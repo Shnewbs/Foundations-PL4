@@ -25,6 +25,7 @@ jobs:
         if: always()
         run: |
           mkdir -p port-diagnostics
+          python3 tools/port_api_inventory.py
           cp port-compile.log port-diagnostics/ || true
           find "$HOME/.gradle/caches" -type f \( -name '*sources*.jar' -o -name '*manifest*.json' \) -printf '%p\n' > port-diagnostics/source-paths.txt
           find . -path './.git' -prune -o -name '*sources*.jar' -print >> port-diagnostics/source-paths.txt
