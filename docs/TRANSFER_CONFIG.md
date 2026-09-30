@@ -24,7 +24,7 @@ fePerCycle = 50000
 
 `transfer` limits new extraction per Transfer Node per cycle. `transfer.networkCaps` limits total successful delivery per connected data network per cycle, shared across all its Transfer Nodes, ADD/REMOVE paths, passive endpoints, and pending escrow retries. A resource is charged once on successful destination insertion, not twice at extraction and insertion. Each separate connected component gets its own budget; wireless links joining components share that budget too. Existing endpoint eligibility, filters, priorities and ordering remain in effect.
 
-Shared caps default to **0**, meaning uncapped; per-node limits and `transfer.enabled` still apply. To disable all transfers, set `enabled = false`. Item values count individual items, not stacks. Fluid values are millibuckets; energy values are FE. EU and J remain telemetry-only.
+Shared caps default to **0**, meaning uncapped; per-node limits and `transfer.enabled` still apply. To disable all transfers, set `enabled = false`. Item values count individual items, not stacks. Fluid values are millibuckets; energy values are FE-equivalent for native Mekanism J, GregTech EU and Electrodynamics J as well as FE. See [native energy and conversion](ENERGY_TRANSFER.md) for ratios, packet thresholds and conservative fractional budget charging.
 
 At the default 20 ticks per cycle and 20 TPS, the example shared cap allows at most 128 items, 4000 mB and 50000 FE per second per network. At 10 ticks per cycle it allows twice that per second at 20 TPS. These are ceilings, not guaranteed throughput; server TPS and provider acceptance also affect actual delivery. Cable placement responsiveness is independent of these limits.
 

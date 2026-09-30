@@ -68,6 +68,7 @@ public final class FoundationsPL4 {
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); TABS.register(bus); MENUS.register(bus);
         net.foundations.pl4.core.CoreRecipes.register(bus);
         container.registerConfig(ModConfig.Type.SERVER,PLConfig.SPEC);
+        container.registerConfig(ModConfig.Type.CLIENT,PLClientConfig.SPEC);
         bus.addListener(PLPackets::register);
         bus.addListener(HammerEntity::capabilities);
         bus.addListener(PLGameTests::register);

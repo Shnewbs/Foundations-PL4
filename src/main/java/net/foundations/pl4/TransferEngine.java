@@ -55,6 +55,7 @@ public final class TransferEngine {
     public static void run(MinecraftServer server,Plan plan){
         List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.drivers();
         if(transfer.isEmpty())return;
+        boolean nativeEnergy=NativeEnergyTransfers.needed(plan);
 
         Budgets budgets=new Budgets();
         Set<PairKey> itemPairs=new HashSet<>(),fluidPairs=new HashSet<>(),energyPairs=new HashSet<>();
@@ -66,7 +67,7 @@ public final class TransferEngine {
             List<NetworkEngine.Ref> sinks=sinks(endpoints,ref,ref.part().ticks);
             if(ref.part().items&&!ref.part().pendingItem.isEmpty())flushItem(server,ref,sinks,budgets,itemPairs,itemReceived);
             if(ref.part().fluids&&!ref.part().pendingFluid.isEmpty())flushFluid(server,ref,sinks,budgets,fluidPairs,fluidReceived);
-            if(ref.part().energy&&ref.part().pendingEnergy>0)flushEnergy(server,ref,sinks,budgets,energyPairs,energyReceived);
+            if(!nativeEnergy&&ref.part().energy&&ref.part().pendingEnergy>0)flushEnergy(server,ref,sinks,budgets,energyPairs,energyReceived);
         }
 
         // REMOVE drives exports. This phase keeps the old REMOVE -> ADD behavior and also
@@ -75,7 +76,7 @@ public final class TransferEngine {
             List<NetworkEngine.Ref> sinks=sinks(endpoints,source,source.part().ticks);
             if(source.part().items)pushItems(server,source,sinks,budgets,itemPairs,itemReceived);
             if(source.part().fluids)pushFluids(server,source,sinks,budgets,fluidPairs,fluidReceived);
-            if(source.part().energy)pushEnergy(server,source,sinks,budgets,energyPairs,energyReceived);
+            if(!nativeEnergy&&source.part().energy)pushEnergy(server,source,sinks,budgets,energyPairs,energyReceived);
         }
 
         // ADD drives imports. Explicit REMOVE peers already handled above are skipped by the
@@ -84,13 +85,14 @@ public final class TransferEngine {
             List<NetworkEngine.Ref> sources=sources(endpoints,sink,sink.part().ticks);
             if(sink.part().items)pullItems(server,sink,sources,budgets,itemPairs,itemReceived);
             if(sink.part().fluids)pullFluids(server,sink,sources,budgets,fluidPairs,fluidReceived);
-            if(sink.part().energy)pullEnergy(server,sink,sources,budgets,energyPairs,energyReceived);
+            if(!nativeEnergy&&sink.part().energy)pullEnergy(server,sink,sources,budgets,energyPairs,energyReceived);
         }
 
-        for(NetworkEngine.Ref ref:transfer)updateStatus(ref,endpoints);
+        if(nativeEnergy)NativeEnergyTransfers.run(server,plan);
+        for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
     }
 
-    private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.pendingEnergy>0;}
+    private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0;}
     private static Comparator<NetworkEngine.Ref> driverOrder(){
         return Comparator.<NetworkEngine.Ref>comparingInt(r->r.part().priority).reversed()
             .thenComparing(r->r.level().dimension().location().toString())
@@ -118,10 +120,10 @@ public final class TransferEngine {
         }
         return out;
     }
-    private static List<NetworkEngine.Ref> sinks(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref source,long cursor){
+    static List<NetworkEngine.Ref> sinks(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref source,long cursor){
         return rotateTies(endpoints.stream().filter(s->s!=source&&!sameTarget(source,s)&&TransferRules.canRoute(true,source.part().transferMode,s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode)).toList(),cursor);
     }
-    private static List<NetworkEngine.Ref> sources(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref sink,long cursor){
+    static List<NetworkEngine.Ref> sources(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref sink,long cursor){
         return rotateTies(endpoints.stream().filter(s->s!=sink&&!sameTarget(s,sink)&&TransferRules.canRoute(s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode,true,sink.part().transferMode)).toList(),cursor);
     }
     private static PairKey pair(NetworkEngine.Ref source,NetworkEngine.Ref sink){return new PairKey(source.part().identity,sink.part().identity);}

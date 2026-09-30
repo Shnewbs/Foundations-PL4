@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.4` page tools and shared network transfer caps
+**Current source candidate:** `0.0.2a.R1.5` explicit native energy/conversion and once-per-account community links
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -853,7 +853,7 @@ R16 is intentionally safer than blindly matching incomplete historical semantics
 - `ADD_REMOVE` does not blindly interact with the passive pool;
 - same-cycle re-extraction is blocked;
 - no chunk force-loading;
-- EU/J are not converted.
+- Energy readers do not convert EU/J. R1.5 adds explicit, server-controlled Transfer Node conversion; telemetry remains native.
 
 This is a good alpha safety boundary. The correct next step is to port **channels and filters**, not to loosen the safety rules blindly.
 
@@ -1305,7 +1305,7 @@ Test:
 
 ## Native energy transport
 
-Decide deliberately whether PL4 should ever transport native EU/J directly.
+R1.5 implements user-requested optional native Mekanism J, GTCEu EU and Electrodynamics/Voltaic Joule transport plus explicit node A → B conversion. See `docs/ENERGY_TRANSFER.md`. Native FE remains the default; this does not complete Phase 3 transfer parity.
 
 Recommended default:
 

@@ -31,7 +31,7 @@ public final class NetworkEngine {
     public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
     public static void stopped(ServerStoppedEvent e){
-        EnergyReader.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
+        EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
     public static ServerLevel level(MinecraftServer server,Part.Link link){
         ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));

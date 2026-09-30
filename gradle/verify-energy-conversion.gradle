@@ -1,0 +1,7 @@
+def energyVerifierClasses = layout.buildDirectory.dir('energyVerifierClasses')
+tasks.register('compileEnergyRuleVerifier',JavaCompile){
+    source=files('src/main/java/net/foundations/pl4/core/EnergyConversion.java','src/main/java/net/foundations/pl4/core/ReflectiveEnergyTransfer.java','src/main/java/net/foundations/pl4/core/ReflectiveElectrodynamicTransfer.java','tools/EnergyConversionRegressionTests.java')
+    classpath=files();destinationDirectory=energyVerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyEnergyConversion',JavaExec){dependsOn tasks.named('compileEnergyRuleVerifier');classpath=files(energyVerifierClasses);mainClass='EnergyConversionRegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyEnergyConversion')}

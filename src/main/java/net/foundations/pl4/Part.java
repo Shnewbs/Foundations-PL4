@@ -20,6 +20,16 @@ public final class Part {
     public int hologramView = 3; // SOUTH for legacy floor/ceiling projectors; wall view is derived.
     public long layoutRevision; // Shared large-display edits; persisted so expansion/reload keeps the layout.
     public String energySystem = "AUTO";
+    public String energyInput="FE",energyOutput="FE",pendingEnergyUnit="FE";
+    public int energyVoltage=32,pendingEnergyJRate,pendingEnergyEURate,pendingEnergyEDRate;
+    public long pendingEnergyCredits;
+    public String energyTransferStatus="";
+    public boolean energyConvert;
+    public long energyCredits(){return pendingEnergyCredits>0?pendingEnergyCredits:(long)pendingEnergy*net.foundations.pl4.core.EnergyConversion.FE;}
+    public void energyCredits(long value){pendingEnergyCredits=Math.max(0,value);pendingEnergy=(int)Math.min(Integer.MAX_VALUE,pendingEnergyCredits/net.foundations.pl4.core.EnergyConversion.FE);energyEscrow=pendingEnergyCredits>0;}
+    public boolean energyEscrow;
+    public boolean energyRouteEditable(){return energyCredits()==0&&!energyEscrow;}
+
     public DisplayElements.Mode displayMode=DisplayElements.Mode.AUTO_LIST;
     public int displayPage;
     public int layoutWidth=DisplayElements.WIDTH,layoutHeight=DisplayElements.HEIGHT; // Persisted logical coordinate space; R11 large canvases migrate proportionally.
@@ -111,11 +121,15 @@ public final class Part {
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
         t.putString("comparison",comparison); t.putDouble("threshold",threshold); t.putInt("index",index); t.putInt("priority",priority); t.putInt("signal",signal);
         t.putInt("color",color); t.putInt("transferMode",transferMode); t.putBoolean("items",items); t.putBoolean("fluids",fluids); t.putBoolean("energy",energy);
+        t.putBoolean("energyConvert",energyConvert);t.putString("energyInput",energyInput);t.putString("energyOutput",energyOutput);t.putInt("energyVoltage",energyVoltage);
+        // Amount remains server-only; the boolean prevents editing a route while escrow exists.
+        t.putBoolean("energyEscrow",energyCredits()>0);
         t.putInt("blockedFaces",blockedFaces & 63); t.putBoolean("descending",descending); t.putBoolean("whitelist",whitelist); t.putLong("ticks",ticks);
         if (!sync) {
             if (!pendingItem.isEmpty()) t.put("pendingItem",pendingItem.save(registry));
             if (!pendingFluid.isEmpty()) t.put("pendingFluid",pendingFluid.save(registry));
-            t.putInt("pendingEnergy",pendingEnergy);
+            t.putInt("pendingEnergy",pendingEnergy);t.putLong("pendingEnergyCredits",energyCredits());
+            t.putString("pendingEnergyUnit",pendingEnergyUnit);t.putInt("pendingEnergyJRate",pendingEnergyJRate);t.putInt("pendingEnergyEURate",pendingEnergyEURate);t.putInt("pendingEnergyEDRate",pendingEnergyEDRate);
         }
         ListTag l = new ListTag(); links.forEach(a -> l.add(a.save())); t.put("links",l);
         ListTag e = new ListTag(); elements.forEach(a -> e.add(a.save())); t.put("elements",e);
@@ -137,6 +151,11 @@ public final class Part {
         p.label=t.getString("label"); p.filter=t.getString("filter"); p.selected=t.getString("selected"); p.metric=t.getString("metric"); p.mode=t.getString("mode");
         p.comparison=t.getString("comparison"); p.threshold=t.getDouble("threshold"); p.index=t.getInt("index"); p.priority=t.getInt("priority"); p.signal=t.getInt("signal");
         p.color=t.getInt("color"); p.transferMode=t.getInt("transferMode"); p.items=t.getBoolean("items"); p.fluids=t.getBoolean("fluids"); p.energy=t.getBoolean("energy");
+        p.energyConvert=t.getBoolean("energyConvert");p.energyInput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyInput"));p.energyOutput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyOutput"));
+        p.energyVoltage=t.contains("energyVoltage")?Math.clamp(t.getInt("energyVoltage"),1,1048576):32;
+        p.pendingEnergyUnit=net.foundations.pl4.core.EnergyConversion.unit(t.getString("pendingEnergyUnit"));
+        p.pendingEnergyJRate=Math.max(0,t.getInt("pendingEnergyJRate"));p.pendingEnergyEURate=Math.max(0,t.getInt("pendingEnergyEURate"));p.pendingEnergyEDRate=Math.max(0,t.getInt("pendingEnergyEDRate"));
+        p.pendingEnergyCredits=Math.max(0,t.getLong("pendingEnergyCredits"));p.energyEscrow=!t.contains("pendingEnergy")&&t.getBoolean("energyEscrow");
         p.blockedFaces=t.getInt("blockedFaces") & 63; p.descending=t.getBoolean("descending"); p.whitelist=t.getBoolean("whitelist"); p.ticks=t.getLong("ticks");
         p.pendingItem=ItemStack.parseOptional(registry,t.getCompound("pendingItem")); p.pendingFluid=FluidStack.parseOptional(registry,t.getCompound("pendingFluid")); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
         ListTag links=t.getList("links",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));

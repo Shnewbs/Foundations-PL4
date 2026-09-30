@@ -118,6 +118,16 @@ public final class PLPackets {
                         p.hologramView=previous;reply(player,anchorHost,anchorPart);return;
                     }
                 }
+                case "energy_convert" -> {
+                    if(p.kind!=Kind.TRANSFER_NODE||!p.energyRouteEditable()||!Set.of("true","false").contains(v))return;
+                    p.energyConvert=Boolean.parseBoolean(v);if(!p.energyConvert)p.energyOutput=p.energyInput;
+                }
+                case "energy_input", "energy_output" -> {
+                    if(p.kind!=Kind.TRANSFER_NODE||!p.energyRouteEditable()||!Set.of("FE","J","EU","ED_J").contains(v)||!EnergyPorts.supported(v)||!EnergyPorts.enabled(v)){reply(player,anchorHost,anchorPart);return;}
+                    if(packet.field.equals("energy_input")){p.energyInput=v;if(!p.energyConvert)p.energyOutput=v;}
+                    else {if(!p.energyConvert)return;p.energyOutput=v;}
+                }
+                case "energy_voltage" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.energyRouteEditable())return;int n=Integer.parseInt(v);if(n<1||n>1048576)return;p.energyVoltage=n;}
                 case "energy_system" -> {if(p.kind==Kind.ENERGY_READER&&Set.of("AUTO","FE","EU","J").contains(v))p.energySystem=v;else return;}
                 case "label" -> p.label=clean(v,48);
                 case "filter" -> p.filter=clean(v,256);

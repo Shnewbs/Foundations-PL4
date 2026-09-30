@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.1a.R17
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.5
 
 This is the same chapter text shipped in the game. Tutorial checkpoints are manual, not automated acceptance results.
 
@@ -325,7 +325,7 @@ A supported empty battery can report zero. Missing, unloaded, blocked or unsuppo
 
 ### BOUNDARIES
 
-Transfer Nodes still transport FE only. This is not universal energy support: AE2-native grids, IC2-specific power and Create stress/RPM are not added here. Very large telemetry above 2^53 may lose integer precision.
+Transfer Nodes support FE and optional native Mekanism J, GregTech EU and Electrodynamics/Voltaic Joules, with explicit server-controlled conversion. This is not universal energy support: AE2-native grids, IC2-specific power and Create stress/RPM are not added here. Very large telemetry above 2^53 may lose integer precision.
 
 ## Info and Network Readers
 
@@ -514,7 +514,7 @@ Wireless Storage currently opens a bound-target read-only view. It is not a comp
 
 ## Transfer Nodes
 
-Move items, fluids and FE through the data network without turning ordinary Nodes into pumps.
+Move items, fluids and supported native energy through the data network with explicit optional conversion.
 
 ### THE SIMPLE PAIR
 
@@ -534,7 +534,11 @@ Items and fluids use the Transfer Node filter on the direction that node control
 
 ### SAFETY AND ESCROW
 
-If a real provider accepts less than simulation promised, the driving Transfer Node keeps the remainder in persistent escrow and retries later. Resources inserted during a transfer cycle are not immediately re-extracted in that same cycle. Operator removal preserves pending escrow. Items, compatible fluid handlers and FE are transportable; native EU and Mekanism Joule support remains read-only telemetry in this alpha.
+If a real provider accepts less than simulation promised, the driving Transfer Node keeps the remainder in persistent escrow and retries later. Resources inserted during a transfer cycle are not immediately re-extracted in that same cycle. Operator removal preserves pending escrow. Items, compatible fluid handlers and FE are transportable; Energy Reader support remains read-only telemetry. R1.5 Transfer Nodes separately add native Mekanism J, GregTech EU and Electrodynamics Joules plus explicit Input/Output conversion, with server ratios and loss settings.
+
+### NATIVE OR CONVERT
+
+Scroll in Transfer Node Settings to Conversion Off/On and Input/Output. Off keeps both types equal. REMOVE reads Input from its machine and offers Output to the network; ADD expects Input from the network and sends Output to its machine. Source Output must match destination Input. Ordinary Nodes expose FE only. Mek J and ED Joules are separate providers; use server-controlled conversion to bridge them. EU insertion uses the configured packet voltage and rejects a receiver rated below it. Route settings lock until pending escrow drains. See docs/ENERGY_TRANSFER.md for pack ratios, loss and packet/cap limits.
 
 ## Redstone and clocks
 
@@ -630,7 +634,7 @@ Client resource packs may replace assets/foundations_pl4/guide/en_us.json. Conte
 
 ### DISPLAY BUDGETS
 
-Typed layouts are limited to 32 elements, eight pages, eight explicit visible reader bindings, and 128 rendered item/fluid pictures per canvas. Preview metadata excludes nested inventories and uses a 4096-byte per-picture and 32768-byte component budget per sampled reader, plus small base-ID fallback records. The limits are safety caps, not performance benchmark results. Different energy units remain separate; PL4 does not convert or transfer EU/J.
+Typed layouts are limited to 32 elements, eight pages, eight explicit visible reader bindings, and 128 rendered item/fluid pictures per canvas. Preview metadata excludes nested inventories and uses a 4096-byte per-picture and 32768-byte component budget per sampled reader, plus small base-ID fallback records. The limits are safety caps, not performance benchmark results. Different energy units remain separate; Energy Readers do not convert units. Transfer Nodes can explicitly transfer or convert supported native units under server policy.
 
 ## Port status and credits
 

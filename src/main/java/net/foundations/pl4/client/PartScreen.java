@@ -14,16 +14,22 @@ public final class PartScreen extends Screen {
     private final java.util.UUID clickedIdentity;private final int clickedSlot;
     private int left,top,w,h,scroll,tab,contentScroll;
     private Component hoveredRowTooltip;
+    private Button energyInputButton,energyOutputButton,energyModeButton;
     private Button viewToggle;private String displayError="";
     private final Map<String,EditBox> fields=new LinkedHashMap<>();
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    public void update(Part p){if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));}
+    public void update(Part p){if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+        if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
+        if(energyOutputButton!=null){energyOutputButton.setMessage(Component.literal("Output: "+EnergyPorts.label(part.energyOutput)));energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;}
+        if(energyModeButton!=null){energyModeButton.setMessage(Component.literal("Conversion: "+(part.energyConvert?"On":"Off")));energyModeButton.active=editable&&part.energyRouteEditable();}
+        if(fields.containsKey("energy_voltage"))fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
+    }
     public void error(String message){displayError=message;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;
+        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
         if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
@@ -65,6 +71,16 @@ public final class PartScreen extends Screen {
                 Button modeButton=button(names[part.transferMode],left+12,y,156,b->{int next=(part.transferMode+1)%4;send("transfer",Integer.toString(next));b.setMessage(Component.literal(names[next]));b.setTooltip(transferTooltip(next));});
                 modeButton.setTooltip(transferTooltip(part.transferMode));
                 y+=25;toggle("items","Items",part.items,left+12,y);toggle("fluids","Fluids",part.fluids,left+90,y);toggle("energy","Energy",part.energy,left+168,y);
+                y+=25;energyModeButton=button("Conversion: "+(part.energyConvert?"On":"Off"),left+12,y,156,b->{send("energy_convert",Boolean.toString(!part.energyConvert));});
+                energyModeButton.active=editable&&part.energyRouteEditable();energyModeButton.setTooltip(Tooltip.create(Component.literal("Off: native same-unit transfer. On: choose input and output; server policy applies. Drain escrow before editing.")));
+                y+=25;
+                energyInputButton=button("Input: "+EnergyPorts.label(part.energyInput),left+12,y,104,b->{String value=EnergyPorts.next(part.energyInput);send("energy_input",value);b.setMessage(Component.literal("Input: "+EnergyPorts.label(value)));});
+                energyOutputButton=button("Output: "+EnergyPorts.label(part.energyOutput),left+124,y,104,b->{String value=EnergyPorts.next(part.energyOutput);send("energy_output",value);b.setMessage(Component.literal("Output: "+EnergyPorts.label(value)));});
+                energyInputButton.active=editable&&part.energyRouteEditable();energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;
+                energyInputButton.setTooltip(Tooltip.create(Component.literal("REMOVE: attached machine input; ADD: network input. Equal types mean native transfer.")));
+                energyOutputButton.setTooltip(Tooltip.create(Component.literal("REMOVE: network output; ADD: attached machine output. Different types request server-controlled conversion.")));
+                y+=28;field("energy_voltage","EU voltage",Integer.toString(part.energyVoltage),x,y,90);
+                fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
             }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())button("Clear links ("+part.links.size()+")",left+12,y,140,b->{send("clear_links","");b.setMessage(Component.literal("Links cleared"));});
             button("Apply fields",left+12,top+h-27,104,b->{Map<String,String> values=new LinkedHashMap<>();fields.forEach((key,box)->values.put(key,box.getValue()));values.forEach(this::send);});
         }
@@ -115,7 +131,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.drawString(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             
         }
     }

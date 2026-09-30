@@ -96,8 +96,13 @@ public final class PartItem extends Item {
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
     public static ItemStack stack(Part part,HolderLookup.Provider registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());
-        if(PartItemDataRules.needsEscrowPayload(!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.pendingEnergy)){
+        if(PartItemDataRules.needsEscrowPayload(!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
             Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
+            if(part.energyCredits()>0){
+                escrow.energyCredits(part.energyCredits());escrow.pendingEnergyUnit=part.pendingEnergyUnit;
+                escrow.pendingEnergyJRate=part.pendingEnergyJRate;escrow.pendingEnergyEURate=part.pendingEnergyEURate;escrow.pendingEnergyEDRate=part.pendingEnergyEDRate;
+                escrow.energyInput=part.energyInput;escrow.energyOutput=part.energyOutput;escrow.energyConvert=part.energyConvert;escrow.energyVoltage=part.energyVoltage;escrow.transferMode=part.transferMode;
+            }
             putSaved(stack,canonical(escrow.save(registry,false)));
         }
         return stack;
