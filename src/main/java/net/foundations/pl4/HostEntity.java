@@ -35,6 +35,7 @@ public final class HostEntity extends BlockEntity {
         Part p=hit(hit);if(p!=null&&behindDisplay){Part reader=coveredReader(p);if(reader!=null)return reader;}return p;
     }
     public int connection(Direction face) { return cableConnections[face.ordinal()]; }
+    int[] connections() { return cableConnections.clone(); }
     public void setConnections(int[] values) {
         if(!java.util.Arrays.equals(cableConnections,values)) { System.arraycopy(values,0,cableConnections,0,6); cachedOutline=null;lastCableSync=null; }
     }

@@ -73,7 +73,8 @@ public final class PartItem extends Item {
             if(inherited!=null)part.applyDisplaySettings(inherited,inheritedRevision);
         }
         host.parts.put(part.slot(),part);host.changed();
-        if(l instanceof net.minecraft.server.level.ServerLevel server)NetworkEngine.ensureCurrent(server.getServer());
+        if(part.kind.cable())NetworkEngine.refreshCableGeometry(host);
+        else if(l instanceof net.minecraft.server.level.ServerLevel server)NetworkEngine.ensureCurrent(server.getServer());
         if(!player.getAbilities().instabuild)c.getItemInHand().shrink(1);
         return InteractionResult.CONSUME;
     }

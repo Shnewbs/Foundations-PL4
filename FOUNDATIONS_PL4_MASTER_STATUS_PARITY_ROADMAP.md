@@ -1151,11 +1151,11 @@ Use PL2/PL3 research for:
 - alignment tools;
 - distribute evenly;
 - copy/paste; **implemented in the R1 continuation with local clipboard, deterministic offset, and revision-fenced add**;
-- duplicate with deterministic offset;
+- duplicate with deterministic offset; **implemented in the R1 continuation (Ctrl+D re-pastes the selection at a fixed 4px offset)**;
 - group/ungroup;
 - lock element;
 - hide/show element;
-- undo/redo;
+- undo/redo; **implemented in the R1 continuation: bounded client-side history of whole-layout snapshots, restored server-side through a new revision-fenced `replace` transaction (Ctrl+Z / Ctrl+Y, Ctrl+Shift+Z)**;
 - page names;
 - page duplicate/delete;
 - keyboard shortcuts;

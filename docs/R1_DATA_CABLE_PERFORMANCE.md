@@ -6,6 +6,8 @@ Network groups now build their stable processing order, distinct target list, an
 
 This removes recurring `O(P log P)` sorting and per-sample list/set allocation from each group, where `P` is the group's part count. Topology rebuild also collects valid loaded hosts while pruning stale entries, avoiding a second loaded-host/chunk check across the registry. Provider sampling, entity scans, and resource transfers remain dynamic and are not cached.
 
+Cable placement now recalculates and synchronizes cable arms for the placed host and adjacent cable hosts immediately. The full server network rebuild remains authoritative but is deferred by one server tick, allowing the client to receive the local cable geometry before a large loaded network is rebuilt.
+
 ## Review findings
 
 - Data and redstone cables remain separated by the topology planner's compatibility check.

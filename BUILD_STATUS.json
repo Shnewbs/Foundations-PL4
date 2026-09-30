@@ -71,7 +71,7 @@
   "r17_visual_acceptance": "USER_ACCEPTED_WALL_FLOOR_CEILING_NORMAL_AND_ADVANCED",
   "r1_network_topology": "CACHED_GROUP_ORDER_TARGETS_READERS_DURING_REBUILD",
   "r1_priority_cache_invalidation_test": "PASS",
-  "r1_gametests_total": 115,
-  "r1_gametests_passed": 115,
+  "r1_gametests_total": 118,
+  "r1_gametests_passed": 118,
   "r1_gametests_failed": 0
 }
