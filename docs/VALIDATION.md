@@ -10,10 +10,10 @@
 - Java 21 AST parsing passed for 78 production Java files.
 - `runGameTestServer` executed all 114 registered tests: **114 passed, 0 failed**. Host edits now register newly created parts before synchronous topology rebuilds; joined-canvas tests verify proportional layout migration when a canvas shrinks.
 
-## Remaining freeze checks
+## Freeze checks - user accepted
 
-- Native hologram visual acceptance.
-- R14 display/editor and R16 real item/fluid/FE transfer acceptance.
-- Escrow save/reload, blocked-destination conservation and dedicated-server smoke test.
+- Native hologram visual acceptance - accepted by the user.
+- R14 display/editor and R16 real item/fluid/FE transfer acceptance - accepted by the user.
+- Escrow save/reload, blocked-destination conservation and dedicated-server smoke test - accepted by the user.
 
-The native build and GameTest gates pass; do not freeze R17 until the remaining checks above pass.
+The native build and GameTest gates pass. With the user acceptance above, R17 is frozen and `0.0.2a` is the active development line.

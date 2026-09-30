@@ -6,7 +6,7 @@
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
-**Status:** Alpha / source candidate; `0.0.1a` is not frozen until the freeze gate in this document passes.
+**Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
 
 ---
 
@@ -1096,24 +1096,20 @@ Do not blindly port old APIs; map each historical integration to a current 1.21.
 
 # 12. Recommended phase plan
 
-# Phase 0 — Freeze `0.0.1a`
+# Phase 0 — Freeze `0.0.1a` (complete)
 
 **Goal:** finish the foundation without adding another large subsystem.
 
-### Remaining work
+### Completed freeze gate
 
-1. R17 source corrects the emitter-relative hologram anchor; complete the in-game visual matrix.
-2. Native build exact freeze candidate.
-3. Run all 114 GameTests.
-4. Complete R16 item/fluid/FE acceptance.
-5. Save/reload escrow test.
-6. Final display/editor graphical regression.
-7. Dedicated-server smoke test.
-8. Archive source/JAR/logs/screenshots/checksums.
+- R17 emitter-relative hologram anchor and wall/floor/ceiling visual matrix accepted.
+- Native Java 21 build and all 114 GameTests accepted.
+- R16 item/fluid/FE transfer, escrow/reload, blocked-destination conservation, display/editor regression, and dedicated-server smoke checks accepted.
+- Source/JAR/logs/screenshots/checksums archived by the release operator.
 
 ### Exit condition
 
-`0.0.1a` becomes the immutable base for `0.0.2a`.
+`0.0.1a` is the immutable base for `0.0.2a`. The acceptance above is user-reported release evidence; repeat the native checks when producing the public frozen artifact.
 
 ---
 
@@ -1948,17 +1944,17 @@ The exact number of revisions may change, but the dependency order should stay c
 ## P0 — before freezing `0.0.1a`
 
 - [x] R17 source anchors normal holograms at the emitter bar and Advanced holograms at the selected projection panel.
-- [ ] R17 normal/Advanced holograms visually accepted on wall, floor and ceiling mounts.
-- [ ] Exact freeze source builds under Java 21.
-- [ ] 114/114 GameTests pass.
-- [ ] R16 item passive-endpoint transfers accepted in-game.
-- [ ] R16 real fluid passive-endpoint transfers accepted.
-- [ ] R16 real FE passive-endpoint transfers accepted.
-- [ ] Full destination cannot delete resources.
-- [ ] Escrow survives restart and delivers once.
-- [ ] R14/R15 display/editor render fixes stay fixed.
-- [ ] Final save/reload and dedicated-server smoke.
-- [ ] Frozen source/JAR/checksums/logs archived.
+- [x] R17 normal/Advanced holograms visually accepted on wall, floor and ceiling mounts.
+- [x] Exact freeze source builds under Java 21.
+- [x] 114/114 GameTests pass.
+- [x] R16 item passive-endpoint transfers accepted in-game.
+- [x] R16 real fluid passive-endpoint transfers accepted.
+- [x] R16 real FE passive-endpoint transfers accepted.
+- [x] Full destination cannot delete resources.
+- [x] Escrow survives restart and delivers once.
+- [x] R14/R15 display/editor render fixes stay fixed.
+- [x] Final save/reload and dedicated-server smoke.
+- [x] Frozen source/JAR/checksums/logs archived.
 
 ## P1 — first half of `0.0.2a`
 
