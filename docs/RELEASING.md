@@ -35,3 +35,7 @@ Every release workflow uploads the tested runtime JAR with the same version note
 A `curseforge-upload.json` receipt in the matching GitHub Release records the uploaded file ID and SHA-256. Reruns skip an identical recorded upload and reject changed source/project metadata. A connection failure or failure to save the receipt requires checking the CurseForge project before retrying, because an upload may have succeeded.
 
 API reference: https://support.curseforge.com/support/solutions/articles/9000197321
+
+Configured destination: Practical Logistics 4 - Foundations, project `1716767` (https://www.curseforge.com/minecraft/mc-mods/practical-logistics-4-foundations).
+
+To publish or retry an existing GitHub version, use Actions → Publish existing release to CurseForge → Run workflow on main and enter its tag. This downloads the published runtime JAR, verifies its release checksum, uses the published notes, and uploads without rebuilding or changing the tag. Use this after fixing credentials. The API token must be generated in the CurseForge author dashboard; the general developer API key is a different credential.

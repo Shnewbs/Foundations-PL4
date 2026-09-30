@@ -78,6 +78,7 @@
   "r1_release": "PUBLISHED_0.0.2a.R1",
   "r1_release_commit": "c19aad22ae86bed55cd10b18c2df4aa69594e7c2",
   "r1_release_workflow_run": 36744970734,
-  "r1_curseforge": "CONFIGURED_WORKFLOW_PENDING_PROJECT_ID_AND_SECRET"
+  "r1_curseforge": "BLOCKED_MALFORMED_AUTHOR_API_TOKEN",
+  "curseforge_project_id": 1716767,
+  "curseforge_upload_workflow_run": 36746747935
 }
-
