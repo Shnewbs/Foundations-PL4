@@ -7,12 +7,12 @@ import net.foundations.pl4.core.DisplayElements;
 public final class ElementJson {
     public static String encode(DisplayElements.Spec e){
         JsonObject j=new JsonObject();j.addProperty("id",e.id().toString());j.addProperty("type",e.type().name());j.addProperty("text",e.text());j.addProperty("reader",e.reader());j.addProperty("key",e.key());j.addProperty("asset",e.asset());
-        j.addProperty("x",e.bounds().x());j.addProperty("y",e.bounds().y());j.addProperty("w",e.bounds().width());j.addProperty("h",e.bounds().height());j.addProperty("color",e.color());j.addProperty("count",e.count());j.addProperty("names",e.names());j.addProperty("columns",e.columns());j.addProperty("offset",e.offset());j.addProperty("page",e.page());j.addProperty("vertical",e.vertical());j.addProperty("compact",e.compact());return j.toString();
+        j.addProperty("x",e.bounds().x());j.addProperty("y",e.bounds().y());j.addProperty("w",e.bounds().width());j.addProperty("h",e.bounds().height());j.addProperty("color",e.color());j.addProperty("count",e.count());j.addProperty("names",e.names());j.addProperty("columns",e.columns());j.addProperty("offset",e.offset());j.addProperty("page",e.page());j.addProperty("vertical",e.vertical());j.addProperty("compact",e.compact());j.addProperty("textScale",e.textScale());j.addProperty("textAlign",e.textAlign().name());return j.toString();
     }
     public static DisplayElements.Spec decode(String text){
         if(text.length()>4096)throw new IllegalArgumentException("Element too large");JsonObject j=JsonParser.parseString(text).getAsJsonObject();
         return new DisplayElements.Spec(UUID.fromString(j.get("id").getAsString()),DisplayElements.Type.valueOf(j.get("type").getAsString()),str(j,"text"),str(j,"reader"),str(j,"key"),str(j,"asset"),
-            new DisplayElements.Rect(integer(j,"x"),integer(j,"y"),integer(j,"w"),integer(j,"h")),integer(j,"color"),bool(j,"count"),bool(j,"names"),integer(j,"columns"),integer(j,"offset"),integer(j,"page"),bool(j,"vertical"),bool(j,"compact"));
+            new DisplayElements.Rect(integer(j,"x"),integer(j,"y"),integer(j,"w"),integer(j,"h")),integer(j,"color"),bool(j,"count"),bool(j,"names"),integer(j,"columns"),integer(j,"offset"),integer(j,"page"),bool(j,"vertical"),bool(j,"compact"),j.has("textScale")?j.get("textScale").getAsFloat():1f,DisplayElements.TextAlign.parse(str(j,"textAlign")));
     }
     private static String str(JsonObject j,String k){return j.has(k)?j.get(k).getAsString():"";}
     private static int integer(JsonObject j,String k){return j.has(k)?j.get(k).getAsBigDecimal().intValueExact():0;}

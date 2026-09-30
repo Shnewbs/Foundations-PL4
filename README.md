@@ -4,6 +4,8 @@
 
 R17 is a narrow final-freeze candidate. It keeps R16's hardened Transfer Node behavior and anchors hologram canvases to their actual emitter geometry: the normal projector's bar, the Advanced top emitter on floor/ceiling mounts, or its selected wall panel.
 
+The post-freeze R1 continuation now carries per-element text scale and left/centre/right alignment through the editor, renderer, NBT, and element JSON while retaining legacy defaults.
+
 R16 ordinary Nodes remain passive transfer endpoints. ADD / REMOVE remains explicit-peer only in this alpha until PL2's directional channel/filter editor is restored. Simulated transfers, persistent driver escrow and the same-cycle receive fence are retained. Items, compatible fluids and FE are transported; native EU and Mekanism Joules remain read-only telemetry.
 
 Save schema 2, 13 multipart slots, payload protocol 4, recipes and transfer rules are unchanged from R16.

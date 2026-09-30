@@ -29,9 +29,11 @@ final class DisplayCanvas {
     double depth(int layer){return (DisplayElements.worldDepth(layer)+(layer>0&&layer<5?order*.004/(16.0*32):0))/scale;}
     void rect(double x,double y,double w,double h,int color,int layer){if(w<=0||h<=0)return;quad(WHITE,x,y,w,h,0,0,1,1,color,depth(layer));}
     void outline(DisplayElements.Rect r,int color,int layer){rect(r.x(),r.y(),r.width(),.6,color,layer);rect(r.x(),r.bottom()-.6,r.width(),.6,color,layer);rect(r.x(),r.y(),.6,r.height(),color,layer);rect(r.right()-.6,r.y(),.6,r.height(),color,layer);}
-    void text(String value,int x,int y,int width,int color,boolean right,int layer){
-        if(width<=0)return;Font font=mc.font;String text=font.plainSubstrByWidth(value,width);int tx=right?x+width-font.width(text):x;
-        pose.pushPose();try{pose.translate(0,0,depth(layer));font.drawInBatch(text,tx,y,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}finally{pose.popPose();}
+    void text(String value,int x,int y,int width,int color,boolean right,int layer){text(value,x,y,width,color,right,layer,1f,net.foundations.pl4.core.DisplayElements.TextAlign.LEFT);}
+    void text(String value,int x,int y,int width,int color,boolean right,int layer,float scale,net.foundations.pl4.core.DisplayElements.TextAlign align){
+        if(width<=0)return;Font font=mc.font;float safeScale=Float.isFinite(scale)?Math.clamp(scale,.5f,4f):1f;int textWidth=Math.max(1,(int)(width/safeScale));String text=font.plainSubstrByWidth(value,textWidth);int renderedWidth=(int)(font.width(text)*safeScale);
+        int tx=switch(align){case RIGHT->x+width-renderedWidth;case CENTER->x+(width-renderedWidth)/2;default->right?x+width-renderedWidth:x;};
+        pose.pushPose();try{pose.translate(0,0,depth(layer));pose.translate(tx,y,0);pose.scale(safeScale,safeScale,1);font.drawInBatch(text,0,0,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}finally{pose.popPose();}
     }
     void item(Part.Row sample,DisplayElements.Rect r,boolean block){
         if(sample.item().isEmpty())return;pose.pushPose();

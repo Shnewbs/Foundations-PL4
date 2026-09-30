@@ -31,7 +31,7 @@ final class DisplayPainter {
         int icons=0,order=0;
         render: for(var batch:data.batches){canvas.order(order++);for(var draw:batch.scene.draws()){
             if(draw instanceof DisplayElements.Box box){var r=box.rect();if(box.filled())canvas.rect(r.x(),r.y(),r.width(),r.height(),box.color(),box.layer());else canvas.outline(r,box.color(),box.layer());}
-            else if(draw instanceof DisplayElements.Text text)canvas.text(text.value(),text.x(),text.y(),text.width(),text.color(),text.right(),text.overlay()?4:3);
+            else if(draw instanceof DisplayElements.Text text)canvas.text(text.value(),text.x(),text.y(),text.width(),text.color(),text.right(),text.overlay()?4:3,text.scale(),text.align());
             else if(draw instanceof DisplayElements.Icon icon){if(icons++>=DisplayElements.MAX_ICONS)break render;canvas.item(batch.rows.get(icon.sample()),icon.rect(),icon.block());}
             else if(draw instanceof DisplayElements.Liquid fluid){if(icons++>=DisplayElements.MAX_ICONS)break render;canvas.fluid(batch.rows.get(fluid.sample()),fluid.rect(),fluid.fraction());}
         }
