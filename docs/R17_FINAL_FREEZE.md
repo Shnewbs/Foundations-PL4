@@ -5,8 +5,9 @@ R17 is a narrow continuation of the R16 source candidate, following the roadmap'
 ## Hologram geometry
 
 - Normal projection starts at the physical emitter bar.
-- Advanced projection starts at the selected physical projection panel.
-- The mount anchor, emitter anchor, projection normal and projection distance are modeled separately.
+- Advanced floor/ceiling projection starts at the top emitter; wall projection starts at the selected physical projection panel.
+- Projection follows the mount axis: above floor emitters, below ceiling emitters, and outward from wall emitters. Readable View is independent of this axis.
+- The mount anchor, emitter anchor, projection axis and projection distance are modeled separately.
 - Normal and Advanced clearances remain 0.90 and 1.20 blocks, measured from their emitter geometry.
 - Configured view, readable front/back frames and camera-side origin stability are retained.
 

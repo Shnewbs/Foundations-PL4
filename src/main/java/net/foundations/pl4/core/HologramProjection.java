@@ -30,19 +30,22 @@ public final class HologramProjection {
         return advanced ? ADVANCED_PROJECTION_CLEARANCE : NORMAL_PROJECTION_CLEARANCE;
     }
     public static Geometry geometry(int mount,int requested,boolean advanced) {
-        int front=view(mount,requested);
-        var normal=DisplayFacing.facing(front).normal();
+        view(mount,requested); // Validate the mount before constructing geometry.
+        // Projection follows the attachment axis; view only controls readable orientation.
+        var normal=DisplayFacing.facing(mount^1).normal();
         int yaw=baseYaw(mount,requested);
         Point mountAnchor=modelPoint(mount,yaw,8,advanced?3:0,8);
         Point emitterAnchor;
-        if(advanced) {
+        if(advanced && mount<2) {
+            emitterAnchor=modelPoint(mount,yaw,8,4,8);
+        } else if(advanced) {
             Point[] panels={modelPoint(mount,yaw,5,2,8),modelPoint(mount,yaw,11,2,8),
                 modelPoint(mount,yaw,8,2,5),modelPoint(mount,yaw,8,2,11)};
             emitterAnchor=panels[0];
             for(int i=1;i<panels.length;i++)
                 if(dot(offset(panels[i]),normal)>dot(offset(emitterAnchor),normal))emitterAnchor=panels[i];
         } else {
-            emitterAnchor=modelPoint(mount,yaw,8,0,8);
+            emitterAnchor=modelPoint(mount,yaw,8,0,10.5);
         }
         return new Geometry(mountAnchor,emitterAnchor,normal,clearance(advanced));
     }
