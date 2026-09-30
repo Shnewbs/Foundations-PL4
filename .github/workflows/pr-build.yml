@@ -1,0 +1,52 @@
+name: PR build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-build-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build, test, and package
+    runs-on: windows-latest
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build and run native GameTests
+        run: .\gradlew.bat --no-daemon --console=plain clean build runGameTestServer
+
+      - name: Create build checksums
+        shell: pwsh
+        run: |
+          $jars = Get-ChildItem build\libs -Filter *.jar -File
+          if (-not $jars) {
+            throw "Gradle did not produce any JARs in build\libs."
+          }
+          $checksums = foreach ($file in $jars) {
+            $hash = (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLowerInvariant()
+            "$hash  $($file.Name)"
+          }
+          $checksums | Set-Content -Encoding ascii build\libs\SHA256SUMS.txt
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: FoundationsPL4-pr-${{ github.event.pull_request.number }}-build
+          path: build/libs/
+          if-no-files-found: error
+          retention-days: 14

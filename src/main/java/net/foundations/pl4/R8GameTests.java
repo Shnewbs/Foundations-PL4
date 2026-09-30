@@ -81,8 +81,17 @@ public final class R8GameTests {
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);configure(part(a));a.changed();
         NetworkEngine.ensureCurrent(h.getLevel().getServer());var settings=part(a).displaySettings();
         h.assertTrue(part(b).displaySettings().equals(settings),"Shared settings must be copied to member before removal");
+        var single=net.foundations.pl4.core.DynamicCanvasLayout.large(1,1);
+        var elements=settings.elements().stream().map(e->new Part.Element(net.foundations.pl4.core.DynamicCanvasLayout.migrate(
+            e.spec(),settings.layoutWidth(),settings.layoutHeight(),single.width(),single.height()))).toList();
+        var expected=new Part.DisplaySettings(settings.label(),settings.selected(),settings.metric(),settings.color(),elements,
+            settings.displayMode(),settings.displayPage(),single.width(),single.height());
+        long revision=part(b).layoutRevision;
+        if(settings.layoutWidth()!=single.width()||settings.layoutHeight()!=single.height())
+            revision=net.foundations.pl4.core.CanvasContinuity.next(revision);
         h.getLevel().removeBlock(a.getBlockPos(),false);NetworkEngine.ensureCurrent(h.getLevel().getServer());
-        h.assertTrue(part(b).displaySettings().equals(settings)&&part(b).canvasWidth==1,"Removing visual top-left keeps content on survivor");h.succeed();
+        h.assertTrue(part(b).displaySettings().equals(expected)&&part(b).canvasWidth==1&&part(b).layoutRevision==revision,
+            "Removing visual top-left keeps settings and proportionally resizes content on survivor");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void editedSharedLayoutSurvivesReload(GameTestHelper h){

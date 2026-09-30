@@ -15,4 +15,4 @@ To release a version:
 
 4. The `Build and release` GitHub Actions workflow builds the tagged source and publishes the release with generated notes and build artifacts.
 
-The current R17 candidate is not releasable yet: `verifyClientAssets` reports six missing Large Display back textures, and the latest native GameTest run passed 94/114 tests. Fix those blockers and rerun the full release gate before tagging.
+The R17 candidate's clean build and all 114 native GameTests pass. Do not tag it as a frozen alpha yet: native hologram visual acceptance, R14 display/editor and R16 item/fluid/FE transfer acceptance, escrow reload, and dedicated-server smoke testing remain part of the freeze gate.

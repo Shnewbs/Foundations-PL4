@@ -61,7 +61,14 @@ public final class HostEntity extends BlockEntity {
         if(y>=z)return point.y<0?Direction.DOWN:Direction.UP;
         return point.z<0?Direction.NORTH:Direction.SOUTH;
     }
-    public void changed(){cachedOutline=null;setChanged();if(level!=null){NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);level.updateNeighborsAt(worldPosition,getBlockState().getBlock());}}
+    public void changed(){
+        cachedOutline=null;setChanged();
+        if(level!=null){
+            if(!level.isClientSide)NetworkEngine.add(this);
+            NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
+            level.updateNeighborsAt(worldPosition,getBlockState().getBlock());
+        }
+    }
     public void syncIfChanged(){
         if(level==null||level.isClientSide)return;
         CompoundTag tag=getUpdateTag(level.registryAccess());

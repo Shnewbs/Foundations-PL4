@@ -12,12 +12,10 @@ R17 is a narrow continuation of the R16 source candidate, following the roadmap'
 
 ## Compatibility and scope
 
-R16 transfer routing, save schema 2, 13 multipart slots, payload protocol 4 and recipes are unchanged. Native `compileJava` and the emitter-anchor rule suite pass. The full build is currently blocked by six missing Large Display back textures, and the native GameTest run reports 94/114 passing; do not treat this candidate as accepted.
+R16 transfer routing, save schema 2, 13 multipart slots, payload protocol 4 and recipes are unchanged. The Java 21 clean build, asset/standalone-JAR checks, emitter-anchor rule suite and all 114 native GameTests pass. Host edits register immediately for synchronous topology rebuilds, and joined canvases preserve their settings with proportional layout migration when their size changes. Do not treat this candidate as accepted until the remaining freeze checks pass.
 
 ## Remaining freeze gate
 
-- Java 21 native clean build.
-- All 114 registered GameTests.
 - Normal and Advanced hologram visual checks on wall, floor and ceiling mounts.
 - R14 display/editor and R16 item/fluid/FE transfer acceptance.
 - Escrow save/reload, blocked-destination conservation and dedicated-server smoke test.
