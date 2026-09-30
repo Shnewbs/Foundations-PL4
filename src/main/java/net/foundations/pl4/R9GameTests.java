@@ -143,8 +143,15 @@ public final class R9GameTests {
         var a=display(h,2,Kind.LARGE_DISPLAY);var b=display(h,3,Kind.LARGE_DISPLAY);NetworkEngine.ensureCurrent(h.getLevel().getServer());var root=DisplayNetworks.controller(a,part(a));
         var setting=new Part.DisplaySettings("Typed board","","",0xFFFFFF,List.of(new Part.Element(spec(DisplayElements.Type.BLOCK).onPage(2))),DisplayElements.Mode.CUSTOM,2,DisplayElements.WIDTH,DisplayElements.HEIGHT);
         DisplayNetworks.applyLayout(root.host(),root.part(),setting,12);root.host().changed();
-        HostEntity survivor=root.host()==a?b:a;h.getLevel().removeBlock(root.host().getBlockPos(),false);NetworkEngine.ensureCurrent(h.getLevel().getServer());
-        h.assertTrue(part(survivor).displaySettings().equals(setting)&&part(survivor).layoutRevision==12,"All typed element fields, mode and page survive a controller change");h.succeed();
+        HostEntity survivor=root.host()==a?b:a;
+        var single=net.foundations.pl4.core.DynamicCanvasLayout.large(1,1);
+        var elements=setting.elements().stream().map(e->new Part.Element(net.foundations.pl4.core.DynamicCanvasLayout.migrate(
+            e.spec(),setting.layoutWidth(),setting.layoutHeight(),single.width(),single.height()))).toList();
+        var expected=new Part.DisplaySettings(setting.label(),setting.selected(),setting.metric(),setting.color(),elements,
+            setting.displayMode(),setting.displayPage(),single.width(),single.height());
+        h.getLevel().removeBlock(root.host().getBlockPos(),false);NetworkEngine.ensureCurrent(h.getLevel().getServer());
+        h.assertTrue(part(survivor).displaySettings().equals(expected)&&part(survivor).layoutRevision==13,
+            "All typed element fields survive proportional resizing after a controller change");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void componentVariantKeyIsStableAcrossSave(GameTestHelper h){
