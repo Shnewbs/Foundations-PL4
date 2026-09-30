@@ -33,17 +33,19 @@ final class DisplayCanvas {
     void rect(double x,double y,double w,double h,int color,int layer){if(w<=0||h<=0)return;quad(WHITE,x,y,w,h,0,0,1,1,color,depth(layer));}
     void outline(DisplayElements.Rect r,int color,int layer){rect(r.x(),r.y(),r.width(),.6,color,layer);rect(r.x(),r.bottom()-.6,r.width(),.6,color,layer);rect(r.x(),r.y(),.6,r.height(),color,layer);rect(r.right()-.6,r.y(),.6,r.height(),color,layer);}
     void text(String value,int x,int y,int width,int color,boolean right,int layer){
-        text(value,x,y,width,12,color,right?DisplayElements.TextAlign.RIGHT:DisplayElements.TextAlign.LEFT,false,layer);
+        text(value,x,y,width,12,color,right?DisplayElements.TextAlign.RIGHT:DisplayElements.TextAlign.LEFT,false,1F,layer);
     }
-    void text(String value,int x,int y,int width,int height,int color,DisplayElements.TextAlign alignment,boolean wrap,int layer){
+    void text(String value,int x,int y,int width,int height,int color,DisplayElements.TextAlign alignment,boolean wrap,float textScale,int layer){
         if(width<=0||height<=0)return;Font font=mc.font;pose.pushPose();
         try{
-            pose.translate(0,0,depth(layer));int lineY=y;int maxY=y+height;
-            List<FormattedCharSequence> lines=wrap?font.split(Component.literal(value),width):
-                List.of(FormattedCharSequence.forward(font.plainSubstrByWidth(value,width),net.minecraft.network.chat.Style.EMPTY));
+            pose.translate(x,y,depth(layer));pose.scale(textScale,textScale,1);
+            int scaledWidth=Math.max(1,Math.round(width/textScale)),scaledHeight=Math.max(1,Math.round(height/textScale));
+            int lineY=0;int maxY=scaledHeight;
+            List<FormattedCharSequence> lines=wrap?font.split(Component.literal(value),scaledWidth):
+                List.of(FormattedCharSequence.forward(font.plainSubstrByWidth(value,scaledWidth),net.minecraft.network.chat.Style.EMPTY));
             for(var line:lines){
                 if(lineY+font.lineHeight>maxY)break;
-                int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->x;case CENTER->x+(width-lineWidth)/2;case RIGHT->x+width-lineWidth;};
+                int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->0;case CENTER->(scaledWidth-lineWidth)/2;case RIGHT->scaledWidth-lineWidth;};
                 font.drawInBatch(line,tx,lineY,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);
                 lineY+=font.lineHeight;
             }

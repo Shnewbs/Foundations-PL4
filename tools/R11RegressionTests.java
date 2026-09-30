@@ -28,11 +28,13 @@ public final class R11RegressionTests {
   }
   static void styledText(){
     var base=DisplayElements.create(DisplayElements.Type.TEXT,0,248,120);
-    var styled=base.textStyle(DisplayElements.TextAlign.CENTER,true);
-    check(styled.bounds(base.bounds()).textAlign()==DisplayElements.TextAlign.CENTER&&styled.onPage(1).wrap(),"element copies preserve text style");
+    var styled=base.textStyle(DisplayElements.TextAlign.CENTER,true,2F);
+    check(styled.bounds(base.bounds()).textAlign()==DisplayElements.TextAlign.CENTER&&styled.onPage(1).wrap()&&styled.identity(styled.id()).textScale()==2F,"element copies preserve text style and scale");
     var draw=(DisplayElements.Text)DisplayElements.plan(styled,List.of()).draws().getFirst();
-    check(draw.alignment()==DisplayElements.TextAlign.CENTER&&draw.wrap()&&draw.height()==styled.bounds().height(),"text scene carries alignment, wrapping and clipping height");
+    check(draw.alignment()==DisplayElements.TextAlign.CENTER&&draw.wrap()&&draw.scale()==2F&&draw.height()==styled.bounds().height(),"text scene carries alignment, wrapping, scale and clipping height");
     check(DisplayElements.TextAlign.parse("right")==DisplayElements.TextAlign.RIGHT&&DisplayElements.TextAlign.parse("unknown")==DisplayElements.TextAlign.LEFT,"alignment parsing is case-insensitive and safely defaults");
+    check(base.textScale()==1F,"default text scale is 1x");
+    check(base.textStyle(DisplayElements.TextAlign.LEFT,false,0F).textScale()==1F&&base.textStyle(DisplayElements.TextAlign.LEFT,false,99F).textScale()==DisplayElements.MAX_TEXT_SCALE,"text scale clamps to a safe finite range");
   }
   public static void main(String[] args){spaces();migration();styledText();System.out.println("PASS R11/R1 display rules: "+checks+" assertions. NOT native rendering/API acceptance.");}
 }
