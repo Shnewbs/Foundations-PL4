@@ -1,6 +1,6 @@
 # Foundations PL4 0.0.2a development line
 
-**SOURCE REPOSITORY. No compiled 0.0.2a.R1.5 runtime mod JAR is committed.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
+**SOURCE REPOSITORY. No compiled 0.0.2a.R1.6 runtime mod JAR is committed.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
 
 `0.0.1a.R17` is frozen by user acceptance. This branch is now the `0.0.2a` development line, retaining R16's hardened Transfer Node behavior and R17's emitter-anchored holograms.
 
@@ -21,7 +21,7 @@ gradlew.bat --no-daemon --console=plain clean build
 Expected artifact after a successful Java 21 build:
 
 ```text
-build/libs/FoundationsPL4-1.21.1-0.0.2a.R1.5.jar
+build/libs/FoundationsPL4-1.21.1-0.0.2a.R1.6.jar
 ```
 
 Run native GameTests with:

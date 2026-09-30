@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.5
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.6
 
 This is the same chapter text shipped in the game. Tutorial checkpoints are manual, not automated acceptance results.
 

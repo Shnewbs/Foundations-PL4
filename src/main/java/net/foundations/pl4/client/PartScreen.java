@@ -14,6 +14,7 @@ public final class PartScreen extends Screen {
     private final java.util.UUID clickedIdentity;private final int clickedSlot;
     private int left,top,w,h,scroll,tab,contentScroll;
     private Component hoveredRowTooltip;
+    private boolean draggingSettings;private double settingsDragOffset;
     private Button energyInputButton,energyOutputButton,energyModeButton;
     private Button viewToggle;private String displayError="";
     private final Map<String,EditBox> fields=new LinkedHashMap<>();
@@ -81,11 +82,14 @@ public final class PartScreen extends Screen {
                 energyOutputButton.setTooltip(Tooltip.create(Component.literal("REMOVE: network output; ADD: attached machine output. Different types request server-controlled conversion.")));
                 y+=28;field("energy_voltage","EU voltage",Integer.toString(part.energyVoltage),x,y,90);
                 fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
+                fields.get("energy_voltage").setTooltip(Tooltip.create(Component.literal("EU insertion voltage; maximum accepted voltage from a pushing EU source. Set to match the source tier.")));
             }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())button("Clear links ("+part.links.size()+")",left+12,y,140,b->{send("clear_links","");b.setMessage(Component.literal("Links cleared"));});
             button("Apply fields",left+12,top+h-27,104,b->{Map<String,String> values=new LinkedHashMap<>();fields.forEach((key,box)->values.put(key,box.getValue()));values.forEach(this::send);});
         }
         layoutContent();
     }
+    private int contentHeight(){return contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20-(top+52);}
+    private int settingsViewport(){return Math.max(1,h-90);}
     private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=Math.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.setY(y-contentScroll);widget.visible=widget.getY()>=top+52&&widget.getY()+20<=top+h-35;});}
     private static String next(String[] values,String current){for(int i=0;i<values.length;i++)if(values[i].equals(current))return values[(i+1)%values.length];return values[0];}
     private void toggle(String key,String label,boolean initial,int x,int y){button(label+": "+(initial?"On":"Off"),x,y,72,new Button.OnPress(){boolean value=initial;public void onPress(Button b){value=!value;send(key,Boolean.toString(value));b.setMessage(Component.literal(label+": "+(value?"On":"Off")));}});}
@@ -132,7 +136,8 @@ public final class PartScreen extends Screen {
             g.drawString(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
             for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
-            
+            int viewport=settingsViewport(),content=contentHeight();
+            if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }
     }
     @Override public void render(GuiGraphics g,int mx,int my,float partial){
@@ -142,5 +147,11 @@ public final class PartScreen extends Screen {
         if(hoveredRowTooltip!=null)g.renderTooltip(font,hoveredRowTooltip,mx,my);
     }
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){if(tab==0){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);return true;}contentScroll-=((int)Math.signum(dy))*25;layoutContent();return true;}
-    @Override public boolean mouseClicked(double x,double y,int button){if(button==1){if(tab!=0){tab=0;scroll=0;contentScroll=0;rebuildWidgets();}else onClose();return true;}if(tab==0&&button==0&&x>=left+8&&x<left+w-12&&y>=top+73&&y<top+h-39){int index=scroll+(int)(y-(top+73))/19;if(index<part.rows.size()){minecraft.keyboardHandler.setClipboard(part.rows.get(index).key());return true;}}return super.mouseClicked(x,y,button);}
+    @Override public boolean mouseClicked(double x,double y,int button){if(button==0&&tab==1&&contentHeight()>settingsViewport()&&x>=left+w-10&&x<left+w&&y>=top+52&&y<top+52+settingsViewport()){
+        int viewport=settingsViewport(),content=contentHeight();int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);
+        settingsDragOffset=y>=sy&&y<sy+thumb?y-sy:thumb/2.0;draggingSettings=true;dragSettings(y);return true;
+    }if(button==1){if(tab!=0){tab=0;scroll=0;contentScroll=0;rebuildWidgets();}else onClose();return true;}if(tab==0&&button==0&&x>=left+8&&x<left+w-12&&y>=top+73&&y<top+h-39){int index=scroll+(int)(y-(top+73))/19;if(index<part.rows.size()){minecraft.keyboardHandler.setClipboard(part.rows.get(index).key());return true;}}return super.mouseClicked(x,y,button);}
+    private void dragSettings(double y){contentScroll=net.foundations.pl4.core.GuideLayout.scrollFromThumb(y-(top+52)-settingsDragOffset,settingsViewport(),contentHeight(),settingsViewport());layoutContent();}
+    @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){if(button==0&&draggingSettings){dragSettings(y);return true;}return super.mouseDragged(x,y,button,dx,dy);}
+    @Override public boolean mouseReleased(double x,double y,int button){if(button==0&&draggingSettings){draggingSettings=false;return true;}return super.mouseReleased(x,y,button);}
 }

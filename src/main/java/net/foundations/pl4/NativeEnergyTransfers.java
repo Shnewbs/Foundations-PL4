@@ -95,10 +95,12 @@ final class NativeEnergyTransfers {
         Part p=source.part();
         if(p.energyCredits()>0){flush(source,sinks);if(!profile(source)||!p.pendingEnergyUnit.equals(output(source)))return;}
         if(received.contains(target(source))||shared.remaining()==0)return;
-        long trial=extract(source,extractionLimit(source),true);if(trial==0)return;
+        long trial=extract(source,extractionLimit(source),true);if(trial==0){
+            p.energyTransferStatus=port(source,input(source))==null?"No supported "+EnergyPorts.label(input(source))+" capability on attached side":"Source empty, output side blocked, or awaiting pushed energy";return;
+        }
         long existing=p.energyCredits(),total=Math.min(Math.min(existing,(long)Integer.MAX_VALUE*EnergyConversion.FE)+trial,(long)shared.remaining()*EnergyConversion.FE),remaining=total;
         for(var sink:sinks)if(remaining>0&&route(source,sink,output(source)))remaining-=deliver(sink,remaining,true);
-        long room=total-remaining-existing;if(room<=0)return;
+        long room=total-remaining-existing;if(room<=0){p.energyTransferStatus=sinks.stream().noneMatch(sink->route(source,sink,output(source)))?"No compatible destination: check mode and network Input":"Destination blocked/full or cap below minimum packet";return;}
         long extracted=extract(source,room,false);if(extracted<=0)return;
         save(source,Math.addExact(existing,extracted),output(source));p.ticks++;flush(source,sinks);
     }

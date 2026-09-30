@@ -142,4 +142,29 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(clicks.size()==2&&clicks.get(0).getAction()==ClickEvent.Action.OPEN_URL&&clicks.get(0).getValue().equals("https://discord.gg/tCTS9xduad")&&clicks.get(1).getValue().equals("https://ko-fi.com/shnewbs"),"Exactly two requested links, no commands or automatic browser opening");
         h.assertTrue(message.getString().equals("[PL4] Discord · Support on Ko-fi"),"One short chat line");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void pushOnlyEUFeedsConversionEscrow(GameTestHelper h){
+        int oldRate=PLConfig.ENERGY_RATE.get(),oldCap=PLConfig.NETWORK_ENERGY_RATE.get();
+        try{PLConfig.ENERGY_RATE.set(256);PLConfig.NETWORK_ENERGY_RATE.set(128);
+            var f=fixture(h,"EU","FE","FE",0,1000,false);Part p=f.source.part();
+            long accepted=NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,10);
+            h.assertTrue(accepted==2&&p.energyCredits()==256*EnergyConversion.FE,"Push-only source fills bounded converted escrow without extraction");
+            h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Full buffer rejects packets");
+            f.run(h);h.assertTrue(f.to.stored==128&&p.energyCredits()==128*EnergyConversion.FE,"Shared network cap applies to pushed EU delivery");
+            f.run(h);h.assertTrue(f.to.stored==256&&p.energyCredits()==0&&f.from.withdrawals==0,"Pushed packets drain exactly once without pulling source storage");h.succeed();
+        }finally{PLConfig.ENERGY_RATE.set(oldRate);PLConfig.NETWORK_ENERGY_RATE.set(oldCap);}
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void pushedEURespectsSideVoltageAndPolicy(GameTestHelper h){
+        boolean conversion=PLConfig.ENERGY_CONVERSION.get();
+        try{var f=fixture(h,"EU","FE","FE",0,1000,false);Part p=f.source.part();
+            h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.EAST,32,1)==0,"Wrong side rejects input");
+            h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,128,1)==0,"Overvoltage rejected without accepting packet");
+            PLConfig.ENERGY_CONVERSION.set(false);h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Server conversion policy enforced on push");
+            PLConfig.ENERGY_CONVERSION.set(true);h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==1,"Configured input accepts safe packet");
+            p.pendingEnergyEURate++;h.assertTrue(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Ratio mismatch prevents mixing escrow profiles");
+            h.assertTrue(p.energyCredits()==128*EnergyConversion.FE,"Rejected packets never change escrow");h.succeed();
+        }finally{PLConfig.ENERGY_CONVERSION.set(conversion);}
+    }
+
 }
