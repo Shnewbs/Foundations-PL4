@@ -16,18 +16,38 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public final class DataSampler {
+    private record ParsedFilter(String source,Set<String> ids,
+        List<TagKey<Item>> itemTags,List<TagKey<net.minecraft.world.level.material.Fluid>> fluidTags) {}
+    // Server-thread cache. Values never retain their weak Part keys or world/capability objects.
+    private static final Map<Part,ParsedFilter> FILTERS=new WeakHashMap<>();
+    private static long filterCompiles;
+    static long filterCompileCount(){return filterCompiles;}
+    static void clearFilters(){FILTERS.clear();filterCompiles=0;}
+    private static ParsedFilter filter(Part part){
+        ParsedFilter cached=FILTERS.get(part);
+        if(cached!=null&&cached.source().equals(part.filter))return cached;
+        Set<String> ids=new HashSet<>();List<TagKey<Item>> items=new ArrayList<>();
+        List<TagKey<net.minecraft.world.level.material.Fluid>> fluids=new ArrayList<>();
+        for(String token:part.filter.split(",")){
+            String entry=token.trim();
+            if(entry.startsWith("#")){
+                ResourceLocation id=ResourceLocation.tryParse(entry.substring(1));
+                if(id!=null){items.add(TagKey.create(Registries.ITEM,id));fluids.add(TagKey.create(Registries.FLUID,id));}
+            }else ids.add(entry); // Preserve exact namespaced-ID semantics, including invalid IDs.
+        }
+        ParsedFilter compiled=new ParsedFilter(part.filter,Set.copyOf(ids),List.copyOf(items),List.copyOf(fluids));
+        FILTERS.put(part,compiled);filterCompiles++;return compiled;
+    }
     public static boolean matches(ItemStack stack,Part part){
         if(part.filter.isBlank())return true;
-        boolean match=false;
-        for(String entry:part.filter.split(",")){
-            entry=entry.trim();if(entry.startsWith("#")){ResourceLocation id=ResourceLocation.tryParse(entry.substring(1));if(id!=null&&stack.is(TagKey.create(Registries.ITEM,id)))match=true;}
-            else if(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(entry))match=true;
-        }
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+        if(!match)for(var tag:filter.itemTags())if(stack.is(tag)){match=true;break;}
         return match==part.whitelist;
     }
     public static boolean matches(FluidStack stack,Part part){
-        if(part.filter.isBlank())return true;boolean match=false;
-        for(String entry:part.filter.split(",")){entry=entry.trim();if(entry.startsWith("#")){ResourceLocation id=ResourceLocation.tryParse(entry.substring(1));if(id!=null&&stack.getFluid().is(TagKey.create(Registries.FLUID,id)))match=true;}else if(BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString().equals(entry))match=true;}
+        if(part.filter.isBlank())return true;
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
+        if(!match)for(var tag:filter.fluidTags())if(stack.getFluid().is(tag)){match=true;break;}
         return match==part.whitelist;
     }
     public static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> targets,int hosts){

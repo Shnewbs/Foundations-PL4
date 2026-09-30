@@ -39,9 +39,18 @@ public final class TransferEngine {
         }
     }
 
-    public static void run(MinecraftServer server,List<NetworkEngine.Ref> network){
+    /** Topology-owned membership/order. Modes, permissions, filters and capabilities stay live. */
+    public record Plan(List<NetworkEngine.Ref> endpoints,List<NetworkEngine.Ref> drivers) {
+        public Plan { endpoints=List.copyOf(endpoints);drivers=List.copyOf(drivers); }
+    }
+    public static Plan prepare(List<NetworkEngine.Ref> network){
         List<NetworkEngine.Ref> endpoints=network.stream().filter(r->r.part().kind==Kind.NODE||r.part().kind==Kind.TRANSFER_NODE).toList();
         List<NetworkEngine.Ref> transfer=endpoints.stream().filter(r->r.part().kind==Kind.TRANSFER_NODE).sorted(driverOrder()).toList();
+        return new Plan(endpoints,transfer);
+    }
+    public static void run(MinecraftServer server,List<NetworkEngine.Ref> network){run(server,prepare(network));}
+    public static void run(MinecraftServer server,Plan plan){
+        List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.drivers();
         if(transfer.isEmpty())return;
 
         Budgets budgets=new Budgets();

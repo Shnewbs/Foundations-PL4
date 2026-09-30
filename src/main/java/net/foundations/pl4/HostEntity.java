@@ -12,12 +12,21 @@ import net.minecraft.world.phys.*;
 public final class HostEntity extends BlockEntity {
     public final Map<Integer,Part> parts=new TreeMap<>();
     private CompoundTag lastSync;
+    private record CableSync(Part part,String status,int signal,List<Part.Row> rows) {}
+    private CableSync lastCableSync;
+    private long syncTagBuilds;
+    // Package-private diagnostic for executable allocation-regression fixtures.
+    long syncTagBuildCount(){return syncTagBuilds;}
+
     private final int[] cableConnections = new int[6];
     private net.minecraft.world.phys.shapes.VoxelShape cachedOutline;
     private int externalLeads;
     public boolean externalLead(Part p){return (externalLeads&(1<<p.slot()))!=0;}
-    public void setExternalLeads(int mask){mask&=8191;if(mask!=externalLeads){externalLeads=mask;cachedOutline=null;}}
-    public boolean readerHasDisplay(Part p){return MultipartShapes.paired(parts.values(),p);}
+    public void setExternalLeads(int mask){mask&=8191;if(mask!=externalLeads){externalLeads=mask;cachedOutline=null;lastCableSync=null;}}
+    public boolean readerHasDisplay(Part p){
+        Part display=parts.get(7+p.face.ordinal());
+        return p.kind.reader()&&display!=null&&display.kind.panelDisplay();
+    }
     public Part coveredReader(Part display){
         if(!display.kind.panelDisplay())return null;
         Part reader=parts.get(display.face.ordinal());return reader!=null&&reader.kind.reader()?reader:null;
@@ -27,7 +36,7 @@ public final class HostEntity extends BlockEntity {
     }
     public int connection(Direction face) { return cableConnections[face.ordinal()]; }
     public void setConnections(int[] values) {
-        if(!java.util.Arrays.equals(cableConnections,values)) { System.arraycopy(values,0,cableConnections,0,6); cachedOutline=null; }
+        if(!java.util.Arrays.equals(cableConnections,values)) { System.arraycopy(values,0,cableConnections,0,6); cachedOutline=null;lastCableSync=null; }
     }
     public net.minecraft.world.phys.shapes.VoxelShape outline() {
         if(cachedOutline==null) {
@@ -62,7 +71,7 @@ public final class HostEntity extends BlockEntity {
         return point.z<0?Direction.NORTH:Direction.SOUTH;
     }
     public void changed(){
-        cachedOutline=null;setChanged();
+        cachedOutline=null;lastCableSync=null;setChanged();
         if(level!=null){
             if(!level.isClientSide)NetworkEngine.add(this);
             NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
@@ -71,8 +80,16 @@ public final class HostEntity extends BlockEntity {
     }
     public void syncIfChanged(){
         if(level==null||level.isClientSide)return;
+        // Standalone cables have only status/signal/rows changing during sampling.
+        // Persistent edits, geometry changes and reloads explicitly invalidate this shortcut.
+        Part cable=parts.size()==1?parts.get(6):null;
+        if(cable!=null&&cable.kind.cable()&&lastCableSync!=null&&lastCableSync.part()==cable
+            &&lastCableSync.signal()==cable.signal&&lastCableSync.status().equals(cable.status)
+            &&lastCableSync.rows().equals(cable.rows))return;
+        syncTagBuilds++;
         CompoundTag tag=getUpdateTag(level.registryAccess());
         if(!tag.equals(lastSync)){lastSync=tag;level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),2);}
+        lastCableSync=cable!=null&&cable.kind.cable()?new CableSync(cable,cable.status,cable.signal,List.copyOf(cable.rows)):null;
     }
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
@@ -83,7 +100,7 @@ public final class HostEntity extends BlockEntity {
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
     }
     @Override protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){
-        super.loadAdditional(t,r);cachedOutline=null;java.util.Arrays.fill(cableConnections,0);
+        super.loadAdditional(t,r);cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
         int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=Math.clamp(arms[a],0,3);
         externalLeads=t.getInt("externalLeads")&8191;parts.clear();ListTag list=t.getList("parts",Tag.TAG_COMPOUND);
         // R6 stored kind+face, not a persisted slot key. Reindex displays without changing identity/layout.
