@@ -1,4 +1,4 @@
-# Foundations PL4 0.0.1a.R17 validation
+# Foundations PL4 0.0.2a.R1 validation
 
 ## Completed
 
@@ -9,6 +9,8 @@
 - R14, R16 and R17 source guards passed.
 - Java 21 AST parsing passed for 78 production Java files.
 - `runGameTestServer` executed all 114 registered tests: **114 passed, 0 failed**. Host edits now register newly created parts before synchronous topology rebuilds; joined-canvas tests verify proportional layout migration when a canvas shrinks.
+- R1 cached network processing order, reader list and target links during topology rebuild; a native regression verifies priority changes invalidate that cache.
+- Current `0.0.2a.R1` clean build packages matching Gradle/mod metadata, and all **115 GameTests pass**.
 
 ## Freeze checks - user accepted
 

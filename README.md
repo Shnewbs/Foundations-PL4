@@ -1,6 +1,6 @@
 # Foundations PL4 0.0.2a development line
 
-**SOURCE ONLY. No compiled R17 runtime mod JAR is included.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
+**SOURCE REPOSITORY. No compiled 0.0.2a.R1 runtime mod JAR is committed.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
 
 `0.0.1a.R17` is frozen by user acceptance. This branch is now the `0.0.2a` development line, retaining R16's hardened Transfer Node behavior and R17's emitter-anchored holograms.
 
@@ -21,7 +21,7 @@ gradlew.bat --no-daemon --console=plain clean build
 Expected artifact after a successful Java 21 build:
 
 ```text
-build/libs/FoundationsPL4-1.21.1-0.0.1a.R17.jar
+build/libs/FoundationsPL4-1.21.1-0.0.2a.R1.jar
 ```
 
 Run native GameTests with:
@@ -30,6 +30,6 @@ Run native GameTests with:
 gradlew.bat --no-daemon --console=plain runGameTestServer
 ```
 
-R17 retains R16's 114 registered GameTests. Use a copied world until native build, all GameTests, hologram wall/floor/ceiling visuals and the R16 transfer acceptance checklist pass.
+The frozen R17 baseline has 114 GameTests; R1 adds a topology-priority invalidation test, for 115 total. Use a copied world for ongoing 0.0.2a acceptance.
 
 Hologram placement hotfix: floor and wall canvases sit directly above the emitter edge with a 0.04-block gap; ceiling canvases sit below it. View controls readable orientation, without projecting the canvas horizontally away.

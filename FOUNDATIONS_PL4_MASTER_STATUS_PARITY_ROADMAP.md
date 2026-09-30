@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.1a.R17` Transfer Node Hardening + Emitter Anchor
+**Current source candidate:** `0.0.2a.R1` display parity + data-cable topology hardening
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  

@@ -3,7 +3,7 @@ loaderVersion="[4,)"
 license="MIT"
 [[mods]]
 modId="foundations_pl4"
-version="0.0.1a.R17"
+version="${version}"
 displayName="Foundations PL4"
 authors="Foundations; original Practical Logistics and Sonar Core by Ollie Lansdell (SonarSonic)"
 description='''Foundations PL4: standalone development port of Practical Logistics. See PARITY.md for implemented behavior and outstanding parity work. Not a stable 1:1 release.'''
