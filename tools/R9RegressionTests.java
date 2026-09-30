@@ -86,5 +86,38 @@ public final class R9RegressionTests {
             check(Math.abs(point.x()-x)<1e-5&&Math.abs(point.y()-y)<1e-5,"Perspective and arbitrary mount preserve cursor coordinates");
         }
     }
-    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
+    static void arrangement(){
+        var a=DisplayElements.create(DisplayElements.Type.TEXT,0).bounds(new DisplayElements.Rect(20,15,20,12)).textStyle(DisplayElements.TextAlign.RIGHT,true,1.5F);
+        var b=DisplayElements.create(DisplayElements.Type.BAR,0).bounds(new DisplayElements.Rect(60,40,30,18));
+        var c=DisplayElements.create(DisplayElements.Type.ITEM,0).bounds(new DisplayElements.Rect(120,70,10,20));
+        var hidden=DisplayElements.create(DisplayElements.Type.TEXT,1);
+        var before=new LayoutTransactions.State(List.of(a,b,c,hidden),DisplayElements.Mode.CUSTOM,0,7);
+        for(String action:List.of("align_left","align_right","align_top","align_bottom","align_hcenter","align_vcenter")){
+            var r=LayoutTransactions.applyArrange(before,7,action,List.of(a.id()),248,120);
+            check(r.accepted()&&r.state().revision()==8,"single canvas alignment "+action);
+            var changed=r.state().elements().getFirst();var box=changed.bounds();
+            int expectedX=switch(action){case "align_left"->0;case "align_right"->228;case "align_hcenter"->114;default->20;};
+            int expectedY=switch(action){case "align_top"->0;case "align_bottom"->108;case "align_vcenter"->54;default->15;};
+            check(box.x()==expectedX&&box.y()==expectedY,"canvas anchor "+action);
+            check(changed.textAlign()==a.textAlign()&&changed.wrap()&&changed.textScale()==a.textScale(),"arrangement preserves text style");
+            check(r.state().elements().subList(1,4).equals(before.elements().subList(1,4)),"unselected and other-page elements preserved");
+        }
+        var aligned=LayoutTransactions.applyArrange(before,7,"align_bottom",List.of(a.id(),b.id()),248,120);
+        check(aligned.accepted()&&aligned.state().elements().getFirst().bounds().bottom()==58,"selection anchor, not canvas anchor");
+        var spaced=LayoutTransactions.applyArrange(before,7,"distribute_x",List.of(c.id(),a.id(),b.id()),248,120);
+        check(spaced.accepted(),"unordered selection can distribute");
+        var list=spaced.state().elements();check(list.get(0).equals(a)&&list.get(2).equals(c),"distribution fixes outer elements");
+        check(list.get(1).bounds().x()==65&&list.get(1).bounds().y()==40,"equal 25-pixel edge gaps, unchanged other axis");
+        check(!LayoutTransactions.applyArrange(before,6,"align_left",List.of(a.id()),248,120).accepted(),"stale arrangement rejected");
+        check(!LayoutTransactions.applyArrange(before,7,"align_left",List.of(hidden.id()),248,120).accepted(),"other page rejected");
+        check(!LayoutTransactions.applyArrange(before,7,"align_left",List.of(a.id(),UUID.randomUUID()),248,120).accepted(),"missing identity rejects entire operation");
+        check(!LayoutTransactions.applyArrange(before,7,"align_left",List.of(a.id(),a.id()),248,120).accepted(),"duplicate selection rejected");
+        check(!LayoutTransactions.applyArrange(before,7,"distribute_x",List.of(a.id(),b.id()),248,120).accepted(),"three required for spacing");
+        check(!LayoutTransactions.applyArrange(before,7,"execute",List.of(a.id()),248,120).accepted(),"unknown arrangement rejected");
+        var overlap=new LayoutTransactions.State(List.of(a,b.bounds(new DisplayElements.Rect(25,20,30,18)),c.bounds(new DisplayElements.Rect(30,30,10,20))),DisplayElements.Mode.CUSTOM,0,7);
+        check(!LayoutTransactions.applyArrange(overlap,7,"distribute_x",List.of(a.id(),b.id(),c.id()),248,120).accepted(),"insufficient spacing rejects atomically");
+        check(LayoutTransactions.applyReplace(spaced.state(),8,before.elements()).state().elements().equals(before.elements()),"undo restores arranged layout and styles");
+        check(!LayoutTransactions.applyArrange(new LayoutTransactions.State(before.elements(),before.mode(),0,Long.MAX_VALUE),Long.MAX_VALUE,"align_left",List.of(a.id()),248,120).accepted(),"arrangement revision overflow rejected");
+    }
+    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
 }

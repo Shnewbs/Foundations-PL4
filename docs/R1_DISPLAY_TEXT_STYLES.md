@@ -2,8 +2,9 @@
 
 This continuation implements the first self-contained slice of the roadmap's display/GSI parity work:
 
-- per-element text scale from 50% through 200%;
-- left, centre, and right text alignment;
+- per-element text scale from 25% through 400%;
+- separate left, centre, and right text alignment controls;
+- persisted line wrapping, bounded by the element width and height;
 - rendering in both live canvases and the editor preview;
 - persistence through part NBT and element JSON/packet data.
 

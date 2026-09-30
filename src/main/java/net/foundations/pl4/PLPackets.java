@@ -52,6 +52,9 @@ public final class PLPackets {
                     if(!visible){openWithError(player,anchor,clicked,"Choose a reader visible to this display.");return;}
                 }
                 result=net.foundations.pl4.core.LayoutTransactions.applyReplace(before,packet.revision,restored);
+            }else if(net.foundations.pl4.core.LayoutTransactions.arrangement(packet.action)){
+                var ids=Arrays.stream(packet.value.split(",",-1)).map(UUID::fromString).toList();
+                result=net.foundations.pl4.core.LayoutTransactions.applyArrange(before,packet.revision,packet.action,ids,part.layoutWidth,part.layoutHeight);
             }else{
                 result=net.foundations.pl4.core.LayoutTransactions.apply(before,packet.revision,packet.action,packet.element,spec,packet.value);
             }

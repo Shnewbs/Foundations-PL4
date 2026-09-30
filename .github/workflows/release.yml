@@ -4,12 +4,13 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-publication
   cancel-in-progress: false
 
 jobs:
@@ -43,10 +44,14 @@ jobs:
           }
           $version = $versionLine -replace '^version:\s+', ''
           $expectedTag = "v$version"
-          if ($env:GITHUB_REF_NAME -ne $expectedTag) {
+          if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch" -and $env:GITHUB_REF_NAME -ne "main") {
+            throw "Manual releases must be built from main."
+          }
+          if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_NAME -ne $expectedTag) {
             throw "Tag '$env:GITHUB_REF_NAME' does not match project version '$version' (expected '$expectedTag')."
           }
           "version=$version" >> $env:GITHUB_OUTPUT
+          "tag=$expectedTag" >> $env:GITHUB_OUTPUT
 
       - name: Build and run native GameTests
         run: .\gradlew.bat --no-daemon --console=plain clean build runGameTestServer
@@ -63,22 +68,64 @@ jobs:
               throw "Expected release artifact was not produced: $file"
             }
           }
-          $artifacts = @($jar, $sources)
+          $archive = "FoundationsPL4-$env:VERSION-source.zip"
+          git archive --format=zip --output=$archive HEAD
+          if ($LASTEXITCODE -ne 0) { throw "Could not archive the tagged source." }
+          $artifacts = @($jar, $sources, $archive)
           $hashes = foreach ($file in $artifacts) {
             $hash = (Get-FileHash -Algorithm SHA256 $file).Hash.ToLowerInvariant()
             "$hash  $([System.IO.Path]::GetFileName($file))"
           }
           $hashes | Set-Content -Encoding ascii SHA256SUMS.txt
 
-      - name: Publish GitHub Release
+      - name: Publish validated GitHub Release
+        shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
-        run: >-
-          gh release create "$env:GITHUB_REF_NAME"
-          "build/libs/FoundationsPL4-1.21.1-$env:VERSION.jar"
-          "build/libs/FoundationsPL4-1.21.1-$env:VERSION-sources.jar"
-          "SHA256SUMS.txt"
-          --verify-tag
-          --title "Foundations PL4 $env:VERSION"
-          --generate-notes
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          $tag = $env:RELEASE_TAG
+          $remoteTag = git ls-remote --tags origin "refs/tags/$tag"
+          if ($LASTEXITCODE -ne 0) { throw "Could not check the release tag." }
+          if ($remoteTag) {
+            git fetch origin "refs/tags/${tag}:refs/tags/${tag}"
+            if ($LASTEXITCODE -ne 0) { throw "Could not fetch the release tag." }
+            $tagCommit = git rev-parse "${tag}^{commit}"
+            if ($LASTEXITCODE -ne 0 -or $tagCommit -ne $env:GITHUB_SHA) {
+              throw "The existing release tag points to different source; use a new version."
+            }
+          } else {
+            gh api "repos/$env:GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$tag" -f "sha=$env:GITHUB_SHA"
+            if ($LASTEXITCODE -ne 0) { throw "Could not create the validated release tag." }
+          }
+          $notes = "docs/releases/$env:VERSION.md"
+          $title = "Foundations PL4 $env:VERSION"
+          $prerelease = if ($env:VERSION -match "(alpha|beta|rc|\d[ab](\.|$))") { "true" } else { "false" }
+          $artifacts = @("build/libs/FoundationsPL4-1.21.1-$env:VERSION.jar", "build/libs/FoundationsPL4-1.21.1-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          $exists = $LASTEXITCODE -eq 0
+          if ($exists) {
+            gh release upload $tag @artifacts --clobber --repo $env:GITHUB_REPOSITORY
+            if ($LASTEXITCODE -ne 0) { throw "Could not upload release artifacts." }
+            if (Test-Path $notes) {
+              gh release edit $tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
+              if ($LASTEXITCODE -ne 0) { throw "Could not update release notes." }
+            }
+          } else {
+            if (Test-Path $notes) {
+              gh release create $tag @artifacts --verify-tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
+            } else {
+              gh release create $tag @artifacts --verify-tag --title $title --generate-notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
+            }
+            if ($LASTEXITCODE -ne 0) { throw "Could not publish the validated release." }
+          }
+
+      - name: Upload tested runtime JAR to CurseForge when configured
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+        run: python tools/upload_curseforge.py

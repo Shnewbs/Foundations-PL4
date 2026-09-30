@@ -15,4 +15,23 @@ To release a version:
 
 4. The `Build and release` GitHub Actions workflow builds the tagged source and publishes the release with generated notes and build artifacts.
 
-The R17 candidate's clean build and all 114 native GameTests pass. Do not tag it as a frozen alpha yet: native hologram visual acceptance, R14 display/editor and R16 item/fluid/FE transfer acceptance, escrow reload, and dedicated-server smoke testing remain part of the freeze gate.
+## Release directly from main
+
+Open Actions → Build and release → Run workflow and choose `main`. The workflow reads the exact Gradle version, builds and runs native GameTests, then creates a tag at that exact source commit and publishes the Release. It refuses an existing version tag pointing to different source; increment the version before a new release.
+
+Releases contain the runtime JAR, sources JAR, complete tracked-source ZIP (including the roadmap and build wrapper), and SHA-256 checksums. Version-specific notes come from `docs/releases/<version>.md`; generated notes are the fallback. Alpha/beta/RC versions are marked as prereleases. Rerunning the same version/source refreshes artifacts without creating duplicate releases.
+
+A successful automated build does not replace client visual acceptance. Release notes must list remaining roadmap scope accurately.
+
+## Optional CurseForge publication
+
+Create or select the CurseForge Minecraft mod project, then configure this GitHub repository:
+
+- Actions variable `CURSEFORGE_PROJECT_ID`: numeric CurseForge project ID.
+- Actions secret `CURSEFORGE_API_TOKEN`: the author API token, entered through GitHub's secure secret settings (never committed).
+
+Every release workflow uploads the tested runtime JAR with the same version notes after GitHub publication. It resolves Minecraft 1.21.1 and NeoForge against CurseForge's versions API, and chooses alpha/beta/release from the version. CurseForge approval still controls availability. With neither setting configured, this step skips and GitHub publishing works normally. An incomplete configuration fails visibly.
+
+A `curseforge-upload.json` receipt in the matching GitHub Release records the uploaded file ID and SHA-256. Reruns skip an identical recorded upload and reject changed source/project metadata. A connection failure or failure to save the receipt requires checking the CurseForge project before retrying, because an upload may have succeeded.
+
+API reference: https://support.curseforge.com/support/solutions/articles/9000197321

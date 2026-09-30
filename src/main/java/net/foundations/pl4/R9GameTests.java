@@ -182,4 +182,27 @@ public final class R9GameTests {
         var restored=ItemStack.parseOptional(h.getLevel().registryAccess(),(CompoundTag)item.save(h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
         h.assertTrue(r.key().equals(r2.key())&&r.value()==r2.value(),"Variant bindings must not drift simply because an item was saved");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void arrangementUsesServerCanvasAndPreservesStyle(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.TEXT).bounds(new DisplayElements.Rect(24,20,30,18)).textStyle(DisplayElements.TextAlign.RIGHT,true,1.5F);
+        var p=part(host);p.elements.add(new Part.Element(s));p.displayMode=DisplayElements.Mode.CUSTOM;
+        var user=player(h,host,true);
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"align_right",new UUID(0,0),s.id().toString()));
+        var arranged=part(host).elements.getFirst().spec();
+        h.assertTrue(arranged.bounds().right()==p.layoutWidth&&arranged.wrap()&&arranged.textScale()==1.5F&&arranged.textAlign()==DisplayElements.TextAlign.RIGHT&&p.layoutRevision==1,"Server canvas dimensions and style must be retained");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void arrangementRejectsStaleAndOtherPageSelection(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.TEXT).onPage(1);var p=part(host);p.elements.add(new Part.Element(s));p.layoutRevision=2;
+        var user=player(h,host,true);
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,1,"align_left",new UUID(0,0),s.id().toString()));
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"align_left",new UUID(0,0),s.id().toString()));
+        h.assertTrue(p.layoutRevision==2&&p.elements.getFirst().spec().equals(s),"Stale and cross-page edits must leave the layout unchanged");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void arrangementRejectsUnauthorizedPlayer(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.TEXT);var p=part(host);p.elements.add(new Part.Element(s));p.owner=UUID.randomUUID();
+        PLPackets.editLayout(player(h,host,false),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"align_left",new UUID(0,0),s.id().toString()));
+        h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(s),"Arrangement must enforce the existing ownership gate");h.succeed();
+    }
 }

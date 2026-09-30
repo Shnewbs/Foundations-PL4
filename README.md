@@ -4,7 +4,7 @@
 
 `0.0.1a.R17` is frozen by user acceptance. This branch is now the `0.0.2a` development line, retaining R16's hardened Transfer Node behavior and R17's emitter-anchored holograms.
 
-The post-freeze R1 continuation now carries per-element text scale, left/centre/right alignment and bounded line wrapping through the editor, renderer, NBT, and element JSON while retaining legacy defaults.
+The post-freeze R1 continuation now carries per-element text scale, left/centre/right alignment and bounded line wrapping through the editor, renderer, NBT, and element JSON while retaining legacy defaults. Use **Arrange [A]** in the world display editor for current-page alignment and equal spacing; Shift-click adds elements to the selection.
 
 R16 ordinary Nodes remain passive transfer endpoints. ADD / REMOVE remains explicit-peer only in this alpha until PL2's directional channel/filter editor is restored. Simulated transfers, persistent driver escrow and the same-cycle receive fence are retained. Items, compatible fluids and FE are transported; native EU and Mekanism Joules remain read-only telemetry.
 

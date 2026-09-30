@@ -79,3 +79,9 @@ apply from: 'gradle/verify-r14-rules.gradle'
 apply from: 'gradle/verify-r17-rules.gradle'
 
 apply from: 'gradle/verify-r16-rules.gradle'
+
+// Identical source produces identical release archives for safe publication retries.
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}

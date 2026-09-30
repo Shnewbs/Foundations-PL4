@@ -1148,8 +1148,8 @@ Use PL2/PL3 research for:
 - element list panel;
 - multi-select; **implemented in the R1 continuation for additive selection and atomic multi-delete**;
 - box/lasso select;
-- alignment tools;
-- distribute evenly;
+- alignment tools; **implemented in R1: left/right/top/bottom/centre, using canvas bounds for one element and selection bounds for multiple elements**;
+- distribute evenly; **implemented in R1: horizontal/vertical equal edge gaps for three or more current-page elements, preserving outer anchors**;
 - copy/paste; **implemented in the R1 continuation with local clipboard, deterministic offset, and revision-fenced add**;
 - duplicate with deterministic offset; **implemented in the R1 continuation (Ctrl+D re-pastes the selection at a fixed 4px offset)**;
 - group/ungroup;

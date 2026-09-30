@@ -11,7 +11,7 @@
   "native_blocker": "NONE",
   "large_display_back_textures": "RESTORED_AND_VERIFIED_6_OF_6",
   "java_ast_parsing": "PASS_SYNTAX_ONLY",
-  "production_java_files": 78,
+  "production_java_files": 80,
   "r14_production_assertions": 12,
   "r14_source_guards": "PASS_15_OF_15",
   "retained_r13_assertions": 64,
@@ -73,5 +73,7 @@
   "r1_priority_cache_invalidation_test": "PASS",
   "r1_gametests_total": 118,
   "r1_gametests_passed": 118,
-  "r1_gametests_failed": 0
+  "r1_gametests_failed": 0,
+  "r1_arrangement": "IMPLEMENTED_NATIVE_VALIDATION_PENDING",
+  "r1_release": "CANDIDATE_0.0.2a.R1"
 }

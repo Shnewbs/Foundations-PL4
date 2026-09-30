@@ -4,6 +4,7 @@ import java.util.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -39,6 +40,10 @@ public final class DisplayEditorScreen extends Screen {
         selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)));selected=selectedIds.stream().findFirst().orElse(null);
     }
     @Override public boolean isPauseScreen(){return false;}
+    @Override protected void init(){
+        var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
+        arrange.active=editable;
+    }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){
         if(minecraft==null||minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity anchor))return false;
@@ -102,6 +107,17 @@ public final class DisplayEditorScreen extends Screen {
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
     }
     private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
+    int selectionCount(){return (int)part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).count();}
+    private void arrangementScreen(){if(editable&&!pending)minecraft.setScreen(new DisplayArrangementScreen(this));}
+    void arrange(String action){
+        if(!editable||pending)return;
+        var ids=part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).map(Part.Element::id).toList();
+        var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);
+        var preview=LayoutTransactions.applyArrange(before,part.layoutRevision,action,ids,spaceW(),spaceH());
+        if(!preview.accepted()){message=preview.message();return;}
+        pushUndo();pending=true;waitTicks=0;message="Saving...";
+        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+    }
     private void pushUndo(){undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();redoStack.clear();}
     private void undo(){
         if(!editable||pending){message="Not ready.";return;}
@@ -123,10 +139,11 @@ public final class DisplayEditorScreen extends Screen {
     void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
-        case 3->pasteSelected();
+        case 3->duplicateSelected();
         case 4->commit("forward",null,"",part.layoutRevision);case 5->commit("backward",null,"",part.layoutRevision);
         case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
+    private void duplicateSelected(){if(selectedElement()==null){message="Select an element first.";return;}copySelected();pasteSelected();}
     private void copySelected(){var e=selectedElement();if(e!=null){clipboard=e;message="Element copied.";}}
     private void pasteSelected(){
         if(clipboard==null){message="Copy an element first.";return;}
@@ -150,6 +167,7 @@ public final class DisplayEditorScreen extends Screen {
     }
     @Override public boolean mouseClicked(double x,double y,int button){
         if(button==1){onClose();return true;}
+        if(super.mouseClicked(x,y,button))return true;
         if(button!=0||pending)return super.mouseClicked(x,y,button);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
@@ -167,7 +185,8 @@ public final class DisplayEditorScreen extends Screen {
     @Override public boolean keyPressed(int key,int scan,int mods){
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
         if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
-        if(key==68&&hasControlDown()){pasteSelected();return true;}if(key==71){snap=!snap;return true;}
+        if(key==68&&hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
+        if(key==65&&!hasControlDown()){arrangementScreen();return true;}
         if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}
         return super.keyPressed(key,scan,mods);
     }
