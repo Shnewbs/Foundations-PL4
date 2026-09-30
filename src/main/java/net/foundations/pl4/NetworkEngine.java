@@ -47,8 +47,12 @@ public final class NetworkEngine {
     }
     /** Server-only loaded-part graph with typed NETWORK inputs and separate VISUAL exports. */
     public static void rebuild(MinecraftServer server){
-        LOADED.removeIf(h->!loadedHost(h,server));
-        List<Ref> refs=all(server);
+        List<Ref> refs=new ArrayList<>();
+        for(Iterator<HostEntity> iterator=LOADED.iterator();iterator.hasNext();){
+            HostEntity host=iterator.next();
+            if(!loadedHost(host,server)){iterator.remove();continue;}
+            host.parts.values().forEach(part->refs.add(new Ref(host,part)));
+        }
         refs.sort(Comparator.comparing((Ref r)->r.level().dimension().location().toString())
             .thenComparingLong(r->r.host.getBlockPos().asLong()).thenComparingInt(r->r.part.slot()));
         var sets=new net.foundations.pl4.core.DisjointSets(refs.size());

@@ -4,7 +4,7 @@
 
 Network groups now build their stable processing order, distinct target list, and reader list once during topology rebuild. Sampling reuses those immutable lists instead of sorting every group's parts and rebuilding target/reader collections on every sample interval. Part priority, links, port masks, placement, load/unload, and configuration changes continue to invalidate topology through the existing host lifecycle.
 
-This removes recurring `O(P log P)` sorting and per-sample list/set allocation from each group, where `P` is the group's part count. Provider sampling, entity scans, and resource transfers remain dynamic and are not cached.
+This removes recurring `O(P log P)` sorting and per-sample list/set allocation from each group, where `P` is the group's part count. Topology rebuild also collects valid loaded hosts while pruning stale entries, avoiding a second loaded-host/chunk check across the registry. Provider sampling, entity scans, and resource transfers remain dynamic and are not cached.
 
 ## Review findings
 
