@@ -59,9 +59,9 @@ public final class R8RegressionTests {
                 ok(facing>0,"Only readable camera side submitted");ok(projection.centre().equals(centre),"Back view does not move the projection");
             }
             var geometry=HologramProjection.geometry(mount,requested,advanced);
-            double delta=(centre.x()-geometry.emitterAnchor().x())*configured.normal().x()
-                +(centre.y()-geometry.emitterAnchor().y())*configured.normal().y()
-                +(centre.z()-geometry.emitterAnchor().z())*configured.normal().z();
+            double delta=(centre.x()-geometry.emitterAnchor().x())*geometry.normal().x()
+                +(centre.y()-geometry.emitterAnchor().y())*geometry.normal().y()
+                +(centre.z()-geometry.emitterAnchor().z())*geometry.normal().z();
             ok(delta>0,"Project away from the physical emitter");
             if(mount<2){int v=requested;Set<Integer> seen=new HashSet<>();for(int i=0;i<4;i++){seen.add(v);v=HologramProjection.nextView(mount,v);}ok(v==requested&&seen.size()==4,"Four-way view control");}
         }
