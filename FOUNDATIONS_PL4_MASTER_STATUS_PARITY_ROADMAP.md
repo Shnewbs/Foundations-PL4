@@ -5,6 +5,7 @@
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
+**Page/cap workflow:** R1.4 published; 140 native tests passed on Linux and Windows; page-panel visuals and third-party fluid/FE cap acceptance pending.
 **Layer workflow:** R1.3 published; 134 native tests passed on Linux and Windows; client visual acceptance pending.
 **Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
