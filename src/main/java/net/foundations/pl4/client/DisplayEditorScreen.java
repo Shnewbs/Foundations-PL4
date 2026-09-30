@@ -3,7 +3,7 @@ package net.foundations.pl4.client;
 import java.util.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -46,7 +46,7 @@ public final class DisplayEditorScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
         addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
-    @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
+    @Override public void extractBackground(GuiGraphicsExtractor g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){
         if(minecraft==null||minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity anchor))return false;
         Part hit=anchor.parts.get(clickedSlot);if(hit==null||!hit.identity.equals(clickedIdentity))return false;
@@ -92,15 +92,15 @@ public final class DisplayEditorScreen extends Screen {
             }
         }
     }
-    private void drawHudHelp(GuiGraphics g){
+    private void drawHudHelp(GuiGraphicsExtractor g){
         if(!editable)return;
         int x=8,y=8,w=Math.min(width-16,420),h=34;
         g.fill(x,y,x+w,y+h,0xD0141B20);g.fill(x,y,x+3,y+h,0xFF62C7D6);
         String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"Box: drag empty space • Shift: toggle • RMB back • side tools stay active");
-        g.drawString(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
+        g.text(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
         int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);kx=hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);hudKey(g,kx+4,ky,"CTRL+Z",0xFFAA88FF);
     }
-    private int hudKey(GuiGraphics g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.drawString(font,key,x+5,y+2,color,false);return x+w;}
+    private int hudKey(GuiGraphicsExtractor g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.text(font,key,x+5,y+2,color,false);return x+w;}
     DisplayElements.Spec selectedElement(){return selected==null?null:part.elements.stream().filter(e->e.id().equals(selected)&&e.spec().page()==part.displayPage).map(Part.Element::spec).findFirst().orElse(null);}
     void inspect(String reader){if(!reader.isEmpty()&&!inspected.containsKey(reader))PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"preview_reader",reader));}
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
@@ -113,7 +113,7 @@ public final class DisplayEditorScreen extends Screen {
     }
     private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
     int selectionCount(){return (int)part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).count();}
-    private void arrangementScreen(){if(editable&&!pending)minecraft.setScreen(new DisplayArrangementScreen(this));}
+    private void arrangementScreen(){if(editable&&!pending)minecraft.gui.setScreen(new DisplayArrangementScreen(this));}
     void arrange(String action){
         if(!editable||pending)return;
         var ids=part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).map(Part.Element::id).toList();
@@ -123,7 +123,7 @@ public final class DisplayEditorScreen extends Screen {
         pushUndo();pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
-    void pagesScreen(){if(!pending)minecraft.setScreen(new DisplayPagesScreen(this));}
+    void pagesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayPagesScreen(this));}
     int pageElementCount(int page){return (int)part.elements.stream().filter(e->e.spec().page()==page).count();}
     void pageAction(String action,String value){
         if(!editable||pending)return;
@@ -132,7 +132,7 @@ public final class DisplayEditorScreen extends Screen {
         if(!result.accepted()){message=result.message();return;}
         commit(action,null,value,part.layoutRevision);
     }
-    void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
+    void layersScreen(){if(!pending)minecraft.gui.setScreen(new DisplayLayersScreen(this));}
     List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
     boolean layerSelected(UUID id){return selectedIds.contains(id);}
     boolean layoutPending(){return pending;}
@@ -170,12 +170,12 @@ public final class DisplayEditorScreen extends Screen {
         pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
     }
-    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
+    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.gui.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
         case 3->duplicateSelected();
         case 4->layer("layer_forward");case 5->layer("layer_backward");
-        case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
+        case 6->snap=!snap;case 7->minecraft.gui.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
     private List<DisplayElements.Spec> selectionOnPage(){return snapshot().stream().filter(e->e.page()==part.displayPage).toList();}
     private List<DisplayElements.Spec> selection(){return part.elements.stream().map(Part.Element::spec).filter(e->e.page()==part.displayPage&&selectedIds.contains(e.id())).toList();}
@@ -203,25 +203,25 @@ public final class DisplayEditorScreen extends Screen {
         if(pending&&++waitTicks==60){pending=false;message="No acknowledgement; refresh requested. Review before retrying.";PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"refresh",""));}
     }
     private static int toolAt(DisplayPicking.Point p){return EditorChrome.toolAt(p.x(),p.y(),TOOLS.length);}
-    @Override public void render(GuiGraphics g,int mx,int my,float partial){
-        super.render(g,mx,my,partial);hoveredTool=-1;hoveredCorner=EditorChrome.Corner.NONE;var hit=point(mx,my);
+    @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float partial){
+        super.extractRenderState(g,mx,my,partial);hoveredTool=-1;hoveredCorner=EditorChrome.Corner.NONE;var hit=point(mx,my);
         if(hit.isPresent()){var p=hit.get();hoveredTool=toolAt(p);if(hoveredTool<0){var e=selectedElement();if(e!=null&&e.page()==part.displayPage)hoveredCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());}}
         drawHudHelp(g);
-        if(!message.isBlank()){int w=Math.min(width-20,font.width(message)+12);g.fill(6,height-20,6+w,height-4,0xCC080808);g.drawString(font,font.plainSubstrByWidth(message,w-8),10,height-16,0xFFECECEC,false);}
+        if(!message.isBlank()){int w=Math.min(width-20,font.width(message)+12);g.fill(6,height-20,6+w,height-4,0xCC080808);g.text(font,font.plainSubstrByWidth(message,w-8),10,height-16,0xFFECECEC,false);}
     }
-    @Override public boolean mouseClicked(double x,double y,int button){
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();
         if(button==1){onClose();return true;}
-        if(super.mouseClicked(x,y,button))return true;
-        if(button!=0||pending)return super.mouseClicked(x,y,button);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
+        if(super.mouseClicked(event,doubleClick))return true;
+        if(button!=0||pending)return super.mouseClicked(event,doubleClick);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
         if(p.x()<0||p.y()<0||p.x()>=spaceW()||p.y()>=spaceH())return false;
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
         UUID hitId=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&e.bounds().contains(p.x(),p.y())){hitId=e.id();break;}}
         if(hitId==null){
-            additiveBox=hasShiftDown();if(!additiveBox){selectedIds.clear();selected=null;}
+            additiveBox=net.minecraft.client.Minecraft.getInstance().hasShiftDown();if(!additiveBox){selectedIds.clear();selected=null;}
             boxStart=p;boxEnd=p;return true;
         }
-        if(hasShiftDown()){
+        if(net.minecraft.client.Minecraft.getInstance().hasShiftDown()){
             if(!selectedIds.remove(hitId))selectedIds.add(hitId);
             selected=selectedIds.contains(hitId)?hitId:selectedIds.stream().findFirst().orElse(null);return true;
         }
@@ -229,7 +229,7 @@ public final class DisplayEditorScreen extends Screen {
         var e=selectedElement();if(e!=null&&editable){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());dragSpecs=resizeCorner==EditorChrome.Corner.NONE?selection():List.of();}
         return true;
     }
-    @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){
+    @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){double x=event.x(),y=event.y();int button=event.button();
         if(button==0&&boxStart!=null){point(x,y).ifPresent(p->boxEnd=p);return true;}
         if(button==0&&start!=null&&dragStart!=null){point(x,y).ifPresent(p->{
             double sx=p.x()-dragStart.x(),sy=p.y()-dragStart.y();
@@ -237,9 +237,9 @@ public final class DisplayEditorScreen extends Screen {
                 int step=snap?4:1,tx=(int)Math.round(sx/step)*step,ty=(int)Math.round(sy/step)*step;
                 try{draftSpecs=EditorSelection.move(dragSpecs,tx,ty,spaceW(),spaceH());draft=draftSpecs.stream().filter(e->e.id().equals(start.id())).findFirst().orElse(start);}catch(IllegalArgumentException ex){message=ex.getMessage();draftSpecs=List.of();draft=start;}
             }else draft=EditorChrome.resize(start,resizeCorner,sx,sy,snap,spaceW(),spaceH());
-        });return true;}return super.mouseDragged(x,y,button,dx,dy);
+        });return true;}return super.mouseDragged(event,dx,dy);
     }
-    @Override public boolean mouseReleased(double x,double y,int button){
+    @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();
         if(button==0&&boxStart!=null){
             point(x,y).ifPresent(p->boxEnd=p);var box=EditorSelection.box(boxStart.x(),boxStart.y(),boxEnd.x(),boxEnd.y(),spaceW(),spaceH());
             if(!additiveBox)selectedIds.clear();selectedIds.addAll(EditorSelection.inBox(snapshot(),part.displayPage,box));selected=selectedIds.stream().findFirst().orElse(null);boxStart=null;boxEnd=null;message=selectionCount()+" element(s) selected.";return true;
@@ -254,18 +254,18 @@ public final class DisplayEditorScreen extends Screen {
                 pushUndo();pending=true;waitTicks=0;message="Saving...";
                 PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,"move_selection",new UUID(0,0),dx+";"+dy+";"+String.join(",",ids.stream().map(UUID::toString).toList())));
             }else if(changed)commit("update",result,"",revision);return true;
-        }return super.mouseReleased(x,y,button);
+        }return super.mouseReleased(event);
     }
-    @Override public boolean keyPressed(int key,int scan,int mods){
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),mods=event.modifiers();
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
-        if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
-        if(key==68&&hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
-        if(key==65&&hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
+        if(key==67&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){copySelected();return true;}if(key==86&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){pasteSelected();return true;}
+        if(key==68&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
+        if(key==65&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
         if(key==80){pagesScreen();return true;}
         if(key==76){layersScreen();return true;}
-        if(key==65&&!hasControlDown()){arrangementScreen();return true;}
-        if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}
-        return super.keyPressed(key,scan,mods);
+        if(key==65&&!net.minecraft.client.Minecraft.getInstance().hasControlDown()){arrangementScreen();return true;}
+        if(key==90&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){if(net.minecraft.client.Minecraft.getInstance().hasShiftDown())redo();else undo();return true;}if(key==89&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){redo();return true;}
+        return super.keyPressed(event);
     }
     @Override public void removed(){inverse=null;boxStart=null;boxEnd=null;dragSpecs=List.of();draftSpecs=List.of();draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
 }

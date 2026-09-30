@@ -1,7 +1,7 @@
 package net.foundations.pl4.client;
 
 import java.util.*;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -113,42 +113,42 @@ public final class GuideScreen extends Screen {
         lines=List.copyOf(result);bodyHeight=y;bodyScroll=GuideLayout.clampScroll(bodyScroll,bodyHeight,layout.detail().height());
     }
     /** Native blur first; then book, art, text; inherited Screen.render draws the widgets last. */
-    @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){
-        super.renderBackground(g,x,y,partial);
+    @Override public void extractBackground(GuiGraphicsExtractor g,int x,int y,float partial){
+        super.extractBackground(g,x,y,partial);
         var b=layout.book();drawBook(g,b);
         int leftWidth=layout.compact()?b.width()-62:b.width()/2-44;
         String name=font.plainSubstrByWidth("FOUNDATIONS PL4 FIELD GUIDE",leftWidth);
-        g.drawString(font,name,b.x()+22,b.y()+20,INK,false);
+        g.text(font,name,b.x()+22,b.y()+20,INK,false);
         if(!layout.compact()){
-            g.drawString(font,font.plainSubstrByWidth("TECHNICAL MANUAL  /  1.21.1",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
-            if(listVisible()){int ry=b.y()+69;g.drawString(font,"DATA",layout.list().x(),ry,ACCENT,false);g.drawString(font,">  READER  >  VIEW",layout.list().x()+35,ry,MUTED,false);}
+            g.text(font,font.plainSubstrByWidth("TECHNICAL MANUAL  /  1.21.1",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
+            if(listVisible()){int ry=b.y()+69;g.text(font,"DATA",layout.list().x(),ry,ACCENT,false);g.text(font,">  READER  >  VIEW",layout.list().x()+35,ry,MUTED,false);}
         }
         if(listVisible()){
-            var list=layout.list();if(filtered.isEmpty())g.drawString(font,"No matching chapters",list.x()+2,list.y()+6,MUTED,false);
+            var list=layout.list();if(filtered.isEmpty())g.text(font,"No matching chapters",list.x()+2,list.y()+6,MUTED,false);
             scrollbar(g,list,listScroll,filtered.size()*25);
             var description=chapter;
             for(int i=listScroll/25;i<filtered.size();i++){int rowY=list.y()+i*25-listScroll;if(rowY+22>list.bottom())break;if(rowY>=list.y()&&x>=list.x()&&x<list.right()-9&&y>=rowY&&y<rowY+22){description=filtered.get(i);break;}}
-            int lineY=list.bottom()+5,count=0;for(var line:font.split(Component.literal(description.summary()),list.width()-8)){if(count++==2)break;g.drawString(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
+            int lineY=list.bottom()+5,count=0;for(var line:font.split(Component.literal(description.summary()),list.width()-8)){if(count++==2)break;g.text(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
 
         }
         if(detailVisible()){
             var r=layout.detail();int headerY=layout.compact()?b.y()+64:b.y()+26;
             String heading=font.plainSubstrByWidth(chapter.title(),r.width()-14);
-            g.drawString(font,heading,r.x(),headerY,INK,false);
+            g.text(font,heading,r.x(),headerY,INK,false);
             if(!layout.compact()){
-                g.drawString(font,font.plainSubstrByWidth(GuideNavigation.heading(chapter.category()),r.width()-14),r.x(),b.y()+42,ACCENT,false);
+                g.text(font,font.plainSubstrByWidth(GuideNavigation.heading(chapter.category()),r.width()-14),r.x(),b.y()+42,ACCENT,false);
                 g.fill(r.x(),b.y()+59,r.right()-9,b.y()+60,0xFF648B91);
             }
             g.enableScissor(r.x(),r.y(),r.right()-7,r.bottom());
             try{for(var line:lines){int ly=r.y()+line.y()-bodyScroll;if(ly<r.y()||ly+(line.heading()?16:10)>r.bottom())continue;
                 if(line.heading()){g.fill(r.x(),ly,r.right()-10,ly+16,0xFF203F4A);g.fill(r.x(),ly,r.x()+2,ly+16,0xFF79D3FF);}
-                g.drawString(font,line.text(),r.x()+(line.heading()?6:2),ly+(line.heading()?3:0),line.heading()?0xFFE7F4EE:INK,false);
+                g.text(font,line.text(),r.x()+(line.heading()?6:2),ly+(line.heading()?3:0),line.heading()?0xFFE7F4EE:INK,false);
             }}finally{g.disableScissor();}
             scrollbar(g,r,bodyScroll,bodyHeight);
         }
-        if(!layout.compact()&&b.x()+b.width()/2+83+font.width((book.chapters().indexOf(chapter)+1)+" / "+book.chapters().size())+6<footerJumpX)g.drawString(font,(book.chapters().indexOf(chapter)+1)+" / "+book.chapters().size(),b.x()+b.width()/2+83,b.bottom()-23,MUTED,false);
+        if(!layout.compact()&&b.x()+b.width()/2+83+font.width((book.chapters().indexOf(chapter)+1)+" / "+book.chapters().size())+6<footerJumpX)g.text(font,(book.chapters().indexOf(chapter)+1)+" / "+book.chapters().size(),b.x()+b.width()/2+83,b.bottom()-23,MUTED,false);
     }
-    private void drawBook(GuiGraphics g,GuideLayout.Rect b){
+    private void drawBook(GuiGraphicsExtractor g,GuideLayout.Rect b){
         // Same established PL4 footprint, but a cleaner Calculator-style technical binder: graphite shell, pale pages and cyan rails.
         g.fill(b.x()+5,b.y()+6,b.right()+6,b.bottom()+6,0x66000000);
         g.fill(b.x(),b.y(),b.right(),b.bottom(),0xFF1B252A);
@@ -171,14 +171,14 @@ public final class GuideScreen extends Screen {
         g.fill(b.x()+14,b.y()+12,b.right()-14,b.y()+13,0xFFB8C2B2);
         g.fill(b.x()+14,b.bottom()-13,b.right()-14,b.bottom()-12,0xFF9FA99D);
     }
-    private void drawSpecimen(GuiGraphics g,GuideLayout.Rect b){
+    private void drawSpecimen(GuiGraphicsExtractor g,GuideLayout.Rect b){
         int x=b.x()+24,y=b.y()+56,w=b.width()/2-50;
         g.fill(x,y,x+w,y+43,0xFF243B46);g.fill(x+1,y+1,x+w-1,y+42,0xFF172A33);
         g.fill(x+10,y+21,x+w-10,y+22,0xFF619CAA);
-        for(int i=0;i<4;i++){int px=x+8+i*(w-34)/3;g.fill(px-2,y+6,px+18,y+31,0xFF243B46);g.renderItem(item("foundations_pl4:"+SPECIMEN[i]),px,y+10);}
-        g.drawString(font,"DATA  >  READER  >  VIEW",x+6,y+33,0xFFBAE1E5,false);
+        for(int i=0;i<4;i++){int px=x+8+i*(w-34)/3;g.fill(px-2,y+6,px+18,y+31,0xFF243B46);g.item(item("foundations_pl4:"+SPECIMEN[i]),px,y+10);}
+        g.text(font,"DATA  >  READER  >  VIEW",x+6,y+33,0xFFBAE1E5,false);
     }
-    private void scrollbar(GuiGraphics g,GuideLayout.Rect r,int scroll,int content){
+    private void scrollbar(GuiGraphicsExtractor g,GuideLayout.Rect r,int scroll,int content){
         if(content<=r.height())return;int thumb=GuideLayout.thumbSize(r.height(),content,r.height()),top=r.y()+GuideLayout.thumbPosition(scroll,r.height(),content,r.height());
         g.fill(r.right()-6,r.y(),r.right()-2,r.bottom(),0xFFB2B7A5);g.fill(r.right()-6,top,r.right()-2,top+thumb,0xFF285F70);
     }
@@ -194,24 +194,24 @@ public final class GuideScreen extends Screen {
         if(detailVisible()&&layout.detail().contains(x,y)){bodyScroll=GuideLayout.clampScroll(bodyScroll-(int)Math.signum(dy)*36,bodyHeight,layout.detail().height());return true;}
         return super.mouseScrolled(x,y,dx,dy);
     }
-    @Override public boolean mouseClicked(double x,double y,int button){
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();
         if(button==0&&((listVisible()&&beginDrag(layout.list(),filtered.size()*25,listScroll,x,y,1))||(detailVisible()&&beginDrag(layout.detail(),bodyHeight,bodyScroll,x,y,2))))return true;
-        return super.mouseClicked(x,y,button);
+        return super.mouseClicked(event,doubleClick);
     }
-    @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){
+    @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){double x=event.x(),y=event.y();int button=event.button();
         if(button==0&&drag!=0){var rect=drag==1?layout.list():layout.detail();int value=GuideLayout.scrollFromThumb(y-rect.y()-dragOffset,rect.height(),drag==1?filtered.size()*25:bodyHeight,rect.height());
             if(drag==1){listScroll=value;refreshList();}else bodyScroll=value;return true;}
-        return super.mouseDragged(x,y,button,dx,dy);
+        return super.mouseDragged(event,dx,dy);
     }
-    @Override public boolean mouseReleased(double x,double y,int button){boolean handled=drag!=0;drag=0;return super.mouseReleased(x,y,button)||handled;}
-    @Override public boolean keyPressed(int key,int scan,int modifiers){
+    @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();boolean handled=drag!=0;drag=0;return super.mouseReleased(event)||handled;}
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),modifiers=event.modifiers();
         if(key==256){onClose();return true;}
         if(search==null||!search.isFocused()){
             if(key==268){query="";savedOnly=false;listScroll=0;select(GuideNavigation.byId(book,"start"));return true;}
             if(key==266){bodyScroll=GuideLayout.clampScroll(bodyScroll-layout.detail().height(),bodyHeight,layout.detail().height());return true;}
             if(key==267){bodyScroll=GuideLayout.clampScroll(bodyScroll+layout.detail().height(),bodyHeight,layout.detail().height());return true;}
         }
-        return super.keyPressed(key,scan,modifiers);
+        return super.keyPressed(event);
     }
     @Override public void removed(){if(preferences!=null){preferences.chapter=chapter.id();GuideResources.save(preferences);}drag=0;chapterButtons.clear();icons.clear();super.removed();}
 }

@@ -1,6 +1,6 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -22,16 +22,16 @@ final class DisplayPickerScreen extends Screen {
         String filter=query.toLowerCase(Locale.ROOT);choices=all.stream().filter(c->(c.label+" "+c.key).toLowerCase(Locale.ROOT).contains(filter)).toList();scroll=Math.clamp(scroll,0,Math.max(0,choices.size()-Math.max(1,(h-94)/22)));}
     private void choose(String value){if(readers)parent.reader(value);else parent.key(value);}
     @Override public void tick(){parent.parent.tick();refresh();}
-    @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
-        super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA171717);g.fill(left,top,left+w,top+24,0xFF3C3C3C);g.drawString(font,title,left+10,top+8,0xFFFFFFFF,false);
+    @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float partial){
+        super.extractBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA171717);g.fill(left,top,left+w,top+24,0xFF3C3C3C);g.text(font,title,left+10,top+8,0xFFFFFFFF,false);
         int count=Math.max(1,(h-94)/22);for(int i=0;i<count&&i+scroll<choices.size();i++){var c=choices.get(i+scroll);int y=top+58+i*22;
             g.fill(left+8,y,left+w-8,y+21,mx>=left+8&&mx<left+w-8&&my>=y&&my<y+21?0xFF404F3F:0xFF282828);
-            int x=left+12;if(c.row!=null&&c.row.hasItem()){g.renderItem(c.row.item(),x,y+2);x+=22;}
-            g.drawString(font,font.plainSubstrByWidth(c.label,w-(x-left)-16),x,y+6,0xFFEEEEEE,false);
+            int x=left+12;if(c.row!=null&&c.row.hasItem()){g.item(c.row.item(),x,y+2);x+=22;}
+            g.text(font,font.plainSubstrByWidth(c.label,w-(x-left)-16),x,y+6,0xFFEEEEEE,false);
         }
-        if(choices.isEmpty())g.drawString(font,readers?"No connected readers":"No matching rows; check reader data mode",left+12,top+64,0xFFE1B1A5,false);
+        if(choices.isEmpty())g.text(font,readers?"No connected readers":"No matching rows; check reader data mode",left+12,top+64,0xFFE1B1A5,false);
     }
-    @Override public boolean mouseClicked(double x,double y,int button){if(button==1){onClose();return true;}if(button==0&&x>=left+8&&x<left+w-8&&y>=top+58&&y<top+h-36){int i=scroll+(int)(y-top-58)/22;if(i-scroll<Math.max(1,(h-94)/22)&&i<choices.size()){choose(choices.get(i).key);return true;}}return super.mouseClicked(x,y,button);}
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==1){onClose();return true;}if(button==0&&x>=left+8&&x<left+w-8&&y>=top+58&&y<top+h-36){int i=scroll+(int)(y-top-58)/22;if(i-scroll<Math.max(1,(h-94)/22)&&i<choices.size()){choose(choices.get(i).key);return true;}}return super.mouseClicked(event,doubleClick);}
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);refresh();return true;}
-    @Override public void onClose(){minecraft.setScreen(parent);}
+    @Override public void onClose(){minecraft.gui.setScreen(parent);}
 }

@@ -33,7 +33,7 @@ public final class PartScreen extends Screen {
         w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
-        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
+        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.gui.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
         button("Done",left+w-66,top+h-27,56,b->onClose());
         if(tab==1){
             int x=left+112,y=top+58,fw=Math.max(90,w-132);
@@ -117,41 +117,41 @@ public final class PartScreen extends Screen {
      * Screen.render calls this before rendering its widgets in Minecraft 1.21.1.
      * Finish the native world blur/dim pass before drawing any PL4 pixels.
      */
-    @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
-        super.renderBackground(g,mx,my,partial);
+    @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float partial){
+        super.extractBackground(g,mx,my,partial);
         hoveredRowTooltip=null;
         g.fill(left,top,left+w,top+h,0xF21B2533);g.fill(left,top,left+w,top+22,0xFF293D56);
-        g.drawString(font,title,left+10,top+7,0xFFE4F3FF,false);
-        if(!displayError.isBlank())g.drawString(font,font.plainSubstrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
+        g.text(font,title,left+10,top+7,0xFFE4F3FF,false);
+        if(!displayError.isBlank())g.text(font,font.plainSubstrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
         if(tab==0){
-            g.drawString(font,font.plainSubstrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
+            g.text(font,font.plainSubstrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
             int count=Math.max(1,(h-112)/19);scroll=Math.clamp(scroll,0,Math.max(0,part.rows.size()-count));
             for(int i=0;i<count&&i+scroll<part.rows.size();i++){
                 Part.Row row=part.rows.get(i+scroll);int y=top+73+i*19;
                 if(i%2==0)g.fill(left+8,y-2,left+w-12,y+16,0x442C465E);
-                g.drawString(font,font.plainSubstrByWidth(row.text(),w-34),left+13,y+2,0xFFDBEFFF,false);
+                g.text(font,font.plainSubstrByWidth(row.text(),w-34),left+13,y+2,0xFFDBEFFF,false);
                 if(mx>=left+8&&mx<left+w-12&&my>=y&&my<y+18)hoveredRowTooltip=Component.literal(row.key()+" · click to copy");
             }
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
-            g.drawString(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
+            g.text(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }
     }
-    @Override public void render(GuiGraphics g,int mx,int my,float partial){
+    @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float partial){
         // Native Screen.render invokes our background/content hook once, then widgets.
-        super.render(g,mx,my,partial);
+        super.extractRenderState(g,mx,my,partial);
         // Row tooltips belong above the panel, labels and widgets, never in the blur pass.
-        if(hoveredRowTooltip!=null)g.renderTooltip(font,hoveredRowTooltip,mx,my);
+        if(hoveredRowTooltip!=null)g.extractTooltip(font,hoveredRowTooltip,mx,my);
     }
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){if(tab==0){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);return true;}contentScroll-=((int)Math.signum(dy))*25;layoutContent();return true;}
-    @Override public boolean mouseClicked(double x,double y,int button){if(button==0&&tab==1&&contentHeight()>settingsViewport()&&x>=left+w-10&&x<left+w&&y>=top+52&&y<top+52+settingsViewport()){
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==0&&tab==1&&contentHeight()>settingsViewport()&&x>=left+w-10&&x<left+w&&y>=top+52&&y<top+52+settingsViewport()){
         int viewport=settingsViewport(),content=contentHeight();int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);
         settingsDragOffset=y>=sy&&y<sy+thumb?y-sy:thumb/2.0;draggingSettings=true;dragSettings(y);return true;
-    }if(button==1){if(tab!=0){tab=0;scroll=0;contentScroll=0;rebuildWidgets();}else onClose();return true;}if(tab==0&&button==0&&x>=left+8&&x<left+w-12&&y>=top+73&&y<top+h-39){int index=scroll+(int)(y-(top+73))/19;if(index<part.rows.size()){minecraft.keyboardHandler.setClipboard(part.rows.get(index).key());return true;}}return super.mouseClicked(x,y,button);}
+    }if(button==1){if(tab!=0){tab=0;scroll=0;contentScroll=0;rebuildWidgets();}else onClose();return true;}if(tab==0&&button==0&&x>=left+8&&x<left+w-12&&y>=top+73&&y<top+h-39){int index=scroll+(int)(y-(top+73))/19;if(index<part.rows.size()){minecraft.keyboardHandler.setClipboard(part.rows.get(index).key());return true;}}return super.mouseClicked(event,doubleClick);}
     private void dragSettings(double y){contentScroll=net.foundations.pl4.core.GuideLayout.scrollFromThumb(y-(top+52)-settingsDragOffset,settingsViewport(),contentHeight(),settingsViewport());layoutContent();}
-    @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){if(button==0&&draggingSettings){dragSettings(y);return true;}return super.mouseDragged(x,y,button,dx,dy);}
-    @Override public boolean mouseReleased(double x,double y,int button){if(button==0&&draggingSettings){draggingSettings=false;return true;}return super.mouseReleased(x,y,button);}
+    @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){double x=event.x(),y=event.y();int button=event.button();if(button==0&&draggingSettings){dragSettings(y);return true;}return super.mouseDragged(event,dx,dy);}
+    @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();if(button==0&&draggingSettings){draggingSettings=false;return true;}return super.mouseReleased(event);}
 }

@@ -15,7 +15,7 @@ public final class CoreRecipes {
     public static final DeferredHolder<RecipeType<?>,RecipeType<ForgingRecipe>> HAMMER=TYPES.register("forging_hammer",()->new RecipeType<>(){
         @Override public String toString(){return FoundationsPL4.ID+":forging_hammer";}
     });
-    public static final DeferredHolder<RecipeSerializer<?>,ForgingRecipe.Serializer> HAMMER_SERIALIZER=SERIALIZERS.register("forging_hammer",ForgingRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ForgingRecipe>> HAMMER_SERIALIZER=SERIALIZERS.register("forging_hammer",ForgingRecipe.Serializer::create);
     public static void register(IEventBus bus){TYPES.register(bus);SERIALIZERS.register(bus);}
     private CoreRecipes(){}
 }
