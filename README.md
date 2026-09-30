@@ -8,6 +8,8 @@ R16 ordinary Nodes remain passive transfer endpoints. ADD / REMOVE remains expli
 
 Save schema 2, 13 multipart slots, payload protocol 4, recipes and transfer rules are unchanged from R16.
 
+Version tags of the form `v<Gradle version>` trigger a Java 21 build and publish a GitHub Release with the runtime JAR, sources JAR and SHA-256 checksums. See [docs/RELEASING.md](docs/RELEASING.md) for the release gate and steps.
+
 ## Build
 
 ```bat
