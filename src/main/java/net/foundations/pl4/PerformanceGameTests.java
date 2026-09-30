@@ -82,4 +82,47 @@ public final class PerformanceGameTests {
         p.filter="#minecraft:water";h.assertTrue(DataSampler.matches(new FluidStack(Fluids.WATER,1000),p),"Fluid tag matching must remain live");
         p.filter="";p.whitelist=false;h.assertTrue(DataSampler.matches(diamond,p),"An empty filter must still allow everything");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void localGeometryRepairsStaleArmSnapshotsWithoutGraphRebuild(GameTestHelper h){
+        var a=host(h,new BlockPos(1,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var b=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var c=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var d=host(h,new BlockPos(4,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        NetworkEngine.rebuild(h.getLevel().getServer());long builds=NetworkEngine.topologyBuildCount();
+        // Reproduce a received snapshot with valid parts but old/disconnected geometry.
+        var stale=b.getUpdateTag(h.getLevel().registryAccess());stale.putIntArray("cableConnections",new int[6]);
+        b.loadAdditional(stale,h.getLevel().registryAccess());
+        a.setConnections(new int[6]);CableGeometry.refresh(b);
+        h.assertTrue(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1&&b.connection(Direction.EAST)==1&&c.connection(Direction.WEST)==1,"Both ends must connect from parts in the same local refresh");
+        h.assertTrue(c.connection(Direction.EAST)==1&&d.connection(Direction.WEST)==1,"Updating a neighbour must preserve its farther connection");
+        stale=a.getUpdateTag(h.getLevel().registryAccess());stale.putIntArray("cableConnections",new int[6]);
+        a.loadAdditional(stale,h.getLevel().registryAccess());CableGeometry.refresh(a);
+        h.assertTrue(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"A later stale arm snapshot must not reopen the gap");
+        h.assertTrue(NetworkEngine.topologyBuildCount()==builds,"Local geometry must not rebuild the global network");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void localGeometryHonorsBlockedPortsAndCableFamilies(GameTestHelper h){
+        var a=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var b=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        b.parts.get(6).blockedFaces=1<<Direction.WEST.ordinal();CableGeometry.refresh(b);
+        h.assertTrue(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Disabled neighbour port must block both arms");
+        b.parts.get(6).blockedFaces=0;CableGeometry.refresh(b);
+        h.assertTrue(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"Enabling port must restore both arms immediately");
+        b.parts.put(6,new Part(Kind.REDSTONE_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(b);
+        h.assertTrue(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Different cable families must never visually connect");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void localGeometryReconcilesMultipartLeadsAndRemoval(GameTestHelper h){
+        var cable=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var device=host(h,new BlockPos(3,2,2),Kind.NODE,Direction.EAST);
+        Part node=device.parts.get(Direction.EAST.ordinal());CableGeometry.refresh(device);
+        h.assertTrue(cable.connection(Direction.EAST)==1&&device.externalLead(node),"External device lead and cable must reconcile together");
+        device.parts.clear();CableGeometry.refresh(device);
+        h.assertTrue(cable.connection(Direction.EAST)==0&&!device.externalLead(node),"Removed part must clear both arm and lead immediately");
+        device.parts.put(6,new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(device);
+        h.assertTrue(cable.connection(Direction.EAST)==1,"New cable must join without waiting for sampling");
+        device.setRemoved();CableGeometry.refresh(device);
+        h.assertTrue(cable.connection(Direction.EAST)==0,"Removed/unloaded host must be excluded even before its world slot disappears");h.succeed();
+    }
+
 }

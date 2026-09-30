@@ -52,8 +52,8 @@ public final class HostEntity extends BlockEntity {
         return cachedOutline;
     }
     public HostEntity(BlockPos p,BlockState s){super(FoundationsPL4.HOST_ENTITY.get(),p,s);}
-    @Override public void onLoad(){super.onLoad();if(level!=null&&!level.isClientSide)NetworkEngine.add(this);}
-    @Override public void setRemoved(){if(level!=null&&!level.isClientSide)NetworkEngine.remove(this);super.setRemoved();}
+    @Override public void onLoad(){super.onLoad();if(level!=null){if(!level.isClientSide)NetworkEngine.add(this);else CableGeometry.refresh(this);}}
+    @Override public void setRemoved(){if(level!=null&&!level.isClientSide)NetworkEngine.remove(this);super.setRemoved();if(level!=null&&level.isClientSide)CableGeometry.refresh(this);}
     public boolean canEdit(Player p){return p.hasPermissions(2)||parts.values().stream().allMatch(a->a.owner==null||a.owner.equals(p.getUUID()));}
     public Part hit(BlockHitResult h){
         Vec3 local=h.getLocation().subtract(Vec3.atLowerCornerOf(worldPosition));
@@ -108,7 +108,7 @@ public final class HostEntity extends BlockEntity {
         for(int i=0;i<Math.min(list.size(),net.foundations.pl4.core.MultipartTopology.SLOT_COUNT);i++){
             Part p=Part.load(list.getCompound(i),r);if(p!=null)parts.put(p.slot(),p);
         }
-        if(level!=null&&!level.isClientSide)NetworkEngine.invalidate(level);
+        if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
     @Override public CompoundTag getUpdateTag(HolderLookup.Provider r){CompoundTag t=new CompoundTag();write(t,r,true);return t;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}

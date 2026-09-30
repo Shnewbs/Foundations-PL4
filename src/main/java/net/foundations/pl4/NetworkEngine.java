@@ -128,36 +128,8 @@ public final class NetworkEngine {
     }
     /** Publish exact local cable geometry now; defer the expensive global graph rebuild by one tick. */
     public static void refreshCableGeometry(HostEntity anchor){
-        if(!(anchor.getLevel() instanceof ServerLevel level))return;
-        int[] anchorArms=new int[6];
-        Map<HostEntity,int[]> neighborArms=new IdentityHashMap<>();
-        for(Direction direction:Direction.values()){
-            BlockPos adjacent=anchor.getBlockPos().relative(direction);
-            HostEntity neighbor=level.hasChunkAt(adjacent)&&level.getBlockEntity(adjacent) instanceof HostEntity h?h:null;
-            List<HostEntity> pair=neighbor==null?List.of(anchor):List.of(anchor,neighbor);
-            List<net.foundations.pl4.core.MultipartTopology.Node> nodes=new ArrayList<>();
-            Map<Part,Integer> ids=new IdentityHashMap<>();
-            for(HostEntity host:pair)for(Part part:host.parts.values()){
-                int id=nodes.size();ids.put(part,id);
-                BlockPos position=host.getBlockPos();
-                nodes.add(new net.foundations.pl4.core.MultipartTopology.Node(id,
-                    new net.foundations.pl4.core.MultipartTopology.Cell(level.dimension().location().toString(),position.getX(),position.getY(),position.getZ()),
-                    part.kind,part.face.ordinal(),part.blockedFaces));
-            }
-            var plan=net.foundations.pl4.core.MultipartTopology.plan(nodes);
-            Part center=anchor.parts.get(6);
-            if(center!=null&&center.kind.cable())anchorArms[direction.ordinal()]=plan.cableArms().get(ids.get(center))[direction.ordinal()];
-            if(neighbor!=null){
-                Part cable=neighbor.parts.get(6);
-                if(cable!=null&&cable.kind.cable()){
-                    int[] values=neighborArms.computeIfAbsent(neighbor,ignored->neighbor.connections());
-                    values[direction.getOpposite().ordinal()]=plan.cableArms().get(ids.get(cable))[direction.getOpposite().ordinal()];
-                }
-            }
-        }
-        anchor.setConnections(anchorArms);
-        anchor.syncIfChanged();
-        neighborArms.forEach((host,values)->{host.setConnections(values);host.syncIfChanged();});
+        if(!(anchor.getLevel() instanceof ServerLevel))return;
+        CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
