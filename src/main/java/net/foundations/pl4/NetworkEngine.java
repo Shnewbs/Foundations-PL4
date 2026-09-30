@@ -21,7 +21,7 @@ public final class NetworkEngine {
     private static List<Group> cachedGroups=List.of();
     private static long topologyBuilds;
     private static int cachedMaxNetwork;
-    private record Group(List<Ref> parts,int hostCount,boolean redstone) {}
+    private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers) {}
     public record Ref(HostEntity host,Part part) {
         public ServerLevel level(){return (ServerLevel)host.getLevel();}
         public Part.Link adjacent(){return new Part.Link(level().dimension().location().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
@@ -85,7 +85,17 @@ public final class NetworkEngine {
         List<Group> complete=new ArrayList<>();
         for(List<Ref> group:groups.values()) {
             Set<HostEntity> hosts=Collections.newSetFromMap(new IdentityHashMap<>());group.forEach(r->hosts.add(r.host));
-            complete.add(new Group(group,hosts.size(),group.getFirst().part.kind.redstone()));
+            List<Ref> ordered=new ArrayList<>(group);
+            ordered.sort(Comparator.<Ref>comparingInt(r->r.part.priority).reversed()
+                .thenComparing(r->r.host.getBlockPos().asLong()).thenComparing(r->r.part.slot()));
+            LinkedHashSet<Part.Link> uniqueTargets=new LinkedHashSet<>();
+            for(Ref r:ordered){
+                if(r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE)uniqueTargets.add(r.adjacent());
+                if(r.part.kind==Kind.ARRAY||r.part.kind==Kind.ENTITY_NODE)uniqueTargets.addAll(r.part.links);
+            }
+            List<Ref> groupReaders=ordered.stream().filter(r->r.part.kind.reader()).toList();
+            complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.getFirst().part.kind.redstone(),
+                List.copyOf(uniqueTargets),groupReaders));
         }
         // A visual reader export adds telemetry visibility to the destination cable bus,
         // NEVER an edge to its machine/transfer network. Wireless unions are already resolved.
@@ -123,7 +133,7 @@ public final class NetworkEngine {
             if(group.hostCount>PLConfig.MAX_NETWORK.get()) {
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Network exceeds configured host limit";setSignal(r,0);}continue;
             }
-            try { process(server,group.parts,group.hostCount,group.redstone); }
+            try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers); }
             catch(RuntimeException ex) {
                 LoggerFactory.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.getFirst().host.getBlockPos(),ex);
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Provider error; check server log";setSignal(r,0);}
@@ -132,21 +142,13 @@ public final class NetworkEngine {
         DisplayNetworks.sample();
         cachedHosts.forEach(HostEntity::syncIfChanged);
     }
-    private static void process(MinecraftServer server,List<Ref> refs,int hosts,boolean redstone){
-        List<Part.Link> targets=new ArrayList<>();
-        refs.sort(Comparator.<Ref>comparingInt(r->r.part.priority).reversed().thenComparing(r->r.host.getBlockPos().asLong()).thenComparing(r->r.part.slot()));
+    private static void process(MinecraftServer server,List<Ref> refs,int hosts,boolean redstone,List<Part.Link> targets,List<Ref> readers){
         if(redstone){
             int signal=0;
             for(Ref r:refs)if(r.part.kind==Kind.REDSTONE_NODE||r.part.kind==Kind.REDSTONE_EMITTER)signal=Math.max(signal,r.level().getBestNeighborSignal(r.host.getBlockPos().relative(r.part.face)));
             for(Ref r:refs){r.part.rows.clear();r.part.rows.add(new Part.Row("signal","Redstone",signal,15,""));r.part.status="Connected: "+hosts+" hosts";if(r.part.kind==Kind.REDSTONE_RECEIVER)setSignal(r,signal);else if(r.part.kind==Kind.REDSTONE_CABLE)r.part.signal=signal;}
             return;
         }
-        for(Ref r:refs){
-            if(r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE)targets.add(r.adjacent());
-            if(r.part.kind==Kind.ARRAY||r.part.kind==Kind.ENTITY_NODE)targets.addAll(r.part.links);
-        }
-        targets=new ArrayList<>(new LinkedHashSet<>(targets));
-        List<Ref> readers=refs.stream().filter(r->r.part.kind.reader()).toList();
         for(Ref r:readers){
             r.part.rows.clear();
             List<Part.Link> selectedTargets=targets;
