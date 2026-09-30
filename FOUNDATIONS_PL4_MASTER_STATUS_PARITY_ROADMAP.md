@@ -1125,8 +1125,8 @@ This should be the first major next-alpha work because displays are the feature 
 
 ### Element styling
 
-- text scale;
-- text alignment;
+- text scale; **implemented in the R1 continuation** (50%–400% bounded data model; editor cycles 50%–200%);
+- text alignment; **implemented in the R1 continuation** (left, centre, right);
 - width/height alignment;
 - fill/background styles;
 - opacity;
