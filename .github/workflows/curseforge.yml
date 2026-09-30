@@ -1,0 +1,54 @@
+name: Publish existing release to CurseForge
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing GitHub release tag
+        required: true
+        default: v0.0.2a.R1
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-publication
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the already validated GitHub artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          python - <<'PY'
+          import os, re, subprocess, json, hashlib
+          from pathlib import Path
+          tag = os.environ['RELEASE_TAG']
+          if not re.fullmatch(r'v[A-Za-z0-9._-]+', tag):
+              raise SystemExit('Invalid release tag')
+          version = tag[1:]
+          jar = f'FoundationsPL4-1.21.1-{version}.jar'
+          repo = os.environ['GITHUB_REPOSITORY']
+          subprocess.run(['gh', 'release', 'download', tag, '--repo', repo, '--pattern', jar, '--pattern', 'SHA256SUMS.txt', '--dir', 'build/libs'], check=True)
+          digest = hashlib.sha256(Path('build/libs', jar).read_bytes()).hexdigest()
+          entries = Path('build/libs/SHA256SUMS.txt').read_text().splitlines()
+          if f'{digest}  {jar}' not in entries:
+              raise SystemExit('GitHub release checksum does not match runtime JAR')
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', repo, '--json', 'body'], text=True))
+          notes = Path(f'docs/releases/{version}.md')
+          notes.parent.mkdir(parents=True, exist_ok=True)
+          notes.write_text(release['body'], encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'], 'a') as env:
+              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\n')
+          PY
+      - name: Upload release to CurseForge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+        run: python tools/upload_curseforge.py

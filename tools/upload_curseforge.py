@@ -32,7 +32,16 @@ def request_json(path, token, data=None, content_type=None):
         with urllib.request.build_opener(NoRedirect).open(req, timeout=120) as response:
             return json.load(response)
     except urllib.error.HTTPError as exc:
-        raise RuntimeError(f"CurseForge returned HTTP {exc.code}. Check project permissions and metadata before retrying.") from None
+        detail = ""
+        try:
+            error = json.loads(exc.read(8192))
+            if isinstance(error, dict):
+                message = error.get("errorMessage", error.get("message", ""))
+                if isinstance(message, str):
+                    detail = " " + message.replace(token, "[redacted]").replace("\n", " ")[:400]
+        except (ValueError, OSError):
+            pass
+        raise RuntimeError(f"CurseForge {path} returned HTTP {exc.code}.{detail} Check project permissions and metadata before retrying.") from None
     except urllib.error.URLError:
         raise RuntimeError("CurseForge connection failed. Check the project file list before retrying an upload; the request may have succeeded.") from None
 
