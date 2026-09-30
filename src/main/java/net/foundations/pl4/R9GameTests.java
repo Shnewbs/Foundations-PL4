@@ -205,4 +205,29 @@ public final class R9GameTests {
         PLPackets.editLayout(player(h,host,false),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"align_left",new UUID(0,0),s.id().toString()));
         h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(s),"Arrangement must enforce the existing ownership gate");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void multiMoveIsAtomicAndClampsSharedDelta(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT).bounds(new DisplayElements.Rect(10,20,30,18)).textStyle(DisplayElements.TextAlign.RIGHT,true,1.5F);var b=spec(DisplayElements.Type.BAR).bounds(new DisplayElements.Rect(60,40,20,12));
+        p.elements.add(new Part.Element(a));p.elements.add(new Part.Element(b));var user=player(h,host,true);
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"move_selection",new UUID(0,0),"400;400;"+a.id()+","+b.id()));
+        var ma=p.elements.get(0).spec();var mb=p.elements.get(1).spec();
+        h.assertTrue(p.layoutRevision==1&&mb.bounds().right()==p.layoutWidth&&mb.bounds().bottom()==p.layoutHeight&&mb.bounds().x()-ma.bounds().x()==50&&ma.wrap()&&ma.textScale()==1.5F,"Move commits once using server bounds and preserves selection spacing/style");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void multiMoveRejectsStaleMissingAndForeignOwner(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);p.elements.add(new Part.Element(a));p.layoutRevision=2;var user=player(h,host,true);
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,1,"move_selection",new UUID(0,0),"4;4;"+a.id()));
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"move_selection",new UUID(0,0),"4;4;"+a.id()+","+UUID.randomUUID()));
+        p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"move_selection",new UUID(0,0),"4;4;"+a.id()));
+        h.assertTrue(p.layoutRevision==2&&p.elements.getFirst().spec().equals(a),"Invalid moves cannot partially change selection");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void multiPasteRejectsInvisibleReaderAndAcceptsWholeBatch(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var b=spec(DisplayElements.Type.BAR);var user=player(h,host,true);
+        var invisible=new DisplayElements.Spec(UUID.randomUUID(),a.type(),a.text(),"hidden-reader",a.key(),a.asset(),a.bounds(),a.color(),a.count(),a.names(),a.columns(),a.offset(),a.page(),a.vertical(),a.compact());
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"paste",new UUID(0,0),ElementJson.encodeList(List.of(a,invisible))));
+        h.assertTrue(p.elements.isEmpty()&&p.layoutRevision==0,"Invisible binding rejects entire paste");
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"paste",new UUID(0,0),ElementJson.encodeList(List.of(a,b))));
+        h.assertTrue(p.elements.size()==2&&p.layoutRevision==1&&p.elements.get(0).spec().equals(a)&&p.elements.get(1).spec().equals(b),"Whole batch added in one revision");h.succeed();
+    }
 }

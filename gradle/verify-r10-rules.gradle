@@ -8,6 +8,7 @@ tasks.register('compileR10RuleVerifier',JavaCompile){
         'src/main/java/net/foundations/pl4/core/GuideLayout.java',
         'src/main/java/net/foundations/pl4/core/DisplayElements.java',
         'src/main/java/net/foundations/pl4/core/LayoutTransactions.java',
+        'src/main/java/net/foundations/pl4/core/EditorSelection.java',
         'src/main/java/net/foundations/pl4/core/DynamicCanvasLayout.java')
     classpath=files();destinationDirectory=r10VerifierClasses
     javaCompiler=javaToolchains.compilerFor{languageVersion=JavaLanguageVersion.of(21)}

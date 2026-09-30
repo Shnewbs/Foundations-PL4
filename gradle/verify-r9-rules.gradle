@@ -5,6 +5,7 @@ tasks.register('compileR9RuleVerifier',JavaCompile){
     source=files('tools/R9RegressionTests.java',
         'src/main/java/net/foundations/pl4/core/DisplayElements.java',
         'src/main/java/net/foundations/pl4/core/LayoutTransactions.java',
+        'src/main/java/net/foundations/pl4/core/EditorSelection.java',
         'src/main/java/net/foundations/pl4/core/DisplayPicking.java')
     classpath=files();destinationDirectory=r9VerifierClasses
     javaCompiler=javaToolchains.compilerFor{languageVersion=JavaLanguageVersion.of(21)}

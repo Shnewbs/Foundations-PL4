@@ -91,6 +91,27 @@ public final class LayoutTransactions {
         if(result.equals(before.elements))return fail(before,"Selection is already arranged.");
         return new Result(true,new State(result,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
     }
+    public static Result applyMove(State before,long expected,List<UUID> ids,int dx,int dy,int width,int height){
+        if(expected!=before.revision)return fail(before,"Screen changed; review the current layout and retry.");
+        if(before.revision==Long.MAX_VALUE)return fail(before,"Layout revision is exhausted.");
+        if(ids.isEmpty()||ids.size()>DisplayElements.MAX_ELEMENTS||new HashSet<>(ids).size()!=ids.size())return fail(before,"Select distinct elements on this page.");
+        if(Math.abs((long)dx)>DisplayElements.MAX_CANVAS||Math.abs((long)dy)>DisplayElements.MAX_CANVAS)return fail(before,"Invalid movement.");
+        Set<UUID> selected=new HashSet<>(ids);var picked=before.elements.stream().filter(e->selected.contains(e.id())).toList();
+        if(picked.size()!=ids.size()||picked.stream().anyMatch(e->e.page()!=before.page))return fail(before,"Selection changed; select elements on this page.");
+        try{
+            var moved=EditorSelection.move(picked,dx,dy,width,height);
+            Map<UUID,DisplayElements.Spec> edits=new HashMap<>();for(var e:moved)edits.put(e.id(),e);
+            var result=before.elements.stream().map(e->edits.getOrDefault(e.id(),e)).toList();
+            if(result.equals(before.elements))return fail(before,"Selection has not moved.");
+            return new Result(true,new State(result,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
+        }catch(IllegalArgumentException ex){return fail(before,ex.getMessage());}
+    }
+    public static Result applyPaste(State before,long expected,List<DisplayElements.Spec> copies,int width,int height){
+        if(copies.isEmpty()||copies.stream().anyMatch(e->e.page()!=before.page||e.bounds().right()>width||e.bounds().bottom()>height))return fail(before,"Paste must fit the current page and canvas.");
+        if(width<8||height<9||width>DisplayElements.MAX_CANVAS||height>DisplayElements.MAX_CANVAS)return fail(before,"Invalid canvas dimensions.");
+        var all=new ArrayList<>(before.elements);all.addAll(copies);
+        return applyReplace(before,expected,all);
+    }
     private static Result fail(State s,String reason){return new Result(false,s,reason);}
     private LayoutTransactions(){}
 }

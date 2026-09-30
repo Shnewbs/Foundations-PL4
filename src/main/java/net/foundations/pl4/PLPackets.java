@@ -45,13 +45,17 @@ public final class PLPackets {
             }
             var before=new net.foundations.pl4.core.LayoutTransactions.State(part.elements.stream().map(Part.Element::spec).toList(),part.displayMode,part.displayPage,part.layoutRevision);
             net.foundations.pl4.core.LayoutTransactions.Result result;
-            if(packet.action.equals("replace")){
+            if(packet.action.equals("replace")||packet.action.equals("paste")){
                 var restored=ElementJson.decodeList(packet.value);
                 for(var s:restored){
                     boolean visible=s.reader().isEmpty()||(part.readerChoices.stream().anyMatch(choice->choice.id().equals(s.reader()))||part.readerChoices.stream().filter(choice->choice.name().equals(s.reader())).count()==1);
                     if(!visible){openWithError(player,anchor,clicked,"Choose a reader visible to this display.");return;}
                 }
-                result=net.foundations.pl4.core.LayoutTransactions.applyReplace(before,packet.revision,restored);
+                result=packet.action.equals("paste")?net.foundations.pl4.core.LayoutTransactions.applyPaste(before,packet.revision,restored,part.layoutWidth,part.layoutHeight):net.foundations.pl4.core.LayoutTransactions.applyReplace(before,packet.revision,restored);
+            }else if(packet.action.equals("move_selection")){
+                var fields=packet.value.split(";",-1);if(fields.length!=3)throw new IllegalArgumentException("Invalid movement.");
+                var ids=Arrays.stream(fields[2].split(",",-1)).map(UUID::fromString).toList();
+                result=net.foundations.pl4.core.LayoutTransactions.applyMove(before,packet.revision,ids,Integer.parseInt(fields[0]),Integer.parseInt(fields[1]),part.layoutWidth,part.layoutHeight);
             }else if(net.foundations.pl4.core.LayoutTransactions.arrangement(packet.action)){
                 var ids=Arrays.stream(packet.value.split(",",-1)).map(UUID::fromString).toList();
                 result=net.foundations.pl4.core.LayoutTransactions.applyArrange(before,packet.revision,packet.action,ids,part.layoutWidth,part.layoutHeight);

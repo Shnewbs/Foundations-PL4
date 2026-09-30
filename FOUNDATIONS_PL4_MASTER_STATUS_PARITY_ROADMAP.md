@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1` display parity + data-cable topology hardening
+**Current source candidate:** `0.0.2a.R1.1` display selection workflow continuation
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -1146,12 +1146,12 @@ Use PL2/PL3 research for:
 ### Editor workflow
 
 - element list panel;
-- multi-select; **implemented in the R1 continuation for additive selection and atomic multi-delete**;
-- box/lasso select;
+- multi-select; **extended in R1.1 with Shift-toggle, Ctrl+A, box selection, rigid multi-element movement and atomic multi-delete**;
+- box/lasso select; **box selection implemented in R1.1 with page-local overlap, reverse drag and Shift-add; freeform lasso remains planned**;
 - alignment tools; **implemented in R1: left/right/top/bottom/centre, using canvas bounds for one element and selection bounds for multiple elements**;
 - distribute evenly; **implemented in R1: horizontal/vertical equal edge gaps for three or more current-page elements, preserving outer anchors**;
-- copy/paste; **implemented in the R1 continuation with local clipboard, deterministic offset, and revision-fenced add**;
-- duplicate with deterministic offset; **implemented in the R1 continuation (Ctrl+D re-pastes the selection at a fixed 4px offset)**;
+- copy/paste; **extended in R1.1 to an entire page-local selection, preserving styles/spacing, with one revision-fenced paste**;
+- duplicate with deterministic offset; **extended in R1.1: Ctrl+D duplicates the entire selection with a shared 4px offset clamped to canvas edges**;
 - group/ungroup;
 - lock element;
 - hide/show element;

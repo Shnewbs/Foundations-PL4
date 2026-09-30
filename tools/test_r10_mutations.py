@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile,subprocess,shutil,json
 from verify_r10 import check_models
 R=Path(__file__).resolve().parents[1];C=R/'src/main/java/net/foundations/pl4/core'
-names=['MonitorPresentation','GuideNavigation','GuideBook','GuideLayout','DisplayElements','LayoutTransactions','DynamicCanvasLayout']
+names=['MonitorPresentation','GuideNavigation','GuideBook','GuideLayout','DisplayElements','LayoutTransactions','EditorSelection','DynamicCanvasLayout']
 mutations=[
  ('list_covers_custom_editor','MonitorPresentation','return !editing&&mode==','return mode=='),
  ('new_element_hidden_on_other_page','LayoutTransactions','page=element.page();',''),

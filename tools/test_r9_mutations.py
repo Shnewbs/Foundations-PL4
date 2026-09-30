@@ -10,7 +10,7 @@ mutations=[
 for name,filename,old,new in mutations:
  with tempfile.TemporaryDirectory(prefix='pl4-r9-mutant-') as tmp:
   p=Path(tmp);files=[]
-  for n in ['DisplayElements','LayoutTransactions','DisplayPicking']:
+  for n in ['DisplayElements','LayoutTransactions','EditorSelection','DisplayPicking']:
    path=C/(n+'.java');s=path.read_text()
    if path.name==filename:
     assert old in s,(name,old);s=s.replace(old,new,1)

@@ -119,5 +119,40 @@ public final class R9RegressionTests {
         check(LayoutTransactions.applyReplace(spaced.state(),8,before.elements()).state().elements().equals(before.elements()),"undo restores arranged layout and styles");
         check(!LayoutTransactions.applyArrange(new LayoutTransactions.State(before.elements(),before.mode(),0,Long.MAX_VALUE),Long.MAX_VALUE,"align_left",List.of(a.id()),248,120).accepted(),"arrangement revision overflow rejected");
     }
-    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
+    static void selectionWorkflow(){
+        var a=spec(DisplayElements.Type.TEXT,10,20,30,18).textStyle(DisplayElements.TextAlign.RIGHT,true,1.75F);
+        var b=spec(DisplayElements.Type.BAR,60,40,20,12);var other=spec(DisplayElements.Type.ITEM,10,20,30,18).onPage(1);
+        var before=new LayoutTransactions.State(List.of(a,b,other),DisplayElements.Mode.CUSTOM,0,7);
+        var box=EditorSelection.box(90,70,0,0,248,120);
+        check(EditorSelection.inBox(before.elements(),0,box).equals(List.of(a.id(),b.id())),"reverse marquee selects current page in layer order");
+        check(EditorSelection.inBox(before.elements(),0,new DisplayElements.Rect(40,20,20,18)).isEmpty(),"touching edge is not overlap");
+        check(EditorSelection.inBox(before.elements(),0,new DisplayElements.Rect(10,20,0,0)).isEmpty(),"zero box selects nothing");
+        check(EditorSelection.box(-100,-100,300,200,248,120).equals(new DisplayElements.Rect(0,0,248,120)),"marquee clips to canvas");
+        var moved=LayoutTransactions.applyMove(before,7,List.of(a.id(),b.id()),200,200,248,120);
+        check(moved.accepted()&&moved.state().revision()==8,"one atomic move revision");
+        var ma=moved.state().elements().get(0);var mb=moved.state().elements().get(1);
+        check(mb.bounds().right()==248&&mb.bounds().bottom()==120,"common displacement clamps to outer bounds");
+        check(mb.bounds().x()-ma.bounds().x()==50&&mb.bounds().y()-ma.bounds().y()==20,"relative positions preserved at edge");
+        check(ma.wrap()&&ma.textScale()==1.75F&&ma.textAlign()==DisplayElements.TextAlign.RIGHT,"move retains style");
+        check(moved.state().elements().get(2).equals(other),"other page unchanged");
+        check(!LayoutTransactions.applyMove(before,6,List.of(a.id()),4,4,248,120).accepted(),"stale move rejected");
+        check(!LayoutTransactions.applyMove(before,7,List.of(a.id(),other.id()),4,4,248,120).accepted(),"cross page move rejected");
+        check(!LayoutTransactions.applyMove(before,7,List.of(a.id(),a.id()),4,4,248,120).accepted(),"duplicate move identity rejected");
+        check(!LayoutTransactions.applyMove(before,7,List.of(a.id(),UUID.randomUUID()),4,4,248,120).accepted(),"missing move identity rejects all");
+        check(!LayoutTransactions.applyMove(before,7,List.of(a.id()),Integer.MIN_VALUE,0,248,120).accepted(),"overflow movement rejected");
+        check(!LayoutTransactions.applyMove(before,7,List.of(a.id()),0,0,248,120).accepted(),"no-op rejected");
+        check(!LayoutTransactions.applyMove(new LayoutTransactions.State(before.elements(),before.mode(),0,Long.MAX_VALUE),Long.MAX_VALUE,List.of(a.id()),4,4,248,120).accepted(),"revision overflow rejected");
+        var copies=EditorSelection.move(List.of(a,b),4,4,248,120).stream().map(e->e.identity(UUID.randomUUID())).toList();
+        var pasted=LayoutTransactions.applyPaste(before,7,copies,248,120);
+        check(pasted.accepted()&&pasted.state().revision()==8&&pasted.state().elements().size()==5,"atomic multi paste");
+        check(pasted.state().elements().subList(0,3).equals(before.elements()),"paste preserves existing layer order");
+        check(!LayoutTransactions.applyPaste(before,7,List.of(a),248,120).accepted(),"paste cannot reuse existing identity");
+        check(!LayoutTransactions.applyPaste(before,7,List.of(copies.getFirst(),copies.getFirst()),248,120).accepted(),"duplicate copy identity rejects all");
+        check(!LayoutTransactions.applyPaste(before,7,List.of(other.identity(UUID.randomUUID())),248,120).accepted(),"paste other page rejected");
+        check(!LayoutTransactions.applyPaste(before,7,List.of(a.identity(UUID.randomUUID()).bounds(new DisplayElements.Rect(240,20,30,18))),248,120).accepted(),"out of canvas paste rejected");
+        var full=new ArrayList<DisplayElements.Spec>();for(int i=0;i<32;i++)full.add(a.identity(UUID.randomUUID()));
+        check(!LayoutTransactions.applyPaste(new LayoutTransactions.State(full,before.mode(),0,7),7,copies,248,120).accepted(),"capacity failure leaves whole batch unapplied");
+        check(LayoutTransactions.applyReplace(pasted.state(),8,before.elements()).state().elements().equals(before.elements()),"one undo restores entire paste");
+    }
+    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();selectionWorkflow();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
 }

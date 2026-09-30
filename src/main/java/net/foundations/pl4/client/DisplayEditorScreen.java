@@ -17,7 +17,7 @@ import net.foundations.pl4.core.*;
  * Identity is anchored to the clicked tile; joined-canvas roots may be elsewhere. */
 public final class DisplayEditorScreen extends Screen {
     final BlockPos pos;final UUID clickedIdentity;final int clickedSlot;final boolean editable;
-    Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private DisplayElements.Spec clipboard;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
+    Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private List<DisplayElements.Spec> clipboard=List.of(),dragSpecs=List.of(),draftSpecs=List.of();private DisplayPicking.Point boxStart,boxEnd;private boolean additiveBox;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
     private double[] inverse;private long captureTime;private boolean snap=true,pending;private int waitTicks;
     private EditorChrome.Corner resizeCorner=EditorChrome.Corner.NONE,hoveredCorner=EditorChrome.Corner.NONE;private int hoveredTool=-1;
     String message="";
@@ -27,37 +27,7 @@ public final class DisplayEditorScreen extends Screen {
     private static final String[] TOOLS={"+","E","X","C","^","v","#","?"};
     private static final String[] HELP={"Add element","Edit selected element","Delete selected element","Duplicate selected element","Bring forward","Send backward","Toggle 4-pixel snap","Data / settings"};
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
-    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
-    public UUID identity(){return clickedIdentity;}
-    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
-    public void receive(PLPackets.Open packet,Part p){
-        if(p.layoutRevision>=part.layoutRevision)part=p;
-        if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
-        if(packet.tag().contains("previewReader")){
-            String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
-            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
-        }
-        selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)));selected=selectedIds.stream().findFirst().orElse(null);
-    }
-    @Override public boolean isPauseScreen(){return false;}
-    @Override protected void init(){
-        var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
-        arrange.active=editable;
-    }
-    @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
-    public boolean matches(HostEntity host,Part p){
-        if(minecraft==null||minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity anchor))return false;
-        Part hit=anchor.parts.get(clickedSlot);if(hit==null||!hit.identity.equals(clickedIdentity))return false;
-        BlockPos root=hit.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(hit),-hit.canvasColumn).relative(DisplayNetworks.up(hit),hit.canvasRow):pos;
-        return root.equals(host.getBlockPos())&&p.slot()==clickedSlot&&p.kind==hit.kind;
-    }
-    public List<Part.Element> preview(Part live){
-        if(draft==null)return live.elements;
-        List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
-    }
-    public void capture(Matrix4f localPose){
-        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix()).mul(RenderSystem.getModelViewMatrix()).mul(localPose);
-        float[] values=new float[16];matrix.get(values);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
+    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos…765 tokens truncated…;
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
     }
     private Optional<DisplayPicking.Point> point(double x,double y){if(System.nanoTime()-captureTime>300_000_000L)return Optional.empty();return DisplayPicking.hit(inverse,x,y,width,height);}
@@ -72,8 +42,10 @@ public final class DisplayEditorScreen extends Screen {
         int pageY=Math.max(EditorChrome.TOOLBAR_Y,spaceH()-14);var page=new DisplayElements.Rect(EditorChrome.TOOLBAR_X,pageY,EditorChrome.TOOLBAR_W,EditorChrome.TOOLBAR_H);
         canvas.rect(page.x(),page.y(),page.width(),page.height(),0xE6080B0D,5);canvas.outline(page,0xFF67DCE6,6);canvas.text(Integer.toString(live.displayPage+1),page.x()+4,page.y()+2,10,0xFF67DCE6,false,7);
         canvas.text("<",20,pageY+2,8,0xFFFFC45C,false,7);canvas.text(">",Math.max(28,spaceW()-10),pageY+2,8,0xFFFFC45C,false,7);
+        if(boxStart!=null&&boxEnd!=null)canvas.outline(EditorSelection.box(boxStart.x(),boxStart.y(),boxEnd.x(),boxEnd.y(),spaceW(),spaceH()),0xFF73D86B,8);
+        var visible=preview(live);
         var elem=draft!=null?draft:selectedElement();
-        for(var id:selectedIds){var marked=live.elements.stream().filter(e->e.id().equals(id)).map(Part.Element::spec).findFirst().orElse(null);if(marked!=null&&marked.page()==live.displayPage)canvas.outline(marked.bounds(),id.equals(selected)?0xFF73D86B:0xFF4D8D94,6);}
+        for(var id:selectedIds){var marked=visible.stream().filter(e->e.id().equals(id)).map(Part.Element::spec).findFirst().orElse(null);if(marked!=null&&marked.page()==live.displayPage)canvas.outline(marked.bounds(),id.equals(selected)?0xFF73D86B:0xFF4D8D94,6);}
         if(elem!=null&&elem.page()==live.displayPage){
             boolean pulse=minecraft!=null&&minecraft.level!=null&&((minecraft.level.getGameTime()/6)&1)==0;
             for(var corner:new EditorChrome.Corner[]{EditorChrome.Corner.NW,EditorChrome.Corner.NE,EditorChrome.Corner.SW,EditorChrome.Corner.SE}){
@@ -91,19 +63,19 @@ public final class DisplayEditorScreen extends Screen {
         if(!editable)return;
         int x=8,y=8,w=Math.min(width-16,420),h=34;
         g.fill(x,y,x+w,y+h,0xD0141B20);g.fill(x,y,x+3,y+h,0xFF62C7D6);
-        String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"LMB select/drag/resize  •  RMB back  •  side tools stay active");
+        String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"Drag empty space: box select  •  Shift: add/toggle  •  RMB: back");
         g.drawString(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
         int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);kx=hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);hudKey(g,kx+4,ky,"CTRL+Z",0xFFAA88FF);
     }
     private int hudKey(GuiGraphics g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.drawString(font,key,x+5,y+2,color,false);return x+w;}
-    DisplayElements.Spec selectedElement(){return selected==null?null:part.elements.stream().filter(e->e.id().equals(selected)).map(Part.Element::spec).findFirst().orElse(null);}
+    DisplayElements.Spec selectedElement(){return selected==null?null:part.elements.stream().filter(e->e.id().equals(selected)&&e.spec().page()==part.displayPage).map(Part.Element::spec).findFirst().orElse(null);}
     void inspect(String reader){if(!reader.isEmpty()&&!inspected.containsKey(reader))PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"preview_reader",reader));}
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
     void commit(String action,DisplayElements.Spec spec,String value,long revision){
         if(!editable||pending)return;
         if(action.equals("add")||action.equals("update")||action.equals("delete")||action.equals("forward")||action.equals("backward")||action.equals("clear"))pushUndo();
         UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
-        if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&selectedIds.size()>1)value=String.join(",",selectedIds.stream().map(UUID::toString).toList());pending=true;waitTicks=0;message="Saving...";
+        if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&!selection().isEmpty())value=String.join(",",selection().stream().map(e->e.id().toString()).toList());pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
     }
     private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
@@ -143,12 +115,22 @@ public final class DisplayEditorScreen extends Screen {
         case 4->commit("forward",null,"",part.layoutRevision);case 5->commit("backward",null,"",part.layoutRevision);
         case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
-    private void duplicateSelected(){if(selectedElement()==null){message="Select an element first.";return;}copySelected();pasteSelected();}
-    private void copySelected(){var e=selectedElement();if(e!=null){clipboard=e;message="Element copied.";}}
+    private List<DisplayElements.Spec> selectionOnPage(){return snapshot().stream().filter(e->e.page()==part.displayPage).toList();}
+    private List<DisplayElements.Spec> selection(){return part.elements.stream().map(Part.Element::spec).filter(e->e.page()==part.displayPage&&selectedIds.contains(e.id())).toList();}
+    private void duplicateSelected(){if(selection().isEmpty()){message="Select elements first.";return;}copySelected();pasteSelected();}
+    private void copySelected(){var picks=selection();if(!picks.isEmpty()){clipboard=List.copyOf(picks);message=picks.size()+" element(s) copied.";}else message="Select elements first.";}
     private void pasteSelected(){
-        if(clipboard==null){message="Copy an element first.";return;}
-        var copy=DisplayElements.move(clipboard,4,4,false,snap,spaceW(),spaceH()).identity(UUID.randomUUID());
-        selectedIds.clear();selectedIds.add(copy.id());selected=copy.id();commit("add",copy,"",part.layoutRevision);
+        if(!editable||pending)return;
+        if(clipboard.isEmpty()){message="Copy elements first.";return;}
+        try{
+            var copies=EditorSelection.move(clipboard,4,4,spaceW(),spaceH()).stream().map(e->e.identity(UUID.randomUUID()).onPage(part.displayPage)).toList();
+            var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);
+            var result=LayoutTransactions.applyPaste(before,part.layoutRevision,copies,spaceW(),spaceH());
+            if(!result.accepted()){message=result.message();return;}
+            pushUndo();pending=true;waitTicks=0;message="Saving...";
+            selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=copies.getLast().id();
+            PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
+        }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
     @Override public void tick(){
@@ -170,25 +152,56 @@ public final class DisplayEditorScreen extends Screen {
         if(super.mouseClicked(x,y,button))return true;
         if(button!=0||pending)return super.mouseClicked(x,y,button);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
+        if(p.x()<0||p.y()<0||p.x()>=spaceW()||p.y()>=spaceH())return false;
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
         UUID hitId=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&e.bounds().contains(p.x(),p.y())){hitId=e.id();break;}}
-        if(hitId!=null){if(hasShiftDown())selectedIds.add(hitId);else{selectedIds.clear();selectedIds.add(hitId);}selected=hitId;}else if(!hasShiftDown()){selectedIds.clear();selected=null;}
-        var e=selectedElement();if(e!=null&&editable){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());}
+        if(hitId==null){
+            additiveBox=hasShiftDown();if(!additiveBox){selectedIds.clear();selected=null;}
+            boxStart=p;boxEnd=p;return true;
+        }
+        if(hasShiftDown()){
+            if(!selectedIds.remove(hitId))selectedIds.add(hitId);
+            selected=selectedIds.contains(hitId)?hitId:selectedIds.stream().findFirst().orElse(null);return true;
+        }
+        if(!selectedIds.contains(hitId)){selectedIds.clear();selectedIds.add(hitId);}selected=hitId;
+        var e=selectedElement();if(e!=null&&editable){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());dragSpecs=resizeCorner==EditorChrome.Corner.NONE?selection():List.of();}
         return true;
     }
     @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){
-        if(button==0&&start!=null&&dragStart!=null){point(x,y).ifPresent(p->{double sx=p.x()-dragStart.x(),sy=p.y()-dragStart.y();draft=resizeCorner==EditorChrome.Corner.NONE?DisplayElements.move(start,sx,sy,false,snap,spaceW(),spaceH()):EditorChrome.resize(start,resizeCorner,sx,sy,snap,spaceW(),spaceH());});return true;}return super.mouseDragged(x,y,button,dx,dy);
+        if(button==0&&boxStart!=null){point(x,y).ifPresent(p->boxEnd=p);return true;}
+        if(button==0&&start!=null&&dragStart!=null){point(x,y).ifPresent(p->{
+            double sx=p.x()-dragStart.x(),sy=p.y()-dragStart.y();
+            if(resizeCorner==EditorChrome.Corner.NONE){
+                int step=snap?4:1,tx=(int)Math.round(sx/step)*step,ty=(int)Math.round(sy/step)*step;
+                try{draftSpecs=EditorSelection.move(dragSpecs,tx,ty,spaceW(),spaceH());draft=draftSpecs.stream().filter(e->e.id().equals(start.id())).findFirst().orElse(start);}catch(IllegalArgumentException ex){message=ex.getMessage();draftSpecs=List.of();draft=start;}
+            }else draft=EditorChrome.resize(start,resizeCorner,sx,sy,snap,spaceW(),spaceH());
+        });return true;}return super.mouseDragged(x,y,button,dx,dy);
     }
     @Override public boolean mouseReleased(double x,double y,int button){
-        if(button==0&&start!=null){var result=draft;boolean changed=result!=null&&!result.equals(start);start=null;draft=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;if(changed)commit("update",result,"",dragRevision);return true;}return super.mouseReleased(x,y,button);
+        if(button==0&&boxStart!=null){
+            point(x,y).ifPresent(p->boxEnd=p);var box=EditorSelection.box(boxStart.x(),boxStart.y(),boxEnd.x(),boxEnd.y(),spaceW(),spaceH());
+            if(!additiveBox)selectedIds.clear();selectedIds.addAll(EditorSelection.inBox(snapshot(),part.displayPage,box));selected=selectedIds.stream().findFirst().orElse(null);boxStart=null;boxEnd=null;message=selectionCount()+" element(s) selected.";return true;
+        }
+        if(button==0&&start!=null){
+            var result=draft;var original=start;boolean changed=result!=null&&!result.equals(original);boolean move=resizeCorner==EditorChrome.Corner.NONE;var ids=dragSpecs.stream().map(DisplayElements.Spec::id).toList();long revision=dragRevision;
+            start=null;draft=null;dragStart=null;dragSpecs=List.of();draftSpecs=List.of();resizeCorner=EditorChrome.Corner.NONE;
+            if(changed&&move){
+                int dx=result.bounds().x()-original.bounds().x(),dy=result.bounds().y()-original.bounds().y();
+                var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);var check=LayoutTransactions.applyMove(before,revision,ids,dx,dy,spaceW(),spaceH());
+                if(!check.accepted()){message=check.message();return true;}
+                pushUndo();pending=true;waitTicks=0;message="Saving...";
+                PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,"move_selection",new UUID(0,0),dx+";"+dy+";"+String.join(",",ids.stream().map(UUID::toString).toList())));
+            }else if(changed)commit("update",result,"",revision);return true;
+        }return super.mouseReleased(x,y,button);
     }
     @Override public boolean keyPressed(int key,int scan,int mods){
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
         if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
         if(key==68&&hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
+        if(key==65&&hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
         if(key==65&&!hasControlDown()){arrangementScreen();return true;}
         if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}
         return super.keyPressed(key,scan,mods);
     }
-    @Override public void removed(){inverse=null;draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
+    @Override public void removed(){inverse=null;boxStart=null;boxEnd=null;dragSpecs=List.of();draftSpecs=List.of();draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
 }

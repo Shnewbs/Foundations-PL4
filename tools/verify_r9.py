@@ -25,7 +25,7 @@ assert 'disableDepthTest' not in canvas and 'renderGuiItemDecorations' not in ca
 assert 'renderBackground(GuiGraphics g,int x,int y,float partial){}' in editor
 assert 'DisplayPicking.inverse' in editor and 'RenderSystem.getProjectionMatrix()' in editor and 'RenderSystem.getModelViewMatrix()' in editor
 assert 'if(p.layoutRevision>=part.layoutRevision)' in editor and 'live.layoutRevision>=part.layoutRevision' in editor
-assert 'mouseReleased' in editor and 'commit("update",result,"",dragRevision)' in editor
+assert 'mouseReleased' in editor and 'commit("update",result,"",revision)' in editor
 assert 'dragRevision=part.layoutRevision' in editor and '300_000_000L' in editor
 assert 'new PLPackets.LayoutEdit' in editor and 'clickedIdentity' in editor and 'inspected.size()>=8' in editor
 assert 'packet.action.equals("replace")' in packet and 'ElementJson.decodeList(packet.value)' in packet and 'LayoutTransactions.applyReplace' in packet
@@ -35,7 +35,7 @@ assert 'setHint(' not in source('client/GuideSearchBox.java') and 'false' in sou
 assert '.summary()' in guide and 'Tooltip.create(Component.literal(chapter' not in guide
 assert 'getBoolean("reply")' in source('client/PLClient.java') and 't.putBoolean("reply",reply)' in packet
 assert 'R9GameTests.class'  in source('PLGameTests.java')
-tests=source('R9GameTests.java').count('@GameTest(');assert tests==25,tests
+tests=source('R9GameTests.java').count('@GameTest(');assert tests==28,tests
 for path in A.rglob('*.json'):json.loads(path.read_text())
 white=(A/'textures/gui/display_white.png').read_bytes();assert white[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II',white[16:24])==(1,1)
 b=json.loads((A/'guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '1.21.1' in b['edition']
