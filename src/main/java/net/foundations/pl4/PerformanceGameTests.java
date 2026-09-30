@@ -13,7 +13,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 /** Operation-count regressions and native correctness for the cable/tick performance pass. */
 @PrefixGameTestTemplate(false)
 public final class PerformanceGameTests {
-    private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-000000000018");
+    private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000018");
     private static HostEntity host(GameTestHelper h,BlockPos pos,Kind kind,Direction face){
         h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
         Part part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return host;
