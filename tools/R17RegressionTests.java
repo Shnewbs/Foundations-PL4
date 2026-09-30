@@ -1,0 +1,37 @@
+import net.foundations.pl4.core.*;
+
+/** Emitter-anchored hologram geometry checks without a Minecraft classpath. */
+public final class R17RegressionTests {
+    private static int count;
+    private static void ok(boolean value,String message){count++;if(!value)throw new AssertionError(message);}
+    public static void main(String[] args){
+        for(int mount=0;mount<6;mount++)for(int requested=2;requested<6;requested++)for(boolean advanced:new boolean[]{false,true}){
+            var geometry=HologramProjection.geometry(mount,requested,advanced);
+            var normal=DisplayFacing.facing(HologramProjection.view(mount,requested)).normal();
+            var centre=geometry.centre();
+            double along=(centre.x()-geometry.emitterAnchor().x())*normal.x()
+                +(centre.y()-geometry.emitterAnchor().y())*normal.y()
+                +(centre.z()-geometry.emitterAnchor().z())*normal.z();
+            ok(geometry.normal().equals(normal),"Projection normal follows configured view");
+            ok(Math.abs(along-HologramProjection.clearance(advanced))<1e-12,
+                "Projection clearance is measured from emitter hardware");
+            var anchor=geometry.emitterAnchor();
+            ok(anchor.x()>=0&&anchor.x()<=1&&anchor.y()>=0&&anchor.y()<=1&&anchor.z()>=0&&anchor.z()<=1,
+                "Emitter anchor remains on projector hardware");
+            for(int side:new int[]{-1,1}){
+                var eye=new HologramProjection.Point(centre.x()+normal.x()*side*2,
+                    centre.y()+normal.y()*side*2,centre.z()+normal.z()*side*2);
+                var projection=HologramProjection.forCamera(mount,requested,advanced,eye);
+                ok(projection.centre().equals(centre),"Camera side cannot move projection origin");
+                ok(projection.frame().right().cross(projection.frame().up()).equals(projection.frame().normal()),
+                    "Readable frame remains right handed");
+            }
+        }
+        for(int mount=0;mount<6;mount++){
+            var anchor=HologramProjection.geometry(mount,3,false).mountAnchor();
+            ok(anchor.x()>=0&&anchor.x()<=1&&anchor.y()>=0&&anchor.y()<=1&&anchor.z()>=0&&anchor.z()<=1,
+                "Mount anchor remains within host geometry");
+        }
+        System.out.println("PASS R17 emitter-anchored hologram rules: "+count+" assertions.");
+    }
+}

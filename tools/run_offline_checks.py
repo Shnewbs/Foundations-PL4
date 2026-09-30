@@ -11,7 +11,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='foundations-pl4-r5-checks-') as tmp:
         core=ROOT/'src/main/java/net/foundations/pl4/core'
         classes=[core/(n+'.java') for n in ['ConnectionRules','DisjointSets','HammerMotion','HammerGeometry','DisplayLayout','DisplayFacing','EnergyValues','ReflectiveEnergyAccess','MultipartTopology','DisplayPlacement','CanvasContinuity','HologramProjection','GuideLayout','GuideBook','DisplayElements','LayoutTransactions','DisplayPicking','MonitorPresentation','GuideNavigation','DynamicCanvasLayout','EditorChrome','PartItemDataRules','EditorPalette','TransferRules']]
-        run('javac','--release','21','-encoding','UTF-8','-d',tmp,*classes,ROOT/'src/main/java/net/foundations/pl4/Kind.java',ROOT/'tools/R7RegressionTests.java',ROOT/'tools/R8RegressionTests.java',ROOT/'tools/R9RegressionTests.java',ROOT/'tools/R10RegressionTests.java',ROOT/'tools/R11RegressionTests.java',ROOT/'tools/R12RegressionTests.java',ROOT/'tools/R13RegressionTests.java',ROOT/'tools/R14RegressionTests.java',ROOT/'tools/R15RegressionTests.java',ROOT/'tools/R16RegressionTests.java',ROOT/'tools/R5RegressionTests.java',ROOT/'tools/VerifyJavaSyntax.java',ROOT/'tools/R6RegressionTests.java')
+        run('javac','--release','21','-encoding','UTF-8','-d',tmp,*classes,ROOT/'src/main/java/net/foundations/pl4/Kind.java',ROOT/'tools/R7RegressionTests.java',ROOT/'tools/R8RegressionTests.java',ROOT/'tools/R9RegressionTests.java',ROOT/'tools/R10RegressionTests.java',ROOT/'tools/R11RegressionTests.java',ROOT/'tools/R12RegressionTests.java',ROOT/'tools/R13RegressionTests.java',ROOT/'tools/R14RegressionTests.java',ROOT/'tools/R17RegressionTests.java',ROOT/'tools/R16RegressionTests.java',ROOT/'tools/R5RegressionTests.java',ROOT/'tools/VerifyJavaSyntax.java',ROOT/'tools/R6RegressionTests.java')
         run('java','-cp',tmp,'R5RegressionTests')
         run('java','-cp',tmp,'R6RegressionTests')
         run('java','-cp',tmp,'R7RegressionTests')
@@ -22,7 +22,7 @@ def main():
         run('java','-cp',tmp,'R12RegressionTests')
         run('java','-cp',tmp,'R13RegressionTests')
         run('java','-cp',tmp,'R14RegressionTests')
-        run('java','-cp',tmp,'R15RegressionTests')
+        run('java','-cp',tmp,'R17RegressionTests')
         run('java','-cp',tmp,'R16RegressionTests')
         run('java','-cp',tmp,'VerifyJavaSyntax',ROOT)
     run(sys.executable,ROOT/'tools/verify_r5_assets.py')
@@ -40,7 +40,7 @@ def main():
     run(sys.executable,ROOT/'tools/verify_r12.py')
     run(sys.executable,ROOT/'tools/verify_r13.py')
     run(sys.executable,ROOT/'tools/verify_r14.py')
-    run(sys.executable,ROOT/'tools/verify_r15.py')
+    run(sys.executable,ROOT/'tools/verify_r17.py')
     run(sys.executable,ROOT/'tools/verify_r16.py')
     print('OFFLINE CHECKS PASSED. Native mod compilation, GameTests, graphical rendering and Windows updater execution remain separate checks.',flush=True)
 

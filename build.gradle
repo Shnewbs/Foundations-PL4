@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.147'
 }
-version = '0.0.1a.R16'
+version = '0.0.1a.R17'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.21.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
@@ -71,6 +71,6 @@ apply from: 'gradle/verify-r13-rules.gradle'
 
 apply from: 'gradle/verify-r14-rules.gradle'
 
-apply from: 'gradle/verify-r15-rules.gradle'
+apply from: 'gradle/verify-r17-rules.gradle'
 
 apply from: 'gradle/verify-r16-rules.gradle'

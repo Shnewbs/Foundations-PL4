@@ -104,7 +104,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
         }
         // Projected text extends outside the projector base; include both view faces in frustum bounds.
         for(Part p:host.parts.values())if(p.hologram()){
-            var centre=net.foundations.pl4.core.HologramProjection.centre(p.face.ordinal(),p.kind==Kind.ADVANCED_HOLOGRAM);
+            var centre=net.foundations.pl4.core.HologramProjection.centre(p.face.ordinal(),p.hologramView,p.kind==Kind.ADVANCED_HOLOGRAM);
             var origin=host.getBlockPos();
             bounds=bounds.minmax(new net.minecraft.world.phys.AABB(origin.getX()+centre.x()-.55,origin.getY()+centre.y()-.35,origin.getZ()+centre.z()-.55,
                 origin.getX()+centre.x()+.55,origin.getY()+centre.y()+.35,origin.getZ()+centre.z()+.55));

@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.1a.R16
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.1a.R17
 
 This is the same chapter text shipped in the game. Tutorial checkpoints are manual, not automated acceptance results.
 
@@ -154,7 +154,7 @@ For floor or ceiling mounts, Settings > View rotates the readable projection nor
 
 ### 3  /  GIVE IT SOMETHING OBVIOUS
 
-Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R15 projects the canvas farther clear of the projector and its cable hardware: normal holograms leave about 0.90 blocks from the mount surface; Advanced leaves about 1.20.
+Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R17 measures projection clearance from the emitter hardware itself: normal holograms leave about 0.90 blocks from the emitter bar; Advanced leaves about 1.20 from its selected projection panel.
 
 ### 4  /  WALK AROUND THE PLANE
 
@@ -162,7 +162,7 @@ Look from the front, rear and a shallow side angle. Text should stay readable ra
 
 ### SCOPE
 
-Holograms stay independent rather than joining into Large Display rectangles. R15 fixes practical projection clearance and orientation, but it does not claim the complete historical advanced/volumetric GSI system. If something still looks wrong, report normal vs Advanced, mounting face and View direction.
+Holograms stay independent rather than joining into Large Display rectangles. R17 fixes the projection origin and retains readable two-sided orientation, but it does not claim the complete historical advanced/volumetric GSI system. If something still looks wrong, report normal vs Advanced, mounting face and View direction.
 
 ## Hammer walkthrough
 
@@ -417,7 +417,7 @@ Readable projections instead of backwards flat-screen text.
 
 ### SEPARATE PROJECTOR AND TEXT
 
-A holographic display is a projector, not a monitor skin glued to the base. The hardware stays on its mounting surface while R15 moves the readable canvas well clear of that hardware: about 0.90 blocks from the mount surface for the normal projector and 1.20 for Advanced.
+A holographic display is a projector, not a monitor skin glued to the base. R17 moves the readable canvas from the physical emitter hardware: about 0.90 blocks from the normal projector's emitter bar and 1.20 from the selected Advanced projection panel.
 
 ### READ FROM EITHER SIDE
 
@@ -429,7 +429,7 @@ Floor and ceiling projectors start from the placing player's direction. Settings
 
 ### DATA AND LIMITS
 
-Use the same reader bindings and typed display elements as the other screens. Holograms do not join into Large Display rectangles. R15 improves practical spacing/orientation; full historical advanced hologram/GSI parity remains future work.
+Use the same reader bindings and typed display elements as the other screens. Holograms do not join into Large Display rectangles. R17 improves emitter-relative spacing/orientation; full historical advanced hologram/GSI parity remains future work.
 
 ## Remote displays
 

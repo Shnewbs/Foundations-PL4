@@ -1,12 +1,12 @@
-# Foundations PL4 0.0.1a.R16
+# Foundations PL4 0.0.1a.R17
 
-**SOURCE ONLY. No compiled R16 runtime mod JAR is included.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
+**SOURCE ONLY. No compiled R17 runtime mod JAR is included.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
 
-R16 hardens Transfer Nodes before the 0.0.1a freeze. Ordinary Nodes now participate as passive transfer endpoints: ADD / IMPORT Transfer Nodes can pull from normal Nodes on the same data network, while REMOVE / EXPORT Transfer Nodes can push into them. Existing REMOVE -> ADD Transfer Node pairs still work and are preferred over passive endpoints on equal priority.
+R17 is a narrow final-freeze candidate. It keeps R16's hardened Transfer Node behavior and anchors hologram canvases to their actual emitter geometry: the normal projector's bar, or the selected side panel on the Advanced projector.
 
-ADD / REMOVE remains explicit-peer only in this alpha until PL2's directional channel/filter editor is restored. This prevents a bidirectional node from blindly pumping the passive network back into itself. Transfers are simulated before extraction; partial real insertion is retained in persistent driver escrow. Resources received in one cycle are fenced from immediate re-extraction during that cycle. Items, compatible fluids and FE are transported; native EU and Mekanism Joules remain read-only telemetry.
+R16 ordinary Nodes remain passive transfer endpoints. ADD / REMOVE remains explicit-peer only in this alpha until PL2's directional channel/filter editor is restored. Simulated transfers, persistent driver escrow and the same-cycle receive fence are retained. Items, compatible fluids and FE are transported; native EU and Mekanism Joules remain read-only telemetry.
 
-The R15 hologram projection and guide-tone work, R14 editor UX and block-preview hotfix, R13 stackability/editor polish, and all earlier wiring/display/hammer work remain. Save schema 2, 13 multipart slots and payload protocol 4 are unchanged.
+Save schema 2, 13 multipart slots, payload protocol 4, recipes and transfer rules are unchanged from R16.
 
 ## Build
 
@@ -17,7 +17,7 @@ gradlew.bat --no-daemon --console=plain clean build
 Expected artifact after a successful Java 21 build:
 
 ```text
-build/libs/FoundationsPL4-1.21.1-0.0.1a.R16.jar
+build/libs/FoundationsPL4-1.21.1-0.0.1a.R17.jar
 ```
 
 Run native GameTests with:
@@ -26,4 +26,4 @@ Run native GameTests with:
 gradlew.bat --no-daemon --console=plain runGameTestServer
 ```
 
-R16 registers 114 GameTests total (8 new transfer endpoint tests). Use a copied world until native build, all GameTests and the transfer acceptance checklist pass.
+R17 retains R16's 114 registered GameTests. Use a copied world until native build, all GameTests, hologram wall/floor/ceiling visuals and the R16 transfer acceptance checklist pass.
