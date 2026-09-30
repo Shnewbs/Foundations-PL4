@@ -40,7 +40,7 @@ public final class HologramProjection {
                 modelPoint(mount,yaw,8,2,5),modelPoint(mount,yaw,8,2,11)};
             emitterAnchor=panels[0];
             for(int i=1;i<panels.length;i++)
-                if(dot(offset(panels[i]),normal)<dot(offset(emitterAnchor),normal))emitterAnchor=panels[i];
+                if(dot(offset(panels[i]),normal)>dot(offset(emitterAnchor),normal))emitterAnchor=panels[i];
         } else {
             emitterAnchor=modelPoint(mount,yaw,8,0,10.5);
         }
