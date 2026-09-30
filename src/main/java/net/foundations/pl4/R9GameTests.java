@@ -89,9 +89,14 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void elementJsonRejectsUnknownTypeAndFractionalGeometry(GameTestHelper h){
-        var s=spec(DisplayElements.Type.ITEM);h.assertTrue(ElementJson.decode(ElementJson.encode(s)).equals(s),"JSON property codec must round trip");
+        var s=spec(DisplayElements.Type.TEXT).textStyle(DisplayElements.TextAlign.CENTER,true,1.5F);
+        h.assertTrue(ElementJson.decode(ElementJson.encode(s)).equals(s),"JSON property codec must round trip text style");
+        var saved=new Part.Element(s).save();var loaded=Part.Element.load(saved);
+        h.assertTrue(loaded.spec().textAlign()==DisplayElements.TextAlign.CENTER&&loaded.spec().wrap()&&loaded.spec().textScale()==1.5F,"Text style persists with element data");
+        var legacy=ElementJson.decode(ElementJson.encode(s).replace(",\"textAlign\":\"CENTER\",\"wrap\":true,\"textScale\":1.5",""));
+        h.assertTrue(legacy.textAlign()==DisplayElements.TextAlign.LEFT&&!legacy.wrap()&&legacy.textScale()==1F,"Legacy JSON defaults text to left/no-wrap/1x scale");
         String valid=ElementJson.encode(s);boolean badType=false,badNumber=false;
-        try{ElementJson.decode(valid.replace("\"ITEM\"","\"CLASSLOADER\""));}catch(RuntimeException expected){badType=true;}
+        try{ElementJson.decode(valid.replace("\""+s.type().name()+"\"","\"CLASSLOADER\""));}catch(RuntimeException expected){badType=true;}
         var parsed=com.google.gson.JsonParser.parseString(valid).getAsJsonObject();parsed.addProperty("x",1.5);try{ElementJson.decode(parsed.toString());}catch(RuntimeException expected){badNumber=true;}
         h.assertTrue(badType&&badNumber,"Whitelist types and exact integer geometry are required");h.succeed();
     }

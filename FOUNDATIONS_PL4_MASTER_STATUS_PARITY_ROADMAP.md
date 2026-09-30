@@ -1121,7 +1121,7 @@ This should be the first major next-alpha work because displays are the feature 
 
 ### Element styling
 
-- text scale; **implemented in the R1 continuation** (50%–400% bounded data model; editor cycles 50%–200%);
+- text scale; **implemented in the R1 continuation** (25%–400% bounded data model; separate scale and alignment controls);
 - text alignment; **implemented in the R1 continuation** (left, centre, right);
 - width/height alignment;
 - fill/background styles;
@@ -1136,7 +1136,7 @@ This should be the first major next-alpha work because displays are the feature 
 
 Use PL2/PL3 research for:
 
-- wrapped text;
+- wrapped text; **reconciled from the older R1 branch, with persisted wrap controls and element-height clipping**;
 - titles;
 - line breaks;
 - style spans;

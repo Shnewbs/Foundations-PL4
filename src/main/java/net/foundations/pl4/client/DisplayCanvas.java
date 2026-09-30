@@ -2,10 +2,13 @@ package net.foundations.pl4.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
@@ -29,11 +32,24 @@ final class DisplayCanvas {
     double depth(int layer){return (DisplayElements.worldDepth(layer)+(layer>0&&layer<5?order*.004/(16.0*32):0))/scale;}
     void rect(double x,double y,double w,double h,int color,int layer){if(w<=0||h<=0)return;quad(WHITE,x,y,w,h,0,0,1,1,color,depth(layer));}
     void outline(DisplayElements.Rect r,int color,int layer){rect(r.x(),r.y(),r.width(),.6,color,layer);rect(r.x(),r.bottom()-.6,r.width(),.6,color,layer);rect(r.x(),r.y(),.6,r.height(),color,layer);rect(r.right()-.6,r.y(),.6,r.height(),color,layer);}
-    void text(String value,int x,int y,int width,int color,boolean right,int layer){text(value,x,y,width,color,right,layer,1f,net.foundations.pl4.core.DisplayElements.TextAlign.LEFT);}
-    void text(String value,int x,int y,int width,int color,boolean right,int layer,float scale,net.foundations.pl4.core.DisplayElements.TextAlign align){
-        if(width<=0)return;Font font=mc.font;float safeScale=Float.isFinite(scale)?Math.clamp(scale,.5f,4f):1f;int textWidth=Math.max(1,(int)(width/safeScale));String text=font.plainSubstrByWidth(value,textWidth);int renderedWidth=(int)(font.width(text)*safeScale);
-        int tx=switch(align){case RIGHT->x+width-renderedWidth;case CENTER->x+(width-renderedWidth)/2;default->right?x+width-renderedWidth:x;};
-        pose.pushPose();try{pose.translate(0,0,depth(layer));pose.translate(tx,y,0);pose.scale(safeScale,safeScale,1);font.drawInBatch(text,0,0,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}finally{pose.popPose();}
+    void text(String value,int x,int y,int width,int color,boolean right,int layer){
+        text(value,x,y,width,12,color,right?DisplayElements.TextAlign.RIGHT:DisplayElements.TextAlign.LEFT,false,1F,layer);
+    }
+    void text(String value,int x,int y,int width,int height,int color,DisplayElements.TextAlign alignment,boolean wrap,float textScale,int layer){
+        if(width<=0||height<=0)return;Font font=mc.font;pose.pushPose();
+        try{
+            pose.translate(x,y,depth(layer));pose.scale(textScale,textScale,1);
+            int scaledWidth=Math.max(1,Math.round(width/textScale)),scaledHeight=Math.max(1,Math.round(height/textScale));
+            int lineY=0;int maxY=scaledHeight;
+            List<FormattedCharSequence> lines=wrap?font.split(Component.literal(value),scaledWidth):
+                List.of(FormattedCharSequence.forward(font.plainSubstrByWidth(value,scaledWidth),net.minecraft.network.chat.Style.EMPTY));
+            for(var line:lines){
+                if(lineY+font.lineHeight>maxY)break;
+                int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->0;case CENTER->(scaledWidth-lineWidth)/2;case RIGHT->scaledWidth-lineWidth;};
+                font.drawInBatch(line,tx,lineY,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);
+                lineY+=font.lineHeight;
+            }
+        }finally{pose.popPose();}
     }
     void item(Part.Row sample,DisplayElements.Rect r,boolean block){
         if(sample.item().isEmpty())return;pose.pushPose();
