@@ -6,9 +6,9 @@ R17 is a narrow continuation of the R16 source candidate, following the roadmap'
 
 - Normal projection starts at the physical emitter bar.
 - Advanced floor/ceiling projection starts at the top emitter; wall projection starts at the selected physical projection panel.
-- Projection follows the mount axis: above floor emitters, below ceiling emitters, and outward from wall emitters. Readable View is independent of this axis.
+- Projection follows the mount axis: above floor and wall emitters, and below ceiling emitters. Readable View is independent of this axis.
 - The mount anchor, emitter anchor, projection axis and projection distance are modeled separately.
-- Normal and Advanced clearances remain 0.90 and 1.20 blocks, measured from their emitter geometry.
+- Both canvases have a .25 block centre offset from their emitter edge: .21 block half-height plus a .04 block gap. This places the panel immediately above the bar instead of floating far away.
 - Configured view, readable front/back frames and camera-side origin stability are retained.
 
 ## Compatibility and scope
