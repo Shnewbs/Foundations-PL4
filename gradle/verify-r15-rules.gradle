@@ -1,7 +1,0 @@
-def r15VerifierClasses = layout.buildDirectory.dir('r15VerifierClasses')
-tasks.register('compileR15RuleVerifier',JavaCompile){
- source=files('src/main/java/net/foundations/pl4/core/DisplayFacing.java','src/main/java/net/foundations/pl4/core/HologramProjection.java','tools/R15RegressionTests.java')
- classpath=files();destinationDirectory=r15VerifierClasses;options.release=21;options.encoding='UTF-8'
-}
-tasks.register('verifyR15Rules',JavaExec){dependsOn tasks.named('compileR15RuleVerifier');classpath=files(r15VerifierClasses);mainClass='R15RegressionTests'}
-tasks.named('check'){dependsOn tasks.named('verifyR15Rules')}

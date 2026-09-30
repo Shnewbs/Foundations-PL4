@@ -49,7 +49,7 @@ public final class R8RegressionTests {
     }
     private static void holograms(){
         for(int mount=0;mount<6;mount++)for(int requested=2;requested<6;requested++)for(boolean advanced:new boolean[]{false,true}){
-            var centre=HologramProjection.centre(mount,advanced);var configured=DisplayFacing.facing(HologramProjection.view(mount,requested));
+            var centre=HologramProjection.centre(mount,requested,advanced);var configured=DisplayFacing.facing(HologramProjection.view(mount,requested));
             for(int side:new int[]{-1,1}){
                 var camera=new HologramProjection.Point(centre.x()+configured.normal().x()*side*3,centre.y()+configured.normal().y()*side*3,centre.z()+configured.normal().z()*side*3);
                 var projection=HologramProjection.forCamera(mount,requested,advanced,camera);var frame=projection.frame();
@@ -58,8 +58,11 @@ public final class R8RegressionTests {
                 double facing=(camera.x()-centre.x())*frame.normal().x()+(camera.y()-centre.y())*frame.normal().y()+(camera.z()-centre.z())*frame.normal().z();
                 ok(facing>0,"Only readable camera side submitted");ok(projection.centre().equals(centre),"Back view does not move the projection");
             }
-            var m=DisplayFacing.facing(mount).normal();double delta=(centre.x()-(.5+m.x()*.4375))*m.x()+(centre.y()-(.5+m.y()*.4375))*m.y()+(centre.z()-(.5+m.z()*.4375))*m.z();
-            ok(delta<0,"Project away from mounted surface");
+            var geometry=HologramProjection.geometry(mount,requested,advanced);
+            double delta=(centre.x()-geometry.emitterAnchor().x())*configured.normal().x()
+                +(centre.y()-geometry.emitterAnchor().y())*configured.normal().y()
+                +(centre.z()-geometry.emitterAnchor().z())*configured.normal().z();
+            ok(delta>0,"Project away from the physical emitter");
             if(mount<2){int v=requested;Set<Integer> seen=new HashSet<>();for(int i=0;i<4;i++){seen.add(v);v=HologramProjection.nextView(mount,v);}ok(v==requested&&seen.size()==4,"Four-way view control");}
         }
     }

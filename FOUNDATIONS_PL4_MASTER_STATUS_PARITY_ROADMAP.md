@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current audited source baseline:** `0.0.1a.R16` Transfer Node Hardening  
+**Current source candidate:** `0.0.1a.R17` Transfer Node Hardening + Emitter Anchor
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -33,13 +33,13 @@ This file should be updated whenever a revision closes a roadmap item. **A featu
 
 ## 2.1 Current Foundations PL4 source
 
-Audited package:
+Historical audited R16 package:
 
 ```text
 FoundationsPL4-0.0.1a.R16-TRANSFER-HARDENING-SOURCE.zip
 ```
 
-Important current source paths:
+Current R17 source retains these paths:
 
 ```text
 src/main/java/net/foundations/pl4/
@@ -50,7 +50,7 @@ src/main/resources/data/foundations_pl4/
 docs/
 ```
 
-Current source size at R16:
+Historical R16 source size:
 
 | Item | Count |
 |---|---:|
@@ -498,6 +498,14 @@ Initial port baseline: content registration, basic host/network/data concepts, r
 - persistent escrow retained;
 - ADD/REMOVE is deliberately explicit-peer-only until fuller PL2 channel/filter semantics return.
 
+## R17 — final-freeze emitter anchor
+
+- normal hologram projection begins at the model's physical emitter bar;
+- Advanced projection begins at the selected physical projection panel;
+- projection clearance is measured along the configured view normal from that emitter anchor;
+- R16 transfer behavior, save schema, multipart slots, protocol and recipes remain unchanged;
+- native build, all 114 GameTests and real in-game transfer/visual acceptance remain required.
+
 ---
 
 # 7. Current user-reported in-game acceptance evidence
@@ -523,8 +531,8 @@ The following has been reported working in actual gameplay during the current al
 - R16 passive normal-Node Transfer endpoint behavior has not yet been reported accepted in-game.
 - Fluid passive-source/passive-destination transfer still needs real handler acceptance.
 - FE passive-source/passive-destination transfer still needs real machine acceptance after R16.
-- Holographic display placement is still visually questionable: the projection should visually originate from/above the emitter bar, but the current R15/R16 calculation is based on the multipart mounting surface rather than an explicit emitter-bar anchor.
-- Full 114 GameTest run for exact R16 remains required.
+- R17 source now anchors projection geometry at the normal emitter bar / Advanced projection panel; in-game wall/floor/ceiling visual acceptance remains outstanding.
+- Full 114 GameTest run for the R17 candidate remains required.
 
 ---
 
@@ -541,7 +549,7 @@ core/HologramProjection.java
 client/HostRenderer.java
 ```
 
-Current projection center logic is based on:
+R15/R16 projection center logic was based on:
 
 ```text
 MOUNT_SURFACE_OFFSET
@@ -549,9 +557,9 @@ NORMAL_PROJECTION_CLEARANCE
 ADVANCED_PROJECTION_CLEARANCE
 ```
 
-The current `centre()` calculation moves from the multipart mounting surface. It does **not** model the actual physical emitter bar as the projection origin.
+The R17 `geometry()` contract now keeps the mount anchor, emitter anchor, projection normal and distance separate. Normal holograms use the center of the physical emitter bar; Advanced holograms select the physical projection panel facing opposite the configured view.
 
-This matches the remaining visual complaint: the hologram is separated from the center body, but it still does not clearly appear to originate above/from the bar.
+Offline geometry checks cover all six mount faces, four requested view directions, both projector variants and front/back camera sides. Native rendering still requires the acceptance matrix below.
 
 ### PL2 source to revisit
 
@@ -684,7 +692,7 @@ final parity ledger
 updater from previous release
 ```
 
-If the hologram fix requires another revision, use a narrow **R17 final-freeze revision** rather than quietly changing R16 after acceptance.
+R17 is the narrow final-freeze revision for the hologram anchor; do not add new feature work before the freeze gate passes.
 
 ---
 
@@ -1094,7 +1102,7 @@ Do not blindly port old APIs; map each historical integration to a current 1.21.
 
 ### Remaining work
 
-1. Fix hologram emitter-bar anchor.
+1. R17 source corrects the emitter-relative hologram anchor; complete the in-game visual matrix.
 2. Native build exact freeze candidate.
 3. Run all 114 GameTests.
 4. Complete R16 item/fluid/FE acceptance.
@@ -1867,6 +1875,7 @@ Use the existing Foundations revision policy:
 0.0.1a.R2
 ...
 0.0.1a.R16
+0.0.1a.R17 — narrow final-freeze emitter anchor
 ```
 
 Keep the same base alpha while finishing that alpha’s agreed scope.
@@ -1938,7 +1947,8 @@ The exact number of revisions may change, but the dependency order should stay c
 
 ## P0 — before freezing `0.0.1a`
 
-- [ ] Hologram emitter-bar anchor corrected.
+- [x] R17 source anchors normal holograms at the emitter bar and Advanced holograms at the selected projection panel.
+- [ ] R17 normal/Advanced holograms visually accepted on wall, floor and ceiling mounts.
 - [ ] Exact freeze source builds under Java 21.
 - [ ] 114/114 GameTests pass.
 - [ ] R16 item passive-endpoint transfers accepted in-game.
@@ -2024,7 +2034,7 @@ The next mistake to avoid is broadening scope before the foundation is frozen.
 
 Recommended order from here:
 
-1. **Finish the hologram anchor.**
+1. **Visually accept the R17 hologram anchor.**
 2. **Native-test R16 transfers and all 114 GameTests.**
 3. **Freeze `0.0.1a`.**
 4. **Use the frozen alpha as the migration baseline.**
