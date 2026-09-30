@@ -21,7 +21,7 @@ public final class NetworkEngine {
     private static List<Group> cachedGroups=List.of();
     private static long topologyBuilds;
     private static int cachedMaxNetwork;
-    private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers) {}
+    private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
     public record Ref(HostEntity host,Part part) {
         public ServerLevel level(){return (ServerLevel)host.getLevel();}
         public Part.Link adjacent(){return new Part.Link(level().dimension().location().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
@@ -31,7 +31,7 @@ public final class NetworkEngine {
     public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
     public static void stopped(ServerStoppedEvent e){
-        EnergyReader.clear();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;topologyBuilds=0;
+        EnergyReader.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;topologyBuilds=0;
     }
     public static ServerLevel level(MinecraftServer server,Part.Link link){
         ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));
@@ -99,7 +99,7 @@ public final class NetworkEngine {
             }
             List<Ref> groupReaders=ordered.stream().filter(r->r.part.kind.reader()).toList();
             complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.getFirst().part.kind.redstone(),
-                List.copyOf(uniqueTargets),groupReaders));
+                List.copyOf(uniqueTargets),groupReaders,TransferEngine.prepare(ordered)));
         }
         // A visual reader export adds telemetry visibility to the destination cable bus,
         // NEVER an edge to its machine/transfer network. Wireless unions are already resolved.
@@ -137,7 +137,7 @@ public final class NetworkEngine {
             if(group.hostCount>PLConfig.MAX_NETWORK.get()) {
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Network exceeds configured host limit";setSignal(r,0);}continue;
             }
-            try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers); }
+            try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers,group.transfers); }
             catch(RuntimeException ex) {
                 LoggerFactory.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.getFirst().host.getBlockPos(),ex);
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Provider error; check server log";setSignal(r,0);}
@@ -146,11 +146,12 @@ public final class NetworkEngine {
         DisplayNetworks.sample();
         cachedHosts.forEach(HostEntity::syncIfChanged);
     }
-    private static void process(MinecraftServer server,List<Ref> refs,int hosts,boolean redstone,List<Part.Link> targets,List<Ref> readers){
+    private static void process(MinecraftServer server,List<Ref> refs,int hosts,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers){
         if(redstone){
             int signal=0;
             for(Ref r:refs)if(r.part.kind==Kind.REDSTONE_NODE||r.part.kind==Kind.REDSTONE_EMITTER)signal=Math.max(signal,r.level().getBestNeighborSignal(r.host.getBlockPos().relative(r.part.face)));
-            for(Ref r:refs){r.part.rows.clear();r.part.rows.add(new Part.Row("signal","Redstone",signal,15,""));r.part.status="Connected: "+hosts+" hosts";if(r.part.kind==Kind.REDSTONE_RECEIVER)setSignal(r,signal);else if(r.part.kind==Kind.REDSTONE_CABLE)r.part.signal=signal;}
+            String status="Connected: "+hosts+" hosts";
+            for(Ref r:refs){r.part.rows.clear();r.part.rows.add(new Part.Row("signal","Redstone",signal,15,""));r.part.status=status;if(r.part.kind==Kind.REDSTONE_RECEIVER)setSignal(r,signal);else if(r.part.kind==Kind.REDSTONE_CABLE)r.part.signal=signal;}
             return;
         }
         for(Ref r:readers){
@@ -160,9 +161,10 @@ public final class NetworkEngine {
             r.part.rows.addAll(DataSampler.sample(server,r,selectedTargets,hosts));
             if(r.part.kind!=Kind.ENERGY_READER)r.part.status=targets.isEmpty()?"No node connections":"Connected: "+targets.size()+" targets / "+hosts+" hosts";
         }
+        String connectionStatus="Connected: "+hosts+" hosts / "+refs.size()+" parts";
         for(Ref r:refs){
             Part p=r.part;
-            if(p.kind.cable()||p.kind==Kind.NODE||p.kind==Kind.ARRAY)p.status="Connected: "+hosts+" hosts / "+refs.size()+" parts";
+            if(p.kind.cable()||p.kind==Kind.NODE||p.kind==Kind.ARRAY)p.status=connectionStatus;
             if(p.kind==Kind.ENTITY_NODE&&p.links.isEmpty()){
                 int count=r.level().getEntities(null,new net.minecraft.world.phys.AABB(r.host.getBlockPos()).inflate(PLConfig.ENTITY_RANGE.get())).size();
                 p.rows.clear();p.rows.add(new Part.Row("entities","Nearby entities",count,0,""));
@@ -183,7 +185,7 @@ public final class NetworkEngine {
             }
             if(p.kind==Kind.NETWORK_READER)p.status="Network: "+hosts+" hosts / "+refs.size()+" components";
         }
-        if(PLConfig.TRANSFERS.get())TransferEngine.run(server,refs);
+        if(PLConfig.TRANSFERS.get())TransferEngine.run(server,transfers);
     }
     public static boolean compare(double a,double b,String op){return switch(op){case ">"->a>b;case "<"->a<b;case "<="->a<=b;case "="->Double.compare(a,b)==0;case "!="->Double.compare(a,b)!=0;default->a>=b;};}
     private static void setSignal(Ref r,int signal){if(r.part.signal!=signal){r.part.signal=signal;r.host.setChanged();r.level().updateNeighborsAt(r.host.getBlockPos(),r.host.getBlockState().getBlock());}}
