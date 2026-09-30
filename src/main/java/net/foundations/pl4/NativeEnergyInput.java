@@ -36,7 +36,7 @@ final class NativeEnergyInput {
         }
     }
     private static boolean eligible(HostEntity host,Part p,Direction side){
-        if(host.getLevel()==null||host.getLevel().isClientSide||host.isRemoved()||host.parts.get(side.ordinal())!=p)return false;
+        if(host.getLevel()==null||host.getLevel().isClientSide()||host.isRemoved()||host.parts.get(side.ordinal())!=p)return false;
         if(!p.energy||!TransferRules.drivesRemove(p.transferMode)||!p.energyInput.equals("EU")||!EnergyPorts.enabled("EU")||!EnergyPorts.enabled(p.energyOutput))return false;
         if(!p.energyOutput.equals("EU")&&(!p.energyConvert||!PLConfig.ENERGY_CONVERSION.get()))return false;
         var rates=EnergyPorts.rates();

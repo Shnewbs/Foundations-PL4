@@ -28,7 +28,7 @@ public final class NetworkEngine {
     }
     public static void add(HostEntity h){if(LOADED.add(h))dirty=true;}
     public static void remove(HostEntity h){if(LOADED.remove(h))dirty=true;}
-    public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
+    public static void invalidate(Level l){if(!l.isClientSide())dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
     public static void stopped(ServerStoppedEvent e){
         EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;

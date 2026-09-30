@@ -84,7 +84,7 @@ public final class PLPackets {
         var target=DisplayNetworks.controller(host,p);
         CompoundTag t=target.part().save(host.getLevel().registryAccess(),true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
-        t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(host.getBlockPos().getCenter())<=64);
+        t.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(host.getBlockPos().getCenter())<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
     private static void edit(ServerPlayer player,Edit packet){
@@ -94,7 +94,7 @@ public final class PLPackets {
         if(packet.field.equals("preview_reader")){
             long tick=player.serverLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
             if(!p.kind.display()||packet.value.length()>64)return;var target=DisplayNetworks.controller(h,p);
-            CompoundTag tag=target.part().save(h.getLevel().registryAccess(),true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
+            CompoundTag tag=target.part().save(h.getLevel().registryAccess(),true);tag.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
             var rows=new net.minecraft.nbt.ListTag();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;
         }
         if(packet.field.equals("refresh")){reply(player,h,p);return;}

@@ -2,6 +2,8 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
+import net.minecraft.world.level.storage.*;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.nbt.*;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
@@ -52,9 +54,9 @@ public final class HostEntity extends BlockEntity {
         return cachedOutline;
     }
     public HostEntity(BlockPos p,BlockState s){super(FoundationsPL4.HOST_ENTITY.get(),p,s);}
-    @Override public void onLoad(){super.onLoad();if(level!=null){if(!level.isClientSide)NetworkEngine.add(this);else CableGeometry.refresh(this);}}
-    @Override public void setRemoved(){if(level!=null&&!level.isClientSide)NetworkEngine.remove(this);super.setRemoved();if(level!=null&&level.isClientSide)CableGeometry.refresh(this);}
-    public boolean canEdit(Player p){return p.hasPermissions(2)||parts.values().stream().allMatch(a->a.owner==null||a.owner.equals(p.getUUID()));}
+    @Override public void onLoad(){super.onLoad();if(level!=null){if(!level.isClientSide())NetworkEngine.add(this);else CableGeometry.refresh(this);}}
+    @Override public void setRemoved(){if(level!=null&&!level.isClientSide())NetworkEngine.remove(this);super.setRemoved();if(level!=null&&level.isClientSide())CableGeometry.refresh(this);}
+    public boolean canEdit(Player p){return p.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)||parts.values().stream().allMatch(a->a.owner==null||a.owner.equals(p.getUUID()));}
     public Part hit(BlockHitResult h){
         Vec3 local=h.getLocation().subtract(Vec3.atLowerCornerOf(worldPosition));
         // A front hit belongs to the thin display, never its covered reader; use real paired geometry.
@@ -74,13 +76,13 @@ public final class HostEntity extends BlockEntity {
     public void changed(){
         cachedOutline=null;lastCableSync=null;setChanged();
         if(level!=null){
-            if(!level.isClientSide)NetworkEngine.add(this);
+            if(!level.isClientSide())NetworkEngine.add(this);
             NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
             level.updateNeighborsAt(worldPosition,getBlockState().getBlock());
         }
     }
     public void syncIfChanged(){
-        if(level==null||level.isClientSide)return;
+        if(level==null||level.isClientSide())return;
         // Standalone cables have only status/signal/rows changing during sampling.
         // Persistent edits, geometry changes and reloads explicitly invalidate this shortcut.
         Part cable=parts.size()==1?parts.get(6):null;
@@ -95,21 +97,24 @@ public final class HostEntity extends BlockEntity {
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
-    @Override protected void saveAdditional(CompoundTag t,HolderLookup.Provider r){super.saveAdditional(t,r);write(t,r,false);}
+    @Override protected void saveAdditional(ValueOutput output){super.saveAdditional(output);var tag=new CompoundTag();write(tag,persistenceLookup(),false);output.store(tag);}
+    private HolderLookup.Provider persistenceLookup(){return level!=null?level.registryAccess():HolderLookup.Provider.create(java.util.stream.Stream.of(net.minecraft.core.registries.BuiltInRegistries.ITEM,net.minecraft.core.registries.BuiltInRegistries.FLUID));}
+    @Override protected void loadAdditional(ValueInput input){super.loadAdditional(input);loadAdditional(input.read(MapCodec.assumeMapUnsafe(CompoundTag.CODEC)).orElseGet(CompoundTag::new),input.lookup());}
     private void write(CompoundTag t,HolderLookup.Provider r,boolean sync){
         ListTag list=new ListTag();parts.values().forEach(p->list.add(p.save(r,sync)));t.put("parts",list);t.putInt("schema",2);
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
     }
-    @Override protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){
-        super.loadAdditional(t,r);cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
-        int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=Math.clamp(arms[a],0,3);
-        externalLeads=t.getInt("externalLeads")&8191;parts.clear();ListTag list=t.getList("parts",Tag.TAG_COMPOUND);
+    protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){
+        cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
+        int[] arms=t.getIntArray("cableConnections").orElse(new int[0]);if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=Math.clamp(arms[a],0,3);
+        externalLeads=t.getInt("externalLeads").orElse(0)&8191;parts.clear();ListTag list=t.getList("parts").orElseGet(ListTag::new);
         // R6 stored kind+face, not a persisted slot key. Reindex displays without changing identity/layout.
         for(int i=0;i<Math.min(list.size(),net.foundations.pl4.core.MultipartTopology.SLOT_COUNT);i++){
-            Part p=Part.load(list.getCompound(i),r);if(p!=null)parts.put(p.slot(),p);
+            Part p=Part.load(list.getCompound(i).orElseGet(CompoundTag::new),r);if(p!=null)parts.put(p.slot(),p);
         }
-        if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
+        if(level!=null){if(!level.isClientSide())NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
+    public void loadWithComponents(CompoundTag tag,HolderLookup.Provider registry){loadWithComponents(TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING,registry,tag));}
     @Override public CompoundTag getUpdateTag(HolderLookup.Provider r){CompoundTag t=new CompoundTag();write(t,r,true);return t;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
 }

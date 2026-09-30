@@ -6,10 +6,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.*;
+import net.foundations.pl4.compat.TransferAdapters.*;
 import net.neoforged.neoforge.fluids.*;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+
+
 
 /**
  * Server-authoritative resource movement over one data-network component.
@@ -242,8 +242,8 @@ public final class TransferEngine {
         p.status="Transfer "+mode+": "+count+" network endpoint(s)";
     }
 
-    private static IItemHandler itemHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?NetworkEngine.level(s,l).getCapability(Capabilities.ItemHandler.BLOCK,l.pos(),l.side()):null;}
-    private static IFluidHandler fluidHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?NetworkEngine.level(s,l).getCapability(Capabilities.FluidHandler.BLOCK,l.pos(),l.side()):null;}
-    private static IEnergyStorage energyHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?NetworkEngine.level(s,l).getCapability(Capabilities.EnergyStorage.BLOCK,l.pos(),l.side()):null;}
+    private static IItemHandler itemHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?net.foundations.pl4.compat.TransferAdapters.items(NetworkEngine.level(s,l),l.pos(),l.side()):null;}
+    private static IFluidHandler fluidHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?net.foundations.pl4.compat.TransferAdapters.fluids(NetworkEngine.level(s,l),l.pos(),l.side()):null;}
+    private static IEnergyStorage energyHandler(MinecraftServer s,NetworkEngine.Ref r){Part.Link l=r.adjacent();return NetworkEngine.loaded(s,l)?net.foundations.pl4.compat.TransferAdapters.energy(NetworkEngine.level(s,l),l.pos(),l.side()):null;}
     private TransferEngine(){}
 }

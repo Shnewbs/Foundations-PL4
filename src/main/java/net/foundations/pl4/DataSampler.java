@@ -58,14 +58,14 @@ public final class DataSampler {
             if(link.entity()!=null){Entity entity=l.getEntity(link.entity());if(entity!=null&&p.kind==Kind.INFO_READER)entity(rows,entity);continue;}
             if(!l.hasChunkAt(link.pos()))continue;available++;
             if(p.kind==Kind.INVENTORY_READER){
-                var handler=l.getCapability(Capabilities.ItemHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
+                var handler=net.foundations.pl4.compat.TransferAdapters.items(l,link.pos(),link.side());if(handler==null)continue;
                 for(int slot=0;slot<Math.min(handler.getSlots(),65536);slot++){
                     ItemStack stack=handler.getStackInSlot(slot);capacity+=handler.getSlotLimit(slot);total+=stack.getCount();
                     if(stack.isEmpty()||!matches(stack,p)||p.mode.equals("SLOT")&&slot!=p.index)continue;
                     pictures.item(stack);
                 }
             }else if(p.kind==Kind.FLUID_READER){
-                var handler=l.getCapability(Capabilities.FluidHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
+                var handler=net.foundations.pl4.compat.TransferAdapters.fluids(l,link.pos(),link.side());if(handler==null)continue;
                 for(int tank=0;tank<Math.min(handler.getTanks(),65536);tank++){
                     FluidStack stack=handler.getFluidInTank(tank);capacity+=handler.getTankCapacity(tank);total+=stack.getAmount();
                     if(stack.isEmpty()||!matches(stack,p))continue;

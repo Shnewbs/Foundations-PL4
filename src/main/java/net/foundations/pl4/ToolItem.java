@@ -20,7 +20,7 @@ public final class ToolItem extends Item {
     public enum Mode{OPERATOR,BLOCK_LINK,ENTITY_LINK,MONITOR,GUIDE}
     private final Mode mode;
     public ToolItem(Mode m,Properties p){super(p);mode=m;}
-    private static Part.Link link(ItemStack stack){var data=stack.get(DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link"));}
+    private static Part.Link link(ItemStack stack){var data=stack.get(DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link").orElseGet(CompoundTag::new));}
     private static void save(ItemStack stack,Part.Link link){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_link",link.save()));}
     @Override public InteractionResult useOn(UseOnContext c){
         if(!(c.getPlayer() instanceof ServerPlayer player))return InteractionResult.SUCCESS;
@@ -70,7 +70,7 @@ public final class ToolItem extends Item {
     }
     @Override public InteractionResult interactLivingEntity(ItemStack stack,Player player,LivingEntity entity,InteractionHand hand){
         if(mode!=Mode.ENTITY_LINK)return InteractionResult.PASS;
-        if(!player.level().isClientSide){save(stack,new Part.Link(entity.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(Component.literal("Linked "+entity.getName().getString()),true);}return InteractionResult.sidedSuccess(player.level().isClientSide);
+        if(!player.level().isClientSide()){save(stack,new Part.Link(entity.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(Component.literal("Linked "+entity.getName().getString()),true);}return InteractionResult.sidedSuccess(player.level().isClientSide());
     }
     @Override public InteractionResultHolder<ItemStack> use(Level l,Player player,InteractionHand hand){
         ItemStack stack=player.getItemInHand(hand);
@@ -86,6 +86,6 @@ public final class ToolItem extends Item {
                 }else sp.displayClientMessage(Component.literal("Linked target is not loaded"),true);
             }
         }
-        return InteractionResultHolder.sidedSuccess(stack,l.isClientSide);
+        return InteractionResultHolder.sidedSuccess(stack,l.isClientSide());
     }
 }

@@ -45,8 +45,8 @@ public final class EnergyReader {
             }catch(ReflectiveOperationException|RuntimeException failure){failures[0]++;warn(probe.id,failure);}
         }
         if(EnergyValues.accepts(reader.energySystem,"FE"))for(Direction side:sides)try{
-            var handler=level.getCapability(Capabilities.EnergyStorage.BLOCK,pos,side);
-            if(handler!=null)return new EnergyValues.Reading("neoforge","FE",handler.getEnergyStored(),handler.getMaxEnergyStored());
+            var handler=level.getCapability(Capabilities.Energy.BLOCK,pos,side);
+            if(handler!=null)return new EnergyValues.Reading("neoforge","FE",handler.getAmountAsLong(),handler.getCapacityAsLong());
         }catch(RuntimeException failure){failures[0]++;warn("neoforge:energy",failure);}
         return null;
     }

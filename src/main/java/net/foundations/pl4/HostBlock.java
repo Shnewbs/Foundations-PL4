@@ -38,11 +38,11 @@ public final class HostBlock extends BaseEntityBlock {
             ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos p,Player player,BlockHitResult hit){
-        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.sidedSuccess(l.isClientSide);}}
+        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.sidedSuccess(l.isClientSide());}}
         return InteractionResult.PASS;
     }
     @Override protected void onRemove(BlockState s,Level l,BlockPos p,BlockState next,boolean moving){
-        if(s.getBlock()!=next.getBlock() && l.getBlockEntity(p) instanceof HostEntity h && !l.isClientSide){
+        if(s.getBlock()!=next.getBlock() && l.getBlockEntity(p) instanceof HostEntity h && !l.isClientSide()){
             for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,l.registryAccess()));
             NetworkEngine.invalidate(l); l.updateNeighborsAt(p,this);
         }

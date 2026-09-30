@@ -32,10 +32,10 @@ public final class DisplayEditorScreen extends Screen {
     static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
         if(p.layoutRevision>=part.layoutRevision)part=p;
-        if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
+        if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError").orElse("");}
         if(packet.tag().contains("previewReader")){
-            String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
-            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
+            String id=packet.tag().getString("previewReader").orElse("");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i).orElseGet(CompoundTag::new),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
         }
         selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)&&e.spec().page()==part.displayPage));selected=selectedIds.stream().findFirst().orElse(null);
     }

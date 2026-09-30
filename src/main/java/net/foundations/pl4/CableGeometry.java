@@ -29,7 +29,7 @@ public final class CableGeometry {
             Part cable=host.parts.get(6);host.setConnections(cable!=null&&cable.kind.cable()?plan.cableArms().get(ids.get(cable)):new int[6]);
             int leads=0;for(Part part:host.parts.values())if(plan.externalLeads().contains(ids.get(part)))leads|=1<<part.slot();
             host.setExternalLeads(leads);
-            if(!level.isClientSide)host.syncIfChanged();
+            if(!level.isClientSide())host.syncIfChanged();
         }
     }
     private static void add(Level level,BlockPos pos,Map<BlockPos,HostEntity> hosts){

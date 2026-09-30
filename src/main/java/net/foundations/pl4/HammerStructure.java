@@ -24,7 +24,7 @@ public final class HammerStructure {
         return level.hasChunkAt(base)&&ownSpace(level.getBlockState(base.above()),1)&&ownSpace(level.getBlockState(base.above(2)),2);
     }
     public static boolean ensure(Level level,BlockPos base) {
-        if(level.isClientSide||!level.getBlockState(base).is(FoundationsPL4.HAMMER.get()))return false;
+        if(level.isClientSide()||!level.getBlockState(base).is(FoundationsPL4.HAMMER.get()))return false;
         // Preflight both positions before touching either. Also supports safe R3/R4 single-block upgrades.
         for(int i=1;i<=2;i++) {
             BlockPos p=base.above(i);
@@ -41,7 +41,7 @@ public final class HammerStructure {
         return complete(level,base);
     }
     public static void removeOwnedSpaces(Level level,BlockPos base) {
-        if(level.isClientSide)return;
+        if(level.isClientSide())return;
         for(int i=1;i<=2;i++)if(ownSpace(level.getBlockState(base.above(i)),i))level.removeBlock(base.above(i),false);
     }
     public static boolean open(Level level,BlockPos base,Player player) {

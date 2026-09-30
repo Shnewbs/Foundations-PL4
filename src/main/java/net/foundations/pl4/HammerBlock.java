@@ -33,20 +33,20 @@ public final class HammerBlock extends BaseEntityBlock {
     @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.ENTITYBLOCK_ANIMATED;}
     @Override protected VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){return BASE;}
     @Override protected void onPlace(BlockState s,Level l,BlockPos p,BlockState old,boolean moving){
-        super.onPlace(s,l,p,old,moving);if(!old.is(this)&&!l.isClientSide)HammerStructure.ensure(l,p);
+        super.onPlace(s,l,p,old,moving);if(!old.is(this)&&!l.isClientSide())HammerStructure.ensure(l,p);
     }
     @Override public BlockEntity newBlockEntity(BlockPos p,BlockState s){return new HammerEntity(p,s);}
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level l,BlockState s,BlockEntityType<T> type){
-        return l.isClientSide?null:createTickerHelper(type,FoundationsPL4.HAMMER_ENTITY.get(),HammerEntity::tick);
+        return l.isClientSide()?null:createTickerHelper(type,FoundationsPL4.HAMMER_ENTITY.get(),HammerEntity::tick);
     }
     @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?ItemInteractionResult.sidedSuccess(l.isClientSide):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return HammerStructure.open(l,pos,p)?ItemInteractionResult.sidedSuccess(l.isClientSide()):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?InteractionResult.sidedSuccess(l.isClientSide):InteractionResult.PASS;
+        return HammerStructure.open(l,pos,p)?InteractionResult.sidedSuccess(l.isClientSide()):InteractionResult.PASS;
     }
     @Override protected void onRemove(BlockState s,Level l,BlockPos pos,BlockState next,boolean moving){
-        if(!s.is(next.getBlock())&&!l.isClientSide&&l.getBlockEntity(pos) instanceof HammerEntity h) {
+        if(!s.is(next.getBlock())&&!l.isClientSide()&&l.getBlockEntity(pos) instanceof HammerEntity h) {
             // Clear before dropping so callbacks cannot observe the same inventory twice.
             for(int i=0;i<h.inventory.getSlots();i++) {
                 ItemStack stack=h.inventory.getStackInSlot(i).copy();h.inventory.setStackInSlot(i,ItemStack.EMPTY);

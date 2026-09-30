@@ -11,10 +11,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.util.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+
 
 /** Native server fixtures. These require an actual Minecraft/NeoForge build and are NOT offline passes. */
-@PrefixGameTestTemplate(false)
+
 public final class R8GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000008");
     private static HostEntity panel(GameTestHelper h,BlockPos position,Direction face){
@@ -44,13 +44,13 @@ public final class R8GameTests {
         }
         h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionDown(GameTestHelper h){extend(h,Direction.DOWN);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionUp(GameTestHelper h){extend(h,Direction.UP);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionNorth(GameTestHelper h){extend(h,Direction.NORTH);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionSouth(GameTestHelper h){extend(h,Direction.SOUTH);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionWest(GameTestHelper h){extend(h,Direction.WEST);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionEast(GameTestHelper h){extend(h,Direction.EAST);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionDown(GameTestHelper h){extend(h,Direction.DOWN);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionUp(GameTestHelper h){extend(h,Direction.UP);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionNorth(GameTestHelper h){extend(h,Direction.NORTH);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionSouth(GameTestHelper h){extend(h,Direction.SOUTH);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionWest(GameTestHelper h){extend(h,Direction.WEST);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID) public static void edgeExtensionEast(GameTestHelper h){extend(h,Direction.EAST);}
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void frontRimAndSavedItemAdoptCanvas(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);configure(part(source));source.changed();
         Part saved=new Part(Kind.LARGE_DISPLAY,Direction.DOWN,OWNER);saved.displayOutward=false;saved.label="Do not override active board";saved.layoutRevision=99;
@@ -61,14 +61,14 @@ public final class R8GameTests {
         h.assertTrue(next!=null&&part(next).face==Direction.NORTH&&part(next).displayOutward,"Front rim extends east in original plane");
         h.assertTrue(part(next).selected.equals("power_main")&&part(next).label.equals("Saved machine board"),"Explicit extension uses source settings even for a saved item");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void centreClickDoesNotConsumeOrRotate(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
         var point=source.getBlockPos().getCenter().add(0,0,-.4999);
         var result=stack.getItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(point,Direction.NORTH,source.getBlockPos(),false)));
         h.assertTrue(result==InteractionResult.FAIL&&stack.getCount()==2&&h.getLevel().isEmptyBlock(source.getBlockPos().north()),"Ambiguous centre does not create a perpendicular or offset panel");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void occupiedExtensionCannotReplaceOrConsume(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);h.setBlock(new BlockPos(4,3,3),Blocks.DIAMOND_BLOCK);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
@@ -76,7 +76,7 @@ public final class R8GameTests {
         stack.getItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(point,Direction.EAST,source.getBlockPos(),false)));
         h.assertTrue(stack.getCount()==2&&h.getLevel().getBlockState(source.getBlockPos().east()).is(Blocks.DIAMOND_BLOCK),"Solid destination remains intact");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void removedControllerKeepsSharedLayout(GameTestHelper h){
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);configure(part(a));a.changed();
         NetworkEngine.ensureCurrent(h.getLevel().getServer());var settings=part(a).displaySettings();
@@ -93,7 +93,7 @@ public final class R8GameTests {
         h.assertTrue(part(b).displaySettings().equals(expected)&&part(b).canvasWidth==1&&part(b).layoutRevision==revision,
             "Removing visual top-left keeps settings and proportionally resizes content on survivor");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void editedSharedLayoutSurvivesReload(GameTestHelper h){
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);configure(part(a));a.changed();NetworkEngine.ensureCurrent(h.getLevel().getServer());
         Part root=DisplayNetworks.controller(a,part(a)).part();root.label="Latest edit";root.selected="inventory_main";DisplayNetworks.layoutEdited(a,root);
@@ -103,13 +103,13 @@ public final class R8GameTests {
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
         h.assertTrue(part(a).label.equals("Latest edit")&&part(b).selected.equals("inventory_main")&&part(b).layoutRevision>20,"Save reload retains mirrored edit and revision");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void mergeUsesNewestStoredSettings(GameTestHelper h){
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);configure(part(a));var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);part(b).label="Newer canvas";part(b).layoutRevision=30;b.changed();
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
         h.assertTrue(part(a).label.equals("Newer canvas")&&part(b).label.equals("Newer canvas")&&part(a).elements.isEmpty(),"Newer explicit layout (including clear) wins deterministically");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hologramViewPersistenceAndLegacyDefault(GameTestHelper h){
         for(Kind kind:List.of(Kind.HOLOGRAM,Kind.ADVANCED_HOLOGRAM))for(Direction face:Direction.values()){
             Part p=new Part(kind,face,OWNER);p.hologramView=Direction.WEST.ordinal();p.label="Projection";
@@ -120,7 +120,7 @@ public final class R8GameTests {
             h.assertTrue(loaded.hologramView==net.foundations.pl4.core.HologramProjection.view(face.ordinal(),3),"Legacy projectors load without moving mount or slots");
         }h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hologramBaseAndRotatedOutlineAgree(GameTestHelper h){
         for(Kind kind:List.of(Kind.HOLOGRAM,Kind.ADVANCED_HOLOGRAM))for(Direction mount:List.of(Direction.DOWN,Direction.UP)){
             Part p=new Part(kind,mount,OWNER);p.hologramView=3;var source=MultipartShapes.part(List.of(p),p).bounds();
@@ -128,7 +128,7 @@ public final class R8GameTests {
             h.assertTrue(Math.abs(rotated.minX-source.minZ)<.0001&&Math.abs(rotated.maxZ-(1-source.minX))<.0001,"Outline follows the same 90-degree base yaw as renderer");
         }h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void explicitFlipKeepsActiveLayoutWhenJoiningNewerNeighbor(GameTestHelper h){
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);configure(part(a));
         var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);part(b).displayOutward=false;part(b).label="Newer neighbor";part(b).layoutRevision=50;b.changed();

@@ -32,10 +32,10 @@ public final class PartItem extends Item {
             var point=c.getClickLocation().subtract(net.minecraft.world.phys.Vec3.atLowerCornerOf(pos));
             var direction=net.foundations.pl4.core.DisplayPlacement.extension(clicked.face.ordinal(),clicked.displayOutward,c.getClickedFace().ordinal(),point.x,point.y,point.z);
             if(direction.isEmpty()){
-                if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
+                if(!l.isClientSide())player.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
                 return InteractionResult.FAIL;
             }
-            if(!l.isClientSide){
+            if(!l.isClientSide()){
                 if(l instanceof net.minecraft.server.level.ServerLevel current)NetworkEngine.ensureCurrent(current.getServer());
                 if(!(player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)||!DisplayNetworks.canEditCanvas(serverPlayer,host,clicked))return InteractionResult.FAIL;
                 var controller=DisplayNetworks.controller(host,clicked).part();inherited=controller.displaySettings();inheritedRevision=controller.layoutRevision;
@@ -43,7 +43,7 @@ public final class PartItem extends Item {
             face=clicked.face;outward=clicked.displayOutward;pos=pos.relative(Direction.from3DDataValue(direction.getAsInt()));
             if(!l.hasChunkAt(pos)||l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos))return InteractionResult.FAIL;
             if(!DisplayNetworks.canExtendAt(l,pos,clicked,player)){
-                if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."),true);
+                if(!l.isClientSide())player.displayClientMessage(net.minecraft.network.chat.Component.literal("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."),true);
                 return InteractionResult.FAIL;
             }
             host=l.getBlockEntity(pos) instanceof HostEntity h?h:null;
@@ -62,7 +62,7 @@ public final class PartItem extends Item {
         if(l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos)||!l.hasChunkAt(pos)||!player.mayUseItemAt(pos,c.getClickedFace(),c.getItemInHand())||!l.mayInteract(player,pos))return InteractionResult.FAIL;
         if(host!=null&&(!host.canEdit(player)||!HostBlock.canAdd(host,part)))return InteractionResult.FAIL;
         if(host==null&&!l.getBlockState(pos).canBeReplaced())return InteractionResult.FAIL;
-        if(l.isClientSide)return InteractionResult.SUCCESS;
+        if(l.isClientSide())return InteractionResult.SUCCESS;
         if(host==null) {
             if(!l.setBlock(pos,FoundationsPL4.HOST.get().defaultBlockState(),3))return InteractionResult.FAIL;
             if(!(l.getBlockEntity(pos) instanceof HostEntity h))return InteractionResult.FAIL;
@@ -84,7 +84,7 @@ public final class PartItem extends Item {
         if(part.hologram())part.hologramView=net.foundations.pl4.core.HologramProjection.view(face.ordinal(),player.getDirection().getOpposite().ordinal());
         var saved=c.getItemInHand().get(DataComponents.CUSTOM_DATA);
         if(saved!=null&&saved.contains("pl_part")){
-            var tag=saved.copyTag().getCompound("pl_part");tag.putString("kind",kind.id);tag.putInt("face",face.ordinal());
+            var tag=saved.copyTag().getCompound("pl_part").orElseGet(CompoundTag::new);tag.putString("kind",kind.id);tag.putInt("face",face.ordinal());
             Part restored=Part.load(tag,c.getLevel().registryAccess());
             if(restored!=null){part=restored;part.owner=player.getUUID();part.identity=java.util.UUID.randomUUID();}
         }

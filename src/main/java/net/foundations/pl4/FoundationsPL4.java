@@ -33,7 +33,7 @@ public final class FoundationsPL4 {
     public static final Map<String,DeferredBlock<CableModelBlock>> CABLE_MODELS = new LinkedHashMap<>();
     public static final Map<String,DeferredItem<Item>> MATERIALS = new LinkedHashMap<>();
     public static final DeferredBlock<HostBlock> HOST = BLOCKS.register("multipart_host", () -> new HostBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(.5F,25).noOcclusion().dynamicShape()));
-    public static final DeferredBlock<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission()));
+    public static final DeferredBlock<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollision()));
     public static final DeferredBlock<Block> ORE = BLOCKS.register("sapphireore", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3,5).requiresCorrectToolForDrops()));
     public static final DeferredBlock<HammerBlock> HAMMER = BLOCKS.register("hammer", () -> new HammerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<HammerSpaceBlock> HAMMER_SPACE = BLOCKS.register("hammer_air", () -> new HammerSpaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.BLOCK)));
@@ -48,12 +48,12 @@ public final class FoundationsPL4 {
             for (String connector : List.of("cable", "internal", "half", "centre")) {
                 String name = "cable_model_" + material + "_" + connector;
                 CABLE_MODELS.put(material + "_" + connector, BLOCKS.register(name,
-                    () -> new CableModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission())));
+                    () -> new CableModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollision())));
             }
         }
         for(String material:List.of("data","redstone_off","redstone_on"))for(String depth:List.of("1","15","2","3","4","6")){
             String key=material+"_lead_"+depth;
-            CABLE_MODELS.put(key,BLOCKS.register("cable_model_"+key,()->new CableModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission())));
+            CABLE_MODELS.put(key,BLOCKS.register("cable_model_"+key,()->new CableModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollision())));
         }
         for (String id : List.of("sapphire","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate")) MATERIALS.put(id,ITEMS.registerSimpleItem(id));
         ITEMS.registerSimpleBlockItem(ORE); ITEMS.registerSimpleBlockItem(HAMMER);
@@ -72,7 +72,7 @@ public final class FoundationsPL4 {
         bus.addListener(PLPackets::register);
         bus.addListener(HammerEntity::capabilities);
         bus.addListener(NativeEnergyInput::register);
-        bus.addListener(PLGameTests::register);
+        PortTestInstance.registerTypes(bus);bus.addListener(PLGameTests::register);
         NeoForge.EVENT_BUS.addListener(NetworkEngine::tick);
         NeoForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }

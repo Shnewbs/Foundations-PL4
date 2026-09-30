@@ -22,22 +22,22 @@ public final class HammerSpaceBlock extends Block {
     @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.INVISIBLE;}
     @Override protected VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){return s.getValue(OFFSET)==2?TOP:POSTS;}
     @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
-        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?ItemInteractionResult.sidedSuccess(l.isClientSide):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?ItemInteractionResult.sidedSuccess(l.isClientSide()):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
-        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.sidedSuccess(l.isClientSide):InteractionResult.PASS;
+        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.sidedSuccess(l.isClientSide()):InteractionResult.PASS;
     }
     @Override public boolean onDestroyedByPlayer(BlockState s,Level l,BlockPos p,Player player,boolean willHarvest,FluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));
-        if(!l.isClientSide&&l.getBlockState(base).is(FoundationsPL4.HAMMER.get())) {
+        if(!l.isClientSide()&&l.getBlockState(base).is(FoundationsPL4.HAMMER.get())) {
             if(player!=null&&!l.mayInteract(player,base))return false;
             l.destroyBlock(base,player==null||!player.getAbilities().instabuild,player);
         }
-        return l.isClientSide?l.setBlock(p,fluid.createLegacyBlock(),11):l.removeBlock(p,false)||l.getBlockState(p).isAir();
+        return l.isClientSide()?l.setBlock(p,fluid.createLegacyBlock(),11):l.removeBlock(p,false)||l.getBlockState(p).isAir();
     }
     @Override protected void onRemove(BlockState s,Level l,BlockPos p,BlockState next,boolean moving){
         super.onRemove(s,l,p,next,moving);
-        if(!s.is(next.getBlock())&&!l.isClientSide) {
+        if(!s.is(next.getBlock())&&!l.isClientSide()) {
             BlockPos base=p.below(s.getValue(OFFSET));
             if(l.getBlockState(base).is(FoundationsPL4.HAMMER.get()))l.destroyBlock(base,true);
         }

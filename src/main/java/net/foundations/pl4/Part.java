@@ -71,10 +71,10 @@ public final class Part {
     public record Link(String dimension, BlockPos pos, Direction side, UUID entity, UUID part) {
         public CompoundTag save() {
             CompoundTag t = new CompoundTag(); t.putString("dimension", dimension); t.putLong("pos", pos.asLong()); t.putInt("side", side.ordinal());
-            if (entity != null) t.putUUID("entity", entity); if (part != null) t.putUUID("part", part); return t;
+            if (entity != null) t.store("entity",net.minecraft.core.UUIDUtil.CODEC, entity); if (part != null) t.store("part",net.minecraft.core.UUIDUtil.CODEC, part); return t;
         }
         public static Link load(CompoundTag t) {
-            return new Link(t.getString("dimension"), BlockPos.of(t.getLong("pos")), Direction.from3DDataValue(t.getInt("side")), t.hasUUID("entity") ? t.getUUID("entity") : null, t.hasUUID("part") ? t.getUUID("part") : null);
+            return new Link(t.getString("dimension").orElse(""), BlockPos.of(t.getLong("pos").orElse(0L)), Direction.from3DDataValue(t.getInt("side").orElse(0)), t.read("entity",net.minecraft.core.UUIDUtil.CODEC).isPresent() ? t.read("entity",net.minecraft.core.UUIDUtil.CODEC).orElseThrow() : null, t.read("part",net.minecraft.core.UUIDUtil.CODEC).isPresent() ? t.read("part",net.minecraft.core.UUIDUtil.CODEC).orElseThrow() : null);
         }
     }
     public record ReaderChoice(String id,String name,String kind) {}
@@ -87,10 +87,10 @@ public final class Part {
         public String text(){return name+": "+number(value)+(capacity>0?" / "+number(capacity):"")+(unit.isEmpty()?"":" "+unit);}
         public static String number(double d){return DisplayElements.number(d,false);}
         public CompoundTag save(){CompoundTag t=new CompoundTag();t.putString("key",key);t.putString("name",name);t.putDouble("value",value);t.putDouble("capacity",capacity);t.putString("unit",unit);if(!previewItem.isEmpty())t.put("item",previewItem.copy());if(!previewFluid.isEmpty())t.put("fluid",previewFluid.copy());return t;}
-        public static Row load(CompoundTag t){return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"));}
+        public static Row load(CompoundTag t){return new Row(t.getString("key").orElse(""),t.getString("name").orElse(""),t.getDouble("value").orElse(0.0),t.getDouble("capacity").orElse(0.0),t.getString("unit").orElse(""));}
         public static Row load(CompoundTag t,HolderLookup.Provider registry){
-            ItemStack item=ItemStack.parseOptional(registry,t.getCompound("item"));FluidStack fluid=FluidStack.parseOptional(registry,t.getCompound("fluid"));
-            return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"),item,fluid,t.getCompound("item"),t.getCompound("fluid"));
+            ItemStack item=net.foundations.pl4.NbtStacks.item(registry,t.getCompound("item").orElseGet(CompoundTag::new));FluidStack fluid=net.foundations.pl4.NbtStacks.fluid(registry,t.getCompound("fluid").orElseGet(CompoundTag::new));
+            return new Row(t.getString("key").orElse(""),t.getString("name").orElse(""),t.getDouble("value").orElse(0.0),t.getDouble("capacity").orElse(0.0),t.getString("unit").orElse(""),item,fluid,t.getCompound("item").orElseGet(CompoundTag::new),t.getCompound("fluid").orElseGet(CompoundTag::new));
         }
     }
     public record Element(DisplayElements.Spec spec) {
@@ -98,23 +98,23 @@ public final class Part {
         public UUID id(){return spec.id();} public String text(){return spec.text();}public String reader(){return spec.reader();}public String key(){return spec.key();}
         public int x(){return spec.bounds().x();}public int y(){return spec.bounds().y();}public int color(){return spec.color();}public boolean bar(){return spec.type()==DisplayElements.Type.BAR;}
         public CompoundTag save(){
-            CompoundTag t=new CompoundTag();t.putUUID("id",id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
+            CompoundTag t=new CompoundTag();t.store("id",net.minecraft.core.UUIDUtil.CODEC,id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
             t.putInt("x",x());t.putInt("y",y());t.putInt("w",spec.bounds().width());t.putInt("h",spec.bounds().height());t.putInt("color",color());t.putBoolean("bar",bar());
             t.putBoolean("count",spec.count());t.putBoolean("names",spec.names());t.putInt("columns",spec.columns());t.putInt("offset",spec.offset());t.putInt("page",spec.page());t.putBoolean("vertical",spec.vertical());t.putBoolean("compact",spec.compact());
             t.putString("textAlign",spec.textAlign().name());t.putBoolean("wrap",spec.wrap());t.putFloat("textScale",spec.textScale());return t;
         }
         public static Element load(CompoundTag t){
-            boolean legacy=!t.contains("type");DisplayElements.Type type=legacy?(t.getBoolean("bar")?DisplayElements.Type.BAR:DisplayElements.Type.TEXT):DisplayElements.Type.parse(t.getString("type"));
-            UUID id=t.hasUUID("id")?t.getUUID("id"):UUID.nameUUIDFromBytes(t.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            return new Element(new DisplayElements.Spec(id,type,t.getString("text"),t.getString("reader"),t.getString("key"),t.getString("asset"),
-                new DisplayElements.Rect(t.getInt("x"),t.getInt("y"),legacy?248-t.getInt("x"):t.getInt("w"),legacy?(type==DisplayElements.Type.BAR?18:12):t.getInt("h")),
-                t.getInt("color"),legacy||t.getBoolean("count"),t.getBoolean("names"),legacy?8:t.getInt("columns"),t.getInt("offset"),t.getInt("page"),t.getBoolean("vertical"),t.getBoolean("compact"),
-                DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap"),t.contains("textScale")?t.getFloat("textScale"):1F));
+            boolean legacy=!t.contains("type");DisplayElements.Type type=legacy?(t.getBoolean("bar").orElse(false)?DisplayElements.Type.BAR:DisplayElements.Type.TEXT):DisplayElements.Type.parse(t.getString("type").orElse(""));
+            UUID id=t.read("id",net.minecraft.core.UUIDUtil.CODEC).isPresent()?t.read("id",net.minecraft.core.UUIDUtil.CODEC).orElseThrow():UUID.nameUUIDFromBytes(t.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            return new Element(new DisplayElements.Spec(id,type,t.getString("text").orElse(""),t.getString("reader").orElse(""),t.getString("key").orElse(""),t.getString("asset").orElse(""),
+                new DisplayElements.Rect(t.getInt("x").orElse(0),t.getInt("y").orElse(0),legacy?248-t.getInt("x").orElse(0):t.getInt("w").orElse(0),legacy?(type==DisplayElements.Type.BAR?18:12):t.getInt("h").orElse(0)),
+                t.getInt("color").orElse(0),legacy||t.getBoolean("count").orElse(false),t.getBoolean("names").orElse(false),legacy?8:t.getInt("columns").orElse(0),t.getInt("offset").orElse(0),t.getInt("page").orElse(0),t.getBoolean("vertical").orElse(false),t.getBoolean("compact").orElse(false),
+                DisplayElements.TextAlign.parse(t.getString("textAlign").orElse("")),t.getBoolean("wrap").orElse(false),t.contains("textScale")?t.getFloat("textScale").orElse(0f):1F));
         }
     }
     public CompoundTag save(HolderLookup.Provider registry, boolean sync) {
-        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
-        if (owner != null) t.putUUID("owner",owner);
+        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id); t.putInt("face",face.ordinal()); t.store("identity",net.minecraft.core.UUIDUtil.CODEC,identity);
+        if (owner != null) t.store("owner",net.minecraft.core.UUIDUtil.CODEC,owner);
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
         t.putBoolean("displayOutward",displayOutward);t.putString("energySystem",energySystem);
@@ -126,8 +126,8 @@ public final class Part {
         t.putBoolean("energyEscrow",energyCredits()>0);
         t.putInt("blockedFaces",blockedFaces & 63); t.putBoolean("descending",descending); t.putBoolean("whitelist",whitelist); t.putLong("ticks",ticks);
         if (!sync) {
-            if (!pendingItem.isEmpty()) t.put("pendingItem",pendingItem.save(registry));
-            if (!pendingFluid.isEmpty()) t.put("pendingFluid",pendingFluid.save(registry));
+            if (!pendingItem.isEmpty()) t.put("pendingItem",net.foundations.pl4.NbtStacks.save(pendingItem,registry));
+            if (!pendingFluid.isEmpty()) t.put("pendingFluid",net.foundations.pl4.NbtStacks.save(pendingFluid,registry));
             t.putInt("pendingEnergy",pendingEnergy);t.putLong("pendingEnergyCredits",energyCredits());
             t.putString("pendingEnergyUnit",pendingEnergyUnit);t.putInt("pendingEnergyJRate",pendingEnergyJRate);t.putInt("pendingEnergyEURate",pendingEnergyEURate);t.putInt("pendingEnergyEDRate",pendingEnergyEDRate);
         }
@@ -142,31 +142,31 @@ public final class Part {
         return t;
     }
     public static Part load(CompoundTag t, HolderLookup.Provider registry) {
-        Kind k = Kind.byId(t.getString("kind")); if (k == null) return null;
-        Part p = new Part(k, Direction.from3DDataValue(t.getInt("face")), t.hasUUID("owner") ? t.getUUID("owner") : null);
-        if (t.hasUUID("identity")) p.identity = t.getUUID("identity");
-        p.hologramView=net.foundations.pl4.core.HologramProjection.view(p.face.ordinal(),t.contains("hologramView")?t.getInt("hologramView"):3);
-        p.layoutRevision=Math.max(0,t.getLong("layoutRevision"));
-        p.displayOutward=t.getBoolean("displayOutward");p.energySystem=net.foundations.pl4.core.EnergyValues.system(t.getString("energySystem"));
-        p.label=t.getString("label"); p.filter=t.getString("filter"); p.selected=t.getString("selected"); p.metric=t.getString("metric"); p.mode=t.getString("mode");
-        p.comparison=t.getString("comparison"); p.threshold=t.getDouble("threshold"); p.index=t.getInt("index"); p.priority=t.getInt("priority"); p.signal=t.getInt("signal");
-        p.color=t.getInt("color"); p.transferMode=t.getInt("transferMode"); p.items=t.getBoolean("items"); p.fluids=t.getBoolean("fluids"); p.energy=t.getBoolean("energy");
-        p.energyConvert=t.getBoolean("energyConvert");p.energyInput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyInput"));p.energyOutput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyOutput"));
-        p.energyVoltage=t.contains("energyVoltage")?Math.clamp(t.getInt("energyVoltage"),1,1048576):32;
-        p.pendingEnergyUnit=net.foundations.pl4.core.EnergyConversion.unit(t.getString("pendingEnergyUnit"));
-        p.pendingEnergyJRate=Math.max(0,t.getInt("pendingEnergyJRate"));p.pendingEnergyEURate=Math.max(0,t.getInt("pendingEnergyEURate"));p.pendingEnergyEDRate=Math.max(0,t.getInt("pendingEnergyEDRate"));
-        p.pendingEnergyCredits=Math.max(0,t.getLong("pendingEnergyCredits"));p.energyEscrow=!t.contains("pendingEnergy")&&t.getBoolean("energyEscrow");
-        p.blockedFaces=t.getInt("blockedFaces") & 63; p.descending=t.getBoolean("descending"); p.whitelist=t.getBoolean("whitelist"); p.ticks=t.getLong("ticks");
-        p.pendingItem=ItemStack.parseOptional(registry,t.getCompound("pendingItem")); p.pendingFluid=FluidStack.parseOptional(registry,t.getCompound("pendingFluid")); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
-        ListTag links=t.getList("links",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));
-        ListTag elements=t.getList("elements",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(elements.size(),32);i++){Element e=Element.load(elements.getCompound(i));UUID original=e.id();if(p.elements.stream().anyMatch(old->old.id().equals(original)))e=new Element(e.spec().identity(UUID.randomUUID()));p.elements.add(e);}
-        p.displayMode=t.contains("displayMode")?DisplayElements.Mode.parse(t.getString("displayMode")):(p.elements.isEmpty()?DisplayElements.Mode.AUTO_LIST:DisplayElements.Mode.CUSTOM);p.displayPage=Math.clamp(t.getInt("displayPage"),0,7);p.layoutWidth=t.contains("layoutWidth")?Math.clamp(t.getInt("layoutWidth"),8,DisplayElements.MAX_CANVAS):DisplayElements.WIDTH;p.layoutHeight=t.contains("layoutHeight")?Math.clamp(t.getInt("layoutHeight"),9,DisplayElements.MAX_CANVAS):DisplayElements.HEIGHT;
-        ListTag rows=t.getList("rows",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(rows.size(),256);i++) p.rows.add(Row.load(rows.getCompound(i),registry));
-        ListTag choices=t.getList("readerChoices",Tag.TAG_COMPOUND);for(int i=0;i<Math.min(64,choices.size());i++){CompoundTag c=choices.getCompound(i);p.readerChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
-        ListTag sources=t.getList("sources",Tag.TAG_COMPOUND);int budget=256;for(int i=0;i<Math.min(8,sources.size());i++){CompoundTag c=sources.getCompound(i);ListTag data=c.getList("data",Tag.TAG_COMPOUND);List<Row> list=new ArrayList<>();for(int n=0;n<Math.min(64,data.size())&&budget>0;n++,budget--)list.add(Row.load(data.getCompound(n),registry));p.sourceRows.put(c.getString("id"),List.copyOf(list));}
-        p.status=t.getString("status");
-        p.canvasWidth=Math.clamp(t.getInt("canvasWidth"),1,16);p.canvasHeight=Math.clamp(t.getInt("canvasHeight"),1,16);
-        p.canvasColumn=Math.clamp(t.getInt("canvasColumn"),0,p.canvasWidth-1);p.canvasRow=Math.clamp(t.getInt("canvasRow"),0,p.canvasHeight-1);p.canvasMask=t.getInt("canvasMask")&15;
+        Kind k = Kind.byId(t.getString("kind").orElse("")); if (k == null) return null;
+        Part p = new Part(k, Direction.from3DDataValue(t.getInt("face").orElse(0)), t.read("owner",net.minecraft.core.UUIDUtil.CODEC).isPresent() ? t.read("owner",net.minecraft.core.UUIDUtil.CODEC).orElseThrow() : null);
+        if (t.read("identity",net.minecraft.core.UUIDUtil.CODEC).isPresent()) p.identity = t.read("identity",net.minecraft.core.UUIDUtil.CODEC).orElseThrow();
+        p.hologramView=net.foundations.pl4.core.HologramProjection.view(p.face.ordinal(),t.contains("hologramView")?t.getInt("hologramView").orElse(0):3);
+        p.layoutRevision=Math.max(0,t.getLong("layoutRevision").orElse(0L));
+        p.displayOutward=t.getBoolean("displayOutward").orElse(false);p.energySystem=net.foundations.pl4.core.EnergyValues.system(t.getString("energySystem").orElse(""));
+        p.label=t.getString("label").orElse(""); p.filter=t.getString("filter").orElse(""); p.selected=t.getString("selected").orElse(""); p.metric=t.getString("metric").orElse(""); p.mode=t.getString("mode").orElse("");
+        p.comparison=t.getString("comparison").orElse(""); p.threshold=t.getDouble("threshold").orElse(0.0); p.index=t.getInt("index").orElse(0); p.priority=t.getInt("priority").orElse(0); p.signal=t.getInt("signal").orElse(0);
+        p.color=t.getInt("color").orElse(0); p.transferMode=t.getInt("transferMode").orElse(0); p.items=t.getBoolean("items").orElse(false); p.fluids=t.getBoolean("fluids").orElse(false); p.energy=t.getBoolean("energy").orElse(false);
+        p.energyConvert=t.getBoolean("energyConvert").orElse(false);p.energyInput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyInput").orElse(""));p.energyOutput=net.foundations.pl4.core.EnergyConversion.unit(t.getString("energyOutput").orElse(""));
+        p.energyVoltage=t.contains("energyVoltage")?Math.clamp(t.getInt("energyVoltage").orElse(0),1,1048576):32;
+        p.pendingEnergyUnit=net.foundations.pl4.core.EnergyConversion.unit(t.getString("pendingEnergyUnit").orElse(""));
+        p.pendingEnergyJRate=Math.max(0,t.getInt("pendingEnergyJRate").orElse(0));p.pendingEnergyEURate=Math.max(0,t.getInt("pendingEnergyEURate").orElse(0));p.pendingEnergyEDRate=Math.max(0,t.getInt("pendingEnergyEDRate").orElse(0));
+        p.pendingEnergyCredits=Math.max(0,t.getLong("pendingEnergyCredits").orElse(0L));p.energyEscrow=!t.contains("pendingEnergy")&&t.getBoolean("energyEscrow").orElse(false);
+        p.blockedFaces=t.getInt("blockedFaces").orElse(0) & 63; p.descending=t.getBoolean("descending").orElse(false); p.whitelist=t.getBoolean("whitelist").orElse(false); p.ticks=t.getLong("ticks").orElse(0L);
+        p.pendingItem=net.foundations.pl4.NbtStacks.item(registry,t.getCompound("pendingItem").orElseGet(CompoundTag::new)); p.pendingFluid=net.foundations.pl4.NbtStacks.fluid(registry,t.getCompound("pendingFluid").orElseGet(CompoundTag::new)); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy").orElse(0));
+        ListTag links=t.getList("links").orElseGet(ListTag::new); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i).orElseGet(CompoundTag::new)));
+        ListTag elements=t.getList("elements").orElseGet(ListTag::new); for(int i=0;i<Math.min(elements.size(),32);i++){Element e=Element.load(elements.getCompound(i).orElseGet(CompoundTag::new));UUID original=e.id();if(p.elements.stream().anyMatch(old->old.id().equals(original)))e=new Element(e.spec().identity(UUID.randomUUID()));p.elements.add(e);}
+        p.displayMode=t.contains("displayMode")?DisplayElements.Mode.parse(t.getString("displayMode").orElse("")):(p.elements.isEmpty()?DisplayElements.Mode.AUTO_LIST:DisplayElements.Mode.CUSTOM);p.displayPage=Math.clamp(t.getInt("displayPage").orElse(0),0,7);p.layoutWidth=t.contains("layoutWidth")?Math.clamp(t.getInt("layoutWidth").orElse(0),8,DisplayElements.MAX_CANVAS):DisplayElements.WIDTH;p.layoutHeight=t.contains("layoutHeight")?Math.clamp(t.getInt("layoutHeight").orElse(0),9,DisplayElements.MAX_CANVAS):DisplayElements.HEIGHT;
+        ListTag rows=t.getList("rows").orElseGet(ListTag::new); for(int i=0;i<Math.min(rows.size(),256);i++) p.rows.add(Row.load(rows.getCompound(i).orElseGet(CompoundTag::new),registry));
+        ListTag choices=t.getList("readerChoices").orElseGet(ListTag::new);for(int i=0;i<Math.min(64,choices.size());i++){CompoundTag c=choices.getCompound(i).orElseGet(CompoundTag::new);p.readerChoices.add(new ReaderChoice(c.getString("id").orElse(""),c.getString("name").orElse(""),c.getString("kind").orElse("")));}
+        ListTag sources=t.getList("sources").orElseGet(ListTag::new);int budget=256;for(int i=0;i<Math.min(8,sources.size());i++){CompoundTag c=sources.getCompound(i).orElseGet(CompoundTag::new);ListTag data=c.getList("data").orElseGet(ListTag::new);List<Row> list=new ArrayList<>();for(int n=0;n<Math.min(64,data.size())&&budget>0;n++,budget--)list.add(Row.load(data.getCompound(n).orElseGet(CompoundTag::new),registry));p.sourceRows.put(c.getString("id").orElse(""),List.copyOf(list));}
+        p.status=t.getString("status").orElse("");
+        p.canvasWidth=Math.clamp(t.getInt("canvasWidth").orElse(0),1,16);p.canvasHeight=Math.clamp(t.getInt("canvasHeight").orElse(0),1,16);
+        p.canvasColumn=Math.clamp(t.getInt("canvasColumn").orElse(0),0,p.canvasWidth-1);p.canvasRow=Math.clamp(t.getInt("canvasRow").orElse(0),0,p.canvasHeight-1);p.canvasMask=t.getInt("canvasMask").orElse(0)&15;
         return p;
     }
 }

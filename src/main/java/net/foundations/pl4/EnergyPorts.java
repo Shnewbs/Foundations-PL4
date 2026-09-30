@@ -38,7 +38,7 @@ public final class EnergyPorts {
         if(!enabled(unit))return null;Part.Link link=ref.adjacent();if(!NetworkEngine.loaded(server,link))return null;
         var level=NetworkEngine.level(server,link);
         if(unit.equals("FE")){
-            var storage=level.getCapability(Capabilities.EnergyStorage.BLOCK,link.pos(),link.side());if(storage==null)return null;
+            var storage=net.foundations.pl4.compat.TransferAdapters.energy(level,link.pos(),link.side());if(storage==null)return null;
             return new EnergyConversion.Port(){
                 public long extract(long n,boolean simulate){return storage.extractEnergy((int)Math.min(Integer.MAX_VALUE,n),simulate);}
                 public long insert(long n,boolean simulate){return storage.receiveEnergy((int)Math.min(Integer.MAX_VALUE,n),simulate);}
