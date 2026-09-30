@@ -93,17 +93,10 @@ def main():
                 raise RuntimeError("The existing CurseForge upload record differs. Do not overwrite or duplicate this version.")
             print(f"CurseForge file {prior['file_id']} already uploaded; skipped.")
             return
-        versions = request_json("/game/versions", token)
-        names = ["1.21.1", "NeoForge"]
-        selected = []
-        for name in names:
-            matches = [entry["id"] for entry in versions if entry["name"] == name]
-            if len(matches) != 1:
-                raise RuntimeError(f"CurseForge game version '{name}' could not be resolved uniquely.")
-            selected.extend(matches)
+        # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersions": selected, "releaseType": release_type(version)}
+        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge"], "releaseType": release_type(version)}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")
