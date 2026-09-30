@@ -25,7 +25,7 @@ public final class PLPackets {
     }
     public record LayoutEdit(BlockPos pos,int slot,UUID identity,long revision,String action,UUID element,String value) implements CustomPacketPayload {
         public static final Type<LayoutEdit> TYPE=new Type<>(FoundationsPL4.id("layout_edit"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,4096);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(4096)));
+        public static final StreamCodec<RegistryFriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,65536);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(65536)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private record Rate(long tick,int count){}
@@ -44,7 +44,17 @@ public final class PLPackets {
                 if(!spec.id().equals(packet.element)||!visible){openWithError(player,anchor,clicked,"Choose a reader visible to this display.");return;}
             }
             var before=new net.foundations.pl4.core.LayoutTransactions.State(part.elements.stream().map(Part.Element::spec).toList(),part.displayMode,part.displayPage,part.layoutRevision);
-            var result=net.foundations.pl4.core.LayoutTransactions.apply(before,packet.revision,packet.action,packet.element,spec,packet.value);
+            net.foundations.pl4.core.LayoutTransactions.Result result;
+            if(packet.action.equals("replace")){
+                var restored=ElementJson.decodeList(packet.value);
+                for(var s:restored){
+                    boolean visible=s.reader().isEmpty()||(part.readerChoices.stream().anyMatch(choice->choice.id().equals(s.reader()))||part.readerChoices.stream().filter(choice->choice.name().equals(s.reader())).count()==1);
+                    if(!visible){openWithError(player,anchor,clicked,"Choose a reader visible to this display.");return;}
+                }
+                result=net.foundations.pl4.core.LayoutTransactions.applyReplace(before,packet.revision,restored);
+            }else{
+                result=net.foundations.pl4.core.LayoutTransactions.apply(before,packet.revision,packet.action,packet.element,spec,packet.value);
+            }
             if(!result.accepted()){openWithError(player,anchor,clicked,result.message());return;}
             long nextRevision=DisplayNetworks.nextLayoutRevision(part); // Preflight before changing even the root.
             var settings=new Part.DisplaySettings(part.label,part.selected,part.metric,part.color,result.state().elements().stream().map(Part.Element::new).toList(),result.state().mode(),result.state().page(),part.layoutWidth,part.layoutHeight);

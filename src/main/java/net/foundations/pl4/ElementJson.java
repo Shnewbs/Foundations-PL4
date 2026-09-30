@@ -1,10 +1,20 @@
 package net.foundations.pl4;
 
 import com.google.gson.*;
+import java.util.List;
 import java.util.UUID;
 import net.foundations.pl4.core.DisplayElements;
 /** Explicit data format; never reflective class instantiation from client input. */
 public final class ElementJson {
+    /** Whole-layout snapshot, used for undo/redo and future layout import/export. */
+    public static String encodeList(List<DisplayElements.Spec> elements){
+        JsonArray array=new JsonArray();for(var e:elements)array.add(JsonParser.parseString(encode(e)));return array.toString();
+    }
+    public static List<DisplayElements.Spec> decodeList(String text){
+        if(text.length()>65536)throw new IllegalArgumentException("Layout snapshot too large");
+        JsonArray array=JsonParser.parseString(text).getAsJsonArray();
+        List<DisplayElements.Spec> result=new java.util.ArrayList<>();for(var e:array)result.add(decode(e.toString()));return result;
+    }
     public static String encode(DisplayElements.Spec e){
         JsonObject j=new JsonObject();j.addProperty("id",e.id().toString());j.addProperty("type",e.type().name());j.addProperty("text",e.text());j.addProperty("reader",e.reader());j.addProperty("key",e.key());j.addProperty("asset",e.asset());
         j.addProperty("x",e.bounds().x());j.addProperty("y",e.bounds().y());j.addProperty("w",e.bounds().width());j.addProperty("h",e.bounds().height());j.addProperty("color",e.color());j.addProperty("count",e.count());j.addProperty("names",e.names());j.addProperty("columns",e.columns());j.addProperty("offset",e.offset());j.addProperty("page",e.page());j.addProperty("vertical",e.vertical());j.addProperty("compact",e.compact());j.addProperty("textScale",e.textScale());j.addProperty("textAlign",e.textAlign().name());return j.toString();

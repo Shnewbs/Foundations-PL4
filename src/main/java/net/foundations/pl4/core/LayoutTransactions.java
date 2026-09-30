@@ -32,6 +32,16 @@ public final class LayoutTransactions {
         if(list.stream().map(DisplayElements.Spec::reader).filter(s->!s.isBlank()).distinct().count()>8)return fail(before,"Maximum eight explicit reader bindings.");
         return new Result(true,new State(list,mode,page,before.revision+1),"");
     }
+    /** Whole-layout snapshot restore for client-side undo/redo and future layout import; no JSON here (this file compiles standalone). */
+    public static Result applyReplace(State before,long expected,List<DisplayElements.Spec> elements){
+        if(expected!=before.revision)return new Result(false,before,"Screen changed; review the current layout and retry.");
+        if(before.revision==Long.MAX_VALUE)return new Result(false,before,"Layout revision is exhausted.");
+        if(elements.size()>DisplayElements.MAX_ELEMENTS)return fail(before,"Maximum 32 elements.");
+        List<DisplayElements.Spec> list=new ArrayList<>(elements);
+        if(list.stream().map(DisplayElements.Spec::id).distinct().count()!=list.size())return fail(before,"Duplicate element ID.");
+        if(list.stream().map(DisplayElements.Spec::reader).filter(s->!s.isBlank()).distinct().count()>8)return fail(before,"Maximum eight explicit reader bindings.");
+        return new Result(true,new State(list,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
+    }
     private static Result fail(State s,String reason){return new Result(false,s,reason);}
     private LayoutTransactions(){}
 }

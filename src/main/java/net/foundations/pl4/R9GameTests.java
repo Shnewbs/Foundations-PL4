@@ -127,6 +127,24 @@ public final class R9GameTests {
         PLPackets.editLayout(player(h,host,true),packet(host,0,"add",s,""));h.assertTrue(part(host).elements.isEmpty(),"Arbitrary unrelated reader UUID is not a source binding");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void replaceActionRestoresWholeLayoutSnapshot(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var a=spec(DisplayElements.Type.ITEM);var p=player(h,host,true);
+        PLPackets.editLayout(p,packet(host,0,"add",a,""));
+        var snapshot=part(host).elements.stream().map(Part.Element::spec).toList();
+        var b=spec(DisplayElements.Type.BLOCK);PLPackets.editLayout(p,packet(host,1,"add",b,""));
+        h.assertTrue(part(host).elements.size()==2,"Second add must have applied before the undo restore");
+        var restore=new PLPackets.LayoutEdit(host.getBlockPos(),part(host).slot(),part(host).identity,part(host).layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(snapshot));
+        PLPackets.editLayout(p,restore);
+        h.assertTrue(part(host).elements.size()==1&&part(host).elements.getFirst().spec().equals(a)&&part(host).layoutRevision==3,"Replace must restore the exact prior snapshot as an atomic, revision-fenced edit");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void replaceActionRejectsOversizedSnapshot(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=player(h,host,true);
+        List<DisplayElements.Spec> oversized=new ArrayList<>();for(int i=0;i<DisplayElements.MAX_ELEMENTS+1;i++)oversized.add(spec(DisplayElements.Type.ITEM).identity(UUID.randomUUID()));
+        var command=new PLPackets.LayoutEdit(host.getBlockPos(),part(host).slot(),part(host).identity,0,"replace",new UUID(0,0),ElementJson.encodeList(oversized));
+        PLPackets.editLayout(p,command);h.assertTrue(part(host).elements.isEmpty()&&part(host).layoutRevision==0,"Oversized snapshot restore must be rejected, not truncated");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void deleteLastElementKeepsBlankCustomMode(GameTestHelper h){
         var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.ITEM);part(host).elements.add(new Part.Element(s));part(host).displayMode=DisplayElements.Mode.CUSTOM;var p=player(h,host,true);
         var command=new PLPackets.LayoutEdit(host.getBlockPos(),part(host).slot(),part(host).identity,0,"delete",s.id(),"");PLPackets.editLayout(p,command);

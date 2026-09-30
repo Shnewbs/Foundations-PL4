@@ -21,6 +21,8 @@ public final class DisplayEditorScreen extends Screen {
     private EditorChrome.Corner resizeCorner=EditorChrome.Corner.NONE,hoveredCorner=EditorChrome.Corner.NONE;private int hoveredTool=-1;
     String message="";
     final Map<String,List<Part.Row>> inspected=new HashMap<>();
+    private static final int MAX_HISTORY=20;
+    private final Deque<List<DisplayElements.Spec>> undoStack=new ArrayDeque<>(),redoStack=new ArrayDeque<>();
     private static final String[] TOOLS={"+","E","X","C","^","v","#","?"};
     private static final String[] HELP={"Add element","Edit selected element","Delete selected element","Duplicate selected element","Bring forward","Send backward","Toggle 4-pixel snap","Data / settings"};
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
@@ -86,16 +88,37 @@ public final class DisplayEditorScreen extends Screen {
         g.fill(x,y,x+w,y+h,0xD0141B20);g.fill(x,y,x+3,y+h,0xFF62C7D6);
         String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"LMB select/drag/resize  •  RMB back  •  side tools stay active");
         g.drawString(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
-        int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);
+        int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);kx=hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);hudKey(g,kx+4,ky,"CTRL+Z",0xFFAA88FF);
     }
     private int hudKey(GuiGraphics g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.drawString(font,key,x+5,y+2,color,false);return x+w;}
     DisplayElements.Spec selectedElement(){return selected==null?null:part.elements.stream().filter(e->e.id().equals(selected)).map(Part.Element::spec).findFirst().orElse(null);}
     void inspect(String reader){if(!reader.isEmpty()&&!inspected.containsKey(reader))PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"preview_reader",reader));}
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
     void commit(String action,DisplayElements.Spec spec,String value,long revision){
-        if(!editable||pending)return;UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
+        if(!editable||pending)return;
+        if(action.equals("add")||action.equals("update")||action.equals("delete")||action.equals("forward")||action.equals("backward")||action.equals("clear"))pushUndo();
+        UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
         if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&selectedIds.size()>1)value=String.join(",",selectedIds.stream().map(UUID::toString).toList());pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
+    }
+    private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
+    private void pushUndo(){undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();redoStack.clear();}
+    private void undo(){
+        if(!editable||pending){message="Not ready.";return;}
+        if(undoStack.isEmpty()){message="Nothing to undo.";return;}
+        redoStack.addLast(snapshot());if(redoStack.size()>MAX_HISTORY)redoStack.removeFirst();
+        var previous=undoStack.removeLast();selectedIds.clear();selected=null;commitReplace(previous);
+    }
+    private void redo(){
+        if(!editable||pending){message="Not ready.";return;}
+        if(redoStack.isEmpty()){message="Nothing to redo.";return;}
+        undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();
+        var next=redoStack.removeLast();selectedIds.clear();selected=null;commitReplace(next);
+    }
+    /** Restores a whole-layout snapshot for undo/redo; bypasses commit()'s own history tracking. */
+    private void commitReplace(List<DisplayElements.Spec> elements){
+        pending=true;waitTicks=0;message="Saving...";
+        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
     }
     void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
@@ -145,6 +168,7 @@ public final class DisplayEditorScreen extends Screen {
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
         if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
         if(key==68&&hasControlDown()){pasteSelected();return true;}if(key==71){snap=!snap;return true;}
+        if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}
         return super.keyPressed(key,scan,mods);
     }
     @Override public void removed(){inverse=null;draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
