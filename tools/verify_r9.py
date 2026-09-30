@@ -8,7 +8,7 @@ assert 'event.registrar("4")' in packet
 assert 'result.accepted()' in packet and packet.index('if(!result.accepted())')<packet.index('DisplayNetworks.applyLayout(host,part,settings,nextRevision)')
 assert 'DisplayNetworks.canEditCanvas' in packet and '!clicked.identity.equals(packet.identity)' in packet
 assert 'player.isSpectator()' in packet and 'player.distanceToSqr(packet.pos.getCenter())>64' in packet
-assert 'writeUtf(p.value,4096)' in packet and 'rate.count>=8' in packet
+assert 'writeUtf(p.value,65536)' in packet and 'rate.count>=8' in packet
 assert 'part.readerChoices.stream()' in packet and 'Map<ServerPlayer,Rate> EDIT_RATE=new WeakHashMap' in packet
 assert 't.putString("displayMode"' in part and 't.putInt("displayPage"' in part and 't.putString("type",spec.type().name())' in part
 assert 't.hasUUID("id")' in part and 'legacy?' in part and 'Part.DisplaySettings' in packet
@@ -28,13 +28,14 @@ assert 'if(p.layoutRevision>=part.layoutRevision)' in editor and 'live.layoutRev
 assert 'mouseReleased' in editor and 'commit("update",result,"",dragRevision)' in editor
 assert 'dragRevision=part.layoutRevision' in editor and '300_000_000L' in editor
 assert 'new PLPackets.LayoutEdit' in editor and 'clickedIdentity' in editor and 'inspected.size()>=8' in editor
+assert 'packet.action.equals("replace")' in packet and 'ElementJson.decodeList(packet.value)' in packet and 'LayoutTransactions.applyReplace' in packet
 assert 'DisplayEditorScreen.active()' in source('client/PLClient.java') and 'new DisplayEditorScreen' in source('client/PLClient.java')
 assert 'new GuideSearchBox' in guide and ('\"Saved\"' in guide or 'Bookmarks' in guide) and 'description.summary()' in guide
 assert 'setHint(' not in source('client/GuideSearchBox.java') and 'false' in source('client/GuideSearchBox.java')
 assert '.summary()' in guide and 'Tooltip.create(Component.literal(chapter' not in guide
 assert 'getBoolean("reply")' in source('client/PLClient.java') and 't.putBoolean("reply",reply)' in packet
 assert 'R9GameTests.class'  in source('PLGameTests.java')
-tests=source('R9GameTests.java').count('@GameTest(');assert tests==20,tests
+tests=source('R9GameTests.java').count('@GameTest(');assert tests==22,tests
 for path in A.rglob('*.json'):json.loads(path.read_text())
 white=(A/'textures/gui/display_white.png').read_bytes();assert white[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II',white[16:24])==(1,1)
 b=json.loads((A/'guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '1.21.1' in b['edition']
