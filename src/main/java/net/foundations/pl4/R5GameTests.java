@@ -78,10 +78,40 @@ public final class R5GameTests {
         h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void cablePlacementUsesAimedCableArm(GameTestHelper h){
+        var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);
+        var endpoint=host(h,new BlockPos(3,1,2),Kind.INVENTORY_READER,Direction.EAST,false);rebuild(h);
+        h.assertTrue(a.connection(Direction.EAST)==1,"Fixture must expose the cable arm toward the endpoint");
+        var player=player(h,new BlockPos(2,1,3));
+        ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DATA_CABLE).get());
+        player.setItemInHand(InteractionHand.MAIN_HAND,stack);
+        var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.7,.5,.5),Direction.UP,a.getBlockPos(),false);
+        stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
+        h.assertTrue(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the east cable arm must attach into its endpoint host, not place above");
+        h.assertTrue(a.connection(Direction.EAST)==1&&endpoint.connection(Direction.WEST)==1,"The placed cable must join the aimed cable run");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void unchangedTopologyIsReused(GameTestHelper h){
         host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);NetworkEngine.ensureCurrent(h.getLevel().getServer());long count=NetworkEngine.topologyBuildCount();
         NetworkEngine.ensureCurrent(h.getLevel().getServer());NetworkEngine.ensureCurrent(h.getLevel().getServer());
         h.assertTrue(count==NetworkEngine.topologyBuildCount(),"Unchanged graph must not be rebuilt on every access");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=120)
+    public static void topologyRebuildRefreshesCachedTargetPriority(GameTestHelper h){
+        BlockPos leftChest=new BlockPos(2,1,2),rightChest=new BlockPos(4,1,2),hostPos=new BlockPos(3,1,2);
+        chest(h,leftChest);h.setBlock(rightChest,Blocks.CHEST);((ChestBlockEntity)h.getBlockEntity(rightChest)).setItem(0,new ItemStack(Items.STONE,5));
+        HostEntity host=host(h,hostPos,Kind.NODE,Direction.WEST,true);
+        Part left=host.parts.get(Direction.WEST.ordinal()),right=new Part(Kind.NODE,Direction.EAST,OWNER),reader=new Part(Kind.INVENTORY_READER,Direction.DOWN,OWNER);
+        left.priority=10;right.priority=0;reader.mode="CHANNEL";reader.index=1;
+        host.parts.put(right.slot(),right);host.parts.put(reader.slot(),reader);host.changed();
+        h.runAtTickTime(45,()->{
+            h.assertTrue(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:diamond")&&r.value()==17),"Cached priority order selects the higher-priority first target");
+            left.priority=-1;right.priority=10;host.changed();
+        });
+        h.runAtTickTime(85,()->{
+            h.assertTrue(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:stone")&&r.value()==5),"A priority edit must invalidate and refresh cached target order");
+            h.succeed();
+        });
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void cablePortStateRoundTrips(GameTestHelper h){

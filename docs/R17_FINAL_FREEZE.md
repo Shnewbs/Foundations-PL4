@@ -1,4 +1,4 @@
-# Foundations PL4 0.0.1a.R17 — final-freeze candidate
+# Foundations PL4 0.0.1a.R17 - frozen baseline
 
 R17 is the accepted `0.0.1a` freeze, following the roadmap's recommendation to fix the hologram emitter anchor without adding new feature scope.
 
@@ -13,7 +13,7 @@ R17 is the accepted `0.0.1a` freeze, following the roadmap's recommendation to f
 
 ## Compatibility and scope
 
-R16 transfer routing, save schema 2, 13 multipart slots, payload protocol 4 and recipes are unchanged. The Java 21 clean build, asset/standalone-JAR checks, emitter-anchor rule suite and all 114 native GameTests pass. Host edits register immediately for synchronous topology rebuilds, and joined canvases preserve their settings with proportional layout migration when their size changes. Do not treat this candidate as accepted until the remaining freeze checks pass.
+R16 transfer routing, save schema 2, 13 multipart slots, payload protocol 4 and recipes are unchanged. The Java 21 clean build, asset/standalone-JAR checks, emitter-anchor rule suite and all 114 R17 native GameTests passed. Host edits register immediately for synchronous topology rebuilds, and joined canvases preserve their settings with proportional layout migration when their size changes.
 
 ## Freeze gate - accepted
 

@@ -1,6 +1,6 @@
 {
   "project": "Foundations PL4",
-  "version": "0.0.1a.R17",
+  "version": "0.0.2a.R1",
   "minecraft": "1.21.1",
   "neoforge": "21.1.250",
   "java": 21,
@@ -51,7 +51,7 @@
   "client_rendering_r15": "NOT_RUN",
   "r15_production_assertions": 223,
   "r15_source_guards": "PASS_10_OF_10",
-  "freeze_candidate": false,
+  "freeze_candidate": true,
   "r16_scope": "Transfer Node passive normal-Node endpoints + loop guards + clearer mode UX; no save/protocol/recipe format change",
   "r16_production_assertions": 41,
   "r16_source_guards": "PASS_18_OF_18",
@@ -67,6 +67,11 @@
   "gametests_failed_r17": 0,
   "gametest_failures_r17": [],
   "gametest_failure_categories_r17": "NONE",
-  "client_rendering_r17": "NOT_RUN",
-  "r17_visual_acceptance": "PENDING_WALL_FLOOR_CEILING_NORMAL_AND_ADVANCED"
+  "client_rendering_r17": "USER_ACCEPTED",
+  "r17_visual_acceptance": "USER_ACCEPTED_WALL_FLOOR_CEILING_NORMAL_AND_ADVANCED",
+  "r1_network_topology": "CACHED_GROUP_ORDER_TARGETS_READERS_DURING_REBUILD",
+  "r1_priority_cache_invalidation_test": "PASS",
+  "r1_gametests_total": 115,
+  "r1_gametests_passed": 115,
+  "r1_gametests_failed": 0
 }

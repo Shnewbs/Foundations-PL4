@@ -21,7 +21,10 @@ public final class PartItem extends Item {
         // place into the adjacent cell with the attachment's back against that block.
         Direction face=host==null?c.getClickedFace().getOpposite():c.getClickedFace();
         boolean outward=host!=null;
-        Part clicked=host==null?null:host.hit(new net.minecraft.world.phys.BlockHitResult(c.getClickLocation(),c.getClickedFace(),pos,false));
+        var hit=new net.minecraft.world.phys.BlockHitResult(c.getClickLocation(),c.getClickedFace(),pos,false);
+        Part clicked=host==null?null:host.hit(hit);
+        Direction placementDirection=kind.cable()&&clicked!=null&&clicked.kind.cable()
+            ?host.cableDirection(hit):c.getClickedFace();
         boolean extend=kind==Kind.LARGE_DISPLAY&&clicked!=null&&clicked.kind==Kind.LARGE_DISPLAY&&!player.isShiftKeyDown();
         Part.DisplaySettings inherited=null;long inheritedRevision=0;
         if(extend){
@@ -50,7 +53,7 @@ public final class PartItem extends Item {
         Part candidate=placementPart(c,face,outward,extend);
         if(attachToReader&&!HostBlock.canAdd(host,candidate))return InteractionResult.FAIL;
         if(!extend&&(host==null||!HostBlock.canAdd(host,candidate))) {
-            pos=pos.relative(c.getClickedFace());face=c.getClickedFace().getOpposite();outward=false;
+            pos=pos.relative(placementDirection);face=placementDirection.getOpposite();outward=false;
             if(!l.hasChunkAt(pos))return InteractionResult.FAIL;
             host=l.getBlockEntity(pos) instanceof HostEntity h?h:null;
             candidate=placementPart(c,face,outward,extend);

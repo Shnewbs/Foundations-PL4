@@ -21,6 +21,10 @@ dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; test
 test { useJUnitPlatform() }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
+}
 
 // A release cannot silently regain the old external core/multipart runtime dependencies.
 tasks.register('verifyStandalone') {
@@ -40,6 +44,7 @@ tasks.register('verifyStandalone') {
             def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
             if (metadata.contains('modId="sonarcore"') || metadata.contains('modId="mcmultipart"')) failures.add('Legacy dependency in mod metadata')
             if (!metadata.contains('modId="foundations_pl4"')) failures.add('Foundations PL4 identity missing')
+            if (!metadata.contains('version="' + project.version + '"')) failures.add('Mod metadata version does not match Gradle project version')
         }
         if (!failures.empty) throw new GradleException('Standalone verification failed: ' + failures.join(', '))
         logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')

@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.1a.R17` Transfer Node Hardening + Emitter Anchor
+**Current source candidate:** `0.0.2a.R1` display parity + data-cable topology hardening
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -702,7 +702,7 @@ R17 is the narrow final-freeze revision for the hologram anchor; do not add new 
 |---|---|---|---|---|---|
 | Core/runtime | Standalone NeoForge mod; legacy Core responsibilities internalized | Source + earlier local builds | Sonar Core audit; PL2 entrypoints | Public extension API, final packaging acceptance | 0.0.2a+ |
 | Multipart host | 13-slot host; cable center + ordinary/display faces | User partial + source | PL2 multipart slots / connection helpers | Remaining placement exceptions, covers, external multipart/API parity | 0.0.2a |
-| Data cable | Original connector family, dynamic arms/ports | User verified | `connections/data/*` | Large network perf/load-unload acceptance | 0.0.2a hardening |
+| Data cable | Original connector family, dynamic arms/ports; cached per-group sample inputs | User verified + R1 source optimization | `connections/data/*` | Large network perf/load-unload acceptance and native TPS/memory profile | 0.0.2a hardening |
 | Redstone cable | Separate graph and signal propagation | Source | `connections/redstone/*` | Full per-face semantics, feedback loops, wireless parity | 0.0.2a |
 | Node | Samples target; R16 passive transfer endpoint | R16 source | `nodes/node/*` | Native transfer acceptance, original GUI details | freeze/0.0.2a |
 | Inventory Reader | Counts, filters, sorting, component-aware visuals | User display evidence + source | `readers/items/*` | Historical channel modes, slot/position details, deduplication | 0.0.2a |
