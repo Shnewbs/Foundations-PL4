@@ -2,10 +2,13 @@ package net.foundations.pl4.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
@@ -30,8 +33,21 @@ final class DisplayCanvas {
     void rect(double x,double y,double w,double h,int color,int layer){if(w<=0||h<=0)return;quad(WHITE,x,y,w,h,0,0,1,1,color,depth(layer));}
     void outline(DisplayElements.Rect r,int color,int layer){rect(r.x(),r.y(),r.width(),.6,color,layer);rect(r.x(),r.bottom()-.6,r.width(),.6,color,layer);rect(r.x(),r.y(),.6,r.height(),color,layer);rect(r.right()-.6,r.y(),.6,r.height(),color,layer);}
     void text(String value,int x,int y,int width,int color,boolean right,int layer){
-        if(width<=0)return;Font font=mc.font;String text=font.plainSubstrByWidth(value,width);int tx=right?x+width-font.width(text):x;
-        pose.pushPose();try{pose.translate(0,0,depth(layer));font.drawInBatch(text,tx,y,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}finally{pose.popPose();}
+        text(value,x,y,width,12,color,right?DisplayElements.TextAlign.RIGHT:DisplayElements.TextAlign.LEFT,false,layer);
+    }
+    void text(String value,int x,int y,int width,int height,int color,DisplayElements.TextAlign alignment,boolean wrap,int layer){
+        if(width<=0||height<=0)return;Font font=mc.font;pose.pushPose();
+        try{
+            pose.translate(0,0,depth(layer));int lineY=y;int maxY=y+height;
+            List<FormattedCharSequence> lines=wrap?font.split(Component.literal(value),width):
+                List.of(FormattedCharSequence.forward(font.plainSubstrByWidth(value,width),net.minecraft.network.chat.Style.EMPTY));
+            for(var line:lines){
+                if(lineY+font.lineHeight>maxY)break;
+                int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->x;case CENTER->x+(width-lineWidth)/2;case RIGHT->x+width-lineWidth;};
+                font.drawInBatch(line,tx,lineY,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);
+                lineY+=font.lineHeight;
+            }
+        }finally{pose.popPose();}
     }
     void item(Part.Row sample,DisplayElements.Rect r,boolean block){
         if(sample.item().isEmpty())return;pose.pushPose();

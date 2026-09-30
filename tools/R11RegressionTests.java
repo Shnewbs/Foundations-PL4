@@ -26,5 +26,13 @@ public final class R11RegressionTests {
       var r=DisplayElements.move(m,500,500,true,false,900,300);check(r.bounds().right()<=900&&r.bounds().bottom()<=300,"dynamic resize clamp "+t);
     }
   }
-  public static void main(String[] args){spaces();migration();System.out.println("PASS R11 dynamic-canvas migration/editor rules: "+checks+" assertions. NOT native rendering/API acceptance.");}
+  static void styledText(){
+    var base=DisplayElements.create(DisplayElements.Type.TEXT,0,248,120);
+    var styled=base.textStyle(DisplayElements.TextAlign.CENTER,true);
+    check(styled.bounds(base.bounds()).textAlign()==DisplayElements.TextAlign.CENTER&&styled.onPage(1).wrap(),"element copies preserve text style");
+    var draw=(DisplayElements.Text)DisplayElements.plan(styled,List.of()).draws().getFirst();
+    check(draw.alignment()==DisplayElements.TextAlign.CENTER&&draw.wrap()&&draw.height()==styled.bounds().height(),"text scene carries alignment, wrapping and clipping height");
+    check(DisplayElements.TextAlign.parse("right")==DisplayElements.TextAlign.RIGHT&&DisplayElements.TextAlign.parse("unknown")==DisplayElements.TextAlign.LEFT,"alignment parsing is case-insensitive and safely defaults");
+  }
+  public static void main(String[] args){spaces();migration();styledText();System.out.println("PASS R11/R1 display rules: "+checks+" assertions. NOT native rendering/API acceptance.");}
 }

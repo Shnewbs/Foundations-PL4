@@ -13,22 +13,32 @@ public final class DisplayElements {
     public enum Mode { AUTO_LIST, CUSTOM;
         public static Mode parse(String name){return "CUSTOM".equals(name)?CUSTOM:AUTO_LIST;}
     }
+    public enum TextAlign { LEFT, CENTER, RIGHT;
+        public static TextAlign parse(String name){try{return valueOf(name.toUpperCase(Locale.ROOT));}catch(Exception e){return LEFT;}}
+    }
     public record Rect(int x,int y,int width,int height){
         public int right(){return x+width;}public int bottom(){return y+height;}
         public boolean contains(double a,double b){return a>=x&&a<right()&&b>=y&&b<bottom();}
     }
     public record Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
-                       int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact) {
+                       int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact,
+                       TextAlign textAlign,boolean wrap) {
         public Spec {
             id=Objects.requireNonNull(id);type=Objects.requireNonNull(type);
+            textAlign=Objects.requireNonNullElse(textAlign,TextAlign.LEFT);
             text=clean(text,128);reader=clean(reader,64);key=clean(key,192);asset=clean(asset,192);
             int x=Math.clamp(bounds.x(),0,MAX_CANVAS-8),y=Math.clamp(bounds.y(),0,MAX_CANVAS-9);
             bounds=new Rect(x,y,Math.clamp(bounds.width(),8,MAX_CANVAS-x),Math.clamp(bounds.height(),9,MAX_CANVAS-y));
             color&=0xFFFFFF;columns=Math.clamp(columns,1,16);offset=Math.clamp(offset,0,65535);page=Math.clamp(page,0,MAX_PAGES-1);
         }
-        public Spec bounds(Rect r){return new Spec(id,type,text,reader,key,asset,r,color,count,names,columns,offset,page,vertical,compact);}
-        public Spec identity(UUID value){return new Spec(value,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact);}
-        public Spec onPage(int value){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,value,vertical,compact);}
+        public Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
+                    int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact){
+            this(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,TextAlign.LEFT,false);
+        }
+        public Spec bounds(Rect r){return new Spec(id,type,text,reader,key,asset,r,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap);}
+        public Spec identity(UUID value){return new Spec(value,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap);}
+        public Spec onPage(int value){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,value,vertical,compact,textAlign,wrap);}
+        public Spec textStyle(TextAlign alignment,boolean wrapped){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,alignment,wrapped);}
     }
     public interface Sample {
         String key();String name();double value();double capacity();String unit();
@@ -39,7 +49,11 @@ public final class DisplayElements {
     public record Box(Rect rect,int color,boolean filled,int layer) implements Draw {
         public Box { layer=Math.clamp(layer,1,3); }
     }
-    public record Text(String value,int x,int y,int width,int color,boolean right,boolean overlay) implements Draw {}
+    public record Text(String value,int x,int y,int width,int height,int color,TextAlign alignment,boolean wrap,boolean overlay) implements Draw {
+        public Text(String value,int x,int y,int width,int color,boolean right,boolean overlay){
+            this(value,x,y,width,12,color,right?TextAlign.RIGHT:TextAlign.LEFT,false,overlay);
+        }
+    }
     public record Icon(int sample,Rect rect,boolean block) implements Draw {}
     public record Liquid(int sample,Rect rect,double fraction) implements Draw {}
     public record Scene(List<Draw> draws,String diagnostic){public Scene{draws=List.copyOf(draws);}}
@@ -78,7 +92,7 @@ public final class DisplayElements {
             case TEXT -> {
                 String value=e.text;
                 if(!e.key.isBlank())value+=(value.isEmpty()?"":" ")+(selected<0?"[missing data]":number(rows.get(selected).value(),e.compact)+(rows.get(selected).unit().isBlank()?"":" "+rows.get(selected).unit()));
-                out.add(new Text(value,b.x,b.y,b.width,e.color,false,false));
+                out.add(new Text(value,b.x,b.y,b.width,b.height,e.color,e.textAlign,e.wrap,false));
             }
             case BAR -> {
                 out.add(new Box(b,0xFF333333,true,1));out.add(new Box(b,0xFFB0B0B0,false,3));

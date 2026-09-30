@@ -90,14 +90,16 @@ public final class Part {
         public CompoundTag save(){
             CompoundTag t=new CompoundTag();t.putUUID("id",id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
             t.putInt("x",x());t.putInt("y",y());t.putInt("w",spec.bounds().width());t.putInt("h",spec.bounds().height());t.putInt("color",color());t.putBoolean("bar",bar());
-            t.putBoolean("count",spec.count());t.putBoolean("names",spec.names());t.putInt("columns",spec.columns());t.putInt("offset",spec.offset());t.putInt("page",spec.page());t.putBoolean("vertical",spec.vertical());t.putBoolean("compact",spec.compact());return t;
+            t.putBoolean("count",spec.count());t.putBoolean("names",spec.names());t.putInt("columns",spec.columns());t.putInt("offset",spec.offset());t.putInt("page",spec.page());t.putBoolean("vertical",spec.vertical());t.putBoolean("compact",spec.compact());
+            t.putString("textAlign",spec.textAlign().name());t.putBoolean("wrap",spec.wrap());return t;
         }
         public static Element load(CompoundTag t){
             boolean legacy=!t.contains("type");DisplayElements.Type type=legacy?(t.getBoolean("bar")?DisplayElements.Type.BAR:DisplayElements.Type.TEXT):DisplayElements.Type.parse(t.getString("type"));
             UUID id=t.hasUUID("id")?t.getUUID("id"):UUID.nameUUIDFromBytes(t.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return new Element(new DisplayElements.Spec(id,type,t.getString("text"),t.getString("reader"),t.getString("key"),t.getString("asset"),
                 new DisplayElements.Rect(t.getInt("x"),t.getInt("y"),legacy?248-t.getInt("x"):t.getInt("w"),legacy?(type==DisplayElements.Type.BAR?18:12):t.getInt("h")),
-                t.getInt("color"),legacy||t.getBoolean("count"),t.getBoolean("names"),legacy?8:t.getInt("columns"),t.getInt("offset"),t.getInt("page"),t.getBoolean("vertical"),t.getBoolean("compact")));
+                t.getInt("color"),legacy||t.getBoolean("count"),t.getBoolean("names"),legacy?8:t.getInt("columns"),t.getInt("offset"),t.getInt("page"),t.getBoolean("vertical"),t.getBoolean("compact"),
+                DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap")));
         }
     }
     public CompoundTag save(HolderLookup.Provider registry, boolean sync) {

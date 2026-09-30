@@ -8,13 +8,13 @@ projection=read('src/main/java/net/foundations/pl4/core/HologramProjection.java'
 renderer=read('src/main/java/net/foundations/pl4/client/HostRenderer.java')
 book=json.loads((ROOT/'src/main/resources/assets/foundations_pl4/guide/en_us.json').read_text())
 checks={
-    'R17 version in build and mod metadata':'0.0.1a.R17' in read('build.gradle') and '0.0.1a.R17' in read('src/main/resources/META-INF/neoforge.mods.toml'),
+    'R17 geometry retained in current release':'0.0.2a.R1' in read('build.gradle') and '0.0.1a.R17' in read('docs/R17_FINAL_FREEZE.md'),
     'normal emitter bar anchor':'modelPoint(mount,yaw,8,0,10.5)' in projection,
     'advanced panel emitter anchors':'modelPoint(mount,yaw,5,2,8)' in projection and 'modelPoint(mount,yaw,8,2,11)' in projection,
     'projection clearance starts at emitter':'emitterAnchor.x()+normal.x()*distance' in projection and 'clearance(advanced)' in projection,
     'configured view defines projection normal':'DisplayFacing.facing(front).normal()' in projection,
     'renderer uses view-aware anchor':'centre(p.face.ordinal(),p.hologramView' in renderer,
-    'guide edition updated':'0.0.1a.R17' in book['edition'],
+    'R17 hologram acceptance remains open':'PENDING_WALL_FLOOR_CEILING_NORMAL_AND_ADVANCED' in read('BUILD_STATUS.json'),
     'guide describes emitter-relative clearance':any('from the emitter hardware' in section['body'] for chapter in book['chapters'] for section in chapter['sections']),
 }
 failed=[name for name,passed in checks.items() if not passed]

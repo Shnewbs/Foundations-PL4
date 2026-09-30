@@ -9,10 +9,10 @@ To release a version:
 3. Create and push a version tag whose name is `v` plus the exact Gradle version. For example:
 
    ```powershell
-   git tag -a v0.0.1a.R17 -m "Foundations PL4 0.0.1a.R17"
-   git push origin v0.0.1a.R17
+   git tag -a v0.0.2a.R1 -m "Foundations PL4 0.0.2a.R1"
+   git push origin v0.0.2a.R1
    ```
 
 4. The `Build and release` GitHub Actions workflow builds the tagged source and publishes the release with generated notes and build artifacts.
 
-The R17 candidate's clean build and all 114 native GameTests pass. Do not tag it as a frozen alpha yet: native hologram visual acceptance, R14 display/editor and R16 item/fluid/FE transfer acceptance, escrow reload, and dedicated-server smoke testing remain part of the freeze gate.
+The R17 clean build and all 114 native GameTests passed. The R17/0.0.1a freeze gate still needs native hologram visual acceptance, R14 display/editor and R16 item/fluid/FE transfer acceptance, escrow reload, and dedicated-server smoke testing. R1 is an early 0.0.2a development build and must not be treated as closing those gates.

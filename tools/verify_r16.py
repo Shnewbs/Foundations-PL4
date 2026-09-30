@@ -9,7 +9,7 @@ book=json.loads((R/'src/main/resources/assets/foundations_pl4/guide/en_us.json')
 transfer=next(c for c in book['chapters'] if c['id']=='transfer')
 body=' '.join(s['body'] for s in transfer['sections'])
 checks={
- 'R17 retains R16 code line':"0.0.1a.R17" in read('build.gradle') and '0.0.1a.R17' in read('src/main/resources/META-INF/neoforge.mods.toml'),
+ 'R1 retains R16 code line':"0.0.2a.R1" in read('build.gradle') and '0.0.2a.R1' in read('src/main/resources/META-INF/neoforge.mods.toml'),
  'normal node endpoints':'Kind.NODE||r.part().kind==Kind.TRANSFER_NODE' in engine,
  'route rules used':'TransferRules.canRoute' in engine,
  'remove phase':'TransferRules.drivesRemove' in engine,
@@ -26,7 +26,7 @@ checks={
  'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
  'eight R16 native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==8,
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
- 'guide R17 edition':'0.0.1a.R17' in book['edition'],
+ 'guide R1 edition':'0.0.2a.R1' in book['edition'],
 }
 failed=[k for k,v in checks.items() if not v]
 if failed:raise SystemExit('R16 source guard failed: '+', '.join(failed))

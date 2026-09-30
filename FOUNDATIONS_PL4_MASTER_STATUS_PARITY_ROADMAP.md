@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.1a.R17` Transfer Node Hardening + Emitter Anchor
+**Current source candidate:** `0.0.2a.R1` GSI Text Alignment + Wrapping
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -692,7 +692,7 @@ final parity ledger
 updater from previous release
 ```
 
-R17 is the narrow final-freeze revision for the hologram anchor; do not add new feature work before the freeze gate passes.
+R17 was the narrow final-freeze revision for the hologram anchor. Its remaining visual/live-acceptance gate is still open. Per the user's direction, 0.0.2a.R1 development has begun before 0.0.1a is frozen; this early expansion does not close or replace any P0 acceptance requirements.
 
 ---
 
@@ -2032,14 +2032,12 @@ The project has moved well beyond a registration-only port. The current alpha ha
 
 The next mistake to avoid is broadening scope before the foundation is frozen.
 
-Recommended order from here:
+Recommended order for finalizing the alpha and continuing development:
 
-1. **Visually accept the R17 hologram anchor.**
-2. **Native-test R16 transfers and all 114 GameTests.**
-3. **Freeze `0.0.1a`.**
-4. **Use the frozen alpha as the migration baseline.**
-5. **Spend `0.0.2a` completing PL2 parity, especially GSI, channels, transfers, wireless, and integrations.**
-6. **Only after that, use PL3 and new Foundations ideas to expand beyond PL2.**
+1. **Finish the R17 hologram visual and R16 item/fluid/FE live acceptance checks before declaring `0.0.1a` frozen.**
+2. **Use the accepted alpha as the migration baseline for `0.0.2a`.**
+3. **Continue the ordered 0.0.2a PL2 parity work, starting with GSI/editor, then channels, transfers, wireless, and integrations.**
+4. **Only after that, use PL3 and new Foundations ideas to expand beyond PL2.**
 
 That gives Foundations PL4 a clear identity:
 

@@ -1,6 +1,10 @@
 {
   "project": "Foundations PL4",
-  "version": "0.0.1a.R17",
+  "version": "0.0.2a.R1",
+  "previous_candidate": "0.0.1a.R17",
+  "r1_scope": "GSI text alignment and wrapped text rendering; 0.0.1a freeze acceptance remains incomplete",
+  "r1_text_layout": "optional per-element left/center/right alignment and wrapping; old data defaults to left/no-wrap",
+  "r1_client_acceptance": "PENDING",
   "minecraft": "1.21.1",
   "neoforge": "21.1.250",
   "java": 21,
