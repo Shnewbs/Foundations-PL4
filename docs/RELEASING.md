@@ -2,6 +2,8 @@
 
 Each published version gets a tagged Windows/Java 21 build and a GitHub Release containing the mod JAR, sources JAR and SHA-256 checksums. The release workflow verifies that the tag version exactly matches Gradle's `version`, then runs `clean build runGameTestServer`; it publishes nothing if any build, asset, rule or native GameTest gate fails.
 
+Pushing a new Gradle version to `main` automatically builds, tests, tags and publishes it to GitHub and the configured CurseForge project. Main updates whose version already has a tag skip publication. Tag pushes and manual dispatch remain supported.
+
 To release a version:
 
 1. Update `version` in `build.gradle` and matching version references in mod metadata and release documentation.

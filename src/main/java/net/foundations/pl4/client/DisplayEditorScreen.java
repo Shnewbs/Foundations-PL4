@@ -94,7 +94,7 @@ public final class DisplayEditorScreen extends Screen {
         if(!editable)return;
         int x=8,y=8,w=Math.min(width-16,420),h=34;
         g.fill(x,y,x+w,y+h,0xD0141B20);g.fill(x,y,x+3,y+h,0xFF62C7D6);
-        String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"Drag empty space: box select  •  Shift: add/toggle  •  RMB: back");
+        String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"Box: drag empty space • Shift: toggle • RMB back • side tools stay active");
         g.drawString(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
         int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);kx=hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);hudKey(g,kx+4,ky,"CTRL+Z",0xFFAA88FF);
     }

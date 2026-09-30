@@ -2,6 +2,8 @@ name: Build and release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
   workflow_dispatch:
@@ -47,16 +49,28 @@ jobs:
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch" -and $env:GITHUB_REF_NAME -ne "main") {
             throw "Manual releases must be built from main."
           }
-          if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_NAME -ne $expectedTag) {
+          if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_TYPE -eq "tag" -and $env:GITHUB_REF_NAME -ne $expectedTag) {
             throw "Tag '$env:GITHUB_REF_NAME' does not match project version '$version' (expected '$expectedTag')."
           }
+          $publish = "true"
+          if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_TYPE -eq "branch") {
+            $existing = git ls-remote --tags origin "refs/tags/$expectedTag"
+            if ($LASTEXITCODE -ne 0) { throw "Could not check whether this version was already released." }
+            if ($existing) {
+              $publish = "false"
+              Write-Host "Version $version is already tagged; no new release for this main update."
+            }
+          }
+          "publish=$publish" >> $env:GITHUB_OUTPUT
           "version=$version" >> $env:GITHUB_OUTPUT
           "tag=$expectedTag" >> $env:GITHUB_OUTPUT
 
       - name: Build and run native GameTests
+        if: steps.version.outputs.publish == 'true'
         run: .\gradlew.bat --no-daemon --console=plain clean build runGameTestServer
 
       - name: Prepare checksums
+        if: steps.version.outputs.publish == 'true'
         shell: pwsh
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -79,6 +93,7 @@ jobs:
           $hashes | Set-Content -Encoding ascii SHA256SUMS.txt
 
       - name: Publish validated GitHub Release
+        if: steps.version.outputs.publish == 'true'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -122,6 +137,7 @@ jobs:
           }
 
       - name: Upload tested runtime JAR to CurseForge when configured
+        if: steps.version.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
