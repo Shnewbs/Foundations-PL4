@@ -1,0 +1,15 @@
+// OPTIONAL EXAMPLE, not installed by the updater.
+// Copy as kubejs/server_scripts/pl4_recipes.js on your test instance/server, then /reload.
+// This changes stone forging: 2 tagged stones -> 4 plates, using the existing registered recipe codec.
+// It is not a special PL4 KubeJS plugin/event. result.id is the Minecraft 1.21.1 ItemStack field.
+ServerEvents.recipes(event => {
+  event.remove({ id: 'foundations_pl4:forging/stone_plate' })
+  event.custom({
+    type: 'foundations_pl4:forging_hammer',
+    ingredient: { tag: 'c:stones' },
+    input_count: 2,
+    result: { id: 'foundations_pl4:stoneplate', count: 4 },
+    processing_ticks: 120,
+    cooldown_ticks: 80
+  }).id('kubejs:pl4/stone_plate')
+})

@@ -1,0 +1,21 @@
+// Run production placement/projection/book layout rules without Minecraft dependencies.
+def r8VerifierClasses=layout.buildDirectory.dir('r8-rule-verifier')
+tasks.register('compileR8RuleVerifier',JavaCompile){
+    source=files('tools/R8RegressionTests.java',
+        'src/main/java/net/foundations/pl4/core/DisplayPlacement.java',
+        'src/main/java/net/foundations/pl4/core/CanvasContinuity.java',
+        'src/main/java/net/foundations/pl4/core/DisplayLayout.java',
+        'src/main/java/net/foundations/pl4/core/DisplayFacing.java',
+        'src/main/java/net/foundations/pl4/core/HologramProjection.java',
+        'src/main/java/net/foundations/pl4/core/GuideBook.java',
+        'src/main/java/net/foundations/pl4/core/GuideLayout.java')
+    classpath=files();destinationDirectory=r8VerifierClasses
+    javaCompiler=javaToolchains.compilerFor{languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR8Rules',JavaExec){
+    dependsOn tasks.named('compileR8RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor{languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r8VerifierClasses);mainClass='R8RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR8Rules')}

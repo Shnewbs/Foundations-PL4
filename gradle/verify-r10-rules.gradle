@@ -1,0 +1,21 @@
+// Executes presentation/navigation/edit-page rules without Minecraft. Item JSON checks use tools/verify_r10.py.
+def r10VerifierClasses=layout.buildDirectory.dir('r10-rule-verifier')
+tasks.register('compileR10RuleVerifier',JavaCompile){
+    source=files('tools/R10RegressionTests.java',
+        'src/main/java/net/foundations/pl4/core/MonitorPresentation.java',
+        'src/main/java/net/foundations/pl4/core/GuideNavigation.java',
+        'src/main/java/net/foundations/pl4/core/GuideBook.java',
+        'src/main/java/net/foundations/pl4/core/GuideLayout.java',
+        'src/main/java/net/foundations/pl4/core/DisplayElements.java',
+        'src/main/java/net/foundations/pl4/core/LayoutTransactions.java',
+        'src/main/java/net/foundations/pl4/core/DynamicCanvasLayout.java')
+    classpath=files();destinationDirectory=r10VerifierClasses
+    javaCompiler=javaToolchains.compilerFor{languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR10Rules',JavaExec){
+    dependsOn tasks.named('compileR10RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor{languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r10VerifierClasses);mainClass='R10RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR10Rules')}

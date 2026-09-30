@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "foundations_pl4:hammer",
+    "count": 1
+  },
+  "pattern": [
+    "ADA",
+    "B B",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "tag": "minecraft:logs"
+    },
+    "B": {
+      "tag": "c:rods/wooden"
+    },
+    "C": {
+      "tag": "c:stones"
+    },
+    "D": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  }
+}

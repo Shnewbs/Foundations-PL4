@@ -1,0 +1,18 @@
+// Compile and execute the production render planner, revision fence and cursor math without Minecraft.
+// This is not a graphical or native API test.
+def r9VerifierClasses=layout.buildDirectory.dir('r9-rule-verifier')
+tasks.register('compileR9RuleVerifier',JavaCompile){
+    source=files('tools/R9RegressionTests.java',
+        'src/main/java/net/foundations/pl4/core/DisplayElements.java',
+        'src/main/java/net/foundations/pl4/core/LayoutTransactions.java',
+        'src/main/java/net/foundations/pl4/core/DisplayPicking.java')
+    classpath=files();destinationDirectory=r9VerifierClasses
+    javaCompiler=javaToolchains.compilerFor{languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR9Rules',JavaExec){
+    dependsOn tasks.named('compileR9RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor{languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r9VerifierClasses);mainClass='R9RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR9Rules')}

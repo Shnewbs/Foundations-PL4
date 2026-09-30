@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "foundations_pl4:block/part_redstonesignaller"
+    },
+    "facing=up": {
+      "model": "foundations_pl4:block/part_redstonesignaller",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "foundations_pl4:block/part_redstonesignaller",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south": {
+      "model": "foundations_pl4:block/part_redstonesignaller",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "foundations_pl4:block/part_redstonesignaller",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east": {
+      "model": "foundations_pl4:block/part_redstonesignaller",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

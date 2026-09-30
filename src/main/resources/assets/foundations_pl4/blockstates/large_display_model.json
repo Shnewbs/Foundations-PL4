@@ -1,0 +1,580 @@
+{
+  "variants": {
+    "facing=down,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_0"
+    },
+    "facing=down,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_1"
+    },
+    "facing=down,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_2"
+    },
+    "facing=down,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_3"
+    },
+    "facing=down,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_4"
+    },
+    "facing=down,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_5"
+    },
+    "facing=down,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_6"
+    },
+    "facing=down,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_7"
+    },
+    "facing=down,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_8"
+    },
+    "facing=down,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_9"
+    },
+    "facing=down,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_10"
+    },
+    "facing=down,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_11"
+    },
+    "facing=down,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_12"
+    },
+    "facing=down,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_13"
+    },
+    "facing=down,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_14"
+    },
+    "facing=down,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_in_15"
+    },
+    "facing=down,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_0"
+    },
+    "facing=down,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_1"
+    },
+    "facing=down,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_2"
+    },
+    "facing=down,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_3"
+    },
+    "facing=down,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_4"
+    },
+    "facing=down,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_5"
+    },
+    "facing=down,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_6"
+    },
+    "facing=down,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_7"
+    },
+    "facing=down,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_8"
+    },
+    "facing=down,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_9"
+    },
+    "facing=down,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_10"
+    },
+    "facing=down,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_11"
+    },
+    "facing=down,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_12"
+    },
+    "facing=down,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_13"
+    },
+    "facing=down,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_14"
+    },
+    "facing=down,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_down_out_15"
+    },
+    "facing=up,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_0"
+    },
+    "facing=up,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_1"
+    },
+    "facing=up,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_2"
+    },
+    "facing=up,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_3"
+    },
+    "facing=up,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_4"
+    },
+    "facing=up,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_5"
+    },
+    "facing=up,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_6"
+    },
+    "facing=up,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_7"
+    },
+    "facing=up,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_8"
+    },
+    "facing=up,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_9"
+    },
+    "facing=up,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_10"
+    },
+    "facing=up,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_11"
+    },
+    "facing=up,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_12"
+    },
+    "facing=up,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_13"
+    },
+    "facing=up,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_14"
+    },
+    "facing=up,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_in_15"
+    },
+    "facing=up,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_0"
+    },
+    "facing=up,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_1"
+    },
+    "facing=up,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_2"
+    },
+    "facing=up,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_3"
+    },
+    "facing=up,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_4"
+    },
+    "facing=up,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_5"
+    },
+    "facing=up,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_6"
+    },
+    "facing=up,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_7"
+    },
+    "facing=up,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_8"
+    },
+    "facing=up,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_9"
+    },
+    "facing=up,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_10"
+    },
+    "facing=up,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_11"
+    },
+    "facing=up,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_12"
+    },
+    "facing=up,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_13"
+    },
+    "facing=up,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_14"
+    },
+    "facing=up,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_up_out_15"
+    },
+    "facing=north,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_0"
+    },
+    "facing=north,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_1"
+    },
+    "facing=north,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_2"
+    },
+    "facing=north,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_3"
+    },
+    "facing=north,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_4"
+    },
+    "facing=north,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_5"
+    },
+    "facing=north,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_6"
+    },
+    "facing=north,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_7"
+    },
+    "facing=north,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_8"
+    },
+    "facing=north,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_9"
+    },
+    "facing=north,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_10"
+    },
+    "facing=north,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_11"
+    },
+    "facing=north,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_12"
+    },
+    "facing=north,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_13"
+    },
+    "facing=north,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_14"
+    },
+    "facing=north,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_in_15"
+    },
+    "facing=north,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_0"
+    },
+    "facing=north,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_1"
+    },
+    "facing=north,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_2"
+    },
+    "facing=north,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_3"
+    },
+    "facing=north,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_4"
+    },
+    "facing=north,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_5"
+    },
+    "facing=north,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_6"
+    },
+    "facing=north,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_7"
+    },
+    "facing=north,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_8"
+    },
+    "facing=north,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_9"
+    },
+    "facing=north,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_10"
+    },
+    "facing=north,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_11"
+    },
+    "facing=north,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_12"
+    },
+    "facing=north,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_13"
+    },
+    "facing=north,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_14"
+    },
+    "facing=north,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_north_out_15"
+    },
+    "facing=south,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_0"
+    },
+    "facing=south,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_1"
+    },
+    "facing=south,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_2"
+    },
+    "facing=south,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_3"
+    },
+    "facing=south,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_4"
+    },
+    "facing=south,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_5"
+    },
+    "facing=south,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_6"
+    },
+    "facing=south,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_7"
+    },
+    "facing=south,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_8"
+    },
+    "facing=south,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_9"
+    },
+    "facing=south,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_10"
+    },
+    "facing=south,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_11"
+    },
+    "facing=south,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_12"
+    },
+    "facing=south,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_13"
+    },
+    "facing=south,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_14"
+    },
+    "facing=south,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_in_15"
+    },
+    "facing=south,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_0"
+    },
+    "facing=south,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_1"
+    },
+    "facing=south,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_2"
+    },
+    "facing=south,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_3"
+    },
+    "facing=south,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_4"
+    },
+    "facing=south,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_5"
+    },
+    "facing=south,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_6"
+    },
+    "facing=south,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_7"
+    },
+    "facing=south,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_8"
+    },
+    "facing=south,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_9"
+    },
+    "facing=south,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_10"
+    },
+    "facing=south,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_11"
+    },
+    "facing=south,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_12"
+    },
+    "facing=south,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_13"
+    },
+    "facing=south,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_14"
+    },
+    "facing=south,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_south_out_15"
+    },
+    "facing=west,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_0"
+    },
+    "facing=west,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_1"
+    },
+    "facing=west,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_2"
+    },
+    "facing=west,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_3"
+    },
+    "facing=west,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_4"
+    },
+    "facing=west,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_5"
+    },
+    "facing=west,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_6"
+    },
+    "facing=west,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_7"
+    },
+    "facing=west,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_8"
+    },
+    "facing=west,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_9"
+    },
+    "facing=west,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_10"
+    },
+    "facing=west,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_11"
+    },
+    "facing=west,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_12"
+    },
+    "facing=west,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_13"
+    },
+    "facing=west,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_14"
+    },
+    "facing=west,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_in_15"
+    },
+    "facing=west,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_0"
+    },
+    "facing=west,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_1"
+    },
+    "facing=west,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_2"
+    },
+    "facing=west,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_3"
+    },
+    "facing=west,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_4"
+    },
+    "facing=west,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_5"
+    },
+    "facing=west,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_6"
+    },
+    "facing=west,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_7"
+    },
+    "facing=west,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_8"
+    },
+    "facing=west,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_9"
+    },
+    "facing=west,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_10"
+    },
+    "facing=west,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_11"
+    },
+    "facing=west,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_12"
+    },
+    "facing=west,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_13"
+    },
+    "facing=west,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_14"
+    },
+    "facing=west,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_west_out_15"
+    },
+    "facing=east,front_outward=false,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_0"
+    },
+    "facing=east,front_outward=false,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_1"
+    },
+    "facing=east,front_outward=false,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_2"
+    },
+    "facing=east,front_outward=false,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_3"
+    },
+    "facing=east,front_outward=false,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_4"
+    },
+    "facing=east,front_outward=false,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_5"
+    },
+    "facing=east,front_outward=false,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_6"
+    },
+    "facing=east,front_outward=false,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_7"
+    },
+    "facing=east,front_outward=false,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_8"
+    },
+    "facing=east,front_outward=false,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_9"
+    },
+    "facing=east,front_outward=false,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_10"
+    },
+    "facing=east,front_outward=false,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_11"
+    },
+    "facing=east,front_outward=false,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_12"
+    },
+    "facing=east,front_outward=false,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_13"
+    },
+    "facing=east,front_outward=false,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_14"
+    },
+    "facing=east,front_outward=false,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_in_15"
+    },
+    "facing=east,front_outward=true,connections=0": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_0"
+    },
+    "facing=east,front_outward=true,connections=1": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_1"
+    },
+    "facing=east,front_outward=true,connections=2": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_2"
+    },
+    "facing=east,front_outward=true,connections=3": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_3"
+    },
+    "facing=east,front_outward=true,connections=4": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_4"
+    },
+    "facing=east,front_outward=true,connections=5": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_5"
+    },
+    "facing=east,front_outward=true,connections=6": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_6"
+    },
+    "facing=east,front_outward=true,connections=7": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_7"
+    },
+    "facing=east,front_outward=true,connections=8": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_8"
+    },
+    "facing=east,front_outward=true,connections=9": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_9"
+    },
+    "facing=east,front_outward=true,connections=10": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_10"
+    },
+    "facing=east,front_outward=true,connections=11": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_11"
+    },
+    "facing=east,front_outward=true,connections=12": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_12"
+    },
+    "facing=east,front_outward=true,connections=13": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_13"
+    },
+    "facing=east,front_outward=true,connections=14": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_14"
+    },
+    "facing=east,front_outward=true,connections=15": {
+      "model": "foundations_pl4:block/r6_large_display_model_east_out_15"
+    }
+  }
+}

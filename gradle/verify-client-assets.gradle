@@ -1,0 +1,111 @@
+// Check the packaged resources, not just the source tree. Server GameTests do not
+// load the client atlas and therefore cannot catch missing-texture regressions.
+tasks.register('verifyClientAssets') {
+    def candidate = providers.gradleProperty('clientAssetsJar')
+    if (!candidate.present) dependsOn tasks.named('jar')
+    def artifact = candidate.present ? file(candidate.get()) : tasks.named('jar').get().archiveFile.get().asFile
+    inputs.file(artifact)
+    doLast {
+        def problems = new LinkedHashSet<String>()
+        def json = new groovy.json.JsonSlurper()
+        def namespace = 'foundations_pl4'
+        def models = [:]
+        def roots = new LinkedHashSet<String>()
+        def sprites = new LinkedHashSet<String>()
+        def qualify = { String id -> id.contains(':') ? id : 'minecraft:' + id }
+        // These are the vanilla parents used by this project. Unknown external
+        // parents fail explicitly rather than bypassing texture validation.
+        def vanilla = [
+            'minecraft:block/block': [:],
+            'minecraft:block/cube_all': [textures: [particle: '#all'], required: ['#all']],
+            'minecraft:item/generated': [generated: true],
+            'minecraft:item/handheld': [generated: true]
+        ]
+        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+            def readJson = { entry -> json.parseText(zip.getInputStream(entry).getText('UTF-8')) }
+            def modelPrefix = "assets/${namespace}/models/"
+            def statePrefix = "assets/${namespace}/blockstates/"
+            zip.entries().each { entry ->
+                if (entry.name.startsWith(modelPrefix) && entry.name.endsWith('.json')) {
+                    def id = namespace + ':' + entry.name.substring(modelPrefix.length(), entry.name.length() - 5)
+                    models[id] = readJson(entry)
+                    if (id.startsWith(namespace + ':item/')) roots.add(id)
+                }
+                if (entry.name.startsWith(statePrefix) && entry.name.endsWith('.json')) {
+                    Closure gather
+                    gather = { value ->
+                        if (value instanceof Map) {
+                            if (value.model instanceof String) roots.add(qualify(value.model))
+                            value.values().each { gather(it) }
+                        } else if (value instanceof List) value.each { gather(it) }
+                    }
+                    gather(readJson(entry))
+                }
+            }
+            def checkSprite = { String id ->
+                id = qualify(id)
+                if (!sprites.add(id)) return
+                def parts = id.split(':', 2)
+                if (parts[0] != namespace) { problems.add('Unexpected external sprite: ' + id); return }
+                // Actual 1.21.1 assets/minecraft/atlases/blocks.json discovers these
+                // two directories. A PNG existing elsewhere does NOT make it a sprite.
+                if (!(parts[1].startsWith('block/') || parts[1].startsWith('item/')))
+                    problems.add('Outside Minecraft 1.21.1 block/item atlas directories: ' + id)
+                def texturePath = "assets/${parts[0]}/textures/${parts[1]}.png"
+                def png = zip.getEntry(texturePath)
+                if (png == null) { problems.add('Missing texture: ' + texturePath); return }
+                def bitmap
+                zip.getInputStream(png).withCloseable { stream -> bitmap = javax.imageio.ImageIO.read(stream) }
+                if (bitmap == null || bitmap.width < 1 || bitmap.height < 1) problems.add('Invalid PNG: ' + texturePath)
+            }
+            models.each { id, model ->
+                model.textures?.values()?.each { value -> if (!value.startsWith('#')) checkSprite(value) }
+                if (model.parent) {
+                    def parent = qualify(model.parent)
+                    if (!models.containsKey(parent) && !vanilla.containsKey(parent)) problems.add('Missing/unsupported parent: ' + id + ' -> ' + parent)
+                }
+            }
+            Closure resolve
+            resolve = { String id, Set chain ->
+                if (chain.contains(id)) { problems.add('Model parent cycle: ' + id); return [:] }
+                def model = models[id] ?: vanilla[id]
+                if (model == null) { problems.add('Missing model: ' + id); return [:] }
+                def parent = model.parent ? resolve(qualify(model.parent), chain + id) : [:]
+                def merged = new LinkedHashMap(parent)
+                merged.putAll(model)
+                merged.textures = (parent.textures ?: [:]) + (model.textures ?: [:])
+                return merged
+            }
+            roots.each { id ->
+                def model = resolve(id, [] as Set)
+                def textures = model.textures ?: [:]
+                def references = new LinkedHashSet<String>(model.required ?: [])
+                if (model.generated) {
+                    if (!textures.containsKey('layer0')) problems.add('Generated item has no layer0: ' + id)
+                    textures.keySet().findAll { it.startsWith('layer') }.each { references.add('#' + it) }
+                } else {
+                    model.elements?.each { element -> element.faces?.values()?.each { face ->
+                        if (face.texture) references.add(face.texture)
+                        else problems.add('Face has no texture: ' + id)
+                    } }
+                    if (!textures.containsKey('particle')) problems.add('Block model has no particle texture: ' + id)
+                    else references.add('#particle')
+                }
+                references.each { reference ->
+                    String value = reference
+                    def seen = new HashSet<String>()
+                    while (value != null && value.startsWith('#')) {
+                        if (!seen.add(value)) { problems.add('Texture alias cycle: ' + id + ' ' + reference); value = null; break }
+                        value = textures[value.substring(1)]
+                    }
+                    if (value == null) problems.add('Unresolved texture: ' + id + ' ' + reference)
+                    else checkSprite(value)
+                }
+            }
+        }
+        if (roots.empty) problems.add('No client models found in ' + artifact)
+        if (!problems.empty) throw new GradleException('Client asset verification failed:\n' + problems.collect { ' - ' + it }.join('\n'))
+        logger.lifecycle("PASS: ${roots.size()} root models, ${models.size()} model files, ${sprites.size()} sprites; all packaged textures resolve inside the 1.21.1 atlas directories.")
+    }
+}
+tasks.named('build') { dependsOn tasks.named('verifyClientAssets') }

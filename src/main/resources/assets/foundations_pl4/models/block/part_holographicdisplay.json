@@ -1,0 +1,6 @@
+{
+  "parent": "foundations_pl4:block/holographicdisplay",
+  "textures": {
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

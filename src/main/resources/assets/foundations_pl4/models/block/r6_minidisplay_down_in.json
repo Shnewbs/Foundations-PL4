@@ -1,0 +1,77 @@
+{
+  "textures": {
+    "0": "foundations_pl4:block/model/mini_display",
+    "particle": "foundations_pl4:block/data_cable"
+  },
+  "elements": [
+    {
+      "__comment": "Element",
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        1,
+        12
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            6,
+            6,
+            12
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            6
+          ],
+          "texture": "#0"
+        },
+        "north": {
+          "uv": [
+            8,
+            0,
+            16,
+            1
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            8,
+            1,
+            16,
+            2
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            8,
+            1,
+            16,
+            2
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            8,
+            1,
+            16,
+            2
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

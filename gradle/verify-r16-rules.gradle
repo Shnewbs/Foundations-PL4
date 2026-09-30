@@ -1,0 +1,7 @@
+def r16VerifierClasses = layout.buildDirectory.dir('r16VerifierClasses')
+tasks.register('compileR16RuleVerifier',JavaCompile){
+    source=files('src/main/java/net/foundations/pl4/core/TransferRules.java','tools/R16RegressionTests.java')
+    classpath=files();destinationDirectory=r16VerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyR16Rules',JavaExec){dependsOn tasks.named('compileR16RuleVerifier');classpath=files(r16VerifierClasses);mainClass='R16RegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyR16Rules')}

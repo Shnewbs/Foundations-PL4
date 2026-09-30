@@ -1,0 +1,7 @@
+def r13VerifierClasses = layout.buildDirectory.dir('r13VerifierClasses')
+tasks.register('compileR13RuleVerifier',JavaCompile){
+ source=files('src/main/java/net/foundations/pl4/core/DisplayElements.java','src/main/java/net/foundations/pl4/core/EditorChrome.java','src/main/java/net/foundations/pl4/core/PartItemDataRules.java','tools/R13RegressionTests.java')
+ classpath=files();destinationDirectory=r13VerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyR13Rules',JavaExec){dependsOn tasks.named('compileR13RuleVerifier');classpath=files(r13VerifierClasses);mainClass='R13RegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyR13Rules')}

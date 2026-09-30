@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "foundations_pl4:block/part_datacable"
+    },
+    "facing=up": {
+      "model": "foundations_pl4:block/part_datacable"
+    },
+    "facing=north": {
+      "model": "foundations_pl4:block/part_datacable"
+    },
+    "facing=south": {
+      "model": "foundations_pl4:block/part_datacable"
+    },
+    "facing=west": {
+      "model": "foundations_pl4:block/part_datacable"
+    },
+    "facing=east": {
+      "model": "foundations_pl4:block/part_datacable"
+    }
+  }
+}

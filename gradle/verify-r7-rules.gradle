@@ -1,0 +1,16 @@
+// Execute the SAME dependency-free topology planner called by NetworkEngine.
+def r7VerifierClasses=layout.buildDirectory.dir('r7-rule-verifier')
+tasks.register('compileR7RuleVerifier',JavaCompile){
+    source=files('tools/R7RegressionTests.java','src/main/java/net/foundations/pl4/Kind.java',
+        'src/main/java/net/foundations/pl4/core/MultipartTopology.java','src/main/java/net/foundations/pl4/core/ConnectionRules.java',
+        'src/main/java/net/foundations/pl4/core/DisjointSets.java')
+    classpath=files();destinationDirectory=r7VerifierClasses
+    javaCompiler=javaToolchains.compilerFor {languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR7Rules',JavaExec){
+    dependsOn tasks.named('compileR7RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r7VerifierClasses);mainClass='R7RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR7Rules')}

@@ -1,0 +1,14 @@
+def r6VerifierClasses=layout.buildDirectory.dir('r6-rule-verifier')
+tasks.register('compileR6RuleVerifier',JavaCompile){
+    source=files('tools/R6RegressionTests.java','src/main/java/net/foundations/pl4/core/DisplayFacing.java',
+        'src/main/java/net/foundations/pl4/core/EnergyValues.java','src/main/java/net/foundations/pl4/core/ReflectiveEnergyAccess.java')
+    classpath=files();destinationDirectory=r6VerifierClasses
+    javaCompiler=javaToolchains.compilerFor {languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR6Rules',JavaExec){
+    dependsOn tasks.named('compileR6RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r6VerifierClasses);mainClass='R6RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR6Rules')}

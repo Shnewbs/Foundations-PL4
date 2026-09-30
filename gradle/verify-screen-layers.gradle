@@ -1,0 +1,18 @@
+// JDK-only source guard. Does not start Minecraft or claim graphical validation.
+def screenVerifierClasses = layout.buildDirectory.dir('screen-layer-verifier')
+tasks.register('compileScreenLayerVerifier', JavaCompile) {
+    source = files('tools/VerifyScreenLayers.java')
+    classpath = files()
+    destinationDirectory = screenVerifierClasses
+    javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(21) }
+    options.release = 21
+}
+tasks.register('verifyScreenLayers', JavaExec) {
+    dependsOn tasks.named('compileScreenLayerVerifier')
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(21) }
+    classpath = files(screenVerifierClasses)
+    mainClass = 'VerifyScreenLayers'
+    args layout.projectDirectory.asFile.absolutePath
+    inputs.files(fileTree('src/main/java/net/foundations/pl4/client') { include '*.java' })
+}
+tasks.named('check') { dependsOn tasks.named('verifyScreenLayers') }

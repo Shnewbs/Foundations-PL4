@@ -1,0 +1,7 @@
+def r14VerifierClasses = layout.buildDirectory.dir('r14VerifierClasses')
+tasks.register('compileR14RuleVerifier',JavaCompile){
+ source=files('src/main/java/net/foundations/pl4/core/DisplayElements.java','src/main/java/net/foundations/pl4/core/EditorPalette.java','tools/R14RegressionTests.java')
+ classpath=files();destinationDirectory=r14VerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyR14Rules',JavaExec){dependsOn tasks.named('compileR14RuleVerifier');classpath=files(r14VerifierClasses);mainClass='R14RegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyR14Rules')}

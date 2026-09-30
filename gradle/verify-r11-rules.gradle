@@ -1,0 +1,7 @@
+def r11VerifierClasses = layout.buildDirectory.dir('r11VerifierClasses')
+tasks.register('compileR11RuleVerifier',JavaCompile){
+ source=files('src/main/java/net/foundations/pl4/core/DisplayElements.java','src/main/java/net/foundations/pl4/core/DynamicCanvasLayout.java','tools/R11RegressionTests.java')
+ classpath=files();destinationDirectory=r11VerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyR11Rules',JavaExec){dependsOn tasks.named('compileR11RuleVerifier');classpath=files(r11VerifierClasses);mainClass='R11RegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyR11Rules')}

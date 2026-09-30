@@ -1,0 +1,1755 @@
+{
+  "upstream_url": "https://github.com/SonarSonic/Sonar-Core",
+  "commit": "f5b64e033e2c07af55c2d5f474052fb83fba5ca1",
+  "upstream_version": "5.0.19",
+  "pl2_declared_dependency_version": "5.0.18",
+  "upstream_minecraft": "1.12.2",
+  "distinct_pl2_core_imports": 124,
+  "resolved_in_pulled_source": 123,
+  "runtime_external_dependency": false,
+  "runtime_namespace": "net.foundations.pl4",
+  "mod_id": "foundations_pl4",
+  "complete_legacy_api_port": false,
+  "imports": [
+    {
+      "original_import": "sonar.core.SonarCore",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/blocks/BlockSapphireOre.java",
+        "src/main/java/sonar/logistics/core/items/guide/ItemGuide.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageEmitterList.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ItemWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementRecipe.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayViewerHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/BlockHammerAir.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/base/PacketClientEmitters.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIElementPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/DisplayElementHelper.java",
+        "src/main/java/sonar/logistics/base/channels/PacketChannels.java",
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java",
+        "src/main/java/sonar/logistics/network/packets/PacketMonitoredList.java",
+        "src/main/java/sonar/logistics/network/packets/PacketConnectedDisplayUpdate.java",
+        "src/main/java/sonar/logistics/network/packets/PacketItemInteractionText.java",
+        "src/main/java/sonar/logistics/network/packets/PacketHolographicDisplayScaling.java",
+        "src/main/java/sonar/logistics/network/packets/PacketLocalProviders.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java",
+        "src/main/java/sonar/logistics/network/packets/PacketInventoryReader.java",
+        "src/main/java/sonar/logistics/network/packets/PacketNodeFilter.java",
+        "src/main/java/sonar/logistics/network/packets/PacketConnectedDisplayRemove.java",
+        "src/main/java/sonar/logistics/network/packets/PacketInfoUpdates.java",
+        "src/main/java/sonar/logistics/network/packets/PacketWirelessStorage.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIInvalidate.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIElement.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIConnectedDisplayValidate.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIStandardDisplayValidate.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIClick.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSISavedDataPacket.java"
+      ],
+      "source": "src/main/java/sonar/core/SonarCore.java",
+      "source_sha256": "d278c3261bf11dda6352b24c3f9cbe678ec9a182353bf853b63690aece43df90"
+    },
+    {
+      "original_import": "sonar.core.SonarCrafting",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Crafting.java"
+      ],
+      "source": "src/main/java/sonar/core/SonarCrafting.java",
+      "source_sha256": "89da14d644d58e51d4a17a2b982627568711ad9d3da8a2960390dd4889e54811"
+    },
+    {
+      "original_import": "sonar.core.SonarRegister",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Blocks.java",
+        "src/main/java/sonar/logistics/PL2Items.java"
+      ],
+      "source": "src/main/java/sonar/core/SonarRegister.java",
+      "source_sha256": "7d7311d6a162e4a2cc01d2f5cb9e619f2d5d2552f9d7280b5b2589b56269088c"
+    },
+    {
+      "original_import": "sonar.core.api.IFlexibleContainer",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/items/ContainerInventoryReader.java"
+      ],
+      "source": "src/main/java/sonar/core/api/IFlexibleContainer.java",
+      "source_sha256": "c51059e96d3e9d2b6bd28c66300ad38319d5306888450f81324c1b5d129d398f"
+    },
+    {
+      "original_import": "sonar.core.api.IFlexibleGui",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/ItemGuide.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ItemWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileDataReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileDataEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractListReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/TileArray.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/UnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonEmptyInfo.java",
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/tiles/IDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/api/IFlexibleGui.java",
+      "source_sha256": "73e86fbe2f0428749109ecd3d4e193afaed6e53c97dce5e90699d9510651d95b"
+    },
+    {
+      "original_import": "sonar.core.api.IRegistryObject",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/statements/comparators/ILogicComparator.java"
+      ],
+      "source": "src/main/java/sonar/core/api/IRegistryObject.java",
+      "source_sha256": "00916c04b9285134212faa83d7b6e440ccf4de35587368431e04155e344da059"
+    },
+    {
+      "original_import": "sonar.core.api.SonarAPI",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/DummyFluidHandler.java"
+      ],
+      "source": "src/main/java/sonar/core/api/SonarAPI.java",
+      "source_sha256": "cab83634025a3d3d4dc6d9d83174269767a8ca6ced0fbf87f6cb699c1f7378ff"
+    },
+    {
+      "original_import": "sonar.core.api.StorageSize",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/FluidChangeableList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/ItemChangeableList.java"
+      ],
+      "source": "src/main/java/sonar/core/api/StorageSize.java",
+      "source_sha256": "f8df202b04678587cebd5a1ce6b9c8291faccc813efc4dc41065e9480ddc9928"
+    },
+    {
+      "original_import": "sonar.core.api.energy.ITileEnergyHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/handling/EnergyNetworkHandler.java"
+      ],
+      "source": "src/main/java/sonar/core/api/energy/ITileEnergyHandler.java",
+      "source_sha256": "637b00168840c6db7f0590062ab439468b86ae39b8f62862fabd592d7f843451"
+    },
+    {
+      "original_import": "sonar.core.api.energy.StoredEnergyStack",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/handling/EnergyNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/energy/MonitoredEnergyStack.java",
+        "src/main/java/sonar/logistics/base/channels/NodeConnection.java"
+      ],
+      "source": "src/main/java/sonar/core/api/energy/StoredEnergyStack.java",
+      "source_sha256": "9908dea9ed7ffbae2a96787d8ae5ac9144b10fdadc641442b21d7a74b34952e2"
+    },
+    {
+      "original_import": "sonar.core.api.fluids.ISonarFluidHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidHelper.java"
+      ],
+      "source": "src/main/java/sonar/core/api/fluids/ISonarFluidHandler.java",
+      "source_sha256": "22c811dba40204a2e3185bb3187fe4bc5cc1d2bb6aaa6cd4cd6a6680d87f64b4"
+    },
+    {
+      "original_import": "sonar.core.api.fluids.StoredFluidStack",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/ContainerFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/GuiFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/DummyFluidHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkChannels.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/GSIInteractionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIClickPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/FluidChangeableList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/InfoNetworkFluid.java",
+        "src/main/java/sonar/logistics/base/channels/NodeConnection.java",
+        "src/main/java/sonar/logistics/base/filters/IFluidFilter.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/filters/types/FluidFilter.java",
+        "src/main/java/sonar/logistics/integration/extremereactors/ExtremeReactorsCoolantProvider.java",
+        "src/main/java/sonar/logistics/network/sync/SyncFilterList.java"
+      ],
+      "source": "src/main/java/sonar/core/api/fluids/StoredFluidStack.java",
+      "source_sha256": "1874dc37c2e7586c7f0082a8d75000e0fe10514583ec940dde28111fdbd2a8fd"
+    },
+    {
+      "original_import": "sonar.core.api.inventories.StoredItemStack",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ContainerStorageViewer.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/ExampleConfigurations.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemNetworkChannels.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/GSIInteractionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIClickPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/ItemStackElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/MonitoredItemStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/ItemChangeableList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/energy/MonitoredEnergyStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredBlockCoords.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java",
+        "src/main/java/sonar/logistics/integration/ae2/AE2CraftingProvider.java"
+      ],
+      "source": "src/main/java/sonar/core/api/inventories/StoredItemStack.java",
+      "source_sha256": "a73f1691f72eafc61e9239c433d0f9daca67b68a706d26c4acdc3813849fb1c0"
+    },
+    {
+      "original_import": "sonar.core.api.machines.IProcessMachine",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/calculator/CalculatorInfoRegistry.java"
+      ],
+      "source": "src/main/java/sonar/core/api/machines/IProcessMachine.java",
+      "source_sha256": "353c05ffd73ce3c4f0bc0bb449b4fdf5328c38ea43796172ae05d1082ee1a493"
+    },
+    {
+      "original_import": "sonar.core.api.nbt.INBTSyncable",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2ASMLoader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/ElementStorage.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/actions/IDisplayAction.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/references/InfoReference.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/ClockInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/base/IDisplayElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/InfoProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledStringLine.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/SonarStyling.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/IStyledString.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledString.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java",
+        "src/main/java/sonar/logistics/base/filters/INodeFilter.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorUUID.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/IInfoError.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorTileUUID.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorAbstractUUID.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ILogicListSorter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/info/InfoUUID.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/info/IInfo.java"
+      ],
+      "source": "src/main/java/sonar/core/api/nbt/INBTSyncable.java",
+      "source_sha256": "1304b31da642b4e92bd8505d5364bda88936e3424e831c276e199110325dca3e"
+    },
+    {
+      "original_import": "sonar.core.api.utils.ActionType",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/DummyFluidHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidHelper.java",
+        "src/main/java/sonar/logistics/base/data/generators/items/TileInventoryAE2.java"
+      ],
+      "source": "src/main/java/sonar/core/api/utils/ActionType.java",
+      "source_sha256": "531524db0264ae759d9a88030c2bfe944caff89fab0d1368572f53554dcd40e3"
+    },
+    {
+      "original_import": "sonar.core.api.utils.BlockCoords",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/transceiver/ItemWirelessItemTransceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayInfoReferenceHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/AbstractConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/energy/MonitoredEnergyStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredBlockCoords.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java",
+        "src/main/java/sonar/logistics/base/channels/BlockConnection.java",
+        "src/main/java/sonar/logistics/base/channels/ChannelList.java",
+        "src/main/java/sonar/logistics/base/utils/LogisticsHelper.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayBlockSelection.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorTileUUID.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/transceivers/IRangeTransceiver.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/transceivers/ITileTransceiver.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java",
+        "src/main/java/sonar/logistics/network/packets/PacketConnectedDisplayUpdate.java"
+      ],
+      "source": "src/main/java/sonar/core/api/utils/BlockCoords.java",
+      "source_sha256": "c923380bc4b28ecdcbf9637cec5599610eda3db8614803d4ac4dd6ce51dbb230"
+    },
+    {
+      "original_import": "sonar.core.api.utils.BlockInteractionType",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/PL2Client.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/BlockClickableDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/BlockAbstractDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/DisplayVectorHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/GSIInteractionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/DisplayScreenClick.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/IGSIMode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/GSISelectionMode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/GSIGridMode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/GSIModeDefault.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/EntityHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/BlockLargeDisplay.java",
+        "src/main/java/sonar/logistics/base/events/PL2Events.java"
+      ],
+      "source": "src/main/java/sonar/core/api/utils/BlockInteractionType.java",
+      "source_sha256": "7eba2a50fd9ac778e125f939477efa90a9a271b4c687544fc2381570dc772511"
+    },
+    {
+      "original_import": "sonar.core.client.gui.GuiBlockRenderer3D",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/Logistics3DRenderer.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/GuiBlockRenderer3D.java",
+      "source_sha256": "a217cf74b532c04cf15ba9bf688c78bd3667a654f9aa3d7163abe0cef07f1c6b"
+    },
+    {
+      "original_import": "sonar.core.client.gui.GuiGridElement",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/GuiGridElement.java",
+      "source_sha256": "df76c33e4cb7af2301f2c294b706a669ba2e973f372df3c0990d020ebe434b07"
+    },
+    {
+      "original_import": "sonar.core.client.gui.GuiHelpOverlay",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/GuiFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/GuiInfoReader.java",
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/gui/buttons/LogisticsButton.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/HelpOverlays.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/GuiHelpOverlay.java",
+      "source_sha256": "8fa611251945a0b57b59a74ec3841612ba9b13c8f6136adf1f653efd03075da9"
+    },
+    {
+      "original_import": "sonar.core.client.gui.GuiSonar",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementHammerRecipe.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/Element3DRenderer.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementCraftingRecipe.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonElement.java",
+        "src/main/java/sonar/logistics/base/filters/INodeFilter.java",
+        "src/main/java/sonar/logistics/base/gui/buttons/LogisticsButton.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayOperatorInfo.java",
+        "src/main/java/sonar/logistics/base/requests/colour/TextColourButton.java",
+        "src/main/java/sonar/logistics/base/filters/types/OreDictFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/FluidFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/GuiSonar.java",
+      "source_sha256": "e8eaf089c9de3bb0f7b41beba4756a2a221210eb556243a0fe3a8e7b6114d915"
+    },
+    {
+      "original_import": "sonar.core.client.gui.GuiSonarTile",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/GuiHammer.java",
+        "src/main/java/sonar/logistics/base/gui/GuiLogistics.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/GuiSonarTile.java",
+      "source_sha256": "6bd6215d5c8911bee89d5e93508036a4af84e13f2a2fd25e1a10b55bbbcf54cb"
+    },
+    {
+      "original_import": "sonar.core.client.gui.HelpOverlay",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/HelpOverlays.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/HelpOverlay.java",
+      "source_sha256": "255c19f726004b4f24a46081ef64abd8e041bbc8c8e4390e4feccadd86759e3c"
+    },
+    {
+      "original_import": "sonar.core.client.gui.IGridGui",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiEditElementsList.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid2.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/IGridGui.java",
+      "source_sha256": "bd8e8dcefe165199278ad4598d52d982aac26e6a7d6b129e30968901e6f20a92"
+    },
+    {
+      "original_import": "sonar.core.client.gui.IGuiOrigin",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/UnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonEmptyInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluidlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/ElementNetworkFluidGrid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/ElementNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/NetworkItemElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/NetworkItemGridElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItemlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/ElementProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/GuiEditProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledTitleElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledWrappedTextElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiEditStyledStrings.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/GuiHolographicRescaling.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/IGuiOrigin.java",
+      "source_sha256": "f5c17cf7cfdf3d13498fa9eda40a664e30384feb3f2d69bb85f6127731c75900"
+    },
+    {
+      "original_import": "sonar.core.client.gui.SelectionGrid",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiEditElementsList.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid2.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/SelectionGrid.java",
+      "source_sha256": "ffd941696523eae26e6854a97e53003510eb53ba2bad3856389008d6e3379a2b"
+    },
+    {
+      "original_import": "sonar.core.client.gui.SonarButtons.AnimatedButton",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/gui/buttons/LogisticsButton.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/SonarButtons.java",
+      "source_sha256": "532b3246d00c3661e35882f34c9da56a291bf1a8ec3511f70f8c50757de52978"
+    },
+    {
+      "original_import": "sonar.core.client.gui.SonarButtons.ImageButton",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionList.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/SonarButtons.java",
+      "source_sha256": "532b3246d00c3661e35882f34c9da56a291bf1a8ec3511f70f8c50757de52978"
+    },
+    {
+      "original_import": "sonar.core.client.gui.SonarTextField",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/GuiGuide.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/GuiWirelessEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/GuiFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/GuiNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiAbstractEditContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluidlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItemlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiEditStyledStrings.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiStyledStringFunctions.java",
+        "src/main/java/sonar/logistics/base/requests/hyperlink/GuiHyperlinkAdd.java",
+        "src/main/java/sonar/logistics/base/requests/colour/GuiColourSelection.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/SonarTextField.java",
+      "source_sha256": "52be92f424614b80df4ce0b8d8f846dd3c16fb6b6923b46f5516f02c8639715c"
+    },
+    {
+      "original_import": "sonar.core.client.gui.widgets.ScrollerOrientation",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluidlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItemlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/GuiEditProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiEditStyledStrings.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/GuiHolographicRescaling.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/widgets/ScrollerOrientation.java",
+      "source_sha256": "a27088294b363da16678160fa5a973951d9adc5f9aedbb68c7c82f47cf065041"
+    },
+    {
+      "original_import": "sonar.core.client.gui.widgets.SonarScroller",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiAbstractEditContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiEditElementsList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluidlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItemlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/GuiEditProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiEditStyledStrings.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/GuiHolographicRescaling.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionList.java",
+        "src/main/java/sonar/logistics/base/gui/GuiLogistics.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid2.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid.java",
+        "src/main/java/sonar/logistics/base/requests/colour/GuiColourSelection.java",
+        "src/main/java/sonar/logistics/base/requests/info/GuiInfoSource.java"
+      ],
+      "source": "src/main/java/sonar/core/client/gui/widgets/SonarScroller.java",
+      "source_sha256": "9b36fd4d0037d2e192d0dd91d2fe620ea95fcb3c0f60e2284073994a82528fc8"
+    },
+    {
+      "original_import": "sonar.core.common.block.SonarBlockContainer",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/BlockHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/common/block/SonarBlockContainer.java",
+      "source_sha256": "a3681e09569b7fdc5bf06aef27e5e43ada797742050bee4d156d8affbc4f201b"
+    },
+    {
+      "original_import": "sonar.core.common.block.SonarMaterials",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/BlockLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/BlockHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/common/block/SonarMaterials.java",
+      "source_sha256": "72512eaf2aa89889a0e107897d63102ee69f32e1c91d3a0be7b13934d8ab4ca9"
+    },
+    {
+      "original_import": "sonar.core.common.block.properties.SonarProperties",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/ExampleConfigurations.java",
+        "src/main/java/sonar/logistics/core/tiles/base/BlockLogisticsSided.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/BlockRedstoneNode.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/BlockClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/BlockRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/render/ClockRenderer.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/BlockAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/BlockTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/BlockClickableDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/BlockAbstractDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/BlockLargeDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/common/block/properties/SonarProperties.java",
+      "source_sha256": "ff61acc16eff552ffb4e5c526da458be844e7f041cd8215c4818b11c7116dd1a"
+    },
+    {
+      "original_import": "sonar.core.common.item.SonarItem",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/ItemGuide.java",
+        "src/main/java/sonar/logistics/core/items/transceiver/ItemWirelessItemTransceiver.java",
+        "src/main/java/sonar/logistics/core/items/transceiver/ItemWirelessEntityTransceiver.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ItemWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java"
+      ],
+      "source": "src/main/java/sonar/core/common/item/SonarItem.java",
+      "source_sha256": "32ff0bee6d6ada7b36e736b77932495a459491c4837fdee796ac734314937aed"
+    },
+    {
+      "original_import": "sonar.core.common.tileentity.TileEntityInventory",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/common/tileentity/TileEntityInventory.java",
+      "source_sha256": "e166747e6af49d57544813fc2aeb334589fd08caba42cc169ff0d76033365efd"
+    },
+    {
+      "original_import": "sonar.core.handlers.energy.EnergyTransferHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/handling/EnergyNetworkHandler.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/energy/EnergyTransferHandler.java",
+      "source_sha256": "73e9711bd7467d4017f1f3fb36763c1362dd9fe7765e63d75fdfe1536c047aa3"
+    },
+    {
+      "original_import": "sonar.core.handlers.fluids.FluidHelper.ITankFilter",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidHelper.java",
+        "src/main/java/sonar/logistics/base/filters/ITransferFilteredTile.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/fluids/FluidHelper.java",
+      "source_sha256": "808e0b106f905b0e252cfd72f17a3652f30d198b0f1518b58c7fe7bf1475c960"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.ItemStackHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/ItemStackHelper.java",
+      "source_sha256": "7d56958b4e1b0b1ba8b425678c93e80eb132d2e72f1d27647952a2288c6065a6"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.SonarInventory",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/TileArray.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/SonarInventory.java",
+      "source_sha256": "654e7929cbbefec33199dbc14f91b1f43b5e3401e5b079a134948b0f93d0488d"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.TransferSlotsManager",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/ContainerHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/TransferSlotsManager.java",
+      "source_sha256": "057c271cdcd16b55451fab5f23d53c1724e446cdde56ead2a93cfa187188ddba"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.containers.ContainerMultipartSync",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/GuiClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/ContainerAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/GuiWirelessEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/ContainerFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/ContainerInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/ContainerEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/ContainerInfoReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/ContainerArray.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/GuiNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/GuiEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiAbstractEditScreen.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiUnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/UnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonEmptyInfo.java",
+        "src/main/java/sonar/logistics/base/channels/ContainerChannelSelection.java",
+        "src/main/java/sonar/logistics/base/filters/ContainerFilterList.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/containers/ContainerMultipartSync.java",
+      "source_sha256": "98ce1ca732bc5c8d497d7e107cc142f2085fa68acaeec84a5b2f61076bf252bb"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.containers.ContainerSync",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/ContainerHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/containers/ContainerSync.java",
+      "source_sha256": "6e5ebc381f3a66d721b9c60e6005938034220818137cd69253664c83c9047660"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.handling.EnumFilterType",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/handling/EnumFilterType.java",
+      "source_sha256": "27da3ea35644699fe483bf0e52bdfdfe20c27ef62fea7c169e77fb614166d27f"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.handling.ItemTransferHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/handling/TransferNetworkChannels.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/handling/ItemTransferHandler.java",
+      "source_sha256": "99f2abff761d522b39951c8386389609c164f6c4dfca5417f80cbbdf02b45014"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.handling.ItemTransferHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemNetworkHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemHelper.java",
+        "src/main/java/sonar/logistics/base/channels/EntityConnection.java",
+        "src/main/java/sonar/logistics/base/data/generators/items/TileInventoryForge.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/handling/ItemTransferHelper.java",
+      "source_sha256": "e40ae3572983c27e6848f90325c5e312771addb788b158f593333c7e7bd48ef0"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.handling.methods.TransferMethodSimple",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/handling/TransferNetworkChannels.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/handling/methods/TransferMethodSimple.java",
+      "source_sha256": "4e8fe1dded4bfd0f1852f39e651bdd7b1fa88dc5d5a9d0fb2e9c9be18ceee22b"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.slots.SlotBlockedInventory",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/ContainerHammer.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/slots/SlotBlockedInventory.java",
+      "source_sha256": "3dc77da916fa50313e50d09913bab9d862775bfc6ed32f82c3830fe20c82bad4"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.slots.SlotLimiter",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ContainerStorageViewer.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/slots/SlotLimiter.java",
+      "source_sha256": "4263f968f8f6f58a52b36f76d67a659cf6fc66ff2ea3dfe1e1411caf1943134f"
+    },
+    {
+      "original_import": "sonar.core.handlers.inventories.slots.SlotList",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/ContainerFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/ContainerInventoryReader.java"
+      ],
+      "source": "src/main/java/sonar/core/handlers/inventories/slots/SlotList.java",
+      "source_sha256": "f76d3ce544f263bf6d5ca3d77a5c13f022b395d0728b61c780ba017cc7430772"
+    },
+    {
+      "original_import": "sonar.core.helpers.ASMLoader",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2ASMLoader.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/ASMLoader.java",
+      "source_sha256": "515955d970c1b86523364092a2ec4f6b1f3b74777f865094c6fdec7d426ce875"
+    },
+    {
+      "original_import": "sonar.core.helpers.ChunkHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayViewerHandler.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/ChunkHelper.java",
+      "source_sha256": "6c4aa276242a95e39d535906d0ae2e7c24255923e5535edf04a3d895a87abdc2"
+    },
+    {
+      "original_import": "sonar.core.helpers.FontHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/GuidePageHelper.java",
+        "src/main/java/sonar/logistics/core/items/guide/GuiGuide.java",
+        "src/main/java/sonar/logistics/core/items/transceiver/ItemWirelessItemTransceiver.java",
+        "src/main/java/sonar/logistics/core/items/transceiver/ItemWirelessEntityTransceiver.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageEmitterList.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ItemWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/BaseInfoPage.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/ExamplesPages.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/GeneralPage.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/BaseItemPage.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementHammerRecipe.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementCraftingRecipe.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/BlockDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/GuiClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/GuiHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/GuiDataReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/GuiAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/GuiRedstoneReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/GuiWirelessEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/GuiInfoReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/GuiArray.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/GuiNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/GuiEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoRenderHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiEditElementsList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/GSIElementSelection.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/DisplayElementHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkEnergyListElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/InfoError.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/base/IDisplayElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/GuiEditNetworkFluidlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/InfoNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItemlist.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/GuiEditNetworkItem.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/energy/MonitoredEnergyStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/GuiEditProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledStringLine.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiStyledStringFunctions.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileAbstractHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/GuiHolographicRescaling.java",
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/gui/buttons/LogisticsButton.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayOperatorInfo.java",
+        "src/main/java/sonar/logistics/base/requests/reference/GuiInfoReferenceSource.java",
+        "src/main/java/sonar/logistics/base/requests/hyperlink/GuiHyperlinkAdd.java",
+        "src/main/java/sonar/logistics/base/requests/colour/GuiColourSelection.java",
+        "src/main/java/sonar/logistics/base/requests/info/GuiInfoSource.java",
+        "src/main/java/sonar/logistics/base/filters/types/OreDictFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/FluidFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/FontHelper.java",
+      "source_sha256": "570e32c4650cf5526f6eed687d4ea016ab3ac9b686c364b87baa23ba0a084639"
+    },
+    {
+      "original_import": "sonar.core.helpers.FunctionHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/ServerInfoHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayViewerHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayInfoReferenceHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/AbstractConnectionHandler.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/FunctionHelper.java",
+      "source_sha256": "35d7782f9161159de03938d2cbb6d575bf7c1972da8ed0981908e4fde14968af"
+    },
+    {
+      "original_import": "sonar.core.helpers.ListHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayViewerHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayInfoReferenceHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/network/RedstoneNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/handling/RedstoneConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/LogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/CableConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/ElementStorage.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledTextElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledStringLine.java",
+        "src/main/java/sonar/logistics/base/events/LogisticsEventHandler.java",
+        "src/main/java/sonar/logistics/base/requests/reference/GuiInfoReferenceSource.java",
+        "src/main/java/sonar/logistics/base/requests/info/GuiInfoSource.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorDestroyed.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorDisconnected.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/ListHelper.java",
+      "source_sha256": "7e03b9715f3b60a72d09d64ec29786411feda1e7dc1238a2cd52afa60cef4045"
+    },
+    {
+      "original_import": "sonar.core.helpers.NBTHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/base/PacketClientEmitters.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractListReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/handling/InfoHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/DisplayVectorHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/DisplayScreenClick.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIClickPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIElementPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayGSISaveHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/references/InfoReference.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileAbstractHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileAdvancedHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java",
+        "src/main/java/sonar/logistics/base/utils/worlddata/GSIData.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java",
+        "src/main/java/sonar/logistics/network/packets/PacketHolographicDisplayScaling.java",
+        "src/main/java/sonar/logistics/network/packets/PacketLocalProviders.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/NBTHelper.java",
+      "source_sha256": "dcdcd54c52471ba1887f60b5f7fedc240196abb1413b848cb168ec0cdc57b770"
+    },
+    {
+      "original_import": "sonar.core.helpers.NBTHelper.SyncType",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2ASMLoader.java",
+        "src/main/java/sonar/logistics/base/ServerInfoHandler.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ContainerStorageViewer.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/LogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/base/PacketClientEmitters.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/ContainerFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/FluidSorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/InventorySorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/EnergySorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/InfoSorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/handling/InfoHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/TileArray.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiUnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIClickPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIElementPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementContainer.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/DisplayElementList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/storage/ElementStorage.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/actions/ClickHyperlink.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/references/InfoReference.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/DisplayElementHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/AbstractInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/AbstractDisplayElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkListElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkGridElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/UnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/ItemStackElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/LogicInfoList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/InfoError.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/ElementNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/NetworkItemElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/ElementProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/InfoProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledTextElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledStringLine.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/SonarStyling.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledString.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/TileLargeDisplayScreen.java",
+        "src/main/java/sonar/logistics/base/listeners/ListenerType.java",
+        "src/main/java/sonar/logistics/base/channels/PacketChannels.java",
+        "src/main/java/sonar/logistics/base/channels/ContainerChannelSelection.java",
+        "src/main/java/sonar/logistics/base/channels/ChannelList.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorUUID.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorTileUUID.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorDisconnected.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorAbstractUUID.java",
+        "src/main/java/sonar/logistics/base/filters/types/OreDictFilter.java",
+        "src/main/java/sonar/logistics/base/utils/worlddata/ConnectedDisplayData.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/info/InfoUUID.java",
+        "src/main/java/sonar/logistics/network/sync/SyncTileMessages.java",
+        "src/main/java/sonar/logistics/network/sync/SyncFilterList.java",
+        "src/main/java/sonar/logistics/network/sync/SyncMonitoredType.java",
+        "src/main/java/sonar/logistics/network/sync/SyncStatementList.java",
+        "src/main/java/sonar/logistics/network/packets/PacketMonitoredList.java",
+        "src/main/java/sonar/logistics/network/packets/PacketConnectedDisplayUpdate.java",
+        "src/main/java/sonar/logistics/network/packets/PacketLocalProviders.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java",
+        "src/main/java/sonar/logistics/network/packets/PacketNodeFilter.java",
+        "src/main/java/sonar/logistics/network/packets/PacketInfoUpdates.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIConnectedDisplayValidate.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIStandardDisplayValidate.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSISavedDataPacket.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/NBTHelper.java",
+      "source_sha256": "dcdcd54c52471ba1887f60b5f7fedc240196abb1413b848cb168ec0cdc57b770"
+    },
+    {
+      "original_import": "sonar.core.helpers.RayTraceHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/BlockRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/BlockDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/BlockClickableDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/RayTraceHelper.java",
+      "source_sha256": "25d84a7db083dab18b565d326ac88920e35009c5fcc30542be87c4a884f1aa31"
+    },
+    {
+      "original_import": "sonar.core.helpers.RenderHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/GuidePageHelper.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/BaseInfoPage.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/pages/BaseItemPage.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/IGuidePageElement.java",
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementItem.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/render/ClockRenderer.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/render/RenderHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/render/RenderArray.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoRenderHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/DisplayElementHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkListElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkGridElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/NetworkEnergyListElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/ItemStackElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/buttons/ButtonElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/NetworkItemElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/NetworkItemGridElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledTitleElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/StyledTextElement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledStringLine.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/styling/StyledString.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiEditWrappedStyledString.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/gui/GuiStyledStringFunctions.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayBlockSelection.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayItemInteraction.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayOperatorInfo.java",
+        "src/main/java/sonar/logistics/base/requests/colour/TextColourButton.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/RenderHelper.java",
+      "source_sha256": "f44f2d54cc62d20fff34771a89feffa033f2fa44fada097e5d62030a54e8e102"
+    },
+    {
+      "original_import": "sonar.core.helpers.SonarHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Properties.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/progress/GuiEditProgressBar.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/DisplayConnections.java",
+        "src/main/java/sonar/logistics/base/listeners/ListenerType.java",
+        "src/main/java/sonar/logistics/base/gui/buttons/LogisticsButton.java"
+      ],
+      "source": "src/main/java/sonar/core/helpers/SonarHelper.java",
+      "source_sha256": "e95717ac5fd10a133396524f24c5487b66a7fc359624fa3354d3c1c8bc8f42a7"
+    },
+    {
+      "original_import": "sonar.core.integration.AE2Helper",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/data/generators/items/TileInventoryAE2.java",
+        "src/main/java/sonar/logistics/integration/ae2/AE2CraftingProvider.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/AE2Helper.java",
+      "source_sha256": "3d00003df7637da71d6b3fbc5a9d7475367770494d5d75d9397735fd1f5fda7f"
+    },
+    {
+      "original_import": "sonar.core.integration.crafttweaker.SonarAddRecipe",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/crafttweaker/CraftTweakerIntegration.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/crafttweaker/SonarAddRecipe.java",
+      "source_sha256": "60277978342e0dc22bfbcfd9d72bf3f5f13ecfc94829bc12ef84f856adef31f8"
+    },
+    {
+      "original_import": "sonar.core.integration.crafttweaker.SonarRemoveRecipe",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/crafttweaker/CraftTweakerIntegration.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/crafttweaker/SonarRemoveRecipe.java",
+      "source_sha256": "24bfd1734f470f9ab4885e93049cba6cac7b92959100d6cf38eaf45fbec51eb2"
+    },
+    {
+      "original_import": "sonar.core.integration.jei.JEISonarCategory",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/jei/JEISonarCategory.java",
+      "source_sha256": "a82c8224bb947fabf17772b093368c89c1826bc910c37945b76861c429823bc9"
+    },
+    {
+      "original_import": "sonar.core.integration.jei.JEISonarMapper",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/jei/JEISonarMapper.java",
+      "source_sha256": "cb83cf2d503e27c821b8f917b2ffdf27ea094bdb19a1955c90cb54fd4b9157aa"
+    },
+    {
+      "original_import": "sonar.core.integration.jei.JEISonarPlugin",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/PracticalLogisticsJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/jei/JEISonarPlugin.java",
+      "source_sha256": "6af424a03bc19d28d7b3d8b478e9f8deb9c6a6c36781b56fedb878da78e82264"
+    },
+    {
+      "original_import": "sonar.core.integration.jei.JEISonarProvider",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/PracticalLogisticsJEI.java",
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/jei/JEISonarProvider.java",
+      "source_sha256": "a3887b3b0c11ea06eca43cf2d41097b52cb46f9e13f72f897e635e1c4bce2955"
+    },
+    {
+      "original_import": "sonar.core.integration.jei.JEISonarRecipe",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/jei/JEISonarRecipe.java",
+      "source_sha256": "092581d9e78decafeec2df001308e44f9975cc94dc0eee91632a69ce1e641fc9"
+    },
+    {
+      "original_import": "sonar.core.integration.multipart.BlockSonarMultipart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/BlockLogistics.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/multipart/BlockSonarMultipart.java",
+      "source_sha256": "f52526ea5e37ef679a0a180ff280f308f6890a48d7d56789ceb2874dee0cbe13"
+    },
+    {
+      "original_import": "sonar.core.integration.multipart.SonarMultipartHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/handling/RedstoneConnectionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/CableConnectionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileDataEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/BlockAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractListReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/TileArray.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/multipart/SonarMultipartHelper.java",
+      "source_sha256": "7ffc52de6db900c97321e02a9a5b8fe5f8f6f79176a8095a1be76c869f290dce"
+    },
+    {
+      "original_import": "sonar.core.integration.multipart.TileSonarMultipart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/BlockLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/TileRedstoneNode.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/elements/UnconfiguredInfoElement.java",
+        "src/main/java/sonar/logistics/base/channels/ContainerChannelSelection.java",
+        "src/main/java/sonar/logistics/base/filters/ContainerFilterList.java"
+      ],
+      "source": "src/main/java/sonar/core/integration/multipart/TileSonarMultipart.java",
+      "source_sha256": "8cba33a7bc27c83cdf8814f5e92115ec11eba77879ed6072ce21b1b889757b32"
+    },
+    {
+      "original_import": "sonar.core.listener.ISonarListenable",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/network/EmptyRedstoneNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/EmptyLogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/handling/AbstractWirelessManager.java",
+        "src/main/java/sonar/logistics/base/listeners/ILogicListenable.java",
+        "src/main/java/sonar/logistics/base/listeners/PL2ListenerList.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/IWirelessManager.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/redstone/network/IRedstoneNetwork.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/data/network/ILogisticsNetwork.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/ISonarListenable.java",
+      "source_sha256": "615d43e5cf247196833fb6639feab81447711ee9d8df80244fcbd1221a0c16cb"
+    },
+    {
+      "original_import": "sonar.core.listener.ISonarListener",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/redstone/network/IRedstoneNetwork.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/data/network/ILogisticsNetwork.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/tiles/IDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/ISonarListener.java",
+      "source_sha256": "2c9b89d0950e592e7bf99d90cea6723ef8368134db3255f207bb72dcc0a189e3"
+    },
+    {
+      "original_import": "sonar.core.listener.ListenableList",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/network/RedstoneNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/network/EmptyRedstoneNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/EmptyLogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/LogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/handling/AbstractWirelessManager.java",
+        "src/main/java/sonar/logistics/base/listeners/PL2ListenerList.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/ListenableList.java",
+      "source_sha256": "b24ca94e2a168463e6e1b4f5de08f24db5da37cec862bbf2e6fc550f0ce1c59b"
+    },
+    {
+      "original_import": "sonar.core.listener.ListenerList",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/listeners/PL2ListenerList.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/ListenerList.java",
+      "source_sha256": "3064a814fb93aff2c6f471f32b8e4d55a42286d09f8afdaa0a04003230fb79ff"
+    },
+    {
+      "original_import": "sonar.core.listener.ListenerTally",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/network/EmptyRedstoneNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/network/EmptyLogisticsNetwork.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/handling/AbstractWirelessManager.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoPacketHelper.java",
+        "src/main/java/sonar/logistics/base/channels/handling/ListNetworkChannels.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/ListenerTally.java",
+      "source_sha256": "146d92e73a1b1289ed5b9f559b7a1c2e79a556421ca0d2622d6042bcc4a84b4d"
+    },
+    {
+      "original_import": "sonar.core.listener.PlayerListener",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/ServerInfoHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/handling/AbstractWirelessManager.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/InfoPacketHelper.java",
+        "src/main/java/sonar/logistics/base/listeners/ILogicListenable.java",
+        "src/main/java/sonar/logistics/base/listeners/PL2ListenerList.java",
+        "src/main/java/sonar/logistics/base/channels/handling/ListNetworkChannels.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/IWirelessManager.java"
+      ],
+      "source": "src/main/java/sonar/core/listener/PlayerListener.java",
+      "source_sha256": "b1542dd938fe9dd85190c3989b24455517ddf3e466db1f9e446e66252a1230bd"
+    },
+    {
+      "original_import": "sonar.core.network.FlexibleGuiHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/ItemWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/items/operator/ItemOperator.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/BlockHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/BlockHammerAir.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/GuiFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/GuiInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/info/GuiInfoReader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIClickPacketHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/packets/GSIElementPacketHelper.java",
+        "src/main/java/sonar/logistics/base/filters/GuiFilterList.java"
+      ],
+      "source": "src/main/java/sonar/core/network/FlexibleGuiHandler.java",
+      "source_sha256": "93df229c84deac944da45636d77a36ee78e4cf6c8a7428d9c738979867b38142"
+    },
+    {
+      "original_import": "sonar.core.network.PacketFlexibleCloseGui",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageEmitterList.java",
+        "src/main/java/sonar/logistics/base/channels/GuiChannelSelection.java"
+      ],
+      "source": "src/main/java/sonar/core/network/PacketFlexibleCloseGui.java",
+      "source_sha256": "33a36c2f1c6546e7ca12c17138663421a2042c3fda9ace9b5d751fca1d6d6720"
+    },
+    {
+      "original_import": "sonar.core.network.PacketMultipart",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/packets/PacketHolographicDisplayScaling.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java",
+        "src/main/java/sonar/logistics/network/packets/PacketInventoryReader.java",
+        "src/main/java/sonar/logistics/network/packets/PacketNodeFilter.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIStandardDisplayValidate.java"
+      ],
+      "source": "src/main/java/sonar/core/network/PacketMultipart.java",
+      "source_sha256": "acc5331161ca44d6a0253b4520fd668ecf3e9ebd34b07c0f9b6fcab4dc368730"
+    },
+    {
+      "original_import": "sonar.core.network.PacketMultipartHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/packets/PacketHolographicDisplayScaling.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java",
+        "src/main/java/sonar/logistics/network/packets/PacketInventoryReader.java",
+        "src/main/java/sonar/logistics/network/packets/PacketNodeFilter.java",
+        "src/main/java/sonar/logistics/network/packets/gsi/PacketGSIStandardDisplayValidate.java"
+      ],
+      "source": "src/main/java/sonar/core/network/PacketMultipartHandler.java",
+      "source_sha256": "67593f7b752e18652f27eadec87de8a62d524cdf660cd57d5c8ce3d8e9b4cad0"
+    },
+    {
+      "original_import": "sonar.core.network.PacketStackUpdate",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemHelper.java"
+      ],
+      "source": "src/main/java/sonar/core/network/PacketStackUpdate.java",
+      "source_sha256": "6b90dc964dc443ed35d61e2ca5b9bc0183a508bce696a2653a21b836356dc59f"
+    },
+    {
+      "original_import": "sonar.core.network.SonarClient",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/PL2Client.java"
+      ],
+      "source": "src/main/java/sonar/core/network/SonarClient.java",
+      "source_sha256": "f2fc839cf84df014365e0d5805c9f3f3c66912069e7cf393da79e9d291f31b82"
+    },
+    {
+      "original_import": "sonar.core.network.sync.*",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/RedstoneSignallerStatement.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java"
+      ],
+      "source": null,
+      "source_sha256": null
+    },
+    {
+      "original_import": "sonar.core.network.sync.BaseSyncListPart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/BaseInfo.java",
+        "src/main/java/sonar/logistics/base/filters/types/BaseFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/BaseSyncListPart.java",
+      "source_sha256": "7c49d70a04b2fc1ecee891398ab9e53713592f18b01cc807ee93380e63676fbc"
+    },
+    {
+      "original_import": "sonar.core.network.sync.ICheckableSyncPart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/BaseInfo.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/ICheckableSyncPart.java",
+      "source_sha256": "98a13397a97ed35c891470e1558bc0827473d9e7dfc2faf0196e2a635790b206"
+    },
+    {
+      "original_import": "sonar.core.network.sync.IDirtyPart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/IDirtyPart.java",
+      "source_sha256": "0af5fdd881d547404b48b0c681235cec7c0e6a9e5183972e702842f357f6648f"
+    },
+    {
+      "original_import": "sonar.core.network.sync.ISyncPart",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractListReader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/BaseInfo.java",
+        "src/main/java/sonar/logistics/base/channels/ChannelList.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/ISyncPart.java",
+      "source_sha256": "22020ea868b9b165433ffd4f52121bdfd30c4344b0c0cad17b852e922b83223b"
+    },
+    {
+      "original_import": "sonar.core.network.sync.ISyncableListener",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/BaseInfo.java",
+        "src/main/java/sonar/logistics/base/channels/ChannelList.java",
+        "src/main/java/sonar/logistics/base/filters/INodeFilter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/tiles/IDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/ISyncableListener.java",
+      "source_sha256": "93dd60524814f54c1788a177fe6e4e200b8325e677022883503f92e3683cfa4d"
+    },
+    {
+      "original_import": "sonar.core.network.sync.ObjectType",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/MasterInfoRegistry.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/ObjectType.java",
+      "source_sha256": "0f3f7eb7c491bf78a6f0e229dc36402b65c6e614fafa36fdbbd83c021fd55ea4"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncCoords",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredBlockCoords.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncCoords.java",
+      "source_sha256": "fca6a2bc90b1409440e6c34d42932dfb7f874cd4c1a383a4fbb20497e3f75b82"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncEnergyType",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncEnergyType.java",
+      "source_sha256": "32220d23d3d0bfa19e37a4345690894fa7b0d4e4b3f1a591760abf32d62cda0a"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncEnum",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileRedstoneReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java",
+        "src/main/java/sonar/logistics/base/filters/types/BaseFilter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/misc/signaller/IRedstoneSignaller.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncEnum.java",
+      "source_sha256": "11b848b44ae2b36726e4b2c9ae6cf39083e77e47d3197ee1db441df75a9caaa8"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncNBTAbstract",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/InfoNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/MonitoredItemStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/energy/MonitoredEnergyStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredBlockCoords.java",
+        "src/main/java/sonar/logistics/network/sync/SyncInfoUUID.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncNBTAbstract.java",
+      "source_sha256": "f6821cabf3ab87ff9baa1251cab2639169d320ef5b0bd907c5bfa105951cfedb"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncNBTAbstractList",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileAbstractReceiver.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/FluidFilter.java",
+        "src/main/java/sonar/logistics/api/core/tiles/misc/signaller/IRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/network/packets/PacketEmitterStatement.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncNBTAbstractList.java",
+      "source_sha256": "11c52b90973d69aa36f0307952225427d8064817f5eefbfa6cf9c11512610d37"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncPart",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/sync/SyncTileMessages.java",
+        "src/main/java/sonar/logistics/network/sync/SyncFilterList.java",
+        "src/main/java/sonar/logistics/network/sync/SyncMonitoredType.java",
+        "src/main/java/sonar/logistics/network/sync/SyncStatementList.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncPart.java",
+      "source_sha256": "3745c19d9d2fcad6005e84de2a5a060447fe0865e081867287de8e0a12da6ce9"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncTagType",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/TileRedstoneNode.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileRedstoneReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileRedstoneEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/array/TileArray.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/TileAbstractDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/LogicInfoList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/ClockInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/InfoNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/MonitoredItemStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredEntity.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileAbstractHolographicDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/TileLargeDisplayScreen.java",
+        "src/main/java/sonar/logistics/base/filters/types/ItemFilter.java",
+        "src/main/java/sonar/logistics/base/filters/types/BaseFilter.java",
+        "src/main/java/sonar/logistics/integration/ae2/AE2DriveInfo.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/ClientLocalProvider.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/emitters/ClientWirelessEmitter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncTagType.java",
+      "source_sha256": "12bda8110b76389612050818c61fc5fd19d4e82db8efc1c7749212412a62a627"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncTagType.BOOLEAN",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/ConnectedDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/TileLargeDisplayScreen.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncTagType.java",
+      "source_sha256": "12bda8110b76389612050818c61fc5fd19d4e82db8efc1c7749212412a62a627"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncTagType.INT",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/base/TileLogistics.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/TileRedstoneNode.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/DisplayGSI.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/TileAbstractDisplay.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/LogicInfoList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/fluids/InfoNetworkFluid.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/items/MonitoredItemStack.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/connected/TileLargeDisplayScreen.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncTagType.java",
+      "source_sha256": "12bda8110b76389612050818c61fc5fd19d4e82db8efc1c7749212412a62a627"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncTagType.STRING",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncTagType.java",
+      "source_sha256": "12bda8110b76389612050818c61fc5fd19d4e82db8efc1c7749212412a62a627"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncTagTypeList",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/filters/types/OreDictFilter.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncTagTypeList.java",
+      "source_sha256": "3ac6d34b79d1b1a1afbe866f0ccec869de26443e64562da32e9939a77af0d19a"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncUUID",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/wireless/base/TileAbstractWireless.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/channels/MonitoredEntity.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncUUID.java",
+      "source_sha256": "15284d5c6862a998c75099bf638e959fce9bb5e7174aa5002e95d2001ee949cd"
+    },
+    {
+      "original_import": "sonar.core.network.sync.SyncUnidentifiedObject",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java"
+      ],
+      "source": "src/main/java/sonar/core/network/sync/SyncUnidentifiedObject.java",
+      "source_sha256": "001390b794a44a5d8c96c2ff931df8ab654e184bdf40b1f74d4739bd647a9c56"
+    },
+    {
+      "original_import": "sonar.core.network.utils.ByteBufWritable",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageEmitterList.java",
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/network/packets/PacketWirelessStorage.java"
+      ],
+      "source": "src/main/java/sonar/core/network/utils/ByteBufWritable.java",
+      "source_sha256": "1b698b41058cfb94d49a9e18d193a91bfa1a405d24197d67bedf3198aab0d739"
+    },
+    {
+      "original_import": "sonar.core.network.utils.IByteBufTile",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/clock/TileClock.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/TileRedstoneSignaller.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileAbstractReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/receivers/TileDataReceiver.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileAbstractEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/wireless/emitters/TileDataEmitter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/node/TileNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/transfer/TileTransferNode.java",
+        "src/main/java/sonar/logistics/core/tiles/nodes/entity/TileEntityNode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/tiles/holographic/TileHolographicDisplay.java"
+      ],
+      "source": "src/main/java/sonar/core/network/utils/IByteBufTile.java",
+      "source_sha256": "a74cd4d79c5691bc9abd68ccd9ac2b754b2c9aaa1779baab3eeb07346494dc71"
+    },
+    {
+      "original_import": "sonar.core.recipes.DefinedRecipeHelper",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/HammerRecipes.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/DefinedRecipeHelper.java",
+      "source_sha256": "ed221fc3f330a2e9bfab3f96e48cb311e545586d9692e05723fa17f9434560e5"
+    },
+    {
+      "original_import": "sonar.core.recipes.ISonarRecipe",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementHammerRecipe.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/HammerRecipes.java",
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/ISonarRecipe.java",
+      "source_sha256": "c7b6ea6e38b8e47bf84e70805a0544512d3ed3d6b82041a4f2a7530acf2a8774"
+    },
+    {
+      "original_import": "sonar.core.recipes.RecipeHelperV2",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/TileEntityHammer.java",
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/RecipeHelperV2.java",
+      "source_sha256": "681db0e5c009f094edeb280d00934dd85f1733e709b66e1e89de3d708bbe69a3"
+    },
+    {
+      "original_import": "sonar.core.recipes.RecipeObjectType",
+      "used_by": [
+        "src/main/java/sonar/logistics/integration/jei/ForgingHammerJEI.java",
+        "src/main/java/sonar/logistics/integration/crafttweaker/CraftTweakerIntegration.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/RecipeObjectType.java",
+      "source_sha256": "db725bd906eb36a0ace70d7dd3c62c949de92c63f8dae88c91cb1fb2e7f4d09b"
+    },
+    {
+      "original_import": "sonar.core.recipes.RecipeOreStack",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/misc/hammer/HammerRecipes.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/RecipeOreStack.java",
+      "source_sha256": "9d0056f3d709a4401af6bda0fd4d8c10b2d949a0616c1b60f01df1472620ef96"
+    },
+    {
+      "original_import": "sonar.core.recipes.RecipeUtils",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/guide/pages/elements/ElementCraftingRecipe.java"
+      ],
+      "source": "src/main/java/sonar/core/recipes/RecipeUtils.java",
+      "source_sha256": "3daa9767493f0375edc4ff5606823f47de89db823d79129096be02a80d73e617"
+    },
+    {
+      "original_import": "sonar.core.registries.SonarRegistryBlock",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Blocks.java"
+      ],
+      "source": "src/main/java/sonar/core/registries/SonarRegistryBlock.java",
+      "source_sha256": "b512bf8eee32ad7aa26e1c0721a571a347e8810f6043cfae48d0cf595360c8ef"
+    },
+    {
+      "original_import": "sonar.core.registries.SonarRegistryItem",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Items.java"
+      ],
+      "source": "src/main/java/sonar/core/registries/SonarRegistryItem.java",
+      "source_sha256": "4a2a83ce81d2b8feff9e2098a917898249439355efadec69e9dcd9fa938293e3"
+    },
+    {
+      "original_import": "sonar.core.registries.SonarRegistryMultipart",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Blocks.java"
+      ],
+      "source": "src/main/java/sonar/core/registries/SonarRegistryMultipart.java",
+      "source_sha256": "c411ec64030f32cf447f633410364741ec2e145136dec5bcb16a4f16a41db84d"
+    },
+    {
+      "original_import": "sonar.core.translate.ILocalisationHandler",
+      "used_by": [
+        "src/main/java/sonar/logistics/network/PL2Client.java"
+      ],
+      "source": "src/main/java/sonar/core/translate/ILocalisationHandler.java",
+      "source_sha256": "9ddb5631583994d9914d5ab48a08ed64a1ba42ea06801fd1139aff7237a65203"
+    },
+    {
+      "original_import": "sonar.core.translate.Localisation",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Multiparts.java",
+        "src/main/java/sonar/logistics/PL2Translate.java",
+        "src/main/java/sonar/logistics/network/PL2Client.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/FluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/InventoryReader.java",
+        "src/main/java/sonar/logistics/base/guidance/errors/ErrorMessage.java",
+        "src/main/java/sonar/logistics/api/core/tiles/wireless/EnumWirelessSecurity.java",
+        "src/main/java/sonar/logistics/api/core/tiles/misc/signaller/RedstoneSignaller.java"
+      ],
+      "source": "src/main/java/sonar/core/translate/Localisation.java",
+      "source_sha256": "674d536feff6e1301de6dd4d291457f8b6b84e3a18c50a634cfb9a92c1928217"
+    },
+    {
+      "original_import": "sonar.core.utils.CustomColour",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/GuiEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiEditElementsList.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/gui/GuiAbstractEditScreen.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/modes/GSIGridMode.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/utils/StyledStringHelper.java",
+        "src/main/java/sonar/logistics/base/gui/PL2Colours.java",
+        "src/main/java/sonar/logistics/base/requests/colour/GuiColourSelection.java",
+        "src/main/java/sonar/logistics/base/requests/colour/TextColourButton.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/CustomColour.java",
+      "source_sha256": "2e53725789a78c21c0f8ffabaf3a3190a65a181cf24e87be1f98e584b9690d99"
+    },
+    {
+      "original_import": "sonar.core.utils.IValidate",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/tiles/INetworkTile.java",
+        "src/main/java/sonar/logistics/base/utils/LogisticsHelper.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/redstone/IRedstoneListener.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/IValidate.java",
+      "source_sha256": "6f6325168dcaaad2063cb64fb83672caad675a5e245c07107a326ec826d5816b"
+    },
+    {
+      "original_import": "sonar.core.utils.IWorldPosition",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionList.java",
+        "src/main/java/sonar/logistics/base/gui/GuiLogistics.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid2.java",
+        "src/main/java/sonar/logistics/base/gui/GuiSelectionGrid.java",
+        "src/main/java/sonar/logistics/base/tiles/INetworkTile.java",
+        "src/main/java/sonar/logistics/base/requests/colour/GuiColourSelection.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/ICable.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/data/IDataCable.java",
+        "src/main/java/sonar/logistics/api/core/tiles/misc/signaller/IRedstoneSignaller.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/IWorldPosition.java",
+      "source_sha256": "0e8ab01e63dc39168bcc8b5d0a61e5a6aa1897a606c732d28ba219cac1aca47d"
+    },
+    {
+      "original_import": "sonar.core.utils.IWorldTile",
+      "used_by": [
+        "src/main/java/sonar/logistics/base/tiles/INetworkTile.java",
+        "src/main/java/sonar/logistics/base/events/LogisticsEventHandler.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/ICableConnectable.java",
+        "src/main/java/sonar/logistics/api/core/tiles/connections/data/IDataCable.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/IWorldTile.java",
+      "source_sha256": "099812bfb23044e7612372f6d9b601a6dabfed32e71e950377f6dd182c45447f"
+    },
+    {
+      "original_import": "sonar.core.utils.LabelledAxisAlignedBB",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2Properties.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/LabelledAxisAlignedBB.java",
+      "source_sha256": "d7a9a8529cd984c5dda892075804e2ca56460088252cd0b9a0db08cfd3366f0e"
+    },
+    {
+      "original_import": "sonar.core.utils.Pair",
+      "used_by": [
+        "src/main/java/sonar/logistics/PL2ASMLoader.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/DisplayHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/tiles/TileRedstoneCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/redstone/handling/RedstoneConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/tiles/TileDataCable.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/CableConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/CableConnectionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/connections/data/handling/AbstractConnectionHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/misc/signaller/GuiStatementList.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/base/TileAbstractLogicReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/handling/FluidNetworkChannels.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/handling/ItemNetworkChannels.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/network/handling/NetworkWatcherHandler.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/MasterInfoRegistry.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/gsi/interaction/GSIInteractionHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/general/LogicInfo.java",
+        "src/main/java/sonar/logistics/core/tiles/displays/info/types/text/utils/StyledStringHelper.java",
+        "src/main/java/sonar/logistics/base/gui/overlays/OverlayBlockSelection.java",
+        "src/main/java/sonar/logistics/base/channels/handling/ListNetworkChannels.java",
+        "src/main/java/sonar/logistics/base/channels/handling/ListNetworkHandler.java",
+        "src/main/java/sonar/logistics/api/core/tiles/readers/channels/INetworkListHandler.java",
+        "src/main/java/sonar/logistics/api/core/tiles/displays/info/register/IMasterInfoRegistry.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/Pair.java",
+      "source_sha256": "18f63642111a63cad1e8b180a4b516abcdc94734a4aaaa326bb20b9e4c1adef2"
+    },
+    {
+      "original_import": "sonar.core.utils.SortingDirection",
+      "used_by": [
+        "src/main/java/sonar/logistics/core/items/wirelessstoragereader/GuiWirelessStorageReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/SortingHelper.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/TileFluidReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/fluids/FluidSorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/TileInventoryReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/items/InventorySorter.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/TileEnergyReader.java",
+        "src/main/java/sonar/logistics/core/tiles/readers/energy/EnergySorter.java"
+      ],
+      "source": "src/main/java/sonar/core/utils/SortingDirection.java",
+      "source_sha256": "8c81881ec7910c24a04f246cc99ee371db9fb7310309f1316d3aae6c4b5e2971"
+    }
+  ]
+}

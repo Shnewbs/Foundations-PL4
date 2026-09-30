@@ -1,0 +1,130 @@
+package net.foundations.pl4.client;
+
+import java.util.*;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.foundations.pl4.*;
+
+public final class PartScreen extends Screen {
+    private final BlockPos pos;private Part part;private final boolean editable;
+    private final java.util.UUID clickedIdentity;private final int clickedSlot;
+    private int left,top,w,h,scroll,tab,contentScroll;
+    private Component hoveredRowTooltip;
+    private Button viewToggle;private String displayError="";
+    private final Map<String,EditBox> fields=new LinkedHashMap<>();
+    private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
+    public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
+    public UUID identity(){return clickedIdentity;}
+    public void update(Part p){if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));}
+    public void error(String message){displayError=message;}
+    @Override public boolean isPauseScreen(){return false;}
+    @Override protected void init(){
+        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;
+        button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
+        button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
+        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
+        button("Done",left+w-66,top+h-27,56,b->onClose());
+        if(tab==1){
+            int x=left+112,y=top+58,fw=Math.max(90,w-132);
+            if(part.hologram()){
+                int current=net.foundations.pl4.core.HologramProjection.view(part.face.ordinal(),part.hologramView);
+                String viewLabel="View: "+net.minecraft.core.Direction.from3DDataValue(current).getName();
+                Button viewButton=button(viewLabel,left+12,y,Math.min(w-24,font.width("View: north")+24),b->{
+                    int value=net.foundations.pl4.core.HologramProjection.nextView(part.face.ordinal(),part.hologramView);
+                    send("hologram_view",Integer.toString(value));b.setMessage(Component.literal("View: "+net.minecraft.core.Direction.from3DDataValue(value).getName()));
+                });
+                viewButton.active=editable&&part.face.getAxis()==net.minecraft.core.Direction.Axis.Y;
+                viewButton.setTooltip(Tooltip.create(Component.literal(viewButton.active?"Rotate the projection around its base":"Wall projection follows the mounting face")));y+=28;
+            }else if(part.kind.display()){
+                String label="Front: "+(part.displayOutward?"outward":"inward");
+                button(label,left+12,y,Math.min(w-24,font.width("Front: outward")+24),b->{boolean value=!part.displayOutward;send("display_outward",Boolean.toString(value));b.setMessage(Component.literal("Front: "+(value?"outward":"inward")));});y+=28;
+            }
+            if(part.kind==Kind.ENERGY_READER){
+                String label="Energy: "+part.energySystem;
+                button(label,left+12,y,Math.min(w-24,font.width("Energy: AUTO")+24),b->{String value=next(new String[]{"AUTO","FE","EU","J"},part.energySystem);send("energy_system",value);b.setMessage(Component.literal("Energy: "+value));});y+=28;
+            }
+            field("label","Name",part.label,x,y,fw);y+=28;
+            field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
+            field("selected","Reader name",part.selected,x,y,fw);y+=28;
+            field("metric","Data key",part.metric,x,y,fw);y+=28;
+            field("index","Slot / position",Integer.toString(part.index),x,y,70);
+            field("priority","Priority",Integer.toString(part.priority),x+fw-70,y,70);y+=28;
+            field("threshold",part.kind==Kind.CLOCK?"Interval (ticks)":"Threshold",Double.toString(part.threshold),x,y,90);
+            button(part.comparison,x+98,y,45,b->{String[] ops={">=",">","<","<=","=","!="};send("comparison",next(ops,part.comparison));b.setMessage(Component.literal(next(ops,part.comparison)));});y+=28;
+            if(!part.kind.display())button("Data: "+part.mode,left+12,y,132,b->{String v=next(new String[]{"LIST","STACK","SLOT","POS","STORAGE","CHANNEL"},part.mode);send("mode",v);b.setMessage(Component.literal("Data: "+v));});
+            else viewToggle=button("View: "+part.displayMode,left+12,y,132,b->{var mode=part.displayMode==net.foundations.pl4.core.DisplayElements.Mode.AUTO_LIST?"CUSTOM":"AUTO_LIST";PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"mode",new UUID(0,0),mode));b.setMessage(Component.literal("View: "+mode));});
+            button("Sort: "+(part.descending?"High first":"Low first"),left+150,y,132,b->{send("descending",Boolean.toString(!part.descending));b.setMessage(Component.literal("Sort: "+(!part.descending?"High first":"Low first")));});
+            y+=25;button(part.whitelist?"Allow filter":"Exclude filter",left+12,y,132,b->{send("whitelist",Boolean.toString(!part.whitelist));b.setMessage(Component.literal(!part.whitelist?"Allow filter":"Exclude filter"));});
+            y+=25;
+            if(part.kind==Kind.TRANSFER_NODE){
+                String[] names={"PASSIVE","ADD / IMPORT","REMOVE / EXPORT","ADD / REMOVE (PEER)"};
+                Button modeButton=button(names[part.transferMode],left+12,y,156,b->{int next=(part.transferMode+1)%4;send("transfer",Integer.toString(next));b.setMessage(Component.literal(names[next]));b.setTooltip(transferTooltip(next));});
+                modeButton.setTooltip(transferTooltip(part.transferMode));
+                y+=25;toggle("items","Items",part.items,left+12,y);toggle("fluids","Fluids",part.fluids,left+90,y);toggle("energy","Energy",part.energy,left+168,y);
+            }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())button("Clear links ("+part.links.size()+")",left+12,y,140,b->{send("clear_links","");b.setMessage(Component.literal("Links cleared"));});
+            button("Apply fields",left+12,top+h-27,104,b->{Map<String,String> values=new LinkedHashMap<>();fields.forEach((key,box)->values.put(key,box.getValue()));values.forEach(this::send);});
+        }
+        layoutContent();
+    }
+    private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=Math.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.setY(y-contentScroll);widget.visible=widget.getY()>=top+52&&widget.getY()+20<=top+h-35;});}
+    private static String next(String[] values,String current){for(int i=0;i<values.length;i++)if(values[i].equals(current))return values[(i+1)%values.length];return values[0];}
+    private void toggle(String key,String label,boolean initial,int x,int y){button(label+": "+(initial?"On":"Off"),x,y,72,new Button.OnPress(){boolean value=initial;public void onPress(Button b){value=!value;send(key,Boolean.toString(value));b.setMessage(Component.literal(label+": "+(value?"On":"Off")));}});}
+    private static Tooltip transferTooltip(int mode){return Tooltip.create(Component.literal(switch(mode){
+        case 1->"ADD imports from normal Nodes or explicit REMOVE peers into this attached target";
+        case 2->"REMOVE exports this attached target to explicit ADD peers first, then normal Nodes";
+        case 3->"ADD / REMOVE is explicit-peer only until directional PL2 channel filters are restored";
+        default->"PASSIVE observes the network but does not move resources";
+    }));}
+    private void field(String key,String label,String value,int x,int y,int width){EditBox box=new EditBox(font,x,y,width,20,Component.literal(label));box.setMaxLength(256);box.setValue(value);box.setEditable(editable);box.setTooltip(Tooltip.create(Component.literal(label)));fields.put(key,box);addRenderableWidget(box);contentWidgets.put(box,y);}
+    private Button button(String title,int x,int y,int width,Button.OnPress action){Button b=Button.builder(Component.literal(title),action).bounds(x,y,width,20).build();if(tab==1&&!Set.of("Data","Settings","Layout","Edit screen","Done").contains(title))b.active=editable;addRenderableWidget(b);if(y>=top+52&&y!=top+h-27)contentWidgets.put(b,y);return b;}
+    private void send(String field,String value){if(editable)PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,field,value));}
+    @Override public void tick(){
+        if(minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host))return;
+        Part live=host.parts.get(clickedSlot);if(live==null||!live.identity.equals(clickedIdentity))return;
+        if(live.kind==Kind.LARGE_DISPLAY){
+            BlockPos root=pos.relative(DisplayNetworks.right(live),-live.canvasColumn).relative(DisplayNetworks.up(live),live.canvasRow);
+            if(minecraft.level.hasChunkAt(root)&&minecraft.level.getBlockEntity(root) instanceof HostEntity controller){
+                Part shared=controller.parts.get(clickedSlot);
+                if(shared!=null&&shared.kind==Kind.LARGE_DISPLAY&&shared.displayOutward==live.displayOutward&&java.util.Objects.equals(shared.owner,live.owner))update(shared);
+            }
+        }else update(live);
+    }
+    /**
+     * Screen.render calls this before rendering its widgets in Minecraft 1.21.1.
+     * Finish the native world blur/dim pass before drawing any PL4 pixels.
+     */
+    @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
+        super.renderBackground(g,mx,my,partial);
+        hoveredRowTooltip=null;
+        g.fill(left,top,left+w,top+h,0xF21B2533);g.fill(left,top,left+w,top+22,0xFF293D56);
+        g.drawString(font,title,left+10,top+7,0xFFE4F3FF,false);
+        if(!displayError.isBlank())g.drawString(font,font.plainSubstrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
+        if(tab==0){
+            g.drawString(font,font.plainSubstrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
+            int count=Math.max(1,(h-112)/19);scroll=Math.clamp(scroll,0,Math.max(0,part.rows.size()-count));
+            for(int i=0;i<count&&i+scroll<part.rows.size();i++){
+                Part.Row row=part.rows.get(i+scroll);int y=top+73+i*19;
+                if(i%2==0)g.fill(left+8,y-2,left+w-12,y+16,0x442C465E);
+                g.drawString(font,font.plainSubstrByWidth(row.text(),w-34),left+13,y+2,0xFFDBEFFF,false);
+                if(mx>=left+8&&mx<left+w-12&&my>=y&&my<y+18)hoveredRowTooltip=Component.literal(row.key()+" · click to copy");
+            }
+            if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
+            g.drawString(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
+        }else{
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            
+        }
+    }
+    @Override public void render(GuiGraphics g,int mx,int my,float partial){
+        // Native Screen.render invokes our background/content hook once, then widgets.
+        super.render(g,mx,my,partial);
+        // Row tooltips belong above the panel, labels and widgets, never in the blur pass.
+        if(hoveredRowTooltip!=null)g.renderTooltip(font,hoveredRowTooltip,mx,my);
+    }
+    @Override public boolean mouseScrolled(double x,double y,double dx,double dy){if(tab==0){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);return true;}contentScroll-=((int)Math.signum(dy))*25;layoutContent();return true;}
+    @Override public boolean mouseClicked(double x,double y,int button){if(button==1){if(tab!=0){tab=0;scroll=0;contentScroll=0;rebuildWidgets();}else onClose();return true;}if(tab==0&&button==0&&x>=left+8&&x<left+w-12&&y>=top+73&&y<top+h-39){int index=scroll+(int)(y-(top+73))/19;if(index<part.rows.size()){minecraft.keyboardHandler.setClipboard(part.rows.get(index).key());return true;}}return super.mouseClicked(x,y,button);}
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "foundations_pl4:block/transfernode",
+  "textures": {
+    "particle": "foundations_pl4:block/data_cable",
+    "0": "foundations_pl4:block/model/transfer_node_passive"
+  }
+}

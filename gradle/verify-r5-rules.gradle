@@ -1,0 +1,16 @@
+// Dependency-free regression rules compile from the SAME production classes used by the mod.
+def r5VerifierClasses=layout.buildDirectory.dir('r5-rule-verifier')
+tasks.register('compileR5RuleVerifier',JavaCompile){
+    source=files('tools/R5RegressionTests.java','src/main/java/net/foundations/pl4/core/ConnectionRules.java',
+        'src/main/java/net/foundations/pl4/core/DisjointSets.java','src/main/java/net/foundations/pl4/core/HammerMotion.java',
+        'src/main/java/net/foundations/pl4/core/HammerGeometry.java','src/main/java/net/foundations/pl4/core/DisplayLayout.java')
+    classpath=files();destinationDirectory=r5VerifierClasses
+    javaCompiler=javaToolchains.compilerFor {languageVersion=JavaLanguageVersion.of(21)}
+    options.release=21
+}
+tasks.register('verifyR5Rules',JavaExec){
+    dependsOn tasks.named('compileR5RuleVerifier')
+    javaLauncher=javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(21)}
+    classpath=files(r5VerifierClasses);mainClass='R5RegressionTests'
+}
+tasks.named('check'){dependsOn tasks.named('verifyR5Rules')}

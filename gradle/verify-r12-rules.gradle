@@ -1,0 +1,7 @@
+def r12VerifierClasses = layout.buildDirectory.dir('r12VerifierClasses')
+tasks.register('compileR12RuleVerifier',JavaCompile){
+ source=files('src/main/java/net/foundations/pl4/core/DisplayElements.java','tools/R12RegressionTests.java')
+ classpath=files();destinationDirectory=r12VerifierClasses;options.release=21;options.encoding='UTF-8'
+}
+tasks.register('verifyR12Rules',JavaExec){dependsOn tasks.named('compileR12RuleVerifier');classpath=files(r12VerifierClasses);mainClass='R12RegressionTests'}
+tasks.named('check'){dependsOn tasks.named('verifyR12Rules')}

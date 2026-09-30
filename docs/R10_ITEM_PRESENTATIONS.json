@@ -1,0 +1,991 @@
+{
+  "datacable": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_datacable",
+    "centring_translation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000002,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999997,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999997,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "redstonecable": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_redstonecable",
+    "centring_translation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000002,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999997,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999997,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "node": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_node",
+    "centring_translation": [
+      0.0,
+      7.25,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 12.999995,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 3.999996,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.000005,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599997,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999998,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999998,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "inforeader": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_inforeader",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000002,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 7.999998,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599998,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "inventoryreader": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_inventoryreader",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000002,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 7.999998,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599998,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "fluidreader": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_fluidreader",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000002,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 7.999998,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599998,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "energyreader": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_energyreader",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000002,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 7.999998,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599998,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "networkreader": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_networkreader",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000002,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 7.999998,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.599998,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "array": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_array",
+    "centring_translation": [
+      0.0,
+      5.5,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000003,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200007,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200007,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000004,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000004,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "entitynode": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_entitynode",
+    "centring_translation": [
+      0.0,
+      5.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 12.999999,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "transfernode": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_transfernode",
+    "centring_translation": [
+      0.0,
+      7.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000005,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.199995,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.199995,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "redstonenode": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_redstonenode",
+    "centring_translation": [
+      0.0,
+      7.0,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000005,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.199995,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.199995,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "clock": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_clock",
+    "centring_translation": [
+      0.0,
+      6.5,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "redstonesignaller": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_redstonesignaller",
+    "centring_translation": [
+      0.0,
+      4.5,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "displayscreen": {
+    "profile": "panel",
+    "source": "foundations_pl4:block/part_displayscreen",
+    "centring_translation": [
+      0.0,
+      7.5005,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.199994,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.199994,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "minidisplay": {
+    "profile": "panel",
+    "source": "foundations_pl4:block/part_minidisplay",
+    "centring_translation": [
+      0.0,
+      7.5,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200001,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "largedisplayscreen": {
+    "profile": "panel",
+    "source": "foundations_pl4:block/part_largedisplayscreen",
+    "centring_translation": [
+      0.0,
+      7.5005,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.199993,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.199993,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.0,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "holographicdisplay": {
+    "profile": "projector",
+    "source": "foundations_pl4:block/part_holographicdisplay",
+    "centring_translation": [
+      0.0,
+      8.0,
+      -0.25
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "advancedholographicdisplay": {
+    "profile": "projector",
+    "source": "foundations_pl4:block/part_advancedholographicdisplay",
+    "centring_translation": [
+      -0.0004999999999988347,
+      5.5,
+      -0.0004999999999988347
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.0,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.000003,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.600001,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.200002,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.200002,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 4.999999,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "dataemitter": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_dataemitter",
+    "centring_translation": [
+      0.0,
+      5.75,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000003,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "datareceiver": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_datareceiver",
+    "centring_translation": [
+      0.0,
+      5.75,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000003,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "redstoneemitter": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_redstoneemitter",
+    "centring_translation": [
+      0.0,
+      5.75,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000003,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  },
+  "redstonereceiver": {
+    "profile": "component",
+    "source": "foundations_pl4:block/part_redstonereceiver",
+    "centring_translation": [
+      0.0,
+      5.75,
+      0.0
+    ],
+    "contexts": {
+      "gui": {
+        "maximum_extent_model_units": 13.000003,
+        "target_model_units": 13
+      },
+      "ground": {
+        "maximum_extent_model_units": 4.0,
+        "target_model_units": 4
+      },
+      "fixed": {
+        "maximum_extent_model_units": 8.0,
+        "target_model_units": 8
+      },
+      "head": {
+        "maximum_extent_model_units": 5.6,
+        "target_model_units": 5.6
+      },
+      "firstperson_righthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "firstperson_lefthand": {
+        "maximum_extent_model_units": 5.2,
+        "target_model_units": 5.2
+      },
+      "thirdperson_righthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      },
+      "thirdperson_lefthand": {
+        "maximum_extent_model_units": 5.000003,
+        "target_model_units": 5.0
+      }
+    }
+  }
+}

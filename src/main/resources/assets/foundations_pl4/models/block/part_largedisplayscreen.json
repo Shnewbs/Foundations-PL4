@@ -1,0 +1,7 @@
+{
+  "parent": "foundations_pl4:block/largedisplayscreen",
+  "textures": {
+    "front": "foundations_pl4:block/model/large_screen/large_display_none",
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "foundations_pl4:block/node",
+  "textures": {
+    "node": "foundations_pl4:block/model/node",
+    "0": "foundations_pl4:block/data_cable",
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "foundations_pl4:block/datareceiver",
+  "textures": {
+    "node": "foundations_pl4:block/model/redstone_receiver",
+    "0": "foundations_pl4:block/model/redstone_receiver",
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

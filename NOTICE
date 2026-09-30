@@ -1,0 +1,16 @@
+Foundations PL4 — Minecraft 1.21.1 / NeoForge 21.1.250
+
+Original Practical Logistics and Sonar Core were created by Ollie Lansdell
+(SonarSonic). Their MIT license notice is preserved in LICENSE and
+LICENSE-SonarCore. Upstream resources retain their original attribution.
+
+Foundations PL4 is an independent development adaptation. Runtime code is
+contained in the net.foundations.pl4 namespace and is installed as one JAR.
+It does not load a separate Sonar Core mod, MCMultiPart mod, Foundations
+Framework mod, or Calculator mod. This does not mean the unfinished original
+features or every historical Sonar Core API have been ported.
+
+The Sonar Core source was retrieved and audited as a reference. Its relevant
+recipe behavior has been adapted to Minecraft 1.21.1 recipe registries,
+serializers, item tags and recipe synchronization within Foundations PL4.
+See docs/CORE_INTEGRATION.md for exact coverage and remaining work.

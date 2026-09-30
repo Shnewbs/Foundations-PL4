@@ -1,0 +1,76 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+version = '0.0.1a.R16'
+group = 'net.foundations.pl4'
+base { archivesName = 'FoundationsPL4-1.21.1' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+neoForge {
+    version = '21.1.250'
+    runs {
+        client { client() }
+        server { server(); programArgument '--nogui' }
+        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
+        configureEach { logLevel = org.slf4j.event.Level.INFO }
+    }
+    mods { foundations_pl4 { sourceSet sourceSets.main } }
+}
+repositories { mavenCentral() }
+dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
+test { useJUnitPlatform() }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+
+// A release cannot silently regain the old external core/multipart runtime dependencies.
+tasks.register('verifyStandalone') {
+    dependsOn tasks.named('jar')
+    inputs.file(tasks.named('jar').flatMap { it.archiveFile })
+    doLast {
+        def artifact = tasks.named('jar').get().archiveFile.get().asFile
+        def failures = []
+        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+            zip.entries().each { entry ->
+                if (entry.name.endsWith('.class')) {
+                    def content = new String(zip.getInputStream(entry).bytes, java.nio.charset.StandardCharsets.ISO_8859_1)
+                    if (content.contains('sonar/core/') || content.contains('mcmultipart/')) failures.add(entry.name)
+                }
+                if (entry.name.endsWith('.jar')) failures.add('Unexpected nested mod JAR: ' + entry.name)
+            }
+            def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
+            if (metadata.contains('modId="sonarcore"') || metadata.contains('modId="mcmultipart"')) failures.add('Legacy dependency in mod metadata')
+            if (!metadata.contains('modId="foundations_pl4"')) failures.add('Foundations PL4 identity missing')
+        }
+        if (!failures.empty) throw new GradleException('Standalone verification failed: ' + failures.join(', '))
+        logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
+    }
+}
+tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
+tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
+apply from: 'gradle/verify-client-assets.gradle'
+
+apply from: 'gradle/verify-screen-layers.gradle'
+
+apply from: 'gradle/verify-r5-rules.gradle'
+
+apply from: 'gradle/verify-r6-rules.gradle'
+
+apply from: 'gradle/verify-r7-rules.gradle'
+
+apply from: 'gradle/verify-r8-rules.gradle'
+
+apply from: 'gradle/verify-r9-rules.gradle'
+
+apply from: 'gradle/verify-r10-rules.gradle'
+
+apply from: 'gradle/verify-r11-rules.gradle'
+
+apply from: 'gradle/verify-r12-rules.gradle'
+
+apply from: 'gradle/verify-r13-rules.gradle'
+
+apply from: 'gradle/verify-r14-rules.gradle'
+
+apply from: 'gradle/verify-r15-rules.gradle'
+
+apply from: 'gradle/verify-r16-rules.gradle'

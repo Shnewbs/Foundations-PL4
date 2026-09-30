@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "foundations_pl4:block/hammer"
+    },
+    "facing=east": {
+      "model": "foundations_pl4:block/hammer"
+    },
+    "facing=south": {
+      "model": "foundations_pl4:block/hammer"
+    },
+    "facing=west": {
+      "model": "foundations_pl4:block/hammer"
+    }
+  }
+}
