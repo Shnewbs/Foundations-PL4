@@ -1146,7 +1146,7 @@ Use PL2/PL3 research for:
 ### Editor workflow
 
 - element list panel;
-- multi-select;
+- multi-select; **implemented in the R1 continuation for additive selection and atomic multi-delete**;
 - box/lasso select;
 - alignment tools;
 - distribute evenly;

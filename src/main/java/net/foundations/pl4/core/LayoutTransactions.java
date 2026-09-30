@@ -14,7 +14,14 @@ public final class LayoutTransactions {
         try{switch(action){
             case "add" -> {if(element==null||index>=0||list.size()>=DisplayElements.MAX_ELEMENTS)return fail(before,"Maximum 32 elements or duplicate element ID.");list.add(element);mode=DisplayElements.Mode.CUSTOM;page=element.page();}
             case "update" -> {if(index<0||element==null||!element.id().equals(target))return fail(before,"Element no longer exists.");list.set(index,element);mode=DisplayElements.Mode.CUSTOM;page=element.page();}
-            case "delete" -> {if(index<0)return fail(before,"Element no longer exists.");list.remove(index);mode=DisplayElements.Mode.CUSTOM;}
+            case "delete" -> {
+                if(value!=null&&!value.isBlank()){
+                    var ids=Arrays.stream(value.split(",")).map(String::trim).filter(s->!s.isBlank()).map(UUID::fromString).collect(java.util.stream.Collectors.toSet());
+                    if(ids.isEmpty()||list.stream().noneMatch(e->ids.contains(e.id())))return fail(before,"Select an element.");
+                    list.removeIf(e->ids.contains(e.id()));
+                }else{if(index<0)return fail(before,"Element no longer exists.");list.remove(index);}
+                mode=DisplayElements.Mode.CUSTOM;
+            }
             case "forward","backward" -> {if(index<0)return fail(before,"Select an element.");int next=index+(action.equals("forward")?1:-1);if(next>=0&&next<list.size())Collections.swap(list,index,next);}
             case "clear" -> {list.clear();mode=DisplayElements.Mode.CUSTOM;}
             case "mode" -> {mode=DisplayElements.Mode.valueOf(value);}
