@@ -1,11 +1,11 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.5` explicit native energy/conversion and once-per-account community links
+**Current source candidate:** `0.0.2a.R1.5` published: explicit native energy/conversion and once-per-account community links
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
-**Page/cap workflow:** R1.4 published; 140 native tests passed on Linux and Windows; page-panel visuals and third-party fluid/FE cap acceptance pending.
+**Current validation:** R1.5 published; all 151 native tests passed on Linux and Windows; 30,025 energy arithmetic/provider-contract assertions passed. Installed optional energy modpacks, new node controls and welcome-line client visuals remain pending. R1.4 page-panel visuals and third-party fluid caps also remain pending.
 **Layer workflow:** R1.3 published; 134 native tests passed on Linux and Windows; client visual acceptance pending.
 **Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
