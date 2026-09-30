@@ -49,6 +49,30 @@ for name in roots:
 # R5-specific resources and source-wiring regressions.
 assert len(json.loads((ASSETS/'blockstates/large_display_model.json').read_text())['variants'])==192
 assert len(list((ASSETS/'blockstates').glob('cable_model_*.json')))==30
+# Cable mesh states must keep the DOWN-authored arm aligned with the topology face.
+arm_rotations={
+    'down':{},
+    'up':{'x':180},
+    'north':{'x':90,'y':180},
+    'south':{'x':90},
+    'west':{'x':90,'y':90},
+    'east':{'x':90,'y':270},
+}
+for material in ['data','redstone_off','redstone_on']:
+    for connector in ['cable','internal','half']:
+        states=json.loads((ASSETS/'blockstates'/f'cable_model_{material}_{connector}.json').read_text())['variants']
+        assert len(states)==6,('cable arm direction count',material,connector)
+        for face,rotation in arm_rotations.items():
+            state=states[f'facing={face}']
+            assert {key:value for key,value in state.items() if key in ('x','y')}==rotation,('cable arm rotation',material,connector,face)
+    centre=json.loads((ASSETS/'blockstates'/f'cable_model_{material}_centre.json').read_text())['variants']
+    assert len(centre)==6 and all('x' not in state and 'y' not in state for state in centre.values()),('cable centre rotation',material)
+    for depth in ['1','15','2','3','4','6']:
+        states=json.loads((ASSETS/'blockstates'/f'cable_model_{material}_lead_{depth}.json').read_text())['variants']
+        assert len(states)==6,('cable lead direction count',material,depth)
+        for face,rotation in arm_rotations.items():
+            state=states[f'facing={face}']
+            assert {key:value for key,value in state.items() if key in ('x','y')}==rotation,('cable lead rotation',material,depth,face)
 assert json.loads((ASSETS/'models/block/hammer.json').read_text())['elements']==[]
 assert json.loads((RES/'data/foundations_pl4/loot_table/blocks/hammer_air.json').read_text())['pools']==[]
 for f in ['gui/hammer.png','block/model/forging_hammer_stone.png']:assert (ASSETS/'textures'/f).is_file()
@@ -71,5 +95,6 @@ assert body.index('super.render(')<body.index('renderTooltip(')
 json_files=list(RES.rglob('*.json'))
 for f in json_files:json.loads(f.read_text(encoding='utf-8'))
 print(f'PASS offline resource references: {len(models)} models, {len(roots)} roots, {len(sprites)} atlas sprites; {len(json_files)} JSON files parsed.')
+print('PASS cable rendering states: all materials, arm kinds, endpoint leads, and six facing rotations.')
 print('PASS R5 source wiring guards: dynamic host shapes, click routing, cached cable renderer, menu/model registration, shared-canvas sampling, hammer tooltip order.')
 print('Scope: source assets/wiring only. No Minecraft baking, rendering, Java API type-checking or gameplay execution.')
