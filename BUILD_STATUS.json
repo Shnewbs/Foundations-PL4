@@ -82,6 +82,13 @@
   "curseforge_project_id": 1716767,
   "curseforge_upload_workflow_run": 36767653884,
   "curseforge_file_id": 9021499,
-  "r1_selection_workflow": "IMPLEMENTED_NATIVE_VALIDATION_PENDING",
-  "r1_1_release": "CANDIDATE"
+  "r1_selection_workflow": "NATIVE_VALIDATED_CLIENT_VISUAL_ACCEPTANCE_PENDING",
+  "r1_1_release": "PUBLISHED_0.0.2a.R1.1",
+  "r1_1_gametests_total": 128,
+  "r1_1_gametests_passed": 128,
+  "r1_1_gametests_failed": 0,
+  "r1_1_release_commit": "e72a65c5a218eadbaa19624355aea41dc5a72572",
+  "r1_1_release_workflow_run": 36770471202,
+  "r1_1_curseforge_file_id": 9021648,
+  "r1_1_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL"
 }
