@@ -52,8 +52,8 @@ public final class ToolItem extends Item {
         }
         if(mode==Mode.BLOCK_LINK||mode==Mode.MONITOR||mode==Mode.ENTITY_LINK){
             if(player.isShiftKeyDown()){
-                save(c.getItemInHand(),new Part.Link(level.dimension().location().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
-                player.displayClientMessage(Component.literal("Linked "+pos.toShortString()+" in "+level.dimension().location()),true);return InteractionResult.CONSUME;
+                save(c.getItemInHand(),new Part.Link(level.dimension().identifier().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
+                player.displayClientMessage(Component.literal("Linked "+pos.toShortString()+" in "+level.dimension().identifier()),true);return InteractionResult.CONSUME;
             }
             Part.Link link=link(c.getItemInHand());
             if(host!=null&&part!=null&&link!=null&&(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())){
@@ -70,7 +70,7 @@ public final class ToolItem extends Item {
     }
     @Override public InteractionResult interactLivingEntity(ItemStack stack,Player player,LivingEntity entity,InteractionHand hand){
         if(mode!=Mode.ENTITY_LINK)return InteractionResult.PASS;
-        if(!player.level().isClientSide){save(stack,new Part.Link(entity.level().dimension().location().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(Component.literal("Linked "+entity.getName().getString()),true);}return InteractionResult.sidedSuccess(player.level().isClientSide);
+        if(!player.level().isClientSide){save(stack,new Part.Link(entity.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(Component.literal("Linked "+entity.getName().getString()),true);}return InteractionResult.sidedSuccess(player.level().isClientSide);
     }
     @Override public InteractionResultHolder<ItemStack> use(Level l,Player player,InteractionHand hand){
         ItemStack stack=player.getItemInHand(hand);

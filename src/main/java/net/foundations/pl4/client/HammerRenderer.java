@@ -5,13 +5,13 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.phys.AABB;
 import net.foundations.pl4.*;
 
 public final class HammerRenderer implements BlockEntityRenderer<HammerEntity> {
-    private static final ResourceLocation TEXTURE=FoundationsPL4.id("textures/block/model/forging_hammer_stone.png");
+    private static final Identifier TEXTURE=FoundationsPL4.id("textures/block/model/forging_hammer_stone.png");
     private final HammerModel model;
     private final ItemRenderer items;
     public HammerRenderer(BlockEntityRendererProvider.Context context){model=new HammerModel(context.bakeLayer(HammerModel.LAYER));items=context.getItemRenderer();}

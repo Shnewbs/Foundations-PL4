@@ -41,7 +41,7 @@ public final class R6GameTests {
     public static void energyReaderNeverLoadsRemoteChunk(GameTestHelper h){
         var ref=reader(h);BlockPos far=new BlockPos(1000000,80,1000000);
         h.assertTrue(!h.getLevel().hasChunkAt(far),"Fixture must be unloaded");
-        var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(new Part.Link(h.getLevel().dimension().location().toString(),far,Direction.UP,null,null)),1);
+        var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(new Part.Link(h.getLevel().dimension().identifier().toString(),far,Direction.UP,null,null)),1);
         h.assertTrue(rows.isEmpty()&&!h.getLevel().hasChunkAt(far)&&ref.part().status.contains("unloaded"),"Unloaded is not zero energy and must not force-load");h.succeed();
     }
 }

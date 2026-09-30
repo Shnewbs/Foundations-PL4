@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
 import net.foundations.pl4.*;
@@ -20,7 +20,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
  * The model-space 0.01 steps are normalized by canvas scale, so a 16x16 board is not 16x deeper.
  */
 final class DisplayCanvas {
-    private static final ResourceLocation WHITE=FoundationsPL4.id("textures/gui/display_white.png");
+    private static final Identifier WHITE=FoundationsPL4.id("textures/gui/display_white.png");
     /** Small but real local depth for isometric block previews. Keeps rotated cube faces distinct
      * without visibly floating the preview away from the monitor plane. */
     private static final double BLOCK_MODEL_DEPTH_BLOCKS=.0006;
@@ -84,7 +84,7 @@ final class DisplayCanvas {
     }
     private static final java.util.Set<String> WARNED=new java.util.LinkedHashSet<>();
     private static void warn(String id,RuntimeException error){if(WARNED.size()<64&&WARNED.add(id))org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Cannot render display picture {}",id,error);}
-    private void quad(ResourceLocation texture,double x,double y,double w,double h,float u0,float v0,float u1,float v1,int color,double z){
+    private void quad(Identifier texture,double x,double y,double w,double h,float u0,float v0,float u1,float v1,int color,double z){
         var v=buffers.getBuffer(RenderType.entityTranslucent(texture));var p=pose.last();
         v.addVertex(p,(float)x,(float)y,(float)z).setColor(color).setUv(u0,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);
         v.addVertex(p,(float)x,(float)(y+h),(float)z).setColor(color).setUv(u0,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);

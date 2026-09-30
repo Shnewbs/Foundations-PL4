@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.foundations.pl4.core.DisplayElements;
 import net.foundations.pl4.core.EditorPalette;
 
@@ -43,7 +43,7 @@ final class DisplayPropertiesScreen extends Screen {
     private void toggle(int choice){if(!collect())return;spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),spec.reader(),spec.key(),spec.asset(),spec.bounds(),spec.color(),choice==0?!spec.count():spec.count(),choice==1?!spec.names():spec.names(),spec.columns(),spec.offset(),spec.page(),choice==2?!spec.vertical():spec.vertical(),choice==3?!spec.compact():spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale());rebuildWidgets();}
     private int number(String key){return Integer.parseInt(fields.get(key).getValue());}
     private boolean collect(){
-        try{String asset=fields.get("asset").getValue();if(!asset.isBlank()&&ResourceLocation.tryParse(asset)==null)throw new IllegalArgumentException("Use a namespaced item/fluid ID, e.g. minecraft:stone.");
+        try{String asset=fields.get("asset").getValue();if(!asset.isBlank()&&Identifier.tryParse(asset)==null)throw new IllegalArgumentException("Use a namespaced item/fluid ID, e.g. minecraft:stone.");
             spec=new DisplayElements.Spec(spec.id(),spec.type(),fields.get("text").getValue(),spec.reader(),fields.get("key").getValue(),asset,
                 new DisplayElements.Rect(number("x"),number("y"),number("w"),number("h")),Integer.parseUnsignedInt(fields.get("color").getValue().replace("#",""),16),spec.count(),spec.names(),number("columns"),number("offset"),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale());error="";return true;
         }catch(IllegalArgumentException ex){error="Check numeric fields, hex colour, and resource ID.";return false;}

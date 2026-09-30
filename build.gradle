@@ -2,12 +2,12 @@ plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.147'
 }
-version = '0.0.2a.R1.6'
+version = '0.0.2a.R1.6-port.1'
 group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-1.21.1' }
-java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+base { archivesName = 'FoundationsPL4-26.3' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
 neoForge {
-    version = '21.1.250'
+    version = '26.3.0.23-beta'
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
@@ -19,7 +19,7 @@ neoForge {
 repositories { mavenCentral() }
 dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
 test { useJUnitPlatform() }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs', '1000'] }
 jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
 processResources {
     inputs.property 'version', project.version

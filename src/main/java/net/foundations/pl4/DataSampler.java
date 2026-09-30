@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import java.util.*;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +31,7 @@ public final class DataSampler {
         for(String token:part.filter.split(",")){
             String entry=token.trim();
             if(entry.startsWith("#")){
-                ResourceLocation id=ResourceLocation.tryParse(entry.substring(1));
+                Identifier id=Identifier.tryParse(entry.substring(1));
                 if(id!=null){items.add(TagKey.create(Registries.ITEM,id));fluids.add(TagKey.create(Registries.FLUID,id));}
             }else ids.add(entry); // Preserve exact namespaced-ID semantics, including invalid IDs.
         }

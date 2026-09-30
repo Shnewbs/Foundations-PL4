@@ -10,12 +10,12 @@ description='''Foundations PL4: standalone development port of Practical Logisti
 [[dependencies.foundations_pl4]]
 modId="neoforge"
 type="required"
-versionRange="[21.1.250,21.2)"
+versionRange="[26.3.0.23-beta,26.4)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.foundations_pl4]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.1]"
+versionRange="[26.3]"
 ordering="NONE"
 side="BOTH"

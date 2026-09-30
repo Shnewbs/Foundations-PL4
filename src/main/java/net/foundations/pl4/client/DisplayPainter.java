@@ -4,7 +4,7 @@ import java.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.foundations.pl4.Part;
@@ -59,7 +59,7 @@ final class DisplayPainter {
     }
     private static List<Part.Row> source(Part part,DisplayElements.Spec spec){
         if(!spec.asset().isBlank()){
-            var id=ResourceLocation.tryParse(spec.asset());if(id==null)return List.of();
+            var id=Identifier.tryParse(spec.asset());if(id==null)return List.of();
             if(spec.type()==DisplayElements.Type.FLUID||spec.type()==DisplayElements.Type.FLUID_GRID){
                 var value=BuiltInRegistries.FLUID.get(id);if(value==net.minecraft.world.level.material.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
                 return List.of(new Part.Row(spec.asset(),fluid.getHoverName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new CompoundTag(),new CompoundTag()));

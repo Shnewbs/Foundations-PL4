@@ -75,7 +75,7 @@ public final class DisplayNetworks {
         }
         canvases=List.copyOf(result);
     }
-    private static Comparator<NetworkEngine.Ref> readerOrder(){return Comparator.comparingInt((NetworkEngine.Ref r)->r.part().priority).reversed().thenComparing(r->r.level().dimension().location().toString()).thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());}
+    private static Comparator<NetworkEngine.Ref> readerOrder(){return Comparator.comparingInt((NetworkEngine.Ref r)->r.part().priority).reversed().thenComparing(r->r.level().dimension().identifier().toString()).thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());}
     /** Bounded preflight of the proposed connected plane; never requests an unloaded chunk. */
     public static boolean canExtendAt(net.minecraft.world.level.Level level,BlockPos position,Part template,net.minecraft.world.entity.player.Player player){
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();queue.add(position);seen.add(position);

@@ -3,14 +3,14 @@ package net.foundations.pl4.client;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.HammerMotion;
 
 /** Original 176x143 container texture and slot positions; status text occupies the unused separator. */
 public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
-    private static final ResourceLocation TEXTURE=FoundationsPL4.id("textures/gui/hammer.png");
+    private static final Identifier TEXTURE=FoundationsPL4.id("textures/gui/hammer.png");
     public HammerScreen(HammerMenu menu,Inventory inventory,Component title){
         super(menu,inventory,title);imageWidth=176;imageHeight=143;titleLabelY=6;
     }

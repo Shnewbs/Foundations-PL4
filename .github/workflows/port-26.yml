@@ -1,0 +1,39 @@
+name: Validate 26.x port
+on:
+  push:
+    branches: ['mc/26.3']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  port:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+      - name: Compile port
+        run: |
+          set -o pipefail
+          bash gradlew --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
+      - name: Build and native tests
+        run: bash gradlew --no-daemon --console=plain build runGameTestServer
+      - name: Collect API migration diagnostics
+        if: always()
+        run: |
+          mkdir -p port-diagnostics
+          cp port-compile.log port-diagnostics/ || true
+          find "$HOME/.gradle/caches" -type f \( -name '*sources*.jar' -o -name '*manifest*.json' \) -printf '%p\n' > port-diagnostics/source-paths.txt
+          find . -path './.git' -prune -o -name '*sources*.jar' -print >> port-diagnostics/source-paths.txt
+          find "$HOME/.gradle/caches/neoformruntime" -maxdepth 4 -type f -printf '%p\n' >> port-diagnostics/source-paths.txt 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: port-26-diagnostics
+          path: |
+            port-diagnostics/
+            build/libs/
+            build/reports/

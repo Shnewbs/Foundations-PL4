@@ -103,7 +103,7 @@ public final class PLGameTests {
         chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN),receiver=host(h,new BlockPos(6,1,1),Kind.DATA_RECEIVER,Direction.DOWN),reader=host(h,new BlockPos(7,1,1),Kind.INVENTORY_READER,Direction.DOWN);
         Part ep=emitter.parts.get(0),rp=receiver.parts.get(0),read=reader.parts.get(0);
-        rp.links.add(new Part.Link(h.getLevel().dimension().location().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
+        rp.links.add(new Part.Link(h.getLevel().dimension().identifier().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
         h.runAtTickTime(45,()->{h.assertTrue(read.rows.stream().anyMatch(r->r.value()==17),"Owned wireless link must carry reader data");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
@@ -111,14 +111,14 @@ public final class PLGameTests {
         chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN),receiver=host(h,new BlockPos(6,1,1),Kind.DATA_RECEIVER,Direction.DOWN),reader=host(h,new BlockPos(7,1,1),Kind.INVENTORY_READER,Direction.DOWN);
         Part ep=emitter.parts.get(0),rp=receiver.parts.get(0),read=reader.parts.get(0);ep.owner=UUID.randomUUID();
-        rp.links.add(new Part.Link(h.getLevel().dimension().location().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
+        rp.links.add(new Part.Link(h.getLevel().dimension().identifier().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
         h.runAtTickTime(45,()->{h.assertTrue(read.rows.isEmpty(),"Forged cross-owner link must be ignored");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readingUnloadedTargetDoesNotLoadChunk(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(1,1,1),Kind.INVENTORY_READER,Direction.DOWN);Part p=host.parts.get(0);
         BlockPos distant=new BlockPos(1000000,80,1000000);h.assertTrue(!h.getLevel().hasChunkAt(distant),"Fixture must start unloaded");
-        var rows=DataSampler.sample(h.getLevel().getServer(),new NetworkEngine.Ref(host,p),List.of(new Part.Link(h.getLevel().dimension().location().toString(),distant,Direction.UP,null,null)),1);
+        var rows=DataSampler.sample(h.getLevel().getServer(),new NetworkEngine.Ref(host,p),List.of(new Part.Link(h.getLevel().dimension().identifier().toString(),distant,Direction.UP,null,null)),1);
         h.assertTrue(rows.isEmpty()&&!h.getLevel().hasChunkAt(distant),"A read must never force-load a target chunk");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

@@ -4,7 +4,7 @@ import java.util.*;
 import net.foundations.pl4.core.DisplayElements;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 
