@@ -5,6 +5,7 @@
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
+**Layer workflow:** R1.3 published; 134 native tests passed on Linux and Windows; client visual acceptance pending.
 **Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
 **Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
@@ -1422,6 +1423,16 @@ Add:
 - recipe focus support;
 - guide links to recipe viewers where available.
 
+## Jade inspection
+
+Required integration requested by the user:
+
+- identify the targeted multipart component rather than treating every host as a generic cable;
+- show component/network connection status and configured update interval;
+- expose useful reader/transfer diagnostics through existing permission checks;
+- reuse bounded existing state instead of scanning the whole network per tooltip frame;
+- remain optional at runtime so the standalone mod still starts without Jade.
+
 ## Modern integration matrix
 
 Evaluate current equivalents for historical PL2 integrations:
@@ -1978,6 +1989,7 @@ The exact number of revisions may change, but the dependency order should stay c
 - [ ] Wireless Storage remote GUI/actions.
 - [ ] Redstone Signaller statement lists.
 - [ ] Clock editor/visual parity.
+- [ ] Jade multipart inspection and permission-aware status.
 - [ ] JEI/EMI hammer integration.
 - [ ] Modern mod provider matrix.
 - [ ] KubeJS provider/event API.
