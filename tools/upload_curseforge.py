@@ -96,7 +96,7 @@ def main():
         # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge"], "releaseType": release_type(version)}
+        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")
