@@ -181,7 +181,7 @@
         },
         {
           "heading": "3  /  GIVE IT SOMETHING OBVIOUS",
-          "body": "Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R17 measures projection clearance from the emitter hardware itself: normal holograms leave about 0.90 blocks from the emitter bar; Advanced leaves about 1.20 from its top emitter on floor/ceiling mounts or selected wall panel. The canvas sits directly above a floor emitter, below a ceiling emitter, or outward from a wall emitter. View rotates the text without moving that origin."
+          "body": "Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R17 measures projection clearance from the emitter hardware itself: normal holograms leave about 0.90 blocks from the emitter bar; Advanced leaves about 1.20 from its selected projection panel."
         },
         {
           "heading": "4  /  WALK AROUND THE PLANE",
@@ -331,7 +331,207 @@
         },
         {
           "heading": "SETTINGS",
-          "body": "Name identifies this reader to a display. Filter IDs / tags accepts the port filter syntax; allow/exclude selects the filter direction. Sort chooses high or low values first. Data selects LIST, STACK, SLOT, POS, STORAGE or CHANNEL; index sel…3880 tokens truncated…,
+          "body": "Name identifies this reader to a display. Filter IDs / tags accepts the port filter syntax; allow/exclude selects the filter direction. Sort chooses high or low values first. Data selects LIST, STACK, SLOT, POS, STORAGE or CHANNEL; index selects a slot or channel where applicable. This controls the data, not whether a display draws a block, item, grid or bar."
+        },
+        {
+          "heading": "CURRENT LIMITS",
+          "body": "The sampler groups bounded visual component variants separately and includes a one-item picture with each sampled item row. Quantities remain separate from that picture. Nested container inventories and block-entity data are excluded. Oversized visual metadata falls back to the base item; this can merge those fallback variants. Multiple access points to a combined inventory may duplicate it; use one authoritative target when validating totals."
+        },
+        {
+          "heading": "PICTURES AND QUANTITIES",
+          "body": "In the display editor choose Item icon, Block model or Inventory grid. Pick the reader and actual row key. A key with a variant suffix selects that specific visual variant; a plain item ID matches the first such variant. Block model requires an actual block item. A STORAGE row is numeric and has no item picture. Exact and compact quantities are optional overlays, not ItemStack sizes limited to 64."
+        }
+      ]
+    },
+    {
+      "id": "fluids",
+      "category": "network",
+      "title": "Fluid Reader",
+      "summary": "Read compatible tanks in millibuckets.",
+      "icon": "foundations_pl4:fluidreader",
+      "sections": [
+        {
+          "heading": "CONNECT A TANK",
+          "body": "Put a Node on the tank fluid-handler face. Connect a Fluid Reader to the data network and inspect Data. Tank amounts, capacity and fluid IDs are available when exposed by the target."
+        },
+        {
+          "heading": "FILTER AND DISPLAY",
+          "body": "Filter by fluid IDs/tags as needed. Choose Fluid tank for a tinted still-texture fill, Fluid grid for one icon per sampled fluid, or Progress / energy bar for a numeric storage row. Tanks fill bottom-up from stored/capacity; grids show a fluid sample rather than a fullness meter. Per-fluid capacity sums the nonempty exposed tanks that contain that fluid; STORAGE includes all reported tank capacity. This is not a per-tank selection editor."
+        },
+        {
+          "heading": "READING IS NOT PUMPING",
+          "body": "A Fluid Reader only observes. Actual movement requires configured Transfer Nodes and a source/destination that allow extraction/insertion. Real modded tank behavior still needs validation in your pack."
+        }
+      ]
+    },
+    {
+      "id": "energy",
+      "category": "network",
+      "title": "Energy Reader",
+      "summary": "Keep FE, EU and Joules in their native units.",
+      "icon": "foundations_pl4:energyreader",
+      "sections": [
+        {
+          "heading": "SELECT ENERGY",
+          "body": "Connect a Node to an exposed energy face. Add an Energy Reader, give it a unique name such as power_main, and inspect Data. Point the display Reader name to power_main; an Inventory Reader will not supply power values."
+        },
+        {
+          "heading": "PROVIDERS",
+          "body": "AUTO prefers a usable optional native provider, then FE. FE uses the NeoForge storage capability. J queries an exposed Mekanism strict-energy handler. EU queries GTCEu energy information/container interfaces. Optional native providers are read-only and depend on the installed mod version."
+        },
+        {
+          "heading": "DATA KEYS",
+          "body": "FE total: storage.\nEU total: storage:eu.\nJoule total: storage:j.\nTotals are separate; PL4 does not add unlike energy units or assume conversion constants."
+        },
+        {
+          "heading": "CHECK THE MACHINE",
+          "body": "A supported empty battery can report zero. Missing, unloaded, blocked or unsupported storage is not invented as a zero-capacity battery. Compare stored/capacity with the machine own GUI. These values are not generation or consumption per tick."
+        },
+        {
+          "heading": "BOUNDARIES",
+          "body": "Transfer Nodes still transport FE only. This is not universal energy support: AE2-native grids, IC2-specific power and Create stress/RPM are not added here. Very large telemetry above 2^53 may lose integer precision."
+        }
+      ]
+    },
+    {
+      "id": "information",
+      "category": "network",
+      "title": "Info and Network Readers",
+      "summary": "World, entity and network information.",
+      "icon": "foundations_pl4:inforeader",
+      "sections": [
+        {
+          "heading": "INFO READER",
+          "body": "The current sampler covers selected numeric properties such as position, redstone, time/weather, hardness, growth and selected machine/entity values. Supported rows depend on the target. Not every mod property has a provider."
+        },
+        {
+          "heading": "NETWORK READER",
+          "body": "Use the Network Reader for current host/component and target counts. It is a diagnostic view, not the full historical channel editor."
+        },
+        {
+          "heading": "DISPLAY A VALUE",
+          "body": "Use Data to discover actual row keys. Copy the key, select this reader on your display, then add a text or bar element."
+        }
+      ]
+    },
+    {
+      "id": "panels",
+      "category": "display",
+      "title": "Displays and the element editor",
+      "summary": "Choose actual item, block, grid, fluid, text or bar elements.",
+      "icon": "foundations_pl4:displayscreen",
+      "sections": [
+        {
+          "heading": "CHOOSE A PANEL",
+          "body": "Mini, normal and large flat panels use separate display mounting slots. Normal and mini displays stay individual. Large panels form a rectangular shared canvas. The same typed elements also draw on holographic displays. Joining screens does not join machine or transfer networks."
+        },
+        {
+          "heading": "OPEN THE EDITOR",
+          "body": "Right-click a display to open its world-space editor. The left-edge tools remain visible while that local player is editing, but contextual tool help is shown in the player HUD rather than painted onto the monitor. This keeps the monitor readable up close and prevents the held hand from covering instructions. Right-click is Back throughout the display editor stack; Escape closes the editor. Empty-hand Shift-right-click a paired panel still opens the reader underneath."
+        },
+        {
+          "heading": "ADD A BLOCK OR ITEM",
+          "body": "Click + on the left. Cycle Type to Block model or Item icon. Pick Reader (or keep the display default), then Pick the actual data key. Set position, size, caption and optional Quantity. Colour can be typed as hex or chosen from the visual Palette menu, which previews and fills the hex field. Add element saves the typed element and changes the display to CUSTOM. Block model requires a BlockItem, so an ingot cannot silently become a block. A missing or incompatible sample shows a diagnostic, not the old inventory list."
+        },
+        {
+          "heading": "PRESENTATION TYPES",
+          "body": "Text / value draws a caption and optional live numeric row. Item icon uses the item GUI model. Block model draws the block default-state model. Inventory grid lays out actual item pictures; new grids default to 3 columns, and Columns changes the real grid count with an on-screen preview. Offset skips source rows. Fluid tank draws a tinted graphical fill. Fluid grid uses the same column control for fluid samples. Progress / energy bar draws a horizontal or vertical value/capacity fill. Numeric storage rows are intended for Text or Bar."
+        },
+        {
+          "heading": "READERS AND STATIC PICTURES",
+          "body": "Each element may use the display reader or a specifically selected reader visible on that display network. The picker does not search private or unrelated networks. Up to eight explicit reader bindings are supported; explicit previews contain at most 64 rows each and 256 rows combined. An optional static item/fluid ID draws a fixed sample of one, not a live inventory quantity. Selecting a data key clears the static ID."
+        },
+        {
+          "heading": "MOVE RESIZE EDIT",
+          "body": "Click an element to select it. Drag to move; drag any of the four bright corner brackets to resize while the opposite corner stays anchored. # or G toggles a four-pixel snap. E edits properties; X or Delete removes the selected element; C or Ctrl+D duplicates it. ^ and v reorder elements inside the icon/text layer categories. Large joined displays use their dynamic whole-board canvas; smaller displays keep their bounded logical canvas. Quantities remain above icons; editing controls remain above both."
+        },
+        {
+          "heading": "PAGES AND AUTOMATIC MODE",
+          "body": "The bottom < and > controls select one of eight saved pages. Properties can assign an element to another page. Up to 32 elements are stored across all pages and up to 128 item/fluid pictures are drawn on one canvas at a time. ? opens Data / Settings; View switches between AUTO_LIST and CUSTOM. AUTO_LIST is an explicit top-aligned table with up to 24 rows when space permits, not a fallback. Its footer shows displayed and received row counts. An empty custom layout stays blank. Switching modes retains saved elements."
+        },
+        {
+          "heading": "SAFE SAVING",
+          "body": "Drag updates are local until mouse release. The server checks the clicked tile, identity, edit permission, distance and canvas membership, then commits a revisioned change. A stale edit is rejected instead of overwriting another editor or a newer joined layout. Reopen properties after a conflict and review the latest settings. This is a bounded PL2-style editor pass, not the complete historical GSI action/container system."
+        },
+        {
+          "heading": "VIEWING FRONT",
+          "body": "? then Settings > Front changes inward/outward viewing without moving mounting slots or cable ports. A new reader-mounted panel faces outward. Older panels retain their explicit front. For floor/ceiling holograms use View instead; their text remains upright and readable from either side."
+        }
+      ]
+    },
+    {
+      "id": "large",
+      "category": "display",
+      "title": "Expand a large screen",
+      "summary": "Side-click extension that preserves plane and layout.",
+      "icon": "foundations_pl4:largedisplayscreen",
+      "sections": [
+        {
+          "heading": "EXTEND THE EDGE",
+          "body": "Hold another Large Display and click the thin side edge of an existing Large Display. You can also aim near the rim of its front/back surface. The new tile is placed beside that edge with the same mounting face and viewing front."
+        },
+        {
+          "heading": "AIM AT THE RIM",
+          "body": "A click in the centre is not an extension direction. Aim within the outer fifth of the panel, or at the physical side. Sneak-place to use ordinary independent placement instead of edge extension."
+        },
+        {
+          "heading": "JOIN RULES",
+          "body": "Joined panels must share owner, type, plane, mount and viewing front. A complete rectangle may be at most 16 tiles wide and 16 high. There must be no holes. During an L-shaped intermediate build, tiles remain individually usable until the rectangle is complete."
+        },
+        {
+          "heading": "KEEP YOUR CONTENT",
+          "body": "The active selection, colour and layout are mirrored to members of a valid canvas. Extending left/up, removing the old top-left controller, saving or reloading no longer intentionally replaces that layout with a blank tile. Split pieces keep the last shared settings."
+        },
+        {
+          "heading": "MERGING CONFIGURED SCREENS",
+          "body": "When two configured canvases merge, the newest stored layout revision wins. Deterministic ties prefer an existing controller then the new top-left. Back up distinct layouts before joining; a canvas has one shared layout."
+        },
+        {
+          "heading": "REJECTED PLACEMENT",
+          "body": "Solid blocks, conflicting host parts, ownership/protection, world limits and unloaded positions reject extension without consuming the display. A saved display item adopts the existing canvas plane/front/layout when used to extend it."
+        }
+      ]
+    },
+    {
+      "id": "holograms",
+      "category": "display",
+      "title": "Holographic displays",
+      "summary": "Readable projections instead of backwards flat-screen text.",
+      "icon": "foundations_pl4:holographicdisplay",
+      "sections": [
+        {
+          "heading": "SEPARATE PROJECTOR AND TEXT",
+          "body": "A holographic display is a projector, not a monitor skin glued to the base. R17 moves the readable canvas from the physical emitter hardware: about 0.90 blocks from the normal projector's emitter bar and 1.20 from the selected Advanced projection panel."
+        },
+        {
+          "heading": "READ FROM EITHER SIDE",
+          "body": "Walk around the projected plane and it should remain readable from either side. The rear uses its own right-handed frame instead of mirrored letters. The plane does not rotate to chase the camera; it simply has two readable sides."
+        },
+        {
+          "heading": "VIEW DIRECTION",
+          "body": "Floor and ceiling projectors start from the placing player's direction. Settings > View steps through the four horizontal directions. Wall projectors use their mounting face. Changing View rotates the projection without dragging the projector base or cable connection around."
+        },
+        {
+          "heading": "DATA AND LIMITS",
+          "body": "Use the same reader bindings and typed display elements as the other screens. Holograms do not join into Large Display rectangles. R17 improves emitter-relative spacing/orientation; full historical advanced hologram/GSI parity remains future work."
+        }
+      ]
+    },
+    {
+      "id": "remote",
+      "category": "display",
+      "title": "Remote displays",
+      "summary": "Export reader telemetry without joining machine networks.",
+      "icon": "foundations_pl4:displayscreen",
+      "sections": [
+        {
+          "heading": "VISUAL OUTPUT",
+          "body": "The reader outward side can feed a separate compatible visual cable run. A display on that run can select the exporting reader. This is useful when the screen is not directly attached to the reader."
+        },
+        {
+          "heading": "ISOLATION",
+          "body": "That visual export must not authorize an attached Transfer Node to access the source machine inventory, tank or power. It only exposes reader rows. Keep machine-network cabling and visual export intent distinct."
+        },
         {
           "heading": "NO ROWS",
           "body": "Check the reader Data tab, output direction, cable family and disabled ports. Check the display selected reader name. A larger screen with no supported source is still an empty screen."
