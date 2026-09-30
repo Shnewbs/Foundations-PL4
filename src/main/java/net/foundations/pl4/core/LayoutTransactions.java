@@ -9,6 +9,7 @@ public final class LayoutTransactions {
     public static Result apply(State before,long expected,String action,UUID target,DisplayElements.Spec element,String value){
         if(expected!=before.revision)return new Result(false,before,"Screen changed; review the current layout and retry.");
         if(before.revision==Long.MAX_VALUE)return new Result(false,before,"Layout revision is exhausted.");
+        if(action.equals("forward")||action.equals("backward"))return applyLayers(before,expected,"layer_"+action,List.of(target));
         List<DisplayElements.Spec> list=new ArrayList<>(before.elements);DisplayElements.Mode mode=before.mode;int page=before.page;
         int index=-1;for(int i=0;i<list.size();i++)if(list.get(i).id().equals(target)){index=i;break;}
         try{switch(action){
@@ -22,7 +23,6 @@ public final class LayoutTransactions {
                 }else{if(index<0)return fail(before,"Element no longer exists.");list.remove(index);}
                 mode=DisplayElements.Mode.CUSTOM;
             }
-            case "forward","backward" -> {if(index<0)return fail(before,"Select an element.");int next=index+(action.equals("forward")?1:-1);if(next>=0&&next<list.size())Collections.swap(list,index,next);}
             case "clear" -> {list.clear();mode=DisplayElements.Mode.CUSTOM;}
             case "mode" -> {mode=DisplayElements.Mode.valueOf(value);}
             case "page" -> {page=Integer.parseInt(value);if(page<0||page>=DisplayElements.MAX_PAGES)return fail(before,"Page out of range.");}
@@ -111,6 +111,38 @@ public final class LayoutTransactions {
         if(width<8||height<9||width>DisplayElements.MAX_CANVAS||height>DisplayElements.MAX_CANVAS)return fail(before,"Invalid canvas dimensions.");
         var all=new ArrayList<>(before.elements);all.addAll(copies);
         return applyReplace(before,expected,all);
+    }
+    public static boolean layerAction(String action){return switch(action){
+        case "layer_front","layer_back","layer_forward","layer_backward" -> true;default -> false;
+    };}
+    /** Stable page-local layer changes; other pages retain their exact global list slots. */
+    public static Result applyLayers(State before,long expected,String action,List<UUID> ids){
+        if(expected!=before.revision)return fail(before,"Screen changed; review the current layout and retry.");
+        if(before.revision==Long.MAX_VALUE)return fail(before,"Layout revision is exhausted.");
+        if(!layerAction(action))return fail(before,"Unknown layer action.");
+        if(ids.isEmpty()||ids.size()>DisplayElements.MAX_ELEMENTS||new HashSet<>(ids).size()!=ids.size())return fail(before,"Select distinct elements on this page.");
+        Set<UUID> selected=new HashSet<>(ids);
+        var page=new ArrayList<>(before.elements.stream().filter(e->e.page()==before.page).toList());
+        if(page.stream().filter(e->selected.contains(e.id())).count()!=ids.size())return fail(before,"Selection changed; select elements on this page.");
+        switch(action){
+            case "layer_front","layer_back" -> {
+                boolean front=action.equals("layer_front");var ordered=new ArrayList<DisplayElements.Spec>();
+                for(var e:page)if(selected.contains(e.id())!=front)ordered.add(e);
+                for(var e:page)if(selected.contains(e.id())==front)ordered.add(e);
+                page=ordered;
+            }
+            case "layer_forward" -> {
+                for(int i=page.size()-2;i>=0;i--)if(selected.contains(page.get(i).id())&&!selected.contains(page.get(i+1).id()))Collections.swap(page,i,i+1);
+            }
+            case "layer_backward" -> {
+                for(int i=1;i<page.size();i++)if(selected.contains(page.get(i).id())&&!selected.contains(page.get(i-1).id()))Collections.swap(page,i,i-1);
+            }
+            default -> {return fail(before,"Unknown layer action.");}
+        }
+        var result=new ArrayList<>(before.elements);int next=0;
+        for(int i=0;i<result.size();i++)if(result.get(i).page()==before.page)result.set(i,page.get(next++));
+        if(result.equals(before.elements))return fail(before,"Selection is already at that layer.");
+        return new Result(true,new State(result,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
     }
     private static Result fail(State s,String reason){return new Result(false,s,reason);}
     private LayoutTransactions(){}

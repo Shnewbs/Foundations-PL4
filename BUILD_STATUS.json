@@ -1,6 +1,6 @@
 {
   "project": "Foundations PL4",
-  "version": "0.0.2a.R1.2",
+  "version": "0.0.2a.R1.3",
   "minecraft": "1.21.1",
   "neoforge": "21.1.250",
   "java": 21,
@@ -91,8 +91,8 @@
   "r1_1_release_workflow_run": 36770471202,
   "r1_1_curseforge_file_id": 9021648,
   "r1_1_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL",
-  "r1_2_cable_geometry": "NATIVE_VALIDATED_CLIENT_VISUAL_ACCEPTANCE_PENDING",
-  "r1_2_visual_acceptance": "PENDING_USER_RETEST",
+  "r1_2_cable_geometry": "NATIVE_VALIDATED_AND_USER_ACCEPTED",
+  "r1_2_visual_acceptance": "USER_ACCEPTED_SNAPPY_CABLE_PLACEMENT",
   "r1_2_gametests_total": 131,
   "r1_2_gametests_passed": 131,
   "r1_2_gametests_failed": 0,
@@ -100,5 +100,6 @@
   "r1_2_release_commit": "c0e667aa4f6cc85a6935008a5800ca41805f0849",
   "r1_2_release_workflow_run": 36775253035,
   "r1_2_curseforge_file_id": 9021856,
-  "r1_2_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL"
+  "r1_2_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL",
+  "r1_3_layers": "IMPLEMENTED_NATIVE_VALIDATION_PENDING"
 }

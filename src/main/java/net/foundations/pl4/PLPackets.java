@@ -56,6 +56,9 @@ public final class PLPackets {
                 var fields=packet.value.split(";",-1);if(fields.length!=3)throw new IllegalArgumentException("Invalid movement.");
                 var ids=Arrays.stream(fields[2].split(",",-1)).map(UUID::fromString).toList();
                 result=net.foundations.pl4.core.LayoutTransactions.applyMove(before,packet.revision,ids,Integer.parseInt(fields[0]),Integer.parseInt(fields[1]),part.layoutWidth,part.layoutHeight);
+            }else if(net.foundations.pl4.core.LayoutTransactions.layerAction(packet.action)){
+                var ids=Arrays.stream(packet.value.split(",",-1)).map(UUID::fromString).toList();
+                result=net.foundations.pl4.core.LayoutTransactions.applyLayers(before,packet.revision,packet.action,ids);
             }else if(net.foundations.pl4.core.LayoutTransactions.arrangement(packet.action)){
                 var ids=Arrays.stream(packet.value.split(",",-1)).map(UUID::fromString).toList();
                 result=net.foundations.pl4.core.LayoutTransactions.applyArrange(before,packet.revision,packet.action,ids,part.layoutWidth,part.layoutHeight);

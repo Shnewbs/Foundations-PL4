@@ -154,5 +154,44 @@ public final class R9RegressionTests {
         check(!LayoutTransactions.applyPaste(new LayoutTransactions.State(full,before.mode(),0,7),7,copies,248,120).accepted(),"capacity failure leaves whole batch unapplied");
         check(LayoutTransactions.applyReplace(pasted.state(),8,before.elements()).state().elements().equals(before.elements()),"one undo restores entire paste");
     }
-    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();selectionWorkflow();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
+    static void layerWorkflow(){
+        var a=DisplayElements.create(DisplayElements.Type.TEXT,0).textStyle(DisplayElements.TextAlign.RIGHT,true,1.75F);
+        var b=DisplayElements.create(DisplayElements.Type.BAR,0);var c=DisplayElements.create(DisplayElements.Type.ITEM,0);
+        var d=DisplayElements.create(DisplayElements.Type.FLUID,0);var other=DisplayElements.create(DisplayElements.Type.TEXT,1);
+        var before=new LayoutTransactions.State(List.of(a,other,b,c,d),DisplayElements.Mode.CUSTOM,0,7);
+        var front=LayoutTransactions.applyLayers(before,7,"layer_front",List.of(c.id(),a.id()));
+        check(front.accepted()&&front.state().revision()==8,"layer selection commits once");
+        check(front.state().elements().equals(List.of(b,other,d,a,c)),"front preserves selected and unselected order and other-page slots");
+        check(LayoutTransactions.applyLayers(before,7,"layer_back",List.of(d.id(),b.id())).state().elements().equals(List.of(b,other,d,a,c)),"back keeps selection order independent of packet order");
+        check(LayoutTransactions.applyLayers(before,7,"layer_forward",List.of(a.id(),b.id())).state().elements().equals(List.of(c,other,a,b,d)),"contiguous selection crosses one unselected layer");
+        check(LayoutTransactions.applyLayers(before,7,"layer_backward",List.of(b.id(),c.id())).state().elements().equals(List.of(b,other,c,a,d)),"contiguous backward movement preserves relative order");
+        check(LayoutTransactions.applyLayers(before,7,"layer_forward",List.of(a.id(),c.id())).state().elements().equals(List.of(b,other,a,d,c)),"disjoint selections move one step each");
+        check(!LayoutTransactions.applyLayers(before,6,"layer_front",List.of(a.id())).accepted(),"stale layers rejected");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_front",List.of(other.id())).accepted(),"other-page layers rejected");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_front",List.of(a.id(),UUID.randomUUID())).accepted(),"missing ID rejects whole selection");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_front",List.of(a.id(),a.id())).accepted(),"duplicate layer IDs rejected");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_front",List.of()).accepted(),"empty layer selection rejected");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_delete",List.of(a.id())).accepted(),"unknown layer action rejected");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_forward",List.of(d.id())).accepted(),"front boundary is a no-op");
+        check(!LayoutTransactions.applyLayers(before,7,"layer_backward",List.of(a.id())).accepted(),"back boundary is a no-op");
+        check(!LayoutTransactions.applyLayers(new LayoutTransactions.State(before.elements(),before.mode(),0,Long.MAX_VALUE),Long.MAX_VALUE,"layer_front",List.of(a.id())).accepted(),"layer revision overflow rejected");
+        check(LayoutTransactions.applyReplace(front.state(),8,before.elements()).state().elements().equals(before.elements()),"one undo restores layer selection");
+        check(LayoutTransactions.apply(before,7,"forward",a.id(),null,"").state().elements().equals(List.of(b,other,a,c,d)),"legacy single layer action is page-local too");
+        // Exhaust all selections up to six layers: membership, styles and both relative orders are invariant.
+        for(int size=1;size<=6;size++){
+            var elements=new ArrayList<DisplayElements.Spec>();for(int i=0;i<size;i++)elements.add(a.identity(UUID.randomUUID()));
+            var state=new LayoutTransactions.State(elements,DisplayElements.Mode.CUSTOM,0,0);
+            for(int mask=1;mask<(1<<size);mask++){
+                Set<UUID> ids=new HashSet<>();for(int i=0;i<size;i++)if((mask&(1<<i))!=0)ids.add(elements.get(i).id());
+                for(String action:List.of("layer_front","layer_back","layer_forward","layer_backward")){
+                    var result=LayoutTransactions.applyLayers(state,0,action,new ArrayList<>(ids));var after=result.state().elements();
+                    check(new HashSet<>(after).equals(new HashSet<>(elements)),"all element fields and membership survive layer reorder");
+                    check(after.stream().filter(e->ids.contains(e.id())).toList().equals(elements.stream().filter(e->ids.contains(e.id())).toList()),"selected relative order stable");
+                    check(after.stream().filter(e->!ids.contains(e.id())).toList().equals(elements.stream().filter(e->!ids.contains(e.id())).toList()),"unselected relative order stable");
+                    check(result.state().revision()==(result.accepted()?1:0),"only changed layers consume one revision");
+                }
+            }
+        }
+    }
+    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();selectionWorkflow();layerWorkflow();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
 }

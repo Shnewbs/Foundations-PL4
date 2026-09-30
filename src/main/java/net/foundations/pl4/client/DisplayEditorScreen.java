@@ -29,7 +29,7 @@ public final class DisplayEditorScreen extends Screen {
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
     public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
+    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
         if(p.layoutRevision>=part.layoutRevision)part=p;
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
@@ -43,6 +43,7 @@ public final class DisplayEditorScreen extends Screen {
     @Override protected void init(){
         var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
+        addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){
@@ -121,6 +122,26 @@ public final class DisplayEditorScreen extends Screen {
         pushUndo();pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
+    void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
+    List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
+    boolean layerSelected(UUID id){return selectedIds.contains(id);}
+    boolean layoutPending(){return pending;}
+    void selectLayer(UUID id,boolean additive){
+        if(pending||selectionOnPage().stream().noneMatch(e->e.id().equals(id)))return;
+        if(!additive)selectedIds.clear();
+        if(additive&&selectedIds.contains(id))selectedIds.remove(id);else selectedIds.add(id);
+        selected=selectedIds.contains(id)?id:selectedIds.stream().findFirst().orElse(null);
+    }
+    void selectAllLayers(){if(pending)return;selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);}
+    void layer(String action){
+        if(!editable||pending)return;
+        var ids=selection().stream().map(DisplayElements.Spec::id).toList();
+        var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);
+        var result=LayoutTransactions.applyLayers(before,part.layoutRevision,action,ids);
+        if(!result.accepted()){message=result.message();return;}
+        pushUndo();pending=true;waitTicks=0;message="Saving...";
+        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+    }
     private void pushUndo(){undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();redoStack.clear();}
     private void undo(){
         if(!editable||pending){message="Not ready.";return;}
@@ -143,7 +164,7 @@ public final class DisplayEditorScreen extends Screen {
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
         case 3->duplicateSelected();
-        case 4->commit("forward",null,"",part.layoutRevision);case 5->commit("backward",null,"",part.layoutRevision);
+        case 4->layer("layer_forward");case 5->layer("layer_backward");
         case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
     private List<DisplayElements.Spec> selectionOnPage(){return snapshot().stream().filter(e->e.page()==part.displayPage).toList();}
@@ -230,6 +251,7 @@ public final class DisplayEditorScreen extends Screen {
         if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
         if(key==68&&hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
         if(key==65&&hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
+        if(key==76){layersScreen();return true;}
         if(key==65&&!hasControlDown()){arrangementScreen();return true;}
         if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}
         return super.keyPressed(key,scan,mods);

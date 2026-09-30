@@ -230,4 +230,30 @@ public final class R9GameTests {
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"paste",new UUID(0,0),ElementJson.encodeList(List.of(a,b))));
         h.assertTrue(p.elements.size()==2&&p.layoutRevision==1&&p.elements.get(0).spec().equals(a)&&p.elements.get(1).spec().equals(b),"Whole batch added in one revision");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layerSelectionIsAtomicPageLocalAndPersists(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT).textStyle(DisplayElements.TextAlign.RIGHT,true,1.5F);var b=spec(DisplayElements.Type.BAR);var c=spec(DisplayElements.Type.ITEM);var other=spec(DisplayElements.Type.TEXT).onPage(1);
+        p.displayMode=DisplayElements.Mode.CUSTOM;for(var s:List.of(a,other,b,c))p.elements.add(new Part.Element(s));
+        PLPackets.editLayout(player(h,host,true),packet(host,0,"layer_front",null,b.id()+","+a.id()));
+        var expected=List.of(c,other,a,b);h.assertTrue(p.layoutRevision==1&&p.elements.stream().map(Part.Element::spec).toList().equals(expected),"Atomic layer selection preserves styles and other page slots");
+        var copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(copy.elements.equals(p.elements)&&copy.layoutRevision==1,"Layer order survives native NBT reload");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layerSelectionRejectsStaleMissingOtherPageAndMalformedIds(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var b=spec(DisplayElements.Type.BAR);var other=spec(DisplayElements.Type.ITEM).onPage(1);for(var s:List.of(a,b,other))p.elements.add(new Part.Element(s));p.layoutRevision=2;var user=player(h,host,true);
+        PLPackets.editLayout(user,packet(host,1,"layer_front",null,a.id().toString()));
+        PLPackets.editLayout(user,packet(host,2,"layer_front",null,a.id()+","+UUID.randomUUID()));
+        PLPackets.editLayout(user,packet(host,2,"layer_front",null,a.id()+","+other.id()));
+        PLPackets.editLayout(user,packet(host,2,"layer_front",null,a.id()+",invalid"));
+        h.assertTrue(p.layoutRevision==2&&p.elements.stream().map(Part.Element::spec).toList().equals(List.of(a,b,other)),"Invalid selection must never reorder any element");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layerSelectionRejectsForeignOwnerAndWrongDisplayIdentity(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var b=spec(DisplayElements.Type.BAR);for(var s:List.of(a,b))p.elements.add(new Part.Element(s));
+        PLPackets.editLayout(player(h,host,true),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),UUID.randomUUID(),0,"layer_front",new UUID(0,0),a.id().toString()));
+        p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),packet(host,0,"layer_front",null,a.id().toString()));
+        h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(a),"Layer controls retain both identity and ownership fences");h.succeed();
+    }
+
 }

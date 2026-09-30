@@ -1,11 +1,11 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.2` cable connection synchronization patch
+**Current source candidate:** `0.0.2a.R1.3` element list and selection layer controls
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
-**Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; modpack visual acceptance pending.
+**Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
 **Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
 
@@ -1146,7 +1146,7 @@ Use PL2/PL3 research for:
 
 ### Editor workflow
 
-- element list panel;
+- element list panel; **implemented in R1.3: frontmost-first current-page list, Shift-toggle and Ctrl+A selection, bounded list navigation**;
 - multi-select; **extended in R1.1 with Shift-toggle, Ctrl+A, box selection, rigid multi-element movement and atomic multi-delete**;
 - box/lasso select; **box selection implemented in R1.1 with page-local overlap, reverse drag and Shift-add; freeform lasso remains planned**;
 - alignment tools; **implemented in R1: left/right/top/bottom/centre, using canvas bounds for one element and selection bounds for multiple elements**;
@@ -1160,7 +1160,7 @@ Use PL2/PL3 research for:
 - page names;
 - page duplicate/delete;
 - keyboard shortcuts;
-- clearer selected-layer order.
+- clearer selected-layer order; **implemented in R1.3: stable page-local multi-selection forward/backward/front/back, one revision and one undo snapshot**.
 
 ### Containers/actions
 
