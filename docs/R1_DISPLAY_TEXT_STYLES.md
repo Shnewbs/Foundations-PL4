@@ -9,4 +9,4 @@ This continuation implements the first self-contained slice of the roadmap's dis
 
 Existing elements and older worlds default to 100% scale and left alignment. Values are clamped at the data boundary, so malformed or out-of-range client input cannot create unbounded text geometry.
 
-This is source work after the R17 freeze candidate. The R17 native hologram and transfer acceptance gate remains unchanged; this slice does not claim that the `0.0.1a` alpha is frozen.
+This is the first `0.0.2a.R1` continuation after the R17 freeze. The frozen `0.0.1a` native hologram and transfer acceptance gate remains unchanged.

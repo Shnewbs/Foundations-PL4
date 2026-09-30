@@ -1,8 +1,8 @@
-# Foundations PL4 0.0.1a.R17
+# Foundations PL4 0.0.2a development line
 
 **SOURCE ONLY. No compiled R17 runtime mod JAR is included.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
 
-R17 is a narrow final-freeze candidate. It keeps R16's hardened Transfer Node behavior and anchors hologram canvases to their actual emitter geometry: the normal projector's bar, the Advanced top emitter on floor/ceiling mounts, or its selected wall panel.
+`0.0.1a.R17` is frozen by user acceptance. This branch is now the `0.0.2a` development line, retaining R16's hardened Transfer Node behavior and R17's emitter-anchored holograms.
 
 The post-freeze R1 continuation now carries per-element text scale and left/centre/right alignment through the editor, renderer, NBT, and element JSON while retaining legacy defaults.
 

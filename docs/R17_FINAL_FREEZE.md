@@ -1,6 +1,6 @@
 # Foundations PL4 0.0.1a.R17 — final-freeze candidate
 
-R17 is a narrow continuation of the R16 source candidate, following the roadmap's recommendation to fix the hologram emitter anchor without adding new feature scope.
+R17 is the accepted `0.0.1a` freeze, following the roadmap's recommendation to fix the hologram emitter anchor without adding new feature scope.
 
 ## Hologram geometry
 
@@ -15,10 +15,10 @@ R17 is a narrow continuation of the R16 source candidate, following the roadmap'
 
 R16 transfer routing, save schema 2, 13 multipart slots, payload protocol 4 and recipes are unchanged. The Java 21 clean build, asset/standalone-JAR checks, emitter-anchor rule suite and all 114 native GameTests pass. Host edits register immediately for synchronous topology rebuilds, and joined canvases preserve their settings with proportional layout migration when their size changes. Do not treat this candidate as accepted until the remaining freeze checks pass.
 
-## Remaining freeze gate
+## Freeze gate - accepted
 
-- Normal and Advanced hologram visual checks on wall, floor and ceiling mounts.
-- R14 display/editor and R16 item/fluid/FE transfer acceptance.
-- Escrow save/reload, blocked-destination conservation and dedicated-server smoke test.
+- Normal and Advanced hologram visual checks on wall, floor and ceiling mounts - accepted.
+- R14 display/editor and R16 item/fluid/FE transfer acceptance - accepted.
+- Escrow save/reload, blocked-destination conservation and dedicated-server smoke test - accepted.
 
-Do not freeze `0.0.1a` until the complete gate passes.
+The user has confirmed the complete gate passes. `0.0.1a` is locked as the immutable base for `0.0.2a`; repeat the native checks when publishing the frozen artifact.

@@ -16,7 +16,7 @@ import net.foundations.pl4.core.*;
  * Identity is anchored to the clicked tile; joined-canvas roots may be elsewhere. */
 public final class DisplayEditorScreen extends Screen {
     final BlockPos pos;final UUID clickedIdentity;final int clickedSlot;final boolean editable;
-    Part part;UUID selected;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
+    Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private DisplayElements.Spec clipboard;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
     private double[] inverse;private long captureTime;private boolean snap=true,pending;private int waitTicks;
     private EditorChrome.Corner resizeCorner=EditorChrome.Corner.NONE,hoveredCorner=EditorChrome.Corner.NONE;private int hoveredTool=-1;
     String message="";
@@ -34,7 +34,7 @@ public final class DisplayEditorScreen extends Screen {
             String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
             for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
         }
-        if(selected!=null&&part.elements.stream().noneMatch(e->e.id().equals(selected)))selected=null;
+        selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)));selected=selectedIds.stream().findFirst().orElse(null);
     }
     @Override public boolean isPauseScreen(){return false;}
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
@@ -66,8 +66,9 @@ public final class DisplayEditorScreen extends Screen {
         canvas.rect(page.x(),page.y(),page.width(),page.height(),0xE6080B0D,5);canvas.outline(page,0xFF67DCE6,6);canvas.text(Integer.toString(live.displayPage+1),page.x()+4,page.y()+2,10,0xFF67DCE6,false,7);
         canvas.text("<",20,pageY+2,8,0xFFFFC45C,false,7);canvas.text(">",Math.max(28,spaceW()-10),pageY+2,8,0xFFFFC45C,false,7);
         var elem=draft!=null?draft:selectedElement();
+        for(var id:selectedIds){var marked=live.elements.stream().filter(e->e.id().equals(id)).map(Part.Element::spec).findFirst().orElse(null);if(marked!=null&&marked.page()==live.displayPage)canvas.outline(marked.bounds(),id.equals(selected)?0xFF73D86B:0xFF4D8D94,6);}
         if(elem!=null&&elem.page()==live.displayPage){
-            canvas.outline(elem.bounds(),0xFF73D86B,6);boolean pulse=minecraft!=null&&minecraft.level!=null&&((minecraft.level.getGameTime()/6)&1)==0;
+            boolean pulse=minecraft!=null&&minecraft.level!=null&&((minecraft.level.getGameTime()/6)&1)==0;
             for(var corner:new EditorChrome.Corner[]{EditorChrome.Corner.NW,EditorChrome.Corner.NE,EditorChrome.Corner.SW,EditorChrome.Corner.SE}){
                 var h=EditorChrome.handleRect(elem.bounds(),corner);int c=corner==hoveredCorner?0xFFFFFF66:(pulse?0xFF7DF4FF:0xFF4DB8C8);
                 // Full 10x10 hit target, but render it as a PL4 cyan corner bracket instead of a bulky square.
@@ -93,16 +94,22 @@ public final class DisplayEditorScreen extends Screen {
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
     void commit(String action,DisplayElements.Spec spec,String value,long revision){
         if(!editable||pending)return;UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
-        if(spec!=null)value=ElementJson.encode(spec);pending=true;waitTicks=0;message="Saving...";
+        if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&selectedIds.size()>1)value=String.join(",",selectedIds.stream().map(UUID::toString).toList());pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
     }
     void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
-        case 3->{var e=selectedElement();if(e!=null){var copy=DisplayElements.move(e,4,4,false,snap,spaceW(),spaceH()).identity(UUID.randomUUID());selected=copy.id();commit("add",copy,"",part.layoutRevision);}}
+        case 3->pasteSelected();
         case 4->commit("forward",null,"",part.layoutRevision);case 5->commit("backward",null,"",part.layoutRevision);
         case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
+    private void copySelected(){var e=selectedElement();if(e!=null){clipboard=e;message="Element copied.";}}
+    private void pasteSelected(){
+        if(clipboard==null){message="Copy an element first.";return;}
+        var copy=DisplayElements.move(clipboard,4,4,false,snap,spaceW(),spaceH()).identity(UUID.randomUUID());
+        selectedIds.clear();selectedIds.add(copy.id());selected=copy.id();commit("add",copy,"",part.layoutRevision);
+    }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
     @Override public void tick(){
         if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(pos.getCenter())>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
@@ -123,7 +130,8 @@ public final class DisplayEditorScreen extends Screen {
         if(button!=0||pending)return super.mouseClicked(x,y,button);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
-        selected=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&e.bounds().contains(p.x(),p.y())){selected=e.id();break;}}
+        UUID hitId=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&e.bounds().contains(p.x(),p.y())){hitId=e.id();break;}}
+        if(hitId!=null){if(hasShiftDown())selectedIds.add(hitId);else{selectedIds.clear();selectedIds.add(hitId);}selected=hitId;}else if(!hasShiftDown()){selectedIds.clear();selected=null;}
         var e=selectedElement();if(e!=null&&editable){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());}
         return true;
     }
@@ -135,7 +143,8 @@ public final class DisplayEditorScreen extends Screen {
     }
     @Override public boolean keyPressed(int key,int scan,int mods){
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
-        if(key==68&&hasControlDown()){tool(3);return true;}if(key==71){snap=!snap;return true;}
+        if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
+        if(key==68&&hasControlDown()){pasteSelected();return true;}if(key==71){snap=!snap;return true;}
         return super.keyPressed(key,scan,mods);
     }
     @Override public void removed(){inverse=null;draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
