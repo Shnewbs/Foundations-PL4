@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "foundations_pl4:redstonecable",
+    "count": 16
+  },
+  "pattern": [
+    "SSS",
+    "DDD",
+    "SSS"
+  ],
+  "key": {
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "S": {
+      "item": "foundations_pl4:signallingplate"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "foundations_pl4:block/readerwithdisplay",
+  "textures": {
+    "0": "foundations_pl4:block/model/info_reader",
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

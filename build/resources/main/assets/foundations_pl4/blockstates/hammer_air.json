@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "offset=1": {
+      "model": "foundations_pl4:block/hammer_air"
+    },
+    "offset=2": {
+      "model": "foundations_pl4:block/hammer_air"
+    }
+  }
+}

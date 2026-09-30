@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "foundations_pl4:block/multipart_host"
+    }
+  }
+}

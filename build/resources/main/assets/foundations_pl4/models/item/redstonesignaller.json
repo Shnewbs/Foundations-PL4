@@ -1,0 +1,292 @@
+{
+  "parent": "minecraft:block/block",
+  "gui_light": "side",
+  "ambientocclusion": false,
+  "textures": {
+    "0": "foundations_pl4:block/model/redstoneemitter_off",
+    "particle": "foundations_pl4:block/data_cable"
+  },
+  "elements": [
+    {
+      "__comment": "Element",
+      "from": [
+        6.5,
+        9.0,
+        6.5
+      ],
+      "to": [
+        9.5,
+        10.0,
+        9.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            13,
+            2,
+            15
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            2,
+            15
+          ],
+          "texture": "#0"
+        },
+        "north": {
+          "uv": [
+            0,
+            15,
+            3,
+            16
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            15,
+            3,
+            16
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            15,
+            3,
+            16
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            15,
+            3,
+            16
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "__comment": "Element",
+      "from": [
+        7.0,
+        5.5,
+        7.0
+      ],
+      "to": [
+        9.0,
+        10.5,
+        9.0
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#0",
+          "rotation": 90
+        },
+        "up": {
+          "uv": [
+            0,
+            13,
+            2,
+            15
+          ],
+          "texture": "#0"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            5
+          ],
+          "texture": "#0",
+          "rotation": 180
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            5
+          ],
+          "texture": "#0",
+          "rotation": 180
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            5
+          ],
+          "texture": "#0",
+          "rotation": 180
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            5
+          ],
+          "texture": "#0",
+          "rotation": 180
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        -150,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        2.263097,
+        2.263097,
+        2.263097
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.6,
+        1.6,
+        1.6
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.12,
+        1.12,
+        1.12
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.04,
+        1.04,
+        1.04
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.04,
+        1.04,
+        1.04
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.899009,
+        0.899009,
+        0.899009
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.899009,
+        0.899009,
+        0.899009
+      ]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader"
+    },
+    "facing=up,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader",
+      "x": 180
+    },
+    "facing=north,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader",
+      "x": 90
+    },
+    "facing=west,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,has_display=false": {
+      "model": "foundations_pl4:block/part_networkreader",
+      "x": 90,
+      "y": 270
+    },
+    "facing=down,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display"
+    },
+    "facing=up,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display",
+      "x": 180
+    },
+    "facing=north,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display",
+      "x": 90
+    },
+    "facing=west,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,has_display=true": {
+      "model": "foundations_pl4:block/part_networkreader_with_display",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

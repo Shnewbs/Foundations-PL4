@@ -1,0 +1,13 @@
+{
+  "type": "foundations_pl4:forging_hammer",
+  "ingredient": {
+    "tag": "c:dusts/redstone"
+  },
+  "input_count": 1,
+  "result": {
+    "id": "foundations_pl4:signallingplate",
+    "count": 4
+  },
+  "processing_ticks": 100,
+  "cooldown_ticks": 200
+}

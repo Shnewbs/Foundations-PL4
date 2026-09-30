@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    },
+    "facing=up": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    },
+    "facing=north": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    },
+    "facing=south": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    },
+    "facing=west": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    },
+    "facing=east": {
+      "model": "foundations_pl4:block/cable_model_redstone_on_centre"
+    }
+  }
+}

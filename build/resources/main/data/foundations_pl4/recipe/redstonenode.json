@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "foundations_pl4:redstonenode",
+    "count": 1
+  },
+  "pattern": [
+    " C ",
+    "PDP"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:signallingplate"
+    },
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "C": {
+      "item": "foundations_pl4:redstonecable"
+    }
+  }
+}

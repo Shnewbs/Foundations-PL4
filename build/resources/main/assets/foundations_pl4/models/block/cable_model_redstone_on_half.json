@@ -1,0 +1,7 @@
+{
+  "parent": "foundations_pl4:block/cableconnector_half",
+  "textures": {
+    "0": "foundations_pl4:block/model/redstone_cable_on",
+    "particle": "foundations_pl4:block/data_cable"
+  }
+}

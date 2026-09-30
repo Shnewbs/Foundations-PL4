@@ -1,0 +1,287 @@
+{
+  "parent": "minecraft:block/block",
+  "gui_light": "side",
+  "ambientocclusion": false,
+  "textures": {
+    "0": "foundations_pl4:block/model/transfer_node_passive",
+    "particle": "foundations_pl4:block/data_cable"
+  },
+  "elements": [
+    {
+      "name": "Connect1",
+      "from": [
+        4.0,
+        7.0,
+        4.0
+      ],
+      "to": [
+        12.0,
+        8.0,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            13.0,
+            8.0,
+            14.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            11.0,
+            8.0,
+            12.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            15.0,
+            8.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            12.0,
+            8.0,
+            13.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            1.0,
+            1.0,
+            8.0,
+            8.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            0.0,
+            9.0,
+            9.0
+          ]
+        }
+      }
+    },
+    {
+      "name": "Connect2",
+      "from": [
+        5.0,
+        8.0,
+        5.0
+      ],
+      "to": [
+        11.0,
+        9.0,
+        11.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            11.0,
+            6.0,
+            12.0
+          ]
+        },
+        "east": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            11.0,
+            6.0,
+            12.0
+          ]
+        },
+        "south": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            11.0,
+            6.0,
+            12.0
+          ]
+        },
+        "west": {
+          "texture": "#0",
+          "uv": [
+            0.0,
+            11.0,
+            6.0,
+            12.0
+          ]
+        },
+        "up": {
+          "texture": "#0",
+          "uv": [
+            1.0,
+            1.0,
+            8.0,
+            8.0
+          ]
+        },
+        "down": {
+          "texture": "#0",
+          "uv": [
+            1.0,
+            1.0,
+            8.0,
+            8.0
+          ]
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.149049,
+        1.149049,
+        1.149049
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.459619,
+        0.459619,
+        0.459619
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.459619,
+        0.459619,
+        0.459619
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.441942,
+        0.441942,
+        0.441942
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.441942,
+        0.441942,
+        0.441942
+      ]
+    }
+  }
+}

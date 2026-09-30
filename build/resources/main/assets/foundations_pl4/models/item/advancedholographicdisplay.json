@@ -1,0 +1,352 @@
+{
+  "parent": "minecraft:block/block",
+  "gui_light": "side",
+  "ambientocclusion": false,
+  "textures": {
+    "0": "foundations_pl4:block/model/holographic_display",
+    "1": "foundations_pl4:block/model/cable_types",
+    "hologram": "foundations_pl4:block/model/hologram_animated",
+    "particle": "foundations_pl4:block/data_cable"
+  },
+  "elements": [
+    {
+      "__comment": "Element",
+      "from": [
+        4.9995,
+        8.5,
+        4.9995
+      ],
+      "to": [
+        10.9995,
+        9.5,
+        10.9995
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            9,
+            1,
+            15,
+            7
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            9,
+            1,
+            15,
+            7
+          ],
+          "texture": "#1"
+        },
+        "north": {
+          "uv": [
+            12,
+            15,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            12,
+            15,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            12,
+            15,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            12,
+            15,
+            16,
+            16
+          ],
+          "texture": "#0"
+        }
+      }
+    },
+    {
+      "__comment": "PlaneX5",
+      "from": [
+        4.9995,
+        6.5,
+        4.9995
+      ],
+      "to": [
+        5.0005,
+        8.5,
+        10.9995
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            0.5,
+            9.5,
+            14.5,
+            5.5
+          ],
+          "texture": "#hologram"
+        },
+        "east": {
+          "uv": [
+            1,
+            6.5,
+            15,
+            2.5
+          ],
+          "texture": "#hologram"
+        }
+      }
+    },
+    {
+      "__comment": "PlaneX5",
+      "from": [
+        10.9995,
+        6.5,
+        4.9995
+      ],
+      "to": [
+        11.0005,
+        8.5,
+        10.9995
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            2,
+            10,
+            16,
+            6
+          ],
+          "texture": "#hologram"
+        },
+        "east": {
+          "uv": [
+            1,
+            13.5,
+            15,
+            9.5
+          ],
+          "texture": "#hologram"
+        }
+      }
+    },
+    {
+      "__comment": "PlaneX5",
+      "from": [
+        4.9995,
+        6.5,
+        4.9995
+      ],
+      "to": [
+        10.9995,
+        8.5,
+        5.0005
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            16,
+            15,
+            12
+          ],
+          "texture": "#hologram"
+        },
+        "south": {
+          "uv": [
+            1,
+            16,
+            15,
+            12
+          ],
+          "texture": "#hologram"
+        }
+      }
+    },
+    {
+      "__comment": "PlaneX5",
+      "from": [
+        4.9995,
+        6.5,
+        10.9995
+      ],
+      "to": [
+        10.9995,
+        8.5,
+        11.0005
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            5.5,
+            15,
+            1.5
+          ],
+          "texture": "#hologram"
+        },
+        "south": {
+          "uv": [
+            1,
+            11,
+            15,
+            7
+          ],
+          "texture": "#hologram"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        -150,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.469079,
+        1.469079,
+        1.469079
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.666556,
+        0.666556,
+        0.666556
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -30,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1.194716,
+        1.194716,
+        1.194716
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.933178,
+        0.933178,
+        0.933178
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.612724,
+        0.612724,
+        0.612724
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.612724,
+        0.612724,
+        0.612724
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.557209,
+        0.557209,
+        0.557209
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.557209,
+        0.557209,
+        0.557209
+      ]
+    }
+  }
+}

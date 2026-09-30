@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    },
+    "facing=up": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    },
+    "facing=north": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    },
+    "facing=south": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    },
+    "facing=west": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    },
+    "facing=east": {
+      "model": "foundations_pl4:block/part_redstonecable"
+    }
+  }
+}

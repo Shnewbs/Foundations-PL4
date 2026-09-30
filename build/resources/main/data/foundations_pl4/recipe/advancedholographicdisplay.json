@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "foundations_pl4:advancedholographicdisplay",
+    "count": 1
+  },
+  "pattern": [
+    "SSS",
+    "REW",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "foundations_pl4:minidisplay"
+    },
+    "S": {
+      "tag": "c:dusts/sapphire"
+    },
+    "R": {
+      "item": "foundations_pl4:signallingplate"
+    },
+    "E": {
+      "item": "foundations_pl4:etchedplate"
+    },
+    "W": {
+      "item": "foundations_pl4:wirelessplate"
+    }
+  }
+}

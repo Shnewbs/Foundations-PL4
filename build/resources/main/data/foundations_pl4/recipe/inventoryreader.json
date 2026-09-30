@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "foundations_pl4:inventoryreader",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "foundations_pl4:inforeader"
+    },
+    {
+      "tag": "c:chests/wooden"
+    }
+  ]
+}
