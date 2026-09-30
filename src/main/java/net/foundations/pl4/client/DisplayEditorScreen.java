@@ -27,7 +27,38 @@ public final class DisplayEditorScreen extends Screen {
     private static final String[] TOOLS={"+","E","X","C","^","v","#","?"};
     private static final String[] HELP={"Add element","Edit selected element","Delete selected element","Duplicate selected element","Bring forward","Send backward","Toggle 4-pixel snap","Data / settings"};
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
-    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos…765 tokens truncated…;
+    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
+    public UUID identity(){return clickedIdentity;}
+    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
+    public void receive(PLPackets.Open packet,Part p){
+        if(p.layoutRevision>=part.layoutRevision)part=p;
+        if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
+        if(packet.tag().contains("previewReader")){
+            String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
+        }
+        selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)&&e.spec().page()==part.displayPage));selected=selectedIds.stream().findFirst().orElse(null);
+    }
+    @Override public boolean isPauseScreen(){return false;}
+    @Override protected void init(){
+        var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
+        arrange.active=editable;
+    }
+    @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
+    public boolean matches(HostEntity host,Part p){
+        if(minecraft==null||minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity anchor))return false;
+        Part hit=anchor.parts.get(clickedSlot);if(hit==null||!hit.identity.equals(clickedIdentity))return false;
+        BlockPos root=hit.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(hit),-hit.canvasColumn).relative(DisplayNetworks.up(hit),hit.canvasRow):pos;
+        return root.equals(host.getBlockPos())&&p.slot()==clickedSlot&&p.kind==hit.kind;
+    }
+    public List<Part.Element> preview(Part live){
+        if(!draftSpecs.isEmpty()){var edits=new HashMap<UUID,DisplayElements.Spec>();for(var e:draftSpecs)edits.put(e.id(),e);return live.elements.stream().map(e->edits.containsKey(e.id())?new Part.Element(edits.get(e.id())):e).toList();}
+        if(draft==null)return live.elements;
+        List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
+    }
+    public void capture(Matrix4f localPose){
+        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix()).mul(RenderSystem.getModelViewMatrix()).mul(localPose);
+        float[] values=new float[16];matrix.get(values);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
     }
     private Optional<DisplayPicking.Point> point(double x,double y){if(System.nanoTime()-captureTime>300_000_000L)return Optional.empty();return DisplayPicking.hit(inverse,x,y,width,height);}
