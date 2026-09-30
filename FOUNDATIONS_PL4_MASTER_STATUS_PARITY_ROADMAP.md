@@ -1,10 +1,11 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.1` display selection workflow continuation
+**Current source candidate:** `0.0.2a.R1.2` cable connection synchronization patch
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
+**Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; modpack visual acceptance pending.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
 **Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
 
