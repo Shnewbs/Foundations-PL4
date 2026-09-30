@@ -181,7 +181,7 @@
         },
         {
           "heading": "3  /  GIVE IT SOMETHING OBVIOUS",
-          "body": "Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R17 measures projection clearance from the emitter hardware itself: normal holograms leave about 0.90 blocks from the emitter bar; Advanced leaves about 1.20 from its selected projection panel."
+          "body": "Add a short Text / value or Item icon first. A simple, obvious element makes orientation and spacing easier to judge than a busy page. R17 measures projection clearance from the emitter hardware itself: normal and Advanced holograms leave a 0.04-block gap between the canvas edge and the emitter. Floor and wall panels sit directly above the emitter; ceiling panels sit below it."
         },
         {
           "heading": "4  /  WALK AROUND THE PLANE",
@@ -501,7 +501,7 @@
       "sections": [
         {
           "heading": "SEPARATE PROJECTOR AND TEXT",
-          "body": "A holographic display is a projector, not a monitor skin glued to the base. R17 moves the readable canvas from the physical emitter hardware: about 0.90 blocks from the normal projector's emitter bar and 1.20 from the selected Advanced projection panel."
+          "body": "A holographic display is a projector, not a monitor skin glued to the base. R17 moves the readable canvas from the physical emitter hardware: directly above the normal projector's emitter bar or the Advanced emitter, with a 0.04-block edge gap. Ceiling panels project below the emitter."
         },
         {
           "heading": "READ FROM EITHER SIDE",

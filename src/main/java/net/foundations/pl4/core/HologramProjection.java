@@ -2,10 +2,10 @@ package net.foundations.pl4.core;
 
 /** Projector geometry and readable text orientation are separate coordinate systems. */
 public final class HologramProjection {
-    /** Clear air between the emitter hardware and a normal hologram plane. */
-    public static final double NORMAL_PROJECTION_CLEARANCE = .90;
-    /** Advanced holograms project farther so their larger base/cabling cannot cut through the canvas. */
-    public static final double ADVANCED_PROJECTION_CLEARANCE = 1.20;
+    /** Centre offset: half the upright canvas height (120 * .0035 / 2), plus .04 block gap. */
+    public static final double NORMAL_PROJECTION_CLEARANCE = .25;
+    /** Advanced uses its own emitter anchor with the same canvas-edge gap. */
+    public static final double ADVANCED_PROJECTION_CLEARANCE = .25;
     public record Point(double x, double y, double z) {}
     public record Projection(Point centre, DisplayFacing.Frame frame) {}
     public record Geometry(Point mountAnchor, Point emitterAnchor, DisplayFacing.Vector normal, double distance) {
@@ -31,8 +31,9 @@ public final class HologramProjection {
     }
     public static Geometry geometry(int mount,int requested,boolean advanced) {
         view(mount,requested); // Validate the mount before constructing geometry.
-        // Projection follows the attachment axis; view only controls readable orientation.
-        var normal=DisplayFacing.facing(mount^1).normal();
+        // Upright wall and floor canvases sit above the emitter, never horizontally away.
+        // Ceiling emitters project below their hardware. View only rotates readable text.
+        var normal=DisplayFacing.facing(mount==1?0:1).normal();
         int yaw=baseYaw(mount,requested);
         Point mountAnchor=modelPoint(mount,yaw,8,advanced?3:0,8);
         Point emitterAnchor;
@@ -45,7 +46,9 @@ public final class HologramProjection {
             for(int i=1;i<panels.length;i++)
                 if(dot(offset(panels[i]),normal)>dot(offset(emitterAnchor),normal))emitterAnchor=panels[i];
         } else {
-            emitterAnchor=modelPoint(mount,yaw,8,0,10.5);
+            // The bar spans raw y=-1..1 and z=10..11. Use its exposed edge,
+            // accounting for wall mounting turning raw Z into world height.
+            emitterAnchor=mount<2?modelPoint(mount,yaw,8,1,10.5):modelPoint(mount,yaw,8,0,11);
         }
         return new Geometry(mountAnchor,emitterAnchor,normal,clearance(advanced));
     }

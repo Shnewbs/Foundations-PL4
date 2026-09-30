@@ -29,3 +29,5 @@ gradlew.bat --no-daemon --console=plain runGameTestServer
 ```
 
 R17 retains R16's 114 registered GameTests. Use a copied world until native build, all GameTests, hologram wall/floor/ceiling visuals and the R16 transfer acceptance checklist pass.
+
+Hologram placement hotfix: floor and wall canvases sit directly above the emitter edge with a 0.04-block gap; ceiling canvases sit below it. View controls readable orientation, without projecting the canvas horizontally away.
