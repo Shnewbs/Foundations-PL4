@@ -16,7 +16,7 @@ import net.foundations.pl4.core.*;
  * Identity is anchored to the clicked tile; joined-canvas roots may be elsewhere. */
 public final class DisplayEditorScreen extends Screen {
     final BlockPos pos;final UUID clickedIdentity;final int clickedSlot;final boolean editable;
-    Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
+    Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private DisplayElements.Spec clipboard;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
     private double[] inverse;private long captureTime;private boolean snap=true,pending;private int waitTicks;
     private EditorChrome.Corner resizeCorner=EditorChrome.Corner.NONE,hoveredCorner=EditorChrome.Corner.NONE;private int hoveredTool=-1;
     String message="";
@@ -100,10 +100,16 @@ public final class DisplayEditorScreen extends Screen {
     void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
-        case 3->{var e=selectedElement();if(e!=null){var copy=DisplayElements.move(e,4,4,false,snap,spaceW(),spaceH()).identity(UUID.randomUUID());selected=copy.id();commit("add",copy,"",part.layoutRevision);}}
+        case 3->pasteSelected();
         case 4->commit("forward",null,"",part.layoutRevision);case 5->commit("backward",null,"",part.layoutRevision);
         case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
+    private void copySelected(){var e=selectedElement();if(e!=null){clipboard=e;message="Element copied.";}}
+    private void pasteSelected(){
+        if(clipboard==null){message="Copy an element first.";return;}
+        var copy=DisplayElements.move(clipboard,4,4,false,snap,spaceW(),spaceH()).identity(UUID.randomUUID());
+        selectedIds.clear();selectedIds.add(copy.id());selected=copy.id();commit("add",copy,"",part.layoutRevision);
+    }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
     @Override public void tick(){
         if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(pos.getCenter())>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
@@ -137,7 +143,8 @@ public final class DisplayEditorScreen extends Screen {
     }
     @Override public boolean keyPressed(int key,int scan,int mods){
         if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
-        if(key==68&&hasControlDown()){tool(3);return true;}if(key==71){snap=!snap;return true;}
+        if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
+        if(key==68&&hasControlDown()){pasteSelected();return true;}if(key==71){snap=!snap;return true;}
         return super.keyPressed(key,scan,mods);
     }
     @Override public void removed(){inverse=null;draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}

@@ -1150,7 +1150,7 @@ Use PL2/PL3 research for:
 - box/lasso select;
 - alignment tools;
 - distribute evenly;
-- copy/paste;
+- copy/paste; **implemented in the R1 continuation with local clipboard, deterministic offset, and revision-fenced add**;
 - duplicate with deterministic offset;
 - group/ungroup;
 - lock element;
