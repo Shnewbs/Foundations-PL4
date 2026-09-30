@@ -193,5 +193,29 @@ public final class R9RegressionTests {
             }
         }
     }
-    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();selectionWorkflow();layerWorkflow();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
+    static void pageWorkflow(){
+        var a=DisplayElements.create(DisplayElements.Type.TEXT,0).textStyle(DisplayElements.TextAlign.RIGHT,true,1.75F);
+        var b=DisplayElements.create(DisplayElements.Type.BAR,0);var other=DisplayElements.create(DisplayElements.Type.ITEM,2);
+        var before=new LayoutTransactions.State(List.of(a,other,b),DisplayElements.Mode.CUSTOM,0,7);var zero=new UUID(0,0);
+        var copied=LayoutTransactions.apply(before,7,"page_copy",zero,null,"7");
+        check(copied.accepted()&&copied.state().revision()==8&&copied.state().page()==0,"page copy commits once and retains current page");
+        check(copied.state().elements().subList(0,3).equals(before.elements()),"all original pages retain exact order and data");
+        var ca=copied.state().elements().get(3);var cb=copied.state().elements().get(4);
+        check(ca.page()==7&&cb.page()==7&&ca.identity(a.id()).onPage(0).equals(a)&&cb.identity(b.id()).onPage(0).equals(b),"copies retain all styling and relative layer order");
+        check(copied.state().elements().stream().map(DisplayElements.Spec::id).distinct().count()==5,"copied page owns new unique identities");
+        check(!LayoutTransactions.apply(before,7,"page_copy",zero,null,"2").accepted(),"occupied destination rejected without overwrite");
+        check(!LayoutTransactions.apply(before,7,"page_copy",zero,null,"0").accepted(),"same-page copy rejected");
+        for(String destination:List.of("-1","8","not-a-page","2147483648"))check(!LayoutTransactions.apply(before,7,"page_copy",zero,null,destination).accepted(),"invalid destination rejected");
+        check(!LayoutTransactions.apply(before,6,"page_copy",zero,null,"1").accepted(),"stale page copy rejected");
+        check(!LayoutTransactions.apply(new LayoutTransactions.State(before.elements(),before.mode(),1,7),7,"page_copy",zero,null,"3").accepted(),"empty source rejected");
+        var full=new ArrayList<DisplayElements.Spec>();for(int i=0;i<32;i++)full.add(a.identity(UUID.randomUUID()));
+        check(!LayoutTransactions.apply(new LayoutTransactions.State(full,before.mode(),0,7),7,"page_copy",zero,null,"1").accepted(),"global element cap rejects whole page copy");
+        var cleared=LayoutTransactions.apply(before,7,"page_clear",zero,null,"");
+        check(cleared.accepted()&&cleared.state().revision()==8&&cleared.state().elements().equals(List.of(other))&&cleared.state().page()==0,"clear only current page, without renumbering");
+        check(!LayoutTransactions.apply(cleared.state(),8,"page_clear",zero,null,"").accepted(),"empty-page clear is a no-op");
+        check(LayoutTransactions.applyReplace(cleared.state(),8,before.elements()).state().elements().equals(before.elements()),"undo restores cleared page exactly");
+        check(LayoutTransactions.applyReplace(copied.state(),8,before.elements()).state().elements().equals(before.elements()),"undo restores entire page duplicate atomically");
+        check(!LayoutTransactions.apply(new LayoutTransactions.State(before.elements(),before.mode(),0,Long.MAX_VALUE),Long.MAX_VALUE,"page_copy",zero,null,"1").accepted(),"page operation cannot overflow revision");
+    }
+    public static void main(String[] args){types();bounds();transactions();picking();perspectivePicking();arrangement();selectionWorkflow();layerWorkflow();pageWorkflow();System.out.println("PASS R9 production display planner / transactions / cursor projection: "+assertions+" assertions. No Minecraft rendering or native API compilation.");}
 }

@@ -125,4 +125,56 @@ public final class PerformanceGameTests {
         h.assertTrue(cable.connection(Direction.EAST)==0,"Removed/unloaded host must be excluded even before its world slot disappears");h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkItemCapIsSharedAcrossDriversAndResetsPerCycle(GameTestHelper h){
+        int old=PLConfig.NETWORK_ITEM_RATE.get();try{
+            PLConfig.NETWORK_ITEM_RATE.set(5);
+            h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(1,1,4),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);
+            var a=(ChestBlockEntity)h.getBlockEntity(new BlockPos(1,1,1));var b=(ChestBlockEntity)h.getBlockEntity(new BlockPos(1,1,4));var to=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,1));a.setItem(0,new ItemStack(Items.DIAMOND,16));b.setItem(0,new ItemStack(Items.DIAMOND,16));
+            var ah=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var bh=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,Direction.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);
+            var ar=new NetworkEngine.Ref(ah,ah.parts.get(Direction.WEST.ordinal()));var br=new NetworkEngine.Ref(bh,bh.parts.get(Direction.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;
+            var plan=TransferEngine.prepare(List.of(ar,br,new NetworkEngine.Ref(sink,sink.parts.get(Direction.EAST.ordinal()))));
+            TransferEngine.run(h.getLevel().getServer(),plan);h.assertTrue(to.getItem(0).getCount()==5&&a.getItem(0).getCount()+b.getItem(0).getCount()==27,"Multiple drivers share one five-item delivery cap");
+            TransferEngine.run(h.getLevel().getServer(),plan);h.assertTrue(to.getItem(0).getCount()==10&&a.getItem(0).getCount()+b.getItem(0).getCount()==22,"Next cycle renews cap without duplicating or losing items");
+            h.succeed();
+        }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkItemCapBoundsEscrowAndIndependentNetworks(GameTestHelper h){
+        int old=PLConfig.NETWORK_ITEM_RATE.get();try{
+            PLConfig.NETWORK_ITEM_RATE.set(3);
+            h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,4),Blocks.CHEST);
+            var toA=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,1));var toB=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,4));
+            var a=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var b=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,Direction.WEST);var sinkA=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);var sinkB=host(h,new BlockPos(4,1,4),Kind.NODE,Direction.EAST);
+            var ar=new NetworkEngine.Ref(a,a.parts.get(Direction.WEST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(Direction.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;ar.part().pendingItem=new ItemStack(Items.DIAMOND,12);br.part().pendingItem=new ItemStack(Items.DIAMOND,12);
+            TransferEngine.run(h.getLevel().getServer(),List.of(ar,new NetworkEngine.Ref(sinkA,sinkA.parts.get(Direction.EAST.ordinal()))));
+            TransferEngine.run(h.getLevel().getServer(),List.of(br,new NetworkEngine.Ref(sinkB,sinkB.parts.get(Direction.EAST.ordinal()))));
+            h.assertTrue(toA.getItem(0).getCount()==3&&toB.getItem(0).getCount()==3&&ar.part().pendingItem.getCount()==9&&br.part().pendingItem.getCount()==9,"Escrow cannot bypass cap; separate networks each receive a full budget");h.succeed();
+        }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void nodeItemLimitStillAppliesUnderHigherSharedCap(GameTestHelper h){
+        int oldCap=PLConfig.NETWORK_ITEM_RATE.get(),oldNode=PLConfig.ITEM_RATE.get();try{
+            PLConfig.NETWORK_ITEM_RATE.set(9);PLConfig.ITEM_RATE.set(2);
+            h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);var from=(ChestBlockEntity)h.getBlockEntity(new BlockPos(1,1,1));var to=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,10));
+            var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);var driver=new NetworkEngine.Ref(source,source.parts.get(Direction.WEST.ordinal()));driver.part().transferMode=2;
+            TransferEngine.run(h.getLevel().getServer(),List.of(driver,new NetworkEngine.Ref(sink,sink.parts.get(Direction.EAST.ordinal()))));
+            h.assertTrue(to.getItem(0).getCount()==2&&from.getItem(0).getCount()==8,"Per-node extraction limit remains stricter when below shared cap");h.succeed();
+        }finally{PLConfig.NETWORK_ITEM_RATE.set(oldCap);PLConfig.ITEM_RATE.set(oldNode);}
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkItemCapAlsoBoundsAddImportsAndIncomingEscrow(GameTestHelper h){
+        int old=PLConfig.NETWORK_ITEM_RATE.get();try{
+            PLConfig.NETWORK_ITEM_RATE.set(3);h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,4),Blocks.CHEST);
+            var from=(ChestBlockEntity)h.getBlockEntity(new BlockPos(1,1,1));var toA=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,1));var toB=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,4));from.setItem(0,new ItemStack(Items.DIAMOND,20));
+            var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);var a=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);var b=host(h,new BlockPos(4,1,4),Kind.TRANSFER_NODE,Direction.EAST);
+            var ar=new NetworkEngine.Ref(a,a.parts.get(Direction.EAST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(Direction.EAST.ordinal()));ar.part().transferMode=1;br.part().transferMode=1;
+            var plan=TransferEngine.prepare(List.of(new NetworkEngine.Ref(source,source.parts.get(Direction.WEST.ordinal())),ar,br));TransferEngine.run(h.getLevel().getServer(),plan);
+            h.assertTrue(toA.getItem(0).getCount()+toB.getItem(0).getCount()==3&&from.getItem(0).getCount()==17,"ADD imports across multiple drivers share delivery cap");
+            ar.part().pendingItem=new ItemStack(Items.DIAMOND,10);int before=toA.getItem(0).getCount()+toB.getItem(0).getCount();TransferEngine.run(h.getLevel().getServer(),plan);
+            h.assertTrue(toA.getItem(0).getCount()+toB.getItem(0).getCount()==before+3&&ar.part().pendingItem.getCount()==7&&from.getItem(0).getCount()==17,"Incoming ADD escrow must consume the same shared budget before new extraction");h.succeed();
+        }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
+    }
+
 }

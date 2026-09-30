@@ -1,6 +1,6 @@
 {
   "project": "Foundations PL4",
-  "version": "0.0.2a.R1.3",
+  "version": "0.0.2a.R1.4",
   "minecraft": "1.21.1",
   "neoforge": "21.1.250",
   "java": 21,
@@ -110,5 +110,7 @@
   "r1_3_release_workflow_run": 36777084081,
   "r1_3_release": "PUBLISHED_0.0.2a.R1.3",
   "r1_3_curseforge_file_id": 9021965,
-  "r1_3_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL"
+  "r1_3_curseforge": "UPLOADED_PENDING_CURSEFORGE_APPROVAL",
+  "r1_4_scope": "PAGE_COPY_CLEAR_AND_SHARED_NETWORK_TRANSFER_CAPS",
+  "r1_4_validation": "PENDING"
 }

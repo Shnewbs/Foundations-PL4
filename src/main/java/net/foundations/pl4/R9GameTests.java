@@ -256,4 +256,24 @@ public final class R9GameTests {
         h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(a),"Layer controls retain both identity and ownership fences");h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void pageCopyAndClearPersistAndKeepOtherPages(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT).textStyle(DisplayElements.TextAlign.RIGHT,true,1.5F);var other=spec(DisplayElements.Type.BAR).onPage(2);p.elements.add(new Part.Element(a));p.elements.add(new Part.Element(other));var user=player(h,host,true);
+        PLPackets.editLayout(user,packet(host,0,"page_copy",null,"7"));
+        h.assertTrue(p.layoutRevision==1&&p.elements.size()==3&&p.elements.get(2).spec().page()==7&&!p.elements.get(2).id().equals(a.id())&&p.elements.get(2).spec().identity(a.id()).onPage(0).equals(a),"Copy page once with fresh identity and retained styles");
+        PLPackets.editLayout(user,packet(host,1,"page_clear",null,""));
+        h.assertTrue(p.layoutRevision==2&&p.elements.size()==2&&p.elements.get(0).spec().equals(other)&&p.elements.get(1).spec().page()==7,"Clear only source page");
+        var copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());h.assertTrue(copy.elements.equals(p.elements)&&copy.layoutRevision==2,"Page edits persist natively");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void pageCopyRejectsOverwriteStaleCapacityAndForeignOwner(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var other=spec(DisplayElements.Type.BAR).onPage(1);p.elements.add(new Part.Element(a));p.elements.add(new Part.Element(other));p.layoutRevision=2;var user=player(h,host,true);
+        PLPackets.editLayout(user,packet(host,1,"page_copy",null,"2"));PLPackets.editLayout(user,packet(host,2,"page_copy",null,"1"));
+        h.assertTrue(p.layoutRevision==2&&p.elements.size()==2,"No stale copy or occupied-page overwrite");
+        while(p.elements.size()<32)p.elements.add(new Part.Element(a.identity(UUID.randomUUID())));
+        PLPackets.editLayout(user,packet(host,2,"page_copy",null,"7"));
+        p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),packet(host,2,"page_clear",null,""));
+        h.assertTrue(p.layoutRevision==2&&p.elements.size()==32,"Capacity and permission rejection leave all pages unchanged");h.succeed();
+    }
+
 }

@@ -36,5 +36,16 @@ public final class TransferRules {
     /** Explicit Transfer Nodes win equal-priority ties over passive Nodes. */
     public static int endpointClass(boolean transfer){return transfer?1:0;}
 
+    /** One resource's shared delivery budget for one connected-network cycle. Zero is uncapped. */
+    public static final class CycleLimit {
+        private final int limit;
+        private int remaining;
+        public CycleLimit(int limit){if(limit<0)throw new IllegalArgumentException("Negative network cap");this.limit=limit;remaining=limit;}
+        public int remaining(){return limit==0?Integer.MAX_VALUE:remaining;}
+        public void delivered(int amount){
+            if(amount<0||amount>remaining())throw new IllegalArgumentException("Delivery exceeds network cap");
+            if(limit!=0)remaining-=amount;
+        }
+    }
     private TransferRules(){}
 }

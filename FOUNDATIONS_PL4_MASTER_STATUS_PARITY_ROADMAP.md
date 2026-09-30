@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.3` element list and selection layer controls
+**Current source candidate:** `0.0.2a.R1.4` page tools and shared network transfer caps
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -907,6 +907,9 @@ register monitored values without editing `DataSampler` itself.
 
 ## 10.9 Current configuration is intentionally small
 
+R1.4 adds optional aggregate item/mB/FE delivery caps per connected data network per cycle, including escrow retries. Existing per-node settings remain; shared caps default to zero (uncapped). See `docs/TRANSFER_CONFIG.md`.
+
+
 File:
 
 ```text
@@ -1159,7 +1162,7 @@ Use PL2/PL3 research for:
 - hide/show element;
 - undo/redo; **implemented in the R1 continuation: bounded client-side history of whole-layout snapshots, restored server-side through a new revision-fenced `replace` transaction (Ctrl+Z / Ctrl+Y, Ctrl+Shift+Z)**;
 - page names;
-- page duplicate/delete;
+- page duplicate/delete; **implemented in R1.4: duplicate current page into an empty slot with fresh element IDs; undoable clear of current page contents; eight stable slots retained**;
 - keyboard shortcuts;
 - clearer selected-layer order; **implemented in R1.3: stable page-local multi-selection forward/backward/front/back, one revision and one undo snapshot**.
 

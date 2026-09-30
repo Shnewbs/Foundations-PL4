@@ -6,7 +6,7 @@ public final class PLConfig {
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.IntValue TICK_RATE, MAX_NETWORK, MAX_ROWS, ITEM_RATE, FLUID_RATE, ENERGY_RATE, ENTITY_RANGE;
     public static final ModConfigSpec.BooleanValue TRANSFERS, WIRELESS, CROSS_DIMENSION, MEKANISM_READS, GREGTECH_READS;
-    public static final ModConfigSpec.IntValue MAX_ENERGY_CONTAINERS;
+    public static final ModConfigSpec.IntValue MAX_ENERGY_CONTAINERS, NETWORK_ITEM_RATE, NETWORK_FLUID_RATE, NETWORK_ENERGY_RATE;
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
         b.push("network");
@@ -21,7 +21,11 @@ public final class PLConfig {
         ITEM_RATE = b.defineInRange("itemsPerCycle", 64, 1, 4096);
         FLUID_RATE = b.defineInRange("millibucketsPerCycle", 1000, 1, 64000);
         ENERGY_RATE = b.defineInRange("fePerCycle", 10000, 1, 10000000);
-        b.pop();
+        b.push("networkCaps");
+        NETWORK_ITEM_RATE=b.comment("Maximum individual items delivered per connected data network per transfer cycle, shared by all Transfer Nodes including escrow retries. 0 disables the shared cap; per-node limits still apply.").defineInRange("itemsPerCycle",0,0,10000000);
+        NETWORK_FLUID_RATE=b.comment("Maximum mB delivered per connected data network per transfer cycle. 0 disables the shared cap.").defineInRange("millibucketsPerCycle",0,0,1000000000);
+        NETWORK_ENERGY_RATE=b.comment("Maximum FE delivered per connected data network per transfer cycle. Native EU/J are telemetry only. 0 disables the shared cap.").defineInRange("fePerCycle",0,0,Integer.MAX_VALUE);
+        b.pop().pop();
         b.push("energyReader");
         MEKANISM_READS=b.comment("Read exposed Mekanism strict energy handlers in native J. Does not transfer or convert energy.").define("mekanismJoules",true);
         GREGTECH_READS=b.comment("Read exposed GregTech CEu energy info/containers in native EU. No voltage conversion or transfer.").define("gregtechEU",true);

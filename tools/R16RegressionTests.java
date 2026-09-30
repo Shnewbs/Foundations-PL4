@@ -26,6 +26,16 @@ public final class R16RegressionTests {
             check(TransferRules.peerOnly(mode)==(mode==3),"Only ADD/REMOVE is peer-only");
         }
         check(TransferRules.endpointClass(true)>TransferRules.endpointClass(false),"Explicit transfer endpoint wins passive tie");
+        for(int limit:new int[]{1,64,1000,10000000,Integer.MAX_VALUE}){
+            var cap=new TransferRules.CycleLimit(limit);int first=limit/2;cap.delivered(first);
+            check(cap.remaining()==limit-first,"shared cap counts actual delivery once");cap.delivered(cap.remaining());check(cap.remaining()==0,"all drivers share the exhausted budget");
+            try{cap.delivered(1);throw new AssertionError("over-cap delivery accepted");}catch(IllegalArgumentException expected){check(cap.remaining()==0,"rejected delivery cannot mutate the budget");}
+            check(new TransferRules.CycleLimit(limit).remaining()==limit,"next network/cycle gets an independent budget");
+        }
+        var unlimited=new TransferRules.CycleLimit(0);for(int i=0;i<1000;i++)unlimited.delivered(Integer.MAX_VALUE);check(unlimited.remaining()==Integer.MAX_VALUE,"uncapped delivery counters cannot overflow");
+        try{new TransferRules.CycleLimit(-1);throw new AssertionError("negative cap accepted");}catch(IllegalArgumentException expected){check(true,"negative config rejected");}
+        var items=new TransferRules.CycleLimit(5);var fluid=new TransferRules.CycleLimit(1000);var fe=new TransferRules.CycleLimit(10000);items.delivered(5);
+        check(items.remaining()==0&&fluid.remaining()==1000&&fe.remaining()==10000,"resource caps are independent");
         System.out.println("PASS R16 transfer routing rules: "+count+" assertions.");
     }
 }

@@ -29,7 +29,7 @@ public final class DisplayEditorScreen extends Screen {
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
     public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
+    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
         if(p.layoutRevision>=part.layoutRevision)part=p;
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
@@ -43,6 +43,7 @@ public final class DisplayEditorScreen extends Screen {
     @Override protected void init(){
         var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
+        addRenderableWidget(Button.builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
         addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
@@ -105,7 +106,7 @@ public final class DisplayEditorScreen extends Screen {
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
     void commit(String action,DisplayElements.Spec spec,String value,long revision){
         if(!editable||pending)return;
-        if(action.equals("add")||action.equals("update")||action.equals("delete")||action.equals("forward")||action.equals("backward")||action.equals("clear"))pushUndo();
+        if(action.equals("page_copy")||action.equals("page_clear")||action.equals("add")||action.equals("update")||action.equals("delete")||action.equals("forward")||action.equals("backward")||action.equals("clear"))pushUndo();
         UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
         if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&!selection().isEmpty())value=String.join(",",selection().stream().map(e->e.id().toString()).toList());pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
@@ -121,6 +122,15 @@ public final class DisplayEditorScreen extends Screen {
         if(!preview.accepted()){message=preview.message();return;}
         pushUndo();pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+    }
+    void pagesScreen(){if(!pending)minecraft.setScreen(new DisplayPagesScreen(this));}
+    int pageElementCount(int page){return (int)part.elements.stream().filter(e->e.spec().page()==page).count();}
+    void pageAction(String action,String value){
+        if(!editable||pending)return;
+        var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);
+        var result=LayoutTransactions.apply(before,part.layoutRevision,action,new UUID(0,0),null,value);
+        if(!result.accepted()){message=result.message();return;}
+        commit(action,null,value,part.layoutRevision);
     }
     void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
     List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
@@ -251,6 +261,7 @@ public final class DisplayEditorScreen extends Screen {
         if(key==67&&hasControlDown()){copySelected();return true;}if(key==86&&hasControlDown()){pasteSelected();return true;}
         if(key==68&&hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
         if(key==65&&hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
+        if(key==80){pagesScreen();return true;}
         if(key==76){layersScreen();return true;}
         if(key==65&&!hasControlDown()){arrangementScreen();return true;}
         if(key==90&&hasControlDown()){if(hasShiftDown())redo();else undo();return true;}if(key==89&&hasControlDown()){redo();return true;}

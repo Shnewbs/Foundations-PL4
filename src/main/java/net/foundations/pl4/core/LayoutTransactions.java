@@ -23,6 +23,21 @@ public final class LayoutTransactions {
                 }else{if(index<0)return fail(before,"Element no longer exists.");list.remove(index);}
                 mode=DisplayElements.Mode.CUSTOM;
             }
+            case "page_copy" -> {
+                int destination=Integer.parseInt(value);
+                if(destination<0||destination>=DisplayElements.MAX_PAGES||destination==before.page)return fail(before,"Choose a different page.");
+                var source=before.elements.stream().filter(e->e.page()==before.page).toList();
+                if(source.isEmpty())return fail(before,"Current page is empty.");
+                if(list.stream().anyMatch(e->e.page()==destination))return fail(before,"Destination page must be empty.");
+                if(list.size()+source.size()>DisplayElements.MAX_ELEMENTS)return fail(before,"Maximum 32 elements across all pages.");
+                var used=new HashSet<UUID>();list.forEach(e->used.add(e.id()));
+                for(var e:source){UUID id;do{id=UUID.randomUUID();}while(!used.add(id));list.add(e.identity(id).onPage(destination));}
+                mode=DisplayElements.Mode.CUSTOM;
+            }
+            case "page_clear" -> {
+                if(list.stream().noneMatch(e->e.page()==before.page))return fail(before,"Current page is already empty.");
+                list.removeIf(e->e.page()==before.page);mode=DisplayElements.Mode.CUSTOM;
+            }
             case "clear" -> {list.clear();mode=DisplayElements.Mode.CUSTOM;}
             case "mode" -> {mode=DisplayElements.Mode.valueOf(value);}
             case "page" -> {page=Integer.parseInt(value);if(page<0||page>=DisplayElements.MAX_PAGES)return fail(before,"Page out of range.");}
