@@ -1,4 +1,5 @@
 package net.foundations.pl4;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.*;
 import net.foundations.pl4.core.*;
@@ -23,7 +24,7 @@ public final class EnergyIntegrationGameTests {
         void run(GameTestHelper h){NativeEnergyTransfers.run(h.getLevel().getServer(),plan,(ref,unit)->ref==source?from:to);}
     }
     private static NetworkEngine.Ref host(GameTestHelper h,BlockPos pos,Kind kind,Direction face){
-        h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);var part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return new NetworkEngine.Ref(host,part);
+        h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));var part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return new NetworkEngine.Ref(host,part);
     }
     private static Fixture fixture(GameTestHelper h,String input,String wire,String output,long amount,long capacity,boolean add){
         var source=host(h,new BlockPos(2,2,2),add?Kind.NODE:Kind.TRANSFER_NODE,Direction.WEST);

@@ -16,8 +16,8 @@ public final class HammerMenu extends AbstractContainerMenu {
         super(FoundationsPL4.HAMMER_MENU.get(),id);this.hammer=hammer;this.data=data;
         checkContainerDataCount(data,5);
         HammerInventory inventory=hammer==null?new HammerInventory():hammer.inventory;
-        addSlot(new ResourceHandlerSlot(inventory,inventory::set,0,53,24){@Override public void setChanged(){super.setChanged();if(hammer!=null)hammer.inventoryChanged();}});
-        addSlot(new ResourceHandlerSlot(inventory,inventory::set,1,107,24){@Override public boolean mayPlace(ItemStack stack){return false;}@Override public void setChanged(){super.setChanged();if(hammer!=null)hammer.inventoryChanged();}});
+        addSlot(new ResourceHandlerSlot(inventory,inventory::set,0,53,24));
+        addSlot(new ResourceHandlerSlot(inventory,inventory::set,1,107,24){@Override public boolean mayPlace(ItemStack stack){return false;}});
         for(int row=0;row<3;row++)for(int col=0;col<9;col++)addSlot(new Slot(playerInventory,col+row*9+9,8+col*18,62+row*18));
         for(int col=0;col<9;col++)addSlot(new Slot(playerInventory,col,8+col*18,120));
         addDataSlots(data);
@@ -28,7 +28,7 @@ public final class HammerMenu extends AbstractContainerMenu {
         return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level()
             &&player.level().getBlockEntity(hammer.getBlockPos())==hammer
             &&player.level().getBlockState(hammer.getBlockPos()).is(FoundationsPL4.HAMMER.get())
-            &&player.distanceToSqr(hammer.getBlockPos().getCenter())<=64);
+            &&player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(hammer.getBlockPos()))<=64);
     }
     @Override public ItemStack quickMoveStack(Player player,int index){
         if(index<0||index>=slots.size()||!stillValid(player))return ItemStack.EMPTY;

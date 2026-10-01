@@ -46,46 +46,46 @@ public final class ToolItem extends Item {
                     }
                 }
                 host.changed();
-                player.displayClientMessage(Component.literal(side.getName()+" cable port "+(blocked?"disconnected":"enabled")),true);
+                player.sendOverlayMessage(Component.literal(side.getName()+" cable port "+(blocked?"disconnected":"enabled")));
             }else PLPackets.open(player,host,part);
             return InteractionResult.CONSUME;
         }
         if(mode==Mode.BLOCK_LINK||mode==Mode.MONITOR||mode==Mode.ENTITY_LINK){
             if(player.isShiftKeyDown()){
                 save(c.getItemInHand(),new Part.Link(level.dimension().identifier().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
-                player.displayClientMessage(Component.literal("Linked "+pos.toShortString()+" in "+level.dimension().identifier()),true);return InteractionResult.CONSUME;
+                player.sendOverlayMessage(Component.literal("Linked "+pos.toShortString()+" in "+level.dimension().identifier()));return InteractionResult.CONSUME;
             }
             Part.Link link=link(c.getItemInHand());
             if(host!=null&&part!=null&&link!=null&&(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())){
                 if(!host.canEdit(player)||!level.mayInteract(player,pos))return InteractionResult.FAIL;
-                if(part.links.size()>=(part.kind.receiver()?64:8)){player.displayClientMessage(Component.literal("Link limit reached"),true);return InteractionResult.FAIL;}
+                if(part.links.size()>=(part.kind.receiver()?64:8)){player.sendOverlayMessage(Component.literal("Link limit reached"));return InteractionResult.FAIL;}
                 if(part.kind.receiver()){
-                    var target=NetworkEngine.all(player.getServer()).stream().filter(r->r.part().identity.equals(link.part())).findFirst().orElse(null);
-                    if(target==null||!target.part().kind.emitter()||target.part().kind.redstone()!=part.kind.redstone()||!java.util.Objects.equals(target.part().owner,part.owner)){player.displayClientMessage(Component.literal("Select one of your matching emitters first"),true);return InteractionResult.FAIL;}
+                    var target=NetworkEngine.all(player.level().getServer()).stream().filter(r->r.part().identity.equals(link.part())).findFirst().orElse(null);
+                    if(target==null||!target.part().kind.emitter()||target.part().kind.redstone()!=part.kind.redstone()||!java.util.Objects.equals(target.part().owner,part.owner)){player.sendOverlayMessage(Component.literal("Select one of your matching emitters first"));return InteractionResult.FAIL;}
                 }
-                if(!part.links.contains(link))part.links.add(link);host.changed();player.displayClientMessage(Component.literal("Added link ("+part.links.size()+")"),true);return InteractionResult.CONSUME;
+                if(!part.links.contains(link))part.links.add(link);host.changed();player.sendOverlayMessage(Component.literal("Added link ("+part.links.size()+")"));return InteractionResult.CONSUME;
             }
         }
         return use(level,player,c.getHand()).getResult();
     }
     @Override public InteractionResult interactLivingEntity(ItemStack stack,Player player,LivingEntity entity,InteractionHand hand){
         if(mode!=Mode.ENTITY_LINK)return InteractionResult.PASS;
-        if(!player.level().isClientSide()){save(stack,new Part.Link(entity.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(Component.literal("Linked "+entity.getName().getString()),true);}return InteractionResult.sidedSuccess(player.level().isClientSide());
+        if(!player.level().isClientSide()){save(stack,new Part.Link(entity.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.sendOverlayMessage(Component.literal("Linked "+entity.getName().getString()));}return InteractionResult.SUCCESS;
     }
-    @Override public InteractionResultHolder<ItemStack> use(Level l,Player player,InteractionHand hand){
+    @Override public InteractionResult use(Level l,Player player,InteractionHand hand){
         ItemStack stack=player.getItemInHand(hand);
         if(player instanceof ServerPlayer sp){
             if(mode==Mode.GUIDE){CompoundTag tag=new CompoundTag();tag.putBoolean("guide",true);PacketDistributor.sendToPlayer(sp,new PLPackets.Open(BlockPos.ZERO,-1,tag));}
             else if(mode==Mode.MONITOR){
                 Part.Link link=link(stack);
-                if(link!=null&&NetworkEngine.loaded(sp.getServer(),link)){
-                    var world=NetworkEngine.level(sp.getServer(),link);
+                if(link!=null&&NetworkEngine.loaded(sp.level().getServer(),link)){
+                    var world=NetworkEngine.level(sp.level().getServer(),link);
                     if(world.getBlockEntity(link.pos()) instanceof HostEntity host&&host.canEdit(player)){
                         Part target=host.parts.values().stream().filter(p->p.identity.equals(link.part())).findFirst().orElse(null);if(target!=null)PLPackets.open(sp,host,target);
                     }
-                }else sp.displayClientMessage(Component.literal("Linked target is not loaded"),true);
+                }else sp.sendOverlayMessage(Component.literal("Linked target is not loaded"));
             }
         }
-        return InteractionResultHolder.sidedSuccess(stack,l.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 }

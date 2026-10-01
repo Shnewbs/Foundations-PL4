@@ -9,6 +9,6 @@ public final class CommunityLinks {
         .append(link("Discord",DISCORD,ChatFormatting.AQUA)).append(Component.literal(" · ").withStyle(ChatFormatting.GRAY))
         .append(link("Support on Ko-fi",SUPPORT,ChatFormatting.GOLD));}
     private static Component link(String label,String url,ChatFormatting color){return Component.literal(label).withStyle(style->style.withColor(color).withUnderlined(true)
-        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,url)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Component.literal(url))));}
+        .withClickEvent(new ClickEvent.OpenUrl(java.net.URI.create(url))).withHoverEvent(new HoverEvent.ShowText(Component.literal(url))));}
     private CommunityLinks(){}
 }

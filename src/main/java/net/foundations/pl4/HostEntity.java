@@ -97,6 +97,7 @@ public final class HostEntity extends BlockEntity {
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
+    protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registry){write(tag,registry,false);}
     @Override protected void saveAdditional(ValueOutput output){super.saveAdditional(output);var tag=new CompoundTag();write(tag,persistenceLookup(),false);output.store(tag);}
     private HolderLookup.Provider persistenceLookup(){return level!=null?level.registryAccess():HolderLookup.Provider.create(java.util.stream.Stream.of(net.minecraft.core.registries.BuiltInRegistries.ITEM,net.minecraft.core.registries.BuiltInRegistries.FLUID));}
     @Override protected void loadAdditional(ValueInput input){super.loadAdditional(input);loadAdditional(input.read(MapCodec.assumeMapUnsafe(CompoundTag.CODEC)).orElseGet(CompoundTag::new),input.lookup());}

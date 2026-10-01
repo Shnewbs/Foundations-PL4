@@ -21,11 +21,11 @@ public final class HammerSpaceBlock extends Block {
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(OFFSET);}
     @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.INVISIBLE;}
     @Override protected VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){return s.getValue(OFFSET)==2?TOP:POSTS;}
-    @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
-        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?ItemInteractionResult.sidedSuccess(l.isClientSide()):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    @Override protected InteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
+        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.SUCCESS:InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
-        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.sidedSuccess(l.isClientSide()):InteractionResult.PASS;
+        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.SUCCESS:InteractionResult.PASS;
     }
     @Override public boolean onDestroyedByPlayer(BlockState s,Level l,BlockPos p,Player player,boolean willHarvest,FluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));

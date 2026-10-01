@@ -31,9 +31,9 @@ public final class PLPackets {
     private record Rate(long tick,int count){}
     private static final Map<ServerPlayer,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
     static void editLayout(ServerPlayer player,LayoutEdit packet){
-        long tick=player.serverLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.pos.getCenter())>64||!player.serverLevel().hasChunkAt(packet.pos)||!player.serverLevel().mayInteract(player,packet.pos))return;
-        if(!(player.serverLevel().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
+        long tick=player.level().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
+        if(!(player.level().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
         Part clicked=anchor.parts.get(packet.slot);if(clicked==null||!clicked.identity.equals(packet.identity)||!clicked.kind.display()||!anchor.canEdit(player))return;
         var target=DisplayNetworks.controller(anchor,clicked);HostEntity host=target.host();Part part=target.part();
         if(!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos())||!DisplayNetworks.canEditCanvas(player,anchor,clicked))return;
@@ -84,15 +84,15 @@ public final class PLPackets {
         var target=DisplayNetworks.controller(host,p);
         CompoundTag t=target.part().save(host.getLevel().registryAccess(),true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
-        t.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(host.getBlockPos().getCenter())<=64);
+        t.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(host.getBlockPos()))<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
     private static void edit(ServerPlayer player,Edit packet){
-        if(packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.pos.getCenter())>64||!player.serverLevel().hasChunkAt(packet.pos)||!player.serverLevel().mayInteract(player,packet.pos))return;
-        if(!(player.serverLevel().getBlockEntity(packet.pos) instanceof HostEntity h))return;
+        if(packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
+        if(!(player.level().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){
-            long tick=player.serverLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
+            long tick=player.level().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
             if(!p.kind.display()||packet.value.length()>64)return;var target=DisplayNetworks.controller(h,p);
             CompoundTag tag=target.part().save(h.getLevel().registryAccess(),true);tag.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
             var rows=new net.minecraft.nbt.ListTag();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;

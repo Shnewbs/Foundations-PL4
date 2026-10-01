@@ -101,6 +101,7 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
         tag.putInt("processingTicks",processingTicks);tag.putInt("cooldownTotal",cooldownTotal);tag.putInt("status",status);
         tag.putBoolean("structureReady",structureReady);tag.putBoolean("working",working);tag.putLong("animationTime",animationTime);
     }
+    protected void saveAdditional(CompoundTag tag,HolderLookup.Provider registry){write(tag,registry);}
     @Override protected void saveAdditional(ValueOutput output){super.saveAdditional(output);var tag=new CompoundTag();write(tag,persistenceLookup());output.store(tag);}
     private HolderLookup.Provider persistenceLookup(){return level!=null?level.registryAccess():HolderLookup.Provider.create(java.util.stream.Stream.of(net.minecraft.core.registries.BuiltInRegistries.ITEM,net.minecraft.core.registries.BuiltInRegistries.FLUID));}
     @Override protected void loadAdditional(ValueInput input){super.loadAdditional(input);loadAdditional(input.read(MapCodec.assumeMapUnsafe(CompoundTag.CODEC)).orElseGet(CompoundTag::new),input.lookup());}

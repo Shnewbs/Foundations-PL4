@@ -1,4 +1,5 @@
 package net.foundations.pl4;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.*;
 import net.minecraft.core.*;
@@ -17,15 +18,15 @@ public final class PLGameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000001");
     public static void register(RegisterGameTestsEvent e){PortTestInstance.register(e);}
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face){
-        h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(p);host.parts.put(net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()),new Part(kind,face,OWNER));
+        h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(p));host.parts.put(net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()),new Part(kind,face,OWNER));
         // R5 fixtures explicitly include a centre cable: adjacent face devices are not implicit wires.
         if(!kind.cable())host.parts.put(6,new Part(kind.redstone()?Kind.REDSTONE_CABLE:Kind.DATA_CABLE,Direction.DOWN,OWNER));
         host.changed();return host;
     }
-    private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getBlockEntity(p);}
+    private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(p));}
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerConservesItemsAndBlocksFullOutput(GameTestHelper h){
-        BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getBlockEntity(p);
+        BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(p));
         hammer.inventory.setStackInSlot(0,new ItemStack(Blocks.STONE,2));
         for(int i=0;i<101;i++)HammerEntity.tick(h.getLevel(),h.absolutePos(p),hammer.getBlockState(),hammer);
         h.assertTrue(hammer.inventory.getStackInSlot(0).getCount()==1,"Hammer must consume exactly one stone");
@@ -36,7 +37,7 @@ public final class PLGameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerAutomationCannotExtractInput(GameTestHelper h){
-        BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getBlockEntity(p);
+        BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(p));
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND));
         var capability=h.getLevel().getCapability(Capabilities.ItemHandler.BLOCK,h.absolutePos(p),Direction.UP);
         h.assertTrue(capability!=null,"Item capability must exist");
@@ -96,7 +97,7 @@ public final class PLGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void upstreamCraftingRecipesLoad(GameTestHelper h){
         String[] ids={"plguide","datacable","redstonecable","inforeader","inventoryreader","fluidreader","energyreader","networkreader","hammer","node","array","entitynode","transfernode","displayscreen","minidisplay","largedisplayscreen","holographicdisplay","advancedholographicdisplay","dataemitter","datareceiver","redstoneemitter","redstonereceiver","redstonenode","redstonesignaller","clock","operator","transceiver","entitytransceiver","wirelessstorage"};
-        for(String id:ids)h.assertTrue(h.getLevel().getRecipeManager().byKey(FoundationsPL4.id(id)).isPresent(),"Missing original recipe: "+id);h.succeed();
+        for(String id:ids)h.assertTrue(h.getLevel().getServer().getRecipeManager().byKey(FoundationsPL4.id(id)).isPresent(),"Missing original recipe: "+id);h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void wirelessOwnerLinkCarriesData(GameTestHelper h){
@@ -131,11 +132,11 @@ public final class PLGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void internalForgingRecipesLoadAndMatchTags(GameTestHelper h){
         var type=net.foundations.pl4.core.CoreRecipes.HAMMER.get();
-        h.assertTrue(h.getLevel().getRecipeManager().getAllRecipesFor(type).size()==6,"Six bundled forging recipes must load");
+        h.assertTrue(h.getLevel().getServer().getRecipeManager().getAllRecipesFor(type).size()==6,"Six bundled forging recipes must load");
         Item[] inputs={FoundationsPL4.item("sapphire"),FoundationsPL4.ORE.get().asItem(),Blocks.STONE.asItem(),Items.DIAMOND,Items.REDSTONE,Items.ENDER_PEARL};
         String[] outputs={"sapphiredust","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate"};int[] counts={1,2,4,4,4,4};
         for(int i=0;i<inputs.length;i++){
-            var recipe=h.getLevel().getRecipeManager().getRecipeFor(type,new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(inputs[i])),h.getLevel());
+            var recipe=h.getLevel().getServer().getRecipeManager().getRecipeFor(type,new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(inputs[i])),h.getLevel());
             h.assertTrue(recipe.isPresent(),"Missing ingredient tag match: "+inputs[i]);
             var output=recipe.orElseThrow().value().result();
             h.assertTrue(output.is(FoundationsPL4.item(outputs[i]))&&output.getCount()==counts[i],"Incorrect bundled forging result");
@@ -157,7 +158,7 @@ public final class PLGameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void changingForgingRecipeResetsProgress(GameTestHelper h){
-        BlockPos pos=new BlockPos(1,1,1);h.setBlock(pos,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getBlockEntity(pos);
+        BlockPos pos=new BlockPos(1,1,1);h.setBlock(pos,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND));for(int i=0;i<20;i++)HammerEntity.tick(h.getLevel(),h.absolutePos(pos),hammer.getBlockState(),hammer);
         h.assertTrue(hammer.progress==20,"Fixture must begin processing diamond recipe");
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.REDSTONE));HammerEntity.tick(h.getLevel(),h.absolutePos(pos),hammer.getBlockState(),hammer);

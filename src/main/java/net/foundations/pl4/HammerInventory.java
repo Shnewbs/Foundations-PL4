@@ -9,6 +9,7 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 /** Native transactional inventory with the existing two-slot persistence layout. */
 public class HammerInventory extends ItemStacksResourceHandler {
     public HammerInventory(){super(2);}
+    public int getSlots(){return size();}
     public ItemStack getStackInSlot(int slot){return getResource(slot).toStack(getAmountAsInt(slot));}
     public void setStackInSlot(int slot,ItemStack stack){set(slot,ItemResource.of(stack),stack.getCount());}
     public int getSlotLimit(int slot){return 64;}

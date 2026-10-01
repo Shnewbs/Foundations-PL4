@@ -144,7 +144,7 @@ public final class DisplayNetworks {
     }
     /** Explicit whole-canvas flip retains a snapshot of the active settings, even if a new donor appears. */
     public static boolean flip(net.minecraft.server.level.ServerPlayer player,HostEntity anchor,Part part,boolean outward){
-        NetworkEngine.ensureCurrent(player.getServer());
+        NetworkEngine.ensureCurrent(player.level().getServer());
         var root=controller(anchor,part);
         List<NetworkEngine.Ref> tiles=List.of(new NetworkEngine.Ref(anchor,part));
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){tiles=canvas.tiles;break;}
@@ -152,7 +152,7 @@ public final class DisplayNetworks {
         if(!canFlipInto(player,tiles,outward))return false;
         var settings=root.part().displaySettings();long revision=root.part().layoutRevision;
         for(var tile:tiles){tile.part().displayOutward=outward;tile.host().setChanged();}
-        NetworkEngine.invalidate(anchor.getLevel());NetworkEngine.ensureCurrent(player.getServer());
+        NetworkEngine.invalidate(anchor.getLevel());NetworkEngine.ensureCurrent(player.level().getServer());
         var newRoot=controller(anchor,part);newRoot.part().applyDisplaySettings(settings,revision);
         if(newRoot.part().kind==Kind.LARGE_DISPLAY)layoutEdited(newRoot.host(),newRoot.part());
         newRoot.host().changed();for(var tile:tiles)tile.host().changed();

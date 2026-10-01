@@ -84,7 +84,7 @@ public final class GuideScreen extends Screen {
         wrapBody();
     }
     private GuideButton button(int x,int y,int w,int h,String text,String tip,boolean left,ItemStack icon,Button.OnPress press){return addRenderableWidget(new GuideButton(x,y,w,h,text,tip,left,icon,press));}
-    private ItemStack item(String id){return icons.computeIfAbsent(id,value->{var key=Identifier.tryParse(value);return key==null?ItemStack.EMPTY:new ItemStack(BuiltInRegistries.ITEM.get(key));});}
+    private ItemStack item(String id){return icons.computeIfAbsent(id,value->{var key=Identifier.tryParse(value);return key==null?ItemStack.EMPTY:new ItemStack(BuiltInRegistries.ITEM.getValue(key));});}
     private boolean listVisible(){return !layout.compact()||contents;}
     private boolean detailVisible(){return !layout.compact()||!contents;}
     private void select(GuideBook.Chapter next){chapter=next;category=next.category();preferences.chapter=next.id();bodyScroll=0;contents=false;rebuildWidgets();}

@@ -32,13 +32,13 @@ public final class HostBlock extends BaseEntityBlock {
         for(Part other:host.parts.values())if(Shapes.joinIsNotEmpty(shape,MultipartShapes.part(prospective,other),BooleanOp.AND))return false;
         return true;
     }
-    @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos p,Player player,InteractionHand hand,BlockHitResult hit){
+    @Override protected InteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos p,Player player,InteractionHand hand,BlockHitResult hit){
         // Otherwise the default useWithoutItem consumes the click by opening a GUI before PartItem/Operator can run.
         return stack.getItem() instanceof PartItem||stack.getItem() instanceof ToolItem
-            ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            ? InteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos p,Player player,BlockHitResult hit){
-        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.sidedSuccess(l.isClientSide());}}
+        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.SUCCESS;}}
         return InteractionResult.PASS;
     }
     @Override protected void onRemove(BlockState s,Level l,BlockPos p,BlockState next,boolean moving){

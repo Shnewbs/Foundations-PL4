@@ -18,13 +18,13 @@ import net.neoforged.neoforge.common.util.*;
 public final class R8GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000008");
     private static HostEntity panel(GameTestHelper h,BlockPos position,Direction face){
-        h.setBlock(position,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(position);
+        h.setBlock(position,FoundationsPL4.HOST.get());var host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(position));
         var part=new Part(Kind.LARGE_DISPLAY,face,OWNER);part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind==Kind.LARGE_DISPLAY).findFirst().orElseThrow();}
     private static FakePlayer player(GameTestHelper h,HostEntity at,ItemStack stack){
         var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;p.setShiftKeyDown(false);
-        var centre=at.getBlockPos().getCenter();p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(InteractionHand.MAIN_HAND,stack);return p;
+        var centre=net.minecraft.world.phys.Vec3.atCenterOf(at.getBlockPos());p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(InteractionHand.MAIN_HAND,stack);return p;
     }
     private static void configure(Part p){p.label="Saved machine board";p.selected="power_main";p.color=0x53AACC;p.elements.add(new Part.Element("EU","","storage:eu",7,19,0xABDEEF,false));p.layoutRevision=20;}
     private static void extend(GameTestHelper h,Direction mount){
@@ -32,7 +32,7 @@ public final class R8GameTests {
         for(Direction side:Direction.values())if(side.getAxis()!=mount.getAxis()){
             NetworkEngine.ensureCurrent(h.getLevel().getServer());
             ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var player=player(h,source,stack);
-            Vec3 centre=source.getBlockPos().getCenter();Vec3 hitPoint=centre.add(mount.getStepX()*.4999+side.getStepX()*.5,mount.getStepY()*.4999+side.getStepY()*.5,mount.getStepZ()*.4999+side.getStepZ()*.5);
+            Vec3 centre=net.minecraft.world.phys.Vec3.atCenterOf(source.getBlockPos());Vec3 hitPoint=centre.add(mount.getStepX()*.4999+side.getStepX()*.5,mount.getStepY()*.4999+side.getStepY()*.5,mount.getStepZ()*.4999+side.getStepZ()*.5);
             var result=stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,new BlockHitResult(hitPoint,side,source.getBlockPos(),false)));
             BlockPos destination=source.getBlockPos().relative(side);
             h.assertTrue(result.consumesAction()&&h.getLevel().getBlockEntity(destination) instanceof HostEntity,"Side click must create a neighboring host, not a perpendicular face");
@@ -55,7 +55,7 @@ public final class R8GameTests {
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);configure(part(source));source.changed();
         Part saved=new Part(Kind.LARGE_DISPLAY,Direction.DOWN,OWNER);saved.displayOutward=false;saved.label="Do not override active board";saved.layoutRevision=99;
         ItemStack stack=PartItem.savedStack(saved,h.getLevel().registryAccess());var p=player(h,source,stack);
-        Vec3 point=source.getBlockPos().getCenter().add(.49,0,-.4999);
+        Vec3 point=net.minecraft.world.phys.Vec3.atCenterOf(source.getBlockPos()).add(.49,0,-.4999);
         stack.getItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(point,Direction.NORTH,source.getBlockPos(),false)));
         var next=(HostEntity)h.getLevel().getBlockEntity(source.getBlockPos().east());
         h.assertTrue(next!=null&&part(next).face==Direction.NORTH&&part(next).displayOutward,"Front rim extends east in original plane");
@@ -64,7 +64,7 @@ public final class R8GameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void centreClickDoesNotConsumeOrRotate(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
-        var point=source.getBlockPos().getCenter().add(0,0,-.4999);
+        var point=net.minecraft.world.phys.Vec3.atCenterOf(source.getBlockPos()).add(0,0,-.4999);
         var result=stack.getItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(point,Direction.NORTH,source.getBlockPos(),false)));
         h.assertTrue(result==InteractionResult.FAIL&&stack.getCount()==2&&h.getLevel().isEmptyBlock(source.getBlockPos().north()),"Ambiguous centre does not create a perpendicular or offset panel");h.succeed();
     }
@@ -72,7 +72,7 @@ public final class R8GameTests {
     public static void occupiedExtensionCannotReplaceOrConsume(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);h.setBlock(new BlockPos(4,3,3),Blocks.DIAMOND_BLOCK);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
-        var point=source.getBlockPos().getCenter().add(.5,0,-.4999);
+        var point=net.minecraft.world.phys.Vec3.atCenterOf(source.getBlockPos()).add(.5,0,-.4999);
         stack.getItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(point,Direction.EAST,source.getBlockPos(),false)));
         h.assertTrue(stack.getCount()==2&&h.getLevel().getBlockState(source.getBlockPos().east()).is(Blocks.DIAMOND_BLOCK),"Solid destination remains intact");h.succeed();
     }

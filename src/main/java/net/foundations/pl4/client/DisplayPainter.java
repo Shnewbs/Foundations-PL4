@@ -61,10 +61,10 @@ final class DisplayPainter {
         if(!spec.asset().isBlank()){
             var id=Identifier.tryParse(spec.asset());if(id==null)return List.of();
             if(spec.type()==DisplayElements.Type.FLUID||spec.type()==DisplayElements.Type.FLUID_GRID){
-                var value=BuiltInRegistries.FLUID.get(id);if(value==net.minecraft.world.level.material.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
+                var value=BuiltInRegistries.FLUID.getValue(id);if(value==net.minecraft.world.level.material.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
                 return List.of(new Part.Row(spec.asset(),fluid.getHoverName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new CompoundTag(),new CompoundTag()));
             }
-            ItemStack item=new ItemStack(BuiltInRegistries.ITEM.get(id));if(item.isEmpty())return List.of();
+            ItemStack item=new ItemStack(BuiltInRegistries.ITEM.getValue(id));if(item.isEmpty())return List.of();
             return List.of(new Part.Row(spec.asset(),item.getHoverName().getString(),1,0,"items",item,FluidStack.EMPTY,new CompoundTag(),new CompoundTag()));
         }
         return spec.reader().isBlank()?List.copyOf(part.rows):part.sourceRows.getOrDefault(spec.reader(),List.of());

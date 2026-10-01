@@ -13,12 +13,12 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 public final class R16GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000016");
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face){
-        h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(p);
+        h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(p));
         Part part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);
         host.parts.put(6,new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER));host.changed();return host;
     }
     private static Part part(HostEntity host,Direction face){return host.parts.get(face.ordinal());}
-    private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getBlockEntity(p);}
+    private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(p));}
     private static NetworkEngine.Ref ref(HostEntity h,Direction face){return new NetworkEngine.Ref(h,part(h,face));}
 
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)

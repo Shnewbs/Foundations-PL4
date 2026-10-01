@@ -28,7 +28,7 @@ public final class R6GameTests {
         h.assertTrue(!loaded.displayOutward&&loaded.energySystem.equals("AUTO")&&loaded.label.equals(old.label),"Legacy saves keep their front/controller; explicit flip is user-controlled");h.succeed();
     }
     private static NetworkEngine.Ref reader(GameTestHelper h){
-        BlockPos pos=new BlockPos(2,1,1);h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
+        BlockPos pos=new BlockPos(2,1,1);h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
         Part part=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);host.parts.put(part.slot(),part);host.changed();return new NetworkEngine.Ref(host,part);
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)

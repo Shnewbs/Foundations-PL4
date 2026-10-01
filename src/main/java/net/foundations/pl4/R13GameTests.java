@@ -1,4 +1,5 @@
 package net.foundations.pl4;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.UUID;
 import net.minecraft.core.Direction;

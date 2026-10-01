@@ -20,13 +20,13 @@ import net.neoforged.neoforge.common.util.*;
 public final class R5GameTests {
     private static final UUID OWNER=UUID.fromString("bbbb0000-0000-0000-0000-000000000005");
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face,boolean cable){
-        h.setBlock(p,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(p);
+        h.setBlock(p,FoundationsPL4.HOST.get());var host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(p));
         host.parts.put(net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()),new Part(kind,face,OWNER));
         if(cable&&!kind.cable())host.parts.put(6,new Part(kind.redstone()?Kind.REDSTONE_CABLE:Kind.DATA_CABLE,Direction.DOWN,OWNER));
         host.changed();return host;
     }
     private static void rebuild(GameTestHelper h){NetworkEngine.rebuild(h.getLevel().getServer());}
-    private static void chest(GameTestHelper h,BlockPos pos){h.setBlock(pos,Blocks.CHEST);((ChestBlockEntity)h.getBlockEntity(pos)).setItem(0,new ItemStack(Items.DIAMOND,17));}
+    private static void chest(GameTestHelper h,BlockPos pos){h.setBlock(pos,Blocks.CHEST);((ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(pos))).setItem(0,new ItemStack(Items.DIAMOND,17));}
     private static FakePlayer player(GameTestHelper h,BlockPos pos){
         var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R5-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;
         var absolute=h.absolutePos(pos);p.setPos(absolute.getX()+.5,absolute.getY(),absolute.getZ()+.5);return p;
@@ -73,7 +73,7 @@ public final class R5GameTests {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
         var result=FoundationsPL4.HOST.get().useItemOn(stack,a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
-        h.assertTrue(result==ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION,"Held parts must not be swallowed by the host GUI");
+        h.assertTrue(result==InteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
         h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }
@@ -102,7 +102,7 @@ public final class R5GameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=120)
     public static void topologyRebuildRefreshesCachedTargetPriority(GameTestHelper h){
         BlockPos leftChest=new BlockPos(2,1,2),rightChest=new BlockPos(4,1,2),hostPos=new BlockPos(3,1,2);
-        chest(h,leftChest);h.setBlock(rightChest,Blocks.CHEST);((ChestBlockEntity)h.getBlockEntity(rightChest)).setItem(0,new ItemStack(Items.STONE,5));
+        chest(h,leftChest);h.setBlock(rightChest,Blocks.CHEST);((ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(rightChest))).setItem(0,new ItemStack(Items.STONE,5));
         HostEntity host=host(h,hostPos,Kind.NODE,Direction.WEST,true);
         Part left=host.parts.get(Direction.WEST.ordinal()),right=new Part(Kind.NODE,Direction.EAST,OWNER),reader=new Part(Kind.INVENTORY_READER,Direction.DOWN,OWNER);
         left.priority=10;right.priority=0;reader.mode="CHANNEL";reader.index=1;
@@ -127,7 +127,7 @@ public final class R5GameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void obstructedLegacyHammerDoesNotOverwriteBlocks(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos.above(2),Blocks.STONE);h.setBlock(pos,FoundationsPL4.HAMMER.get());
-        var hammer=(HammerEntity)h.getBlockEntity(pos);hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=7;
+        var hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=7;
         for(int i=0;i<30;i++)HammerEntity.tick(h.getLevel(),hammer.getBlockPos(),hammer.getBlockState(),hammer);
         h.assertTrue(h.getLevel().getBlockState(h.absolutePos(pos.above(2))).is(Blocks.STONE)&&h.getLevel().isEmptyBlock(h.absolutePos(pos.above())),"Check both upper cells before changing either");
         h.assertTrue(hammer.progress==7&&hammer.inventory.getStackInSlot(0).getCount()==17,"Blocked old hammer must preserve its state and inventory");
@@ -136,7 +136,7 @@ public final class R5GameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void breakingHammerUpperDropsOnce(GameTestHelper h){
-        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
+        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));h.getLevel().destroyBlock(hammer.getBlockPos().above(2),true);
         for(int i=0;i<3;i++)h.assertTrue(h.getLevel().isEmptyBlock(h.absolutePos(pos.above(i))),"Breaking the top must remove all three machine cells");
         var items=h.getLevel().getEntitiesOfClass(ItemEntity.class,new AABB(h.absolutePos(pos)).inflate(2));
@@ -146,7 +146,7 @@ public final class R5GameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerMenuSlotsShiftClickAndDistance(GameTestHelper h){
-        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);var player=player(h,new BlockPos(2,1,3));
+        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));var player=player(h,new BlockPos(2,1,3));
         var menu=(HammerMenu)hammer.createMenu(1,player.getInventory(),player);
         h.assertTrue(menu.slots.size()==38&&menu.slots.get(0).x==53&&menu.slots.get(0).y==24&&menu.slots.get(1).x==107,"Original container slot layout");
         h.assertTrue(!menu.slots.get(1).mayPlace(new ItemStack(Items.DIAMOND)),"Output slot is extraction-only");
@@ -159,7 +159,7 @@ public final class R5GameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerInventoryAndProgressRoundTrip(GameTestHelper h){
-        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
+        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=33;hammer.cooldown=9;
         CompoundTag saved=new CompoundTag();hammer.saveAdditional(saved,h.getLevel().registryAccess());
         var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevel(h.getLevel());loaded.loadAdditional(saved,h.getLevel().registryAccess());

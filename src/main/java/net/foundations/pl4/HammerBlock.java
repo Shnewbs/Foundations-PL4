@@ -15,7 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 
 public final class HammerBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING=BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape BASE=Shapes.or(box(0,8,0,16,12,16),box(4,12,4,12,14,12),
         box(0,0,0,16,2,16),box(1,0,1,4,16,4),box(12,0,1,15,16,4),box(1,0,12,4,16,15),box(12,0,12,15,16,15));
     public HammerBlock(Properties p){super(p);registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
@@ -39,11 +39,11 @@ public final class HammerBlock extends BaseEntityBlock {
     @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level l,BlockState s,BlockEntityType<T> type){
         return l.isClientSide()?null:createTickerHelper(type,FoundationsPL4.HAMMER_ENTITY.get(),HammerEntity::tick);
     }
-    @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?ItemInteractionResult.sidedSuccess(l.isClientSide()):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    @Override protected InteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
+        return HammerStructure.open(l,pos,p)?InteractionResult.SUCCESS:InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?InteractionResult.sidedSuccess(l.isClientSide()):InteractionResult.PASS;
+        return HammerStructure.open(l,pos,p)?InteractionResult.SUCCESS:InteractionResult.PASS;
     }
     @Override protected void onRemove(BlockState s,Level l,BlockPos pos,BlockState next,boolean moving){
         if(!s.is(next.getBlock())&&!l.isClientSide()&&l.getBlockEntity(pos) instanceof HammerEntity h) {

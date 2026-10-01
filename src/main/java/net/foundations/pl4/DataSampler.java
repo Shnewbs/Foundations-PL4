@@ -105,7 +105,7 @@ public final class DataSampler {
         for(var property:state.getProperties())if(state.getValue(property) instanceof Number number)put(rows,"state."+property.getName(),property.getName(),number.doubleValue(),0,"");
         if(l.getBlockEntity(pos) instanceof net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity furnace){
             var tag=furnace.saveWithoutMetadata(l.registryAccess());
-            put(rows,"burn_time","Burn time",tag.getShort("BurnTime"),0,"ticks");put(rows,"cook_time","Cooking",tag.getShort("CookTime"),tag.getShort("CookTimeTotal"),"ticks");
+            put(rows,"burn_time","Burn time",tag.getShort("BurnTime").orElse((short)0),0,"ticks");put(rows,"cook_time","Cooking",tag.getShort("CookTime").orElse((short)0),tag.getShort("CookTimeTotal").orElse((short)0),"ticks");
         }
     }
     private static void entity(Map<String,Part.Row> rows,Entity e){

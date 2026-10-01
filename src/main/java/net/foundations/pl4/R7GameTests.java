@@ -15,9 +15,9 @@ import net.minecraft.world.phys.shapes.*;
 
 public final class R7GameTests {
     private static final UUID OWNER=UUID.fromString("77770000-0000-0000-0000-000000000007");
-    private static HostEntity host(GameTestHelper h,BlockPos pos){h.setBlock(pos,FoundationsPL4.HOST.get());return (HostEntity)h.getBlockEntity(pos);}
+    private static HostEntity host(GameTestHelper h,BlockPos pos){h.setBlock(pos,FoundationsPL4.HOST.get());return (HostEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));}
     private static Part put(HostEntity host,Kind kind,Direction face){Part p=new Part(kind,face,OWNER);p.displayOutward=true;host.parts.put(p.slot(),p);host.changed();return p;}
-    private static void chest(GameTestHelper h,BlockPos pos,int count){h.setBlock(pos,Blocks.CHEST);((ChestBlockEntity)h.getBlockEntity(pos)).setItem(0,new ItemStack(Items.DIAMOND,count));}
+    private static void chest(GameTestHelper h,BlockPos pos,int count){h.setBlock(pos,Blocks.CHEST);((ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(pos))).setItem(0,new ItemStack(Items.DIAMOND,count));}
     private static boolean amount(Part p,int count){return p.rows.stream().anyMatch(r->r.key().equals("minecraft:diamond")&&r.value()==count);}
     private static void compact(GameTestHelper h,Direction face,boolean external){
         BlockPos pos=new BlockPos(3,3,3);var target=host(h,pos);

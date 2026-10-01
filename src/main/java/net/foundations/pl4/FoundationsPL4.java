@@ -35,10 +35,10 @@ public final class FoundationsPL4 {
     public static final DeferredBlock<HostBlock> HOST = BLOCKS.register("multipart_host", () -> new HostBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(.5F,25).noOcclusion().dynamicShape()));
     public static final DeferredBlock<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollision()));
     public static final DeferredBlock<Block> ORE = BLOCKS.register("sapphireore", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3,5).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<HammerBlock> HAMMER = BLOCKS.register("hammer", () -> new HammerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.BLOCK)));
-    public static final DeferredBlock<HammerSpaceBlock> HAMMER_SPACE = BLOCKS.register("hammer_air", () -> new HammerSpaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.BLOCK)));
-    public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<HostEntity>> HOST_ENTITY = ENTITIES.register("host", () -> BlockEntityType.Builder.of(HostEntity::new,HOST.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<HammerEntity>> HAMMER_ENTITY = ENTITIES.register("hammer", () -> BlockEntityType.Builder.of(HammerEntity::new,HAMMER.get()).build(null));
+    public static final DeferredBlock<HammerBlock> HAMMER = BLOCKS.register("hammer", () -> new HammerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.IMMOVEABLE)));
+    public static final DeferredBlock<HammerSpaceBlock> HAMMER_SPACE = BLOCKS.register("hammer_air", () -> new HammerSpaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noOcclusion().pushReaction(PushReaction.IMMOVEABLE)));
+    public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<HostEntity>> HOST_ENTITY = ENTITIES.register("host", () -> new BlockEntityType<>(HostEntity::new,HOST.get()));
+    public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<HammerEntity>> HAMMER_ENTITY = ENTITIES.register("hammer", () -> new BlockEntityType<>(HammerEntity::new,HAMMER.get()));
     static {
         for (Kind k : Kind.values()) {
             MODELS.put(k,BLOCKS.register(k.id, () -> new PartModelBlock(k,BlockBehaviour.Properties.of().noOcclusion().strength(.5F))));
@@ -77,5 +77,5 @@ public final class FoundationsPL4 {
         NeoForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }
     public static Identifier id(String path) { return Identifier.fromNamespaceAndPath(ID,path); }
-    public static Item item(String id) { return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(id(id)); }
+    public static Item item(String id) { return net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(id(id)); }
 }

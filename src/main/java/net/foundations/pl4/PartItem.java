@@ -12,7 +12,7 @@ import net.foundations.pl4.core.PartItemDataRules;
 
 public final class PartItem extends Item {
     public final Kind kind;
-    public PartItem(Kind k,Properties p) { super(p); kind=k; }
+    public PartItem(Kind k,Properties p) { super(p.overrideDescription("block."+FoundationsPL4.ID+"."+k.id)); kind=k; }
     @Override public InteractionResult useOn(UseOnContext c) {
         Level l=c.getLevel(); var player=c.getPlayer(); if(player==null)return InteractionResult.PASS;
         BlockPos pos=c.getClickedPos();
@@ -91,7 +91,6 @@ public final class PartItem extends Item {
         if(extending)part.displayOutward=outward;
         return part;
     }
-    @Override public String getDescriptionId() { return "block."+FoundationsPL4.ID+"."+kind.id; }
     /** Normal block-break drop. Unconfigured parts carry no CustomData and therefore stack normally.
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
     public static ItemStack stack(Part part,HolderLookup.Provider registry) {

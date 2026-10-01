@@ -52,7 +52,7 @@ public final class VisualSamples {
         try{return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(canonical(tag).getBytes(java.nio.charset.StandardCharsets.UTF_8))).substring(0,16);}catch(java.security.NoSuchAlgorithmException impossible){throw new IllegalStateException(impossible);}
     }
     private static String canonical(Tag tag){
-        if(tag instanceof CompoundTag compound){StringBuilder out=new StringBuilder("{");for(String key:new java.util.TreeSet<>(compound.getAllKeys()))out.append(key.length()).append(':').append(key).append('=').append(canonical(compound.get(key))).append(';');return out.append('}').toString();}
+        if(tag instanceof CompoundTag compound){StringBuilder out=new StringBuilder("{");for(String key:new java.util.TreeSet<>(compound.keySet()))out.append(key.length()).append(':').append(key).append('=').append(canonical(compound.get(key))).append(';');return out.append('}').toString();}
         if(tag instanceof ListTag list){StringBuilder out=new StringBuilder("[");for(Tag entry:list)out.append(canonical(entry)).append(';');return out.append(']').toString();}return tag.toString();
     }
     public static byte[] bounded(CompoundTag tag,int limit){

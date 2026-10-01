@@ -196,7 +196,7 @@ public final class DisplayEditorScreen extends Screen {
     }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
     @Override public void tick(){
-        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(pos.getCenter())>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
+        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
         var anchor=host.parts.get(clickedSlot);if(anchor==null||!anchor.identity.equals(clickedIdentity)){onClose();return;}
         BlockPos root=anchor.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(anchor),-anchor.canvasColumn).relative(DisplayNetworks.up(anchor),anchor.canvasRow):pos;
         if(minecraft.level.getBlockEntity(root) instanceof HostEntity h){Part live=h.parts.get(clickedSlot);if(live!=null&&live.layoutRevision>=part.layoutRevision)part=live;}

@@ -20,14 +20,14 @@ import net.neoforged.neoforge.fluids.FluidStack;
 public final class R9GameTests {
     private static UUID owner(GameTestHelper h){return UUID.nameUUIDFromBytes(("PL4-R9-"+h.absolutePos(BlockPos.ZERO)).getBytes(java.nio.charset.StandardCharsets.UTF_8));}
     private static HostEntity display(GameTestHelper h,int x,Kind kind){
-        BlockPos position=new BlockPos(x,2,2);h.setBlock(position,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(position);
+        BlockPos position=new BlockPos(x,2,2);h.setBlock(position,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getLevel().getBlockEntity(h.absolutePos(position));
         Part part=new Part(kind,Direction.SOUTH,owner(h));part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind.display()).findFirst().orElseThrow();}
     private static FakePlayer player(GameTestHelper h,HostEntity at,boolean allowed){
         UUID id=allowed?owner(h):UUID.nameUUIDFromBytes((owner(h)+"-other").getBytes(java.nio.charset.StandardCharsets.UTF_8));
         FakePlayer player=FakePlayerFactory.get(h.getLevel(),new GameProfile(id,"PL4-R9-Test"));
-        var p=at.getBlockPos().getCenter();player.setPos(p.x+1,p.y,p.z+1);return player;
+        var p=net.minecraft.world.phys.Vec3.atCenterOf(at.getBlockPos());player.setPos(p.x+1,p.y,p.z+1);return player;
     }
     private static PLPackets.LayoutEdit packet(HostEntity host,long revision,String action,DisplayElements.Spec spec,String value){
         Part p=part(host);return new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,revision,action,spec==null?new UUID(0,0):spec.id(),spec==null?value:ElementJson.encode(spec));
@@ -179,7 +179,7 @@ public final class R9GameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void componentVariantKeyIsStableAcrossSave(GameTestHelper h){
         var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);item.set(DataComponents.CUSTOM_NAME,Component.literal("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
-        var restored=net.foundations.pl4.NbtStacks.item(h.getLevel().registryAccess(),(CompoundTag)item.save(h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
+        var restored=net.foundations.pl4.NbtStacks.item(h.getLevel().registryAccess(),(CompoundTag)NbtStacks.save(item,h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
         h.assertTrue(r.key().equals(r2.key())&&r.value()==r2.value(),"Variant bindings must not drift simply because an item was saved");h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
