@@ -31,6 +31,7 @@ def main():
     run(sys.executable,ROOT/'tools/test_screen_layers.py')
     run(sys.executable,ROOT/'tools/verify_r6.py')
     run(sys.executable,ROOT/'tools/verify_r7.py')
+    run(sys.executable,ROOT/'tools/test_r7_mutants.py')
     run(sys.executable,ROOT/'tools/verify_r8.py')
     run(sys.executable,ROOT/'tools/test_r8_mutations.py')
     run(sys.executable,ROOT/'tools/verify_r9.py')
