@@ -72,3 +72,7 @@ Transfer Nodes now expose a sided GregTech EU input for REMOVE / EXPORT nodes co
 Incoming packets respect server conversion policy, stored ratio profiles and the per-node buffer cap; delivery respects shared network caps. The buffer remains bounded between network update cycles, survives saves and node drops, and refuses additions after removal or a ratio change. Stored machines still support the existing sided pull adapter. Other push-only providers are not covered by this EU receiver.
 
 Settings now have a visible draggable scrollbar; clicking the track also scrolls. The Data tab reports missing source capabilities, blocked/empty sources, unmatched destination routes and receivers that refuse the offered packet. Actual installed-mod visual and power checks remain required.
+
+## External FE push input (R1.8)
+
+External NeoForge FE generators and cables can push into the attached face of an Energy-enabled Transfer Node configured REMOVE or ADD/REMOVE, Input FE. Null and unrelated faces expose no input. Input is receive-only and bounded by the node energy limit. Simulation never stores power. Accepted FE uses persistent conversion escrow, including configured conversion loss; destinations must match Output. Disable Energy or remove the part to revoke cached input handlers. Multipart edits invalidate capability caches.
