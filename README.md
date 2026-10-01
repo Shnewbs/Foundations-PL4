@@ -1,6 +1,6 @@
 # Foundations PL4 0.0.2a development line
 
-**SOURCE REPOSITORY. No compiled 0.0.2a.R1.6 runtime mod JAR is committed.** Minecraft 1.21.1 / NeoForge 21.1.250 / Java 21. Standalone: no Sonar Core or MCMultiPart runtime dependency.
+**SOURCE REPOSITORY. No compiled 0.0.2a.R1.6 runtime mod JAR is committed.** This branch targets Minecraft 26.3 / NeoForge 26.3.0.23-beta / Java 25. The maintained 1.21.1 source remains on `main` and `mc/1.21.1`. Standalone: no Sonar Core or MCMultiPart runtime dependency.
 
 `0.0.1a.R17` is frozen by user acceptance. This branch is now the `0.0.2a` development line, retaining R16's hardened Transfer Node behavior and R17's emitter-anchored holograms.
 
@@ -10,7 +10,7 @@ R16 ordinary Nodes remain passive transfer endpoints. ADD / REMOVE remains expli
 
 Save schema 2, 13 multipart slots, payload protocol 4, recipes and transfer rules are unchanged from R16.
 
-Version tags of the form `v<Gradle version>` trigger a Java 21 build and publish a GitHub Release with the runtime JAR, sources JAR and SHA-256 checksums. See [docs/RELEASING.md](docs/RELEASING.md) for the release gate and steps.
+The `mc/26.3` workflow builds and runs native GameTests and retains JARs as CI artifacts. Port publication is disabled during acceptance. Existing `v<version>` release tags belong to the 1.21.1 track; use separate target tags when enabling 26.x publication. See [docs/PORT_26_STATUS.md](docs/PORT_26_STATUS.md).
 
 ## Build
 
@@ -18,10 +18,10 @@ Version tags of the form `v<Gradle version>` trigger a Java 21 build and publish
 gradlew.bat --no-daemon --console=plain clean build
 ```
 
-Expected artifact after a successful Java 21 build:
+Expected artifact after a successful Java 25 build:
 
 ```text
-build/libs/FoundationsPL4-1.21.1-0.0.2a.R1.6.jar
+build/libs/FoundationsPL4-26.3-0.0.2a.R1.6-port.1.jar
 ```
 
 Run native GameTests with:

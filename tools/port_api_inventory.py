@@ -14,5 +14,5 @@ with (out/'target-api.txt').open('w') as f:
   subprocess.run(['javap','-p','-constants','-classpath',str(jar),name],stdout=f,stderr=f)
 
 with zipfile.ZipFile(jar) as z:
- for path in ["data/minecraft/worldgen/feature/ore_coal.json", "data/minecraft/worldgen/placed_feature/ore_coal_upper.json"]:
+ for path in ["data/minecraft/worldgen/feature/ore_coal.json", "data/minecraft/worldgen/placed_feature/ore_coal_upper.json", "data/minecraft/loot_table/blocks/diamond_ore.json"]:
   if path in z.namelist(): (out/Path(path).name).write_bytes(z.read(path))

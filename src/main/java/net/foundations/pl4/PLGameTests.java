@@ -166,4 +166,15 @@ public final class PLGameTests {
         for(int i=0;i<100;i++)HammerEntity.tick(h.getLevel(),h.absolutePos(pos),hammer.getBlockState(),hammer);
         h.assertTrue(hammer.inventory.getStackInSlot(1).is(FoundationsPL4.item("signallingplate")),"Changed input must produce the new recipe result");h.succeed();
     }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void sapphireOreDropsGemNormallyAndBlockWithSilkTouch(GameTestHelper h){
+        BlockPos local=new BlockPos(1,1,1);h.setBlock(local,FoundationsPL4.ORE.get());BlockPos pos=h.absolutePos(local);
+        var state=h.getLevel().getBlockState(pos);ItemStack tool=new ItemStack(Items.DIAMOND_PICKAXE);
+        var normal=net.minecraft.world.level.block.Block.getDrops(state,h.getLevel(),pos,null,null,tool);
+        h.assertTrue(normal.size()==1&&normal.getFirst().is(FoundationsPL4.item("sapphire")),"Ordinary mining must produce sapphire, not the ore block");
+        tool.enchant(h.getLevel().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH),1);
+        var silk=net.minecraft.world.level.block.Block.getDrops(state,h.getLevel(),pos,null,null,tool);
+        h.assertTrue(silk.size()==1&&silk.getFirst().is(FoundationsPL4.ORE.get().asItem()),"Silk Touch must preserve the ore block");h.succeed();
+    }
+
 }
