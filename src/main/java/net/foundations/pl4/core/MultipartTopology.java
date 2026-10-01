@@ -5,7 +5,7 @@ import net.foundations.pl4.Kind;
 
 /** Pure six-axis planner used by the live server. It never samples data, touches worlds or loads chunks.
  * Ordinary slots 0..5, cable centre 6, display slots 7..12. A reader's face is its visual front;
- * its NETWORK input is the centre behind it, or the exposed cable in the next cell behind it.
+ * its NETWORK input is the centre behind it, which requires a placed cable in the same cell.
  * VISUAL exports are deliberately NOT network edges. A face endpoint is not a cable junction.
  */
 public final class MultipartTopology {
@@ -52,16 +52,16 @@ public final class MultipartTopology {
         }
         // Endpoints choose ONE network input. A local centre, even a disabled or wrong-family
         // one, precludes an invisible through-connection to an outside network.
+        // Empty endpoint cells never extend a neighboring cable across an unplaced cell.
         for(Node device:nodes)if(!device.kind.cable()&&!device.kind.display()){
             Host h=hosts.get(device.cell);Node cable=h.cable();
             if(cable!=null){
                 if(compatible(cable,device)&&enabled(cable,device.face)){
                     edges.add(new Edge(cable.id,device.id));arms.get(cable.id)[device.face]=internalArm(device.kind);
                 }
-            }else{
-                cable=backCable(hosts,h,device);
-                if(cable!=null){edges.add(new Edge(cable.id,device.id));arms.get(cable.id)[device.face]=ConnectionRules.CABLE;leads.add(device.id);}
             }
+            // A mounted endpoint does not supply a free cable through its host cell.
+            // Its centre must contain a placed cable before it can join a network.
         }
         // Reader -> locally mounted display. Separate slots and geometry, no electrical union.
         for(Node reader:nodes)if(reader.kind.reader()){
@@ -79,7 +79,7 @@ public final class MultipartTopology {
                 exports.add(new Export(reader.id,cable.id));arms.get(cable.id)[reader.face^1]=ConnectionRules.CABLE;
             }
         }
-        // Unpaired displays read from their own compatible cable bus or an exposed back cable.
+        // Unpaired displays read from their own placed compatible cable bus.
         for(Node display:nodes)if(display.kind.display()&&!feeds.containsKey(display.id)){
             Host h=hosts.get(display.cell);
             if(h.face(display.face)!=null)continue; // Cannot bypass a reader/Node/device on this face.
@@ -88,17 +88,9 @@ public final class MultipartTopology {
                 if(compatible(cable,display)&&enabled(cable,display.face)){
                     feeds.put(display.id,cable.id);arms.get(cable.id)[display.face]=internalArm(display.kind);
                 }
-            }else{
-                cable=backCable(hosts,h,display);
-                if(cable!=null){feeds.put(display.id,cable.id);arms.get(cable.id)[display.face]=ConnectionRules.CABLE;leads.add(display.id);}
             }
         }
         return new Plan(List.copyOf(edges),List.copyOf(exports),Map.copyOf(feeds),Map.copyOf(arms),Set.copyOf(leads));
-    }
-    private static Node backCable(Map<Cell,Host> hosts,Host h,Node device){
-        if(!h.clear(device.face^1))return null;
-        Host other=hosts.get(device.cell.offset(device.face^1));if(other==null||!other.clear(device.face))return null;
-        Node cable=other.cable();return cable!=null&&compatible(cable,device)&&enabled(cable,device.face)?cable:null;
     }
     private static boolean compatible(Node a,Node b){return a.kind.redstone()==b.kind.redstone();}
     private static boolean enabled(Node cable,int face){return !ConnectionRules.blocked(cable.blocked,face);}
