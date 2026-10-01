@@ -24,8 +24,8 @@ checks={
  'normal node guide':'normal Node' in body and 'passive endpoint' in body,
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
- 'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
- 'eight R16 native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==8,
+ 'R16 native tests registered':'R16GameTests.class' in read('src/main/java/net/foundations/pl4/PortTestInstance.java'),
+ 'eight R16 native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==8,
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }

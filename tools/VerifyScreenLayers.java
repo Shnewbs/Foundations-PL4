@@ -37,7 +37,7 @@ public final class VerifyScreenLayers {
                             for (Tree member : tree.getMembers()) {
                                 if (member instanceof MethodTree method) {
                                     String name = method.getName().toString();
-                                    if ((name.equals("render") || name.equals("renderBackground"))
+                                    if ((name.equals("extractRenderState") || name.equals("extractBackground"))
                                             && methods.put(name, method) != null) fail(file, "Ambiguous rendering overload: " + name);
                                 }
                             }
@@ -50,26 +50,26 @@ public final class VerifyScreenLayers {
         for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
             if (diagnostic.getKind() == Diagnostic.Kind.ERROR) fail(file, "Java syntax: " + diagnostic);
         }
-        MethodTree background = methods.get("renderBackground");
-        if (background == null) fail(file, "Missing renderBackground hook; content must not precede Screen.render's native background.");
-        requireFirstCall(file, background, "super.renderBackground");
+        MethodTree background = methods.get("extractBackground");
+        if (background == null) fail(file, "Missing extractBackground hook; content must not precede Screen.render's native background.");
+        requireFirstCall(file, background, "super.extractBackground");
         List<String> backgroundCalls = calls(background);
-        if (Collections.frequency(backgroundCalls, "super.renderBackground") != 1) fail(file, "Native background must run exactly once.");
+        if (Collections.frequency(backgroundCalls, "super.extractBackground") != 1) fail(file, "Native background must run exactly once.");
         for (String call : backgroundCalls) {
-            if (call.equals("super.render") || (call.endsWith(".renderBackground") && !call.equals("super.renderBackground")))
+            if (call.equals("super.extractRenderState") || (call.endsWith(".extractBackground") && !call.equals("super.extractBackground")))
                 fail(file, "Late or repeated background/widget pass: " + call);
-            if (call.endsWith(".renderTooltip") || call.endsWith(".renderComponentTooltip"))
-                fail(file, "Tooltips must render after widgets, not in renderBackground.");
+            if (call.endsWith(".setTooltipForNextFrame") || call.endsWith(".setComponentTooltipForNextFrame"))
+                fail(file, "Tooltips must render after widgets, not in extractBackground.");
         }
         if (partScreen) {
-            MethodTree render = methods.get("render");
+            MethodTree render = methods.get("extractRenderState");
             if (render == null) fail(file, "PartScreen needs a post-widget tooltip pass.");
-            requireFirstCall(file, render, "super.render");
+            requireFirstCall(file, render, "super.extractRenderState");
             List<String> renderCalls = calls(render);
-            if (Collections.frequency(renderCalls, "super.render") != 1) fail(file, "Screen.render must be called exactly once.");
-            if (renderCalls.stream().noneMatch(c -> c.endsWith(".renderTooltip"))) fail(file, "Missing post-widget row tooltip.");
+            if (Collections.frequency(renderCalls, "super.extractRenderState") != 1) fail(file, "Screen.render must be called exactly once.");
+            if (renderCalls.stream().noneMatch(c -> c.endsWith(".setTooltipForNextFrame"))) fail(file, "Missing post-widget row tooltip.");
             for (String call : renderCalls) {
-                if (!call.equals("super.render") && !call.endsWith(".renderTooltip"))
+                if (!call.equals("super.extractRenderState") && !call.endsWith(".setTooltipForNextFrame"))
                     fail(file, "Only row tooltips belong after widgets; found: " + call);
             }
             // Reset before drawing so moving off a row/changing tab cannot retain a stale tooltip.
@@ -79,7 +79,7 @@ public final class VerifyScreenLayers {
                     || !assignment.getVariable().toString().equals("hoveredRowTooltip")
                     || assignment.getExpression().getKind() != Tree.Kind.NULL_LITERAL)
                 fail(file, "Clear hoveredRowTooltip immediately after the native background pass.");
-        } else if (methods.containsKey("render")) {
+        } else if (methods.containsKey("extractRenderState")) {
             fail(file, "GuideScreen must inherit Screen.render to retain background -> guide -> widgets ordering.");
         }
         System.out.println("PASS: " + file.getFileName());

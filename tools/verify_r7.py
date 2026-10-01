@@ -37,6 +37,6 @@ assert 'attachToReader&&!HostBlock.canAdd(host,candidate)' in placement
 assert 'player.isShiftKeyDown()' in (J/'HostBlock.java').read_text() and 'interactionTarget' in host
 assert 'level.mayInteract(player,adjacent)' in (J/'ToolItem.java').read_text()
 assert 'mayInteract(player,packet.pos)' in packets and '!p.identity.equals(packet.identity)' in packets and 'if(!h.canEdit(player))return;' in packets
-assert 'R7GameTests.class' in (J/'PLGameTests.java').read_text()
+assert 'R7GameTests.class' in (J/'PortTestInstance.java').read_text()
 print('PASS R7 wiring guards: separate-slot persistence/protocol, native planner use, visual edge isolation, paired-reader rendering/placement, covered-reader access and protection checks.')
 print('PASS 60 paired-reader model states, three panel sizes across six geometry rotations, and 18 unscaled endpoint-lead meshes. Not native render acceptance.')

@@ -10,7 +10,7 @@ final class CommunityWelcome {
     static void login(ClientPlayerNetworkEvent.LoggingIn event){
         String account=event.getPlayer().getUUID().toString();
         var seen=new ArrayList<String>(PLClientConfig.COMMUNITY_LINKS_SEEN.get());if(seen.contains(account))return;
-        Minecraft.getInstance().gui.hud.getChat().addMessage(CommunityLinks.message());
+        Minecraft.getInstance().player.sendSystemMessage(CommunityLinks.message());
         seen.add(account);PLClientConfig.COMMUNITY_LINKS_SEEN.set(seen);PLClientConfig.SPEC.save();
     }
     private CommunityWelcome(){}

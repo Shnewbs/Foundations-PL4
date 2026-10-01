@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.6
+Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.6
 
 This is the same chapter text shipped in the game. Tutorial checkpoints are manual, not automated acceptance results.
 
@@ -26,7 +26,7 @@ After the first monitor, try From list to block icon, Your first energy monitor,
 
 ### THIS EDITION
 
-This guide covers Foundations PL4 on Minecraft 1.21.1 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries.
+This guide covers Foundations PL4 on Minecraft 26.3 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries.
 
 ### THE GUIDE ITEM
 
@@ -602,7 +602,7 @@ Registered items, tags, crafting JSON and the foundations_pl4:forging_hammer rec
 
 ### HAMMER FIELDS
 
-Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 1.21.1 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement.
+Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.3 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement.
 
 ### OPT IN
 
@@ -642,7 +642,7 @@ PL2-style display restoration, current limits and credits.
 
 ### ALPHA IMPLEMENTATION
 
-Foundations PL4 is an in-development port for Minecraft 1.21.1 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required.
+Foundations PL4 is an in-development port for Minecraft 26.3 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required.
 
 ### CURRENT BOUNDARY
 

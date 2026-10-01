@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "title": "Foundations PL4 Field Guide",
-  "edition": "Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.6",
+  "edition": "Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.6-port.1",
   "chapters": [
     {
       "id": "start",
@@ -28,7 +28,7 @@
         },
         {
           "heading": "THIS EDITION",
-          "body": "This guide covers Foundations PL4 on Minecraft 1.21.1 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries."
+          "body": "This guide covers Foundations PL4 on Minecraft 26.3 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries."
         },
         {
           "heading": "THE GUIDE ITEM",
@@ -721,7 +721,7 @@
         },
         {
           "heading": "HAMMER FIELDS",
-          "body": "Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 1.21.1 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement."
+          "body": "Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.3 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement."
         },
         {
           "heading": "OPT IN",
@@ -771,7 +771,7 @@
       "sections": [
         {
           "heading": "ALPHA IMPLEMENTATION",
-          "body": "Foundations PL4 is an in-development port for Minecraft 1.21.1 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required."
+          "body": "Foundations PL4 is an in-development port for Minecraft 26.3 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required."
         },
         {
           "heading": "CURRENT BOUNDARY",

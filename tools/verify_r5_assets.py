@@ -77,7 +77,7 @@ assert json.loads((ASSETS/'models/block/hammer.json').read_text())['elements']==
 assert json.loads((RES/'data/foundations_pl4/loot_table/blocks/hammer_air.json').read_text())['pools']==[]
 for f in ['gui/hammer.png','block/model/forging_hammer_stone.png']:assert (ASSETS/'textures'/f).is_file()
 assert '.dynamicShape()' in (JAVA/'FoundationsPL4.java').read_text()
-assert 'SKIP_DEFAULT_BLOCK_INTERACTION' in (JAVA/'HostBlock.java').read_text()
+assert 'InteractionResult.PASS : InteractionResult.TRY_WITH_EMPTY_HAND' in (JAVA/'HostBlock.java').read_text()
 renderer=(JAVA/'client/HostRenderer.java').read_text()
 assert 'host.connection(d)' in renderer and 'pose.scale(d.getAxis()' not in renderer
 assert '.getBlockEntity(' not in renderer,'Renderer must not rediscover topology per frame'
@@ -88,9 +88,9 @@ assert 'HAMMER_MENU.get(),HammerScreen::new' in (JAVA/'client/PLClient.java').re
 assert 'context.bakeLayer(HammerModel.LAYER)' in (JAVA/'client/HammerRenderer.java').read_text()
 assert 'root.render(pose,vertices,light,overlay)' in (JAVA/'client/HammerModel.java').read_text()
 screen=(JAVA/'client/HammerScreen.java').read_text()
-body=screen[screen.index('public void render('):]
-assert body.count('super.render(')==1 and 'renderBackground(' not in body
-assert body.index('super.render(')<body.index('renderTooltip(')
+body=screen[screen.index('public void extractRenderState('):]
+assert body.count('super.extractRenderState(')==1 and 'extractBackground(' not in body
+assert body.index('super.extractRenderState(')<body.index('setTooltipForNextFrame(')
 # All JSON syntax, not native codec/schema acceptance.
 json_files=list(RES.rglob('*.json'))
 for f in json_files:json.loads(f.read_text(encoding='utf-8'))

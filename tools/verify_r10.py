@@ -68,8 +68,8 @@ def check_wiring(root):
     assert 'DisplayElements.plan(spec,rows)' in painter and 'No mode or world data is mutated' in painter
     assert ('drawHelp(canvas)' in editor) or ('drawHudHelp(g)' in editor)
     assert 'event.registrar("4")' in source('PLPackets.java'),'No packet/schema change intended'
-    assert source('R10GameTests.java').count('@GameTest(')==5
-    assert 'R10GameTests.class' in source('PLGameTests.java')
+    assert source('R10GameTests.java').count('@PortGameTest(')==5
+    assert 'R10GameTests.class' in source('PortTestInstance.java')
     return True
 
 def main():

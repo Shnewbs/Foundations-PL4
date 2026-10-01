@@ -4,7 +4,7 @@ import json,re,struct
 R=Path(__file__).resolve().parents[1];A=R/'src/main/resources/assets/foundations_pl4';J=R/'src/main/java/net/foundations/pl4'
 b=json.loads((A/'guide/en_us.json').read_text())
 assert b['schema']==1 and b['title']=='Foundations PL4 Field Guide'
-assert '1.21.1' in b['edition'] and 'NeoForge' in b['edition'] and 'Foundations PL4' in b['edition']
+assert '26.3' in b['edition'] and 'NeoForge' in b['edition'] and 'Foundations PL4' in b['edition']
 assert len(b['chapters'])==28 and len({c['id'] for c in b['chapters']})==28
 categories={};words=0
 for c in b['chapters']:

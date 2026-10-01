@@ -49,28 +49,28 @@ class ScreenLayerGuardTests(unittest.TestCase):
         self.verify(True)
 
     def test_part_content_before_background_rejected(self):
-        self.change('PartScreen.java', 'super.renderBackground(g,mx,my,partial);',
-                    'g.fill(0,0,1,1,0);super.renderBackground(g,mx,my,partial);')
-        self.verify(False, 'must begin with super.renderBackground')
+        self.change('PartScreen.java', 'super.extractBackground(g,mx,my,partial);',
+                    'g.fill(0,0,1,1,0);super.extractBackground(g,mx,my,partial);')
+        self.verify(False, 'must begin with super.extractBackground')
 
     def test_guide_content_before_background_rejected(self):
-        self.change('GuideScreen.java', 'super.renderBackground(g,x,y,partial);',
-                    'g.fill(0,0,1,1,0);super.renderBackground(g,x,y,partial);')
-        self.verify(False, 'must begin with super.renderBackground')
+        self.change('GuideScreen.java', 'super.extractBackground(g,x,y,partial);',
+                    'g.fill(0,0,1,1,0);super.extractBackground(g,x,y,partial);')
+        self.verify(False, 'must begin with super.extractBackground')
 
     def test_repeated_blur_rejected(self):
-        self.change('PartScreen.java', 'super.renderBackground(g,mx,my,partial);',
-                    'super.renderBackground(g,mx,my,partial);super.renderBackground(g,mx,my,partial);')
+        self.change('PartScreen.java', 'super.extractBackground(g,mx,my,partial);',
+                    'super.extractBackground(g,mx,my,partial);super.extractBackground(g,mx,my,partial);')
         self.verify(False, 'exactly once')
 
     def test_recursive_widget_pass_rejected(self):
         self.change('PartScreen.java', 'hoveredRowTooltip=null;',
-                    'hoveredRowTooltip=null;super.render(g,mx,my,partial);')
+                    'hoveredRowTooltip=null;super.extractRenderState(g,mx,my,partial);')
         self.verify(False, 'Late or repeated')
 
     def test_tooltip_in_background_rejected(self):
         self.change('PartScreen.java', 'hoveredRowTooltip=null;',
-                    'hoveredRowTooltip=null;g.renderTooltip(font,title,mx,my);')
+                    'hoveredRowTooltip=null;g.setTooltipForNextFrame(font,title,mx,my);')
         self.verify(False, 'Tooltips must render after widgets')
 
     def test_stale_tooltip_rejected(self):
@@ -79,23 +79,23 @@ class ScreenLayerGuardTests(unittest.TestCase):
 
     def test_guide_render_override_rejected(self):
         self.change('GuideScreen.java', '    @Override public boolean mouseScrolled',
-                    '    public void render(GuiGraphics g,int x,int y,float p){super.render(g,x,y,p);}\n'
+                    '    public void extractRenderState(GuiGraphicsExtractor g,int x,int y,float p){super.extractRenderState(g,x,y,p);}\n'
                     '    @Override public boolean mouseScrolled')
         self.verify(False, 'must inherit Screen.render')
 
     def test_missing_row_tooltip_rejected(self):
         self.change('PartScreen.java',
-                    'if(hoveredRowTooltip!=null)g.renderTooltip(font,hoveredRowTooltip,mx,my);', '')
+                    'if(hoveredRowTooltip!=null)g.setTooltipForNextFrame(font,hoveredRowTooltip,mx,my);', '')
         self.verify(False, 'Missing post-widget row tooltip')
 
     def test_content_before_widgets_in_render_rejected(self):
-        self.change('PartScreen.java', 'super.render(g,mx,my,partial);',
-                    'g.fill(0,0,1,1,0);super.render(g,mx,my,partial);')
-        self.verify(False, 'must begin with super.render(')
+        self.change('PartScreen.java', 'super.extractRenderState(g,mx,my,partial);',
+                    'g.fill(0,0,1,1,0);super.extractRenderState(g,mx,my,partial);')
+        self.verify(False, 'must begin with super.extractRenderState(')
 
     def test_missing_background_hook_rejected(self):
-        self.change('GuideScreen.java', 'public void renderBackground(', 'public void legacyRender(')
-        self.verify(False, 'Missing renderBackground hook')
+        self.change('GuideScreen.java', 'public void extractBackground(', 'public void legacyRender(')
+        self.verify(False, 'Missing extractBackground hook')
 
 
 if __name__ == '__main__':
