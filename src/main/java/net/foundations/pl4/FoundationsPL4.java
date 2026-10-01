@@ -32,6 +32,8 @@ public final class FoundationsPL4 {
     public static final EnumMap<Kind, DeferredItem<PartItem>> PART_ITEMS = new EnumMap<>(Kind.class);
     public static final Map<String,DeferredBlock<CableModelBlock>> CABLE_MODELS = new LinkedHashMap<>();
     public static final Map<String,DeferredItem<Item>> MATERIALS = new LinkedHashMap<>();
+    public static final DeferredBlock<PartModelBlock> KINETIC_READER_MODEL = BLOCKS.register("kinetic_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,BlockBehaviour.Properties.of().noOcclusion().noCollission()));
+    public static final DeferredBlock<PartModelBlock> AE2_READER_MODEL = BLOCKS.register("ae2_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,BlockBehaviour.Properties.of().noOcclusion().noCollission()));
     public static final DeferredBlock<HostBlock> HOST = BLOCKS.register("multipart_host", () -> new HostBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(.5F,25).noOcclusion().dynamicShape()));
     public static final DeferredBlock<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission()));
     public static final DeferredBlock<Block> ORE = BLOCKS.register("sapphireore", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3,5).requiresCorrectToolForDrops()));

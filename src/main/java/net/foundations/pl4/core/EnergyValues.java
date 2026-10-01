@@ -10,7 +10,7 @@ public final class EnergyValues {
             if(!Double.isFinite(stored)||!Double.isFinite(capacity)||stored<0||capacity<0)throw new IllegalArgumentException("Invalid energy telemetry");
         }
     }
-    public static String system(String value){return Set.of("AUTO","FE","EU","J").contains(value)?value:"AUTO";}
+    public static String system(String value){return Set.of("AUTO","FE","EU","J","CREATE","AE2").contains(value)?value:"AUTO";}
     public static boolean accepts(String requested,String unit){return system(requested).equals("AUTO")||requested.equals(unit);}
     public static double add(double a,double b){double result=a+b;if(!Double.isFinite(result))throw new IllegalArgumentException("Energy total exceeds telemetry range");return result;}
     public static String totalKey(String unit){return unit.equals("FE")?"storage":"storage:"+unit.toLowerCase(Locale.ROOT);}

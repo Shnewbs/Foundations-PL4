@@ -128,7 +128,7 @@ public final class PLPackets {
                     else {if(!p.energyConvert)return;p.energyOutput=v;}
                 }
                 case "energy_voltage" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.energyRouteEditable())return;int n=Integer.parseInt(v);if(n<1||n>1048576)return;p.energyVoltage=n;}
-                case "energy_system" -> {if(p.kind==Kind.ENERGY_READER&&Set.of("AUTO","FE","EU","J").contains(v))p.energySystem=v;else return;}
+                case "energy_system" -> {if(p.kind==Kind.ENERGY_READER&&Set.of("AUTO","FE","EU","J","CREATE","AE2").contains(v))p.energySystem=v;else return;}
                 case "label" -> p.label=clean(v,48);
                 case "filter" -> p.filter=clean(v,256);
                 case "selected" -> p.selected=clean(v,64);
