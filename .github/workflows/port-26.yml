@@ -4,9 +4,14 @@ on:
     branches: ['mc/26.3']
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
+  actions: read
 jobs:
   port:
+    strategy:
+      fail-fast: false
+      matrix:
+        neoforge: ['26.3.0.23-beta', '26.3.0.39-beta']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,12 +23,12 @@ jobs:
       - name: Compile port
         run: |
           set -o pipefail
-          bash gradlew --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
+          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
       - name: Build and native tests
         run: |
           set -o pipefail
-          bash gradlew --no-daemon --console=plain build
-          bash gradlew --no-daemon --console=plain runGameTestServer 2>&1 | tee port-native.log
+          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain build
+          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain runGameTestServer 2>&1 | tee port-native.log
           python3 tools/verify_native_port_run.py port-native.log
       - name: Collect API migration diagnostics
         if: always()
@@ -37,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: port-26-diagnostics
+          name: port-26-diagnostics-${{ matrix.neoforge }}
           path: |
             port-diagnostics/
             build/libs/
@@ -45,3 +50,47 @@ jobs:
             port-native.log
             run/logs/
             run/crash-reports/
+
+  publish:
+    needs: port
+    runs-on: ubuntu-latest
+    concurrency:
+      group: port-26-release-publication
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: port-26-diagnostics-26.3.0.23-beta
+          path: validated
+      - name: Prepare validated release
+        run: |
+          python3 - <<'PYTHON'
+          import pathlib, re, shutil, hashlib, os
+          root=pathlib.Path('validated')
+          version=re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'",pathlib.Path('build.gradle').read_text(),re.M).group(1)
+          jars=[f'FoundationsPL4-26.3-{version}.jar',f'FoundationsPL4-26.3-{version}-sources.jar']
+          out=pathlib.Path('build/libs');out.mkdir(parents=True,exist_ok=True)
+          hashes=[]
+          for name in jars:
+              found=list(root.rglob(name));assert len(found)==1
+              target=out/name;shutil.copy2(found[0],target)
+              hashes.append(hashlib.sha256(target.read_bytes()).hexdigest()+'  '+name)
+          (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
+          with open(os.environ['GITHUB_ENV'],'a') as env:
+              env.write(f'VERSION={version}\nRELEASE_TAG=mc26.3-v{version}\nMINECRAFT_VERSION=26.3\n')
+          PYTHON
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.3 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/SHA256SUMS.txt
+          fi
+      - name: Publish validated runtime to CurseForge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+        run: python3 tools/upload_curseforge.py

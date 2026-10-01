@@ -67,7 +67,7 @@ public final class FoundationsPL4 {
     public FoundationsPL4(IEventBus bus, ModContainer container) {
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); TABS.register(bus); MENUS.register(bus);
         net.foundations.pl4.core.CoreRecipes.register(bus);
-        container.registerConfig(ModConfig.Type.SERVER,PLConfig.SPEC);
+        container.registerConfig(net.foundations.pl4.config.ConfigTypeCompat.serverType(ModConfig.Type.class),PLConfig.SPEC, "foundations_pl4-server.toml");
         container.registerConfig(ModConfig.Type.CLIENT,PLClientConfig.SPEC);
         bus.addListener(PLPackets::register);
         bus.addListener(HammerEntity::capabilities);
