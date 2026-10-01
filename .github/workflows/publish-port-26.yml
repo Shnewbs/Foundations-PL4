@@ -1,0 +1,61 @@
+name: Publish validated 26.3 port
+on:
+  push:
+    branches: ['mc/26.3']
+    paths: ['.github/workflows/publish-port-26.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Verify validated build and download JARs
+        run: |
+          set -euo pipefail
+          gh api repos/$GH_REPO/actions/runs/36808255094 > run.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('run.json'))
+          assert r['conclusion']=='success'
+          assert r['head_sha']=='425cd4118d76767a7cde81ab341362fe8e8aaf8c'
+          PY
+          gh run download 36808255094 --name port-26-diagnostics --dir validated
+          python3 - <<'PY'
+          import pathlib, shutil
+          root=pathlib.Path('validated')
+          log=next(root.rglob('port-native.log')).read_text()
+          assert 'All 155 required tests passed' in log
+          out=pathlib.Path('release'); out.mkdir()
+          names=['FoundationsPL4-26.3-0.0.2a.R1.6-port.1.jar','FoundationsPL4-26.3-0.0.2a.R1.6-port.1-sources.jar']
+          for name in names:
+              paths=list(root.rglob(name))
+              assert len(paths)==1, (name, paths)
+              shutil.copy2(paths[0],out/name)
+          PY
+          cd release
+          sha256sum *.jar > SHA256SUMS.txt
+      - name: Publish 26.3 prerelease
+        run: |
+          set -euo pipefail
+          cat > notes.md <<'EOF'
+          Native Minecraft 26.3 port of Foundations PL4 R1.6.
+          
+          Requires Minecraft 26.3, NeoForge 26.3.0.23-beta, and Java 25.
+          Build and all 155 required native GameTests passed, including power conversion and ore drops.
+          
+          Install the regular mod JAR; the sources JAR is for development.
+          Client visual acceptance, installed third-party energy providers, and compatibility with other 26.x versions remain unverified. The 1.21.1 release track remains separate.
+          
+          Published from validated commit 425cd4118d76767a7cde81ab341362fe8e8aaf8c and workflow run 36808255094.
+          EOF
+          tag=mc26.3-v0.0.2a.R1.6-port.1
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target 425cd4118d76767a7cde81ab341362fe8e8aaf8c --title "Foundations PL4 26.3 — 0.0.2a.R1.6-port.1" --prerelease --latest=false --notes-file notes.md release/*.jar release/SHA256SUMS.txt
+          else
+            gh release upload "$tag" release/*.jar release/SHA256SUMS.txt
+          fi
