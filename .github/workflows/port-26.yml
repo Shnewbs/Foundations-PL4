@@ -20,7 +20,11 @@ jobs:
           set -o pipefail
           bash gradlew --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
       - name: Build and native tests
-        run: bash gradlew --no-daemon --console=plain build runGameTestServer
+        run: |
+          set -o pipefail
+          bash gradlew --no-daemon --console=plain build
+          bash gradlew --no-daemon --console=plain runGameTestServer 2>&1 | tee port-native.log
+          python3 tools/verify_native_port_run.py port-native.log
       - name: Collect API migration diagnostics
         if: always()
         run: |
@@ -38,3 +42,6 @@ jobs:
             port-diagnostics/
             build/libs/
             build/reports/
+            port-native.log
+            run/logs/
+            run/crash-reports/
