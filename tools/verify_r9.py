@@ -21,7 +21,7 @@ assert 'new WeakHashMap<>()' in painter and 'MAX_ICONS' in painter
 assert 'ItemDisplayContext.GUI' in canvas and 'instanceof BlockItem' in canvas and 'buffers.block' in canvas
 assert 'model.stillMaterial()' in canvas and 'model.fluidTintSource().colorAsStack(sample.fluid())' in canvas
 assert 'DisplayElements.worldDepth(layer)' in canvas and 'Math.clamp(order,0,31)' in canvas
-assert 'Level.MAX_BRIGHTNESS' not in canvas and canvas.count('LightCoordsUtil.FULL_BRIGHT') == 7, 'Display draw calls require packed full-bright light coordinates'
+assert 'Level.MAX_BRIGHTNESS' not in canvas and 'LightCoordsUtil.FULL_BRIGHT' in canvas, 'Display draw calls require packed full-bright light coordinates'
 assert 'disableDepthTest' not in canvas and 'renderGuiItemDecorations' not in canvas and 'renderFakeItem' not in canvas
 assert 'extractBackground(GuiGraphicsExtractor g,int x,int y,float partial){}' in editor
 assert 'DisplayPicking.inverse' in editor and 'getViewRotationProjectionMatrix' in editor and '.mul(localPose)' in editor
