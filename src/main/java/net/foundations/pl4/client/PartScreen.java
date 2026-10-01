@@ -63,7 +63,7 @@ public final class PartScreen extends Screen {
             field("threshold",part.kind==Kind.CLOCK?"Interval (ticks)":"Threshold",Double.toString(part.threshold),x,y,90);
             button(part.comparison,x+98,y,45,b->{String[] ops={">=",">","<","<=","=","!="};send("comparison",next(ops,part.comparison));b.setMessage(Component.literal(next(ops,part.comparison)));});y+=28;
             if(!part.kind.display())button("Data: "+part.mode,left+12,y,132,b->{String v=next(new String[]{"LIST","STACK","SLOT","POS","STORAGE","CHANNEL"},part.mode);send("mode",v);b.setMessage(Component.literal("Data: "+v));});
-            else viewToggle=button("View: "+part.displayMode,left+12,y,132,b->{var mode=part.displayMode==net.foundations.pl4.core.DisplayElements.Mode.AUTO_LIST?"CUSTOM":"AUTO_LIST";PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"mode",new UUID(0,0),mode));b.setMessage(Component.literal("View: "+mode));});
+            else viewToggle=button("View: "+part.displayMode,left+12,y,132,b->{var mode=part.displayMode==net.foundations.pl4.core.DisplayElements.Mode.AUTO_LIST?"CUSTOM":"AUTO_LIST";net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"mode",new UUID(0,0),mode));b.setMessage(Component.literal("View: "+mode));});
             button("Sort: "+(part.descending?"High first":"Low first"),left+150,y,132,b->{send("descending",Boolean.toString(!part.descending));b.setMessage(Component.literal("Sort: "+(!part.descending?"High first":"Low first")));});
             y+=25;button(part.whitelist?"Allow filter":"Exclude filter",left+12,y,132,b->{send("whitelist",Boolean.toString(!part.whitelist));b.setMessage(Component.literal(!part.whitelist?"Allow filter":"Exclude filter"));});
             y+=25;
@@ -101,7 +101,7 @@ public final class PartScreen extends Screen {
     }));}
     private void field(String key,String label,String value,int x,int y,int width){EditBox box=new EditBox(font,x,y,width,20,Component.literal(label));box.setMaxLength(256);box.setValue(value);box.setEditable(editable);box.setTooltip(Tooltip.create(Component.literal(label)));fields.put(key,box);addRenderableWidget(box);contentWidgets.put(box,y);}
     private Button button(String title,int x,int y,int width,Button.OnPress action){Button b=Button.builder(Component.literal(title),action).bounds(x,y,width,20).build();if(tab==1&&!Set.of("Data","Settings","Layout","Edit screen","Done").contains(title))b.active=editable;addRenderableWidget(b);if(y>=top+52&&y!=top+h-27)contentWidgets.put(b,y);return b;}
-    private void send(String field,String value){if(editable)PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,field,value));}
+    private void send(String field,String value){if(editable)net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,field,value));}
     @Override public void tick(){
         if(minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host))return;
         Part live=host.parts.get(clickedSlot);if(live==null||!live.identity.equals(clickedIdentity))return;
@@ -144,7 +144,7 @@ public final class PartScreen extends Screen {
         // Native Screen.render invokes our background/content hook once, then widgets.
         super.extractRenderState(g,mx,my,partial);
         // Row tooltips belong above the panel, labels and widgets, never in the blur pass.
-        if(hoveredRowTooltip!=null)g.extractTooltip(font,hoveredRowTooltip,mx,my);
+        if(hoveredRowTooltip!=null)g.setTooltipForNextFrame(font,hoveredRowTooltip,mx,my);
     }
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){if(tab==0){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);return true;}contentScroll-=((int)Math.signum(dy))*25;layoutContent();return true;}
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==0&&tab==1&&contentHeight()>settingsViewport()&&x>=left+w-10&&x<left+w&&y>=top+52&&y<top+52+settingsViewport()){

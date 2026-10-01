@@ -39,7 +39,7 @@ public final class PLGameTests {
     public static void hammerAutomationCannotExtractInput(GameTestHelper h){
         BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getLevel().getBlockEntity(h.absolutePos(p));
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND));
-        var capability=h.getLevel().getCapability(Capabilities.ItemHandler.BLOCK,h.absolutePos(p),Direction.UP);
+        var capability=net.foundations.pl4.compat.TransferAdapters.items(h.getLevel(),h.absolutePos(p),Direction.UP);
         h.assertTrue(capability!=null,"Item capability must exist");
         h.assertTrue(capability.extractItem(0,1,false).isEmpty(),"Automation must not extract hammer input");
         h.assertTrue(capability.insertItem(1,new ItemStack(Items.DIAMOND),false).getCount()==1,"Automation must not insert output");h.succeed();
@@ -97,7 +97,7 @@ public final class PLGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void upstreamCraftingRecipesLoad(GameTestHelper h){
         String[] ids={"plguide","datacable","redstonecable","inforeader","inventoryreader","fluidreader","energyreader","networkreader","hammer","node","array","entitynode","transfernode","displayscreen","minidisplay","largedisplayscreen","holographicdisplay","advancedholographicdisplay","dataemitter","datareceiver","redstoneemitter","redstonereceiver","redstonenode","redstonesignaller","clock","operator","transceiver","entitytransceiver","wirelessstorage"};
-        for(String id:ids)h.assertTrue(h.getLevel().getServer().getRecipeManager().byKey(FoundationsPL4.id(id)).isPresent(),"Missing original recipe: "+id);h.succeed();
+        for(String id:ids)h.assertTrue(h.getLevel().getServer().getRecipeManager().byKey(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.RECIPE,FoundationsPL4.id(id))).isPresent(),"Missing original recipe: "+id);h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void wirelessOwnerLinkCarriesData(GameTestHelper h){
@@ -132,7 +132,7 @@ public final class PLGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void internalForgingRecipesLoadAndMatchTags(GameTestHelper h){
         var type=net.foundations.pl4.core.CoreRecipes.HAMMER.get();
-        h.assertTrue(h.getLevel().getServer().getRecipeManager().getAllRecipesFor(type).size()==6,"Six bundled forging recipes must load");
+        h.assertTrue(h.getLevel().getServer().getRecipeManager().getRecipes().stream().filter(r->r.value().getType()==type).count()==6,"Six bundled forging recipes must load");
         Item[] inputs={FoundationsPL4.item("sapphire"),FoundationsPL4.ORE.get().asItem(),Blocks.STONE.asItem(),Items.DIAMOND,Items.REDSTONE,Items.ENDER_PEARL};
         String[] outputs={"sapphiredust","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate"};int[] counts={1,2,4,4,4,4};
         for(int i=0;i<inputs.length;i++){

@@ -14,16 +14,14 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
 
 public final class HostBlock extends BaseEntityBlock {
-    public static final MapCodec<HostBlock> CODEC=simpleCodec(HostBlock::new);
     public HostBlock(Properties p) { super(p); }
-    @Override protected MapCodec<? extends BaseEntityBlock> codec(){return CODEC;}
     @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.INVISIBLE;}
     @Override public BlockEntity newBlockEntity(BlockPos p,BlockState s){return new HostEntity(p,s);}
     @Override protected VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){
         return l.getBlockEntity(p) instanceof HostEntity h ? h.outline() : PartShapes.CENTRE;
     }
     @Override protected VoxelShape getCollisionShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c) { return getShape(s,l,p,c); }
-    @Override protected VoxelShape getOcclusionShape(BlockState s,BlockGetter l,BlockPos p) { return Shapes.empty(); }
+    @Override protected VoxelShape getOcclusionShape(BlockState s) { return Shapes.empty(); }
     public static VoxelShape shape(Part p) { return PartShapes.part(p); }
     public static boolean canAdd(HostEntity host,Part candidate) {
         if(host.parts.containsKey(candidate.slot()))return false;
@@ -35,23 +33,18 @@ public final class HostBlock extends BaseEntityBlock {
     @Override protected InteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos p,Player player,InteractionHand hand,BlockHitResult hit){
         // Otherwise the default useWithoutItem consumes the click by opening a GUI before PartItem/Operator can run.
         return stack.getItem() instanceof PartItem||stack.getItem() instanceof ToolItem
-            ? InteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : InteractionResult.TRY_WITH_EMPTY_HAND;
+            ? InteractionResult.PASS : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos p,Player player,BlockHitResult hit){
         if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.SUCCESS;}}
         return InteractionResult.PASS;
     }
-    @Override protected void onRemove(BlockState s,Level l,BlockPos p,BlockState next,boolean moving){
-        if(s.getBlock()!=next.getBlock() && l.getBlockEntity(p) instanceof HostEntity h && !l.isClientSide()){
-            for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,l.registryAccess()));
-            NetworkEngine.invalidate(l); l.updateNeighborsAt(p,this);
-        }
-        super.onRemove(s,l,p,next,moving);
-    }
+
     @Override protected boolean isSignalSource(BlockState s){return true;}
     @Override protected int getSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return l.getBlockEntity(p) instanceof HostEntity h?h.output(side):0;}
     @Override protected int getDirectSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return getSignal(s,l,p,side);}
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,LevelReader l,BlockPos p,Player player){
+    @Override public ItemStack getCloneItemStack(LevelReader l,BlockPos p,BlockState s,boolean includeData,Player player){
+        HitResult target=player.pick(5,0,false);
         if(target instanceof BlockHitResult hit && l.getBlockEntity(p) instanceof HostEntity h){Part part=h.hit(hit);if(part!=null)return new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());}return ItemStack.EMPTY;
     }
 }

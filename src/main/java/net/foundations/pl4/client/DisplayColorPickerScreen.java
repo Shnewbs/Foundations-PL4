@@ -23,8 +23,8 @@ final class DisplayColorPickerScreen extends Screen {
         super.extractBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA171C20);g.fill(left,top,left+w,top+26,0xFF2A3B42);g.fill(left,top,left+3,top+h,0xFF62C7D6);
         g.text(font,title,left+10,top+9,0xFFFFFFFF,false);g.text(font,"Click a swatch. The chosen value is written back to the hex field.",left+10,top+34,0xFFB8CDD0,false);
         int i=0;for(var sw:EditorPalette.PRESETS){int col=i%columns(),row=i/columns(),x=gridX()+col*(cell()+gap()),y=gridY()+row*(cell()+gap());boolean hover=mx>=x&&mx<x+cell()&&my>=y&&my<y+cell();int rgb=sw.rgb();
-            g.fill(x,y,x+cell(),y+cell(),0xFF000000|rgb);g.renderOutline(x-1,y-1,cell()+2,cell()+2,(rgb==selected?0xFFFFFFFF:(hover?0xFF62C7D6:0xFF48575D)));i++;}
-        int px=left+w-128,py=top+56;g.fill(px,py,px+108,py+76,0xFF20272B);g.fill(px+10,py+10,px+98,py+46,0xFF000000|selected);g.renderOutline(px+9,py+9,90,38,0xFFBFD7DA);g.text(font,"#"+EditorPalette.hex(selected),px+18,py+56,0xFFE8F3F4,false);
+            g.fill(x,y,x+cell(),y+cell(),0xFF000000|rgb);g.outline(x-1,y-1,cell()+2,cell()+2,(rgb==selected?0xFFFFFFFF:(hover?0xFF62C7D6:0xFF48575D)));i++;}
+        int px=left+w-128,py=top+56;g.fill(px,py,px+108,py+76,0xFF20272B);g.fill(px+10,py+10,px+98,py+46,0xFF000000|selected);g.outline(px+9,py+9,90,38,0xFFBFD7DA);g.text(font,"#"+EditorPalette.hex(selected),px+18,py+56,0xFFE8F3F4,false);
         g.text(font,"Right-click = Back",left+10,top+h-40,0xFF8FA9AD,false);
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();

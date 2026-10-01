@@ -1,4 +1,5 @@
 package net.foundations.pl4.client;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.*;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -29,12 +30,12 @@ public final class DisplayEditorScreen extends Screen {
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
     public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
+    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().gui.screen();if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
         if(p.layoutRevision>=part.layoutRevision)part=p;
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError").orElse("");}
         if(packet.tag().contains("previewReader")){
-            String id=packet.tag().getString("previewReader").orElse("");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraft.nbt.Tag.TAG_COMPOUND);
+            String id=packet.tag().getString("previewReader").orElse("");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows").orElseGet(net.minecraft.nbt.ListTag::new);
             for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i).orElseGet(CompoundTag::new),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
         }
         selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)&&e.spec().page()==part.displayPage));selected=selectedIds.stream().findFirst().orElse(null);
@@ -102,14 +103,14 @@ public final class DisplayEditorScreen extends Screen {
     }
     private int hudKey(GuiGraphicsExtractor g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.text(font,key,x+5,y+2,color,false);return x+w;}
     DisplayElements.Spec selectedElement(){return selected==null?null:part.elements.stream().filter(e->e.id().equals(selected)&&e.spec().page()==part.displayPage).map(Part.Element::spec).findFirst().orElse(null);}
-    void inspect(String reader){if(!reader.isEmpty()&&!inspected.containsKey(reader))PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"preview_reader",reader));}
+    void inspect(String reader){if(!reader.isEmpty()&&!inspected.containsKey(reader))net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"preview_reader",reader));}
     List<Part.Row> source(String reader){return reader.isBlank()?part.rows:inspected.getOrDefault(reader,part.sourceRows.getOrDefault(reader,List.of()));}
     void commit(String action,DisplayElements.Spec spec,String value,long revision){
         if(!editable||pending)return;
         if(action.equals("page_copy")||action.equals("page_clear")||action.equals("add")||action.equals("update")||action.equals("delete")||action.equals("forward")||action.equals("backward")||action.equals("clear"))pushUndo();
         UUID id=spec==null?(selected==null?new UUID(0,0):selected):spec.id();
         if(spec!=null)value=ElementJson.encode(spec);else if(action.equals("delete")&&!selection().isEmpty())value=String.join(",",selection().stream().map(e->e.id().toString()).toList());pending=true;waitTicks=0;message="Saving...";
-        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
+        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,action,id,value));
     }
     private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
     int selectionCount(){return (int)part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).count();}
@@ -121,7 +122,7 @@ public final class DisplayEditorScreen extends Screen {
         var preview=LayoutTransactions.applyArrange(before,part.layoutRevision,action,ids,spaceW(),spaceH());
         if(!preview.accepted()){message=preview.message();return;}
         pushUndo();pending=true;waitTicks=0;message="Saving...";
-        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
     void pagesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayPagesScreen(this));}
     int pageElementCount(int page){return (int)part.elements.stream().filter(e->e.spec().page()==page).count();}
@@ -150,7 +151,7 @@ public final class DisplayEditorScreen extends Screen {
         var result=LayoutTransactions.applyLayers(before,part.layoutRevision,action,ids);
         if(!result.accepted()){message=result.message();return;}
         pushUndo();pending=true;waitTicks=0;message="Saving...";
-        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
     private void pushUndo(){undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();redoStack.clear();}
     private void undo(){
@@ -168,7 +169,7 @@ public final class DisplayEditorScreen extends Screen {
     /** Restores a whole-layout snapshot for undo/redo; bypasses commit()'s own history tracking. */
     private void commitReplace(List<DisplayElements.Spec> elements){
         pending=true;waitTicks=0;message="Saving...";
-        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
+        net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
     }
     void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.gui.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
@@ -191,7 +192,7 @@ public final class DisplayEditorScreen extends Screen {
             if(!result.accepted()){message=result.message();return;}
             pushUndo();pending=true;waitTicks=0;message="Saving...";
             selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=copies.getLast().id();
-            PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
+            net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
         }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
@@ -200,7 +201,7 @@ public final class DisplayEditorScreen extends Screen {
         var anchor=host.parts.get(clickedSlot);if(anchor==null||!anchor.identity.equals(clickedIdentity)){onClose();return;}
         BlockPos root=anchor.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(anchor),-anchor.canvasColumn).relative(DisplayNetworks.up(anchor),anchor.canvasRow):pos;
         if(minecraft.level.getBlockEntity(root) instanceof HostEntity h){Part live=h.parts.get(clickedSlot);if(live!=null&&live.layoutRevision>=part.layoutRevision)part=live;}
-        if(pending&&++waitTicks==60){pending=false;message="No acknowledgement; refresh requested. Review before retrying.";PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"refresh",""));}
+        if(pending&&++waitTicks==60){pending=false;message="No acknowledgement; refresh requested. Review before retrying.";net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,"refresh",""));}
     }
     private static int toolAt(DisplayPicking.Point p){return EditorChrome.toolAt(p.x(),p.y(),TOOLS.length);}
     @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float partial){
@@ -252,7 +253,7 @@ public final class DisplayEditorScreen extends Screen {
                 var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);var check=LayoutTransactions.applyMove(before,revision,ids,dx,dy,spaceW(),spaceH());
                 if(!check.accepted()){message=check.message();return true;}
                 pushUndo();pending=true;waitTicks=0;message="Saving...";
-                PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,"move_selection",new UUID(0,0),dx+";"+dy+";"+String.join(",",ids.stream().map(UUID::toString).toList())));
+                net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,revision,"move_selection",new UUID(0,0),dx+";"+dy+";"+String.join(",",ids.stream().map(UUID::toString).toList())));
             }else if(changed)commit("update",result,"",revision);return true;
         }return super.mouseReleased(event);
     }

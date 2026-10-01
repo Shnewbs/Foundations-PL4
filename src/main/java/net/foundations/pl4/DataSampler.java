@@ -100,7 +100,7 @@ public final class DataSampler {
         put(rows,"redstone","Redstone",l.getBestNeighborSignal(pos),15,"");
         put(rows,"light","Block light",l.getBrightness(LightLayer.BLOCK,pos),15,"");put(rows,"sky_light","Sky light",l.getBrightness(LightLayer.SKY,pos),15,"");
         put(rows,"rain","Raining",l.isRaining()?1:0,1,"");put(rows,"thunder","Thundering",l.isThundering()?1:0,1,"");
-        put(rows,"day_time","Day time",l.getDayTime()%24000,24000,"ticks");put(rows,"hardness","Hardness",state.getDestroySpeed(l,pos),0,"");
+        put(rows,"day_time","Day time",l.getDefaultClockTime()%24000,24000,"ticks");put(rows,"hardness","Hardness",state.getDestroySpeed(l,pos),0,"");
         if(state.getBlock() instanceof CropBlock crop)put(rows,"crop_age","Crop growth",crop.getAge(state),crop.getMaxAge(),"");
         for(var property:state.getProperties())if(state.getValue(property) instanceof Number number)put(rows,"state."+property.getName(),property.getName(),number.doubleValue(),0,"");
         if(l.getBlockEntity(pos) instanceof net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity furnace){

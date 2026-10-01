@@ -12,12 +12,13 @@ import net.foundations.pl4.core.HammerMotion;
 public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
     private static final Identifier TEXTURE=FoundationsPL4.id("textures/gui/hammer.png");
     public HammerScreen(HammerMenu menu,Inventory inventory,Component title){
-        super(menu,inventory,title);imageWidth=176;imageHeight=143;titleLabelY=6;
+        super(menu,inventory,title,176,143);titleLabelY=6;
     }
-    @Override protected void extractBackground(GuiGraphicsExtractor g,float partial,int mouseX,int mouseY){
-        g.blit(TEXTURE,leftPos,topPos,0,0,imageWidth,imageHeight);
+    @Override public void extractContents(GuiGraphicsExtractor g,int mouseX,int mouseY,float partial){
+        g.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED,TEXTURE,leftPos,topPos,0,0,imageWidth,imageHeight,256,256);
         int pixels=HammerMotion.progressPixels(menu.progress(),menu.duration());
-        if(pixels>0)g.blit(TEXTURE,leftPos+76,topPos+24,176,0,pixels,16);
+        if(pixels>0)g.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED,TEXTURE,leftPos+76,topPos+24,176,0,pixels,16,256,256);
+        super.extractContents(g,mouseX,mouseY,partial);
     }
     @Override protected void extractLabels(GuiGraphicsExtractor g,int mouseX,int mouseY){
         g.text(font,title,(imageWidth-font.width(title))/2,6,0x404040,false);
@@ -30,6 +31,6 @@ public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
         super.extractRenderState(g,mouseX,mouseY,partial);
         extractTooltip(g,mouseX,mouseY);
         if(mouseX>=leftPos+76&&mouseX<leftPos+100&&mouseY>=topPos+24&&mouseY<topPos+40)
-            g.extractTooltip(font,Component.literal(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);
+            g.setTooltipForNextFrame(font,Component.literal(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);
     }
 }

@@ -45,6 +45,16 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
     };
     public HammerEntity(BlockPos p,BlockState s){super(FoundationsPL4.HAMMER_ENTITY.get(),p,s);}
     public static void capabilities(RegisterCapabilitiesEvent e){e.registerBlockEntity(Capabilities.Item.BLOCK,FoundationsPL4.HAMMER_ENTITY.get(),(be,side)->be.automation);}
+    @Override public void preRemoveSideEffects(BlockPos pos,BlockState next){
+        if(level!=null&&!level.isClientSide()){
+            for(int slot=0;slot<inventory.size();slot++){
+                ItemStack stack=inventory.getStackInSlot(slot);inventory.setStackInSlot(slot,ItemStack.EMPTY);
+                if(!stack.isEmpty())net.minecraft.world.level.block.Block.popResource(level,pos,stack);
+            }
+            HammerStructure.removeOwnedSpaces(level,pos);
+        }
+        super.preRemoveSideEffects(pos,next);
+    }
     public void inventoryChanged(){setChanged();visualDirty=true;}
     public boolean validIngredient(ItemStack stack){
         return level instanceof net.minecraft.server.level.ServerLevel server&&!stack.isEmpty()&&server.getServer().getRecipeManager().getRecipes().stream().anyMatch(r->r.value() instanceof ForgingRecipe forging&&forging.ingredient().test(stack));

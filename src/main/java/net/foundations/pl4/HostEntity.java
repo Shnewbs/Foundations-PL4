@@ -55,6 +55,13 @@ public final class HostEntity extends BlockEntity {
     }
     public HostEntity(BlockPos p,BlockState s){super(FoundationsPL4.HOST_ENTITY.get(),p,s);}
     @Override public void onLoad(){super.onLoad();if(level!=null){if(!level.isClientSide())NetworkEngine.add(this);else CableGeometry.refresh(this);}}
+    @Override public void preRemoveSideEffects(BlockPos pos,BlockState next){
+        if(level!=null&&!level.isClientSide()){
+            for(Part part:parts.values())net.minecraft.world.level.block.Block.popResource(level,pos,PartItem.stack(part,level.registryAccess()));
+            parts.clear();NetworkEngine.invalidate(level);level.updateNeighborsAt(pos,getBlockState().getBlock());
+        }
+        super.preRemoveSideEffects(pos,next);
+    }
     @Override public void setRemoved(){if(level!=null&&!level.isClientSide())NetworkEngine.remove(this);super.setRemoved();if(level!=null&&level.isClientSide())CableGeometry.refresh(this);}
     public boolean canEdit(Player p){return p.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)||parts.values().stream().allMatch(a->a.owner==null||a.owner.equals(p.getUUID()));}
     public Part hit(BlockHitResult h){

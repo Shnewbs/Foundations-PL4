@@ -189,7 +189,7 @@ public final class NetworkEngine {
             if(p.kind==Kind.CLOCK){
                 p.ticks+=PLConfig.TICK_RATE.get(); long period=Math.max(PLConfig.TICK_RATE.get()*2,Math.min(24000,(long)p.threshold));
                 setSignal(r,p.ticks%period<PLConfig.TICK_RATE.get()?15:0);
-                p.rows.clear();p.rows.add(new Part.Row("time","World time",r.level().getDayTime()%24000,24000,"ticks"));p.status="Clock interval "+period+" ticks";
+                p.rows.clear();p.rows.add(new Part.Row("time","World time",r.level().getDefaultClockTime()%24000,24000,"ticks"));p.status="Clock interval "+period+" ticks";
             }
             if(p.kind==Kind.NETWORK_READER)p.status="Network: "+hosts+" hosts / "+refs.size()+" components";
         }

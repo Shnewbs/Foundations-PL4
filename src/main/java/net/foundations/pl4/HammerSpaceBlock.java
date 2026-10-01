@@ -27,7 +27,7 @@ public final class HammerSpaceBlock extends Block {
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
         return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.SUCCESS:InteractionResult.PASS;
     }
-    @Override public boolean onDestroyedByPlayer(BlockState s,Level l,BlockPos p,Player player,boolean willHarvest,FluidState fluid){
+    @Override public boolean onDestroyedByPlayer(BlockState s,Level l,BlockPos p,Player player,ItemStack toolStack,boolean willHarvest,FluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));
         if(!l.isClientSide()&&l.getBlockState(base).is(FoundationsPL4.HAMMER.get())) {
             if(player!=null&&!l.mayInteract(player,base))return false;
@@ -35,12 +35,10 @@ public final class HammerSpaceBlock extends Block {
         }
         return l.isClientSide()?l.setBlock(p,fluid.createLegacyBlock(),11):l.removeBlock(p,false)||l.getBlockState(p).isAir();
     }
-    @Override protected void onRemove(BlockState s,Level l,BlockPos p,BlockState next,boolean moving){
-        super.onRemove(s,l,p,next,moving);
-        if(!s.is(next.getBlock())&&!l.isClientSide()) {
-            BlockPos base=p.below(s.getValue(OFFSET));
-            if(l.getBlockState(base).is(FoundationsPL4.HAMMER.get()))l.destroyBlock(base,true);
-        }
+    @Override protected void affectNeighborsAfterRemoval(BlockState s,net.minecraft.server.level.ServerLevel l,BlockPos p,boolean moving){
+        super.affectNeighborsAfterRemoval(s,l,p,moving);
+        BlockPos base=p.below(s.getValue(OFFSET));
+        if(l.getBlockState(base).is(FoundationsPL4.HAMMER.get()))l.destroyBlock(base,true);
     }
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,LevelReader l,BlockPos p,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
+    @Override public ItemStack getCloneItemStack(LevelReader l,BlockPos p,BlockState s,boolean includeData,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
 }

@@ -22,7 +22,7 @@ final class GuideButton extends Button {
         else if(type==2){g.fill(x,y+2,x+16,y+13,c);g.fill(x+2,y+4,x+14,y+11,0xFF27343B);g.fill(x+5,y+14,x+11,y+15,c);g.fill(x+3,y+6,x+10,y+7,c);}
         else{g.fill(x+3,y+2,x+13,y+4,c);g.fill(x+3,y+2,x+5,y+14,c);g.fill(x+3,y+12,x+13,y+14,c);g.fill(x+7,y+6,x+12,y+7,c);g.fill(x+7,y+9,x+12,y+10,c);}
     }
-    @Override protected void extractWidgetRenderState(GuiGraphicsExtractor g,int mouseX,int mouseY,float partial){
+    @Override protected void extractContents(GuiGraphicsExtractor g,int mouseX,int mouseY,float partial){
         int x=getX(),y=getY(),w=getWidth(),h=getHeight();boolean hot=isHoveredOrFocused();
         if(leftAlign&&glyph<0&&icon.isEmpty()){
             // Chapter index on parchment, rather than a wall of identical dark machine buttons.
