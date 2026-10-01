@@ -205,11 +205,11 @@ public final class GuideScreen extends Screen {
     }
     @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();boolean handled=drag!=0;drag=0;return super.mouseReleased(event)||handled;}
     @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),modifiers=event.modifiers();
-        if(key==256){onClose();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_ESCAPE){onClose();return true;}
         if(search==null||!search.isFocused()){
-            if(key==268){query="";savedOnly=false;listScroll=0;select(GuideNavigation.byId(book,"start"));return true;}
-            if(key==266){bodyScroll=GuideLayout.clampScroll(bodyScroll-layout.detail().height(),bodyHeight,layout.detail().height());return true;}
-            if(key==267){bodyScroll=GuideLayout.clampScroll(bodyScroll+layout.detail().height(),bodyHeight,layout.detail().height());return true;}
+            if(key==com.mojang.blaze3d.platform.InputConstants.KEY_HOME){query="";savedOnly=false;listScroll=0;select(GuideNavigation.byId(book,"start"));return true;}
+            if(key==com.mojang.blaze3d.platform.InputConstants.KEY_PAGEUP){bodyScroll=GuideLayout.clampScroll(bodyScroll-layout.detail().height(),bodyHeight,layout.detail().height());return true;}
+            if(key==com.mojang.blaze3d.platform.InputConstants.KEY_PAGEDOWN){bodyScroll=GuideLayout.clampScroll(bodyScroll+layout.detail().height(),bodyHeight,layout.detail().height());return true;}
         }
         return super.keyPressed(event);
     }

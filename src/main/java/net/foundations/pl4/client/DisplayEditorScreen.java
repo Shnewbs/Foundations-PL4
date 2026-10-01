@@ -259,14 +259,14 @@ public final class DisplayEditorScreen extends Screen {
         }return super.mouseReleased(event);
     }
     @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),mods=event.modifiers();
-        if(key==256){onClose();return true;}if(key==69){properties(false);return true;}if(key==261){commit("delete",null,"",part.layoutRevision);return true;}
-        if(key==67&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){copySelected();return true;}if(key==86&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){pasteSelected();return true;}
-        if(key==68&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){duplicateSelected();return true;}if(key==71){snap=!snap;return true;}
-        if(key==65&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
-        if(key==80){pagesScreen();return true;}
-        if(key==76){layersScreen();return true;}
-        if(key==65&&!net.minecraft.client.Minecraft.getInstance().hasControlDown()){arrangementScreen();return true;}
-        if(key==90&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){if(net.minecraft.client.Minecraft.getInstance().hasShiftDown())redo();else undo();return true;}if(key==89&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){redo();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_ESCAPE){onClose();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_E){properties(false);return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_DELETE){commit("delete",null,"",part.layoutRevision);return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_C&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){copySelected();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_V&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){pasteSelected();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_D&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){duplicateSelected();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_G){snap=!snap;return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_A&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){selectedIds.clear();selectionOnPage().forEach(e->selectedIds.add(e.id()));selected=selectedIds.stream().findFirst().orElse(null);return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_P){pagesScreen();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_L){layersScreen();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_A&&!net.minecraft.client.Minecraft.getInstance().hasControlDown()){arrangementScreen();return true;}
+        if(key==com.mojang.blaze3d.platform.InputConstants.KEY_Z&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){if(net.minecraft.client.Minecraft.getInstance().hasShiftDown())redo();else undo();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_Y&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){redo();return true;}
         return super.keyPressed(event);
     }
     @Override public void removed(){inverse=null;boxStart=null;boxEnd=null;dragSpecs=List.of();draftSpecs=List.of();draft=null;start=null;dragStart=null;resizeCorner=EditorChrome.Corner.NONE;hoveredCorner=EditorChrome.Corner.NONE;hoveredTool=-1;super.removed();}
