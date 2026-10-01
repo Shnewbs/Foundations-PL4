@@ -35,6 +35,6 @@ final class DisplayPagesScreen extends Screen {
     }
     @Override public void tick(){parent.tick();if(revision!=parent.part.layoutRevision||pending!=parent.layoutPending())rebuildWidgets();}
     @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),mods=event.modifiers();if(key==com.mojang.blaze3d.platform.InputConstants.KEY_ESCAPE||key==com.mojang.blaze3d.platform.InputConstants.KEY_P){onClose();return true;}return super.keyPressed(event);}
-    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==1){onClose();return true;}return super.mouseClicked(event,doubleClick);}
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}return super.mouseClicked(event,doubleClick);}
     @Override public void onClose(){minecraft.gui.setScreen(parent);}
 }

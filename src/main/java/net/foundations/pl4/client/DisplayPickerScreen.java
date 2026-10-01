@@ -31,7 +31,7 @@ final class DisplayPickerScreen extends Screen {
         }
         if(choices.isEmpty())g.text(font,readers?"No connected readers":"No matching rows; check reader data mode",left+12,top+64,0xFFE1B1A5,false);
     }
-    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==1){onClose();return true;}if(button==0&&x>=left+8&&x<left+w-8&&y>=top+58&&y<top+h-36){int i=scroll+(int)(y-top-58)/22;if(i-scroll<Math.max(1,(h-94)/22)&&i<choices.size()){choose(choices.get(i).key);return true;}}return super.mouseClicked(event,doubleClick);}
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&x>=left+8&&x<left+w-8&&y>=top+58&&y<top+h-36){int i=scroll+(int)(y-top-58)/22;if(i-scroll<Math.max(1,(h-94)/22)&&i<choices.size()){choose(choices.get(i).key);return true;}}return super.mouseClicked(event,doubleClick);}
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){scroll=Math.max(0,scroll-(int)Math.signum(dy)*3);refresh();return true;}
     @Override public void onClose(){minecraft.gui.setScreen(parent);}
 }

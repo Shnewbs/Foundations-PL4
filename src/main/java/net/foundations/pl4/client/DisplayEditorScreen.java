@@ -212,9 +212,9 @@ public final class DisplayEditorScreen extends Screen {
         if(!message.isBlank()){int w=Math.min(width-20,font.width(message)+12);g.fill(6,height-20,6+w,height-4,0xCC080808);g.text(font,font.plainSubstrByWidth(message,w-8),10,height-16,0xFFECECEC,false);}
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();
-        if(button==1){onClose();return true;}
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}
         if(super.mouseClicked(event,doubleClick))return true;
-        if(button!=0||pending)return super.mouseClicked(event,doubleClick);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
+        if(button!=com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT||pending)return super.mouseClicked(event,doubleClick);var hit=point(x,y);if(hit.isEmpty()){message="Aim at the visible screen; move closer if necessary.";return false;}
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
         if(p.x()<0||p.y()<0||p.x()>=spaceW()||p.y()>=spaceH())return false;
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
@@ -232,8 +232,8 @@ public final class DisplayEditorScreen extends Screen {
         return true;
     }
     @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){double x=event.x(),y=event.y();int button=event.button();
-        if(button==0&&boxStart!=null){point(x,y).ifPresent(p->boxEnd=p);return true;}
-        if(button==0&&start!=null&&dragStart!=null){point(x,y).ifPresent(p->{
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&boxStart!=null){point(x,y).ifPresent(p->boxEnd=p);return true;}
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&start!=null&&dragStart!=null){point(x,y).ifPresent(p->{
             double sx=p.x()-dragStart.x(),sy=p.y()-dragStart.y();
             if(resizeCorner==EditorChrome.Corner.NONE){
                 int step=snap?4:1,tx=(int)Math.round(sx/step)*step,ty=(int)Math.round(sy/step)*step;
@@ -242,11 +242,11 @@ public final class DisplayEditorScreen extends Screen {
         });return true;}return super.mouseDragged(event,dx,dy);
     }
     @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();
-        if(button==0&&boxStart!=null){
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&boxStart!=null){
             point(x,y).ifPresent(p->boxEnd=p);var box=EditorSelection.box(boxStart.x(),boxStart.y(),boxEnd.x(),boxEnd.y(),spaceW(),spaceH());
             if(!additiveBox)selectedIds.clear();selectedIds.addAll(EditorSelection.inBox(snapshot(),part.displayPage,box));selected=selectedIds.stream().findFirst().orElse(null);boxStart=null;boxEnd=null;message=selectionCount()+" element(s) selected.";return true;
         }
-        if(button==0&&start!=null){
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&start!=null){
             var result=draft;var original=start;boolean changed=result!=null&&!result.equals(original);boolean move=resizeCorner==EditorChrome.Corner.NONE;var ids=dragSpecs.stream().map(DisplayElements.Spec::id).toList();long revision=dragRevision;
             start=null;draft=null;dragStart=null;dragSpecs=List.of();draftSpecs=List.of();resizeCorner=EditorChrome.Corner.NONE;
             if(changed&&move){

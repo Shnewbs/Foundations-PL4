@@ -8,6 +8,10 @@ Pinned development target: Minecraft 26.3, NeoForge 26.3.0.23-beta, ModDevGradle
 
 Goal: a common 26.x artifact tested on 26.1, 26.2 and 26.3; 26.4 follows when available. Metadata remains restricted to 26.3 while the native port is being compiled. Broader compatibility must be demonstrated through actual startup, linkage, server and client tests, not inferred by widening version ranges.
 
-Port CI is validation-only and cannot publish a release. Current changes establish the toolchain and compile diagnostics; native migration is in progress. No 26.x runtime is released yet.
+Port CI is validation-only and cannot publish a release. The native source compiles and packages successfully. The baseline regression suite has passed on 26.3; an additional ore-drop fixture checks the migrated loot format. Runtime and source JARs are retained in CI artifacts. No public 26.x release is published yet.
+
+Migrated systems include registry IDs, codec persistence, transactional item/fluid/energy transfers, hammer inventory and menus, recipe templates and data, world-generation features, loot modifiers, item model definitions, GUI extraction/input, block-entity render-state submission and native GameTest registration.
+
+Acceptance still outstanding: an in-game client visual/control playthrough, installed external energy providers on 26.3, and explicit 26.1/26.2 compatibility checks. A successful server suite does not establish those claims.
 
 Source: https://github.com/NeoForgeMDKs/MDK-26.3-ModDevGradle

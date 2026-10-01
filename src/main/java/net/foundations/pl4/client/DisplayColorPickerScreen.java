@@ -28,7 +28,7 @@ final class DisplayColorPickerScreen extends Screen {
         g.text(font,"Right-click = Back",left+10,top+h-40,0xFF8FA9AD,false);
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();
-        if(button==1){onClose();return true;}if(button==0){int i=0;for(var sw:EditorPalette.PRESETS){int col=i%columns(),row=i/columns(),sx=gridX()+col*(cell()+gap()),sy=gridY()+row*(cell()+gap());if(x>=sx&&x<sx+cell()&&y>=sy&&y<sy+cell()){selected=sw.rgb();return true;}i++;}}return super.mouseClicked(event,doubleClick);
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT){int i=0;for(var sw:EditorPalette.PRESETS){int col=i%columns(),row=i/columns(),sx=gridX()+col*(cell()+gap()),sy=gridY()+row*(cell()+gap());if(x>=sx&&x<sx+cell()&&y>=sy&&y<sy+cell()){selected=sw.rgb();return true;}i++;}}return super.mouseClicked(event,doubleClick);
     }
     @Override public void tick(){parent.parent.tick();}
     @Override public void onClose(){minecraft.gui.setScreen(parent);}

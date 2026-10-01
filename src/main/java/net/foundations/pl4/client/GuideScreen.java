@@ -195,11 +195,11 @@ public final class GuideScreen extends Screen {
         return super.mouseScrolled(x,y,dx,dy);
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();
-        if(button==0&&((listVisible()&&beginDrag(layout.list(),filtered.size()*25,listScroll,x,y,1))||(detailVisible()&&beginDrag(layout.detail(),bodyHeight,bodyScroll,x,y,2))))return true;
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&((listVisible()&&beginDrag(layout.list(),filtered.size()*25,listScroll,x,y,1))||(detailVisible()&&beginDrag(layout.detail(),bodyHeight,bodyScroll,x,y,2))))return true;
         return super.mouseClicked(event,doubleClick);
     }
     @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){double x=event.x(),y=event.y();int button=event.button();
-        if(button==0&&drag!=0){var rect=drag==1?layout.list():layout.detail();int value=GuideLayout.scrollFromThumb(y-rect.y()-dragOffset,rect.height(),drag==1?filtered.size()*25:bodyHeight,rect.height());
+        if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT&&drag!=0){var rect=drag==1?layout.list():layout.detail();int value=GuideLayout.scrollFromThumb(y-rect.y()-dragOffset,rect.height(),drag==1?filtered.size()*25:bodyHeight,rect.height());
             if(drag==1){listScroll=value;refreshList();}else bodyScroll=value;return true;}
         return super.mouseDragged(event,dx,dy);
     }

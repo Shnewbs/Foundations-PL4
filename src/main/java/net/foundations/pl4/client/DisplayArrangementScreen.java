@@ -31,6 +31,6 @@ final class DisplayArrangementScreen extends Screen {
         g.text(font,font.plainSubstrByWidth("One: canvas edges. Multiple: selection bounds.",w-20),left+10,top+41,0xFFB8C4CC,false);
     }
     @Override public void tick(){parent.tick();}
-    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==1){onClose();return true;}return super.mouseClicked(event,doubleClick);}
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}return super.mouseClicked(event,doubleClick);}
     @Override public void onClose(){minecraft.gui.setScreen(parent);}
 }
