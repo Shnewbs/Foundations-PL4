@@ -7,7 +7,7 @@ original=planner.read_text()
 mutants={
  'R6-style shared display/ordinary slots':('kind.display()?DISPLAY_BASE+face:face','kind.display()?face:face'),
  'VISUAL port accidentally unions machine networks':('exports.add(new Export(reader.id,cable.id));','edges.add(new Edge(reader.id,cable.id));exports.add(new Export(reader.id,cable.id));'),
- 'External reader input silently removed':('cable=backCable(hosts,h,device);','cable=null;'),
+ 'Free cable lead spans an unplaced endpoint cell':('            // A mounted endpoint', '            else { Host adjacent=hosts.get(device.cell.offset(device.face^1)); if(adjacent!=null&&adjacent.cable()!=null){edges.add(new Edge(adjacent.cable().id,device.id));leads.add(device.id);} }\n            // A mounted endpoint'),
 }
 for label,(before,after) in mutants.items():
  assert before in original,label
