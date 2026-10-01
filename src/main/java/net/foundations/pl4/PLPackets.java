@@ -32,7 +32,7 @@ public final class PLPackets {
     private static final Map<ServerPlayer,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
     static void editLayout(ServerPlayer player,LayoutEdit packet){
         long tick=player.level().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
         if(!(player.level().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
         Part clicked=anchor.parts.get(packet.slot);if(clicked==null||!clicked.identity.equals(packet.identity)||!clicked.kind.display()||!anchor.canEdit(player))return;
         var target=DisplayNetworks.controller(anchor,clicked);HostEntity host=target.host();Part part=target.part();
@@ -88,7 +88,7 @@ public final class PLPackets {
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
     private static void edit(ServerPlayer player,Edit packet){
-        if(packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
+        if(packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
         if(!(player.level().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){

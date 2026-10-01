@@ -73,7 +73,7 @@ public final class R5GameTests {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
         var result=FoundationsPL4.HOST.get().useItemOn(stack,a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
-        h.assertTrue(result==InteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION,"Held parts must not be swallowed by the host GUI");
+        h.assertTrue(result==InteractionResult.PASS,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
         h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }

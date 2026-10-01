@@ -60,7 +60,8 @@ public final class DisplayEditorScreen extends Screen {
         List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
     }
     public void capture(Matrix4f localPose){
-        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix()).mul(RenderSystem.getModelViewMatrix()).mul(localPose);
+        var camera=Minecraft.getInstance().gameRenderer.mainCamera();var eye=camera.position();
+        var matrix=camera.getViewRotationProjectionMatrix(new Matrix4f()).translate((float)(pos.getX()-eye.x),(float)(pos.getY()-eye.y),(float)(pos.getZ()-eye.z)).mul(localPose);
         float[] values=new float[16];matrix.get(values);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
     }

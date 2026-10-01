@@ -32,7 +32,7 @@ public final class PartItem extends Item {
             var point=c.getClickLocation().subtract(net.minecraft.world.phys.Vec3.atLowerCornerOf(pos));
             var direction=net.foundations.pl4.core.DisplayPlacement.extension(clicked.face.ordinal(),clicked.displayOutward,c.getClickedFace().ordinal(),point.x,point.y,point.z);
             if(direction.isEmpty()){
-                if(!l.isClientSide())player.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
+                if(!l.isClientSide())player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."));
                 return InteractionResult.FAIL;
             }
             if(!l.isClientSide()){
@@ -43,7 +43,7 @@ public final class PartItem extends Item {
             face=clicked.face;outward=clicked.displayOutward;pos=pos.relative(Direction.from3DDataValue(direction.getAsInt()));
             if(!l.hasChunkAt(pos)||l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos))return InteractionResult.FAIL;
             if(!DisplayNetworks.canExtendAt(l,pos,clicked,player)){
-                if(!l.isClientSide())player.displayClientMessage(net.minecraft.network.chat.Component.literal("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."),true);
+                if(!l.isClientSide())player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."));
                 return InteractionResult.FAIL;
             }
             host=l.getBlockEntity(pos) instanceof HostEntity h?h:null;

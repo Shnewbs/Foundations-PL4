@@ -140,7 +140,7 @@ public final class EnergyIntegrationGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void communityMessageContainsOnlyRequestedClickableDestinations(GameTestHelper h){
         var message=CommunityLinks.message();List<ClickEvent> clicks=new ArrayList<>();for(var component:message.getSiblings())if(component.getStyle().getClickEvent()!=null)clicks.add(component.getStyle().getClickEvent());
-        h.assertTrue(clicks.size()==2&&clicks.get(0).getAction()==ClickEvent.Action.OPEN_URL&&clicks.get(0).getValue().equals("https://discord.gg/tCTS9xduad")&&clicks.get(1).getValue().equals("https://ko-fi.com/shnewbs"),"Exactly two requested links, no commands or automatic browser opening");
+        h.assertTrue(clicks.size()==2&&clicks.get(0) instanceof ClickEvent.OpenUrl first&&first.uri().toString().equals("https://discord.gg/tCTS9xduad")&&clicks.get(1) instanceof ClickEvent.OpenUrl second&&second.uri().toString().equals("https://ko-fi.com/shnewbs"),"Exactly two requested links, no commands or automatic browser opening");
         h.assertTrue(message.getString().equals("[PL4] Discord · Support on Ko-fi"),"One short chat line");h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)

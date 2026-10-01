@@ -66,7 +66,7 @@ public final class ToolItem extends Item {
                 if(!part.links.contains(link))part.links.add(link);host.changed();player.sendOverlayMessage(Component.literal("Added link ("+part.links.size()+")"));return InteractionResult.CONSUME;
             }
         }
-        return use(level,player,c.getHand()).getResult();
+        return use(level,player,c.getHand());
     }
     @Override public InteractionResult interactLivingEntity(ItemStack stack,Player player,LivingEntity entity,InteractionHand hand){
         if(mode!=Mode.ENTITY_LINK)return InteractionResult.PASS;
