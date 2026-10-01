@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.8
+Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.9
 
 ## Welcome to Foundations PL4
 
@@ -324,6 +324,18 @@ A supported empty battery can report zero. Missing, unloaded, blocked or unsuppo
 ### BOUNDARIES
 
 Transfer Nodes support FE and optional native Mekanism J, GregTech EU and Electrodynamics/Voltaic Joules, with explicit server-controlled conversion. This is not universal energy support: AE2-native grids, IC2-specific power and Create stress/RPM are not added here. Very large telemetry above 2^53 may lose integer precision.
+
+### CREATE KINETICS
+
+Use your existing Energy Reader and choose Energy: CREATE in its Settings. A Node must touch a loaded Create kinetic block entity. Rows show signed RPM, theoretical RPM, network stress/capacity in SU, and overstress. The reader switches to a brass gear-and-gauge model. This is read-only monitoring: it does not consume stress, transmit shafts, drive motors or convert torque to FE. Repeated machines can show the same network stress; those readings are not added into a battery total. Missing or unsupported APIs report unavailable rather than fake zero power.
+
+### AE2 GRID ENERGY
+
+Choose Energy: AE2 on an Energy Reader connected to an AE2 in-world grid-node host. PL4 reads the attached side and reports native AE storage/capacity, average usage/injection in AE/t and powered state. Multiple connected nodes belonging to the same grid are sampled once. A disconnected or hidden side is unsupported. AE is kept separate from FE and other units. The reader uses a purple grid-gauge model. This adapter does not insert or extract AE power; ordinary FE-exposing Energy Acceptors still use the existing FE transfer path.
+
+### OPTIONAL ADAPTER POLICY
+
+Servers can disable Create or AE2 monitoring in energyReader.createKinetics and energyReader.ae2GridEnergy. Both adapters are optional; PL4 starts without either mod. Create 1.21.1 API contracts were reviewed; a supported official Create 26.3 release has not been verified. The 26.3 PL4 jar carries the optional adapter, but this does not establish compatibility with a future Create port. See docs/INTEGRATION_STATUS.md for implemented, unfinished and version-blocked work.
 
 ## Info and Network Readers
 

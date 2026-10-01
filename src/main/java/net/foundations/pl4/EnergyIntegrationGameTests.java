@@ -34,6 +34,15 @@ public final class EnergyIntegrationGameTests {
         return new Fixture(source,sink,TransferEngine.prepare(List.of(source,sink)),new Battery(amount,amount),new Battery(0,capacity));
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void optionalReaderSystemsPersistAndModelsKeepMultipartGeometry(GameTestHelper h){
+        for(String system:List.of("CREATE","AE2")){
+            Part p=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);p.energySystem=system;
+            Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+            h.assertTrue(restored!=null&&restored.energySystem.equals(system),"Optional reader selection survives save/load");
+        }
+        h.assertTrue(FoundationsPL4.KINETIC_READER_MODEL.get().kind==Kind.ENERGY_READER&&FoundationsPL4.AE2_READER_MODEL.get().kind==Kind.ENERGY_READER,"Adapter models preserve Energy Reader behavior and placement");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pushedForgeEnergyIsSidedSimulatedBoundedAndRevoked(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,Direction.WEST);Part p=ref.part();p.transferMode=2;
         var handler=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.Energy.BLOCK,ref.host().getBlockPos(),Direction.WEST);

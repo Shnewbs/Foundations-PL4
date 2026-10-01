@@ -20,6 +20,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity,HostRe
     private static final Direction[] FACES=Direction.values();
     private final DisplayPainter displayPainter=new DisplayPainter();
     private final net.minecraft.world.level.block.state.BlockState[][][] cableStates=new net.minecraft.world.level.block.state.BlockState[3][4][6];
+    private final net.minecraft.world.level.block.state.BlockState[][] kineticStates=new net.minecraft.world.level.block.state.BlockState[2][6],ae2States=new net.minecraft.world.level.block.state.BlockState[2][6];
     private final java.util.EnumMap<Kind,net.minecraft.world.level.block.state.BlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
     private final net.minecraft.world.level.block.state.BlockState[][][] largeStates=new net.minecraft.world.level.block.state.BlockState[2][6][16];
     private final java.util.EnumMap<Kind,net.minecraft.world.level.block.state.BlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
@@ -32,6 +33,10 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity,HostRe
             var states=new net.minecraft.world.level.block.state.BlockState[2][6];
             for(int side=0;side<2;side++)for(Direction face:FACES)states[side][face.ordinal()]=FoundationsPL4.MODELS.get(kind).get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.FRONT_OUTWARD,side==1).setValue(PartModelBlock.HAS_DISPLAY,kind.reader()&&side==1);
             partStates.put(kind,states);
+        }
+        for(int covered=0;covered<2;covered++)for(Direction face:FACES){
+            kineticStates[covered][face.ordinal()]=FoundationsPL4.KINETIC_READER_MODEL.get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.HAS_DISPLAY,covered==1);
+            ae2States[covered][face.ordinal()]=FoundationsPL4.AE2_READER_MODEL.get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.HAS_DISPLAY,covered==1);
         }
         for(String material:materials)for(String depth:new String[]{"1","15","2","3","4","6"}){
             String key=material+"_lead_"+depth;var states=new net.minecraft.world.level.block.state.BlockState[6];
@@ -65,6 +70,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity,HostRe
                     pose.translate(.5,.5,.5);pose.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotationDegrees(yaw)));pose.translate(-.5,-.5,-.5);
                 }
                 var model=partStates.get(part.kind)[part.kind.reader()?(host.readerHasDisplay(part)?1:0):(part.displayOutward?1:0)][part.face.ordinal()];
+                if(part.kind==Kind.ENERGY_READER){if(part.energySystem.equals("CREATE"))model=kineticStates[host.readerHasDisplay(part)?1:0][part.face.ordinal()];else if(part.energySystem.equals("AE2"))model=ae2States[host.readerHasDisplay(part)?1:0][part.face.ordinal()];}
                 buffer.block(model,pose,light,overlay);
                 pose.popPose();
             }

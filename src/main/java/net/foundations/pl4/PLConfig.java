@@ -7,7 +7,7 @@ public final class PLConfig {
     public static final ModConfigSpec.BooleanValue MEKANISM_TRANSFERS, GREGTECH_TRANSFERS, ELECTRODYNAMICS_TRANSFERS, ENERGY_CONVERSION;
     public static final ModConfigSpec.IntValue FE_PER_1000_J, FE_PER_EU, FE_PER_ED_J, CONVERSION_EFFICIENCY;
     public static final ModConfigSpec.IntValue TICK_RATE, MAX_NETWORK, MAX_ROWS, ITEM_RATE, FLUID_RATE, ENERGY_RATE, ENTITY_RANGE;
-    public static final ModConfigSpec.BooleanValue TRANSFERS, WIRELESS, CROSS_DIMENSION, MEKANISM_READS, GREGTECH_READS;
+    public static final ModConfigSpec.BooleanValue TRANSFERS, WIRELESS, CROSS_DIMENSION, MEKANISM_READS, GREGTECH_READS, CREATE_READS, AE2_READS;
     public static final ModConfigSpec.IntValue MAX_ENERGY_CONTAINERS, NETWORK_ITEM_RATE, NETWORK_FLUID_RATE, NETWORK_ENERGY_RATE;
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -41,6 +41,8 @@ public final class PLConfig {
         b.push("energyReader");
         MEKANISM_READS=b.comment("Read exposed Mekanism strict energy handlers in native J. Does not transfer or convert energy.").define("mekanismJoules",true);
         GREGTECH_READS=b.comment("Read exposed GregTech CEu energy info/containers in native EU. No voltage conversion or transfer.").define("gregtechEU",true);
+        CREATE_READS=b.comment("Read Create kinetic RPM and network stress. Never generates torque or converts stress to electrical energy.").define("createKinetics",true);
+        AE2_READS=b.comment("Read AE2 grid energy and average power. Does not withdraw from or inject into a grid.").define("ae2GridEnergy",true);
         MAX_ENERGY_CONTAINERS=b.comment("Reject providers above this count rather than silently reporting a partial total.").defineInRange("maximumContainersPerHandler",1024,1,4096);
         b.pop();
         SPEC = b.build();

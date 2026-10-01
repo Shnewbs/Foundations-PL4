@@ -19,7 +19,7 @@ public final class EnergyReader {
     private static List<Probe> probes;
     private static final Set<String> warned=new HashSet<>(); // At most one entry per built-in provider, not per block.
     private static void warn(String provider,Exception failure){if(warned.add(provider))LoggerFactory.getLogger("FoundationsPL4").warn("Energy reader provider {} unavailable/failed; check API versions and node side. Subsequent identical provider warnings suppressed.",provider,failure);}
-    public static void clear(){probes=null;warned.clear();}
+    public static void clear(){probes=null;warned.clear();OptionalPowerTelemetry.clear();}
     @SuppressWarnings("unchecked")
     private static List<Probe> probes(){
         if(probes!=null)return probes;
@@ -51,6 +51,7 @@ public final class EnergyReader {
         return null;
     }
     public static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> links){
+        if(ref.part().energySystem.equals("CREATE")||ref.part().energySystem.equals("AE2"))return OptionalPowerTelemetry.sample(server,ref,links);
         Part reader=ref.part();Map<Target,List<Direction>> targets=new LinkedHashMap<>();
         for(Part.Link link:links)if(link.entity()==null){var key=new Target(link.dimension(),link.pos());var sides=targets.computeIfAbsent(key,k->new ArrayList<>());if(!sides.contains(link.side()))sides.add(link.side());}
         List<Sample> samples=new ArrayList<>();int unloaded=0,unsupported=0;int[] failures={0};

@@ -52,7 +52,7 @@ public final class PartScreen extends Screen {
             }
             if(part.kind==Kind.ENERGY_READER){
                 String label="Energy: "+part.energySystem;
-                button(label,left+12,y,Math.min(w-24,font.width("Energy: AUTO")+24),b->{String value=next(new String[]{"AUTO","FE","EU","J"},part.energySystem);send("energy_system",value);b.setMessage(Component.literal("Energy: "+value));});y+=28;
+                button(label,left+12,y,Math.min(w-24,font.width("Energy: CREATE")+24),b->{String value=next(new String[]{"AUTO","FE","EU","J","CREATE","AE2"},part.energySystem);send("energy_system",value);b.setMessage(Component.literal("Energy: "+value));});y+=28;
             }
             field("label","Name",part.label,x,y,fw);y+=28;
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
