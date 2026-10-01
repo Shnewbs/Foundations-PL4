@@ -65,6 +65,10 @@ jobs:
           "version=$version" >> $env:GITHUB_OUTPUT
           "tag=$expectedTag" >> $env:GITHUB_OUTPUT
 
+      - name: Offline regression checks
+        if: steps.version.outputs.publish == 'true'
+        run: python tools/run_offline_checks.py
+
       - name: Build and run native GameTests
         if: steps.version.outputs.publish == 'true'
         run: .\gradlew.bat --no-daemon --console=plain clean build runGameTestServer
