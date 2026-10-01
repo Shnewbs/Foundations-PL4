@@ -77,9 +77,11 @@ def main():
     if not project.isdecimal() or int(project) <= 0 or not token:
         raise RuntimeError("Set a numeric CURSEFORGE_PROJECT_ID repository variable and CURSEFORGE_API_TOKEN secret.")
     version, tag, repo = (os.environ[k] for k in ("VERSION", "RELEASE_TAG", "GITHUB_REPOSITORY"))
-    if not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != "v" + version:
+    minecraft = os.environ.get("MINECRAFT_VERSION", "1.21.1")
+    expected_tag = "v" + version if minecraft == "1.21.1" else f"mc{minecraft}-v{version}"
+    if minecraft not in ("1.21.1", "26.3") or not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != expected_tag:
         raise RuntimeError("Invalid release version/tag.")
-    jar = Path(f"build/libs/FoundationsPL4-1.21.1-{version}.jar")
+    jar = Path(f"build/libs/FoundationsPL4-{minecraft}-{version}.jar")
     if not jar.is_file():
         raise RuntimeError("The tested runtime JAR is missing.")
     digest = hashlib.sha256(jar.read_bytes()).hexdigest()
@@ -96,7 +98,7 @@ def main():
         # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
+        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": [minecraft, "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")
