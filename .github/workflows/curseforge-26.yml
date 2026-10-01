@@ -26,10 +26,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
-          import subprocess, os, hashlib, json
+          import subprocess, os, hashlib, json, re
           from pathlib import Path
-          props=dict(line.split('=',1) for line in Path('gradle.properties').read_text().splitlines() if '=' in line and not line.startswith('#'))
-          version=props['mod_version'].strip()
+          version=re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'",Path('build.gradle').read_text(),re.M).group(1)
           tag=f'mc26.3-v{version}'
           jar=f'FoundationsPL4-26.3-{version}.jar'
           subprocess.run(['gh','release','download',tag,'--pattern',jar,'--pattern','SHA256SUMS.txt','--dir','build/libs'],check=True)
