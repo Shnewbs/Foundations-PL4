@@ -1,8 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.6
-
-This is the same chapter text shipped in the game. Tutorial checkpoints are manual, not automated acceptance results.
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.7.1
 
 ## Welcome to Foundations PL4
 
@@ -222,7 +220,7 @@ A reader takes machine-network input behind it. Its front carries visual output.
 
 ### NO EXTRA BRANCH REQUIRED
 
-A same-face reader/panel pair does not require a cable loop around its front. A bare reader can use an exposed compatible cable in the adjacent block behind it. A disabled or obstructed local cable port cannot be bypassed by that external connection.
+A same-face reader/panel pair does not require a cable loop around its front. Place a Data Cable in the reader host centre to join its network input. A neighboring cable cannot supply a free lead through an empty endpoint cell.
 
 ## Nodes and targets
 
@@ -254,7 +252,7 @@ Data Cable carries the machine data network. Redstone Cable carries its redstone
 
 ### LOCAL AND EXTERNAL PORTS
 
-A compatible cable centre can share a host with face components. Exposed compatible external component ports may also connect to an adjacent cable. Merely touching sideways is not a port. Reader network input and visual output are separate.
+A compatible cable centre can share a host with face components. Place a cable in every cell of the run, including cells containing mounted Nodes or Readers. Endpoints do not extend neighboring cables through their own empty centre. Reader network input and visual output remain separate.
 
 ### OPERATOR
 
