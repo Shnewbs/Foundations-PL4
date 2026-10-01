@@ -5,12 +5,12 @@
 |---|---|---|
 | main | Existing 1.21.1 release baseline and coordination | 1.21.1 / NeoForge 21.1.250 / Java 21 |
 | mc/1.21.1 | Maintained 1.21.1 track | Starts from the R1.6 source |
-| mc/26.1 | 26.1 backport/compatibility track | Scaffold only; still contains 1.21.1 build settings |
-| mc/26.2 | 26.2 backport/compatibility track | Scaffold only; still contains 1.21.1 build settings |
-| mc/26.3 | Primary new-version port | Scaffold only; still contains 1.21.1 build settings |
-| mc/26.4 | Future track, create when its target toolchain is available | Planned, no compatibility claim |
+| mc/26.1 | Dormant scaffold | No separate development track or compatibility claim |
+| mc/26.2 | Dormant scaffold | No separate development track or compatibility claim |
+| mc/26.3 | Primary 26.x development track | 26.3 / NeoForge 26.3.0.23-beta / Java 25 |
+| 26.4 | Future compatibility target for the 26.x track | Validate when its toolchain is available |
 
-Creating a branch does not complete a port. Never label or upload a 1.21.1 artifact as a 26.x build.
+Maintain two development tracks: 1.21.1 and 26.3. The 26.3 track targets compatibility across 26.x; dormant 26.1/26.2 branches are not separate product tracks. Creating a branch does not complete a port. Never label or upload a 1.21.1 artifact as a 26.x build.
 
 ## Port sequence
 1. Keep the existing 1.21.1 release path operational.
@@ -20,7 +20,7 @@ Creating a branch does not complete a port. Never label or upload a 1.21.1 artif
 5. Preserve UUID identity, escrow, conversion policy, caps, undo/redo and immediate cable geometry. Test save/load, chunk lifecycle, removal, multiplayer permissions and packet validation on each track.
 6. Apply shared feature/fix commits across tracks by reviewed cherry-picks. Keep Minecraft-specific rendering and loader changes on their own track; do not merge whole port branches blindly into main.
 7. Establish 26.1 and 26.2 compatibility separately. Do not infer binary compatibility from a successful 26.3 build.
-8. Create the 26.4 track when its toolchain is available and run the same acceptance gates.
+8. Validate 26.4 on the existing 26.x development track when its toolchain is available, using the same acceptance gates.
 
 ## Release and CI gates
 Current workflows publish from main and use 1.21.1 artifact names. Version branches do not yet have automatic publication.

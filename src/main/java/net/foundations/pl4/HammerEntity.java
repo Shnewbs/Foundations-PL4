@@ -81,7 +81,7 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
                 if(h.progress!=0||!h.activeRecipe.isEmpty()){h.progress=0;h.activeRecipe="";h.setChanged();}
                 h.status=h.inventory.getStackInSlot(0).isEmpty()?0:5;
             } else {
-                var recipe=holder.get().value();String id=holder.get().id().toString();
+                var recipe=holder.get().value();String id=holder.get().id().identifier().toString();
                 if(!id.equals(h.activeRecipe)){h.progress=0;h.activeRecipe=id;h.setChanged();}
                 h.processingTicks=recipe.processingTicks();h.cooldownTotal=recipe.cooldownTicks();
                 ItemStack output=recipe.result(),existing=h.inventory.getStackInSlot(1);

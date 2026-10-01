@@ -8,9 +8,7 @@
         "predicate_type": "minecraft:tag_match",
         "tag": "minecraft:stone_ore_replaceables"
       },
-      "state": {
-        "Name": "foundations_pl4:sapphireore"
-      }
+      "state": "foundations_pl4:sapphireore"
     }
   ]
 }
