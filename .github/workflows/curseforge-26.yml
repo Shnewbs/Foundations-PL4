@@ -1,0 +1,48 @@
+name: Publish 26.3 release to CurseForge
+on:
+  push:
+    branches: ['mc/26.3']
+    paths: ['.github/workflows/curseforge-26.yml']
+  workflow_run:
+    workflows: ['Publish validated 26.3 port']
+    types: [completed]
+    branches: ['mc/26.3']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: curseforge-26-publication
+  cancel-in-progress: false
+jobs:
+  upload:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mc/26.3
+      - name: Download checksum-verified release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import subprocess, os, hashlib, json
+          from pathlib import Path
+          props=dict(line.split('=',1) for line in Path('gradle.properties').read_text().splitlines() if '=' in line and not line.startswith('#'))
+          version=props['mod_version'].strip()
+          tag=f'mc26.3-v{version}'
+          jar=f'FoundationsPL4-26.3-{version}.jar'
+          subprocess.run(['gh','release','download',tag,'--pattern',jar,'--pattern','SHA256SUMS.txt','--dir','build/libs'],check=True)
+          digest=hashlib.sha256(Path('build/libs',jar).read_bytes()).hexdigest()
+          assert f'{digest}  {jar}' in Path('build/libs/SHA256SUMS.txt').read_text().splitlines()
+          release=json.loads(subprocess.check_output(['gh','release','view',tag,'--json','body'],text=True))
+          notes=Path(f'docs/releases/{version}.md');notes.parent.mkdir(parents=True,exist_ok=True);notes.write_text(release['body'])
+          with open(os.environ['GITHUB_ENV'],'a') as env:
+              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\nMINECRAFT_VERSION=26.3\n')
+          PY
+      - name: Upload runtime JAR to CurseForge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+        run: python3 tools/upload_curseforge.py
