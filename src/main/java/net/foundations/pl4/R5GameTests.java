@@ -78,17 +78,17 @@ public final class R5GameTests {
         h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=20)
-    public static void cablePlacementUsesAimedCableArm(GameTestHelper h){
+    public static void cablePlacementFillsMissingEndpointCell(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);
         var endpoint=host(h,new BlockPos(3,1,2),Kind.INVENTORY_READER,Direction.EAST,false);rebuild(h);
-        h.assertTrue(a.connection(Direction.EAST)==1,"Fixture must expose the cable arm toward the endpoint");
+        h.assertTrue(a.connection(Direction.EAST)==0&&!endpoint.parts.containsKey(6),"Unplaced endpoint centre must not gain a cable arm");
         long builds=NetworkEngine.topologyBuildCount();
         var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DATA_CABLE).get());
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
-        var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.7,.5,.5),Direction.UP,a.getBlockPos(),false);
+        var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5625,.5,.5),Direction.EAST,a.getBlockPos(),false);
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
-        h.assertTrue(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the east cable arm must attach into its endpoint host, not place above");
+        h.assertTrue(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the cable east face must fill the endpoint cell and consume exactly one cable");
         h.assertTrue(NetworkEngine.topologyBuildCount()==builds,"Cable placement must not synchronously rebuild the entire loaded network");
         h.assertTrue(a.connection(Direction.EAST)==1&&endpoint.connection(Direction.WEST)==1,"The placed cable must publish its local connection immediately");
         h.runAtTickTime(4,()->{h.assertTrue(NetworkEngine.topologyBuildCount()>builds,"The authoritative full network rebuild must follow on the next tick");h.succeed();});
