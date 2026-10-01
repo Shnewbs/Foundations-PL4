@@ -24,6 +24,8 @@ jobs:
         run: |
           set -o pipefail
           bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
+      - name: Offline regression checks
+        run: python3 tools/run_offline_checks.py
       - name: Build and native tests
         run: |
           set -o pipefail
