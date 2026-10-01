@@ -67,6 +67,8 @@ jobs:
 
       - name: Offline regression checks
         if: steps.version.outputs.publish == 'true'
+        env:
+          PYTHONUTF8: '1'
         run: python tools/run_offline_checks.py
 
       - name: Build and run native GameTests
