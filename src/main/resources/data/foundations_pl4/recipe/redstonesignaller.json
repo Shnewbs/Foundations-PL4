@@ -11,17 +11,9 @@
     "PCP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "R": {
-      "item": "foundations_pl4:signallingplate"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    },
-    "C": {
-      "item": "foundations_pl4:datacable"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "R": "foundations_pl4:signallingplate",
+    "T": "minecraft:redstone_torch",
+    "C": "foundations_pl4:datacable"
   }
 }

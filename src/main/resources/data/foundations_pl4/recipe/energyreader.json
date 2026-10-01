@@ -6,11 +6,7 @@
     "count": 1
   },
   "ingredients": [
-    {
-      "item": "foundations_pl4:inforeader"
-    },
-    {
-      "tag": "c:gems/sapphire"
-    }
+    "foundations_pl4:inforeader",
+    "#c:gems/sapphire"
   ]
 }

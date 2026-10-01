@@ -10,14 +10,8 @@
     "PDP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "D": {
-      "item": "foundations_pl4:etchedplate"
-    },
-    "C": {
-      "item": "foundations_pl4:node"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "D": "foundations_pl4:etchedplate",
+    "C": "foundations_pl4:node"
   }
 }

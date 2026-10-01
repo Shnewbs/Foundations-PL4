@@ -6,11 +6,7 @@
     "count": 1
   },
   "ingredients": [
-    {
-      "tag": "c:gems/sapphire"
-    },
-    {
-      "item": "minecraft:book"
-    }
+    "#c:gems/sapphire",
+    "minecraft:book"
   ]
 }

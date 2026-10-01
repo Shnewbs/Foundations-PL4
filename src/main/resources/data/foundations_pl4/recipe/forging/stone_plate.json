@@ -1,8 +1,6 @@
 {
   "type": "foundations_pl4:forging_hammer",
-  "ingredient": {
-    "tag": "c:stones"
-  },
+  "ingredient": "#c:stones",
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:stoneplate",

@@ -21,7 +21,7 @@ checks={
  'context help retained':('drawHelp(canvas)' in editor) or ('drawHudHelp(g)' in editor and 'RMB back' in editor),
  'colored key caps':'"E",0xFF63C7FF' in editor and ('"X",0xFFFF6B6B' in editor or '"DEL",0xFFFF6B6B' in editor) and '"G",0xFF75E56B' in editor,
  'eight shallow planes':'Math.clamp(layer,0,8)*.01/16.0' in elements,
- 'normal breaks use stackable path':'PartItem.stack(part,l.registryAccess())' in host,
+ 'normal breaks use stackable path':'PartItem.stack(part,level.registryAccess())' in (R/'src/main/java/net/foundations/pl4/HostEntity.java').read_text(),
  'operator uses config-preserving path':'PartItem.savedStack(part,level.registryAccess())' in tool,
  'normal default drops omit custom data':'needsEscrowPayload' in partitem and 'new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get())' in partitem,
  'runtime item identity stripped':'for(String key:PartItemDataRules.VOLATILE_KEYS)out.remove(key)' in partitem,

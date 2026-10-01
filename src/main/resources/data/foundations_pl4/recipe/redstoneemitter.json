@@ -11,14 +11,8 @@
     "DDD"
   ],
   "key": {
-    "P": {
-      "tag": "c:dusts/redstone"
-    },
-    "D": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "C": {
-      "item": "foundations_pl4:signallingplate"
-    }
+    "P": "#c:dusts/redstone",
+    "D": "foundations_pl4:stoneplate",
+    "C": "foundations_pl4:signallingplate"
   }
 }

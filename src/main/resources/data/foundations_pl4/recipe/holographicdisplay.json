@@ -10,14 +10,8 @@
     " C "
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "D": {
-      "item": "foundations_pl4:displayscreen"
-    },
-    "C": {
-      "item": "foundations_pl4:datacable"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "D": "foundations_pl4:displayscreen",
+    "C": "foundations_pl4:datacable"
   }
 }

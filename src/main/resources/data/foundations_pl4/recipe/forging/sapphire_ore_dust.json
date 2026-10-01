@@ -1,8 +1,6 @@
 {
   "type": "foundations_pl4:forging_hammer",
-  "ingredient": {
-    "tag": "c:ores/sapphire"
-  },
+  "ingredient": "#c:ores/sapphire",
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:sapphiredust",

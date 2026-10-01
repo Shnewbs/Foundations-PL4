@@ -6,14 +6,8 @@
     "count": 1
   },
   "ingredients": [
-    {
-      "item": "foundations_pl4:wirelessplate"
-    },
-    {
-      "tag": "c:gems/sapphire"
-    },
-    {
-      "item": "foundations_pl4:datacable"
-    }
+    "foundations_pl4:wirelessplate",
+    "#c:gems/sapphire",
+    "foundations_pl4:datacable"
   ]
 }

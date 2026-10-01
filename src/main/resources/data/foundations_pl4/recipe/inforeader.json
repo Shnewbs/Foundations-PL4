@@ -11,20 +11,10 @@
     "PIP"
   ],
   "key": {
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "D": {
-      "item": "foundations_pl4:datacable"
-    },
-    "S": {
-      "tag": "c:dusts/sapphire"
-    }
+    "R": "#c:dusts/redstone",
+    "I": "#c:ingots/iron",
+    "P": "foundations_pl4:stoneplate",
+    "D": "foundations_pl4:datacable",
+    "S": "#c:dusts/sapphire"
   }
 }

@@ -10,17 +10,9 @@
     "RCE"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "C": {
-      "item": "foundations_pl4:datacable"
-    },
-    "E": {
-      "item": "foundations_pl4:dataemitter"
-    },
-    "R": {
-      "item": "foundations_pl4:datareceiver"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "C": "foundations_pl4:datacable",
+    "E": "foundations_pl4:dataemitter",
+    "R": "foundations_pl4:datareceiver"
   }
 }

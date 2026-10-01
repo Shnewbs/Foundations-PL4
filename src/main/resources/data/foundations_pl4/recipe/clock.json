@@ -10,20 +10,10 @@
     "PSP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "S": {
-      "item": "foundations_pl4:signallingplate"
-    },
-    "D": {
-      "tag": "c:dusts/sapphire"
-    },
-    "C": {
-      "item": "minecraft:clock"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "S": "foundations_pl4:signallingplate",
+    "D": "#c:dusts/sapphire",
+    "C": "minecraft:clock",
+    "R": "#c:dusts/redstone"
   }
 }

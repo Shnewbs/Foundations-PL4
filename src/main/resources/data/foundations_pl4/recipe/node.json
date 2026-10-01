@@ -10,14 +10,8 @@
     "PDP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "D": {
-      "tag": "c:dusts/sapphire"
-    },
-    "C": {
-      "item": "foundations_pl4:datacable"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "D": "#c:dusts/sapphire",
+    "C": "foundations_pl4:datacable"
   }
 }

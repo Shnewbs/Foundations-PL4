@@ -10,14 +10,8 @@
     "PDP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:signallingplate"
-    },
-    "D": {
-      "tag": "c:dusts/redstone"
-    },
-    "C": {
-      "item": "foundations_pl4:redstonecable"
-    }
+    "P": "foundations_pl4:signallingplate",
+    "D": "#c:dusts/redstone",
+    "C": "foundations_pl4:redstonecable"
   }
 }

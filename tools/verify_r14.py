@@ -22,7 +22,7 @@ checks={
  'settings RMB back':'if(button==1){if(tab!=0)' in part,
  'visual palette screen':'EditorPalette.PRESETS' in color and 'Use colour' in color and 'Right-click = Back' in color,
  'palette fills hex':'Palette' in props and 'EditorPalette.hex(spec.color())' in props and 'void color(int rgb)' in props,
- 'color preview':'colorBox.getValue()' in props and 'g.renderOutline' in props,
+ 'color preview':'colorBox.getValue()' in props and 'g.outline' in props,
  'three column default':'defaultColumns(Type type)' in elems and '?3:1' in elems,
  'columns drive render':'int cols=Math.min(e.columns' in elems and 'cols*Math.max' in elems,
  'columns preview':'cols+" cols"' in props,

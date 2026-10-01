@@ -11,20 +11,10 @@
     "SPD"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "B": {
-      "item": "foundations_pl4:entitynode"
-    },
-    "S": {
-      "tag": "c:dusts/sapphire"
-    },
-    "D": {
-      "tag": "c:dusts/redstone"
-    },
-    "W": {
-      "item": "foundations_pl4:wirelessplate"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "B": "foundations_pl4:entitynode",
+    "S": "#c:dusts/sapphire",
+    "D": "#c:dusts/redstone",
+    "W": "foundations_pl4:wirelessplate"
   }
 }

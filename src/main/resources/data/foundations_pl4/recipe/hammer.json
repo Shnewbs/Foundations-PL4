@@ -11,17 +11,9 @@
     "ACA"
   ],
   "key": {
-    "A": {
-      "tag": "minecraft:logs"
-    },
-    "B": {
-      "tag": "c:rods/wooden"
-    },
-    "C": {
-      "tag": "c:stones"
-    },
-    "D": {
-      "tag": "minecraft:wooden_slabs"
-    }
+    "A": "#minecraft:logs",
+    "B": "#c:rods/wooden",
+    "C": "#c:stones",
+    "D": "#minecraft:wooden_slabs"
   }
 }

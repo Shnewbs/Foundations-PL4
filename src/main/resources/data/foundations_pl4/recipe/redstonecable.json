@@ -11,11 +11,7 @@
     "SSS"
   ],
   "key": {
-    "D": {
-      "tag": "c:dusts/redstone"
-    },
-    "S": {
-      "item": "foundations_pl4:signallingplate"
-    }
+    "D": "#c:dusts/redstone",
+    "S": "foundations_pl4:signallingplate"
   }
 }

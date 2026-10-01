@@ -6,8 +6,6 @@
     "count": 2
   },
   "ingredients": [
-    {
-      "item": "foundations_pl4:displayscreen"
-    }
+    "foundations_pl4:displayscreen"
   ]
 }

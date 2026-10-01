@@ -11,11 +11,7 @@
     "PPP"
   ],
   "key": {
-    "P": {
-      "item": "foundations_pl4:stoneplate"
-    },
-    "D": {
-      "tag": "c:dusts/sapphire"
-    }
+    "P": "foundations_pl4:stoneplate",
+    "D": "#c:dusts/sapphire"
   }
 }

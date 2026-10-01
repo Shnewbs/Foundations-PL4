@@ -11,20 +11,10 @@
     "DDD"
   ],
   "key": {
-    "D": {
-      "item": "foundations_pl4:minidisplay"
-    },
-    "S": {
-      "tag": "c:dusts/sapphire"
-    },
-    "R": {
-      "item": "foundations_pl4:signallingplate"
-    },
-    "E": {
-      "item": "foundations_pl4:etchedplate"
-    },
-    "W": {
-      "item": "foundations_pl4:wirelessplate"
-    }
+    "D": "foundations_pl4:minidisplay",
+    "S": "#c:dusts/sapphire",
+    "R": "foundations_pl4:signallingplate",
+    "E": "foundations_pl4:etchedplate",
+    "W": "foundations_pl4:wirelessplate"
   }
 }
