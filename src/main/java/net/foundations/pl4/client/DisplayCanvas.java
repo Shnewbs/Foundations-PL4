@@ -46,7 +46,7 @@ final class DisplayCanvas {
             for(var line:lines){
                 if(lineY+font.lineHeight>maxY)break;
                 int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->0;case CENTER->(scaledWidth-lineWidth)/2;case RIGHT->scaledWidth-lineWidth;};
-                int drawY=lineY;buffers.add(pose,(p,c)->c.submitText(p,tx,drawY,line,false,Font.DisplayMode.NORMAL,net.minecraft.world.level.Level.MAX_BRIGHTNESS,0xFF000000|color,0,0));
+                int drawY=lineY;buffers.add(pose,(p,c)->c.submitText(p,tx,drawY,line,false,Font.DisplayMode.NORMAL,net.minecraft.util.LightCoordsUtil.FULL_BRIGHT,0xFF000000|color,0,0));
                 lineY+=font.lineHeight;
             }
         }finally{pose.popPose();}
@@ -65,8 +65,8 @@ final class DisplayCanvas {
             pose.scale(size,-size,(float)(modelDepthBlocks/scale));
             if(blockPreview&&sample.item().getItem() instanceof BlockItem bi){
                 pose.scale(.62F,.62F,.62F);pose.mulPose(new org.joml.Matrix4f().rotation(Axis.XP.rotationDegrees(30)));pose.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotationDegrees(45)));pose.translate(-.5,-.5,-.5);
-                buffers.block(bi.getBlock().defaultBlockState(),pose,net.minecraft.world.level.Level.MAX_BRIGHTNESS,OverlayTexture.NO_OVERLAY);
-            }else buffers.item(sample.item(),ItemDisplayContext.GUI,pose,net.minecraft.world.level.Level.MAX_BRIGHTNESS,OverlayTexture.NO_OVERLAY);
+                buffers.block(bi.getBlock().defaultBlockState(),pose,net.minecraft.util.LightCoordsUtil.FULL_BRIGHT,OverlayTexture.NO_OVERLAY);
+            }else buffers.item(sample.item(),ItemDisplayContext.GUI,pose,net.minecraft.util.LightCoordsUtil.FULL_BRIGHT,OverlayTexture.NO_OVERLAY);
         }catch(RuntimeException error){warn(sample.itemId(),error);}finally{pose.popPose();}
     }
     void fluid(Part.Row sample,DisplayElements.Rect r,double fraction){
@@ -86,10 +86,10 @@ final class DisplayCanvas {
     private static void warn(String id,RuntimeException error){if(WARNED.size()<64&&WARNED.add(id))org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Cannot render display picture {}",id,error);}
     private void quad(Identifier texture,double x,double y,double w,double h,float u0,float v0,float u1,float v1,int color,double z){
         buffers.add(pose,(drawPose,collector)->collector.submitCustomGeometry(drawPose,net.minecraft.client.renderer.rendertype.RenderTypes.entityTranslucent(texture),(p,v)->{
-        v.addVertex(p,(float)x,(float)y,(float)z).setColor(color).setUv(u0,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.world.level.Level.MAX_BRIGHTNESS).setNormal(p,0,0,1);
-        v.addVertex(p,(float)x,(float)(y+h),(float)z).setColor(color).setUv(u0,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.world.level.Level.MAX_BRIGHTNESS).setNormal(p,0,0,1);
-        v.addVertex(p,(float)(x+w),(float)(y+h),(float)z).setColor(color).setUv(u1,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.world.level.Level.MAX_BRIGHTNESS).setNormal(p,0,0,1);
-        v.addVertex(p,(float)(x+w),(float)y,(float)z).setColor(color).setUv(u1,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.world.level.Level.MAX_BRIGHTNESS).setNormal(p,0,0,1);
+        v.addVertex(p,(float)x,(float)y,(float)z).setColor(color).setUv(u0,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.util.LightCoordsUtil.FULL_BRIGHT).setNormal(p,0,0,1);
+        v.addVertex(p,(float)x,(float)(y+h),(float)z).setColor(color).setUv(u0,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.util.LightCoordsUtil.FULL_BRIGHT).setNormal(p,0,0,1);
+        v.addVertex(p,(float)(x+w),(float)(y+h),(float)z).setColor(color).setUv(u1,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.util.LightCoordsUtil.FULL_BRIGHT).setNormal(p,0,0,1);
+        v.addVertex(p,(float)(x+w),(float)y,(float)z).setColor(color).setUv(u1,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(net.minecraft.util.LightCoordsUtil.FULL_BRIGHT).setNormal(p,0,0,1);
         }));
     }
 }
