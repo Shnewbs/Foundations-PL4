@@ -74,7 +74,7 @@ public final class HostEntity extends BlockEntity {
     public void changed(){
         cachedOutline=null;lastCableSync=null;setChanged();
         if(level!=null){
-            if(!level.isClientSide)NetworkEngine.add(this);
+            if(!level.isClientSide){level.invalidateCapabilities(worldPosition);NetworkEngine.add(this);}
             NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
             level.updateNeighborsAt(worldPosition,getBlockState().getBlock());
         }

@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.7.1
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.8
 
 ## Welcome to Foundations PL4
 
