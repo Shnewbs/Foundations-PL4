@@ -36,12 +36,13 @@ public final class EnergyIntegrationGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pushedForgeEnergyIsSidedSimulatedBoundedAndRevoked(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,Direction.WEST);Part p=ref.part();p.transferMode=2;
-        var cap=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),Direction.WEST);
-        h.assertTrue(cap!=null&&cap.canReceive()&&!cap.canExtract(),"Pushing generators discover a receive-only FE input");
+        var handler=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.Energy.BLOCK,ref.host().getBlockPos(),Direction.WEST);
+        h.assertTrue(handler!=null,"Pushing generators discover a receive-only FE input");
+        var cap=net.foundations.pl4.compat.TransferAdapters.energy(handler);
         h.assertTrue(cap.receiveEnergy(100,true)==100&&p.energyCredits()==0,"Simulation must not alter escrow");
         h.assertTrue(cap.receiveEnergy(100,false)==100&&p.energyCredits()==100*EnergyConversion.FE,"Accepted FE is conserved in persistent escrow");
         h.assertTrue(cap.receiveEnergy(Integer.MAX_VALUE,false)==PLConfig.ENERGY_RATE.get()-100&&cap.receiveEnergy(1,false)==0,"External pushes cannot overfill the node");
-        p.energyCredits(0);p.transferMode=1;h.assertTrue(!cap.canReceive()&&cap.receiveEnergy(1,false)==0,"ADD mode rejects input even through cached handlers");
+        p.energyCredits(0);p.transferMode=1;h.assertTrue(cap.receiveEnergy(1,false)==0,"ADD mode rejects input even through cached handlers");
         p.transferMode=2;ref.host().parts.remove(p.slot());ref.host().changed();h.assertTrue(cap.receiveEnergy(1,false)==0,"Removed parts revoke cached input handlers");h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)

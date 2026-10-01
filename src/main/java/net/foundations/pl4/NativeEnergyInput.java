@@ -2,7 +2,8 @@ package net.foundations.pl4;
 
 import java.lang.reflect.Proxy;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.*;
 import net.foundations.pl4.core.EnergyConversion;
 import net.foundations.pl4.core.TransferRules;
 import net.minecraft.core.Direction;
@@ -13,18 +14,11 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 final class NativeEnergyInput {
     @SuppressWarnings("unchecked")
     static void register(RegisterCapabilitiesEvent event){
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,FoundationsPL4.HOST_ENTITY.get(),(host,side)->{
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,FoundationsPL4.HOST_ENTITY.get(),(host,side)->{
             if(side==null)return null;
             Part part=host.parts.get(side.ordinal());
             if(part==null||part.kind!=Kind.TRANSFER_NODE)return null;
-            return new IEnergyStorage(){
-                public int receiveEnergy(int amount,boolean simulate){return acceptFE(host,part,side,amount,simulate);}
-                public int extractEnergy(int amount,boolean simulate){return 0;}
-                public int getEnergyStored(){return EnergyConversion.charge(part.energyCredits());}
-                public int getMaxEnergyStored(){return PLConfig.ENERGY_RATE.get();}
-                public boolean canExtract(){return false;}
-                public boolean canReceive(){return eligible(host,part,side,"FE");}
-            };
+            return new FEInput(host,part,side);
         });
         for(var capability:BlockCapability.getAll())if(capability.name().toString().equals("gtceu:energy_container")&&capability.contextClass()==Direction.class){
             var cap=(BlockCapability<Object,Direction>)capability;
@@ -50,6 +44,22 @@ final class NativeEnergyInput {
             });
         }
     }
+    private record InputSnapshot(long credits,int pending,boolean escrow,String unit,int j,int eu,int ed){}
+    private static final class FEInput extends SnapshotJournal<InputSnapshot> implements EnergyHandler {
+        private final HostEntity host;private final Part part;private final Direction side;
+        FEInput(HostEntity host,Part part,Direction side){this.host=host;this.part=part;this.side=side;}
+        public long getAmountAsLong(){return EnergyConversion.charge(part.energyCredits());}
+        public long getCapacityAsLong(){return PLConfig.ENERGY_RATE.get();}
+        public int extract(int amount,TransactionContext tx){if(amount<0)throw new IllegalArgumentException("Negative energy");return 0;}
+        public int insert(int amount,TransactionContext tx){
+            if(amount<0)throw new IllegalArgumentException("Negative energy");
+            int accepted=acceptFE(host,part,side,amount,true);
+            if(accepted>0){updateSnapshots(tx);acceptFE(host,part,side,accepted,false);}return accepted;
+        }
+        protected InputSnapshot createSnapshot(){return new InputSnapshot(part.pendingEnergyCredits,part.pendingEnergy,part.energyEscrow,part.pendingEnergyUnit,part.pendingEnergyJRate,part.pendingEnergyEURate,part.pendingEnergyEDRate);}
+        protected void revertToSnapshot(InputSnapshot s){part.pendingEnergyCredits=s.credits();part.pendingEnergy=s.pending();part.energyEscrow=s.escrow();part.pendingEnergyUnit=s.unit();part.pendingEnergyJRate=s.j();part.pendingEnergyEURate=s.eu();part.pendingEnergyEDRate=s.ed();}
+        protected void onRootCommit(InputSnapshot s){if(!host.isRemoved())host.setChanged();}
+    }
     private static boolean eligible(HostEntity host,Part p,Direction side){return eligible(host,p,side,"EU");}
     private static boolean eligible(HostEntity host,Part p,Direction side,String input){
         if(host.getLevel()==null||host.getLevel().isClientSide()||host.isRemoved()||host.parts.get(side.ordinal())!=p)return false;
@@ -66,7 +76,7 @@ final class NativeEnergyInput {
         int accepted=(int)Math.min(amount,Math.min(PLConfig.ENERGY_RATE.get(),Math.max(0,capacity-p.energyCredits())/packet));
         if(accepted>0&&!simulate){
             p.energyCredits(p.energyCredits()+packet*accepted);p.pendingEnergyUnit=p.energyOutput;
-            p.pendingEnergyJRate=rates.fePer1000J();p.pendingEnergyEURate=rates.fePerEU();p.pendingEnergyEDRate=rates.fePerElectrodynamicsJ();host.setChanged();
+            p.pendingEnergyJRate=rates.fePer1000J();p.pendingEnergyEURate=rates.fePerEU();p.pendingEnergyEDRate=rates.fePerElectrodynamicsJ();
         }
         return accepted;
     }
