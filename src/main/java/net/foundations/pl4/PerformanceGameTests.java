@@ -116,7 +116,7 @@ public final class PerformanceGameTests {
         var cable=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
         var device=host(h,new BlockPos(3,2,2),Kind.NODE,Direction.EAST);
         Part node=device.parts.get(Direction.EAST.ordinal());CableGeometry.refresh(device);
-        h.assertTrue(cable.connection(Direction.EAST)==1&&device.externalLead(node),"External device lead and cable must reconcile together");
+        h.assertTrue(cable.connection(Direction.EAST)==0&&!device.externalLead(node),"Endpoint without a placed centre cable must not extend its neighbor");
         device.parts.clear();CableGeometry.refresh(device);
         h.assertTrue(cable.connection(Direction.EAST)==0&&!device.externalLead(node),"Removed part must clear both arm and lead immediately");
         device.parts.put(6,new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(device);

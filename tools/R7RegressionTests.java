@@ -32,13 +32,13 @@ public final class R7RegressionTests {
                 check(visible(local,plan,2).equals(Set.of(1)),"paired screen sees its reader");
                 check(plan.cableArms().get(0)[face]==ConnectionRules.HALF,"arm terminates at reader, not through screen");
                 check(plan.externalLeads().isEmpty(),"paired centre geometry does not get external leads");
-                // Reader without a local cable centre: connect the neighbouring back cable, not front.
+                // A neighboring cable cannot span the empty centre of a mounted endpoint.
                 List<Node> external=List.of(n(0,origin.offset(face^1),Kind.DATA_CABLE,0,0),n(1,origin,reader,face,0),n(2,origin,screen,face,0));
                 plan=MultipartTopology.plan(external);
-                check(network(external,plan,0,1),"external rear input allowed");
+                check(!network(external,plan,0,1),"endpoint cell requires its own cable");
                 check(visible(external,plan,2).equals(Set.of(1)),"external rear input drives attached screen");
-                check(plan.externalLeads().contains(1),"bare reader renders actual back lead");
-                check(plan.cableArms().get(0)[face]==ConnectionRules.CABLE,"external cable reaches boundary");
+                check(plan.externalLeads().isEmpty(),"no free endpoint cable lead");
+                check(plan.cableArms().get(0)[face]==0,"neighbor cable cannot cross empty endpoint cell");
             }
             // Each enabled/disabled bit and both families: this applies to the actual full planner.
             for(int mask=0;mask<64;mask++)for(boolean redstone:List.of(false,true)){
@@ -48,13 +48,13 @@ public final class R7RegressionTests {
                 check(network(pair,plan,0,1)==expected,"port mask gates wire edge");
                 check((plan.cableArms().get(0)[face]!=0)==expected,"arm agrees with network edge");
                 List<Node> input=List.of(n(0,origin.offset(face^1),cable,0,mask),n(1,origin,Kind.ENERGY_READER,face,0));
-                plan=MultipartTopology.plan(input);expected=!redstone&&(mask&(1<<face))==0;
+                plan=MultipartTopology.plan(input);expected=false;
                 check(network(input,plan,0,1)==expected,"native endpoint family and port checks");
                 check(plan.externalLeads().contains(1)==expected,"lead agrees with actual endpoint connectivity");
             }
             // NETWORK and VISUAL side isolation, including a long remote output bus.
             List<Node> split=new ArrayList<>();
-            split.add(n(0,origin.offset(face^1),Kind.DATA_CABLE,0,0));
+            split.add(n(0,origin,Kind.DATA_CABLE,0,0));
             split.add(n(1,origin,Kind.INVENTORY_READER,face,0));
             split.add(n(2,origin.offset(face),Kind.DATA_CABLE,0,0));
             split.add(n(3,origin.offset(face).offset(face),Kind.DATA_CABLE,0,0));
@@ -88,13 +88,22 @@ public final class R7RegressionTests {
             // Bare Node rear port, direct boundary screen, standalone display rear port.
             for(Kind device:List.of(Kind.NODE,Kind.TRANSFER_NODE,Kind.ARRAY,Kind.DATA_RECEIVER)){
                 List<Node> pair=List.of(n(0,origin,device,face,0),n(1,origin.offset(face^1),Kind.DATA_CABLE,0,0));
-                plan=MultipartTopology.plan(pair);check(network(pair,plan,0,1)&&plan.externalLeads().contains(0),"bare device external input");
+                plan=MultipartTopology.plan(pair);check(!network(pair,plan,0,1)&&plan.externalLeads().isEmpty(),"bare device cannot extend a cable");
             }
             List<Node> boundary=List.of(n(0,origin,Kind.INVENTORY_READER,face,0),n(1,origin.offset(face),Kind.DISPLAY,face^1,0));
             plan=MultipartTopology.plan(boundary);check(visible(boundary,plan,1).equals(Set.of(0)),"direct boundary display visual feed");
             check(plan.network().isEmpty(),"boundary screen not bridge");
             List<Node> displayBack=List.of(n(0,origin,Kind.LARGE_DISPLAY,face,0),n(1,origin.offset(face^1),Kind.DATA_CABLE,0,0));
-            plan=MultipartTopology.plan(displayBack);check(plan.displayFeeds().get(0)==1&&plan.externalLeads().contains(0),"bare screen back cable");
+            plan=MultipartTopology.plan(displayBack);check(!plan.displayFeeds().containsKey(0)&&plan.externalLeads().isEmpty(),"bare screen cannot extend a cable");
+            // Two endpoints separated by three host cells require three placed cables.
+            List<Node> span=new ArrayList<>(List.of(n(0,origin,Kind.DATA_CABLE,0,0),
+                n(1,origin.offset(face^1),Kind.NODE,face^1,0),n(2,origin.offset(face),Kind.TRANSFER_NODE,face,0)));
+            plan=MultipartTopology.plan(span);
+            check(!network(span,plan,1,2)&&plan.externalLeads().isEmpty(),"one cable cannot span three cells between endpoints");
+            span.add(n(3,origin.offset(face^1),Kind.DATA_CABLE,0,0));
+            plan=MultipartTopology.plan(span);check(!network(span,plan,1,2),"one missing cable still breaks the run");
+            span.add(n(4,origin.offset(face),Kind.DATA_CABLE,0,0));
+            plan=MultipartTopology.plan(span);check(network(span,plan,1,2),"placing every cable completes the run");
             // Mounted display occupies the visual output; it must not transmit through its screen face.
             List<Node> blocked=List.of(n(0,origin,Kind.INVENTORY_READER,face,0),n(1,origin,Kind.DISPLAY,face,0),n(2,origin.offset(face),Kind.DATA_CABLE,0,0));
             plan=MultipartTopology.plan(blocked);check(plan.visual().isEmpty()&&plan.cableArms().get(2)[face^1]==0,"display blocks cable through front");

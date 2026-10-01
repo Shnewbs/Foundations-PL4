@@ -29,11 +29,20 @@ public final class R7GameTests {
         chest(h,external?pos.relative(face.getOpposite(),2):pos.relative(face.getOpposite()),17);
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
         h.assertTrue(target.readerHasDisplay(reader),"Paired reader skin must activate");
-        h.assertTrue(target.externalLead(reader)==external,"Lead must reflect real external input, not a fake cable centre");
+        h.assertTrue(!target.externalLead(reader),"Empty endpoint centre must never generate a free cable lead");
         h.assertTrue(external?!target.parts.containsKey(6):target.parts.containsKey(6),"Bare endpoint must not acquire an item/cable silently");
         h.runAtTickTime(45,()->{
-            h.assertTrue(amount(reader,17)&&amount(panel,17),"Compact pair must receive Node inventory on "+face+" with no front cable detour");
-            h.succeed();
+            if(external){
+                h.assertTrue(!amount(reader,17)&&!amount(panel,17),"Missing local cable must leave reader disconnected on "+face);
+                put(target,Kind.DATA_CABLE,Direction.DOWN);
+                h.runAtTickTime(85,()->{
+                    h.assertTrue(amount(reader,17)&&amount(panel,17),"Placing the missing cable must complete the run on "+face);
+                    h.succeed();
+                });
+            }else{
+                h.assertTrue(amount(reader,17)&&amount(panel,17),"Compact pair must receive Node inventory on "+face);
+                h.succeed();
+            }
         });
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactDown(GameTestHelper h){compact(h,Direction.DOWN,false);}
