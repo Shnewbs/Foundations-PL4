@@ -202,4 +202,52 @@ public final class EnergyIntegrationGameTests {
         }finally{PLConfig.ENERGY_CONVERSION.set(conversion);}
     }
 
+
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerChannelsStayPinnedAcrossOrderAndSave(GameTestHelper h){
+        Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);reader.mode="SLOT";reader.index=4;
+        var a=new Part.Link("minecraft:overworld",new BlockPos(1,2,3),Direction.NORTH,null,null);
+        var b=new Part.Link("minecraft:overworld",new BlockPos(4,5,6),Direction.SOUTH,null,null);
+        reader.targetChannel=ReaderChannels.id(b);
+        h.assertTrue(ReaderChannels.select(reader,List.of(a,b)).equals(List.of(b))&&ReaderChannels.select(reader,List.of(b,a)).equals(List.of(b)),"Pinned target survives ordering changes");
+        h.assertTrue(ReaderChannels.select(reader,List.of(a)).isEmpty(),"Missing pinned target never falls back to another inventory");
+        h.assertTrue(!ReaderChannels.id(a).equals(ReaderChannels.id(new Part.Link(a.dimension(),a.pos(),Direction.SOUTH,null,null))),"Sided endpoints remain distinct");
+        reader.targetChoices.add(new Part.ReaderChoice(ReaderChannels.id(b),"Machine B","block"));
+        Part disk=Part.load(reader.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part sync=Part.load(reader.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
+        h.assertTrue(disk.targetChannel.equals(reader.targetChannel)&&disk.index==4&&disk.mode.equals("SLOT")&&disk.targetChoices.isEmpty(),"Save keeps independent channel/slot but excludes derived choices");
+        h.assertTrue(sync.targetChoices.equals(reader.targetChoices),"Client receives bounded channel choices");
+        reader.targetChannel="";reader.mode="CHANNEL";reader.index=2;
+        h.assertTrue(ReaderChannels.select(reader,List.of(a,b)).equals(List.of(b)),"Legacy ordinal channels still load");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void infoProvidersBoundIsolateAndUnregister(GameTestHelper h){
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        var api=net.foundations.pl4.api.InfoProviders.class;
+        try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_failing",(context,out)->{if(!context.target().equals(target))return;out.add("partial","Partial",1,1,"");throw new IllegalStateException("Expected provider isolation fixture");});
+            var good=net.foundations.pl4.api.InfoProviders.register("pl4_test:b_good",(context,out)->{if(!context.target().equals(target))return;out.add("bad","Bad",Double.NaN,0,"");out.add("bad_capacity","Bad",1,-1,"");out.add("health","Machine health",7,10,"");out.add("health","Duplicate",999,0,"");for(int i=0;i<100;i++)out.add("value"+i,"Value",i,100,"");})){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().anyMatch(r->r.key().equals("x")),"Vanilla keys remain available");
+            h.assertTrue(rows.stream().noneMatch(r->r.key().startsWith("pl4_test:a_failing/")),"A failing provider contributes no partial sample");
+            h.assertTrue(rows.stream().filter(r->r.key().startsWith("pl4_test:b_good/")).count()==32,"Provider row budget is enforced");
+            h.assertTrue(rows.stream().anyMatch(r->r.key().equals("pl4_test:b_good/health")&&r.value()==7),"Namespaced first value wins duplicate key");
+            h.assertTrue(rows.stream().noneMatch(r->r.key().endsWith("/bad")||r.key().endsWith("/bad_capacity")),"Invalid numeric samples are rejected");
+            boolean duplicate=false;try{net.foundations.pl4.api.InfoProviders.register("pl4_test:b_good",(c,o)->{});}catch(IllegalArgumentException expected){duplicate=true;}h.assertTrue(duplicate,"Duplicate registration cannot replace a provider");
+        }
+        h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).stream().noneMatch(r->r.key().startsWith("pl4_test:")),"Closing registrations releases providers");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void infoReaderUsesProvidersAndTrimsMetricKeys(GameTestHelper h){
+        var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,Direction.UP);
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
+        reader.part().metric=" x, pl4_test:sample/progress ";
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:sample",(context,out)->{if(context.target().equals(target))out.add("progress","Progress",25,100,"%");})){
+            var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(target),1);
+            h.assertTrue(rows.size()==2&&rows.stream().anyMatch(r->r.key().equals("pl4_test:sample/progress")&&r.value()==25),"Production Info Reader samples extensions and trims key filters");
+            reader.part().mode="STORAGE";
+            h.assertTrue(DataSampler.sample(h.getLevel().getServer(),reader,List.of(target),1).equals(rows),"Storage mode must not replace Info Reader telemetry with an item counter");
+            var absent=new Part.Link("minecraft:overworld",target.pos(),Direction.UP,UUID.randomUUID(),null);
+            h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),absent).isEmpty(),"Unavailable entities never invoke providers");
+        }h.succeed();
+    }
 }
