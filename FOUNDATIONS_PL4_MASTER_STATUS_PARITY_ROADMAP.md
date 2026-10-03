@@ -2165,3 +2165,7 @@ commit f5b64e033e2c07af55c2d5f474052fb83fba5ca1
 ```
 
 Maintain these pins in the project so future refactors can always answer “which original code were we comparing against?”
+
+## R1.10 combined display workflow update
+
+Implemented on both active tracks: schema-1 JSON whole-layout export/import, client-local named templates, eight-page spatial previews, fit-to-screen bounds, fresh imported identities, reader-binding clearing, revision-fenced and undoable apply, and item/fluid/energy starter boards. See the current field guide. Optional server templates, Operator-held layout copying, element lock/hide/grouping and the remaining integration backlog are still pending.
