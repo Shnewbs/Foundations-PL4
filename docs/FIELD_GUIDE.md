@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.9
+Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R1.10
 
 ## Welcome to Foundations PL4
 
@@ -669,3 +669,31 @@ Original Practical Logistics and relevant original assets: SonarSonic / Ollie La
 ### R11 LARGE CANVAS
 
 Joined Large Displays now use the whole connected monitor rectangle as their logical workspace instead of stretching one fixed 248-by-120 canvas. Existing typed layouts migrate proportionally when the rectangle changes so relative position and size are preserved. The world editor anchors its toolbar inside the visible screen edge and uses the expanded coordinate space. Native graphical acceptance is still required.
+
+## Layout library and starter boards
+
+Share complete display layouts, keep local templates and preview imports before applying.
+
+### OPEN THE LIBRARY
+
+Open a display editor and press Layouts. Copy JSON exports all eight page slots and their text, styles, bounds and reader bindings to your system clipboard. Paste preview reads a schema-1 layout document; it does not immediately change the display. Preview page cycles through all eight pages and shows element positions and colors rather than live reader data.
+
+### NAMED LOCAL TEMPLATES
+
+Use a name containing 1-48 letters, numbers, hyphens or underscores. Save current stores the display layout. Load preview reads that named file. Browse names cycles through up to 128 local templates. Save preview stores the imported or starter layout. Saving replaces a file with the same name; Delete named removes only that local template. Files are UTF-8 JSON in config/foundations_pl4/display_templates. Templates remain on your client and are not sent as server filesystem paths.
+
+### FIT AND READER BINDINGS
+
+Fit On scales bounds to the target canvas and preserves minimum element sizes. Fit Off keeps original bounds and rejects layouts that exceed the target. Reader Keep preserves explicit reader IDs/names and refuses unavailable sources. Reader Auto clears those explicit bindings; data keys remain unchanged, so review source selection and keys after import. All imported element IDs are fresh; page slots and layer order are preserved.
+
+### APPLY AND UNDO
+
+Apply all pages replaces the entire custom layout. It requires edit permission and uses the server revision checks. If the screen changed since loading the preview, load it again before applying. Ctrl+Z in the editor restores the previous elements. Imported layouts switch the display to custom mode. The server still validates ownership, visible readers, layout counts and packet identity.
+
+### STARTER BOARDS
+
+The Starter button cycles through item inventory, fluid overview and energy overview boards. Each has a styled title and an appropriate typed component. They need a canvas of at least 64 x 48 pixels. Load the starter, select Reader Auto if needed, Apply, then configure the data source. The energy starter uses the FE storage key; change it for native EU/J or other telemetry.
+
+### FORMAT LIMITS
+
+Only foundations_pl4:layout schema 1 is accepted. Documents have explicit canvas dimensions, a maximum of 32 elements and eight page slots, and a bounded payload. Unsupported schemas, duplicate IDs, invalid bounds, oversized files and arbitrary filename paths are rejected. Layout library work is implemented; server-provided templates, Operator item layout copying and richer template browsing remain future work.

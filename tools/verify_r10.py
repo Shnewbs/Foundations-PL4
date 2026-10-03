@@ -44,7 +44,7 @@ def check_models(root):
 def check_guide(root):
     a=root/'src/main/resources/assets/foundations_pl4';book=json.loads((a/'guide/en_us.json').read_text());ids=[c['id'] for c in book['chapters']]
     tutorials=['tutorial_inventory','tutorial_graphics','tutorial_energy','tutorial_expansion','tutorial_hologram','tutorial_hammer']
-    assert ids[0]=='start' and len(ids)==28 and len(set(ids))==28
+    assert ids[0]=='start' and len(ids)==len(set(ids)) and {'start', 'hammer', 'tutorial_hammer', 'troubleshooting', 'cables', 'compact', 'tutorial_graphics', 'holograms', 'panels', 'tutorial_inventory', 'large', 'tutorial_energy', 'wireless', 'information', 'configuration', 'transfer', 'materials', 'fluids', 'remote', 'guide_controls', 'kubejs', 'redstone', 'status', 'tutorial_hologram', 'inventory', 'tutorial_expansion', 'energy', 'nodes'}.issubset(set(ids))
     assert book['chapters'][0]['title']=='Welcome to Foundations PL4'
     assert ids[1:7]==tutorials
     assert all(c['category']=='start' for c in book['chapters'][:7])

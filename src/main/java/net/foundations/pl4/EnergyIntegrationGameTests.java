@@ -34,6 +34,19 @@ public final class EnergyIntegrationGameTests {
         return new Fixture(source,sink,TransferEngine.prepare(List.of(source,sink)),new Battery(amount,amount),new Battery(0,capacity));
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layoutTemplateRoundTripFitAndMalformedInput(GameTestHelper h){
+        var e=DisplayElements.create(DisplayElements.Type.TEXT,7,100,100).bounds(new DisplayElements.Rect(50,50,40,40));
+        for(int preset=0;preset<3;preset++)h.assertTrue(LayoutTemplate.decode(LayoutTemplate.preset(preset,100,100).encode()).elements().size()==2,"Starter boards round-trip with typed components");
+        var template=new LayoutTemplate(100,100,List.of(e));var decoded=LayoutTemplate.decode(template.encode());
+        h.assertTrue(decoded.elements().equals(template.elements()),"Versioned JSON preserves pages and text styles");
+        var prepared=decoded.prepare(20,20,true,false);
+        h.assertTrue(!prepared.getFirst().id().equals(e.id())&&prepared.getFirst().page()==7&&prepared.getFirst().bounds().right()<=20&&prepared.getFirst().bounds().bottom()<=20,"Fit imports fresh IDs inside a smaller canvas without losing page identity");
+        boolean rejected=false;try{decoded.prepare(20,20,false,false);}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Oversized layouts require explicit fitting");
+        rejected=false;try{LayoutTemplate.decode(template.encode().replace("\"schema\":1","\"schema\":2"));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Unknown schema is rejected");
+        rejected=false;try{new LayoutTemplate(100,100,List.of(e,e));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Duplicate IDs are rejected");
+        rejected=false;try{LayoutTemplate.decode("x".repeat(LayoutTemplate.MAX_TEXT+1));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Oversized clipboard input is rejected before parsing");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void optionalReaderSystemsPersistAndModelsKeepMultipartGeometry(GameTestHelper h){
         for(String system:List.of("CREATE","AE2")){
             Part p=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);p.energySystem=system;

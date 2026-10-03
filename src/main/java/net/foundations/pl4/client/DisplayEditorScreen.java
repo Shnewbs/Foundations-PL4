@@ -45,6 +45,7 @@ public final class DisplayEditorScreen extends Screen {
         var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
         addRenderableWidget(Button.builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
+        addRenderableWidget(Button.builder(Component.literal("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
         addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void extractBackground(GuiGraphicsExtractor g,int x,int y,float partial){} // World, not a blurred menu.
@@ -125,6 +126,17 @@ public final class DisplayEditorScreen extends Screen {
         pushUndo();pending=true;waitTicks=0;message="Saving...";
         net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
+    LayoutTemplate exportLayout(){var elements=snapshot();return new LayoutTemplate(Math.max(spaceW(),elements.stream().mapToInt(e->e.bounds().right()).max().orElse(8)),Math.max(spaceH(),elements.stream().mapToInt(e->e.bounds().bottom()).max().orElse(9)),elements);}
+    void importLayout(LayoutTemplate template,boolean fit,boolean clearReaders,long revision){
+        if(!editable||pending){message="Not ready.";return;}
+        if(revision!=part.layoutRevision){message="Screen changed; load the preview again.";return;}
+        var elements=template.prepare(spaceW(),spaceH(),fit,clearReaders);
+        for(var e:elements)if(!e.reader().isEmpty()&&part.readerChoices.stream().noneMatch(c->c.id().equals(e.reader()))&&part.readerChoices.stream().filter(c->c.name().equals(e.reader())).count()!=1){message="Reader unavailable; select Readers: Auto or reconnect it.";return;}
+        var check=LayoutTransactions.applyReplace(new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision),part.layoutRevision,elements);
+        if(!check.accepted()){message=check.message();return;}
+        pushUndo();selectedIds.clear();selected=null;commitReplace(elements);
+    }
+    void templatesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayTemplatesScreen(this));}
     void pagesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayPagesScreen(this));}
     int pageElementCount(int page){return (int)part.elements.stream().filter(e->e.spec().page()==page).count();}
     void pageAction(String action,String value){
