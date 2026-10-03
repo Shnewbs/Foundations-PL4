@@ -16,12 +16,14 @@ public final class PartScreen extends Screen {
     private Component hoveredRowTooltip;
     private boolean draggingSettings;private double settingsDragOffset;
     private Button energyInputButton,energyOutputButton,energyModeButton;
+    private Button channelButton;
     private Button viewToggle;private String displayError="";
     private final Map<String,EditBox> fields=new LinkedHashMap<>();
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
     public void update(Part p){if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+        if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; first 64 shown")));}
         if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
         if(energyOutputButton!=null){energyOutputButton.setMessage(Component.literal("Output: "+EnergyPorts.label(part.energyOutput)));energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;}
         if(energyModeButton!=null){energyModeButton.setMessage(Component.literal("Conversion: "+(part.energyConvert?"On":"Off")));energyModeButton.active=editable&&part.energyRouteEditable();}
@@ -30,7 +32,7 @@ public final class PartScreen extends Screen {
     public void error(String message){displayError=message;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;energyInputButton=energyOutputButton=energyModeButton=null;
+        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;channelButton=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
         if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
@@ -54,11 +56,23 @@ public final class PartScreen extends Screen {
                 String label="Energy: "+part.energySystem;
                 button(label,left+12,y,Math.min(w-24,font.width("Energy: CREATE")+24),b->{String value=next(new String[]{"AUTO","FE","EU","J","CREATE","AE2"},part.energySystem);send("energy_system",value);b.setMessage(Component.literal("Energy: "+value));});y+=28;
             }
+            if(part.kind.reader()){
+                channelButton=button(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52),left+12,y,w-24,b->{
+                    List<String> ids=new ArrayList<>();ids.add("");part.targetChoices.forEach(c->ids.add(c.id()));
+                    int next=(ids.indexOf(part.targetChannel)+1)%ids.size();send("target_channel",ids.get(next));
+                });channelButton.setTooltip(Tooltip.create(Component.literal("Cycle stable block/entity targets (first 64). All targets clears selection. Slot/tank and list mode stay separate.")));y+=28;
+                button("All targets",left+12,y,104,b->send("target_channel",""));y+=28;
+            }
             field("label","Name",part.label,x,y,fw);y+=28;
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
+            fields.get("filter").setTooltip(Tooltip.create(Component.literal("Comma-separated IDs or #tags, e.g. minecraft:stone,#c:ingots. Applies to item/fluid lists; STORAGE shows the full target.")));
+            if(part.kind==Kind.INVENTORY_READER||part.kind==Kind.TRANSFER_NODE){
+                button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
+                button("Clear filter",left+150,y,104,b->fields.get("filter").setValue(""));y+=28;
+            }
             field("selected","Reader name",part.selected,x,y,fw);y+=28;
             field("metric","Data key",part.metric,x,y,fw);y+=28;
-            field("index","Slot / position",Integer.toString(part.index),x,y,70);
+            field("index","Slot / tank / rank",Integer.toString(part.index),x,y,70);
             field("priority","Priority",Integer.toString(part.priority),x+fw-70,y,70);y+=28;
             field("threshold",part.kind==Kind.CLOCK?"Interval (ticks)":"Threshold",Double.toString(part.threshold),x,y,90);
             button(part.comparison,x+98,y,45,b->{String[] ops={">=",">","<","<=","=","!="};send("comparison",next(ops,part.comparison));b.setMessage(Component.literal(next(ops,part.comparison)));});y+=28;
@@ -135,7 +149,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.drawString(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / position";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.drawString(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }

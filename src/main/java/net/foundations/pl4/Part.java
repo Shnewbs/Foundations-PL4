@@ -20,6 +20,8 @@ public final class Part {
     public int hologramView = 3; // SOUTH for legacy floor/ceiling projectors; wall view is derived.
     public long layoutRevision; // Shared large-display edits; persisted so expansion/reload keeps the layout.
     public String energySystem = "AUTO";
+    public String targetChannel = "";
+    public final List<ReaderChoice> targetChoices=new ArrayList<>(); // Derived from this reader's network; sync-only.
     public String energyInput="FE",energyOutput="FE",pendingEnergyUnit="FE";
     public int energyVoltage=32,pendingEnergyJRate,pendingEnergyEURate,pendingEnergyEDRate;
     public long pendingEnergyCredits;
@@ -118,6 +120,7 @@ public final class Part {
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
         t.putBoolean("displayOutward",displayOutward);t.putString("energySystem",energySystem);
+        t.putString("targetChannel",targetChannel);
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
         t.putString("comparison",comparison); t.putDouble("threshold",threshold); t.putInt("index",index); t.putInt("priority",priority); t.putInt("signal",signal);
         t.putInt("color",color); t.putInt("transferMode",transferMode); t.putBoolean("items",items); t.putBoolean("fluids",fluids); t.putBoolean("energy",energy);
@@ -137,6 +140,7 @@ public final class Part {
             t.putInt("canvasWidth",canvasWidth);t.putInt("canvasHeight",canvasHeight);t.putInt("canvasColumn",canvasColumn);t.putInt("canvasRow",canvasRow);t.putInt("canvasMask",canvasMask);
             ListTag r = new ListTag(); rows.forEach(a -> r.add(a.save())); t.put("rows",r); t.putString("status",status);
             ListTag choices=new ListTag();for(var choice:readerChoices){CompoundTag c=new CompoundTag();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());choices.add(c);}t.put("readerChoices",choices);
+            ListTag channels=new ListTag();for(var choice:targetChoices){CompoundTag c=new CompoundTag();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());channels.add(c);}t.put("targetChoices",channels);
             ListTag sources=new ListTag();for(var entry:sourceRows.entrySet()){CompoundTag c=new CompoundTag();c.putString("id",entry.getKey());ListTag data=new ListTag();entry.getValue().forEach(row->data.add(row.save()));c.put("data",data);sources.add(c);}t.put("sources",sources);
         }
         return t;
@@ -148,6 +152,7 @@ public final class Part {
         p.hologramView=net.foundations.pl4.core.HologramProjection.view(p.face.ordinal(),t.contains("hologramView")?t.getInt("hologramView"):3);
         p.layoutRevision=Math.max(0,t.getLong("layoutRevision"));
         p.displayOutward=t.getBoolean("displayOutward");p.energySystem=net.foundations.pl4.core.EnergyValues.system(t.getString("energySystem"));
+        p.targetChannel=ReaderChannels.sanitize(t.getString("targetChannel"));
         p.label=t.getString("label"); p.filter=t.getString("filter"); p.selected=t.getString("selected"); p.metric=t.getString("metric"); p.mode=t.getString("mode");
         p.comparison=t.getString("comparison"); p.threshold=t.getDouble("threshold"); p.index=t.getInt("index"); p.priority=t.getInt("priority"); p.signal=t.getInt("signal");
         p.color=t.getInt("color"); p.transferMode=t.getInt("transferMode"); p.items=t.getBoolean("items"); p.fluids=t.getBoolean("fluids"); p.energy=t.getBoolean("energy");
@@ -164,6 +169,7 @@ public final class Part {
         ListTag rows=t.getList("rows",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(rows.size(),256);i++) p.rows.add(Row.load(rows.getCompound(i),registry));
         ListTag choices=t.getList("readerChoices",Tag.TAG_COMPOUND);for(int i=0;i<Math.min(64,choices.size());i++){CompoundTag c=choices.getCompound(i);p.readerChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
         ListTag sources=t.getList("sources",Tag.TAG_COMPOUND);int budget=256;for(int i=0;i<Math.min(8,sources.size());i++){CompoundTag c=sources.getCompound(i);ListTag data=c.getList("data",Tag.TAG_COMPOUND);List<Row> list=new ArrayList<>();for(int n=0;n<Math.min(64,data.size())&&budget>0;n++,budget--)list.add(Row.load(data.getCompound(n),registry));p.sourceRows.put(c.getString("id"),List.copyOf(list));}
+        ListTag channels=t.getList("targetChoices",Tag.TAG_COMPOUND);for(int i=0;i<Math.min(64,channels.size());i++){CompoundTag c=channels.getCompound(i);p.targetChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
         p.status=t.getString("status");
         p.canvasWidth=Math.clamp(t.getInt("canvasWidth"),1,16);p.canvasHeight=Math.clamp(t.getInt("canvasHeight"),1,16);
         p.canvasColumn=Math.clamp(t.getInt("canvasColumn"),0,p.canvasWidth-1);p.canvasRow=Math.clamp(t.getInt("canvasRow"),0,p.canvasHeight-1);p.canvasMask=t.getInt("canvasMask")&15;

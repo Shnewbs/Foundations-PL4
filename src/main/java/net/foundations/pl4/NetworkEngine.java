@@ -164,10 +164,15 @@ public final class NetworkEngine {
         }
         for(Ref r:readers){
             r.part.rows.clear();
-            List<Part.Link> selectedTargets=targets;
-            if(r.part.index>0&&r.part.mode.equals("CHANNEL"))selectedTargets=targets.size()>=r.part.index?List.of(targets.get(r.part.index-1)):List.of();
+            ReaderChannels.refresh(server,r.part,targets);
+            List<Part.Link> selectedTargets=ReaderChannels.select(r.part,targets);
             r.part.rows.addAll(DataSampler.sample(server,r,selectedTargets,hosts));
             if(r.part.kind!=Kind.ENERGY_READER)r.part.status=targets.isEmpty()?"No node connections":"Connected: "+targets.size()+" targets / "+hosts+" hosts";
+            if(!r.part.targetChannel.isEmpty()){
+                if(selectedTargets.isEmpty())r.part.status="Selected target disconnected";
+                else if(!ReaderChannels.available(server,selectedTargets.getFirst()))r.part.status="Selected target unloaded";
+                else r.part.status="Channel: "+ReaderChannels.label(r.part)+" · "+r.part.status;
+            }
         }
         String connectionStatus="Connected: "+hosts+" hosts / "+refs.size()+" parts";
         for(Ref r:refs){

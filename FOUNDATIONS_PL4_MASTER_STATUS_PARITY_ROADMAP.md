@@ -2169,3 +2169,10 @@ Maintain these pins in the project so future refactors can always answer “whic
 ## R1.10 combined display workflow update
 
 Implemented on both active tracks: schema-1 JSON whole-layout export/import, client-local named templates, eight-page spatial previews, fit-to-screen bounds, fresh imported identities, reader-binding clearing, revision-fenced and undoable apply, and item/fluid/energy starter boards. See the current field guide. Optional server templates, Operator-held layout copying, element lock/hide/grouping and the remaining integration backlog are still pending.
+
+
+## 0.0.2a.R2 — first reader/provider batch
+
+Implemented: persisted endpoint pins independent of data mode; bounded target cycling and reset; no fallback for missing pins; fluid tank SLOT selection; held-item filter shortcut; trimmed Info Reader metric keys; read-only provider registry with bounded namespaced results, failure isolation and unregister handles. Vanilla information sampling now goes through the registry.
+
+Still open in Phase 2: user-named channels and richer searchable selection, combined-inventory deduplication, full per-slot/per-tank presentation, richer network diagnostics, third-party machine providers and installed-mod acceptance. This batch does not mark the entire R2 parity phase complete.

@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R1.10
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R2
 
 ## Welcome to Foundations PL4
 
@@ -697,3 +697,23 @@ The Starter button cycles through item inventory, fluid overview and energy over
 ### FORMAT LIMITS
 
 Only foundations_pl4:layout schema 1 is accepted. Documents have explicit canvas dimensions, a maximum of 32 elements and eight page slots, and a bounded payload. Unsupported schemas, duplicate IDs, invalid bounds, oversized files and arbitrary filename paths are rejected. Layout library work is implemented; server-provided templates, Operator item layout copying and richer template browsing remain future work.
+
+## Reader targets and providers
+
+Pin a reader to a stable endpoint, then choose what to show.
+
+### PIN A TARGET
+
+Open a Reader, select Settings, then click Target to cycle connected block faces and entities. The picker shows the first 64 endpoints with dimension, position and side. All targets clears the pin. A pin survives save/reload and target-list reordering. If the endpoint disconnects or unloads, the reader reports that state instead of silently reading a different endpoint. Replacing a block at the same position and side keeps that endpoint.
+
+### TARGET AND DATA MODE
+
+Target selection is independent of LIST, STACK, SLOT, POS and STORAGE. SLOT uses a zero-based slot or tank number; POS uses the rank in the sorted aggregated list. Old CHANNEL plus index settings still work until you choose a target or All targets. Info Readers show the first available target; pin one to make the choice explicit.
+
+### FILTER CONTROLS
+
+Inventory Readers and Transfer Nodes can copy the held item ID into the filter field or clear it, then Apply fields. Separate multiple IDs or #tags with commas. Allow filter includes matches; Exclude filter omits them. These filters affect item/fluid lists. STORAGE deliberately reports the full selected target capacity and contents.
+
+### EXTENDING INFORMATION
+
+Info Readers now use a provider registry. Add-on developers can register read-only block or entity telemetry through InfoProviders. Vanilla data keys stay unchanged; add-on keys are namespaced. Providers have row and text limits, invalid numbers are rejected, and a failing provider loses its partial sample without suppressing healthy providers. This API does not itself add support for every machine mod.
