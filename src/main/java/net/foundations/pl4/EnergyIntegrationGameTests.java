@@ -331,6 +331,10 @@ public final class EnergyIntegrationGameTests {
         String forged=UUID.randomUUID().toString();part.targetChoices.add(new Part.ReaderChoice(forged,"Stale entry","block"));
         PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"target_channel",forged));
         h.assertTrue(part.targetChannel.isEmpty(),"Cached choices cannot grant access to absent network endpoints");
+        NetworkEngine.ensureCurrent(h.getLevel().getServer());long builds=NetworkEngine.topologyBuildCount();
+        PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"target_query","chest"));
+        PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"target_page","0"));
+        h.assertTrue(part.targetQuery.equals("chest")&&NetworkEngine.topologyBuildCount()==builds,"Reader browsing must not rebuild unchanged network topology");
         owner.setPos(pos.getX()+100,pos.getY(),pos.getZ());
         PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"label","remote"));
         h.assertTrue(part.label.isEmpty(),"Remote UI edit is rejected");h.succeed();

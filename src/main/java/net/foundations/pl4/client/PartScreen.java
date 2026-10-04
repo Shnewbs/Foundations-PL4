@@ -65,10 +65,10 @@ public final class PartScreen extends Screen {
                 button("All targets",left+12,y,104,b->send("target_channel",""));y+=28;
                 button("Previous",left+12,y,80,b->send("target_page",Integer.toString(Math.max(0,part.targetPage-1))));
                 channelPageButton=button("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64),left+98,y,132,b->send("target_page",Integer.toString(part.targetPage+1)));y+=28;
-                field("target_query","Target search",part.targetQuery,x,y,fw);y+=28;
+                field("target_query","Target search",part.targetQuery,x,y,fw);fields.get("target_query").setMaxLength(48);y+=28;
                 button("Search targets",left+12,y,132,b->send("target_query",fields.get("target_query").getValue()));y+=28;
                 field("channel_name","Channel name",part.channelNames.getOrDefault(part.targetChannel,""),x,y,fw);y+=28;
-                fields.get("channel_name").setTooltip(Tooltip.create(Component.literal("Name the selected endpoint for this reader. Apply fields saves it. Blank removes a name; up to 64 names.")));
+                fields.get("channel_name").setMaxLength(48);fields.get("channel_name").setTooltip(Tooltip.create(Component.literal("Name the selected endpoint for this reader. Apply fields saves it. Blank removes a name; up to 64 names.")));
             }
             field("label","Name",part.label,x,y,fw);y+=28;
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;

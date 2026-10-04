@@ -164,7 +164,10 @@ public final class PLPackets {
             }
         }catch(IllegalArgumentException ignored){return;}
         if(p.kind.display())DisplayNetworks.layoutEdited(h,p);
-        if(p.kind.reader())ReaderChannels.refresh(h.getLevel().getServer(),p,NetworkEngine.targetsFor(h.getLevel().getServer(),p));
+        if(p.kind.reader()&&Set.of("target_channel","target_query","target_page","channel_name").contains(packet.field)){
+            ReaderChannels.refresh(h.getLevel().getServer(),p,NetworkEngine.targetsFor(h.getLevel().getServer(),p));
+            h.setChanged();h.syncIfChanged();reply(player,anchorHost,anchorPart);return;
+        }
         h.changed();reply(player,anchorHost,anchorPart);
     }
     private static String clean(String s,int length){String value=s.replaceAll("[\\p{Cntrl}§]","");return value.substring(0,Math.min(length,value.length()));}

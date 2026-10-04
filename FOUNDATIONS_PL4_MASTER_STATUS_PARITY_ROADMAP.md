@@ -2183,3 +2183,8 @@ Still open in Phase 2: user-named channels and richer searchable selection, comb
 Completed: paginated/searchable endpoint selection; saved per-reader aliases; correct pin status beyond 64 endpoints; current-network validation of target edits; exact handler and vanilla combined-inventory deduplication; network availability diagnostics; current 26.3 furnace keys; registration generation safety; immutable provider snapshot reuse; dead-code cleanup.
 
 Release acceptance remains explicitly open for real-client visuals, two-player gameplay and installed optional power mods. Generic overlapping modded storage views require provider-specific identities; no heuristic equality-based deduplication was added. Broader machine providers, richer per-slot/per-tank presentation and full Phase 2 parity remain follow-up work.
+
+
+## 0.0.2a.R2.2 — final audit performance fix
+
+Reader-only browsing controls no longer invalidate network topology. Native packet coverage verifies unchanged topology build count across successful search/page edits. This completes the current correctness cleanup, while the client/multiplayer/installed-mod acceptance boundaries listed above remain open.
