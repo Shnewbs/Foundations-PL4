@@ -19,3 +19,5 @@ The separate Minecraft branches contain necessary API differences, not competing
 Deduplication does not merge inventories based on equal contents. Distinct modded wrappers can overlap without advertising shared identity, and need provider-specific integration. Installed Create/AE2/Mekanism/GT/Electrodynamics acceptance, client visual checks and live two-player play have not been performed in this audit environment. Existing native conversion, rollback, placement, display-lighting, persistence and ownership regression suites remain release gates.
 
 Furnace field migration reference: https://www.minecraft.net/en-us/article/minecraft-1-21-4-pre-release-2
+
+The first native run exposed a faulty test assumption (64 items per slot) and a 26.3 adapter inconsistency: general slot capacity must be requested with ItemResource.EMPTY, not the currently stored item. The regression now sums the native general-capacity API directly and requires exact agreement after deduplication. STORAGE also skips redundant visual aggregation/serialization.

@@ -36,7 +36,7 @@ public final class TransferAdapters {
         public Object identity(){return handler;}
         public int getSlots(){return handler.size();}
         public ItemStack getStackInSlot(int i){return handler.getResource(i).toStack(handler.getAmountAsInt(i));}
-        public int getSlotLimit(int i){return handler.getCapacityAsInt(i,handler.getResource(i));}
+        public int getSlotLimit(int i){return handler.getCapacityAsInt(i,ItemResource.EMPTY);}
         public ItemStack insertItem(int i,ItemStack stack,boolean sim){if(stack.isEmpty())return ItemStack.EMPTY;try(var tx=Transaction.openRoot()){int n=handler.insert(i,ItemResource.of(stack),stack.getCount(),tx);if(!sim)tx.commit();return stack.copyWithCount(stack.getCount()-n);}}
         public ItemStack extractItem(int i,int amount,boolean sim){var resource=handler.getResource(i);if(resource.isEmpty()||amount<=0)return ItemStack.EMPTY;try(var tx=Transaction.openRoot()){int n=handler.extract(i,resource,amount,tx);if(!sim)tx.commit();return resource.toStack(n);}}
     };}
