@@ -65,6 +65,7 @@ public final class DataSampler {
                 if(!sources.inventory(l,link,handler,handler.getSlots()))continue;
                 for(int slot=0;slot<Math.min(handler.getSlots(),65536);slot++){
                     ItemStack stack=handler.getStackInSlot(slot);capacity+=handler.getSlotLimit(slot);total+=stack.getCount();
+                    if(p.mode.equals("STORAGE"))continue;
                     if(stack.isEmpty()||!matches(stack,p)||p.mode.equals("SLOT")&&slot!=p.index)continue;
                     pictures.item(stack);
                 }
@@ -73,6 +74,7 @@ public final class DataSampler {
                 if(!sources.fluid(handler))continue;
                 for(int tank=0;tank<Math.min(handler.getTanks(),65536);tank++){
                     FluidStack stack=handler.getFluidInTank(tank);capacity+=handler.getTankCapacity(tank);total+=stack.getAmount();
+                    if(p.mode.equals("STORAGE"))continue;
                     if(stack.isEmpty()||!matches(stack,p)||p.mode.equals("SLOT")&&tank!=p.index)continue;
                     pictures.fluid(stack,handler.getTankCapacity(tank));
                 }
@@ -80,13 +82,13 @@ public final class DataSampler {
                 for(var row:net.foundations.pl4.api.InfoProviders.sample(l,link))rows.put(row.key(),row);break; // PL2 info reader chooses one channel at a time.
             }
         }
-        if(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER){
+        if(!p.mode.equals("STORAGE")&&(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER)){
             for(Part.Row row:pictures.rows(ref.level().registryAccess(),p.descending,p.mode.equals("POS")?1:PLConfig.MAX_ROWS.get(),p.mode.equals("POS")?p.index:0))merge(rows,row);
         }
         if(p.mode.equals("STORAGE")&&(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER)){
             String unit=p.kind==Kind.FLUID_READER?"mB":"items";
             rows.clear();
-            LinkedHashMap<String,Part.Row> withTotal=new LinkedHashMap<>();withTotal.put("storage",new Part.Row("storage","Storage",total,capacity,unit));withTotal.putAll(rows);rows=withTotal;
+            rows.put("storage",new Part.Row("storage","Storage",total,capacity,unit));
         }
         List<Part.Row> result=new ArrayList<>(rows.values());
         if(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER){

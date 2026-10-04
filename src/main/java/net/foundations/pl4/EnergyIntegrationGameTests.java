@@ -289,7 +289,10 @@ public final class EnergyIntegrationGameTests {
         var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b,a),1);
         h.assertTrue(rows.size()==1&&rows.getFirst().value()==20,"Both halves and repeated links count one combined inventory");
         reader.part().mode="STORAGE";var storage=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b),1).getFirst();
-        h.assertTrue(storage.value()==20&&storage.capacity()==54*64,"Storage capacity must not double count the combined inventory");h.succeed();
+        var nativeHandler=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,left,Direction.UP);
+        h.assertTrue(nativeHandler!=null&&nativeHandler.getSlots()==54,"Fixture exposes the whole double chest");
+        long expectedCapacity=0;for(int i=0;i<54;i++)expectedCapacity+=nativeHandler.getSlotLimit(i);
+        h.assertTrue(storage.value()==20&&storage.capacity()==expectedCapacity&&expectedCapacity>0,"Storage reports the native general capacity once, not a guessed stack size: "+storage.capacity()+" / "+expectedCapacity);h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=80)
     public static void liveFurnaceReportsCookingAndFuel(GameTestHelper h){
