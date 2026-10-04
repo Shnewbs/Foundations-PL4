@@ -352,7 +352,8 @@ public final class EnergyIntegrationGameTests {
         boolean[] fail={true};BlockPos absolute=h.absolutePos(toPos);
         var to=new net.minecraft.world.level.block.entity.ChestBlockEntity(absolute,h.getLevel().getBlockState(absolute)){
             @Override public void setItem(int slot,net.minecraft.world.item.ItemStack stack){
-                if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
+                // 26.3 simulations tentatively write then roll back: fail only after real source extraction.
+                if(fail[0]&&from.getItem(0).isEmpty()&&!stack.isEmpty())throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
             }
         };
         h.getLevel().setBlockEntity(to);h.getLevel().invalidateCapabilities(absolute);
