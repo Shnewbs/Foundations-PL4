@@ -32,16 +32,20 @@ public final class VisualSamples {
                 id=BuiltInRegistries.ITEM.getKey(item.getItem()).toString();name=item.getHoverName().getString();unit="items";
                 // Rendering is allowed to retain custom models, dyes, enchantment glint and other bounded visual components.
                 item.remove(DataComponents.CONTAINER);item.remove(DataComponents.BLOCK_ENTITY_DATA);
-                it=(CompoundTag)net.foundations.pl4.NbtStacks.save(item,registry);byte[] encoded=bounded(it,Math.min(4096,budget));
-                if(encoded==null){item=new ItemStack(item.getItem());it=(CompoundTag)net.foundations.pl4.NbtStacks.save(item,registry);encoded=bounded(it,4096);}
+                it=(CompoundTag)net.foundations.pl4.NbtStacks.save(item,registry);byte[] encoded=bounded(it,4096);
+                String variant=encoded!=null&&!sum.item.getComponentsPatch().isEmpty()?fingerprint(it):"";
+                if(encoded==null||encoded.length>budget){item=new ItemStack(item.getItem());it=(CompoundTag)net.foundations.pl4.NbtStacks.save(item,registry);encoded=bounded(it,Math.min(4096,budget));}
+                if(encoded==null)it=new CompoundTag();
                 budget=Math.max(0,budget-(encoded==null?0:encoded.length));
-                if(!sum.item.getComponentsPatch().isEmpty())id+="~"+fingerprint(it);
+                if(!variant.isEmpty())id+="~"+variant;else if(!sum.item.getComponentsPatch().isEmpty()&&!it.isEmpty())id+="~"+fingerprint(it);
             }else{
                 id=BuiltInRegistries.FLUID.getKey(fluid.getFluid()).toString();name=fluid.getHoverName().getString();unit="mB";
-                ft=(CompoundTag)net.foundations.pl4.NbtStacks.save(fluid,registry);byte[] encoded=bounded(ft,Math.min(4096,budget));
-                if(encoded==null){fluid=new FluidStack(fluid.getFluid(),1);ft=(CompoundTag)net.foundations.pl4.NbtStacks.save(fluid,registry);encoded=bounded(ft,4096);}
+                ft=(CompoundTag)net.foundations.pl4.NbtStacks.save(fluid,registry);byte[] encoded=bounded(ft,4096);
+                String variant=encoded!=null&&!sum.fluid.getComponentsPatch().isEmpty()?fingerprint(ft):"";
+                if(encoded==null||encoded.length>budget){fluid=new FluidStack(fluid.getFluid(),1);ft=(CompoundTag)net.foundations.pl4.NbtStacks.save(fluid,registry);encoded=bounded(ft,Math.min(4096,budget));}
+                if(encoded==null)ft=new CompoundTag();
                 budget=Math.max(0,budget-(encoded==null?0:encoded.length));
-                if(!sum.fluid.getComponentsPatch().isEmpty())id+="~"+fingerprint(ft);
+                if(!variant.isEmpty())id+="~"+variant;else if(!sum.fluid.getComponentsPatch().isEmpty()&&!ft.isEmpty())id+="~"+fingerprint(ft);
             }
             rows.add(new Part.Row(id,cleanName(name),sum.value,sum.capacity,unit,item,fluid,it,ft));
         }return rows;

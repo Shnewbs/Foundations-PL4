@@ -13,6 +13,7 @@ public final class ElementJson {
     public static List<DisplayElements.Spec> decodeList(String text){
         if(text.length()>65536)throw new IllegalArgumentException("Layout snapshot too large");
         JsonArray array=JsonParser.parseString(text).getAsJsonArray();
+        if(array.size()>DisplayElements.MAX_ELEMENTS)throw new IllegalArgumentException("Too many layout elements");
         List<DisplayElements.Spec> result=new java.util.ArrayList<>();for(var e:array)result.add(decode(e.toString()));return result;
     }
     public static String encode(DisplayElements.Spec e){
