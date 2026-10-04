@@ -2176,3 +2176,10 @@ Implemented on both active tracks: schema-1 JSON whole-layout export/import, cli
 Implemented: persisted endpoint pins independent of data mode; bounded target cycling and reset; no fallback for missing pins; fluid tank SLOT selection; held-item filter shortcut; trimmed Info Reader metric keys; read-only provider registry with bounded namespaced results, failure isolation and unregister handles. Vanilla information sampling now goes through the registry.
 
 Still open in Phase 2: user-named channels and richer searchable selection, combined-inventory deduplication, full per-slot/per-tank presentation, richer network diagnostics, third-party machine providers and installed-mod acceptance. This batch does not mark the entire R2 parity phase complete.
+
+
+## 0.0.2a.R2.1 — reader correctness closeout
+
+Completed: paginated/searchable endpoint selection; saved per-reader aliases; correct pin status beyond 64 endpoints; current-network validation of target edits; exact handler and vanilla combined-inventory deduplication; network availability diagnostics; current 26.3 furnace keys; registration generation safety; immutable provider snapshot reuse; dead-code cleanup.
+
+Release acceptance remains explicitly open for real-client visuals, two-player gameplay and installed optional power mods. Generic overlapping modded storage views require provider-specific identities; no heuristic equality-based deduplication was added. Broader machine providers, richer per-slot/per-tank presentation and full Phase 2 parity remain follow-up work.

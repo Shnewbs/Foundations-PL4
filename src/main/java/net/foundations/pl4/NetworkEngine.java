@@ -132,6 +132,12 @@ public final class NetworkEngine {
         CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }
+    /** Current server-owned endpoints; UI edits never supply arbitrary positions. */
+    public static List<Part.Link> targetsFor(MinecraftServer server,Part reader){
+        ensureCurrent(server);
+        for(Group group:cachedGroups)if(!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&group.readers.stream().anyMatch(r->r.part==reader))return group.targets;
+        return List.of();
+    }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent.Post e){
         MinecraftServer server=e.getServer();
@@ -143,7 +149,7 @@ public final class NetworkEngine {
         if(!sample)return;
         for(Group group:cachedGroups) {
             if(group.hostCount>PLConfig.MAX_NETWORK.get()) {
-                for(Ref r:group.parts){r.part.rows.clear();r.part.status="Network exceeds configured host limit";setSignal(r,0);}continue;
+                for(Ref r:group.parts){r.part.rows.clear();r.part.targetChoices.clear();r.part.targetCount=0;r.part.targetLabel="Network exceeds configured host limit";r.part.status="Network exceeds configured host limit";setSignal(r,0);}continue;
             }
             try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers,group.transfers); }
             catch(RuntimeException ex) {
