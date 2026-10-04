@@ -385,4 +385,13 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
         h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&rows.getLast().key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).getFirst().key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
     }
-    @
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){
+        var elements=new ArrayList<DisplayElements.Spec>();
+        for(int i=0;i<32;i++)elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));
+        h.assertTrue(ElementJson.decodeList(ElementJson.encodeList(elements)).size()==32,"Full supported snapshot is accepted");
+        elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));boolean rejected=false;
+        try{ElementJson.decodeList(ElementJson.encodeList(elements));}catch(IllegalArgumentException expected){rejected=true;}
+        h.assertTrue(rejected,"Oversized element arrays are rejected before individual decoding");h.succeed();
+    }
+}
