@@ -339,4 +339,56 @@ public final class EnergyIntegrationGameTests {
         PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"label","remote"));
         h.assertTrue(part.label.isEmpty(),"Remote UI edit is rejected");h.succeed();
     }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void addItemEscrowSurvivesDestinationException(GameTestHelper h){
+        BlockPos fromPos=new BlockPos(1,1,1),toPos=new BlockPos(5,1,1);
+        h.setBlock(fromPos,net.minecraft.world.level.block.Blocks.CHEST);
+        h.setBlock(toPos,net.minecraft.world.level.block.Blocks.CHEST);
+        var from=(net.minecraft.world.level.block.entity.ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(fromPos));
+        from.setItem(0,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND,17));
+        boolean[] fail={true};BlockPos absolute=h.absolutePos(toPos);
+        var to=new net.minecraft.world.level.block.entity.ChestBlockEntity(absolute,h.getLevel().getBlockState(absolute)){
+            @Override public void setItem(int slot,net.minecraft.world.item.ItemStack stack){
+                if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
+            }
+        };
+        h.getLevel().setBlockEntity(to);h.getLevel().invalidateCapabilities(absolute);
+        var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
+        var sink=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);sink.part().transferMode=1;
+        boolean thrown=false;try{TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));}catch(IllegalStateException expected){
+            if(!"PL4 expected destination failure".equals(expected.getMessage()))throw expected;thrown=true;
+        }
+        h.assertTrue(thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17,"Extracted items remain owned by ADD escrow after a pre-mutation destination failure");
+        Part restored=Part.load(sink.part().save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(restored!=null&&restored.pendingItem.getCount()==17,"Exception escrow survives persistence");
+        fail[0]=false;TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));
+        h.assertTrue(to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void previewFallbackRespectsTotalBudgetAndStableKeys(GameTestHelper h){
+        var samples=new VisualSamples();var last=net.minecraft.world.item.ItemStack.EMPTY;
+        for(int i=0;i<256;i++){
+            var item=new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE);
+            item.set(DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal(i+":"+"x".repeat(1500)));
+            samples.item(item);last=item;
+        }
+        var rows=samples.rows(h.getLevel().registryAccess(),true,256,0);int bytes=0;boolean omitted=false;
+        for(var row:rows){
+            if(row.previewItem().isEmpty())omitted=true;else{byte[] encoded=VisualSamples.bounded(row.previewItem(),4096);h.assertTrue(encoded!=null,"Each preview fits the individual bound");bytes+=encoded.length;}
+            h.assertTrue(row.value()==1&&row.itemId().equals("minecraft:stone"),"Exhausted visual budget preserves numeric and server-side filter data");
+        }
+        var alone=new VisualSamples();alone.item(last);
+        h.assertTrue(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
+        h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&rows.getLast().key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).getFirst().key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){
+        var elements=new ArrayList<DisplayElements.Spec>();
+        for(int i=0;i<32;i++)elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));
+        h.assertTrue(ElementJson.decodeList(ElementJson.encodeList(elements)).size()==32,"Full supported snapshot is accepted");
+        elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));boolean rejected=false;
+        try{ElementJson.decodeList(ElementJson.encodeList(elements));}catch(IllegalArgumentException expected){rejected=true;}
+        h.assertTrue(rejected,"Oversized element arrays are rejected before individual decoding");h.succeed();
+    }
 }
