@@ -342,7 +342,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(part.label.isEmpty(),"Remote UI edit is rejected");h.succeed();
     }
 
-    @PortGameTest
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void addItemEscrowSurvivesDestinationException(GameTestHelper h){
         BlockPos fromPos=new BlockPos(1,1,1),toPos=new BlockPos(5,1,1);
         h.setBlock(fromPos,net.minecraft.world.level.block.Blocks.CHEST);
@@ -367,7 +367,7 @@ public final class EnergyIntegrationGameTests {
         fail[0]=false;TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));
         h.assertTrue(to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once");h.succeed();
     }
-    @PortGameTest
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void previewFallbackRespectsTotalBudgetAndStableKeys(GameTestHelper h){
         var samples=new VisualSamples();var last=net.minecraft.world.item.ItemStack.EMPTY;
         for(int i=0;i<256;i++){
@@ -384,7 +384,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
         h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&rows.getLast().key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).getFirst().key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
     }
-    @PortGameTest
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){
         var elements=new ArrayList<DisplayElements.Spec>();
         for(int i=0;i<32;i++)elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));
