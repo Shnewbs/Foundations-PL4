@@ -20,7 +20,9 @@ public final class Part {
     public int hologramView = 3; // SOUTH for legacy floor/ceiling projectors; wall view is derived.
     public long layoutRevision; // Shared large-display edits; persisted so expansion/reload keeps the layout.
     public String energySystem = "AUTO";
-    public String targetChannel = "";
+    public String targetChannel = "", targetQuery = "", targetLabel = "";
+    public int targetPage,targetCount;
+    public final Map<String,String> channelNames=new LinkedHashMap<>();
     public final List<ReaderChoice> targetChoices=new ArrayList<>(); // Derived from this reader's network; sync-only.
     public String energyInput="FE",energyOutput="FE",pendingEnergyUnit="FE";
     public int energyVoltage=32,pendingEnergyJRate,pendingEnergyEURate,pendingEnergyEDRate;
@@ -120,7 +122,8 @@ public final class Part {
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
         t.putBoolean("displayOutward",displayOutward);t.putString("energySystem",energySystem);
-        t.putString("targetChannel",targetChannel);
+        t.putString("targetChannel",targetChannel);t.putString("targetQuery",targetQuery);t.putInt("targetPage",targetPage);
+        ListTag aliases=new ListTag();for(var entry:channelNames.entrySet()){CompoundTag c=new CompoundTag();c.putString("id",entry.getKey());c.putString("name",entry.getValue());aliases.add(c);}t.put("channelNames",aliases);
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
         t.putString("comparison",comparison); t.putDouble("threshold",threshold); t.putInt("index",index); t.putInt("priority",priority); t.putInt("signal",signal);
         t.putInt("color",color); t.putInt("transferMode",transferMode); t.putBoolean("items",items); t.putBoolean("fluids",fluids); t.putBoolean("energy",energy);
@@ -140,6 +143,7 @@ public final class Part {
             t.putInt("canvasWidth",canvasWidth);t.putInt("canvasHeight",canvasHeight);t.putInt("canvasColumn",canvasColumn);t.putInt("canvasRow",canvasRow);t.putInt("canvasMask",canvasMask);
             ListTag r = new ListTag(); rows.forEach(a -> r.add(a.save())); t.put("rows",r); t.putString("status",status);
             ListTag choices=new ListTag();for(var choice:readerChoices){CompoundTag c=new CompoundTag();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());choices.add(c);}t.put("readerChoices",choices);
+            t.putString("targetLabel",targetLabel);t.putInt("targetCount",targetCount);
             ListTag channels=new ListTag();for(var choice:targetChoices){CompoundTag c=new CompoundTag();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());channels.add(c);}t.put("targetChoices",channels);
             ListTag sources=new ListTag();for(var entry:sourceRows.entrySet()){CompoundTag c=new CompoundTag();c.putString("id",entry.getKey());ListTag data=new ListTag();entry.getValue().forEach(row->data.add(row.save()));c.put("data",data);sources.add(c);}t.put("sources",sources);
         }
@@ -153,6 +157,9 @@ public final class Part {
         p.layoutRevision=Math.max(0,t.getLong("layoutRevision").orElse(0L));
         p.displayOutward=t.getBoolean("displayOutward").orElse(false);p.energySystem=net.foundations.pl4.core.EnergyValues.system(t.getString("energySystem").orElse(""));
         p.targetChannel=ReaderChannels.sanitize(t.getString("targetChannel").orElse(""));
+        p.targetQuery=ReaderChannels.clean(t.getString("targetQuery").orElse(""));p.targetLabel=t.getString("targetLabel").orElse("");
+        p.targetPage=Math.clamp(t.getInt("targetPage").orElse(0),0,65535);p.targetCount=Math.max(0,t.getInt("targetCount").orElse(0));
+        ListTag aliases=t.getList("channelNames").orElseGet(ListTag::new);for(int i=0;i<Math.min(64,aliases.size());i++){CompoundTag c=aliases.getCompound(i).orElseGet(CompoundTag::new);String id=ReaderChannels.sanitize(c.getString("id").orElse(""));String label=ReaderChannels.clean(c.getString("name").orElse(""));if(!id.isEmpty()&&!label.isBlank())p.channelNames.put(id,label);}
         p.label=t.getString("label").orElse(""); p.filter=t.getString("filter").orElse(""); p.selected=t.getString("selected").orElse(""); p.metric=t.getString("metric").orElse(""); p.mode=t.getString("mode").orElse("");
         p.comparison=t.getString("comparison").orElse(""); p.threshold=t.getDouble("threshold").orElse(0.0); p.index=t.getInt("index").orElse(0); p.priority=t.getInt("priority").orElse(0); p.signal=t.getInt("signal").orElse(0);
         p.color=t.getInt("color").orElse(0); p.transferMode=t.getInt("transferMode").orElse(0); p.items=t.getBoolean("items").orElse(false); p.fluids=t.getBoolean("fluids").orElse(false); p.energy=t.getBoolean("energy").orElse(false);

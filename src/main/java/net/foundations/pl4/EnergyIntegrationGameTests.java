@@ -223,7 +223,6 @@ public final class EnergyIntegrationGameTests {
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoProvidersBoundIsolateAndUnregister(GameTestHelper h){
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
-        var api=net.foundations.pl4.api.InfoProviders.class;
         try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_failing",(context,out)->{if(!context.target().equals(target))return;out.add("partial","Partial",1,1,"");throw new IllegalStateException("Expected provider isolation fixture");});
             var good=net.foundations.pl4.api.InfoProviders.register("pl4_test:b_good",(context,out)->{if(!context.target().equals(target))return;out.add("bad","Bad",Double.NaN,0,"");out.add("bad_capacity","Bad",1,-1,"");out.add("health","Machine health",7,10,"");out.add("health","Duplicate",999,0,"");for(int i=0;i<100;i++)out.add("value"+i,"Value",i,100,"");})){
             var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
@@ -249,5 +248,90 @@ public final class EnergyIntegrationGameTests {
             var absent=new Part.Link("minecraft:overworld",target.pos(),Direction.UP,UUID.randomUUID(),null);
             h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),absent).isEmpty(),"Unavailable entities never invoke providers");
         }h.succeed();
+    }
+
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerPagesSearchAndPinsBeyondSixtyFour(GameTestHelper h){
+        Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);List<Part.Link> links=new ArrayList<>();
+        for(int i=0;i<130;i++)links.add(new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(i,2,1)),Direction.NORTH,null,null));
+        reader.targetChannel=ReaderChannels.id(links.get(129));
+        ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
+        h.assertTrue(reader.targetChoices.size()==64&&reader.targetCount==130&&!ReaderChannels.label(reader).contains("disconnected"),"Pinned endpoint beyond first page remains identifiable");
+        reader.targetPage=2;ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
+        h.assertTrue(reader.targetChoices.size()==2&&reader.targetChoices.getLast().id().equals(reader.targetChannel),"Last page exposes targets beyond original limit");
+        h.assertTrue(ReaderChannels.rename(reader," Main Tank "),"Selected channel can be named");reader.targetQuery="MAIN TANK";
+        ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
+        h.assertTrue(reader.targetPage==0&&reader.targetCount==1&&reader.targetChoices.getFirst().name().startsWith("Main Tank"),"Case-insensitive alias search and page clamp");
+        var disk=Part.load(reader.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(disk.channelNames.equals(reader.channelNames)&&disk.targetQuery.equals(reader.targetQuery),"Aliases and query survive saves");
+        reader.targetQuery="no matching target";ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
+        h.assertTrue(reader.targetChoices.isEmpty()&&!ReaderChannels.label(reader).contains("disconnected")&&ReaderChannels.select(reader,links).equals(List.of(links.getLast())),"Search does not change the selected sampling endpoint");
+        ReaderChannels.refresh(h.getLevel().getServer(),reader,List.of());h.assertTrue(ReaderChannels.label(reader).contains("disconnected"),"Actual endpoint removal is reported");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void oldProviderHandleCannotRemoveReplacement(GameTestHelper h){
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        net.foundations.pl4.api.InfoProviders.Provider callback=(c,out)->{if(c.target().equals(target))out.add("value","Value",42,100,"");};
+        var old=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback);old.close();
+        try(var current=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback)){
+            old.close();
+            h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).stream().anyMatch(r->r.key().equals("pl4_test:reused/value")&&r.value()==42),"Repeated close on old handle cannot remove re-registration of same callback");
+        }h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void inventorySamplingDeduplicatesVanillaDoubleChest(GameTestHelper h){
+        var reader=host(h,new BlockPos(5,2,2),Kind.INVENTORY_READER,Direction.UP);
+        var left=h.absolutePos(new BlockPos(2,1,2));var right=left.east();
+        var state=net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState().setValue(net.minecraft.world.level.block.ChestBlock.FACING,Direction.NORTH);
+        h.getLevel().setBlock(left,state.setValue(net.minecraft.world.level.block.ChestBlock.TYPE,net.minecraft.world.level.block.state.properties.ChestType.LEFT),2);
+        h.getLevel().setBlock(right,state.setValue(net.minecraft.world.level.block.ChestBlock.TYPE,net.minecraft.world.level.block.state.properties.ChestType.RIGHT),2);
+        ((net.minecraft.world.level.block.entity.ChestBlockEntity)h.getLevel().getBlockEntity(left)).setItem(0,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND,17));
+        ((net.minecraft.world.level.block.entity.ChestBlockEntity)h.getLevel().getBlockEntity(right)).setItem(0,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND,3));
+        var a=new Part.Link("minecraft:overworld",left,Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",right,Direction.NORTH,null,null);
+        var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b,a),1);
+        h.assertTrue(rows.size()==1&&rows.getFirst().value()==20,"Both halves and repeated links count one combined inventory");
+        reader.part().mode="STORAGE";var storage=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b),1).getFirst();
+        h.assertTrue(storage.value()==20&&storage.capacity()==54*64,"Storage capacity must not double count the combined inventory");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=80)
+    public static void liveFurnaceReportsCookingAndFuel(GameTestHelper h){
+        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,net.minecraft.world.level.block.Blocks.FURNACE);
+        var furnace=(net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
+        furnace.setItem(0,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.RAW_IRON));
+        furnace.setItem(1,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COAL));
+        h.runAtTickTime(20,()->{
+            var target=new Part.Link("minecraft:overworld",h.absolutePos(pos),Direction.UP,null,null);
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().anyMatch(r->r.key().equals("cook_time")&&r.value()>0&&r.capacity()>r.value()),"Actual furnace progress must be live and bounded");
+            h.assertTrue(rows.stream().anyMatch(r->r.key().equals("burn_time")&&r.value()>0),"Actual remaining fuel time must be reported");h.succeed();
+        });
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkDiagnosticsSeparateUnavailableEndpoints(GameTestHelper h){
+        var reader=host(h,new BlockPos(2,2,2),Kind.NETWORK_READER,Direction.UP);
+        var block=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
+        var entity=new Part.Link("minecraft:overworld",block.pos(),Direction.UP,UUID.randomUUID(),null);
+        var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(block,block,entity),1);
+        h.assertTrue(rows.stream().anyMatch(r->r.key().equals("targets")&&r.value()==2)&&rows.stream().anyMatch(r->r.key().equals("available")&&r.value()==1)&&rows.stream().anyMatch(r->r.key().equals("unavailable")&&r.value()==1),"Diagnostics deduplicate exact links and distinguish missing entities");h.succeed();
+    }
+
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerEditsRejectForeignOwnersStaleIdsAndForgedTargets(GameTestHelper h){
+        var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,Direction.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
+        var stranger=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
+        stranger.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);
+        h.assertTrue(!ref.host().canEdit(stranger),"Fixture uses a foreign non-operator");
+        PLPackets.edit(stranger,new PLPackets.Edit(pos,part.slot(),part.identity,"label","forged"));
+        h.assertTrue(part.label.isEmpty(),"Foreign owner cannot rename the reader");
+        var owner=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-owner"));
+        owner.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);h.assertTrue(ref.host().canEdit(owner),"Fixture owner can edit");
+        PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),UUID.randomUUID(),"label","stale"));
+        h.assertTrue(part.label.isEmpty(),"Replaced part identity rejects old UI edits");
+        String forged=UUID.randomUUID().toString();part.targetChoices.add(new Part.ReaderChoice(forged,"Stale entry","block"));
+        PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"target_channel",forged));
+        h.assertTrue(part.targetChannel.isEmpty(),"Cached choices cannot grant access to absent network endpoints");
+        owner.setPos(pos.getX()+100,pos.getY(),pos.getZ());
+        PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),part.identity,"label","remote"));
+        h.assertTrue(part.label.isEmpty(),"Remote UI edit is rejected");h.succeed();
     }
 }

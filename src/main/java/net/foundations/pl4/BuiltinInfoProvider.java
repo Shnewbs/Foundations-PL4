@@ -1,19 +1,12 @@
 package net.foundations.pl4;
 
-import java.util.*;
-import net.minecraft.core.*;
-import net.minecraft.core.registries.*;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.CropBlock;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 /** Vanilla read-only telemetry; historical keys remain stable for existing displays. */
 public final class BuiltinInfoProvider {
@@ -33,7 +26,7 @@ public final class BuiltinInfoProvider {
         for(var property:state.getProperties())if(state.getValue(property) instanceof Number number)put(rows,"state."+property.getName(),property.getName(),number.doubleValue(),0,"");
         if(l.getBlockEntity(pos) instanceof net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity furnace){
             var tag=furnace.saveWithoutMetadata(l.registryAccess());
-            put(rows,"burn_time","Burn time",tag.getShort("BurnTime").orElse((short)0),0,"ticks");put(rows,"cook_time","Cooking",tag.getShort("CookTime").orElse((short)0),tag.getShort("CookTimeTotal").orElse((short)0),"ticks");
+            put(rows,"burn_time","Burn time",tag.getInt("lit_time_remaining").orElse(0),0,"ticks");put(rows,"cook_time","Cooking",tag.getInt("cooking_time_spent").orElse(0),tag.getInt("cooking_total_time").orElse(0),"ticks");
         }
     }
     private static void entity(net.foundations.pl4.api.InfoProviders.Sink rows,Entity e){

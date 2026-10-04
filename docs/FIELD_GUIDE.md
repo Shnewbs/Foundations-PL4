@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R2
+Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R2.1
 
 ## Welcome to Foundations PL4
 
@@ -704,7 +704,11 @@ Pin a reader to a stable endpoint, then choose what to show.
 
 ### PIN A TARGET
 
-Open a Reader, select Settings, then click Target to cycle connected block faces and entities. The picker shows the first 64 endpoints with dimension, position and side. All targets clears the pin. A pin survives save/reload and target-list reordering. If the endpoint disconnects or unloads, the reader reports that state instead of silently reading a different endpoint. Replacing a block at the same position and side keeps that endpoint.
+Open a Reader, select Settings, then click Target to cycle connected block faces and entities on the current page. Previous and Next browse pages of 64. Enter Target search and click Search targets to filter by name, dimension, coordinates or endpoint ID. All targets clears the pin. The selected endpoint remains visible in the Target label even when a search or another page hides its entry. A pin survives save/reload and target-list reordering; disconnected or unloaded targets never redirect to a different endpoint.
+
+### NAME AND DIAGNOSE
+
+Select an endpoint, enter Channel name, then Apply fields. Names belong to this reader and are searchable; up to 64 names are saved, and a blank name removes the selected alias. Network Readers report available and unloaded or missing endpoints, plus block/entity counts. A loaded target can still lack the requested capability. Search and paging do not change which endpoint is sampled.
 
 ### TARGET AND DATA MODE
 
@@ -717,3 +721,7 @@ Inventory Readers and Transfer Nodes can copy the held item ID into the filter f
 ### EXTENDING INFORMATION
 
 Info Readers now use a provider registry. Add-on developers can register read-only block or entity telemetry through InfoProviders. Vanilla data keys stay unchanged; add-on keys are namespaced. Providers have row and text limits, invalid numbers are rejected, and a failing provider loses its partial sample without suppressing healthy providers. This API does not itself add support for every machine mod.
+
+### AVOID DOUBLE COUNTS
+
+Repeated links, shared item/fluid handler objects and vanilla chest, barrel and shulker inventories are deduplicated per sample. Both halves of a vanilla double chest count as one combined inventory. Separate modded sided wrappers may expose overlapping or independent storage; PL4 does not guess from equal contents. Pin a single endpoint when a mod exposes ambiguous overlapping storage.

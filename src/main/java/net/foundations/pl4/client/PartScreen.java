@@ -16,14 +16,15 @@ public final class PartScreen extends Screen {
     private Component hoveredRowTooltip;
     private boolean draggingSettings;private double settingsDragOffset;
     private Button energyInputButton,energyOutputButton,energyModeButton;
-    private Button channelButton;
+    private Button channelButton,channelPageButton;
     private Button viewToggle;private String displayError="";
     private final Map<String,EditBox> fields=new LinkedHashMap<>();
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    public void update(Part p){if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
-        if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; first 64 shown")));}
+    public void update(Part p){if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+        if(channelPageButton!=null)channelPageButton.setMessage(Component.literal("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64)));
+        if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
         if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
         if(energyOutputButton!=null){energyOutputButton.setMessage(Component.literal("Output: "+EnergyPorts.label(part.energyOutput)));energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;}
         if(energyModeButton!=null){energyModeButton.setMessage(Component.literal("Conversion: "+(part.energyConvert?"On":"Off")));energyModeButton.active=editable&&part.energyRouteEditable();}
@@ -32,7 +33,7 @@ public final class PartScreen extends Screen {
     public void error(String message){displayError=message;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;channelButton=null;energyInputButton=energyOutputButton=energyModeButton=null;
+        w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;channelButton=null;channelPageButton=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
         if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.gui.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
@@ -60,8 +61,14 @@ public final class PartScreen extends Screen {
                 channelButton=button(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52),left+12,y,w-24,b->{
                     List<String> ids=new ArrayList<>();ids.add("");part.targetChoices.forEach(c->ids.add(c.id()));
                     int next=(ids.indexOf(part.targetChannel)+1)%ids.size();send("target_channel",ids.get(next));
-                });channelButton.setTooltip(Tooltip.create(Component.literal("Cycle stable block/entity targets (first 64). All targets clears selection. Slot/tank and list mode stay separate.")));y+=28;
+                });channelButton.setTooltip(Tooltip.create(Component.literal("Cycle stable block/entity targets on this page. All targets clears selection. Slot/tank and list mode stay separate.")));y+=28;
                 button("All targets",left+12,y,104,b->send("target_channel",""));y+=28;
+                button("Previous",left+12,y,80,b->send("target_page",Integer.toString(Math.max(0,part.targetPage-1))));
+                channelPageButton=button("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64),left+98,y,132,b->send("target_page",Integer.toString(part.targetPage+1)));y+=28;
+                field("target_query","Target search",part.targetQuery,x,y,fw);y+=28;
+                button("Search targets",left+12,y,132,b->send("target_query",fields.get("target_query").getValue()));y+=28;
+                field("channel_name","Channel name",part.channelNames.getOrDefault(part.targetChannel,""),x,y,fw);y+=28;
+                fields.get("channel_name").setTooltip(Tooltip.create(Component.literal("Name the selected endpoint for this reader. Apply fields saves it. Blank removes a name; up to 64 names.")));
             }
             field("label","Name",part.label,x,y,fw);y+=28;
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
@@ -149,7 +156,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.text(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }

@@ -87,8 +87,8 @@ public final class PLPackets {
         t.store("identity",net.minecraft.core.UUIDUtil.CODEC,p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(host.getBlockPos()))<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
-    private static void edit(ServerPlayer player,Edit packet){
-        if(packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
+    static void edit(ServerPlayer player,Edit packet){
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.level().hasChunkAt(packet.pos)||!player.level().mayInteract(player,packet.pos))return;
         if(!(player.level().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){
@@ -130,10 +130,13 @@ public final class PLPackets {
                 case "energy_voltage" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.energyRouteEditable())return;int n=Integer.parseInt(v);if(n<1||n>1048576)return;p.energyVoltage=n;}
                 case "energy_system" -> {if(p.kind==Kind.ENERGY_READER&&Set.of("AUTO","FE","EU","J","CREATE","AE2").contains(v))p.energySystem=v;else return;}
                 case "target_channel" -> {
-                    if(!p.kind.reader()||(!v.isEmpty()&&p.targetChoices.stream().noneMatch(c->c.id().equals(v))))return;
+                    if(!p.kind.reader()||(!v.isEmpty()&&NetworkEngine.targetsFor(h.getLevel().getServer(),p).stream().noneMatch(t->ReaderChannels.id(t).equals(v))))return;
                     p.targetChannel=v;
                     if(p.mode.equals("CHANNEL")){p.mode="LIST";p.index=0;}
                 }
+                case "target_query" -> {if(!p.kind.reader())return;p.targetQuery=ReaderChannels.clean(v);p.targetPage=0;}
+                case "target_page" -> {if(!p.kind.reader())return;p.targetPage=Math.clamp(Integer.parseInt(v),0,65535);}
+                case "channel_name" -> {if(!p.kind.reader()||!ReaderChannels.rename(p,v))return;}
                 case "label" -> p.label=clean(v,48);
                 case "filter" -> p.filter=clean(v,256);
                 case "selected" -> p.selected=clean(v,64);
@@ -161,6 +164,7 @@ public final class PLPackets {
             }
         }catch(IllegalArgumentException ignored){return;}
         if(p.kind.display())DisplayNetworks.layoutEdited(h,p);
+        if(p.kind.reader())ReaderChannels.refresh(h.getLevel().getServer(),p,NetworkEngine.targetsFor(h.getLevel().getServer(),p));
         h.changed();reply(player,anchorHost,anchorPart);
     }
     private static String clean(String s,int length){String value=s.replaceAll("[\\p{Cntrl}§]","");return value.substring(0,Math.min(length,value.length()));}

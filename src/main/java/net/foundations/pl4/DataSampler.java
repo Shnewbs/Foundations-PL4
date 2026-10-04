@@ -8,10 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.CropBlock;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -51,14 +48,21 @@ public final class DataSampler {
         return match==part.whitelist;
     }
     public static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> targets,int hosts){
-        Part p=ref.part();VisualSamples pictures=new VisualSamples();if(p.kind==Kind.ENERGY_READER)return EnergyReader.sample(server,ref,targets);Map<String,Part.Row> rows=new LinkedHashMap<>();double total=0,capacity=0;int available=0;
-        if(p.kind==Kind.NETWORK_READER)return List.of(new Part.Row("hosts","Hosts",hosts,0,""),new Part.Row("targets","Targets",targets.size(),0,""));
-        for(Part.Link link:targets){
+        Part p=ref.part();VisualSamples pictures=new VisualSamples();if(p.kind==Kind.ENERGY_READER)return EnergyReader.sample(server,ref,targets);Map<String,Part.Row> rows=new LinkedHashMap<>();double total=0,capacity=0;SampleSources sources=new SampleSources();
+        if(p.kind==Kind.NETWORK_READER){
+            Set<Part.Link> unique=new LinkedHashSet<>(targets);int loaded=0,entities=0;
+            for(var target:unique){if(ReaderChannels.available(server,target))loaded++;if(target.entity()!=null)entities++;}
+            return List.of(new Part.Row("hosts","Hosts",hosts,0,""),new Part.Row("targets","Targets",unique.size(),0,""),
+                new Part.Row("available","Available targets",loaded,unique.size(),""),new Part.Row("unavailable","Unloaded / missing targets",unique.size()-loaded,unique.size(),""),
+                new Part.Row("block_targets","Block endpoints",unique.size()-entities,0,""),new Part.Row("entity_targets","Entity endpoints",entities,0,"")).stream().limit(PLConfig.MAX_ROWS.get()).toList();
+        }
+        for(Part.Link link:new LinkedHashSet<>(targets)){
             ServerLevel l=NetworkEngine.level(server,link);if(l==null)continue;
             if(link.entity()!=null){Entity entity=l.getEntity(link.entity());if(entity!=null&&p.kind==Kind.INFO_READER){for(var row:net.foundations.pl4.api.InfoProviders.sample(l,link))rows.put(row.key(),row);break;}continue;}
-            if(!l.hasChunkAt(link.pos()))continue;available++;
+            if(!l.hasChunkAt(link.pos()))continue;
             if(p.kind==Kind.INVENTORY_READER){
                 var handler=net.foundations.pl4.compat.TransferAdapters.items(l,link.pos(),link.side());if(handler==null)continue;
+                if(!sources.inventory(l,link,handler.identity(),handler.getSlots()))continue;
                 for(int slot=0;slot<Math.min(handler.getSlots(),65536);slot++){
                     ItemStack stack=handler.getStackInSlot(slot);capacity+=handler.getSlotLimit(slot);total+=stack.getCount();
                     if(stack.isEmpty()||!matches(stack,p)||p.mode.equals("SLOT")&&slot!=p.index)continue;
@@ -66,6 +70,7 @@ public final class DataSampler {
                 }
             }else if(p.kind==Kind.FLUID_READER){
                 var handler=net.foundations.pl4.compat.TransferAdapters.fluids(l,link.pos(),link.side());if(handler==null)continue;
+                if(!sources.fluid(handler.identity()))continue;
                 for(int tank=0;tank<Math.min(handler.getTanks(),65536);tank++){
                     FluidStack stack=handler.getFluidInTank(tank);capacity+=handler.getTankCapacity(tank);total+=stack.getAmount();
                     if(stack.isEmpty()||!matches(stack,p)||p.mode.equals("SLOT")&&tank!=p.index)continue;
@@ -80,7 +85,7 @@ public final class DataSampler {
         }
         if(p.mode.equals("STORAGE")&&(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER)){
             String unit=p.kind==Kind.FLUID_READER?"mB":"items";
-            if(p.mode.equals("STORAGE"))rows.clear();
+            rows.clear();
             LinkedHashMap<String,Part.Row> withTotal=new LinkedHashMap<>();withTotal.put("storage",new Part.Row("storage","Storage",total,capacity,unit));withTotal.putAll(rows);rows=withTotal;
         }
         List<Part.Row> result=new ArrayList<>(rows.values());

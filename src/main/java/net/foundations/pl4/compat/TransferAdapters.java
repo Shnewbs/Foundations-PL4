@@ -16,10 +16,12 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
  * Simulations abort their transaction; successful executions explicitly commit. */
 public final class TransferAdapters {
     public interface IItemHandler {
+        default Object identity(){return this;}
         int getSlots();ItemStack getStackInSlot(int index);int getSlotLimit(int index);
         ItemStack insertItem(int index,ItemStack stack,boolean simulate);ItemStack extractItem(int index,int amount,boolean simulate);
     }
     public interface IFluidHandler {
+        default Object identity(){return this;}
         enum FluidAction {SIMULATE,EXECUTE}
         int getTanks();FluidStack getFluidInTank(int index);int getTankCapacity(int index);
         int fill(FluidStack stack,FluidAction action);FluidStack drain(FluidStack stack,FluidAction action);
@@ -31,6 +33,7 @@ public final class TransferAdapters {
         var handler=level.getCapability(Capabilities.Item.BLOCK,pos,side);return handler==null?null:items(handler);
     }
     public static IItemHandler items(ResourceHandler<ItemResource> handler){return new IItemHandler(){
+        public Object identity(){return handler;}
         public int getSlots(){return handler.size();}
         public ItemStack getStackInSlot(int i){return handler.getResource(i).toStack(handler.getAmountAsInt(i));}
         public int getSlotLimit(int i){return handler.getCapacityAsInt(i,handler.getResource(i));}
@@ -48,6 +51,7 @@ public final class TransferAdapters {
     public static IFluidHandler fluids(Level level,BlockPos pos,Direction side){
         var handler=level.getCapability(Capabilities.Fluid.BLOCK,pos,side);if(handler==null)return null;
         return new IFluidHandler(){
+            public Object identity(){return handler;}
             public int getTanks(){return handler.size();}
             public FluidStack getFluidInTank(int i){return handler.getResource(i).toStack(handler.getAmountAsInt(i));}
             public int getTankCapacity(int i){return handler.getCapacityAsInt(i,handler.getResource(i));}
