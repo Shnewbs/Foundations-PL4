@@ -1,4 +1,4 @@
-# R2 correctness audit — 0.0.2a.R2.1
+# R2 correctness audit — 0.0.2a.R2.2
 
 ## Resolved findings
 
@@ -21,3 +21,5 @@ Deduplication does not merge inventories based on equal contents. Distinct modde
 Furnace field migration reference: https://www.minecraft.net/en-us/article/minecraft-1-21-4-pre-release-2
 
 The first native run exposed a faulty test assumption (64 items per slot) and a 26.3 adapter inconsistency: general slot capacity must be requested with ItemResource.EMPTY, not the currently stored item. The regression now sums the native general-capacity API directly and requires exact agreement after deduplication. STORAGE also skips redundant visual aggregation/serialization.
+
+Final performance finding: refreshing target choices after every reader field edit could rebuild a dirty global graph repeatedly within one Apply operation. Target browsing edits now save/sync without invalidating topology; other edits use the existing coalesced rebuild path. A native packet fixture checks query/page edits leave topologyBuildCount unchanged.
