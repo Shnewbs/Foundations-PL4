@@ -725,3 +725,22 @@ Info Readers now use a provider registry. Add-on developers can register read-on
 ### AVOID DOUBLE COUNTS
 
 Repeated links, shared item/fluid handler objects and vanilla chest, barrel and shulker inventories are deduplicated per sample. Both halves of a vanilla double chest count as one combined inventory. Separate modded sided wrappers may expose overlapping or independent storage; PL4 does not guess from equal contents. Pin a single endpoint when a mod exposes ambiguous overlapping storage.
+
+
+# R3 additions
+
+## Displays and the element editor — ORGANIZE AND LINK
+
+Layers offers Group, Ungroup, Lock, Unlock, Hide and Show. World selection expands a group; unlock elements before moving or deleting them. Hidden elements stay in Layers. Properties adds background/border hex colours (blank = none) and a Click page destination. In CUSTOM view, right-click the visible element to change page. Only players allowed to edit the canvas can activate a link. Sneak-use bypasses links; on a covered reader it retains the existing reader shortcut. Pages lets you rename each slot. Names are not included in element-only undo or templates.
+
+## Wireless links and Arrays — MANAGE SAVED LINKS
+
+Array, Entity Node and receiver settings show individual saved links. Scroll the settings list to inspect dimensions, positions and sides, then remove the unwanted entry. Other links remain intact. Use the existing transceiver workflow to bind new targets.
+
+## Transfer Nodes — NAMED ROUTES AND FAIRNESS
+
+Nodes and Transfer Nodes have Input channel and Output channel fields. A source output must exactly match a destination input, including letter case. Blank matches blank; named routes never enter the blank pool. Drain all escrow before changing channels. Existing item/fluid filters apply as before. Equal-priority drivers and destinations rotate each network cycle; buffered drivers run first within each transfer phase. ADD/REMOVE remains explicit-peer only.
+
+## Redstone and clocks — CLOCK CONTROLS
+
+Clock settings include interval, pulse width, phase offset, pause/resume and reset. Pulse 0 keeps the legacy one-sample pulse. Pulse width is capped at the interval. Changes are sampled on the configured server network tick, so pulses shorter than that sampling interval are not guaranteed to be observable. Pause forces output low and retains the cycle position.

@@ -30,8 +30,8 @@ public final class LayoutTransactions {
                 if(source.isEmpty())return fail(before,"Current page is empty.");
                 if(list.stream().anyMatch(e->e.page()==destination))return fail(before,"Destination page must be empty.");
                 if(list.size()+source.size()>DisplayElements.MAX_ELEMENTS)return fail(before,"Maximum 32 elements across all pages.");
-                var used=new HashSet<UUID>();list.forEach(e->used.add(e.id()));
-                for(var e:source){UUID id;do{id=UUID.randomUUID();}while(!used.add(id));list.add(e.identity(id).onPage(destination));}
+                var used=new HashSet<UUID>();list.forEach(e->used.add(e.id()));var groups=new HashMap<String,String>();
+                for(var e:source){UUID id;do{id=UUID.randomUUID();}while(!used.add(id));var o=e.options();list.add(e.identity(id).onPage(destination).options(o.organization(o.group().isEmpty()?"":groups.computeIfAbsent(o.group(),key->UUID.randomUUID().toString()),o.locked(),o.hidden())));}
                 mode=DisplayElements.Mode.CUSTOM;
             }
             case "page_clear" -> {

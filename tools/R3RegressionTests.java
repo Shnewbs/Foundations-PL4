@@ -18,6 +18,9 @@ public final class R3RegressionTests {
         check(!LayoutTransactions.applyOrganization(g,0,"hide",ids).accepted(),"stale rejected");
         check(!LayoutTransactions.applyOrganization(g,1,"hide",List.of(other.id())).accepted(),"other page rejected");
         check(!LayoutTransactions.applyOrganization(g,1,"hide",List.of(a.id(),a.id())).accepted(),"duplicates rejected");
+        var copied=LayoutTransactions.apply(g,1,"page_copy",null,null,"2");
+        check(copied.accepted()&&!copied.state().elements().get(3).options().group().equals(g.elements().getFirst().options().group()),"copied page groups have independent IDs");
+        check(copied.state().elements().get(3).options().group().equals(copied.state().elements().get(4).options().group()),"page copy preserves within-group relationship");
         var hidden=LayoutTransactions.applyOrganization(g,1,"hide",ids).state();
         check(DisplayElements.plan(hidden.elements().getFirst(),List.of()).draws().isEmpty(),"hidden does not render");
         check(EditorSelection.inBox(hidden.elements(),0,new DisplayElements.Rect(0,0,248,120)).isEmpty(),"hidden not marquee picked");
