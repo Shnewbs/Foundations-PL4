@@ -202,4 +202,47 @@ public final class R16GameTests {
         }
         h.assertTrue(!net.foundations.pl4.api.InfoProviders.registeredIds().contains("pl4_test:alpha_dimension"),"Closing provider removes its diagnostic entry");h.succeed();
     }
+
+    private record StorageFixture(HostEntity host,Part node,ChestBlockEntity chest,net.minecraft.server.level.ServerPlayer player,ItemStack tool){}
+    private static StorageFixture storageFixture(GameTestHelper h,String name){
+        ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));HostEntity host=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);Part node=part(host,Direction.WEST);
+        var user=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,name));user.getInventory().clearContent();
+        ItemStack tool=new ItemStack(FoundationsPL4.item("wirelessstorage"));var binding=new Part.Link(h.getLevel().dimension().location().toString(),host.getBlockPos(),node.face,null,node.identity);
+        net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA,tool,t->t.put("pl_link",binding.save()));
+        user.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,tool);return new StorageFixture(host,node,chest,user,tool);
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageWithdrawalCannotReplay(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-A");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
+        UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);h.assertTrue(token!=null,"Owned loaded Node opens a storage session");
+        var packet=new PLPackets.StorageRequest(token,"withdraw",0,1);WirelessStorage.request(f.player(),packet);WirelessStorage.request(f.player(),packet);
+        int count=0;for(int slot=0;slot<36;slot++)if(f.player().getInventory().getItem(slot).is(Items.DIAMOND))count+=f.player().getInventory().getItem(slot).getCount();
+        h.assertTrue(f.chest().getItem(0).getCount()==16&&count==1,"Single-use token withdraws exactly once");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageRechecksSlotsFiltersAndHeldTool(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-B");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
+        UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.chest().setItem(0,new ItemStack(Items.EMERALD,9));
+        WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==9,"Stale slot does not withdraw a different resource");
+        token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().outputFilterMode="DENY";f.node().outputFilter="minecraft:emerald";
+        WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==9,"Current send filter is rechecked at action time");
+        token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.player().setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,ItemStack.EMPTY);
+        WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==9,"Removing the held tool revokes the session");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageDepositConservesOffhandAndHonorsFilters(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-C");f.player().setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,new ItemStack(Items.DIAMOND,11));f.node().inputFilterMode="DENY";f.node().inputFilter="minecraft:diamond";
+        UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"deposit",0,0));
+        h.assertTrue(f.player().getOffhandItem().getCount()==11&&f.chest().getItem(0).isEmpty(),"Receive filter rejects deposit without consuming offhand items");
+        f.node().inputFilter="";token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"deposit",0,0));
+        h.assertTrue(f.player().getOffhandItem().isEmpty()&&f.chest().getItem(0).getCount()==11,"Deposit moves exactly the accepted offhand stack");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageRechecksOwnerAndPartIdentity(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-D");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
+        UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().owner=UUID.randomUUID();
+        WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==17,"Owner changes invalidate storage access");
+        f.node().owner=OWNER;token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().identity=UUID.randomUUID();
+        WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==17,"Replacing a Node cannot inherit another binding's authority");h.succeed();
+    }
 }

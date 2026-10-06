@@ -1,4 +1,6 @@
-# Info Reader provider API (0.0.2a.R2.1)
+# Info Reader provider API (0.1a, contract v1)
+
+**Further API testing is still required with real installed add-ons.** See [API_TESTING.md](API_TESTING.md). `API_VERSION` is 1; `registeredIds()` returns an immutable provider inventory. `sample()` rejects off-server-thread calls and skips wrong-dimension targets.
 
 Use `net.foundations.pl4.api.InfoProviders.register` during common setup to install a synchronous, read-only telemetry callback. Compile against the matching Minecraft track; these jars are not cross-version binaries.
 

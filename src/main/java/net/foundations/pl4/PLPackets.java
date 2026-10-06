@@ -28,6 +28,11 @@ public final class PLPackets {
         public static final StreamCodec<RegistryFriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,65536);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(65536)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
+    public record StorageRequest(UUID token,String action,int index,int amount) implements CustomPacketPayload {
+        public static final Type<StorageRequest> TYPE=new Type<>(FoundationsPL4.id("storage_request"));
+        public static final StreamCodec<RegistryFriendlyByteBuf,StorageRequest> CODEC=StreamCodec.of((b,p)->{b.writeUUID(p.token);b.writeUtf(p.action,16);b.writeVarInt(p.index);b.writeVarInt(p.amount);},b->new StorageRequest(b.readUUID(),b.readUtf(16),b.readVarInt(),b.readVarInt()));
+        @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    }
     private record Rate(long tick,int count){}
     private static final Map<ServerPlayer,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
     static void editLayout(ServerPlayer player,LayoutEdit packet){
@@ -82,6 +87,7 @@ public final class PLPackets {
     private static void openWithError(ServerPlayer player,HostEntity host,Part part,String error){sendOpen(player,host,part,error,true);}
     public static void register(RegisterPayloadHandlersEvent event){
         var r=event.registrar("4");
+        r.playToServer(StorageRequest.TYPE,StorageRequest.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayer player)WirelessStorage.request(player,packet);}));
         r.playToServer(LayoutEdit.TYPE,LayoutEdit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayer player)editLayout(player,packet);}));
         r.playToClient(Open.TYPE,Open.CODEC,(packet,context)->context.enqueueWork(()->clientOpen.accept(packet)));
         r.playToServer(Edit.TYPE,Edit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayer player)edit(player,packet);}));

@@ -62,7 +62,7 @@ public final class FoundationsPL4 {
         ITEMS.register("operator", () -> new ToolItem(ToolItem.Mode.OPERATOR,new Item.Properties().stacksTo(1)));
         ITEMS.register("transceiver", () -> new ToolItem(ToolItem.Mode.BLOCK_LINK,new Item.Properties().stacksTo(1)));
         ITEMS.register("entitytransceiver", () -> new ToolItem(ToolItem.Mode.ENTITY_LINK,new Item.Properties().stacksTo(1)));
-        ITEMS.register("wirelessstorage", () -> new ToolItem(ToolItem.Mode.MONITOR,new Item.Properties().stacksTo(1)));
+        ITEMS.register("wirelessstorage", () -> new ToolItem(ToolItem.Mode.STORAGE,new Item.Properties().stacksTo(1)));
         ITEMS.register("plguide", () -> new ToolItem(ToolItem.Mode.GUIDE,new Item.Properties().stacksTo(1)));
         TABS.register("main", () -> CreativeModeTab.builder().title(Component.literal("Foundations PL4")).icon(() -> new ItemStack(item("sapphire"))).displayItems((parameters, output) -> ITEMS.getEntries().forEach(h -> output.accept(h.get()))).build());
     }
