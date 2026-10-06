@@ -24,7 +24,7 @@ final class DisplayPainter {
         // No mode or world data is mutated by opening the editor.
         Compiled data=cache.get(part);
         if(data==null||data.page!=part.displayPage||!data.elements.equals(elements)||!data.rows.equals(part.rows)||!data.sources.equals(part.sourceRows)){
-            List<Batch> batches=new ArrayList<>();for(var element:elements){var spec=element.spec();if(spec.page()!=part.displayPage)continue;List<Part.Row> rows=source(part,spec);
+            List<Batch> batches=new ArrayList<>();for(var element:elements){var spec=element.spec();if(spec.page()!=part.displayPage||spec.options().hidden())continue;List<Part.Row> rows=source(part,spec);
                 batches.add(new Batch(rows,DisplayElements.plan(spec,rows)));}
             data=new Compiled(List.copyOf(elements),List.copyOf(part.rows),Map.copyOf(part.sourceRows),part.displayPage,List.copyOf(batches));cache.put(part,data);
         }

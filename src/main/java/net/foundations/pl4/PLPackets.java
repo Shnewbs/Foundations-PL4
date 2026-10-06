@@ -45,7 +45,12 @@ public final class PLPackets {
             }
             var before=new net.foundations.pl4.core.LayoutTransactions.State(part.elements.stream().map(Part.Element::spec).toList(),part.displayMode,part.displayPage,part.layoutRevision);
             net.foundations.pl4.core.LayoutTransactions.Result result;
-            if(packet.action.equals("replace")||packet.action.equals("paste")){
+            var pageNames=new java.util.ArrayList<>(part.pageNames);
+            if(packet.action.equals("page_name")){
+                if(packet.revision!=part.layoutRevision||part.layoutRevision==Long.MAX_VALUE)return;
+                pageNames.set(part.displayPage,net.foundations.pl4.core.DisplayElements.clean(packet.value.trim(),32));
+                result=new net.foundations.pl4.core.LayoutTransactions.Result(true,new net.foundations.pl4.core.LayoutTransactions.State(before.elements(),before.mode(),before.page(),before.revision()+1),"");
+            }else if(packet.action.equals("replace")||packet.action.equals("paste")){
                 var restored=ElementJson.decodeList(packet.value);
                 for(var s:restored){
                     boolean visible=s.reader().isEmpty()||(part.readerChoices.stream().anyMatch(choice->choice.id().equals(s.reader()))||part.readerChoices.stream().filter(choice->choice.name().equals(s.reader())).count()==1);
@@ -56,6 +61,9 @@ public final class PLPackets {
                 var fields=packet.value.split(";",-1);if(fields.length!=3)throw new IllegalArgumentException("Invalid movement.");
                 var ids=Arrays.stream(fields[2].split(",",-1)).map(UUID::fromString).toList();
                 result=net.foundations.pl4.core.LayoutTransactions.applyMove(before,packet.revision,ids,Integer.parseInt(fields[0]),Integer.parseInt(fields[1]),part.layoutWidth,part.layoutHeight);
+            }else if(net.foundations.pl4.core.LayoutTransactions.organization(packet.action)){
+                var ids=java.util.Arrays.stream(packet.value.split(",")).map(UUID::fromString).toList();
+                result=net.foundations.pl4.core.LayoutTransactions.applyOrganization(before,packet.revision,packet.action,ids);
             }else if(net.foundations.pl4.core.LayoutTransactions.layerAction(packet.action)){
                 var ids=Arrays.stream(packet.value.split(",",-1)).map(UUID::fromString).toList();
                 result=net.foundations.pl4.core.LayoutTransactions.applyLayers(before,packet.revision,packet.action,ids);
@@ -67,7 +75,7 @@ public final class PLPackets {
             }
             if(!result.accepted()){openWithError(player,anchor,clicked,result.message());return;}
             long nextRevision=DisplayNetworks.nextLayoutRevision(part); // Preflight before changing even the root.
-            var settings=new Part.DisplaySettings(part.label,part.selected,part.metric,part.color,result.state().elements().stream().map(Part.Element::new).toList(),result.state().mode(),result.state().page(),part.layoutWidth,part.layoutHeight);
+            var settings=new Part.DisplaySettings(part.label,part.selected,part.metric,part.color,result.state().elements().stream().map(Part.Element::new).toList(),result.state().mode(),result.state().page(),part.layoutWidth,part.layoutHeight,pageNames);
             DisplayNetworks.applyLayout(host,part,settings,nextRevision);host.changed();reply(player,anchor,clicked);
         }catch(RuntimeException ex){openWithError(player,anchor,clicked,"Display edit failed; refresh the layout before retrying.");}
     }
@@ -138,6 +146,10 @@ public final class PLPackets {
                 case "target_page" -> {if(!p.kind.reader())return;p.targetPage=Math.clamp(Integer.parseInt(v),0,65535);}
                 case "channel_name" -> {if(!p.kind.reader()||!ReaderChannels.rename(p,v))return;}
                 case "label" -> p.label=clean(v,48);
+                case "input_channel", "output_channel" -> {
+                    if((p.kind!=Kind.NODE&&p.kind!=Kind.TRANSFER_NODE)||!p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0)return;
+                    if(packet.field.equals("input_channel"))p.inputChannel=clean(v.trim(),48);else p.outputChannel=clean(v.trim(),48);
+                }
                 case "filter" -> p.filter=clean(v,256);
                 case "selected" -> p.selected=clean(v,64);
                 case "metric" -> p.metric=clean(v,128);

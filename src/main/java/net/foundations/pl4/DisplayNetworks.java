@@ -59,7 +59,7 @@ public final class DisplayNetworks {
                 int targetWidth=space.width(),targetHeight=space.height();
                 if(sourceWidth!=targetWidth||sourceHeight!=targetHeight){
                     var migrated=settings.elements().stream().map(e->new Part.Element(net.foundations.pl4.core.DynamicCanvasLayout.migrate(e.spec(),sourceWidth,sourceHeight,targetWidth,targetHeight))).toList();
-                    settings=new Part.DisplaySettings(settings.label(),settings.selected(),settings.metric(),settings.color(),migrated,settings.displayMode(),settings.displayPage(),targetWidth,targetHeight);
+                    settings=new Part.DisplaySettings(settings.label(),settings.selected(),settings.metric(),settings.color(),migrated,settings.displayMode(),settings.displayPage(),targetWidth,targetHeight,settings.pageNames());
                     revision=net.foundations.pl4.core.CanvasContinuity.next(revision);
                 }
                 for(var tile:tiles)if(tile.part().applyDisplaySettings(settings,revision))tile.host().setChanged();

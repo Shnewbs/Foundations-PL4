@@ -47,12 +47,12 @@ final class NativeEnergyTransfers {
             if(!p.energy)continue;
             if(!enabled(ref)){p.energyTransferStatus="Energy route disabled by server";continue;}
             try{
-                if(p.transferMode==TransferRules.ADD_REMOVE&&p.energyCredits()>0)flush(ref,TransferEngine.sinks(plan.endpoints(),ref,p.ticks));
-                else if(TransferRules.drivesRemove(p.transferMode))push(ref,TransferEngine.sinks(plan.endpoints(),ref,p.ticks));
+                if(p.transferMode==TransferRules.ADD_REMOVE&&p.energyCredits()>0)flush(ref,TransferEngine.sinks(plan.endpoints(),ref,plan.routingCursor()));
+                else if(TransferRules.drivesRemove(p.transferMode))push(ref,TransferEngine.sinks(plan.endpoints(),ref,plan.routingCursor()));
             }catch(RuntimeException failure){p.energyTransferStatus="Energy provider error; inspect server log";EnergyPorts.failure(input(ref),failure);}
         }
         for(var ref:plan.drivers())if(ref.part().energy&&TransferRules.drivesAdd(ref.part().transferMode)&&enabled(ref))try{
-            pull(ref,TransferEngine.sources(plan.endpoints(),ref,ref.part().ticks));
+            pull(ref,TransferEngine.sources(plan.endpoints(),ref,plan.routingCursor()));
         }catch(RuntimeException failure){ref.part().energyTransferStatus="Energy provider error; inspect server log";EnergyPorts.failure(output(ref),failure);}
         for(var ref:plan.drivers()){
             Part p=ref.part();if(!p.energy||!p.energyTransferStatus.isEmpty())continue;

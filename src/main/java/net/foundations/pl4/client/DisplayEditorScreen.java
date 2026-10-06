@@ -164,6 +164,18 @@ public final class DisplayEditorScreen extends Screen {
         pushUndo();pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
     }
+    void organize(String action){
+        if(!editable||pending)return;
+        var ids=selection().stream().map(DisplayElements.Spec::id).toList();
+        var result=LayoutTransactions.applyOrganization(new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision),part.layoutRevision,action,ids);
+        if(!result.accepted()){message=result.message();return;}
+        pushUndo();pending=true;waitTicks=0;message="Saving...";
+        PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,action,new UUID(0,0),String.join(",",ids.stream().map(UUID::toString).toList())));
+    }
+    private void expandGroups(){
+        var groups=selection().stream().map(e->e.options().group()).filter(g->!g.isEmpty()).collect(java.util.stream.Collectors.toSet());
+        selectionOnPage().stream().filter(e->groups.contains(e.options().group())).forEach(e->selectedIds.add(e.id()));
+    }
     private void pushUndo(){undoStack.addLast(snapshot());if(undoStack.size()>MAX_HISTORY)undoStack.removeFirst();redoStack.clear();}
     private void undo(){
         if(!editable||pending){message="Not ready.";return;}
@@ -182,7 +194,7 @@ public final class DisplayEditorScreen extends Screen {
         pending=true;waitTicks=0;message="Saving...";
         PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
     }
-    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
+    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null&&spec.options().locked()){message="Unlock the element in Layers first.";return;}if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
         case 3->duplicateSelected();
@@ -197,7 +209,8 @@ public final class DisplayEditorScreen extends Screen {
         if(!editable||pending)return;
         if(clipboard.isEmpty()){message="Copy elements first.";return;}
         try{
-            var copies=EditorSelection.move(clipboard,4,4,spaceW(),spaceH()).stream().map(e->e.identity(UUID.randomUUID()).onPage(part.displayPage)).toList();
+            var groups=new HashMap<String,String>();
+            var copies=EditorSelection.move(clipboard,4,4,spaceW(),spaceH()).stream().map(e->e.identity(UUID.randomUUID()).onPage(part.displayPage)).map(e->{var o=e.options();return e.options(o.organization(o.group().isEmpty()?"":groups.computeIfAbsent(o.group(),k->UUID.randomUUID().toString()),false,o.hidden()));}).toList();
             var before=new LayoutTransactions.State(snapshot(),part.displayMode,part.displayPage,part.layoutRevision);
             var result=LayoutTransactions.applyPaste(before,part.layoutRevision,copies,spaceW(),spaceH());
             if(!result.accepted()){message=result.message();return;}
@@ -228,7 +241,7 @@ public final class DisplayEditorScreen extends Screen {
         var p=hit.get();int toolbarTool=toolAt(p);if(toolbarTool>=0){tool(toolbarTool);return true;}
         if(p.x()<0||p.y()<0||p.x()>=spaceW()||p.y()>=spaceH())return false;
         if(p.y()>=spaceH()-16&&p.y()<spaceH()&&((p.x()>=18&&p.x()<30)||p.x()>=spaceW()-14)){commit("page",null,Integer.toString(Math.floorMod(part.displayPage+(p.x()<30?-1:1),8)),part.layoutRevision);return true;}
-        UUID hitId=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&e.bounds().contains(p.x(),p.y())){hitId=e.id();break;}}
+        UUID hitId=null;for(int i=part.elements.size()-1;i>=0;i--){var e=part.elements.get(i).spec();if(e.page()==part.displayPage&&!e.options().hidden()&&!e.options().locked()&&e.bounds().contains(p.x(),p.y())){hitId=e.id();break;}}
         if(hitId==null){
             additiveBox=hasShiftDown();if(!additiveBox){selectedIds.clear();selected=null;}
             boxStart=p;boxEnd=p;return true;
@@ -237,8 +250,8 @@ public final class DisplayEditorScreen extends Screen {
             if(!selectedIds.remove(hitId))selectedIds.add(hitId);
             selected=selectedIds.contains(hitId)?hitId:selectedIds.stream().findFirst().orElse(null);return true;
         }
-        if(!selectedIds.contains(hitId)){selectedIds.clear();selectedIds.add(hitId);}selected=hitId;
-        var e=selectedElement();if(e!=null&&editable){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());dragSpecs=resizeCorner==EditorChrome.Corner.NONE?selection():List.of();}
+        if(!selectedIds.contains(hitId)){selectedIds.clear();selectedIds.add(hitId);}selected=hitId;expandGroups();
+        var e=selectedElement();if(e!=null&&editable&&selection().stream().noneMatch(s->s.options().locked())){start=e;draft=e;dragStart=p;dragRevision=part.layoutRevision;resizeCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());dragSpecs=resizeCorner==EditorChrome.Corner.NONE?selection():List.of();}
         return true;
     }
     @Override public boolean mouseDragged(double x,double y,int button,double dx,double dy){
@@ -254,7 +267,7 @@ public final class DisplayEditorScreen extends Screen {
     @Override public boolean mouseReleased(double x,double y,int button){
         if(button==0&&boxStart!=null){
             point(x,y).ifPresent(p->boxEnd=p);var box=EditorSelection.box(boxStart.x(),boxStart.y(),boxEnd.x(),boxEnd.y(),spaceW(),spaceH());
-            if(!additiveBox)selectedIds.clear();selectedIds.addAll(EditorSelection.inBox(snapshot(),part.displayPage,box));selected=selectedIds.stream().findFirst().orElse(null);boxStart=null;boxEnd=null;message=selectionCount()+" element(s) selected.";return true;
+            if(!additiveBox)selectedIds.clear();selectedIds.addAll(EditorSelection.inBox(snapshot(),part.displayPage,box));expandGroups();selected=selectedIds.stream().findFirst().orElse(null);boxStart=null;boxEnd=null;message=selectionCount()+" element(s) selected.";return true;
         }
         if(button==0&&start!=null){
             var result=draft;var original=start;boolean changed=result!=null&&!result.equals(original);boolean move=resizeCorner==EditorChrome.Corner.NONE;var ids=dragSpecs.stream().map(DisplayElements.Spec::id).toList();long revision=dragRevision;

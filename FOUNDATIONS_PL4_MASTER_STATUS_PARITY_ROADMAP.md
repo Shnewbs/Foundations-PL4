@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R1.5` published: explicit native energy/conversion and once-per-account community links
+**Current source candidate:** R3 development, based on published `0.0.2a.R2.3`. See `docs/R3_IMPLEMENTATION.md` for implemented scope and acceptance gaps.
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
@@ -12,6 +12,10 @@
 **Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
 
 ---
+
+## R3 reconciliation
+
+R2 delivered named/searchable/pinned reader targets, provider registration and network diagnostics. R3 source adds editor organization/styles/page links, page names, transfer channels and cycle-based fairness. Historical checkboxes below are not release evidence; native and client acceptance remain distinct. The component, directional-filter and installed-mod parity backlog remains open.
 
 ## 1. Purpose of this document
 

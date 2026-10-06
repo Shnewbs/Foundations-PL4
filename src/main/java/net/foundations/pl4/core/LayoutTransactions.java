@@ -14,13 +14,13 @@ public final class LayoutTransactions {
         int index=-1;for(int i=0;i<list.size();i++)if(list.get(i).id().equals(target)){index=i;break;}
         try{switch(action){
             case "add" -> {if(element==null||index>=0||list.size()>=DisplayElements.MAX_ELEMENTS)return fail(before,"Maximum 32 elements or duplicate element ID.");list.add(element);mode=DisplayElements.Mode.CUSTOM;page=element.page();}
-            case "update" -> {if(index<0||element==null||!element.id().equals(target))return fail(before,"Element no longer exists.");list.set(index,element);mode=DisplayElements.Mode.CUSTOM;page=element.page();}
+            case "update" -> {if(index<0||element==null||!element.id().equals(target))return fail(before,"Element no longer exists.");if(list.get(index).options().locked())return fail(before,"Unlock the element in Layers first.");list.set(index,element);mode=DisplayElements.Mode.CUSTOM;page=element.page();}
             case "delete" -> {
                 if(value!=null&&!value.isBlank()){
                     var ids=Arrays.stream(value.split(",")).map(String::trim).filter(s->!s.isBlank()).map(UUID::fromString).collect(java.util.stream.Collectors.toSet());
                     if(ids.isEmpty()||list.stream().noneMatch(e->ids.contains(e.id())))return fail(before,"Select an element.");
-                    list.removeIf(e->ids.contains(e.id()));
-                }else{if(index<0)return fail(before,"Element no longer exists.");list.remove(index);}
+                    if(list.stream().anyMatch(e->ids.contains(e.id())&&e.options().locked()))return fail(before,"Unlock selected elements first.");list.removeIf(e->ids.contains(e.id()));
+                }else{if(index<0)return fail(before,"Element no longer exists.");if(list.get(index).options().locked())return fail(before,"Unlock the element first.");list.remove(index);}
                 mode=DisplayElements.Mode.CUSTOM;
             }
             case "page_copy" -> {
@@ -36,9 +36,9 @@ public final class LayoutTransactions {
             }
             case "page_clear" -> {
                 if(list.stream().noneMatch(e->e.page()==before.page))return fail(before,"Current page is already empty.");
-                list.removeIf(e->e.page()==before.page);mode=DisplayElements.Mode.CUSTOM;
+                if(list.stream().anyMatch(e->e.page()==before.page&&e.options().locked()))return fail(before,"Unlock page elements first.");list.removeIf(e->e.page()==before.page);mode=DisplayElements.Mode.CUSTOM;
             }
-            case "clear" -> {list.clear();mode=DisplayElements.Mode.CUSTOM;}
+            case "clear" -> {if(list.stream().anyMatch(e->e.options().locked()))return fail(before,"Unlock elements first.");list.clear();mode=DisplayElements.Mode.CUSTOM;}
             case "mode" -> {mode=DisplayElements.Mode.valueOf(value);}
             case "page" -> {page=Integer.parseInt(value);if(page<0||page>=DisplayElements.MAX_PAGES)return fail(before,"Page out of range.");}
             default -> {return fail(before,"Unknown display action.");}
@@ -70,6 +70,7 @@ public final class LayoutTransactions {
         if(width<8||height<9||width>DisplayElements.MAX_CANVAS||height>DisplayElements.MAX_CANVAS)return fail(before,"Invalid canvas dimensions.");
         Set<UUID> selected=new HashSet<>(ids);
         List<DisplayElements.Spec> picked=before.elements.stream().filter(e->selected.contains(e.id())).toList();
+        if(picked.stream().anyMatch(e->e.options().locked()))return fail(before,"Unlock selected elements first.");
         if(picked.size()!=ids.size()||picked.stream().anyMatch(e->e.page()!=before.page))return fail(before,"Selection changed; select elements on this page.");
         if(picked.stream().anyMatch(e->e.bounds().right()>width||e.bounds().bottom()>height))return fail(before,"Selection is outside the current canvas.");
         boolean horizontal=action.equals("distribute_x"),distributed=horizontal||action.equals("distribute_y");
@@ -112,6 +113,7 @@ public final class LayoutTransactions {
         if(ids.isEmpty()||ids.size()>DisplayElements.MAX_ELEMENTS||new HashSet<>(ids).size()!=ids.size())return fail(before,"Select distinct elements on this page.");
         if(Math.abs((long)dx)>DisplayElements.MAX_CANVAS||Math.abs((long)dy)>DisplayElements.MAX_CANVAS)return fail(before,"Invalid movement.");
         Set<UUID> selected=new HashSet<>(ids);var picked=before.elements.stream().filter(e->selected.contains(e.id())).toList();
+        if(picked.stream().anyMatch(e->e.options().locked()))return fail(before,"Unlock selected elements first.");
         if(picked.size()!=ids.size()||picked.stream().anyMatch(e->e.page()!=before.page))return fail(before,"Selection changed; select elements on this page.");
         try{
             var moved=EditorSelection.move(picked,dx,dy,width,height);
@@ -139,6 +141,7 @@ public final class LayoutTransactions {
         Set<UUID> selected=new HashSet<>(ids);
         var page=new ArrayList<>(before.elements.stream().filter(e->e.page()==before.page).toList());
         if(page.stream().filter(e->selected.contains(e.id())).count()!=ids.size())return fail(before,"Selection changed; select elements on this page.");
+        if(page.stream().anyMatch(e->selected.contains(e.id())&&e.options().locked()))return fail(before,"Unlock selected elements first.");
         switch(action){
             case "layer_front","layer_back" -> {
                 boolean front=action.equals("layer_front");var ordered=new ArrayList<DisplayElements.Spec>();
@@ -157,6 +160,24 @@ public final class LayoutTransactions {
         var result=new ArrayList<>(before.elements);int next=0;
         for(int i=0;i<result.size();i++)if(result.get(i).page()==before.page)result.set(i,page.get(next++));
         if(result.equals(before.elements))return fail(before,"Selection is already at that layer.");
+        return new Result(true,new State(result,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
+    }
+    public static boolean organization(String action){return Set.of("group","ungroup","lock","unlock","hide","show").contains(action);}
+    /** Page-local atomic metadata edit. Locks are editing aids, not permissions. */
+    public static Result applyOrganization(State before,long expected,String action,List<UUID> ids){
+        if(expected!=before.revision)return fail(before,"Screen changed; review the current layout and retry.");
+        if(before.revision==Long.MAX_VALUE)return fail(before,"Layout revision is exhausted.");
+        if(!organization(action)||ids.isEmpty()||ids.size()>DisplayElements.MAX_ELEMENTS||new HashSet<>(ids).size()!=ids.size())return fail(before,"Select distinct elements on this page.");
+        Set<UUID> selected=new HashSet<>(ids);
+        var picked=before.elements.stream().filter(e->selected.contains(e.id())).toList();
+        if(picked.size()!=ids.size()||picked.stream().anyMatch(e->e.page()!=before.page))return fail(before,"Selection changed; select elements on this page.");
+        if(action.equals("group")&&picked.size()<2)return fail(before,"Select at least two elements to group.");
+        String group=action.equals("group")?UUID.randomUUID().toString():"";
+        var result=before.elements.stream().map(e->{
+            if(!selected.contains(e.id()))return e;var o=e.options();
+            return e.options(o.organization(action.equals("group")?group:action.equals("ungroup")?"":o.group(),action.equals("lock")||!action.equals("unlock")&&o.locked(),action.equals("hide")||!action.equals("show")&&o.hidden()));
+        }).toList();
+        if(result.equals(before.elements))return fail(before,"Selection already has these settings.");
         return new Result(true,new State(result,DisplayElements.Mode.CUSTOM,before.page,before.revision+1),"");
     }
     private static Result fail(State s,String reason){return new Result(false,s,reason);}

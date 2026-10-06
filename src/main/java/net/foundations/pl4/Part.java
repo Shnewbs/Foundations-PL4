@@ -42,6 +42,9 @@ public final class Part {
     public double threshold = 1;
     public int index, priority, signal, color = 0x79D3FF, transferMode; // 0 passive, 1 add, 2 remove, 3 both
     public boolean items = true, fluids = true, energy = true, descending = true, whitelist = true;
+    public final List<String> pageNames=new ArrayList<>(java.util.Collections.nCopies(DisplayElements.MAX_PAGES,""));
+    public String pageName(int page){String name=pageNames.get(Math.clamp(page,0,DisplayElements.MAX_PAGES-1));return name.isBlank()?"Page "+(page+1):name;}
+    public String inputChannel="",outputChannel="";
     public long ticks;
     public int blockedFaces; // Six cable ports; zero preserves old saves.
     public int canvasWidth=1,canvasHeight=1,canvasColumn,canvasRow,canvasMask; // Derived, sync-only; no layout destruction on split. // Six cable ports; zero preserves old saves.
@@ -55,16 +58,18 @@ public final class Part {
 
     public Part(Kind kind, Direction face, UUID owner) { this.kind = kind; this.face = face; this.owner = owner; }
     public boolean hologram(){return kind==Kind.HOLOGRAM||kind==Kind.ADVANCED_HOLOGRAM;}
-    public record DisplaySettings(String label,String selected,String metric,int color,List<Element> elements,DisplayElements.Mode displayMode,int displayPage,int layoutWidth,int layoutHeight) {
-        public DisplaySettings { elements=List.copyOf(elements);layoutWidth=Math.clamp(layoutWidth,8,DisplayElements.MAX_CANVAS);layoutHeight=Math.clamp(layoutHeight,9,DisplayElements.MAX_CANVAS); }
+    public record DisplaySettings(String label,String selected,String metric,int color,List<Element> elements,DisplayElements.Mode displayMode,int displayPage,int layoutWidth,int layoutHeight,List<String> pageNames) {
+        public DisplaySettings { pageNames=normalizePageNames(pageNames);elements=List.copyOf(elements);layoutWidth=Math.clamp(layoutWidth,8,DisplayElements.MAX_CANVAS);layoutHeight=Math.clamp(layoutHeight,9,DisplayElements.MAX_CANVAS); }
+        private static List<String> normalizePageNames(List<String> names){var result=new ArrayList<String>();for(int i=0;i<DisplayElements.MAX_PAGES;i++)result.add(DisplayElements.clean(i<names.size()?names.get(i):"",32));return List.copyOf(result);}
+        public DisplaySettings(String label,String selected,String metric,int color,List<Element> elements,DisplayElements.Mode displayMode,int displayPage,int layoutWidth,int layoutHeight){this(label,selected,metric,color,elements,displayMode,displayPage,layoutWidth,layoutHeight,java.util.Collections.nCopies(DisplayElements.MAX_PAGES,""));}
         public DisplaySettings(String label,String selected,String metric,int color,List<Element> elements){this(label,selected,metric,color,elements,elements.isEmpty()?DisplayElements.Mode.AUTO_LIST:DisplayElements.Mode.CUSTOM,0,DisplayElements.WIDTH,DisplayElements.HEIGHT);}
-        public boolean configured(){return !label.isBlank()||!selected.isBlank()||!metric.isBlank()||color!=0x79D3FF||!elements.isEmpty()||displayMode==DisplayElements.Mode.CUSTOM;}
+        public boolean configured(){return !label.isBlank()||!selected.isBlank()||!metric.isBlank()||color!=0x79D3FF||!elements.isEmpty()||displayMode==DisplayElements.Mode.CUSTOM||pageNames.stream().anyMatch(n->!n.isBlank());}
     }
-    public DisplaySettings displaySettings(){return new DisplaySettings(label,selected,metric,color,elements,displayMode,displayPage,layoutWidth,layoutHeight);}
+    public DisplaySettings displaySettings(){return new DisplaySettings(label,selected,metric,color,elements,displayMode,displayPage,layoutWidth,layoutHeight,pageNames);}
     public boolean applyDisplaySettings(DisplaySettings settings,long revision){
         if(displaySettings().equals(settings)&&layoutRevision==revision)return false;
         label=settings.label();selected=settings.selected();metric=settings.metric();color=settings.color();
-        elements.clear();elements.addAll(settings.elements());displayMode=settings.displayMode();displayPage=settings.displayPage();layoutWidth=settings.layoutWidth();layoutHeight=settings.layoutHeight();layoutRevision=revision;return true;
+        pageNames.clear();pageNames.addAll(settings.pageNames());elements.clear();elements.addAll(settings.elements());displayMode=settings.displayMode();displayPage=settings.displayPage();layoutWidth=settings.layoutWidth();layoutHeight=settings.layoutHeight();layoutRevision=revision;return true;
     }
     public Direction displayFront(){return Direction.from3DDataValue(net.foundations.pl4.core.DisplayFacing.front(face.ordinal(),displayOutward));}
     public int slot() { return net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()); }
@@ -105,7 +110,7 @@ public final class Part {
             CompoundTag t=new CompoundTag();t.putUUID("id",id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
             t.putInt("x",x());t.putInt("y",y());t.putInt("w",spec.bounds().width());t.putInt("h",spec.bounds().height());t.putInt("color",color());t.putBoolean("bar",bar());
             t.putBoolean("count",spec.count());t.putBoolean("names",spec.names());t.putInt("columns",spec.columns());t.putInt("offset",spec.offset());t.putInt("page",spec.page());t.putBoolean("vertical",spec.vertical());t.putBoolean("compact",spec.compact());
-            t.putString("textAlign",spec.textAlign().name());t.putBoolean("wrap",spec.wrap());t.putFloat("textScale",spec.textScale());return t;
+            t.putString("textAlign",spec.textAlign().name());t.putBoolean("wrap",spec.wrap());t.putFloat("textScale",spec.textScale());t.putString("group",spec.options().group());t.putBoolean("locked",spec.options().locked());t.putBoolean("hidden",spec.options().hidden());t.putInt("background",spec.options().background());t.putInt("border",spec.options().border());t.putInt("actionPage",spec.options().actionPage());return t;
         }
         public static Element load(CompoundTag t){
             boolean legacy=!t.contains("type");DisplayElements.Type type=legacy?(t.getBoolean("bar")?DisplayElements.Type.BAR:DisplayElements.Type.TEXT):DisplayElements.Type.parse(t.getString("type"));
@@ -113,11 +118,11 @@ public final class Part {
             return new Element(new DisplayElements.Spec(id,type,t.getString("text"),t.getString("reader"),t.getString("key"),t.getString("asset"),
                 new DisplayElements.Rect(t.getInt("x"),t.getInt("y"),legacy?248-t.getInt("x"):t.getInt("w"),legacy?(type==DisplayElements.Type.BAR?18:12):t.getInt("h")),
                 t.getInt("color"),legacy||t.getBoolean("count"),t.getBoolean("names"),legacy?8:t.getInt("columns"),t.getInt("offset"),t.getInt("page"),t.getBoolean("vertical"),t.getBoolean("compact"),
-                DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap"),t.contains("textScale")?t.getFloat("textScale"):1F));
+                DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap"),t.contains("textScale")?t.getFloat("textScale"):1F,new DisplayElements.Options(t.getString("group"),t.getBoolean("locked"),t.getBoolean("hidden"),t.contains("background")?t.getInt("background"):-1,t.contains("border")?t.getInt("border"):-1,t.contains("actionPage")?t.getInt("actionPage"):-1)));
         }
     }
     public CompoundTag save(HolderLookup.Provider registry, boolean sync) {
-        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
+        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
         if (owner != null) t.putUUID("owner",owner);
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
@@ -168,6 +173,8 @@ public final class Part {
         p.pendingEnergyUnit=net.foundations.pl4.core.EnergyConversion.unit(t.getString("pendingEnergyUnit"));
         p.pendingEnergyJRate=Math.max(0,t.getInt("pendingEnergyJRate"));p.pendingEnergyEURate=Math.max(0,t.getInt("pendingEnergyEURate"));p.pendingEnergyEDRate=Math.max(0,t.getInt("pendingEnergyEDRate"));
         p.pendingEnergyCredits=Math.max(0,t.getLong("pendingEnergyCredits"));p.energyEscrow=!t.contains("pendingEnergy")&&t.getBoolean("energyEscrow");
+        for(int page=0;page<DisplayElements.MAX_PAGES;page++)p.pageNames.set(page,DisplayElements.clean(t.getString("pageName"+page),32));
+        p.inputChannel=DisplayElements.clean(t.getString("inputChannel"),48);p.outputChannel=DisplayElements.clean(t.getString("outputChannel"),48);
         p.blockedFaces=t.getInt("blockedFaces") & 63; p.descending=t.getBoolean("descending"); p.whitelist=t.getBoolean("whitelist"); p.ticks=t.getLong("ticks");
         p.pendingItem=ItemStack.parseOptional(registry,t.getCompound("pendingItem")); p.pendingFluid=FluidStack.parseOptional(registry,t.getCompound("pendingFluid")); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
         ListTag links=t.getList("links",Tag.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));

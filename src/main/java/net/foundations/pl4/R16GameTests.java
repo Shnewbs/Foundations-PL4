@@ -85,4 +85,31 @@ public final class R16GameTests {
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(remove,Direction.WEST),ref(both,Direction.EAST)));
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==21,"REMOVE may feed an explicit ADD/REMOVE peer");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void r3ChannelIsolationAndPersistence(GameTestHelper h){
+        var from=chest(h,new BlockPos(1,1,1));var to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
+        var remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);
+        var source=part(remove,Direction.WEST);var sink=part(node,Direction.EAST);source.transferMode=2;source.outputChannel="ore";sink.inputChannel="fuel";
+        var plan=TransferEngine.prepare(List.of(ref(remove,Direction.WEST),ref(node,Direction.EAST)));
+        TransferEngine.run(h.getLevel().getServer(),plan);
+        h.assertTrue(from.getItem(0).getCount()==17&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),"Different channels cannot extract or deliver");
+        sink.inputChannel="ore";TransferEngine.run(h.getLevel().getServer(),plan);
+        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Matching live channel works without rebuilding plan");
+        var restored=Part.load(source.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void r3EqualPrioritySinksShareRepeatedSingleSlotExports(GameTestHelper h){
+        int old=PLConfig.NETWORK_ITEM_RATE.get();try{
+            PLConfig.NETWORK_ITEM_RATE.set(1);
+            var from=chest(h,new BlockPos(1,1,1));var a=chest(h,new BlockPos(5,1,1));var b=chest(h,new BlockPos(8,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,20));
+            var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);part(source,Direction.WEST).transferMode=2;
+            var sa=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);var sb=host(h,new BlockPos(7,1,1),Kind.NODE,Direction.EAST);
+            var plan=TransferEngine.prepare(List.of(ref(source,Direction.WEST),ref(sa,Direction.EAST),ref(sb,Direction.EAST)));
+            for(int n=0;n<20;n++)TransferEngine.run(h.getLevel().getServer(),plan);
+            h.assertTrue(from.getItem(0).isEmpty()&&a.getItem(0).getCount()==10&&b.getItem(0).getCount()==10&&part(source,Direction.WEST).pendingItem.isEmpty(),"Equal sinks share 20 bounded cycles independently of source slot cursor");h.succeed();
+        }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
+    }
+
 }
