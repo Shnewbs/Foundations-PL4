@@ -127,4 +127,79 @@ public final class R16GameTests {
         c.owner=UUID.randomUUID();PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","7"));h.assertTrue(c.clockPhase==30,"Foreign owner cannot edit clock");h.succeed();
     }
 
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void directionalFiltersConstrainPassiveImportsAndExports(GameTestHelper h){
+        ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.IRON_INGOT,8));from.setItem(1,new ItemStack(Items.DIAMOND,7));
+        HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        Part source=part(node,Direction.WEST),sink=part(add,Direction.EAST);sink.transferMode=1;
+        source.outputFilterMode="ALLOW";source.outputFilter="minecraft:diamond";sink.inputFilterMode="DENY";sink.inputFilter="minecraft:diamond";
+        var network=List.of(ref(node,Direction.WEST),ref(add,Direction.EAST));TransferEngine.run(h.getLevel().getServer(),network);
+        h.assertTrue(from.getItem(0).getCount()==8&&from.getItem(1).getCount()==7&&to.getItem(0).isEmpty(),"Both directional filters must agree before extracting");
+        sink.inputFilter="minecraft:iron_ingot";TransferEngine.run(h.getLevel().getServer(),network);
+        h.assertTrue(from.getItem(0).getCount()==8&&from.getItem(1).isEmpty()&&to.getItem(0).getCount()==7,"Passive output and ADD input filters route only matching items");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void directionalFiltersApplyToFluidsAndRetainLegacyDefaults(GameTestHelper h){
+        Part p=new Part(Kind.TRANSFER_NODE,Direction.UP,OWNER);p.filter="minecraft:water";
+        var water=new net.neoforged.neoforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.WATER,1000);
+        var lava=new net.neoforged.neoforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.LAVA,1000);
+        h.assertTrue(TransferFilters.fluids(water,p,true)&&!TransferFilters.fluids(lava,p,true),"INHERIT keeps the legacy filter");
+        p.outputFilterMode="ALLOW";p.outputFilter="minecraft:lava";
+        h.assertTrue(TransferFilters.fluids(lava,p,false)&&!TransferFilters.fluids(water,p,false)&&TransferFilters.fluids(water,p,true),"Receive and send fluid filters are independent");
+        p.outputFilterMode="DENY";h.assertTrue(!TransferFilters.fluids(lava,p,false)&&TransferFilters.fluids(water,p,false),"Mode changes do not leave stale cached results");
+        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(saved.outputFilterMode.equals("DENY")&&saved.outputFilter.equals("minecraft:lava"),"Directional filters survive restart serialization");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void escrowBlocksRouteAndFilterEditsAndSyncsToClient(GameTestHelper h){
+        HostEntity host=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.UP);Part p=part(host,Direction.UP);p.transferMode=2;p.pendingItem=new ItemStack(Items.DIAMOND,3);
+        var user=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        for(var entry:Map.of("input_filter","minecraft:stone","output_filter_mode","DENY","transfer","1","input_channel","other","filter","minecraft:dirt","whitelist","false").entrySet())PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,entry.getKey(),entry.getValue()));
+        h.assertTrue(p.inputFilter.isEmpty()&&p.outputFilterMode.equals("INHERIT")&&p.transferMode==2&&p.inputChannel.isEmpty()&&p.filter.isEmpty()&&p.whitelist,"Buffered resources protect route semantics from settings edits");
+        Part client=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
+        h.assertTrue(client.pendingItem.isEmpty()&&!client.routeEditable(),"Client knows escrow exists without receiving inventory contents");
+        p.pendingItem=ItemStack.EMPTY;PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"output_filter_mode","DENY"));
+        h.assertTrue(p.outputFilterMode.equals("DENY"),"Drained route becomes editable");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void signallerStatementsHandleMissingAndAmbiguousReaders(GameTestHelper h){
+        HostEntity a=host(h,new BlockPos(1,1,1),Kind.INFO_READER,Direction.UP),b=host(h,new BlockPos(3,1,1),Kind.INFO_READER,Direction.UP);
+        Part first=part(a,Direction.UP),second=part(b,Direction.UP);first.label=second.label="same";first.rows.add(new Part.Row("value","Value",10,20,""));second.rows.add(new Part.Row("value","Value",5,20,""));
+        var readers=List.of(ref(a,Direction.UP),ref(b,Direction.UP));Part signal=new Part(Kind.SIGNALLER,Direction.UP,OWNER);signal.signalStrength=7;
+        signal.statements.add(new net.foundations.pl4.core.SignalRules.Statement(UUID.randomUUID(),first.identity.toString(),"value",">=",10));
+        signal.statements.add(new net.foundations.pl4.core.SignalRules.Statement(UUID.randomUUID(),second.identity.toString(),"missing","!=",0));
+        h.assertTrue(SignallerLogic.evaluate(signal,readers)==0,"Missing metric is false even for !=");signal.statementsAll=false;
+        h.assertTrue(SignallerLogic.evaluate(signal,readers)==7,"ANY returns configured strength when a statement matches");
+        signal.statements.clear();signal.selected="same";signal.threshold=1;
+        h.assertTrue(SignallerLogic.evaluate(signal,readers)==0,"Duplicate reader labels cannot silently pick a different reader");
+        signal.selected=first.identity.toString();h.assertTrue(SignallerLogic.evaluate(signal,readers)==7,"Stable reader UUID restores the legacy single condition");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void signallerStatementPacketsAreBoundedPersistentAndIdentitySafe(GameTestHelper h){
+        HostEntity host=host(h,new BlockPos(2,1,1),Kind.SIGNALLER,Direction.UP);Part p=part(host,Direction.UP);
+        var user=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Rules"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        for(String invalid:List.of("{}","null","[]","{\"threshold\":true}"))PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statement_add",invalid));
+        h.assertTrue(p.statements.isEmpty(),"Malformed statements are rejected without mutation");
+        var json=new com.google.gson.JsonObject();json.addProperty("reader","");json.addProperty("key","value");json.addProperty("operator",">=");json.addProperty("threshold",2);
+        for(int i=0;i<20;i++)PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statement_add",json.toString()));
+        h.assertTrue(p.statements.size()==16,"Statements are capped at sixteen");
+        PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statements_all","false"));PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"signal_strength","9"));
+        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(saved.statements.equals(p.statements)&&!saved.statementsAll&&saved.signalStrength==9,"Statement identities, conditions and mode survive save/reload");
+        String id=p.statements.getFirst().id().toString();var remove=new PLPackets.Edit(at,p.slot(),p.identity,"statement_remove",id);PLPackets.edit(user,remove);PLPackets.edit(user,remove);
+        h.assertTrue(p.statements.size()==15,"Repeated stale removal does not remove a different statement");h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void providerApiRejectsWrongDimensionBeforeInvokingAddons(GameTestHelper h){
+        int[] calls={0};
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:alpha_dimension",(context,out)->calls[0]++)){
+            var wrong=new Part.Link("pl4_test:missing_dimension",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+            h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),wrong).isEmpty()&&calls[0]==0,"Wrong-dimension targets cannot sample the same coordinates in another world");
+            var ids=net.foundations.pl4.api.InfoProviders.registeredIds();h.assertTrue(ids.contains("pl4_test:alpha_dimension")&&ids.contains("foundations_pl4:vanilla"),"API exposes builtin and registered provider identities");
+            boolean immutable=false;try{ids.clear();}catch(UnsupportedOperationException expected){immutable=true;}h.assertTrue(immutable,"Diagnostic inventory is immutable");
+        }
+        h.assertTrue(!net.foundations.pl4.api.InfoProviders.registeredIds().contains("pl4_test:alpha_dimension"),"Closing provider removes its diagnostic entry");h.succeed();
+    }
 }

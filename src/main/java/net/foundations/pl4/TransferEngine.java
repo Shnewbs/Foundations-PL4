@@ -135,8 +135,8 @@ public final class TransferEngine {
     private static PairKey pair(NetworkEngine.Ref source,NetworkEngine.Ref sink){return new PairKey(source.part().identity,sink.part().identity);}
     private static TargetKey target(NetworkEngine.Ref ref){Part.Link l=ref.adjacent();return new TargetKey(l.dimension(),l.pos().asLong(),l.side().ordinal());}
     private static boolean sameTarget(NetworkEngine.Ref a,NetworkEngine.Ref b){return target(a).equals(target(b));}
-    private static boolean itemAllowed(ItemStack stack,NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().items&&DataSampler.matches(stack,ref.part());}
-    private static boolean fluidAllowed(FluidStack stack,NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().fluids&&DataSampler.matches(stack,ref.part());}
+    private static boolean itemAllowed(ItemStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.items(stack,ref.part(),input);}
+    private static boolean fluidAllowed(FluidStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.fluids(stack,ref.part(),input);}
     private static boolean energyAllowed(NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().energy;}
 
     // ------------------------------------------------------------ items
@@ -148,7 +148,7 @@ public final class TransferEngine {
         int sourceBudget=budgets.remaining(budgets.items,source,PLConfig.ITEM_RATE.get());if(sourceBudget<=0)return;
         for(int n=0;n<Math.min(from.getSlots(),65536);n++){
             int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());
-            ItemStack trial=from.extractItem(slot,sourceBudget,true);if(trial.isEmpty()||!itemAllowed(trial,source))continue;
+            ItemStack trial=from.extractItem(slot,sourceBudget,true);if(trial.isEmpty()||!itemAllowed(trial,source,false))continue;
             int space=itemSpace(server,trial,sinks,source,budgets,pairs);if(space<=0)continue;
             ItemStack extracted=from.extractItem(slot,Math.min(space,trial.getCount()),false);if(extracted.isEmpty())continue;
             p.pendingItem=extracted;source.host().setChanged();budgets.use(budgets.items,source,extracted.getCount());p.ticks=slot+1L;
@@ -158,7 +158,7 @@ public final class TransferEngine {
     private static int itemSpace(MinecraftServer server,ItemStack stack,List<NetworkEngine.Ref> sinks,NetworkEngine.Ref source,Budgets budgets,Set<PairKey> pairs){
         int remaining=stack.getCount();
         for(NetworkEngine.Ref sink:sinks){
-            if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!itemAllowed(stack,sink))continue;
+            if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!itemAllowed(stack,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
             int offered=Math.min(remaining,budget);ItemStack send=stack.copyWithCount(offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,true);remaining-=offered-rest.getCount();
@@ -168,7 +168,7 @@ public final class TransferEngine {
     private static void flushItem(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
         Part p=source.part();
         for(NetworkEngine.Ref sink:sinks){
-            if(p.pendingItem.isEmpty())break;if(pairs.contains(pair(source,sink))||!itemAllowed(p.pendingItem,sink))continue;
+            if(p.pendingItem.isEmpty())break;if(pairs.contains(pair(source,sink))||!itemAllowed(p.pendingItem,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
             int offered=Math.min(p.pendingItem.getCount(),budget);ItemStack send=p.pendingItem.copyWithCount(offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,false);int accepted=offered-rest.getCount();
@@ -188,7 +188,7 @@ public final class TransferEngine {
             int sourceBudget=budgets.remaining(budgets.items,source,PLConfig.ITEM_RATE.get());int sinkBudget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());int limit=Math.min(sourceBudget,sinkBudget);if(limit<=0)continue;
             IItemHandler from=itemHandler(server,source);if(from==null||from.getSlots()<=0)continue;
             for(int n=0;n<Math.min(from.getSlots(),65536)&&limit>0;n++){
-                int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());ItemStack trial=from.extractItem(slot,limit,true);if(trial.isEmpty()||!itemAllowed(trial,source)||!itemAllowed(trial,sink))continue;
+                int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());ItemStack trial=from.extractItem(slot,limit,true);if(trial.isEmpty()||!itemAllowed(trial,source,false)||!itemAllowed(trial,sink,true))continue;
                 ItemStack rest=ItemHandlerHelper.insertItemStacked(to,trial.copy(),true);int accepted=trial.getCount()-rest.getCount();if(accepted<=0)continue;
                 ItemStack extracted=from.extractItem(slot,accepted,false);if(extracted.isEmpty())continue;
                 p.pendingItem=extracted.copy();sink.host().setChanged();source.host().setChanged();
@@ -205,22 +205,22 @@ public final class TransferEngine {
         Part p=source.part();boolean hadPending=!p.pendingFluid.isEmpty();if(hadPending){flushFluid(server,source,sinks,budgets,pairs,received);return;}if(received.contains(target(source)))return;
         IFluidHandler from=fluidHandler(server,source);if(from==null)return;int sourceBudget=budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get());if(sourceBudget<=0)return;
         for(int tank=0;tank<Math.min(from.getTanks(),65536);tank++){
-            FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),sourceBudget));
+            FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source,false))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),sourceBudget));
             FluidStack trial=from.drain(request,IFluidHandler.FluidAction.SIMULATE);if(trial.isEmpty())continue;int space=fluidSpace(server,trial,sinks,source,budgets,pairs);if(space<=0)continue;request=trial.copy();request.setAmount(Math.min(space,trial.getAmount()));
             FluidStack extracted=from.drain(request,IFluidHandler.FluidAction.EXECUTE);if(extracted.isEmpty())continue;p.pendingFluid=extracted;budgets.use(budgets.fluids,source,extracted.getAmount());source.host().setChanged();p.ticks++;
             flushFluid(server,source,sinks,budgets,pairs,received);break;
         }
     }
     private static int fluidSpace(MinecraftServer server,FluidStack stack,List<NetworkEngine.Ref> sinks,NetworkEngine.Ref source,Budgets budgets,Set<PairKey> pairs){
-        int remaining=stack.getAmount();for(NetworkEngine.Ref sink:sinks){if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!fluidAllowed(stack,sink))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=stack.copy();send.setAmount(Math.min(remaining,budget));remaining-=Math.clamp(to.fill(send,IFluidHandler.FluidAction.SIMULATE),0,send.getAmount());}return stack.getAmount()-remaining;
+        int remaining=stack.getAmount();for(NetworkEngine.Ref sink:sinks){if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!fluidAllowed(stack,sink,true))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=stack.copy();send.setAmount(Math.min(remaining,budget));remaining-=Math.clamp(to.fill(send,IFluidHandler.FluidAction.SIMULATE),0,send.getAmount());}return stack.getAmount()-remaining;
     }
     private static void flushFluid(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();for(NetworkEngine.Ref sink:sinks){if(p.pendingFluid.isEmpty())break;if(pairs.contains(pair(source,sink))||!fluidAllowed(p.pendingFluid,sink))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));int accepted=Math.clamp(to.fill(send,IFluidHandler.FluidAction.EXECUTE),0,send.getAmount());if(accepted>0){p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);budgets.delivered(budgets.fluids,accepted);pairs.add(pair(source,sink));received.add(target(sink));source.host().setChanged();sink.host().setChanged();}}
+        Part p=source.part();for(NetworkEngine.Ref sink:sinks){if(p.pendingFluid.isEmpty())break;if(pairs.contains(pair(source,sink))||!fluidAllowed(p.pendingFluid,sink,true))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));int accepted=Math.clamp(to.fill(send,IFluidHandler.FluidAction.EXECUTE),0,send.getAmount());if(accepted>0){p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);budgets.delivered(budgets.fluids,accepted);pairs.add(pair(source,sink));received.add(target(sink));source.host().setChanged();sink.host().setChanged();}}
     }
     private static void pullFluids(MinecraftServer server,NetworkEngine.Ref sink,List<NetworkEngine.Ref> sources,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
         Part p=sink.part();IFluidHandler to=fluidHandler(server,sink);if(to==null)return;boolean hadPending=!p.pendingFluid.isEmpty();if(hadPending){int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));int accepted=Math.clamp(to.fill(send,IFluidHandler.FluidAction.EXECUTE),0,send.getAmount());if(accepted>0){p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);budgets.delivered(budgets.fluids,accepted);received.add(target(sink));sink.host().setChanged();}return;}
         for(NetworkEngine.Ref source:sources){if(budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())<=0)break;if(received.contains(target(source))||pairs.contains(pair(source,sink)))continue;int limit=Math.min(budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get()),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get()));if(limit<=0)continue;IFluidHandler from=fluidHandler(server,source);if(from==null)continue;
-            for(int tank=0;tank<Math.min(from.getTanks(),65536);tank++){FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source)||!fluidAllowed(shown,sink))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),limit));FluidStack trial=from.drain(request,IFluidHandler.FluidAction.SIMULATE);if(trial.isEmpty())continue;int accepted=Math.clamp(to.fill(trial.copy(),IFluidHandler.FluidAction.SIMULATE),0,trial.getAmount());if(accepted<=0)continue;request=trial.copy();request.setAmount(accepted);FluidStack extracted=from.drain(request,IFluidHandler.FluidAction.EXECUTE);if(extracted.isEmpty())continue;p.pendingFluid=extracted.copy();sink.host().setChanged();source.host().setChanged();FluidStack offered=extracted.copy();offered.setAmount(Math.min(offered.getAmount(),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())));int inserted=Math.clamp(to.fill(offered,IFluidHandler.FluidAction.EXECUTE),0,offered.getAmount());budgets.use(budgets.fluids,source,extracted.getAmount());budgets.use(budgets.fluids,sink,extracted.getAmount());pairs.add(pair(source,sink));if(inserted>0){budgets.delivered(budgets.fluids,inserted);received.add(target(sink));}p.pendingFluid.shrink(inserted);sink.host().setChanged();source.host().setChanged();p.ticks++;break;}
+            for(int tank=0;tank<Math.min(from.getTanks(),65536);tank++){FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source,false)||!fluidAllowed(shown,sink,true))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),limit));FluidStack trial=from.drain(request,IFluidHandler.FluidAction.SIMULATE);if(trial.isEmpty())continue;int accepted=Math.clamp(to.fill(trial.copy(),IFluidHandler.FluidAction.SIMULATE),0,trial.getAmount());if(accepted<=0)continue;request=trial.copy();request.setAmount(accepted);FluidStack extracted=from.drain(request,IFluidHandler.FluidAction.EXECUTE);if(extracted.isEmpty())continue;p.pendingFluid=extracted.copy();sink.host().setChanged();source.host().setChanged();FluidStack offered=extracted.copy();offered.setAmount(Math.min(offered.getAmount(),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())));int inserted=Math.clamp(to.fill(offered,IFluidHandler.FluidAction.EXECUTE),0,offered.getAmount());budgets.use(budgets.fluids,source,extracted.getAmount());budgets.use(budgets.fluids,sink,extracted.getAmount());pairs.add(pair(source,sink));if(inserted>0){budgets.delivered(budgets.fluids,inserted);received.add(target(sink));}p.pendingFluid.shrink(inserted);sink.host().setChanged();source.host().setChanged();p.ticks++;break;}
             if(!p.pendingFluid.isEmpty())break;
         }
     }

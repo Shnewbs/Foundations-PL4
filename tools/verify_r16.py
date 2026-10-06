@@ -25,7 +25,7 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
- 'eleven R16 native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==11,
+ 'seventeen transfer and automation native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==17,
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }

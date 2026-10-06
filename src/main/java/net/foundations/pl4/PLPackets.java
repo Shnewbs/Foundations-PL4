@@ -147,10 +147,26 @@ public final class PLPackets {
                 case "channel_name" -> {if(!p.kind.reader()||!ReaderChannels.rename(p,v))return;}
                 case "label" -> p.label=clean(v,48);
                 case "input_channel", "output_channel" -> {
-                    if((p.kind!=Kind.NODE&&p.kind!=Kind.TRANSFER_NODE)||!p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0)return;
+                    if((p.kind!=Kind.NODE&&p.kind!=Kind.TRANSFER_NODE)||!p.routeEditable())return;
                     if(packet.field.equals("input_channel"))p.inputChannel=clean(v.trim(),48);else p.outputChannel=clean(v.trim(),48);
                 }
-                case "filter" -> p.filter=clean(v,256);
+                case "input_filter", "output_filter", "input_filter_mode", "output_filter_mode" -> {
+                    if((p.kind!=Kind.NODE&&p.kind!=Kind.TRANSFER_NODE)||!p.routeEditable())return;
+                    if(packet.field.endsWith("mode")){if(!TransferFilters.MODES.contains(v))return;if(packet.field.startsWith("input"))p.inputFilterMode=v;else p.outputFilterMode=v;}
+                    else if(packet.field.startsWith("input"))p.inputFilter=clean(v,256);else p.outputFilter=clean(v,256);
+                }
+                case "statement_add" -> {
+                    if(p.kind!=Kind.SIGNALLER||p.statements.size()>=net.foundations.pl4.core.SignalRules.MAX_STATEMENTS)return;
+                    try{
+                        var json=com.google.gson.JsonParser.parseString(v).getAsJsonObject();
+                        String reader=clean(json.get("reader").getAsString(),64),key=clean(json.get("key").getAsString(),128);
+                        p.statements.add(new net.foundations.pl4.core.SignalRules.Statement(UUID.randomUUID(),reader,key,json.get("operator").getAsString(),json.get("threshold").getAsDouble()));
+                    }catch(RuntimeException invalid){return;}
+                }
+                case "statement_remove" -> {if(p.kind!=Kind.SIGNALLER)return;UUID id=UUID.fromString(v);p.statements.removeIf(s->s.id().equals(id));}
+                case "statements_all" -> {if(p.kind!=Kind.SIGNALLER||!Set.of("true","false").contains(v))return;p.statementsAll=Boolean.parseBoolean(v);}
+                case "signal_strength" -> {if(p.kind!=Kind.SIGNALLER)return;int n=Integer.parseInt(v);if(n<0||n>15)return;p.signalStrength=n;}
+                case "filter" -> {if((p.kind==Kind.NODE||p.kind==Kind.TRANSFER_NODE)&&!p.routeEditable())return;p.filter=clean(v,256);}
                 case "selected" -> p.selected=clean(v,64);
                 case "metric" -> p.metric=clean(v,128);
                 case "mode" -> {if(p.kind.display())return;if(Set.of("LIST","STACK","SLOT","POS","STORAGE","CHANNEL").contains(v))p.mode=v;}
@@ -159,12 +175,12 @@ public final class PLPackets {
                 case "comparison" -> {if(Set.of(">=","<=",">","<","=","!=").contains(v))p.comparison=v;}
                 case "threshold" -> {double n=Double.parseDouble(v);if(Double.isFinite(n)&&Math.abs(n)<=1e15)p.threshold=n;}
                 case "color" -> p.color=Integer.parseUnsignedInt(v.replace("#",""),16)&0xFFFFFF;
-                case "transfer" -> p.transferMode=Math.clamp(Integer.parseInt(v),0,3);
+                case "transfer" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.routeEditable())return;p.transferMode=Math.clamp(Integer.parseInt(v),0,3);}
                 case "items" -> p.items=Boolean.parseBoolean(v);
                 case "fluids" -> p.fluids=Boolean.parseBoolean(v);
                 case "energy" -> p.energy=Boolean.parseBoolean(v);
                 case "descending" -> p.descending=Boolean.parseBoolean(v);
-                case "whitelist" -> p.whitelist=Boolean.parseBoolean(v);
+                case "whitelist" -> {if((p.kind==Kind.NODE||p.kind==Kind.TRANSFER_NODE)&&!p.routeEditable())return;p.whitelist=Boolean.parseBoolean(v);}
                 case "remove_link" -> {if(p.kind!=Kind.ARRAY&&p.kind!=Kind.ENTITY_NODE&&!p.kind.receiver())return;p.links.removeIf(link->ReaderChannels.id(link).equals(v));}
                 case "clock_pulse", "clock_phase" -> {if(p.kind!=Kind.CLOCK)return;int n=Integer.parseInt(v);if(n<0||n>(packet.field.equals("clock_pulse")?24000:23999))return;if(packet.field.equals("clock_pulse"))p.clockPulse=n;else p.clockPhase=n;}
                 case "clock_paused" -> {if(p.kind!=Kind.CLOCK||!Set.of("true","false").contains(v))return;p.clockPaused=Boolean.parseBoolean(v);}

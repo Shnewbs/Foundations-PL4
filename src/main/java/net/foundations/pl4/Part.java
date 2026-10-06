@@ -15,6 +15,12 @@ public final class Part {
     public UUID owner;
     public UUID identity = UUID.randomUUID();
     public String label = "", filter = "", selected = "", metric = "", mode = "LIST", comparison = ">=";
+    public String inputFilter="",outputFilter="",inputFilterMode="INHERIT",outputFilterMode="INHERIT";
+    public boolean resourceEscrow; // Sync-only summary; item/fluid contents stay server-side.
+    public boolean routeEditable(){return pendingItem.isEmpty()&&pendingFluid.isEmpty()&&energyRouteEditable()&&!resourceEscrow;}
+    public final List<net.foundations.pl4.core.SignalRules.Statement> statements=new ArrayList<>();
+    public boolean statementsAll=true;
+    public int signalStrength=15;
     // Old saves keep their inward front until explicitly flipped; no automatic controller/layout migration.
     public boolean displayOutward;
     public int hologramView = 3; // SOUTH for legacy floor/ceiling projectors; wall view is derived.
@@ -131,6 +137,10 @@ public final class Part {
         t.putBoolean("displayOutward",displayOutward);t.putString("energySystem",energySystem);
         t.putString("targetChannel",targetChannel);t.putString("targetQuery",targetQuery);t.putInt("targetPage",targetPage);
         ListTag aliases=new ListTag();for(var entry:channelNames.entrySet()){CompoundTag c=new CompoundTag();c.putString("id",entry.getKey());c.putString("name",entry.getValue());aliases.add(c);}t.put("channelNames",aliases);
+        t.putString("inputFilter",inputFilter);t.putString("outputFilter",outputFilter);t.putString("inputFilterMode",inputFilterMode);t.putString("outputFilterMode",outputFilterMode);
+        t.putBoolean("resourceEscrow",!pendingItem.isEmpty()||!pendingFluid.isEmpty()||energyCredits()>0);
+        t.putBoolean("statementsAll",statementsAll);t.putInt("signalStrength",signalStrength);
+        ListTag statementTags=new ListTag();for(var statement:statements){CompoundTag s=new CompoundTag();s.putString("id",statement.id().toString());s.putString("reader",statement.reader());s.putString("key",statement.key());s.putString("operator",statement.operator());s.putDouble("threshold",statement.threshold());statementTags.add(s);}t.put("statements",statementTags);
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
         t.putString("comparison",comparison); t.putDouble("threshold",threshold); t.putInt("index",index); t.putInt("priority",priority); t.putInt("signal",signal);
         t.putInt("color",color); t.putInt("transferMode",transferMode); t.putBoolean("items",items); t.putBoolean("fluids",fluids); t.putBoolean("energy",energy);
@@ -167,6 +177,11 @@ public final class Part {
         p.targetQuery=ReaderChannels.clean(t.getString("targetQuery"));p.targetLabel=t.getString("targetLabel");
         p.targetPage=Math.clamp(t.getInt("targetPage"),0,65535);p.targetCount=Math.max(0,t.getInt("targetCount"));
         ListTag aliases=t.getList("channelNames",Tag.TAG_COMPOUND);for(int i=0;i<Math.min(64,aliases.size());i++){CompoundTag c=aliases.getCompound(i);String id=ReaderChannels.sanitize(c.getString("id"));String label=ReaderChannels.clean(c.getString("name"));if(!id.isEmpty()&&!label.isBlank())p.channelNames.put(id,label);}
+        p.inputFilter=DisplayElements.clean(t.getString("inputFilter"),256);p.outputFilter=DisplayElements.clean(t.getString("outputFilter"),256);
+        p.inputFilterMode=TransferFilters.mode(t.getString("inputFilterMode"));p.outputFilterMode=TransferFilters.mode(t.getString("outputFilterMode"));
+        p.resourceEscrow=!t.contains("pendingEnergy")&&t.getBoolean("resourceEscrow");
+        p.statementsAll=!t.contains("statementsAll")||t.getBoolean("statementsAll");p.signalStrength=t.contains("signalStrength")?Math.clamp(t.getInt("signalStrength"),0,15):15;
+        ListTag statementTags=t.getList("statements",Tag.TAG_COMPOUND);for(int i=0;i<Math.min(statementTags.size(),net.foundations.pl4.core.SignalRules.MAX_STATEMENTS);i++){CompoundTag s=statementTags.getCompound(i);try{var statement=new net.foundations.pl4.core.SignalRules.Statement(UUID.fromString(s.getString("id")),s.getString("reader"),s.getString("key"),s.getString("operator"),s.getDouble("threshold"));if(p.statements.stream().noneMatch(old->old.id().equals(statement.id())))p.statements.add(statement);}catch(IllegalArgumentException ignored){}}
         p.label=t.getString("label"); p.filter=t.getString("filter"); p.selected=t.getString("selected"); p.metric=t.getString("metric"); p.mode=t.getString("mode");
         p.comparison=t.getString("comparison"); p.threshold=t.getDouble("threshold"); p.index=t.getInt("index"); p.priority=t.getInt("priority"); p.signal=t.getInt("signal");
         p.color=t.getInt("color"); p.transferMode=t.getInt("transferMode"); p.items=t.getBoolean("items"); p.fluids=t.getBoolean("fluids"); p.energy=t.getBoolean("energy");
