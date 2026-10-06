@@ -1,4 +1,6 @@
-# Integration status — R1.9
+# Integration status — 0.1a
+
+**Further API testing is still required.** The implementation inventory below retains the R1.9 adapter scope; installed-provider acceptance is pending. See [API_TESTING.md](API_TESTING.md).
 
 Current GitHub branches are the baseline; the older R16 archive is historical.
 

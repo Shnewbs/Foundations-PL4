@@ -1,15 +1,13 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Project:** Foundations PL4  
-**Current source candidate:** `0.0.2a.R3` — editor organization, routing and component controls. See `docs/R3_IMPLEMENTATION.md`.
-**Minecraft:** 1.21.1  
-**Loader:** NeoForge 21.1.250 target  
-**Java:** 21  
-**Current validation:** R3 source/offline checks pass; publication is gated by native builds and GameTests on each track. Client visuals, live multiplayer and installed optional integrations remain pending. Earlier validation notes below describe historical versions.
-**Layer workflow:** R1.3 published; 134 native tests passed on Linux and Windows; client visual acceptance pending.
-**Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
-**Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  
-**Status:** `0.0.1a` frozen by user acceptance; `0.0.2a` is now the active development line.
+**Current version:** `0.1a` automation alpha, on separate Minecraft 1.21.1 and 26.3 tracks.
+**Further API testing is still required.** See `docs/API_TESTING.md` and `docs/releases/0.1a.md`.
+
+## 0.1a reconciliation
+
+New source implements a paged Wireless Storage inventory screen with guarded server actions, independent receive/send item/fluid filters, bounded ALL/ANY Signaller statements, adjustable signal strength, escrow-aware edits and provider API guards. Existing R3 display and routing features are included. Publication is gated by native tests per track; installed-mod, graphical, live multiplayer and large-world acceptance remain separate and pending.
+
+The version advances to 0.1a as an alpha milestone. It does not close the entire proposed feature-complete 0.1 roadmap. Aggregated Wireless Storage views/search, remaining component parity, richer integrations and gameplay/performance acceptance remain open. Historical checkboxes and counts below are retained for traceability, not presented as current release evidence.
 
 ---
 

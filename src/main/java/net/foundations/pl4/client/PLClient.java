@@ -14,6 +14,7 @@ public final class PLClient {
     @SubscribeEvent public static void setup(FMLClientSetupEvent e){e.enqueueWork(()->{net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CommunityWelcome::login);PLPackets.clientOpen=packet->{
         Minecraft mc=Minecraft.getInstance();if(mc.level==null)return;
         if(packet.tag().getBoolean("guide").orElse(false)){mc.gui.setScreen(new GuideScreen());return;}
+        if(packet.tag().getBoolean("wirelessStorage").orElse(false)){if(mc.gui.screen() instanceof WirelessStorageScreen storage)storage.update(packet.tag());else if(!packet.tag().getBoolean("reply").orElse(false))mc.gui.setScreen(new WirelessStorageScreen(packet.tag()));return;}
         Part part=Part.load(packet.tag(),mc.level.registryAccess());if(part==null)return;
         var editor=DisplayEditorScreen.active();if(editor!=null&&editor.identity().equals(part.identity)){editor.receive(packet,part);return;}
         if(mc.gui.screen() instanceof PartScreen screen&&screen.identity().equals(part.identity)){screen.update(part);screen.error(packet.tag().getString("layoutError").orElse(""));return;}

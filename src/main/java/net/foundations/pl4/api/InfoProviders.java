@@ -27,8 +27,15 @@ public final class InfoProviders {
         Entry entry=new Entry(id,provider);PROVIDERS.put(id,entry);snapshot=List.copyOf(PROVIDERS.values());
         return ()->{synchronized(InfoProviders.class){if(PROVIDERS.remove(id,entry))snapshot=List.copyOf(PROVIDERS.values());}};
     }
+    /** API contract revision, independent of the mod release version. */
+    public static final int API_VERSION=1;
+    /** Immutable deterministic inventory for integration diagnostics; includes the builtin provider. */
+    public static List<String> registeredIds(){List<String> ids=new ArrayList<>();ids.add(VANILLA.id);for(var entry:snapshot)ids.add(entry.id);return List.copyOf(ids);}
     /** Never loads chunks; only connected targets supplied by the reader should be passed here. */
     public static List<Part.Row> sample(ServerLevel level,Part.Link target){
+        Objects.requireNonNull(level);Objects.requireNonNull(target);
+        if(!level.getServer().isSameThread())throw new IllegalStateException("InfoProviders.sample requires the server thread");
+        if(!level.dimension().identifier().toString().equals(target.dimension()))return List.of();
         Entity entity=target.entity()==null?null:level.getEntity(target.entity());
         if(target.entity()!=null?entity==null:!level.hasChunkAt(target.pos()))return List.of();
         Context context=new Context(level,target,entity);List<Part.Row> result=new ArrayList<>();

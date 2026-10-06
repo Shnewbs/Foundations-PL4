@@ -17,10 +17,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class ToolItem extends Item {
-    public enum Mode{OPERATOR,BLOCK_LINK,ENTITY_LINK,MONITOR,GUIDE}
+    public enum Mode{OPERATOR,BLOCK_LINK,ENTITY_LINK,MONITOR,STORAGE,GUIDE}
     private final Mode mode;
     public ToolItem(Mode m,Properties p){super(p);mode=m;}
-    private static Part.Link link(ItemStack stack){var data=stack.get(DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link").orElseGet(CompoundTag::new));}
+    static Part.Link link(ItemStack stack){var data=stack.get(DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link").orElseGet(CompoundTag::new));}
     private static void save(ItemStack stack,Part.Link link){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_link",link.save()));}
     @Override public InteractionResult useOn(UseOnContext c){
         if(!(c.getPlayer() instanceof ServerPlayer player))return InteractionResult.SUCCESS;
@@ -50,6 +50,14 @@ public final class ToolItem extends Item {
             }else PLPackets.open(player,host,part);
             return InteractionResult.CONSUME;
         }
+        if(mode==Mode.STORAGE){
+            if(player.isShiftKeyDown()){
+                if(host==null||part==null||(part.kind!=Kind.NODE&&part.kind!=Kind.TRANSFER_NODE)||!host.canEdit(player)||!level.mayInteract(player,pos))return InteractionResult.FAIL;
+                save(c.getItemInHand(),new Part.Link(level.dimension().identifier().toString(),pos,part.face,null,part.identity));
+                player.sendOverlayMessage(Component.literal("Wireless Storage bound to inventory Node"));
+            }else WirelessStorage.open(player,c.getHand());
+            return InteractionResult.SUCCESS;
+        }
         if(mode==Mode.BLOCK_LINK||mode==Mode.MONITOR||mode==Mode.ENTITY_LINK){
             if(player.isShiftKeyDown()){
                 save(c.getItemInHand(),new Part.Link(level.dimension().identifier().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
@@ -76,6 +84,7 @@ public final class ToolItem extends Item {
         ItemStack stack=player.getItemInHand(hand);
         if(player instanceof ServerPlayer sp){
             if(mode==Mode.GUIDE){CompoundTag tag=new CompoundTag();tag.putBoolean("guide",true);PacketDistributor.sendToPlayer(sp,new PLPackets.Open(BlockPos.ZERO,-1,tag));}
+            else if(mode==Mode.STORAGE)WirelessStorage.open(sp,hand);
             else if(mode==Mode.MONITOR){
                 Part.Link link=link(stack);
                 if(link!=null&&NetworkEngine.loaded(sp.level().getServer(),link)){

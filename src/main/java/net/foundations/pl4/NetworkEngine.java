@@ -193,8 +193,9 @@ public final class NetworkEngine {
                 p.rows.clear(); if(reader!=null)p.rows.addAll(reader.part.rows);
                 p.status=reader==null?"No selected reader":reader.part.title();
                 if(p.kind==Kind.SIGNALLER){
-                    Part.Row row=p.rows.stream().filter(a->p.metric.isEmpty()||a.key().equals(p.metric)).findFirst().orElse(null);
-                    setSignal(r,row!=null&&compare(row.value(),p.threshold,p.comparison)?15:0);
+                    setSignal(r,SignallerLogic.evaluate(p,readers));
+                    if(!p.statements.isEmpty())p.status=(p.statementsAll?"ALL":"ANY")+" of "+p.statements.size()+" statements · output "+p.signal;
+
                 }
             }
             if(p.kind==Kind.CLOCK){

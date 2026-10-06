@@ -22,7 +22,7 @@ public final class PartScreen extends Screen {
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    public void update(Part p){boolean linksChanged=!p.links.equals(part.links);if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+    public void update(Part p){boolean linksChanged=!p.links.equals(part.links)||!p.statements.equals(part.statements);if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
         if(channelPageButton!=null)channelPageButton.setMessage(Component.literal("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64)));
         if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
         if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
@@ -81,7 +81,16 @@ public final class PartScreen extends Screen {
             if(part.kind==Kind.NODE||part.kind==Kind.TRANSFER_NODE){
                 field("input_channel","Input channel",part.inputChannel,x,y,fw);y+=28;
                 field("output_channel","Output channel",part.outputChannel,x,y,fw);y+=28;
-                for(String key:new String[]{"input_channel","output_channel"}){fields.get(key).setMaxLength(48);fields.get(key).setEditable(editable&&part.pendingItem.isEmpty()&&part.pendingFluid.isEmpty()&&part.energyCredits()==0);fields.get(key).setTooltip(Tooltip.create(Component.literal("Exact, case-sensitive route name. Source output must equal destination input. Blank matches blank. Drain escrow before editing.")));}
+                for(String key:new String[]{"input_channel","output_channel"}){fields.get(key).setMaxLength(48);fields.get(key).setEditable(editable&&part.routeEditable());fields.get(key).setTooltip(Tooltip.create(Component.literal("Exact, case-sensitive route name. Source output must equal destination input. Blank matches blank. Drain escrow before editing.")));}
+            }
+            if(part.kind==Kind.NODE||part.kind==Kind.TRANSFER_NODE){
+                for(boolean input:new boolean[]{true,false}){
+                    String key=input?"input_filter":"output_filter";
+                    field(key,input?"Receive filter":"Send filter",input?part.inputFilter:part.outputFilter,x,y,fw);fields.get(key).setEditable(editable&&part.routeEditable());y+=28;
+                    String mode=input?part.inputFilterMode:part.outputFilterMode;
+                    Button filterMode=button((input?"Receive: ":"Send: ")+mode,left+12,y,160,b->{String next=next(new String[]{"INHERIT","ALLOW","DENY"},input?part.inputFilterMode:part.outputFilterMode);send(key+"_mode",next);b.setMessage(Component.literal((input?"Receive: ":"Send: ")+next));});
+                    filterMode.active=editable&&part.routeEditable();filterMode.setTooltip(Tooltip.create(Component.literal("INHERIT uses the existing Transfer Node filter; normal Nodes accept all. ALLOW/DENY uses this direction's IDs or #tags. Blank accepts all. Drain escrow before editing.")));y+=28;
+                }
             }
             if(part.kind==Kind.CLOCK){
                 field("clock_pulse","Pulse ticks (0 = auto)",Integer.toString(part.clockPulse),x,y,fw);y+=28;
@@ -96,6 +105,16 @@ public final class PartScreen extends Screen {
             field("priority","Priority",Integer.toString(part.priority),x+fw-70,y,70);y+=28;
             field("threshold",part.kind==Kind.CLOCK?"Interval (ticks)":"Threshold",Double.toString(part.threshold),x,y,90);
             button(part.comparison,x+98,y,45,b->{String[] ops={">=",">","<","<=","=","!="};send("comparison",next(ops,part.comparison));b.setMessage(Component.literal(next(ops,part.comparison)));});y+=28;
+            if(part.kind==Kind.SIGNALLER){
+                field("signal_strength","Output strength",Integer.toString(part.signalStrength),x,y,90);y+=28;
+                button(part.statementsAll?"Match ALL":"Match ANY",left+12,y,132,b->{send("statements_all",Boolean.toString(!part.statementsAll));b.setMessage(Component.literal(part.statementsAll?"Match ANY":"Match ALL"));});y+=28;
+                button("Add statement from fields",left+12,y,188,b->{
+                    try{var json=new com.google.gson.JsonObject();json.addProperty("reader",fields.get("selected").getValue());json.addProperty("key",fields.get("metric").getValue());json.addProperty("operator",part.comparison);json.addProperty("threshold",Double.parseDouble(fields.get("threshold").getValue()));send("statement_add",json.toString());}catch(IllegalArgumentException invalid){displayError="Enter a finite threshold.";}
+                }).active=editable&&part.statements.size()<net.foundations.pl4.core.SignalRules.MAX_STATEMENTS;y+=28;
+                for(var statement:part.statements){String label=(statement.reader().isEmpty()?"First reader":statement.reader())+" / "+(statement.key().isEmpty()?"first value":statement.key())+" "+statement.operator()+" "+statement.threshold();
+                    Button remove=button(font.plainSubstrByWidth("Remove: "+label,w-48),left+12,y,w-24,b->send("statement_remove",statement.id().toString()));remove.setTooltip(Tooltip.create(Component.literal(label+" · remove this statement. With no statements, the original single condition is used.")));y+=24;
+                }
+            }
             if(!part.kind.display())button("Data: "+part.mode,left+12,y,132,b->{String v=next(new String[]{"LIST","STACK","SLOT","POS","STORAGE","CHANNEL"},part.mode);send("mode",v);b.setMessage(Component.literal("Data: "+v));});
             else viewToggle=button("View: "+part.displayMode,left+12,y,132,b->{var mode=part.displayMode==net.foundations.pl4.core.DisplayElements.Mode.AUTO_LIST?"CUSTOM":"AUTO_LIST";net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"mode",new UUID(0,0),mode));b.setMessage(Component.literal("View: "+mode));});
             button("Sort: "+(part.descending?"High first":"Low first"),left+150,y,132,b->{send("descending",Boolean.toString(!part.descending));b.setMessage(Component.literal("Sort: "+(!part.descending?"High first":"Low first")));});
@@ -174,7 +193,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.text(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "clock_pulse"->"Pulse ticks";case "clock_phase"->"Phase ticks";case "input_channel"->"Input channel";case "output_channel"->"Output channel";case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "signal_strength"->"Output (0-15)";case "input_filter"->"Receive filter";case "output_filter"->"Send filter";case "clock_pulse"->"Pulse ticks";case "clock_phase"->"Phase ticks";case "input_channel"->"Input channel";case "output_channel"->"Output channel";case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }

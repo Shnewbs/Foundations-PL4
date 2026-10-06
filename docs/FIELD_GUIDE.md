@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 26.3 / NeoForge / Foundations PL4 0.0.2a.R2.3
+Minecraft 26.3 / NeoForge / Foundations PL4 0.1a
 
 ## Welcome to Foundations PL4
 
@@ -393,6 +393,10 @@ Drag updates are local until mouse release. The server checks the clicked tile, 
 
 ? then Settings > Front changes inward/outward viewing without moving mounting slots or cable ports. A new reader-mounted panel faces outward. Older panels retain their explicit front. For floor/ceiling holograms use View instead; their text remains upright and readable from either side.
 
+### ORGANIZE AND LINK
+
+Layers offers Group, Ungroup, Lock, Unlock, Hide and Show. World selection expands a group; unlock elements before moving or deleting them. Hidden elements stay in Layers. Properties adds background/border hex colours (blank = none) and a Click page destination. In CUSTOM view, right-click the visible element to change page. Only players allowed to edit the canvas can activate a link. Sneak-use bypasses links; on a covered reader it retains the existing reader shortcut. Pages lets you rename each slot. Names are not included in element-only undo or templates.
+
 ## Expand a large screen
 
 Side-click extension that preserves plane and layout.
@@ -520,7 +524,15 @@ Cross-dimension wireless is configurable. Linked targets still need to be loaded
 
 ### WIRELESS STORAGE
 
-Wireless Storage currently opens a bound-target read-only view. It is not a complete remote inventory management system.
+Wireless Storage opens a dedicated inventory screen for a bound Node. Bind by sneak-using your Node or Transfer Node, then use the tool to browse, withdraw items or deposit the offhand stack. Existing reader/display bindings must be rebound. See Wireless links and Arrays for the complete workflow.
+
+### MANAGE SAVED LINKS
+
+Array, Entity Node and receiver settings show individual saved links. Scroll the settings list to inspect dimensions, positions and sides, then remove the unwanted entry. Other links remain intact. Use the existing transceiver workflow to bind new targets.
+
+### WIRELESS STORAGE INVENTORY
+
+Sneak-use Wireless Storage on your Node or Transfer Node to bind its attached sided inventory. Use the tool to open its dedicated screen: six slots per page, withdraw 1 or up to 64 items, Refresh, and Deposit offhand. Hold the tool in your main hand and put the stack to deposit in your offhand. This is one Node inventory, not a combined network search. Target chunks must already be loaded. Ownership, tool binding, server wireless/transfer settings and directional item filters are checked again for every action. If a slot changes item type, refresh before withdrawing. Older reader/display bindings must be rebound to a Node.
 
 ## Transfer Nodes
 
@@ -550,6 +562,14 @@ If a real provider accepts less than simulation promised, the driving Transfer N
 
 Scroll in Transfer Node Settings to Conversion Off/On and Input/Output. Off keeps both types equal. REMOVE reads Input from its machine and offers Output to the network; ADD expects Input from the network and sends Output to its machine. Source Output must match destination Input. Ordinary Nodes expose FE only. Mek J and ED Joules are separate providers; use server-controlled conversion to bridge them. EU insertion uses the configured packet voltage and rejects a receiver rated below it. Route settings lock until pending escrow drains. See docs/ENERGY_TRANSFER.md for pack ratios, loss and packet/cap limits.
 
+### NAMED ROUTES AND FAIRNESS
+
+Nodes and Transfer Nodes have Input channel and Output channel fields. A source output must exactly match a destination input, including letter case. Blank matches blank; named routes never enter the blank pool. Drain all escrow before changing channels. Existing item/fluid filters apply as before. Equal-priority drivers and destinations rotate each network cycle; buffered drivers run first within each transfer phase. ADD/REMOVE remains explicit-peer only.
+
+### DIRECTIONAL FILTERS
+
+Receive and Send each have an IDs / #tags field and INHERIT, ALLOW or DENY mode. INHERIT keeps the normal Transfer Node filter; a passive normal Node remains unrestricted. ALLOW permits matching resources, DENY rejects them, and blank accepts all. Both source Send and destination Receive must accept an item or fluid before extraction. These filters are separate from exact input/output channel names. Drain buffered items, fluids and energy before changing route settings. ADD / REMOVE remains explicit-peer only.
+
 ## Redstone and clocks
 
 Signal networks and simple numeric conditions.
@@ -560,11 +580,15 @@ Redstone Nodes/emitters sample supported redstone inputs. Redstone Cable and rec
 
 ### SIGNALLER
 
-The Redstone Signaller evaluates a selected numeric reader row using its comparison and threshold. A true condition produces a signal. This is a single condition, not the full original multi-statement logic editor.
+The Redstone Signaller uses its Reader name, Data key, comparison and threshold as a single condition until statements are added. In Settings, fill those fields and choose Add statement from fields. Save up to 16 conditions, select Match ALL or Match ANY, and set Output strength from 0 to 15. Remove statements individually; the last removal restores the single-condition fields. Missing data and ambiguous reader names are false, including with !=. Bind by reader UUID for stable identity. Statement lists survive world saves.
 
 ### CLOCK
 
 A clock uses the Interval setting in ticks. The port samples/pulses with the network update cadence; very short requested timing is bounded. World-time rows are not wall-clock time.
+
+### CLOCK CONTROLS
+
+Clock settings include interval, pulse width, phase offset, pause/resume and reset. Pulse 0 keeps the legacy one-sample pulse. Pulse width is capped at the interval. Changes are sampled on the configured server network tick, so pulses shorter than that sampling interval are not guaranteed to be observable. Pause forces output low and retains the cycle position.
 
 ## Troubleshooting
 
@@ -725,22 +749,3 @@ Info Readers now use a provider registry. Add-on developers can register read-on
 ### AVOID DOUBLE COUNTS
 
 Repeated links, shared item/fluid handler objects and vanilla chest, barrel and shulker inventories are deduplicated per sample. Both halves of a vanilla double chest count as one combined inventory. Separate modded sided wrappers may expose overlapping or independent storage; PL4 does not guess from equal contents. Pin a single endpoint when a mod exposes ambiguous overlapping storage.
-
-
-# R3 additions
-
-## Displays and the element editor — ORGANIZE AND LINK
-
-Layers offers Group, Ungroup, Lock, Unlock, Hide and Show. World selection expands a group; unlock elements before moving or deleting them. Hidden elements stay in Layers. Properties adds background/border hex colours (blank = none) and a Click page destination. In CUSTOM view, right-click the visible element to change page. Only players allowed to edit the canvas can activate a link. Sneak-use bypasses links; on a covered reader it retains the existing reader shortcut. Pages lets you rename each slot. Names are not included in element-only undo or templates.
-
-## Wireless links and Arrays — MANAGE SAVED LINKS
-
-Array, Entity Node and receiver settings show individual saved links. Scroll the settings list to inspect dimensions, positions and sides, then remove the unwanted entry. Other links remain intact. Use the existing transceiver workflow to bind new targets.
-
-## Transfer Nodes — NAMED ROUTES AND FAIRNESS
-
-Nodes and Transfer Nodes have Input channel and Output channel fields. A source output must exactly match a destination input, including letter case. Blank matches blank; named routes never enter the blank pool. Drain all escrow before changing channels. Existing item/fluid filters apply as before. Equal-priority drivers and destinations rotate each network cycle; buffered drivers run first within each transfer phase. ADD/REMOVE remains explicit-peer only.
-
-## Redstone and clocks — CLOCK CONTROLS
-
-Clock settings include interval, pulse width, phase offset, pause/resume and reset. Pulse 0 keeps the legacy one-sample pulse. Pulse width is capped at the interval. Changes are sampled on the configured server network tick, so pulses shorter than that sampling interval are not guaranteed to be observable. Pause forces output low and retains the cycle position.

@@ -62,7 +62,7 @@ public final class FoundationsPL4 {
         ITEMS.register("operator", registryId -> new ToolItem(ToolItem.Mode.OPERATOR,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
         ITEMS.register("transceiver", registryId -> new ToolItem(ToolItem.Mode.BLOCK_LINK,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
         ITEMS.register("entitytransceiver", registryId -> new ToolItem(ToolItem.Mode.ENTITY_LINK,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
-        ITEMS.register("wirelessstorage", registryId -> new ToolItem(ToolItem.Mode.MONITOR,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
+        ITEMS.register("wirelessstorage", registryId -> new ToolItem(ToolItem.Mode.STORAGE,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
         ITEMS.register("plguide", registryId -> new ToolItem(ToolItem.Mode.GUIDE,new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,registryId)).stacksTo(1)));
         TABS.register("main", () -> CreativeModeTab.builder().title(Component.literal("Foundations PL4")).icon(() -> new ItemStack(item("sapphire"))).displayItems((parameters, output) -> ITEMS.getEntries().forEach(h -> output.accept(h.get()))).build());
     }
