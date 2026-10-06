@@ -43,8 +43,14 @@ public final class TransferEngine {
     }
 
     /** Topology-owned membership/order. Modes, permissions, filters and capabilities stay live. */
-    public record Plan(List<NetworkEngine.Ref> endpoints,List<NetworkEngine.Ref> drivers) {
-        public Plan { endpoints=List.copyOf(endpoints);drivers=List.copyOf(drivers); }
+    public static final class Plan {
+        private final List<NetworkEngine.Ref> endpoints,drivers;
+        private long cycle;
+        long routingCursor(){return Math.max(0,cycle-1);}
+        public Plan(List<NetworkEngine.Ref> endpoints,List<NetworkEngine.Ref> drivers){this.endpoints=List.copyOf(endpoints);this.drivers=List.copyOf(drivers);}
+        public List<NetworkEngine.Ref> endpoints(){return endpoints;}
+        public List<NetworkEngine.Ref> drivers(){return drivers;}
+        private List<NetworkEngine.Ref> nextDrivers(){return rotateTies(drivers,cycle++);}
     }
     public static Plan prepare(List<NetworkEngine.Ref> network){
         List<NetworkEngine.Ref> endpoints=network.stream().filter(r->r.part().kind==Kind.NODE||r.part().kind==Kind.TRANSFER_NODE).toList();
@@ -53,7 +59,7 @@ public final class TransferEngine {
     }
     public static void run(MinecraftServer server,List<NetworkEngine.Ref> network){run(server,prepare(network));}
     public static void run(MinecraftServer server,Plan plan){
-        List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.drivers();
+        List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.nextDrivers();
         if(transfer.isEmpty())return;
         boolean nativeEnergy=NativeEnergyTransfers.needed(plan);
 
@@ -64,7 +70,7 @@ public final class TransferEngine {
         // Preserve R15 source-side escrow from ADD/REMOVE nodes even though R16 no longer lets
         // bidirectional nodes autonomously drive the passive endpoint pool.
         for(NetworkEngine.Ref ref:transfer)if(ref.part().transferMode==TransferRules.ADD_REMOVE&&hasPending(ref.part())){
-            List<NetworkEngine.Ref> sinks=sinks(endpoints,ref,ref.part().ticks);
+            List<NetworkEngine.Ref> sinks=sinks(endpoints,ref,plan.routingCursor());
             if(ref.part().items&&!ref.part().pendingItem.isEmpty())flushItem(server,ref,sinks,budgets,itemPairs,itemReceived);
             if(ref.part().fluids&&!ref.part().pendingFluid.isEmpty())flushFluid(server,ref,sinks,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&ref.part().energy&&ref.part().pendingEnergy>0)flushEnergy(server,ref,sinks,budgets,energyPairs,energyReceived);
@@ -73,7 +79,7 @@ public final class TransferEngine {
         // REMOVE drives exports. This phase keeps the old REMOVE -> ADD behavior and also
         // allows REMOVE -> ordinary Node endpoints.
         for(NetworkEngine.Ref source:transfer)if(TransferRules.drivesRemove(source.part().transferMode)){
-            List<NetworkEngine.Ref> sinks=sinks(endpoints,source,source.part().ticks);
+            List<NetworkEngine.Ref> sinks=sinks(endpoints,source,plan.routingCursor());
             if(source.part().items)pushItems(server,source,sinks,budgets,itemPairs,itemReceived);
             if(source.part().fluids)pushFluids(server,source,sinks,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&source.part().energy)pushEnergy(server,source,sinks,budgets,energyPairs,energyReceived);
@@ -82,13 +88,13 @@ public final class TransferEngine {
         // ADD drives imports. Explicit REMOVE peers already handled above are skipped by the
         // pair ledger; passive Nodes now work as PL2-style network sources.
         for(NetworkEngine.Ref sink:transfer)if(TransferRules.drivesAdd(sink.part().transferMode)){
-            List<NetworkEngine.Ref> sources=sources(endpoints,sink,sink.part().ticks);
+            List<NetworkEngine.Ref> sources=sources(endpoints,sink,plan.routingCursor());
             if(sink.part().items)pullItems(server,sink,sources,budgets,itemPairs,itemReceived);
             if(sink.part().fluids)pullFluids(server,sink,sources,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&sink.part().energy)pullEnergy(server,sink,sources,budgets,energyPairs,energyReceived);
         }
 
-        if(nativeEnergy)NativeEnergyTransfers.run(server,plan);
+        if(nativeEnergy){var energyPlan=new Plan(endpoints,transfer);energyPlan.cycle=plan.cycle;NativeEnergyTransfers.run(server,energyPlan);}
         for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
     }
 
@@ -121,10 +127,10 @@ public final class TransferEngine {
         return out;
     }
     static List<NetworkEngine.Ref> sinks(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref source,long cursor){
-        return rotateTies(endpoints.stream().filter(s->s!=source&&!sameTarget(source,s)&&TransferRules.canRoute(true,source.part().transferMode,s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode)).toList(),cursor);
+        return rotateTies(endpoints.stream().filter(s->s!=source&&!sameTarget(source,s)&&TransferRules.channelsMatch(source.part().outputChannel,s.part().inputChannel)&&TransferRules.canRoute(true,source.part().transferMode,s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode)).toList(),cursor);
     }
     static List<NetworkEngine.Ref> sources(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref sink,long cursor){
-        return rotateTies(endpoints.stream().filter(s->s!=sink&&!sameTarget(s,sink)&&TransferRules.canRoute(s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode,true,sink.part().transferMode)).toList(),cursor);
+        return rotateTies(endpoints.stream().filter(s->s!=sink&&!sameTarget(s,sink)&&TransferRules.channelsMatch(s.part().outputChannel,sink.part().inputChannel)&&TransferRules.canRoute(s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode,true,sink.part().transferMode)).toList(),cursor);
     }
     private static PairKey pair(NetworkEngine.Ref source,NetworkEngine.Ref sink){return new PairKey(source.part().identity,sink.part().identity);}
     private static TargetKey target(NetworkEngine.Ref ref){Part.Link l=ref.adjacent();return new TargetKey(l.dimension(),l.pos().asLong(),l.side().ordinal());}

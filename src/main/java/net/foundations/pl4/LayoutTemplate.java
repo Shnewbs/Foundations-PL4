@@ -46,7 +46,7 @@ public record LayoutTemplate(int width,int height,List<DisplayElements.Spec> ele
             var e=original.identity(UUID.randomUUID());var b=e.bounds();
             if(fit){int x=(int)((long)b.x()*targetWidth/width),y=(int)((long)b.y()*targetHeight/height),w=Math.max(8,(int)((long)b.width()*targetWidth/width)),h=Math.max(9,(int)((long)b.height()*targetHeight/height));x=Math.min(x,targetWidth-8);y=Math.min(y,targetHeight-9);b=new DisplayElements.Rect(x,y,Math.min(w,targetWidth-x),Math.min(h,targetHeight-y));}
             if(b.right()>targetWidth||b.bottom()>targetHeight)throw new IllegalArgumentException("Layout exceeds target; enable Fit to screen");
-            result.add(new DisplayElements.Spec(e.id(),e.type(),e.text(),clearReaders?"":e.reader(),e.key(),e.asset(),b,e.color(),e.count(),e.names(),e.columns(),e.offset(),e.page(),e.vertical(),e.compact(),e.textAlign(),e.wrap(),e.textScale()));
+            result.add(new DisplayElements.Spec(e.id(),e.type(),e.text(),clearReaders?"":e.reader(),e.key(),e.asset(),b,e.color(),e.count(),e.names(),e.columns(),e.offset(),e.page(),e.vertical(),e.compact(),e.textAlign(),e.wrap(),e.textScale(),e.options()));
         }
         return List.copyOf(result);
     }

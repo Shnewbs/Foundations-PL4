@@ -33,6 +33,9 @@ public final class TransferRules {
         return sinkMode==ADD;                        // passive Node -> ADD
     }
 
+    /** Empty channels preserve old worlds; named channels never leak into the default pool. */
+    public static boolean channelsMatch(String output,String input){return java.util.Objects.equals(output,input);}
+
     /** Explicit Transfer Nodes win equal-priority ties over passive Nodes. */
     public static int endpointClass(boolean transfer){return transfer?1:0;}
 

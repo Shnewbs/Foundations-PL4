@@ -36,7 +36,7 @@ public final class HostBlock extends BaseEntityBlock {
             ? InteractionResult.PASS : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos p,Player player,BlockHitResult hit){
-        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp)PLPackets.open(sp,h,part); return InteractionResult.SUCCESS;}}
+        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayer sp&&!DisplayActions.activate(sp,h,part))PLPackets.open(sp,h,part); return InteractionResult.SUCCESS;}}
         return InteractionResult.PASS;
     }
 

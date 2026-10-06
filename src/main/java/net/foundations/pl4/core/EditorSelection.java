@@ -11,7 +11,7 @@ public final class EditorSelection {
     }
     public static List<UUID> inBox(List<DisplayElements.Spec> elements,int page,DisplayElements.Rect box){
         if(box.width()<=0||box.height()<=0)return List.of();
-        return elements.stream().filter(e->e.page()==page&&e.bounds().x()<box.right()&&e.bounds().right()>box.x()&&e.bounds().y()<box.bottom()&&e.bounds().bottom()>box.y()).map(DisplayElements.Spec::id).toList();
+        return elements.stream().filter(e->e.page()==page&&!e.options().hidden()&&!e.options().locked()&&e.bounds().x()<box.right()&&e.bounds().right()>box.x()&&e.bounds().y()<box.bottom()&&e.bounds().bottom()>box.y()).map(DisplayElements.Spec::id).toList();
     }
     /** Clamp one common displacement; never squash sizes or change spacing within the selection. */
     public static List<DisplayElements.Spec> move(List<DisplayElements.Spec> elements,int dx,int dy,int width,int height){

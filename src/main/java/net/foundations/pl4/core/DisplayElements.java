@@ -21,11 +21,17 @@ public final class DisplayElements {
         public boolean contains(double a,double b){return a>=x&&a<right()&&b>=y&&b<bottom();}
     }
     public static final float MIN_TEXT_SCALE=0.25F,MAX_TEXT_SCALE=4F;
+    /** Optional editor and presentation metadata. Defaults preserve existing worlds. */
+    public record Options(String group,boolean locked,boolean hidden,int background,int border,int actionPage) {
+        public static final Options DEFAULT=new Options("",false,false,-1,-1,-1);
+        public Options {group=clean(group,48);background=background<0?-1:background&0xFFFFFF;border=border<0?-1:border&0xFFFFFF;actionPage=Math.clamp(actionPage,-1,MAX_PAGES-1);}
+        public Options organization(String name,boolean lock,boolean hide){return new Options(name,lock,hide,background,border,actionPage);}
+    }
     public record Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
                        int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact,
-                       TextAlign textAlign,boolean wrap,float textScale) {
+                       TextAlign textAlign,boolean wrap,float textScale,Options options) {
         public Spec {
-            id=Objects.requireNonNull(id);type=Objects.requireNonNull(type);
+            id=Objects.requireNonNull(id);type=Objects.requireNonNull(type);options=Objects.requireNonNullElse(options,Options.DEFAULT);
             textAlign=Objects.requireNonNullElse(textAlign,TextAlign.LEFT);
             text=clean(text,128);reader=clean(reader,64);key=clean(key,192);asset=clean(asset,192);
             int x=Math.clamp(bounds.x(),0,MAX_CANVAS-8),y=Math.clamp(bounds.y(),0,MAX_CANVAS-9);
@@ -34,14 +40,20 @@ public final class DisplayElements {
             textScale=Double.isFinite(textScale)&&textScale>0?Math.clamp(textScale,MIN_TEXT_SCALE,MAX_TEXT_SCALE):1F;
         }
         public Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
+                    int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact,
+                    TextAlign textAlign,boolean wrap,float textScale){
+            this(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale,Options.DEFAULT);
+        }
+        public Spec options(Options value){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale,value);}
+        public Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
                     int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact){
             this(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,TextAlign.LEFT,false,1F);
         }
-        public Spec bounds(Rect r){return new Spec(id,type,text,reader,key,asset,r,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale);}
-        public Spec identity(UUID value){return new Spec(value,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale);}
-        public Spec onPage(int value){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,value,vertical,compact,textAlign,wrap,textScale);}
-        public Spec textStyle(TextAlign alignment,boolean wrapped){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,alignment,wrapped,textScale);}
-        public Spec textStyle(TextAlign alignment,boolean wrapped,float scale){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,alignment,wrapped,scale);}
+        public Spec bounds(Rect r){return new Spec(id,type,text,reader,key,asset,r,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale,options);}
+        public Spec identity(UUID value){return new Spec(value,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,textAlign,wrap,textScale,options);}
+        public Spec onPage(int value){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,value,vertical,compact,textAlign,wrap,textScale,options);}
+        public Spec textStyle(TextAlign alignment,boolean wrapped){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,alignment,wrapped,textScale,options);}
+        public Spec textStyle(TextAlign alignment,boolean wrapped,float scale){return new Spec(id,type,text,reader,key,asset,bounds,color,count,names,columns,offset,page,vertical,compact,alignment,wrapped,scale,options);}
     }
     public interface Sample {
         String key();String name();double value();double capacity();String unit();
@@ -93,7 +105,7 @@ public final class DisplayElements {
         }return -1;
     }
     public static Scene plan(Spec e,List<? extends Sample> rows){
-        List<Draw> out=new ArrayList<>();Rect b=e.bounds;int selected=select(e,rows);String diagnostic="";
+        List<Draw> out=new ArrayList<>();if(e.options.hidden())return new Scene(out,"");Rect b=e.bounds;if(e.options.background()>=0)out.add(new Box(b,0xFF000000|e.options.background(),true,1));if(e.options.border()>=0)out.add(new Box(b,0xFF000000|e.options.border(),false,3));int selected=select(e,rows);String diagnostic="";
         switch(e.type){
             case TEXT -> {
                 String value=e.text;

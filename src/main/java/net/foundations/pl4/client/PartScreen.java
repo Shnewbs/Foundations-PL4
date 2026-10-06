@@ -77,6 +77,11 @@ public final class PartScreen extends Screen {
                 button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
                 button("Clear filter",left+150,y,104,b->fields.get("filter").setValue(""));y+=28;
             }
+            if(part.kind==Kind.NODE||part.kind==Kind.TRANSFER_NODE){
+                field("input_channel","Input channel",part.inputChannel,x,y,fw);y+=28;
+                field("output_channel","Output channel",part.outputChannel,x,y,fw);y+=28;
+                for(String key:new String[]{"input_channel","output_channel"}){fields.get(key).setMaxLength(48);fields.get(key).setEditable(editable&&part.pendingItem.isEmpty()&&part.pendingFluid.isEmpty()&&part.energyCredits()==0);fields.get(key).setTooltip(Tooltip.create(Component.literal("Exact, case-sensitive route name. Source output must equal destination input. Blank matches blank. Drain escrow before editing.")));}
+            }
             field("selected","Reader name",part.selected,x,y,fw);y+=28;
             field("metric","Data key",part.metric,x,y,fw);y+=28;
             field("index","Slot / tank / rank",Integer.toString(part.index),x,y,70);
@@ -156,7 +161,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.text(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "input_channel"->"Input channel";case "output_channel"->"Output channel";case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }

@@ -276,4 +276,35 @@ public final class R9GameTests {
         h.assertTrue(p.layoutRevision==2&&p.elements.size()==32,"Capacity and permission rejection leave all pages unchanged");h.succeed();
     }
 
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void r3OrganizationPersistsAndRejectsUnauthorizedEdits(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var b=spec(DisplayElements.Type.BAR);p.elements.add(new Part.Element(a));p.elements.add(new Part.Element(b));
+        var user=player(h,host,true);String ids=a.id()+","+b.id();
+        PLPackets.editLayout(user,packet(host,0,"group",null,ids));PLPackets.editLayout(user,packet(host,1,"lock",null,ids));PLPackets.editLayout(user,packet(host,2,"hide",null,ids));
+        PLPackets.editLayout(user,packet(host,3,"page_name",null,"Production"));
+        var restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(restored.elements.equals(p.elements)&&restored.pageName(0).equals("Production"),"Metadata and page names survive save/load");
+        h.assertTrue(p.elements.getFirst().spec().options().locked()&&p.elements.getFirst().spec().options().hidden(),"Server applied metadata");
+        var json=ElementJson.decodeList(ElementJson.encodeList(p.elements.stream().map(Part.Element::spec).toList()));
+        h.assertTrue(json.equals(p.elements.stream().map(Part.Element::spec).toList()),"JSON snapshots preserve metadata");
+        PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,4,"delete",a.id(),""));
+        h.assertTrue(p.elements.size()==2&&p.layoutRevision==4,"Locked delete rejected");
+        p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),packet(host,4,"unlock",null,ids));
+        h.assertTrue(p.layoutRevision==4&&p.elements.getFirst().spec().options().locked(),"Foreign owner cannot unlock");h.succeed();
+    }
+
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void r3PageActionUsesVisibleFrontmostElementAndPermissions(GameTestHelper h){
+        var host=display(h,2,Kind.DISPLAY);var p=part(host);p.displayMode=DisplayElements.Mode.CUSTOM;
+        var e=spec(DisplayElements.Type.TEXT).bounds(new DisplayElements.Rect(100,40,60,40)).options(new DisplayElements.Options("",false,false,-1,-1,1));p.elements.add(new Part.Element(e));
+        var user=player(h,host,true);var pos=host.getBlockPos();user.setPos(pos.getX()+.5,pos.getY()+.5-user.getEyeHeight(),pos.getZ()+3);user.setYRot(180);user.setXRot(0);
+        h.assertTrue(DisplayActions.activate(user,host,p)&&p.displayPage==1&&p.layoutRevision==1,"Owner click switches page using server ray");
+        p.displayPage=0;p.elements.add(new Part.Element(e.identity(UUID.randomUUID()).options(DisplayElements.Options.DEFAULT)));
+        h.assertTrue(!DisplayActions.activate(user,host,p)&&p.displayPage==0,"Non-action front layer blocks link below");
+        p.elements.removeLast();p.elements.set(0,new Part.Element(e.options(new DisplayElements.Options("",false,true,-1,-1,1))));
+        h.assertTrue(!DisplayActions.activate(user,host,p),"Hidden action cannot fire");
+        p.elements.set(0,new Part.Element(e));p.owner=UUID.randomUUID();
+        h.assertTrue(!DisplayActions.activate(user,host,p)&&p.displayPage==0,"Foreign owner cannot change displayed page");h.succeed();
+    }
+
 }
