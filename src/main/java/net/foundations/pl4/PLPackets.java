@@ -165,6 +165,10 @@ public final class PLPackets {
                 case "energy" -> p.energy=Boolean.parseBoolean(v);
                 case "descending" -> p.descending=Boolean.parseBoolean(v);
                 case "whitelist" -> p.whitelist=Boolean.parseBoolean(v);
+                case "remove_link" -> {if(p.kind!=Kind.ARRAY&&p.kind!=Kind.ENTITY_NODE&&!p.kind.receiver())return;p.links.removeIf(link->ReaderChannels.id(link).equals(v));}
+                case "clock_pulse", "clock_phase" -> {if(p.kind!=Kind.CLOCK)return;int n=Integer.parseInt(v);if(n<0||n>(packet.field.equals("clock_pulse")?24000:23999))return;if(packet.field.equals("clock_pulse"))p.clockPulse=n;else p.clockPhase=n;}
+                case "clock_paused" -> {if(p.kind!=Kind.CLOCK||!Set.of("true","false").contains(v))return;p.clockPaused=Boolean.parseBoolean(v);}
+                case "clock_reset" -> {if(p.kind!=Kind.CLOCK)return;p.ticks=0;}
                 case "clear_links" -> p.links.clear();
                 case "clear_elements" -> {if(!p.kind.display())return;p.elements.clear();p.displayMode=net.foundations.pl4.core.DisplayElements.Mode.CUSTOM;}
                 case "element" -> {

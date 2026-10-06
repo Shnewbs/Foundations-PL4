@@ -45,6 +45,8 @@ public final class Part {
     public final List<String> pageNames=new ArrayList<>(java.util.Collections.nCopies(DisplayElements.MAX_PAGES,""));
     public String pageName(int page){String name=pageNames.get(Math.clamp(page,0,DisplayElements.MAX_PAGES-1));return name.isBlank()?"Page "+(page+1):name;}
     public String inputChannel="",outputChannel="";
+    public int clockPulse,clockPhase;
+    public boolean clockPaused;
     public long ticks;
     public int blockedFaces; // Six cable ports; zero preserves old saves.
     public int canvasWidth=1,canvasHeight=1,canvasColumn,canvasRow,canvasMask; // Derived, sync-only; no layout destruction on split. // Six cable ports; zero preserves old saves.
@@ -122,7 +124,7 @@ public final class Part {
         }
     }
     public CompoundTag save(HolderLookup.Provider registry, boolean sync) {
-        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.store("identity",net.minecraft.core.UUIDUtil.CODEC,identity);
+        CompoundTag t = new CompoundTag(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putInt("clockPulse",clockPulse);t.putInt("clockPhase",clockPhase);t.putBoolean("clockPaused",clockPaused);t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.store("identity",net.minecraft.core.UUIDUtil.CODEC,identity);
         if (owner != null) t.store("owner",net.minecraft.core.UUIDUtil.CODEC,owner);
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
@@ -174,6 +176,7 @@ public final class Part {
         p.pendingEnergyJRate=Math.max(0,t.getInt("pendingEnergyJRate").orElse(0));p.pendingEnergyEURate=Math.max(0,t.getInt("pendingEnergyEURate").orElse(0));p.pendingEnergyEDRate=Math.max(0,t.getInt("pendingEnergyEDRate").orElse(0));
         p.pendingEnergyCredits=Math.max(0,t.getLong("pendingEnergyCredits").orElse(0L));p.energyEscrow=!t.contains("pendingEnergy")&&t.getBoolean("energyEscrow").orElse(false);
         for(int page=0;page<DisplayElements.MAX_PAGES;page++)p.pageNames.set(page,DisplayElements.clean(t.getString("pageName"+page).orElse(""),32));
+        p.clockPulse=Math.clamp(t.getInt("clockPulse").orElse(0),0,24000);p.clockPhase=Math.clamp(t.getInt("clockPhase").orElse(0),0,23999);p.clockPaused=t.getBoolean("clockPaused").orElse(false);
         p.inputChannel=DisplayElements.clean(t.getString("inputChannel").orElse(""),48);p.outputChannel=DisplayElements.clean(t.getString("outputChannel").orElse(""),48);
         p.blockedFaces=t.getInt("blockedFaces").orElse(0) & 63; p.descending=t.getBoolean("descending").orElse(false); p.whitelist=t.getBoolean("whitelist").orElse(false); p.ticks=t.getLong("ticks").orElse(0L);
         p.pendingItem=net.foundations.pl4.NbtStacks.item(registry,t.getCompound("pendingItem").orElseGet(CompoundTag::new)); p.pendingFluid=net.foundations.pl4.NbtStacks.fluid(registry,t.getCompound("pendingFluid").orElseGet(CompoundTag::new)); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy").orElse(0));

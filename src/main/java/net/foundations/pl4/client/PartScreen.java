@@ -22,12 +22,13 @@ public final class PartScreen extends Screen {
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    public void update(Part p){if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+    public void update(Part p){boolean linksChanged=!p.links.equals(part.links);if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
         if(channelPageButton!=null)channelPageButton.setMessage(Component.literal("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64)));
         if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
         if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
         if(energyOutputButton!=null){energyOutputButton.setMessage(Component.literal("Output: "+EnergyPorts.label(part.energyOutput)));energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;}
         if(energyModeButton!=null){energyModeButton.setMessage(Component.literal("Conversion: "+(part.energyConvert?"On":"Off")));energyModeButton.active=editable&&part.energyRouteEditable();}
+        if(linksChanged)rebuildWidgets();
         if(fields.containsKey("energy_voltage"))fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
     }
     public void error(String message){displayError=message;}
@@ -82,6 +83,13 @@ public final class PartScreen extends Screen {
                 field("output_channel","Output channel",part.outputChannel,x,y,fw);y+=28;
                 for(String key:new String[]{"input_channel","output_channel"}){fields.get(key).setMaxLength(48);fields.get(key).setEditable(editable&&part.pendingItem.isEmpty()&&part.pendingFluid.isEmpty()&&part.energyCredits()==0);fields.get(key).setTooltip(Tooltip.create(Component.literal("Exact, case-sensitive route name. Source output must equal destination input. Blank matches blank. Drain escrow before editing.")));}
             }
+            if(part.kind==Kind.CLOCK){
+                field("clock_pulse","Pulse ticks (0 = auto)",Integer.toString(part.clockPulse),x,y,fw);y+=28;
+                field("clock_phase","Phase ticks",Integer.toString(part.clockPhase),x,y,fw);y+=28;
+                button(part.clockPaused?"Resume clock":"Pause clock",left+12,y,132,b->{send("clock_paused",Boolean.toString(!part.clockPaused));b.setMessage(Component.literal(part.clockPaused?"Pause clock":"Resume clock"));});
+                button("Reset phase",left+150,y,132,b->send("clock_reset",""));y+=28;
+                fields.get("clock_pulse").setTooltip(Tooltip.create(Component.literal("0 = one server sample. 1-24000 ticks, capped by interval. Timing resolution is the server sampling interval.")));
+            }
             field("selected","Reader name",part.selected,x,y,fw);y+=28;
             field("metric","Data key",part.metric,x,y,fw);y+=28;
             field("index","Slot / tank / rank",Integer.toString(part.index),x,y,70);
@@ -109,7 +117,12 @@ public final class PartScreen extends Screen {
                 y+=28;field("energy_voltage","EU voltage",Integer.toString(part.energyVoltage),x,y,90);
                 fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
                 fields.get("energy_voltage").setTooltip(Tooltip.create(Component.literal("EU insertion voltage; maximum accepted voltage from a pushing EU source. Set to match the source tier.")));
-            }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())button("Clear links ("+part.links.size()+")",left+12,y,140,b->{send("clear_links","");b.setMessage(Component.literal("Links cleared"));});
+            }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver()){
+                button("Clear links ("+part.links.size()+")",left+12,y,140,b->send("clear_links",""));y+=28;
+                for(var link:part.links){String id=ReaderChannels.id(link);String detail=link.dimension()+" "+link.pos().getX()+", "+link.pos().getY()+", "+link.pos().getZ()+" "+link.side().getName()+(link.entity()==null?"":" · entity "+link.entity());
+                    var remove=button(font.plainSubstrByWidth("Remove: "+detail,w-48),left+12,y,w-24,b->send("remove_link",id));remove.setTooltip(Tooltip.create(Component.literal(detail+" · remove only this saved link")));y+=24;
+                }
+            }
             button("Apply fields",left+12,top+h-27,104,b->{Map<String,String> values=new LinkedHashMap<>();fields.forEach((key,box)->values.put(key,box.getValue()));values.forEach(this::send);});
         }
         layoutContent();
@@ -161,7 +174,7 @@ public final class PartScreen extends Screen {
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}
             g.text(font,part.rows.size()+" data rows"+(editable?"":" · read only"),left+12,top+h-23,0xFF8CAEC5,false);
         }else{
-            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "input_channel"->"Input channel";case "output_channel"->"Output channel";case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
+            for(var e:fields.entrySet()){EditBox box=e.getValue();if(!box.visible)continue;String label=switch(e.getKey()){case "clock_pulse"->"Pulse ticks";case "clock_phase"->"Phase ticks";case "input_channel"->"Input channel";case "output_channel"->"Output channel";case "target_query"->"Target search";case "channel_name"->"Channel name";case "energy_voltage"->"EU voltage";case "label"->"Name";case "filter"->"Filter IDs / tags";case "selected"->"Reader name";case "metric","key"->"Data key";case "index"->"Slot / tank / rank";case "threshold"->part.kind==Kind.CLOCK?"Interval":"Threshold";case "color"->"Colour (hex)";default->e.getKey();};if(!e.getKey().equals("priority"))g.text(font,label,left+12,box.getY()+6,0xFFAFC4D9,false);}
             int viewport=settingsViewport(),content=contentHeight();
             if(content>viewport){int thumb=net.foundations.pl4.core.GuideLayout.thumbSize(viewport,content,viewport);int sy=top+52+net.foundations.pl4.core.GuideLayout.thumbPosition(contentScroll,viewport,content,viewport);g.fill(left+w-8,top+52,left+w-3,top+52+viewport,0xFF30445C);g.fill(left+w-8,sy,left+w-3,sy+thumb,0xFF79D3FF);}
         }
