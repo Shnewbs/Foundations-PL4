@@ -50,7 +50,7 @@ public final class TransferEngine {
         public Plan(List<NetworkEngine.Ref> endpoints,List<NetworkEngine.Ref> drivers){this.endpoints=List.copyOf(endpoints);this.drivers=List.copyOf(drivers);}
         public List<NetworkEngine.Ref> endpoints(){return endpoints;}
         public List<NetworkEngine.Ref> drivers(){return drivers;}
-        private List<NetworkEngine.Ref> nextDrivers(){return rotateTies(drivers,cycle++);}
+        private List<NetworkEngine.Ref> nextDrivers(){return rotateTies(drivers,cycle++).stream().sorted(Comparator.comparing(r->!hasPending(r.part()))).toList();}
     }
     public static Plan prepare(List<NetworkEngine.Ref> network){
         List<NetworkEngine.Ref> endpoints=network.stream().filter(r->r.part().kind==Kind.NODE||r.part().kind==Kind.TRANSFER_NODE).toList();

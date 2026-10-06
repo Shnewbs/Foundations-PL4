@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "title": "Foundations PL4 Field Guide",
-  "edition": "Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R2.3",
+  "edition": "Minecraft 1.21.1 / NeoForge / Foundations PL4 0.0.2a.R3",
   "chapters": [
     {
       "id": "start",
@@ -468,6 +468,10 @@
         {
           "heading": "VIEWING FRONT",
           "body": "? then Settings > Front changes inward/outward viewing without moving mounting slots or cable ports. A new reader-mounted panel faces outward. Older panels retain their explicit front. For floor/ceiling holograms use View instead; their text remains upright and readable from either side."
+        },
+        {
+          "heading": "ORGANIZE AND LINK",
+          "body": "Layers offers Group, Ungroup, Lock, Unlock, Hide and Show. World selection expands a group; unlock elements before moving or deleting them. Hidden elements stay in Layers. Properties adds background/border hex colours (blank = none) and a Click page destination. In CUSTOM view, right-click the visible element to change page. Only players allowed to edit the canvas can activate a link. Sneak-use bypasses links; on a covered reader it retains the existing reader shortcut. Pages lets you rename each slot. Names are not included in element-only undo or templates."
         }
       ]
     },
@@ -622,6 +626,10 @@
         {
           "heading": "WIRELESS STORAGE",
           "body": "Wireless Storage currently opens a bound-target read-only view. It is not a complete remote inventory management system."
+        },
+        {
+          "heading": "MANAGE SAVED LINKS",
+          "body": "Array, Entity Node and receiver settings show individual saved links. Scroll the settings list to inspect dimensions, positions and sides, then remove the unwanted entry. Other links remain intact. Use the existing transceiver workflow to bind new targets."
         }
       ]
     },
@@ -655,6 +663,10 @@
         {
           "heading": "NATIVE OR CONVERT",
           "body": "Scroll in Transfer Node Settings to Conversion Off/On and Input/Output. Off keeps both types equal. REMOVE reads Input from its machine and offers Output to the network; ADD expects Input from the network and sends Output to its machine. Source Output must match destination Input. Ordinary Nodes expose FE only. Mek J and ED Joules are separate providers; use server-controlled conversion to bridge them. EU insertion uses the configured packet voltage and rejects a receiver rated below it. Route settings lock until pending escrow drains. See docs/ENERGY_TRANSFER.md for pack ratios, loss and packet/cap limits."
+        },
+        {
+          "heading": "NAMED ROUTES AND FAIRNESS",
+          "body": "Nodes and Transfer Nodes have Input channel and Output channel fields. A source output must exactly match a destination input, including letter case. Blank matches blank; named routes never enter the blank pool. Drain all escrow before changing channels. Existing item/fluid filters apply as before. Equal-priority drivers and destinations rotate each network cycle; buffered drivers run first within each transfer phase. ADD/REMOVE remains explicit-peer only."
         }
       ]
     },
@@ -676,6 +688,10 @@
         {
           "heading": "CLOCK",
           "body": "A clock uses the Interval setting in ticks. The port samples/pulses with the network update cadence; very short requested timing is bounded. World-time rows are not wall-clock time."
+        },
+        {
+          "heading": "CLOCK CONTROLS",
+          "body": "Clock settings include interval, pulse width, phase offset, pause/resume and reset. Pulse 0 keeps the legacy one-sample pulse. Pulse width is capped at the interval. Changes are sampled on the configured server network tick, so pulses shorter than that sampling interval are not guaranteed to be observable. Pause forces output low and retains the cycle position."
         }
       ]
     },

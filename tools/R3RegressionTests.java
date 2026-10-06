@@ -38,6 +38,12 @@ public final class R3RegressionTests {
         check(DisplayElements.plan(styled,List.of()).draws().stream().filter(d->d instanceof DisplayElements.Box).count()==2,"background and border render");
         check(new DisplayElements.Options(null,false,false,-100,-2,99).equals(new DisplayElements.Options("",false,false,-1,-1,7)),"metadata bounds");
         for(String out:List.of("","ore","smelter","ORE"))for(String in:List.of("","ore","smelter","ORE"))check(TransferRules.channelsMatch(out,in)==out.equals(in),"exact channel isolation");
+        for(int tick=0;tick<400;tick++)check(ClockRules.high(tick,40,10,0,0,false)==(tick%40<10),"legacy clock pulse");
+        check(!ClockRules.high(0,40,10,20,0,true),"paused clock low");
+        check(ClockRules.high(30,40,10,5,10,false),"phase wraps");
+        check(!ClockRules.high(35,40,10,5,10,false),"custom pulse end");
+        check(ClockRules.period(1,10)==20&&ClockRules.period(99999,10)==24000,"period bounds");
+        check(ClockRules.high(Long.MIN_VALUE,40,10,24000,23999,false),"overflow-safe phase math and pulse cap");
         System.out.println("PASS R3: "+assertions+" assertions");
     }
 }

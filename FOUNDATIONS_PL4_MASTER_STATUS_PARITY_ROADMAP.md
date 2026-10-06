@@ -1,11 +1,11 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Project:** Foundations PL4  
-**Current source candidate:** R3 development, based on published `0.0.2a.R2.3`. See `docs/R3_IMPLEMENTATION.md` for implemented scope and acceptance gaps.
+**Current source candidate:** `0.0.2a.R3` — editor organization, routing and component controls. See `docs/R3_IMPLEMENTATION.md`.
 **Minecraft:** 1.21.1  
 **Loader:** NeoForge 21.1.250 target  
 **Java:** 21  
-**Current validation:** R1.5 published; all 151 native tests passed on Linux and Windows; 30,025 energy arithmetic/provider-contract assertions passed. Installed optional energy modpacks, new node controls and welcome-line client visuals remain pending. R1.4 page-panel visuals and third-party fluid caps also remain pending.
+**Current validation:** R3 source/offline checks pass; publication is gated by native builds and GameTests on each track. Client visuals, live multiplayer and installed optional integrations remain pending. Earlier validation notes below describe historical versions.
 **Layer workflow:** R1.3 published; 134 native tests passed on Linux and Windows; client visual acceptance pending.
 **Cable placement patch:** local client/server geometry reconciliation implemented; 131 native tests passed on Linux and Windows; user accepted much faster/snappy placement in the modpack.
 **Primary visual/gameplay reference:** Practical Logistics 2 (`3.0.8`, Minecraft 1.12.2)  

@@ -112,4 +112,19 @@ public final class R16GameTests {
         }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void r3ComponentControlsPreserveOtherLinksAndClockSettings(GameTestHelper h){
+        var array=host(h,new BlockPos(2,1,1),Kind.ARRAY,Direction.WEST);var p=part(array,Direction.WEST);
+        var a=new Part.Link("minecraft:overworld",new BlockPos(1,1,1),Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",new BlockPos(5,1,1),Direction.DOWN,null,null);p.links.add(a);p.links.add(b);
+        var user=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R3-Test"));var at=array.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        var remove=new PLPackets.Edit(at,p.slot(),p.identity,"remove_link",ReaderChannels.id(a));PLPackets.edit(user,remove);PLPackets.edit(user,remove);
+        h.assertTrue(p.links.equals(List.of(b)),"Repeated stale removal cannot delete the next link");
+        var clock=host(h,new BlockPos(4,1,1),Kind.CLOCK,Direction.WEST);var c=part(clock,Direction.WEST);var cp=clock.getBlockPos();user.setPos(cp.getX(),cp.getY()+1,cp.getZ());
+        PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","12"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","30"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_paused","true"));
+        var restored=Part.load(c.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        h.assertTrue(restored.clockPulse==12&&restored.clockPhase==30&&restored.clockPaused,"Clock controls persist");
+        PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","-1"));h.assertTrue(c.clockPulse==12,"Invalid clock setting rejected");
+        c.owner=UUID.randomUUID();PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","7"));h.assertTrue(c.clockPhase==30,"Foreign owner cannot edit clock");h.succeed();
+    }
+
 }
