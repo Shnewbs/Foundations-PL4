@@ -1,4 +1,4 @@
-# Info Reader provider API (0.1a, contract v1)
+# Info Reader provider API (0.1b, contract v1)
 
 **Further API testing is still required with real installed add-ons.** See [API_TESTING.md](API_TESTING.md). `API_VERSION` is 1; `registeredIds()` returns an immutable provider inventory. `sample()` rejects off-server-thread calls and skips wrong-dimension targets.
 

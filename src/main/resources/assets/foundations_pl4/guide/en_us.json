@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "title": "Foundations PL4 Field Guide",
-  "edition": "Minecraft 1.21.1 / NeoForge / Foundations PL4 0.1a",
+  "edition": "Minecraft 1.21.1 / NeoForge / Foundations PL4 0.1b",
   "chapters": [
     {
       "id": "start",
@@ -654,7 +654,7 @@
         },
         {
           "heading": "MODES",
-          "body": "PASSIVE moves nothing. ADD / IMPORT fills the block attached to that Transfer Node from eligible network sources. REMOVE / EXPORT drains the attached block into eligible network destinations. ADD / REMOVE remains explicit-peer only in this alpha because the old PL2 directional channel/filter editor is not fully restored; this avoids blind passive-network ping-pong."
+          "body": "PASSIVE moves nothing. ADD / IMPORT fills the block attached to that Transfer Node from eligible network sources. REMOVE / EXPORT drains the attached block into eligible network destinations. ADD / REMOVE remains explicit-peer only in this beta because the old PL2 directional channel/filter editor is not fully restored; this avoids blind passive-network ping-pong."
         },
         {
           "heading": "FILTERS, PRIORITY AND RATES",

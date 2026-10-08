@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.1a
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.1b
 
 ## Welcome to Foundations PL4
 
@@ -548,7 +548,7 @@ R16 restores the useful PL2-style network pool. A normal Node attached to a ches
 
 ### MODES
 
-PASSIVE moves nothing. ADD / IMPORT fills the block attached to that Transfer Node from eligible network sources. REMOVE / EXPORT drains the attached block into eligible network destinations. ADD / REMOVE remains explicit-peer only in this alpha because the old PL2 directional channel/filter editor is not fully restored; this avoids blind passive-network ping-pong.
+PASSIVE moves nothing. ADD / IMPORT fills the block attached to that Transfer Node from eligible network sources. REMOVE / EXPORT drains the attached block into eligible network destinations. ADD / REMOVE remains explicit-peer only in this beta because the old PL2 directional channel/filter editor is not fully restored; this avoids blind passive-network ping-pong.
 
 ### FILTERS, PRIORITY AND RATES
 

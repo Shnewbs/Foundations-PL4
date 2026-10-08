@@ -1,13 +1,15 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Current version:** `0.1a` automation alpha, on separate Minecraft 1.21.1 and 26.3 tracks.
-**Further API testing is still required.** See `docs/API_TESTING.md` and `docs/releases/0.1a.md`.
+**Current version:** `0.1b` automation beta, on separate Minecraft 1.21.1 and 26.3 tracks.
+**Further API testing is still required.** See `docs/API_TESTING.md` and `docs/releases/0.1b.md`.
 
-## 0.1a reconciliation
+## 0.1b reconciliation
 
 New source implements a paged Wireless Storage inventory screen with guarded server actions, independent receive/send item/fluid filters, bounded ALL/ANY Signaller statements, adjustable signal strength, escrow-aware edits and provider API guards. Existing R3 display and routing features are included. Publication is gated by native tests per track; installed-mod, graphical, live multiplayer and large-world acceptance remain separate and pending.
 
-The version advances to 0.1a as an alpha milestone. It does not close the entire proposed feature-complete 0.1 roadmap. Aggregated Wireless Storage views/search, remaining component parity, richer integrations and gameplay/performance acceptance remain open. Historical checkboxes and counts below are retained for traceability, not presented as current release evidence.
+The version advances to 0.1b as a beta milestone. It does not close the entire proposed feature-complete 0.1 roadmap. Aggregated Wireless Storage views/search, remaining component parity, richer integrations and gameplay/performance acceptance remain open. Historical checkboxes and counts below are retained for traceability, not presented as current release evidence.
+
+This beta promotes the existing 0.1a implementation without gameplay or API changes. Further API testing is still required; the beta designation does not change pending acceptance results.
 
 ---
 
