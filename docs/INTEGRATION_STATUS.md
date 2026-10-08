@@ -1,4 +1,4 @@
-# Integration status — 0.1a
+# Integration status — 0.1b
 
 **Further API testing is still required.** The implementation inventory below retains the R1.9 adapter scope; installed-provider acceptance is pending. See [API_TESTING.md](API_TESTING.md).
 

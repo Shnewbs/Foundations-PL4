@@ -1,4 +1,4 @@
-# 0.1a API acceptance matrix
+# 0.1b API acceptance matrix
 
 **Further API testing is still required.** Every installed-provider result below is pending for each Minecraft track independently. An adapter being registered, a reflected signature resolving, or a synthetic fixture passing is not proof that a supported modpack works.
 
