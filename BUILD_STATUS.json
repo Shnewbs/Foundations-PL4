@@ -1,15 +1,16 @@
 {
   "project": "Foundations PL4",
   "version": "0.2a-port.1",
-  "minecraft": "1.16.5",
+  "minecraft": "1.16.4",
   "java": 17,
   "release_channel": "alpha",
   "host_save_schema": 2,
-  "payload_protocol": "forge-1.16.5-5",
+  "payload_protocol": "forge-1.16.4-5",
   "release_gate": [
-    "offline regressions",
-    "native build",
-    "native GameTests"
+    "offline production rules",
+    "native compilation and reobfuscation",
+    "191 isolated native server scenarios",
+    "exact target metadata"
   ],
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING",
@@ -20,8 +21,9 @@
   "release_notes": "docs/releases/0.2a-port.1.md",
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
-  "loader_version": "36.2.42",
+  "loader_version": "35.1.37",
   "port_status": "NATIVE_SCENARIO_VALIDATION_REQUIRED",
   "expected_native_scenarios": 191,
-  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests"
+  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
+  "installed_runtime_acceptance": "PENDING"
 }
