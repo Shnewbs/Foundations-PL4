@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "title": "Foundations PL4 Field Guide",
-  "edition": "Minecraft 26.3 / NeoForge / Foundations PL4 0.1b",
+  "edition": "Minecraft 26.1.2 / NeoForge / Foundations PL4 0.1b",
   "chapters": [
     {
       "id": "start",
@@ -28,7 +28,7 @@
         },
         {
           "heading": "THIS EDITION",
-          "body": "This guide covers Foundations PL4 on Minecraft 26.3 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries."
+          "body": "This guide covers Foundations PL4 on Minecraft 26.1.2 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries."
         },
         {
           "heading": "THE GUIDE ITEM",
@@ -401,7 +401,7 @@
         },
         {
           "heading": "OPTIONAL ADAPTER POLICY",
-          "body": "Servers can disable Create or AE2 monitoring in energyReader.createKinetics and energyReader.ae2GridEnergy. Both adapters are optional; PL4 starts without either mod. Create 1.21.1 API contracts were reviewed; a supported official Create 26.3 release has not been verified. The 26.3 PL4 jar carries the optional adapter, but this does not establish compatibility with a future Create port. See docs/INTEGRATION_STATUS.md for implemented, unfinished and version-blocked work."
+          "body": "Servers can disable Create or AE2 monitoring in energyReader.createKinetics and energyReader.ae2GridEnergy. Both adapters are optional; PL4 starts without either mod. Create 1.21.1 API contracts were reviewed; a supported official Create 26.1.2 release has not been verified. The 26.1.2 PL4 jar carries the optional adapter, but this does not establish compatibility with a future Create port. See docs/INTEGRATION_STATUS.md for implemented, unfinished and version-blocked work."
         }
       ]
     },
@@ -757,7 +757,7 @@
         },
         {
           "heading": "HAMMER FIELDS",
-          "body": "Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.3 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement."
+          "body": "Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.1.2 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement."
         },
         {
           "heading": "OPT IN",
@@ -807,7 +807,7 @@
       "sections": [
         {
           "heading": "ALPHA IMPLEMENTATION",
-          "body": "Foundations PL4 is an in-development port for Minecraft 26.3 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required."
+          "body": "Foundations PL4 is an in-development port for Minecraft 26.1.2 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required."
         },
         {
           "heading": "CURRENT BOUNDARY",

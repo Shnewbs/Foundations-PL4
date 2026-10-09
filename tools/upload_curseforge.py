@@ -79,7 +79,7 @@ def main():
     version, tag, repo = (os.environ[k] for k in ("VERSION", "RELEASE_TAG", "GITHUB_REPOSITORY"))
     minecraft = os.environ.get("MINECRAFT_VERSION", "1.21.1")
     expected_tag = "v" + version if minecraft == "1.21.1" else f"mc{minecraft}-v{version}"
-    if minecraft not in ("1.21.1", "26.3") or not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != expected_tag:
+    if minecraft not in ("1.21.1", "26.1.2", "26.3") or not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != expected_tag:
         raise RuntimeError("Invalid release version/tag.")
     jar = Path(f"build/libs/FoundationsPL4-{minecraft}-{version}.jar")
     if not jar.is_file():

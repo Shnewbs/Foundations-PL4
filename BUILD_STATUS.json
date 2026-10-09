@@ -1,7 +1,7 @@
 {
   "project": "Foundations PL4",
   "version": "0.1b",
-  "minecraft": "26.3",
+  "minecraft": "26.1.2",
   "java": 25,
   "release_channel": "beta",
   "host_save_schema": 2,
@@ -19,5 +19,7 @@
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.1b.md",
-  "historical_evidence": "docs/releases/"
+  "historical_evidence": "docs/releases/",
+  "neoforge": "26.1.2.114",
+  "native_validation": "REQUIRED_BEFORE_PUBLICATION"
 }

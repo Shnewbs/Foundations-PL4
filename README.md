@@ -1,6 +1,6 @@
 # Foundations PL4 0.1b
 
-Standalone logistics, live machine displays and automation for Minecraft 26.3 / NeoForge. No Sonar Core or MCMultiPart runtime dependency.
+Standalone logistics, live machine displays and automation for Minecraft 26.1.2 / NeoForge. No Sonar Core or MCMultiPart runtime dependency.
 
 **Further API testing is still required.** This beta includes a dedicated Wireless Storage screen, new directional item/fluid filters, multi-condition Signallers and provider API safeguards, alongside the 0.0.2a editor, routing and telemetry work. It does not claim full PL2 parity or installed-mod compatibility certification.
 
@@ -15,7 +15,7 @@ Use Java 25:
 python tools/run_offline_checks.py
 ```
 
-Windows: use `gradlew.bat` for Gradle. The runtime artifact is `build/libs/FoundationsPL4-26.3-0.1b.jar`. Publication runs native checks before distributing artifacts; client visuals and installed API acceptance are separate.
+Windows: use `gradlew.bat` for Gradle. The runtime artifact is `build/libs/FoundationsPL4-26.1.2-0.1b.jar`. Publication runs native checks before distributing artifacts; client visuals and installed API acceptance are separate.
 
 ## World compatibility
 

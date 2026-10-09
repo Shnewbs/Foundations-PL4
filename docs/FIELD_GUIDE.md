@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 26.3 / NeoForge / Foundations PL4 0.1b
+Minecraft 26.1.2 / NeoForge / Foundations PL4 0.1b
 
 ## Welcome to Foundations PL4
 
@@ -24,7 +24,7 @@ After the first monitor, try From list to block icon, Your first energy monitor,
 
 ### THIS EDITION
 
-This guide covers Foundations PL4 on Minecraft 26.3 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries.
+This guide covers Foundations PL4 on Minecraft 26.1.2 / NeoForge. Practical Logistics 2 is the visual reference; the unfinished PL3 project is not the feature checklist. Some original GSI interactions and integrations are still pending. See Port status and credits for the boundaries.
 
 ### THE GUIDE ITEM
 
@@ -335,7 +335,7 @@ Choose Energy: AE2 on an Energy Reader connected to an AE2 in-world grid-node ho
 
 ### OPTIONAL ADAPTER POLICY
 
-Servers can disable Create or AE2 monitoring in energyReader.createKinetics and energyReader.ae2GridEnergy. Both adapters are optional; PL4 starts without either mod. Create 1.21.1 API contracts were reviewed; a supported official Create 26.3 release has not been verified. The 26.3 PL4 jar carries the optional adapter, but this does not establish compatibility with a future Create port. See docs/INTEGRATION_STATUS.md for implemented, unfinished and version-blocked work.
+Servers can disable Create or AE2 monitoring in energyReader.createKinetics and energyReader.ae2GridEnergy. Both adapters are optional; PL4 starts without either mod. Create 1.21.1 API contracts were reviewed; a supported official Create 26.1.2 release has not been verified. The 26.1.2 PL4 jar carries the optional adapter, but this does not establish compatibility with a future Create port. See docs/INTEGRATION_STATUS.md for implemented, unfinished and version-blocked work.
 
 ## Info and Network Readers
 
@@ -636,7 +636,7 @@ Registered items, tags, crafting JSON and the foundations_pl4:forging_hammer rec
 
 ### HAMMER FIELDS
 
-Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.3 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement.
+Use type, ingredient, input_count, result, processing_ticks and cooldown_ticks. In 26.1.2 the result uses id and count. The included examples/kubejs/server_scripts/pl4_recipes.js.example shows a deliberate recipe replacement.
 
 ### OPT IN
 
@@ -676,7 +676,7 @@ PL2-style display restoration, current limits and credits.
 
 ### ALPHA IMPLEMENTATION
 
-Foundations PL4 is an in-development port for Minecraft 26.3 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required.
+Foundations PL4 is an in-development port for Minecraft 26.1.2 / NeoForge. It bundles its own required core functionality. A separate Sonar Core or MCMultiPart runtime is not required.
 
 ### CURRENT BOUNDARY
 

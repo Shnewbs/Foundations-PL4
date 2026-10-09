@@ -1,7 +1,7 @@
-name: Validate 26.x port
+name: Validate and release Minecraft 26.1.2
 on:
   push:
-    branches: ['mc/26.3']
+    branches: ['mc/26.1.2']
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        neoforge: ['26.3.0.23-beta', '26.3.0.39-beta']
+        neoforge: ['26.1.2.114']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,13 +57,13 @@ jobs:
     needs: port
     runs-on: ubuntu-latest
     concurrency:
-      group: port-26-release-publication
+      group: port-2612-release-publication
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: port-26-diagnostics-26.3.0.23-beta
+          name: port-26-diagnostics-26.1.2.114
           path: validated
       - name: Prepare validated release
         run: |
@@ -71,7 +71,7 @@ jobs:
           import pathlib, re, shutil, hashlib, os
           root=pathlib.Path('validated')
           version=re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'",pathlib.Path('build.gradle').read_text(),re.M).group(1)
-          jars=[f'FoundationsPL4-26.3-{version}.jar',f'FoundationsPL4-26.3-{version}-sources.jar']
+          jars=[f'FoundationsPL4-26.1.2-{version}.jar',f'FoundationsPL4-26.1.2-{version}-sources.jar']
           out=pathlib.Path('build/libs');out.mkdir(parents=True,exist_ok=True)
           hashes=[]
           for name in jars:
@@ -80,7 +80,7 @@ jobs:
               hashes.append(hashlib.sha256(target.read_bytes()).hexdigest()+'  '+name)
           (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
           with open(os.environ['GITHUB_ENV'],'a') as env:
-              env.write(f'VERSION={version}\nRELEASE_TAG=mc26.3-v{version}\nMINECRAFT_VERSION=26.3\n')
+              env.write(f'VERSION={version}\nRELEASE_TAG=mc26.1.2-v{version}\nMINECRAFT_VERSION=26.1.2\n')
           PYTHON
       - name: Publish GitHub prerelease
         env:
@@ -88,7 +88,7 @@ jobs:
         run: |
           set -euo pipefail
           if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.3 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/SHA256SUMS.txt
+            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.1.2 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/SHA256SUMS.txt
           fi
       - name: Publish validated runtime to CurseForge
         env:

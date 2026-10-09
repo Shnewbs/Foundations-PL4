@@ -4,10 +4,10 @@ plugins {
 }
 version = '0.1b'
 group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-26.3' }
+base { archivesName = 'FoundationsPL4-26.1.2' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
 neoForge {
-    version = providers.gradleProperty('neoForgeVersion').getOrElse('26.3.0.23-beta')
+    version = providers.gradleProperty('neoForgeVersion').getOrElse('26.1.2.114')
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
