@@ -8,6 +8,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 @Mod.EventBusSubscriber(modid=LegacyPL4.ID,value=Side.CLIENT)
 public final class LegacyClient {
-    @SubscribeEvent public static void models(ModelRegistryEvent event){ModelLoader.setCustomModelResourceLocation(LegacyPL4.FLUID_CELL,0,new ModelResourceLocation(LegacyPL4.FLUID_CELL.getRegistryName(),"inventory"));for(LegacyBlock block:LegacyPL4.BLOCKS)ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),0,new ModelResourceLocation(block.getRegistryName(),"inventory"));}
+    @SubscribeEvent public static void models(ModelRegistryEvent event){ModelLoader.setCustomModelResourceLocation(LegacyPL4.ENERGY_CELL,0,new ModelResourceLocation(LegacyPL4.ENERGY_CELL.getRegistryName(),"inventory"));ModelLoader.setCustomModelResourceLocation(LegacyPL4.FLUID_CELL,0,new ModelResourceLocation(LegacyPL4.FLUID_CELL.getRegistryName(),"inventory"));for(LegacyBlock block:LegacyPL4.BLOCKS)ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block),0,new ModelResourceLocation(block.getRegistryName(),"inventory"));}
     private LegacyClient(){}
 }

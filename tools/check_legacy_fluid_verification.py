@@ -9,12 +9,12 @@ import zipfile
 
 target=sys.argv[1]
 if target not in {'1.12.2','1.6.4'}:raise SystemExit('Unsupported target')
-root=Path.cwd();name='FoundationsPL4-'+target+'-0.2a-legacy-preview.2'
+root=Path.cwd();name='FoundationsPL4-'+target+'-0.2a-legacy-preview.3'
 suffix='-srg.jar' if target=='1.6.4' else '.jar'
 built=root/'build/libs'/(name+suffix)
 installed=root/'run-legacy/mods'/(name+suffix)
 report=json.loads((root/'run-legacy/legacy-scenarios.json').read_text())
-if report['minecraft']!=target or report['total']!=52 or report['passed']!=52 or report['failed']!=0:
+if report['minecraft']!=target or report['total']!=89 or report['passed']!=89 or report['failed']!=0:
     raise SystemExit('Native scenario failure: '+str(report))
 log=(root/'verification-logs/native.log').read_text(encoding='utf-8',errors='replace')
 if 'PL4 LEGACY FIXTURE CLEANUP: PASS' not in log or 'missing a mapping' in log or 'It will not persist' in log:
@@ -26,7 +26,7 @@ def entries(path):
         return {name:z.read(name) for name in z.namelist() if not name.endswith('/')}
 if entries(built)!=entries(reference):raise SystemExit('Rebuilt runtime contents differ from the selected published runtime')
 summary={
-    'minecraft':target,'version':'0.2a-legacy-preview.2','total':52,'passed':52,'failed':0,
+    'minecraft':target,'version':'0.2a-legacy-preview.3','total':89,'passed':89,'failed':0,
     'fixture_cleanup':'PASS','fixture_save_mapping_error':False,
     'published_runtime_used':bool(os.environ.get('PL4_VERIFICATION_RUNTIME')),
     'runtime_sha256':hashlib.sha256(installed.read_bytes()).hexdigest(),
@@ -39,4 +39,4 @@ summary={
     'scope':'Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance'
 }
 (root/'verification-logs/clean-native-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
-print('PASS 52 native scenarios, cleanup/save guard, exact installed runtime hash and rebuilt archive contents')
+print('PASS 89 native scenarios, cleanup/save guard, exact installed runtime hash and rebuilt archive contents')

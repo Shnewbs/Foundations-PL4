@@ -4,14 +4,14 @@ buildscript {
 }
 apply plugin:'net.minecraftforge.gradle'
 apply plugin:'java'
-version='0.2a-legacy-preview.2'
+version='0.2a-legacy-preview.3'
 group='net.foundations.pl4'
 archivesBaseName='FoundationsPL4-1.12.2'
 sourceCompatibility=targetCompatibility='1.8'
 sourceSets {
     main { java.srcDirs=['src/legacy/java']; resources.srcDirs=['src/legacy/resources'] }
     legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
-    legacyRules { java.srcDirs=['tools']; java.include 'CoreChecks.java','FluidChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
+    legacyRules { java.srcDirs=['tools']; java.include 'CoreChecks.java','FluidChecks.java','EnergyChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
 }
 minecraft {
     mappings channel:'snapshot',version:'20171003-1.12'

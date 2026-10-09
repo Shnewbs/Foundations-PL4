@@ -6,3 +6,8 @@ tile.foundations_pl4.legacy_fluid_export.name=PL4 Legacy Fluid Export Node
 tile.foundations_pl4.legacy_fluid_import.name=PL4 Legacy Fluid Import Node
 tile.foundations_pl4.legacy_tank.name=PL4 Legacy Tank (16 buckets)
 item.foundations_pl4.legacy_fluid_cell.name=PL4 Sealed Fluid Recovery Cell
+
+tile.foundations_pl4.legacy_energy_export.name=PL4 Legacy Energy Export Node
+tile.foundations_pl4.legacy_energy_import.name=PL4 Legacy Energy Import Node
+tile.foundations_pl4.legacy_energy_buffer.name=PL4 Legacy Energy Buffer
+item.foundations_pl4.legacy_energy_cell.name=PL4 Sealed Energy Recovery Cell
