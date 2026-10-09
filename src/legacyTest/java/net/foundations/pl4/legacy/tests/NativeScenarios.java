@@ -54,7 +54,9 @@ public final class NativeScenarios {
             test("native sided furnace extraction",()->{world.setBlockState(export.west(),Blocks.FURNACE.getDefaultState(),3);TileEntityFurnace f=(TileEntityFurnace)world.getTileEntity(export.west());f.setInventorySlotContents(0,new ItemStack(Blocks.IRON_ORE,5));check(node(export).inventory().extractItem(0,1,true).isEmpty(),"sided extraction guard");});
             test("source scan respects slot limit",()->{LegacyPL4.slotLimit=1;source().setInventorySlotContents(5,new ItemStack(Items.IRON_INGOT,32));check(node(export).transferOnce()==0,"slot cap");});
             test("empty native inventories are inert",()->check(node(export).transferOnce()==0&&node(export).pending.isEmpty(),"empty source"));
-            test("pending buffer released when host removed",()->{node(export).pending=new ItemStack(Items.DIAMOND,5);world.setBlockToAir(export);int count=0;for(EntityItem item:world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(-2,199,-2,5,203,2)))if(item.getItem().getItem()==Items.DIAMOND)count+=item.getItem().getCount();check(count==5,"escrow drop exactly once");});
+            // reset() discards fixture drops with setDead(). Until the next tick those removed entities
+            // can remain in the spatial query; only live drops belong to this exact-once assertion.
+            test("pending buffer released when host removed",()->{node(export).pending=new ItemStack(Items.DIAMOND,5);world.setBlockToAir(export);int count=0;for(EntityItem item:world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(-2,199,-2,5,203,2)))if(!item.isDead&&item.getItem().getItem()==Items.DIAMOND)count+=item.getItem().getCount();check(count==5,"escrow drop exactly once (live count="+count+")");});
         }finally{
             JsonObject report=new JsonObject();report.addProperty("minecraft","1.12.2");report.addProperty("total",total);report.addProperty("passed",passed);report.addProperty("failed",total-passed);report.add("results",results);
             try(FileWriter file=new FileWriter(new File("legacy-scenarios.json"))){new Gson().toJson(report,file);}
