@@ -1,0 +1,62 @@
+name: Export published release artifacts
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/export-release.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and verify the published release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          VERSION=$(cat release-version.txt)
+          python3 -c 'import re,sys; assert re.fullmatch(r"\d+\.\d+(?:\.\d+)?[ab](?:\.R\d+(?:\.\d+)*)?", sys.argv[1])' "$VERSION"
+          mkdir -p release-export
+          gh release view "v$VERSION" --json tagName,isDraft,isPrerelease,targetCommitish,assets > release-export/RELEASE.json
+          gh release download "v$VERSION" --dir release-export
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root = Path('release-export')
+          metadata = json.loads((root / 'RELEASE.json').read_text())
+          if metadata['isDraft']:
+              raise SystemExit('Refusing a draft release')
+          checked = 0
+          for line in (root / 'SHA256SUMS.txt').read_text().splitlines():
+              if not line.strip():
+                  continue
+              expected, name = line.split(None, 1)
+              name = name.strip()
+              if Path(name).name != name or '/' in name or '\\' in name:
+                  raise SystemExit('Unsafe checksum filename')
+              actual = hashlib.sha256((root / name).read_bytes()).hexdigest()
+              if actual != expected:
+                  raise SystemExit('Published checksum mismatch: ' + name)
+              checked += 1
+              print('PASS published SHA256: ' + name)
+          if checked < 3:
+              raise SystemExit('Missing release checksums')
+          receipt = root / 'curseforge-upload.json'
+          if receipt.is_file():
+              print('CurseForge upload receipt: ' + receipt.read_text())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published-release-${{ github.sha }}
+          path: release-export/
+          retention-days: 14
+          if-no-files-found: error
