@@ -1,0 +1,108 @@
+name: Verify published legacy fluid runtimes
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/legacy-fluid-recheck.yml'
+      - 'tools/legacy-fluid-update/finish_validation.py'
+      - 'tools/legacy-fluid-update/check_legacy_fluid_verification.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: legacy-fluid-recheck
+  cancel-in-progress: false
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: ['1.12.2', '1.6.4']
+    env:
+      TARGET: ${{ matrix.minecraft }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: coordinator
+      - uses: actions/checkout@v4
+        with:
+          ref: mc/${{ matrix.minecraft }}
+          path: target
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        if: matrix.minecraft == '1.6.4'
+        with:
+          distribution: zulu
+          java-version: '7'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+      - name: Commit test cleanup and current validation documentation
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          python3 ../coordinator/tools/legacy-fluid-update/finish_validation.py . "$TARGET"
+          git diff --check
+          git add src/legacyTest tools/validate_legacy_fluids.sh tools/check_legacy_fluid_verification.py README.md LEGACY_FLUID_STATUS.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m "Verify native test cleanup and exact published fluid runtime; no production source changes"
+            git push origin "HEAD:mc/$TARGET"
+          fi
+          tag="mc$TARGET-v0.2a-legacy-preview.2"
+          git diff --exit-code "$tag" HEAD -- src/legacy build.gradle settings.gradle gradle.properties gradle/
+      - name: Fetch checksum-verified published runtime
+        shell: bash
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          dir="$RUNNER_TEMP/published-$TARGET"
+          gh release download "mc$TARGET-v0.2a-legacy-preview.2" --dir "$dir"
+          (cd "$dir" && sha256sum -c SHA256SUMS.txt)
+          echo "PL4_VERIFICATION_RUNTIME=$dir/FoundationsPL4-$TARGET-0.2a-legacy-preview.2.jar" >> "$GITHUB_ENV"
+      - name: Build fixtures and test the unchanged published runtime
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          if [ "$TARGET" = '1.12.2' ]; then
+            export JAVA_HOME="$JAVA_HOME_8_X64"
+            export PATH="$JAVA_HOME/bin:$PATH"
+          fi
+          bash tools/validate_legacy_fluids.sh
+      - name: Attach supplemental evidence without overwriting published files
+        shell: bash
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p supplemental
+          prefix="validation-$TARGET-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp verification-logs/native.log "supplemental/$prefix-native.log"
+          cp verification-logs/clean-native-summary.json "supplemental/$prefix-summary.json"
+          cp run-legacy/legacy-scenarios.json "supplemental/$prefix-scenarios.json"
+          git archive --format=zip --output="supplemental/$prefix-source.zip" HEAD
+          git diff "mc$TARGET-v0.2a-legacy-preview.2" HEAD > "supplemental/$prefix-test-only.patch"
+          (cd supplemental && sha256sum * > "$prefix-SHA256SUMS.txt")
+          gh release upload "mc$TARGET-v0.2a-legacy-preview.2" supplemental/*
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: legacy-fluid-recheck-${{ matrix.minecraft }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            target/supplemental/
+            target/verification-logs/
+            target/run-legacy/legacy-scenarios.json
+          retention-days: 14
+          if-no-files-found: warn
