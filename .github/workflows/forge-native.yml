@@ -1,15 +1,16 @@
-name: Forge 1.16.5 native validation
+name: Forge 1.16.4 independent native validation
 on:
   push:
-    branches: [mc/1.16.5]
+    branches: [mc/1.16.4]
   workflow_dispatch:
 permissions:
   contents: write
 concurrency:
-  group: forge116-native-validation
+  group: forge1164-native-validation
   cancel-in-progress: false
 jobs:
   verify:
+    if: github.ref == 'refs/heads/mc/1.16.4'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -20,22 +21,22 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Correct deferred Forge run-task wiring
+      - name: Configure and commit the exact new target
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('build.gradle');s=p.read_text();s=s.replace("tasks.named('runServer') { dependsOn tasks.named('portTestClasses') }","tasks.matching { it.name == 'runServer' }.configureEach { dependsOn tasks.named('portTestClasses') }");p.write_text(s)
-          PY
+          python3 tools/prepare_1164.py
+          git diff --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add build.gradle
+          git add build.gradle BUILD_STATUS.json src/ docs/FIELD_GUIDE.md tools/run_port_checks.py
           if ! git diff --cached --quiet; then
-            git commit -m 'Configure native server dependency after Forge creates run tasks'
-            git push origin HEAD:mc/1.16.5
+            git commit -m 'Configure exact Minecraft 1.16.4 Forge 35.1.37 source and payload identity'
+            git push origin HEAD:mc/1.16.4
           fi
           git rev-parse HEAD > source-commit.txt
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
       - name: Build and execute all native server scenarios
         shell: bash
         run: |
@@ -45,36 +46,44 @@ jobs:
           printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=scenario-world\nlevel-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-scenarios/server.properties
           bash gradlew --no-daemon --console=plain clean build runServer -PportScenarios 2>&1 | tee verification-logs/native.log
           python3 - <<'PY'
-          import json
+          import json,re
           from pathlib import Path
           report=json.loads(Path('run-scenarios/port-scenarios.json').read_text())
-          assert report['minecraft']=='1.16.5' and report['total']==191 and report['passed']==191 and report['failed']==0,report
-          assert 'PL4 SCENARIOS SUCCESS: All 191 required native scenarios passed' in Path('verification-logs/native.log').read_text()
-          print('PASS all 191 native scenarios; not modern GameTests')
+          log=Path('verification-logs/native.log').read_text()
+          assert report['minecraft']=='1.16.4' and report['total']==191 and report['passed']==191 and report['failed']==0,report
+          assert 'PL4 SCENARIOS SUCCESS: All 191 required native scenarios passed' in log
+          assert re.search(r'Starting minecraft server version 1\.16\.4\b',log,re.I),'Actual native Minecraft version not established'
+          print('PASS 191 native scenarios on actual 1.16.4; not modern GameTests or ordinary client acceptance')
           PY
-      - name: Publish validated exact target alpha
+      - name: Publish only the successful independent target
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          version='0.2a-port.1'; tag="mc1.16.5-v$version"
+          version='0.2a-port.1'; tag="mc1.16.4-v$version"
+          test "$(git ls-remote origin refs/heads/mc/1.16.4 | cut -f1)" = "$(git rev-parse HEAD)"
+          git diff --exit-code
           mkdir -p release-files
-          cp "build/libs/FoundationsPL4-1.16.5-$version.jar" "build/libs/FoundationsPL4-1.16.5-$version-sources.jar" release-files/
-          git archive --format=zip --output="release-files/FoundationsPL4-1.16.5-$version-source.zip" HEAD
-          cp verification-logs/native.log "release-files/FoundationsPL4-1.16.5-$version-native-tests.log"
+          cp "build/libs/FoundationsPL4-1.16.4-$version.jar" "build/libs/FoundationsPL4-1.16.4-$version-sources.jar" release-files/
+          git archive --format=zip --output="release-files/FoundationsPL4-1.16.4-$version-source.zip" HEAD
+          cp verification-logs/native.log "release-files/FoundationsPL4-1.16.4-$version-native-tests.log"
           cp run-scenarios/port-scenarios.json source-commit.txt release-files/
           (cd release-files && sha256sum *.jar *.zip *.log *.json source-commit.txt > SHA256SUMS.txt)
           if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
-            echo 'Existing published tag is immutable; use a new port revision.'; exit 1
+            git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            git diff --exit-code "$tag" HEAD -- src/ build.gradle settings.gradle gradle.properties gradle/
+            gh release view "$tag"
+            echo 'Existing release retained; no assets overwritten.'
+          else
+            git tag "$tag"; git push origin "$tag"
+            gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $version - Minecraft 1.16.4 Forge" --notes-file docs/releases/0.2a-port.1.md
           fi
-          git tag "$tag"; git push origin "$tag"
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $version — Minecraft 1.16.5 Forge" --notes-file docs/releases/0.2a-port.1.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: forge116-${{ github.run_id }}-${{ github.run_attempt }}
+          name: forge1164-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             source-commit.txt
             release-files/
