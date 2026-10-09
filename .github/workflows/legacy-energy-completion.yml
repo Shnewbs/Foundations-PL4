@@ -1,0 +1,128 @@
+name: Complete legacy energy ports
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/legacy-energy-completion.yml'
+      - 'tools/legacy-energy-update/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: legacy-energy-completion
+  cancel-in-progress: false
+jobs:
+  energy:
+    name: Native energy transport ${{ matrix.minecraft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: ['1.12.2', '1.6.4']
+    env:
+      TARGET: ${{ matrix.minecraft }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Check out reviewed source coordinator
+        uses: actions/checkout@v4
+        with:
+          path: coordinator
+      - name: Check out native target
+        uses: actions/checkout@v4
+        with:
+          ref: mc/${{ matrix.minecraft }}
+          path: target
+          fetch-depth: 0
+      - name: Prepare isolated Java 7 runtime
+        if: matrix.minecraft == '1.6.4'
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '7'
+      - name: Prepare build JDKs
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+      - name: Apply reviewed source and scenario update
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 coordinator/tools/legacy-energy-update/unpack.py "$RUNNER_TEMP/pl4-energy-update"
+          python3 "$RUNNER_TEMP/pl4-energy-update/apply.py" target "$TARGET"
+          python3 coordinator/tools/legacy-energy-update/legacy_constructor.py target "$TARGET"
+          cd target
+          git diff --check
+          git add src/legacy src/legacyTest tools build.gradle README.md docs/releases/0.2a-legacy-preview.3.md LEGACY_ENERGY_STATUS.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m "Implement native $TARGET energy buffers, routing and quarantined recovery"
+            git push origin "HEAD:mc/$TARGET"
+          fi
+      - name: Build and test exact native runtime
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          if [ "$TARGET" = '1.12.2' ]; then
+            export JAVA_HOME="$JAVA_HOME_8_X64"
+            export PATH="$JAVA_HOME/bin:$PATH"
+          fi
+          bash tools/validate_legacy_fluids.sh
+      - name: Publish only the passing native target
+        shell: bash
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version='0.2a-legacy-preview.3'
+          tag="mc$TARGET-v$version"
+          name="FoundationsPL4-$TARGET-$version"
+          test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            git diff --exit-code "$tag" HEAD -- src/legacy build.gradle settings.gradle gradle.properties gradle/
+            gh release view "$tag"
+            echo 'Identical production source already released; no assets overwritten.'
+            exit 0
+          fi
+          test -f verification-logs/energy-summary.json
+          mkdir -p release-files
+          if [ "$TARGET" = '1.6.4' ]; then
+            cp "build/libs/$name-srg.jar" "release-files/$name.jar"
+          else
+            cp "build/libs/$name.jar" release-files/
+          fi
+          cp "build/libs/$name-sources.jar" release-files/
+          git archive --format=zip --output="release-files/$name-source.zip" HEAD
+          cp run-legacy/legacy-scenarios.json verification-logs/native.log verification-logs/build.log verification-logs/energy-summary.json verification-logs/clean-native-summary.json release-files/
+          git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
+          (cd release-files && sha256sum *.jar *.zip *.json *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
+          git tag "$tag"
+          git push origin "$tag"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --target "mc/$TARGET" --title "Foundations PL4 $TARGET $version (legacy energy transport)" --notes-file "docs/releases/$version.md"
+      - name: Preserve exact source snapshot
+        if: always()
+        shell: bash
+        working-directory: target
+        run: |
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/verified-branch-source.zip HEAD
+      - name: Preserve builds and native evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-energy-${{ matrix.minecraft }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            target/release-files/
+            target/verification-logs/
+            target/run-legacy/legacy-scenarios.json
+            target/build/libs/
+            target/LEGACY_ENERGY_STATUS.json
+          retention-days: 14
+          if-no-files-found: warn
