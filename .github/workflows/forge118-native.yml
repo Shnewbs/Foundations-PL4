@@ -1,0 +1,93 @@
+name: Forge 1.18.2 native validation
+on:
+  push:
+    branches: [mc/1.18.2]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: forge118-native-validation
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Wire native world generation and prepare new immutable revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          java=Path('src/main/java/net/foundations/pl4')
+          p=java/'FoundationsPL4.java';s=p.read_text()
+          if 'PortWorldgen::register' not in s:
+              marker='PLPackets.register(new net.foundations.pl4.compat.RegisterPayloadHandlersEvent());';assert marker in s;s=s.replace(marker,marker+'\n            e.enqueueWork(PortWorldgen::register);')
+              marker='MinecraftForge.EVENT_BUS.addListener(NetworkEngine::tick);';assert marker in s;s=s.replace(marker,marker+'\n        MinecraftForge.EVENT_BUS.addListener(PortWorldgen::biome);')
+              p.write_text(s)
+          p=java/'PLGameTests.java';s=p.read_text()
+          if 'e.register(PortWorldgenGameTests.class)' not in s:
+              marker='e.register(EnergyIntegrationGameTests.class);';assert marker in s;s=s.replace(marker,marker+'e.register(PortWorldgenGameTests.class);');p.write_text(s)
+          old='0.2a-port.1';new='0.2a-port.2'
+          for name in ['build.gradle','README.md','release-version.txt','docs/FIELD_GUIDE.md','src/main/resources/assets/foundations_pl4/guide/en_us.json']:
+              p=Path(name);p.write_text(p.read_text().replace(old,new))
+          p=Path('BUILD_STATUS.json');status=json.loads(p.read_text());status.update(version=new,expected_native_tests=193,release_notes='docs/releases/'+new+'.md',port_status='ALPHA_NATIVE_RELEASE_GATED');p.write_text(json.dumps(status,indent=2)+'\n')
+          p=Path('tools/run_port_checks.py');s=p.read_text().replace('count_tests==191==','count_tests==193==');p.write_text(s)
+          p=Path('docs/releases')/(new+'.md');p.write_text('# Foundations PL4 '+new+' — Forge 1.18.2\n\nRestores native sapphire ore placement using the Forge biome-loading event rather than unsupported newer biome-modifier JSON. Maintains six-block veins, fifteen attempts per chunk and the Y 1–29 placement range. Adds two native regression tests for actual overworld biome attachment, Nether/End exclusion and the configured ore output. Existing chunks are unchanged.\n\nRelease requires the original 191 behavior tests plus both world-generation tests, native Forge compilation/reobfuscation, standalone checks and the original production-rule regressions.\n\n**Further API testing is still required.** Real client graphics, optional providers, multiplayer, sustained profiling and the entire optional-fallback milestone remain pending. Use Java 17 and Forge 40.3.12.\n')
+          p=Path('src/main/resources/data/foundations_pl4/forge/biome_modifier/sapphire_ore.json');p.unlink(missing_ok=True)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src build.gradle README.md release-version.txt BUILD_STATUS.json tools/run_port_checks.py docs/FIELD_GUIDE.md docs/releases/0.2a-port.2.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Wire native sapphire biome generation and prepare 1.18.2 port.2'
+            git push origin HEAD:mc/1.18.2
+          fi
+          git rev-parse HEAD > source-commit.txt
+      - name: Build and execute all required native tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification-logs
+          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+          grep -F 'All 193 required tests passed' verification-logs/native.log
+      - name: Publish exact validated port revision
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          version='0.2a-port.2'; tag="mc1.18.2-v$version"
+          mkdir -p release-files
+          cp "build/libs/FoundationsPL4-1.18.2-$version.jar" "build/libs/FoundationsPL4-1.18.2-$version-sources.jar" release-files/
+          git archive --format=zip --output="release-files/FoundationsPL4-1.18.2-$version-source.zip" HEAD
+          cp verification-logs/native.log "release-files/FoundationsPL4-1.18.2-$version-native-tests.log"
+          cp source-commit.txt release-files/
+          (cd release-files && sha256sum *.jar *.zip *.log source-commit.txt > SHA256SUMS.txt)
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo 'Published tag is immutable; use a new revision.'; exit 1
+          fi
+          git tag "$tag"; git push origin "$tag"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $version — Minecraft 1.18.2 Forge" --notes-file "docs/releases/$version.md"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forge118-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source-commit.txt
+            release-files/
+            verification-logs/
+            run/logs/
+            build/reports/
+            build/libs/
+          retention-days: 14
+          if-no-files-found: warn
