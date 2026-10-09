@@ -8,10 +8,10 @@ import net.minecraft.util.text.StringTextComponent;
 
 public final class CommunityLinks {
     public static final String DISCORD="https://discord.gg/tCTS9xduad",SUPPORT="https://ko-fi.com/shnewbs";
-    public static ITextComponent message(){return new net.minecraft.util.text.StringTextComponent("[PL4] ").withStyle(TextFormatting.GRAY)
-        .append(link("Discord",DISCORD,TextFormatting.AQUA)).append(new net.minecraft.util.text.StringTextComponent(" · ").withStyle(TextFormatting.GRAY))
+    public static ITextComponent message(){return new StringTextComponent("[PL4] ").withStyle(TextFormatting.GRAY)
+        .append(link("Discord",DISCORD,TextFormatting.AQUA)).append(new StringTextComponent(" · ").withStyle(TextFormatting.GRAY))
         .append(link("Support on Ko-fi",SUPPORT,TextFormatting.GOLD));}
-    private static ITextComponent link(String label,String url,TextFormatting color){return new net.minecraft.util.text.StringTextComponent(label).withStyle(style->style.withColor(color).withUnderlined(true)
-        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,url)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new net.minecraft.util.text.StringTextComponent(url))));}
+    private static ITextComponent link(String label,String url,TextFormatting color){return new StringTextComponent(label).withStyle(TextFormatting.UNDERLINE).withStyle(style->style.withColor(color)
+        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,url)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new StringTextComponent(url))));}
     private CommunityLinks(){}
 }
