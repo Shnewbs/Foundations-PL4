@@ -61,7 +61,7 @@ public final class WirelessStorage {
                 ItemStack trial=target.inventory().extractItem(slot,amount,true);
                 if(amount>0&&!trial.isEmpty()&&ItemStack.isSameItemSameComponents(current,trial)){
                     ItemStack extracted=target.inventory().extractItem(slot,Math.min(amount,trial.getCount()),false);
-                    if(!extracted.isEmpty()){player.getInventory().add(extracted);if(!extracted.isEmpty())player.drop(extracted,false,net.minecraft.util.Prediction.SERVER_ONLY);}
+                    if(!extracted.isEmpty()){player.getInventory().add(extracted);if(!extracted.isEmpty())player.drop(extracted,false);}
                     player.getInventory().setChanged();player.inventoryMenu.broadcastChanges();
                 }else status="No inventory space or extraction is blocked.";
             }

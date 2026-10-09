@@ -15,7 +15,7 @@ final class DisplayColorPickerScreen extends Screen {
         w=Math.min(392,width-16);h=Math.min(268,height-16);left=(width-w)/2;top=(height-h)/2;
         addRenderableWidget(Button.builder(Component.literal("PL4 default"),b->selected=EditorPalette.DEFAULT).bounds(left+10,top+h-26,86,20).build());
         addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+w-138,top+h-26,56,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Use colour"),b->{parent.color(selected);minecraft.gui.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
+        addRenderableWidget(Button.builder(Component.literal("Use colour"),b->{parent.color(selected);minecraft.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
     }
     private int columns(){return 6;}private int cell(){return 34;}private int gap(){return 5;}
     private int gridX(){return left+14;}private int gridY(){return top+56;}
@@ -31,5 +31,5 @@ final class DisplayColorPickerScreen extends Screen {
         if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT){int i=0;for(var sw:EditorPalette.PRESETS){int col=i%columns(),row=i/columns(),sx=gridX()+col*(cell()+gap()),sy=gridY()+row*(cell()+gap());if(x>=sx&&x<sx+cell()&&y>=sy&&y<sy+cell()){selected=sw.rgb();return true;}i++;}}return super.mouseClicked(event,doubleClick);
     }
     @Override public void tick(){parent.parent.tick();}
-    @Override public void onClose(){minecraft.gui.setScreen(parent);}
+    @Override public void onClose(){minecraft.setScreen(parent);}
 }

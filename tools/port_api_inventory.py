@@ -16,3 +16,6 @@ with (out/'target-api.txt').open('w') as f:
 with zipfile.ZipFile(jar) as z:
  for path in ["version.json","data/minecraft/worldgen/feature/ore_coal.json", "data/minecraft/worldgen/placed_feature/ore_coal_upper.json", "data/minecraft/loot_table/blocks/diamond_ore.json"]:
   if path in z.namelist(): (out/Path(path).name).write_bytes(z.read(path))
+
+version=out/"version.json"
+if version.exists(): print("Target game metadata: "+version.read_text())

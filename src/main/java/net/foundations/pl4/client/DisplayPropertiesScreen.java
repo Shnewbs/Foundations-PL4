@@ -20,14 +20,14 @@ final class DisplayPropertiesScreen extends Screen {
         fields.clear();positions.clear();w=Math.min(466,width-16);h=Math.min(350,height-16);left=(width-w)/2;top=(height-h)/2;int x=left+116,y=top+33,fw=w-130;boolean narrow=w<390;
         control("Type: "+label(spec.type()),left+10,y,w-20,b->{if(!collect())return;DisplayElements.Type[] all=DisplayElements.Type.values();var oldType=spec.type();var type=all[(oldType.ordinal()+1)%all.length];int columns=(type==DisplayElements.Type.INVENTORY||type==DisplayElements.Type.FLUID_GRID)&&(oldType!=DisplayElements.Type.INVENTORY&&oldType!=DisplayElements.Type.FLUID_GRID)?DisplayElements.defaultColumns(type):spec.columns();spec=new DisplayElements.Spec(spec.id(),type,spec.text(),spec.reader(),spec.key(),spec.asset(),spec.bounds(),spec.color(),spec.count(),spec.names(),columns,spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());rebuildWidgets();});y+=25;
         String source=spec.reader().isBlank()?"Display reader (default)":parent.part.readerChoices.stream().filter(c->c.id().equals(spec.reader())).map(c->c.name()).findFirst().orElse(spec.reader());
-        control("Reader: "+source,left+10,y,w-20,b->{if(collect())minecraft.gui.setScreen(new DisplayPickerScreen(this,true));});y+=29;
-        field("key","Data key",spec.key(),x,y,fw-48);control("Pick",left+w-52,y,42,b->{if(collect()){parent.inspect(spec.reader());minecraft.gui.setScreen(new DisplayPickerScreen(this,false));}});y+=29;
+        control("Reader: "+source,left+10,y,w-20,b->{if(collect())minecraft.setScreen(new DisplayPickerScreen(this,true));});y+=29;
+        field("key","Data key",spec.key(),x,y,fw-48);control("Pick",left+w-52,y,42,b->{if(collect()){parent.inspect(spec.reader());minecraft.setScreen(new DisplayPickerScreen(this,false));}});y+=29;
         field("asset","Static item/fluid ID",spec.asset(),x,y,fw);y+=29;
         field("text","Caption",spec.text(),x,y,fw);y+=29;
         field("x","X",Integer.toString(spec.bounds().x()),x,y,58);if(narrow)y+=29;field("y","Y",Integer.toString(spec.bounds().y()),narrow?x:x+114,y,58);y+=29;
         field("w","Width",Integer.toString(spec.bounds().width()),x,y,58);if(narrow)y+=29;field("h","Height",Integer.toString(spec.bounds().height()),narrow?x:x+114,y,58);y+=29;
         field("columns","Columns",Integer.toString(spec.columns()),x,y,58);if(narrow)y+=29;field("offset","Grid offset",Integer.toString(spec.offset()),narrow?x:x+114,y,58);y+=29;
-        field("color","Colour (hex)",EditorPalette.hex(spec.color()),x,y,100);control("Palette…",x+108,y,78,b->{if(collect())minecraft.gui.setScreen(new DisplayColorPickerScreen(this,spec.color()));});y+=29;
+        field("color","Colour (hex)",EditorPalette.hex(spec.color()),x,y,100);control("Palette…",x+108,y,78,b->{if(collect())minecraft.setScreen(new DisplayColorPickerScreen(this,spec.color()));});y+=29;
         control("Quantity: "+(spec.count()?"On":"Off"),left+10,y,118,b->toggle(0));if(narrow)y+=25;control("Names: "+(spec.names()?"On":"Off"),narrow?left+10:left+136,y,108,b->toggle(1));y+=25;
         control("Bar: "+(spec.vertical()?"Vertical":"Horizontal"),left+10,y,138,b->toggle(2));if(narrow)y+=25;control("Numbers: "+(spec.compact()?"Compact":"Exact"),narrow?left+10:left+154,y,138,b->toggle(3));y+=25;
         control("Text align: "+spec.textAlign().name(),left+10,y,138,b->{if(collect()){var all=DisplayElements.TextAlign.values();spec=spec.textStyle(all[(spec.textAlign().ordinal()+1)%all.length],spec.wrap(),spec.textScale());rebuildWidgets();}});
@@ -38,7 +38,7 @@ final class DisplayPropertiesScreen extends Screen {
         control("Click: "+(spec.options().actionPage()<0?"None":"Page "+(spec.options().actionPage()+1)),left+10,y,180,b->{if(collect()){var o=spec.options();spec=spec.options(new DisplayElements.Options(o.group(),o.locked(),o.hidden(),o.background(),o.border(),o.actionPage()==7?-1:o.actionPage()+1));rebuildWidgets();}});y+=25;
         control("Page: "+(spec.page()+1),left+10,y,100,b->{if(collect()){spec=spec.onPage((spec.page()+1)%8);rebuildWidgets();}});
         addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+10,top+h-26,64,20).build());
-        addRenderableWidget(Button.builder(Component.literal(add?"Add element":"Save element"),b->{if(collect()){parent.selected=spec.id();minecraft.gui.setScreen(parent);parent.commit(add?"add":"update",spec,"",revision);}}).bounds(left+w-112,top+h-26,102,20).build());layout();
+        addRenderableWidget(Button.builder(Component.literal(add?"Add element":"Save element"),b->{if(collect()){parent.selected=spec.id();minecraft.setScreen(parent);parent.commit(add?"add":"update",spec,"",revision);}}).bounds(left+w-112,top+h-26,102,20).build());layout();
     }
     private static String label(DisplayElements.Type type){return switch(type){case TEXT->"Text / value";case ITEM->"Item icon";case BLOCK->"Block model";case INVENTORY->"Inventory grid";case FLUID->"Fluid tank";case FLUID_GRID->"Fluid grid";case BAR->"Progress / energy bar";};}
     private void field(String key,String label,String value,int x,int y,int w){EditBox b=new EditBox(font,x,y,Math.max(20,w),20,Component.literal(label));b.setMaxLength(key.equals("key")||key.equals("asset")?192:128);b.setValue(value);b.setTooltip(Tooltip.create(Component.literal(label)));fields.put(key,b);positions.put(b,y);addRenderableWidget(b);}
@@ -53,8 +53,8 @@ final class DisplayPropertiesScreen extends Screen {
         }catch(IllegalArgumentException ex){error="Check numeric fields, hex colour, and resource ID.";return false;}
     }
     void color(int rgb){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),spec.reader(),spec.key(),spec.asset(),spec.bounds(),rgb&0xFFFFFF,spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());}
-    void reader(String id){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),id,"",spec.asset(),spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());parent.inspect(id);minecraft.gui.setScreen(this);}
-    void key(String key){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),spec.reader(),key,"",spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());minecraft.gui.setScreen(this);}
+    void reader(String id){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),id,"",spec.asset(),spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());parent.inspect(id);minecraft.setScreen(this);}
+    void key(String key){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),spec.reader(),key,"",spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());minecraft.setScreen(this);}
     String reader(){return spec.reader();}
     private void layout(){int end=positions.values().stream().mapToInt(Integer::intValue).max().orElse(0)+20;scroll=Math.clamp(scroll,0,Math.max(0,end-(top+h-38)));positions.forEach((b,y)->{b.setY(y-scroll);b.visible=b.getY()>=top+31&&b.getY()+20<=top+h-35;});}
     @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float partial){
@@ -67,5 +67,5 @@ final class DisplayPropertiesScreen extends Screen {
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}return super.mouseClicked(event,doubleClick);}
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){scroll-=(int)Math.signum(dy)*28;layout();return true;}
     @Override public void tick(){parent.tick();}
-    @Override public void onClose(){minecraft.gui.setScreen(parent);}
+    @Override public void onClose(){minecraft.setScreen(parent);}
 }

@@ -82,7 +82,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity,HostRe
         }
     }
     private void display(HostEntity host,Part p,PoseStack pose,RenderCommands buffer,Font font){
-        var eye=Minecraft.getInstance().gameRenderer.mainCamera().position();
+        var eye=Minecraft.getInstance().gameRenderer.getMainCamera().position();
         net.foundations.pl4.core.DisplayFacing.Frame frame;
         double ox,oy,oz;
         if(p.hologram()){

@@ -204,7 +204,7 @@ public final class GuideScreen extends Screen {
         return super.mouseDragged(event,dx,dy);
     }
     @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){double x=event.x(),y=event.y();int button=event.button();boolean handled=drag!=0;drag=0;return super.mouseReleased(event)||handled;}
-    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),modifiers=event.modifiers();
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),modifiers=event.modifiers();
         if(key==com.mojang.blaze3d.platform.InputConstants.KEY_ESCAPE){onClose();return true;}
         if(search==null||!search.isFocused()){
             if(key==com.mojang.blaze3d.platform.InputConstants.KEY_HOME){query="";savedOnly=false;listScroll=0;select(GuideNavigation.byId(book,"start"));return true;}

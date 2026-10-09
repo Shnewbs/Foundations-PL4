@@ -37,7 +37,7 @@ public final class PartScreen extends Screen {
         w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;channelButton=null;channelPageButton=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
-        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.gui.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
+        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
         button("Done",left+w-66,top+h-27,56,b->onClose());
         if(tab==1){
             int x=left+112,y=top+58,fw=Math.max(90,w-132);

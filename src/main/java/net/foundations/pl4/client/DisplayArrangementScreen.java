@@ -18,7 +18,7 @@ final class DisplayArrangementScreen extends Screen {
         int count=parent.selectionCount(),bw=(w-28)/2,step=Math.min(25,Math.max(16,(h-98)/4));
         for(int i=0;i<ACTIONS.length;i++){
             final String action=ACTIONS[i];
-            var button=addRenderableWidget(Button.builder(Component.literal(LABELS[i]),b->{parent.arrange(action);minecraft.gui.setScreen(parent);}).bounds(left+10+(i%2)*(bw+8),top+57+(i/2)*step,bw,Math.min(20,step-2)).build());
+            var button=addRenderableWidget(Button.builder(Component.literal(LABELS[i]),b->{parent.arrange(action);minecraft.setScreen(parent);}).bounds(left+10+(i%2)*(bw+8),top+57+(i/2)*step,bw,Math.min(20,step-2)).build());
             button.active=count>=(i>=6?3:1);
         }
         addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+10,top+h-28,w-20,20).build());
@@ -32,5 +32,5 @@ final class DisplayArrangementScreen extends Screen {
     }
     @Override public void tick(){parent.tick();}
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){double x=event.x(),y=event.y();int button=event.button();if(button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT){onClose();return true;}return super.mouseClicked(event,doubleClick);}
-    @Override public void onClose(){minecraft.gui.setScreen(parent);}
+    @Override public void onClose(){minecraft.setScreen(parent);}
 }

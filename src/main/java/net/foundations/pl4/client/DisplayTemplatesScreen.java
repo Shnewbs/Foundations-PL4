@@ -48,5 +48,5 @@ final class DisplayTemplatesScreen extends Screen {
         g.text(font,font.plainSubstrByWidth(status.isBlank()?"Apply replaces all pages. Ctrl+Z restores the previous layout.":status,w-20),left+10,top+h-43,0xFFB8CDD0,false);
     }
     @Override public void tick(){parent.tick();}
-    @Override public void onClose(){minecraft.gui.setScreen(parent);}
+    @Override public void onClose(){minecraft.setScreen(parent);}
 }

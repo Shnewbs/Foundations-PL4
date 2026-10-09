@@ -14,6 +14,7 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
 
 public final class HostBlock extends BaseEntityBlock {
+    @Override protected com.mojang.serialization.MapCodec<? extends BaseEntityBlock> codec(){return simpleCodec(HostBlock::new);}
     public HostBlock(Properties p) { super(p); }
     @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.INVISIBLE;}
     @Override public BlockEntity newBlockEntity(BlockPos p,BlockState s){return new HostEntity(p,s);}

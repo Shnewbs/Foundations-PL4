@@ -30,7 +30,7 @@ public final class DisplayEditorScreen extends Screen {
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
     public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().gui.screen();if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
+    static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
         if(p.layoutRevision>=part.layoutRevision)part=p;
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError").orElse("");}
@@ -61,7 +61,7 @@ public final class DisplayEditorScreen extends Screen {
         List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
     }
     public void capture(Matrix4f localPose){
-        var camera=Minecraft.getInstance().gameRenderer.mainCamera();var eye=camera.position();
+        var camera=Minecraft.getInstance().gameRenderer.getMainCamera();var eye=camera.position();
         var matrix=camera.getViewRotationProjectionMatrix(new Matrix4f()).translate((float)(pos.getX()-eye.x),(float)(pos.getY()-eye.y),(float)(pos.getZ()-eye.z)).mul(localPose);
         float[] values=new float[16];matrix.get(values);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
@@ -116,7 +116,7 @@ public final class DisplayEditorScreen extends Screen {
     }
     private List<DisplayElements.Spec> snapshot(){return part.elements.stream().map(Part.Element::spec).toList();}
     int selectionCount(){return (int)part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).count();}
-    private void arrangementScreen(){if(editable&&!pending)minecraft.gui.setScreen(new DisplayArrangementScreen(this));}
+    private void arrangementScreen(){if(editable&&!pending)minecraft.setScreen(new DisplayArrangementScreen(this));}
     void arrange(String action){
         if(!editable||pending)return;
         var ids=part.elements.stream().filter(e->selectedIds.contains(e.id())&&e.spec().page()==part.displayPage).map(Part.Element::id).toList();
@@ -136,8 +136,8 @@ public final class DisplayEditorScreen extends Screen {
         if(!check.accepted()){message=check.message();return;}
         pushUndo();selectedIds.clear();selected=null;commitReplace(elements);
     }
-    void templatesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayTemplatesScreen(this));}
-    void pagesScreen(){if(!pending)minecraft.gui.setScreen(new DisplayPagesScreen(this));}
+    void templatesScreen(){if(!pending)minecraft.setScreen(new DisplayTemplatesScreen(this));}
+    void pagesScreen(){if(!pending)minecraft.setScreen(new DisplayPagesScreen(this));}
     int pageElementCount(int page){return (int)part.elements.stream().filter(e->e.spec().page()==page).count();}
     void pageAction(String action,String value){
         if(!editable||pending)return;
@@ -146,7 +146,7 @@ public final class DisplayEditorScreen extends Screen {
         if(!result.accepted()){message=result.message();return;}
         commit(action,null,value,part.layoutRevision);
     }
-    void layersScreen(){if(!pending)minecraft.gui.setScreen(new DisplayLayersScreen(this));}
+    void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
     List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
     boolean layerSelected(UUID id){return selectedIds.contains(id);}
     boolean layoutPending(){return pending;}
@@ -196,12 +196,12 @@ public final class DisplayEditorScreen extends Screen {
         pending=true;waitTicks=0;message="Saving...";
         net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(elements)));
     }
-    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null&&spec.options().locked()){message="Unlock the element in Layers first.";return;}if(spec!=null)minecraft.gui.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
+    void properties(boolean add){if(!editable||pending)return;var spec=add?DisplayElements.create(DisplayElements.Type.ITEM,part.displayPage,spaceW(),spaceH()):selectedElement();if(spec!=null&&spec.options().locked()){message="Unlock the element in Layers first.";return;}if(spec!=null)minecraft.setScreen(new DisplayPropertiesScreen(this,spec,add));else message="Select an element first.";}
     private void tool(int id){if(pending)return;switch(id){
         case 0->properties(true);case 1->properties(false);case 2->commit("delete",null,"",part.layoutRevision);
         case 3->duplicateSelected();
         case 4->layer("layer_forward");case 5->layer("layer_backward");
-        case 6->snap=!snap;case 7->minecraft.gui.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
+        case 6->snap=!snap;case 7->minecraft.setScreen(new PartScreen(pos,anchoredPart(),editable));default->{}
     }}
     private List<DisplayElements.Spec> selectionOnPage(){return snapshot().stream().filter(e->e.page()==part.displayPage).toList();}
     private List<DisplayElements.Spec> selection(){return part.elements.stream().map(Part.Element::spec).filter(e->e.page()==part.displayPage&&selectedIds.contains(e.id())).toList();}
@@ -283,7 +283,7 @@ public final class DisplayEditorScreen extends Screen {
             }else if(changed)commit("update",result,"",revision);return true;
         }return super.mouseReleased(event);
     }
-    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),scan=event.keycode(),mods=event.modifiers();
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){int key=event.key(),mods=event.modifiers();
         if(key==com.mojang.blaze3d.platform.InputConstants.KEY_ESCAPE){onClose();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_E){properties(false);return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_DELETE){commit("delete",null,"",part.layoutRevision);return true;}
         if(key==com.mojang.blaze3d.platform.InputConstants.KEY_C&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){copySelected();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_V&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){pasteSelected();return true;}
         if(key==com.mojang.blaze3d.platform.InputConstants.KEY_D&&net.minecraft.client.Minecraft.getInstance().hasControlDown()){duplicateSelected();return true;}if(key==com.mojang.blaze3d.platform.InputConstants.KEY_G){snap=!snap;return true;}
