@@ -1,0 +1,88 @@
+name: Complete reviewed 0.2a native ports
+
+on:
+  push:
+    branches: [main]
+    paths: ['tools/prepare_02a_ports.py', '.github/workflows/complete-02a-ports.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: complete-02a-native-ports
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - minecraft: '26.1.2'
+            base: '64df6ed855879da26e0976da73c4078d3f065239'
+          - minecraft: '26.3'
+            base: 'c05aedb4453d78d39b69c64852be5e8d4b0f9031'
+    env:
+      TARGET: ${{ matrix.minecraft }}
+      BASE: ${{ matrix.base }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: reference
+          ref: ${{ github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: port
+          ref: mc/${{ matrix.minecraft }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Preflight reviewed source and apply migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C port rev-parse HEAD)" = "$BASE" || { echo 'Target moved; review before migrating. No branch was modified.'; exit 1; }
+          python3 reference/tools/test_prepare_02a_ports.py
+          python3 reference/tools/prepare_02a_ports.py reference port "$TARGET" --check
+          python3 reference/tools/prepare_02a_ports.py reference port "$TARGET"
+          git -C port diff --check
+      - name: Validate migrated source before committing
+        working-directory: port
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/run_offline_checks.py 2>&1 | tee migration-offline.log
+      - name: Commit target and request its native build gates
+        working-directory: port
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$BASE"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a.md tools/verify_r7.py tools/verify_r8.py tools/verify_r9.py tools/verify_r10.py tools/verify_r16.py .github/workflows/port-26.yml
+          git commit -m "Port 0.2a network storage and component selection to Minecraft $TARGET"
+          git push origin "HEAD:refs/heads/mc/$TARGET"
+          # Token-authored pushes do not launch push workflows automatically.
+          gh workflow run port-26.yml --ref "mc/$TARGET"
+          git archive --format=zip --output=port-source.zip HEAD
+      - name: Preserve migration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-0.2a-${{ matrix.minecraft }}-${{ github.sha }}
+          path: |
+            port/migration-offline.log
+            port/port-source.zip
+          retention-days: 14
+          if-no-files-found: warn

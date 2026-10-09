@@ -1,101 +1,86 @@
-# PL4 multi-version port and API stability plan
+# PL4 functional ports and optional-API fallback plan
 
 Updated: October 8, 2026 (America/Los_Angeles).
 
-## Next-build direction
+## Approved scope
 
-Expand Foundations PL4 to the important modded Minecraft version families, with separate source branches and independently tested loader/API combinations. This document records the next-build plan; it does not create branches, publish new builds, or certify compatibility. Finish the current release's outstanding work without replacing it with branch scaffolding.
+The next multi-version update must deliver usable ports, not just branches or renamed JARs. Minecraft **1.6.4 is approved as an experimental track**. Minecraft **1.7.10 is excluded**. Experimental means actual implementation and testing are required; it does not mean a working port already exists. The 1.6.4 track must not hold up validated modern releases.
 
-Scope adjustment: **Minecraft 1.7.10 is excluded at the user's request. Minecraft 1.6.4 replaces it only as a tentative legacy feasibility candidate, not a committed supported port.** The other planned targets and their priorities remain unchanged.
-
-Selection is based on relevant mod ecosystems and dependency availability, not a claim to a measured global popularity ranking. Recheck author-maintained release listings before pinning any dependency. An upstream release being available is not the same as continued upstream support or PL4 acceptance.
-
-## Version targets and branch policy
-
-Retain the existing names for established tracks. New names below are proposed Forge tracks; add a loader suffix if a second loader is later implemented for the same Minecraft version.
-
-| Minecraft | Branch | Intended loader | Next-build priority / status |
+| Minecraft | Branch | Loader | Scope |
 |---|---|---|---|
 | 1.21.1 | main, mirrored to mc/1.21.1 | NeoForge | Maintain the primary release baseline |
-| 26.1.2 | mc/26.1.2 | NeoForge | Complete and maintain the existing parallel track |
-| 26.3 | mc/26.3 | NeoForge | Complete and maintain the existing forward-port track |
-| 1.20.1 | mc/1.20.1 | Forge | First additional port candidate |
-| 1.19.2 | mc/1.19.2 | Forge | Additional established-version candidate |
-| 1.18.2 | mc/1.18.2 | Forge | Additional established-version candidate |
-| 1.16.5 | mc/1.16.5 | Forge | Additional established-version candidate |
-| 1.12.2 | mc/1.12.2 | Forge | Dedicated legacy feasibility and implementation track |
-| 1.6.4 | mc/1.6.4 (proposed) | Forge | Tentative only: establish toolchain and legacy API feasibility before committing to a port |
-| 26.4 | mc/26.4 | Verify available toolchain | Create when a usable target toolchain is verified; validate independently |
+| 26.1.2 | mc/26.1.2 | NeoForge | Complete current feature parity and native validation |
+| 26.3 | mc/26.3 | NeoForge | Complete current feature parity and native validation |
+| 1.20.1 | mc/1.20.1 | Forge | First additional functional port |
+| 1.19.2 | mc/1.19.2 | Forge | Functional port, independently adapted and tested |
+| 1.18.2 | mc/1.18.2 | Forge | Functional port, independently adapted and tested |
+| 1.16.5 | mc/1.16.5 | Forge | Functional port, including language and API backports |
+| 1.12.2 | mc/1.12.2 | Forge | Dedicated legacy implementation |
+| 1.6.4 | mc/1.6.4 | Forge | Approved experimental implementation; independent feasibility/build gate |
+| 26.4 | mc/26.4 | Verify toolchain | Forward target when a usable toolchain is verified |
 
-The existing mc/26.1 and mc/26.2 refs remain audit-only until their actual build settings and acceptance are verified. Do not relabel them as working ports or delete them as part of this plan. Evaluate other versions only when their mod ecosystems justify another maintained track; do not create every intervening point release automatically. No Fabric compatibility is inferred from a Forge or NeoForge port.
+These are scope commitments, not a list of completed ports. A branch is created with research/implementation status until its actual build and scenarios pass. Existing mc/26.1 and mc/26.2 remain audit-only unless independently validated; do not delete them or imply binary compatibility. No Fabric support is implied.
 
-Current configured release tracks and naming are documented in [RELEASE_TARGETS.md](RELEASE_TARGETS.md). Preserve published tags and artifact names. A new branch starts as research/scaffold, not as supported. The first native build must use that target's actual Minecraft, loader, mappings, Java, Gradle or other build tooling, resource formats and APIs. Older tracks require deliberate language/API backports rather than lowering the version declaration on Java 21 source.
+## Functional baseline for every port
 
-## Evidence for the initial shortlist
+Preserve cables and multipart placement, network topology, readers, displays/editor, Nodes and Transfer Nodes, sided item/fluid/available-native-energy access, wireless links and item storage, Forging Hammer recipes, configuration, player permissions, resource conservation and reliable persistence. Port the behavior using each target's actual APIs; do not disable a feature merely to obtain a green compile. A missing required function blocks the functional milestone and must be named in the status report.
 
-Create's author-maintained development table lists continued support for 1.21.1; available releases for 1.20.1, 1.19.2, 1.18.2 and 1.16.5; a 26.1 port in progress; and several intervening releases as skipped. That supports investigating these version families, but does not certify any PL4/Create pairing.
+Use version-specific registration, networking, persistence, inventory/resource interfaces, client rendering, recipe formats and test infrastructure. Share behavioral rules and reviewed fixes where possible. Never merge an entire incompatible version branch into main or lower the Java declaration on unmodified modern source. Back up worlds; preserve published tags and keep save migration separate from unsupported downgrades.
 
-GregTech CEu Modern explicitly identifies Forge 1.20.1 and NeoForge 1.21.1+ in its project documentation. The separate GregTech CEu project targets the 1.12 generation. These are distinct integration contracts, not interchangeable editions of one API.
+## Required alternatives for unavailable optional APIs
 
-For the tentative 1.6.4 target, Forge's official download page lists 9.11.1.1345 as both recommended and latest, with source and universal downloads. BuildCraft's own download page lists 4.2.2 for Minecraft 1.6.4, and the Waila author's file listing identifies Waila_1.5.2a.zip as a 1.6.4 release. These listings were checked for this scope adjustment. They establish published legacy artifacts, not successful toolchain setup, current maintenance, artifact integrity, or PL4 integration acceptance.
+**Optional dependencies stay optional; essential PL4 functions must have an included path.** For each feature, use an installed, target-compatible adapter when available. Otherwise use a verified alternative adapter or implement the PL4-owned fallback below. Unavailable is not a completion state for a required user task. Do not call a proposed fallback implemented or tested until it is.
 
-## Tentative 1.6.4 feasibility gate
-
-Treat this as a separate legacy implementation, not a NeoForge build with a changed Minecraft label. Before promoting it to a supported release track:
-
-- Reproduce a clean development build and client/dedicated-server launch using the actual 1.6.4 Forge development files. Record the compiler, bytecode target, runtime JDK, mappings and dependency checksums instead of assuming modern Java compatibility. Keep the legacy environment isolated from the maintained builds.
-- Audit registration and ID allocation, player ownership/identity, persistence, networking, inventory/fluid interfaces, GUI/world rendering and multipart placement against the actual target. Preserve PL4's permission and resource-conservation behavior through target-specific implementations and equivalent server scenario tests.
-- Investigate era-appropriate optional integrations: NEI and Waila; BuildCraft power interfaces; Thermal Expansion/CoFH RF; IC2 and the appropriate legacy GregTech API; and the original Applied Energistics generation. Except for the published BuildCraft/Waila artifacts noted above, these are research candidates with exact versions and API availability still to verify. No PL4 compatibility with any of them has been tested here. Do not carry the current AE2, JEI, Jade, KubeJS, ModernFix or FerriteCore matrix over as a compatibility claim.
-- Verify each proposed stability fix specifically for 1.6.4 and compare it against a clean baseline. Do not substitute 1.7.10/GTNH dependencies. Keep telemetry, transfer and power conversion as separate tested capabilities, and keep optional adapters optional.
-
-No mc/1.6.4 branch or executable build is created by this plan update. Existing release completion and the first additional 1.20.1 port remain ahead of this tentative investigation.
-
-## Per-target API and mod matrix
-
-For every target, record the exact Minecraft patch, loader build, build JDK, runtime JDK, dependency version, source revision, checksum and tested feature surface. Record each result as NOT_AVAILABLE, NOT_TESTED, COMPILE_VERIFIED, INSTALLED_PASS, INSTALLED_FAIL or BLOCKED. Never convert a source-signature check or synthetic fixture into an installed-mod pass.
-
-| Area | Candidate APIs/mods to audit | Required evidence |
+| User task | External integration candidates | Included fallback required for the functional milestone |
 |---|---|---|
-| Base runtime | Target loader registries, packets, saved data, rendering, recipes, item/fluid/energy interfaces | Independent compilation, dedicated-server boot and native scenario tests |
-| Power and machines | FE; legacy RF and BuildCraft power APIs where applicable; Mekanism Joules; the appropriate GregTech EU API; IC2-specific EU where a target artifact is verified; Electrodynamics/Voltaic | Real sided providers, simulation agreement, bounded transfer, explicit conversion policy and resource conservation |
-| Mechanical and storage telemetry | Create, AE2 or the original Applied Energistics generation where actually available for the target | Installed network lifecycle, unavailable/removed providers, deduplication and documented read-only versus transfer behavior |
-| Recipe viewers | JEI and EMI where available; NEI for the relevant legacy track | Forging Hammer category, ingredients/results/counts, recipe reload and client-only isolation |
-| Tooltips and scripting | Jade or target-appropriate Waila/HWYLA; KubeJS and CraftTweaker where available | Target-specific APIs, server-safe loading, documented examples and feature-specific tests |
-| Stability and performance profiles | ModernFix and FerriteCore where supported; evaluate target-appropriate renderer and legacy fixes separately | Clean baseline comparison, one-mod-at-a-time tests and combined-profile tests; no universal compatibility claim |
+| Recipe lookup | JEI, EMI or era-appropriate NEI | PL4 recipe browser/guide path showing actual registered recipes, input/output counts and reload changes; static instructions alone do not certify live recipe lookup |
+| Inspect machines, nodes and networks | Jade, HWYLA/Waila or a verified target-specific continuation | PL4 inspector/status view with the data needed to configure and diagnose PL4; no mandatory HUD mod |
+| Configure recipes and automation | KubeJS, CraftTweaker or an era-appropriate scripting alternative | PL4 declarative configuration/recipe rules and documented native extension hooks; no claim that configuration replaces arbitrary JavaScript execution |
+| Inventory and fluid access | Target loader interfaces and available storage-mod integrations | Native sided inventory/fluid adapters plus PL4's own network storage/transfer behavior; vanilla-compatible tests with no storage mod installed |
+| Power monitoring/transfer | FE/RF, appropriate IC2/GregTech EU, Mekanism Joules, BuildCraft or Voltaic APIs where present | Correct target-native power adapters and explicit capability diagnostics. Preserve units, voltage, sidedness and simulation. An absent foreign network is not emulated and never receives guessed conversion ratios |
+| Mechanical or storage telemetry | Create, AE2 or the original Applied Energistics generation where available | PL4 native network/transfer information remains accessible; external stress/channels are marked not applicable when that external system does not exist |
+| Performance and stability | ModernFix, FerriteCore and verified target-appropriate alternatives | PL4's own bounded scans, topology caching, lifecycle cleanup and performance tests. Do not force-install a stability mod or claim an untested legacy fix is equivalent |
 
-Core PL4 must remain loadable without optional integration mods. A missing optional API disables only its adapter and is reported clearly. Do not bundle performance/stability mods as mandatory dependencies merely because they are in a test profile. Mod presence, readable telemetry, resource transfer, and power conversion are separate capabilities and must be reported separately.
+For every candidate, record Minecraft patch, loader, upstream version/revision, checksum, required dependencies, supported feature surface and installed-test outcome. Recipe viewers and HUD replacements are alternatives, not instructions to install incompatible forks together. Where two providers coexist, avoid duplicate registration and record the selected adapter.
 
-Pin a verified loader/dependency baseline and test upgrade candidates in a separate CI lane before changing it. Include loader security advisories in that review: NeoForge's May 11, 2026 advisory identifies network-allocation fixes in 21.1.229 and 26.1.2.44-beta, and describes mitigation for older affected NeoForge installations. Do not generalize that advisory's remedy to unrelated loaders or every legacy version.
+Included means PL4-owned fallback code or adapter code is part of the corresponding PL4 build. Third-party mods remain optional installs unless separately approved for distribution and their licenses permit it. Never silently download, bundle, rehost or backport an entire external mod just because its API is missing. No unrelated loader/version JAR can be substituted.
 
-## Implementation sequence
+## Verification and release gates
 
-1. Close the current release blockers on 1.21.1, 26.1.2 and 26.3. Preserve the source changes and tests already under development.
-2. Define shared behavioral contracts for topology, placement, ownership, storage, transfer/escrow, display layouts and provider sampling. Keep loader and Minecraft adapters separate; share fixes through reviewed ports instead of merging whole version branches blindly.
-3. Start 1.20.1 first. Establish the actual Forge toolchain, then migrate serialization, networking, capabilities, recipes and rendering. Create the other committed tracks with explicit research/scaffold status and evaluate their blockers independently; keep 1.6.4 tentative until its feasibility gate is assessed.
-4. On 1.19.2, 1.18.2 and 1.16.5, reproduce the same behavioral tests with the correct APIs. Treat 1.12.2 as separate legacy implementation work. Evaluate 1.6.4 independently under its tentative feasibility gate, including appropriate JVM bytecode and test infrastructure; do not infer compatibility from another legacy track. Do not create a 1.7.10 track.
-5. Install and exercise the selected real integration mods, first alone and then in each recorded combined test profile. Keep unavailable APIs explicit rather than substituting a mismatched build.
-6. Publish each successful target's runtime JAR, sources and checksums to GitHub Releases with its exact Minecraft/loader identity. Submit to CurseForge using the matching target metadata; upload acceptance and moderation approval remain separate. Never publish renamed binaries for untested targets.
+Track source port, native build, required gameplay scenarios, no-optional-mod baseline, alternative/fallback behavior, installed integrations, real-client visuals, multiplayer and performance separately. A synthetic fixture, reflected signature, detected mod ID or green compile is not an installed-integration pass.
 
-## Acceptance and rollout reporting
+Required scenarios include replay/malformed packets, owner changes, missing and replaced providers, full/empty/sided stores, NBT/component variants, simulation without mutation, restart with nonempty escrow, unload/reload without forced chunk loading, cable geometry, GUI scaling and display editing, two-player interactions and reconnects. Test optional APIs absent, compatible alternatives present, incompatible versions present, and failure of one adapter without losing the core functions. On legacy targets use an equivalent server scenario harness instead of claiming modern GameTests ran there.
 
-Maintain separate progress fields for source port, build, native scenarios, installed APIs, client visuals, multiplayer and performance. On versions without the modern GameTest framework, use equivalent automated dedicated-server scenarios and record that harness; do not claim modern GameTests ran there.
+Use NOT_STARTED, IMPLEMENTING, BUILD_PASS, SCENARIO_PASS and BLOCKED for ports. Record INSTALLED_PASS, INSTALLED_FAIL, NOT_TESTED or NOT_AVAILABLE separately for external integrations. Required fallback status is independently IMPLEMENTING, TESTED_PASS or BLOCKED. A port is functionally complete only when required tasks, the no-optional baseline and the selected alternatives/fallbacks pass. Stable compatibility additionally requires the corresponding client and multiplayer evidence.
 
-Required scenarios include packet replay and malformed requests; owner/permission changes; absent and replaced providers; empty/full/sided stores; component/NBT variants; simulation without mutation; restart with nonempty escrow; chunk unload/reload without forced loading; cable placement and geometry; display editing and GUI scaling; two-player interactions and reconnects; and sustained network tick/allocation profiling.
+Publish each validated target's own runtime JAR, source JAR/archive, checksums, exact version identity and honest release notes on GitHub Releases. Submit CurseForge files with matching Minecraft/loader metadata; upload acceptance and moderation approval remain separate. Keep **Further API testing is still required** while installed-provider acceptance is incomplete. Report partial rollouts explicitly; publishing two 26.x ports does not finish the older ports.
 
-Successful automated gates may justify a clearly labelled alpha while manual acceptance remains open. A stable compatibility claim requires the corresponding installed-provider, real-client and multiplayer evidence. Keep the release notice **Further API testing is still required** wherever those checks remain pending. Report partial rollouts per target; a successful modern build does not complete the legacy ports or the full multi-version rollout.
+## Implementation order
 
-## Author-maintained references reviewed
+1. Finish the outstanding 0.2a feature migration on the existing 26.1.2 and 26.3 ports without discarding their native adapters or tests. The reviewed migration tooling is specific to these baselines, not a general port generator.
+2. Complete the no-optional baseline and required built-in fallbacks, then the 1.20.1 Forge port and its actual integration profile.
+3. Apply the same functional contracts to 1.19.2, 1.18.2 and 1.16.5 with independent toolchains and tests.
+4. Implement 1.12.2 separately. Establish the isolated 1.6.4 experimental development environment, registry/ID policy, player identity, persistence and equivalent scenario harness; evaluate legacy integrations without borrowing GTNH/1.7.10 binaries.
+5. Create the 26.4 track when verified tooling exists and repeat the same gates. Only mark the complete rollout done when each required track's recorded evidence supports that claim.
 
-- Create development status: https://wiki.createmod.net/users/development-status
-- GregTech CEu Modern: https://github.com/GregTechCEu/GregTech-Modern
-- GregTech CEu Modern documentation: https://gregtechceu.github.io/GregTech-Modern/
-- GregTech CEu legacy: https://github.com/GregTechCEu/GregTech
-- Forge 1.6.4 downloads: https://files.minecraftforge.net/net/minecraftforge/forge/index_1.6.4.html
-- BuildCraft official downloads: https://mod-buildcraft.com/pages/download.html
-- BuildCraft 4.2.2 source/runtime listing: https://mod-buildcraft.com/releases/BuildCraft/4.2.2/
-- Waila 1.6.4 author release: https://www.curseforge.com/minecraft/mc-mods/waila/files/786719
+## 1.6.4 experiment and references
+
+Forge's official 1.6.4 page lists 9.11.1.1345 with development source and runtime downloads. That is a starting point, not evidence of a successful PL4 build. Record the actual compiler, bytecode and runtime; keep the legacy environment isolated. Investigate NEI/Waila, original Applied Energistics, Thermal Expansion/CoFH, BuildCraft, IC2 and the appropriate GregTech generation individually. Their exact compatible artifacts and APIs remain subject to verification.
+
+Author-maintained references for dependency research; none certifies PL4 integration:
+
+- Forge 1.6.4: https://files.minecraftforge.net/net/minecraftforge/forge/index_1.6.4.html
+- JEI: https://github.com/mezz/JustEnoughItems
+- EMI: https://github.com/emilyploszaj/emi
+- NEI historical project: https://github.com/Chicken-Bones/NotEnoughItems
+- Jade author files: https://www.curseforge.com/minecraft/mc-mods/jade/files/all
 - ModernFix: https://github.com/embeddedt/ModernFix
 - FerriteCore: https://github.com/malte0811/FerriteCore
-- NeoForge network security advisory: https://neoforged.net/news/mitigating-vulnerabilities-network/
-- NeoForge 26.1 migration background: https://neoforged.net/news/26.1release/
-- NeoForge transfer migration background: https://neoforged.net/news/transfer-rework/
+- Create development status: https://wiki.createmod.net/users/development-status
+- GregTech CEu Modern: https://github.com/GregTechCEu/GregTech-Modern
+- GregTech CEu legacy: https://github.com/GregTechCEu/GregTech
+- BuildCraft: https://mod-buildcraft.com/pages/download.html
+- NeoForge 26.1 migration: https://neoforged.net/news/26.1release/
+- NeoForge transfer migration: https://neoforged.net/news/21.9-transfer-rework/
+
+See [RELEASE_TARGETS.md](RELEASE_TARGETS.md) for configured release tracks and [API_TESTING.md](API_TESTING.md) for existing acceptance work.
