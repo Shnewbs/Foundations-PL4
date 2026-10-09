@@ -43,7 +43,7 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
    optional(Codec.intRange(0,72000),"cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
   ).apply(instance,ForgingRecipe::new));
   private static <A> MapCodec<A> optional(Codec<A> codec,String name,A fallback){return new MapCodec<>(){
-   @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);return value==null?DataResult.success(fallback):codec.parse(ops,value);}
+   @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);if(value==null)return DataResult.success(fallback);DataResult<A> decoded=codec.parse(ops,value);if(decoded.error().isPresent())return DataResult.error(decoded.error().get().message());return decoded;}
    @Override public <T> RecordBuilder<T> encode(A value,DynamicOps<T> ops,RecordBuilder<T> prefix){return prefix.add(name,codec.encodeStart(ops,value));}
    @Override public <T> java.util.stream.Stream<T> keys(DynamicOps<T> ops){return java.util.stream.Stream.of(ops.createString(name));}
   };}
