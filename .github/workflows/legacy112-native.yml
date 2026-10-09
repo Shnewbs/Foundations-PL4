@@ -1,0 +1,74 @@
+name: Forge 1.12.2 legacy preview validation
+on:
+  push:
+    branches: [mc/1.12.2]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: pl4-legacy112-native
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+      - name: Build and exercise native preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification-logs run-legacy
+          printf 'eula=true\n' > run-legacy/eula.txt
+          printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=pl4-legacy-test-world\nlevel-type=FLAT\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-legacy/server.properties
+          bash gradlew --no-daemon --console=plain clean build runServer -PlegacyScenarios 2>&1 | tee verification-logs/native.log
+          python3 - <<'PY'
+          import json,zipfile,struct
+          from pathlib import Path
+          report=json.loads(Path('run-legacy/legacy-scenarios.json').read_text())
+          assert report['minecraft']=='1.12.2' and report['total']==21 and report['passed']==21 and report['failed']==0,report
+          jar=Path('build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.1.jar')
+          with zipfile.ZipFile(jar) as z:
+              assert json.loads(z.read('mcmod.info'))[0]['version']=='0.2a-legacy-preview.1'
+              for n in z.namelist():
+                  assert '/tests/' not in n and not n.endswith('GameTests.class') and not n.endswith('.jar'),n
+                  if n.endswith('.class'):
+                      b=z.read(n);assert struct.unpack('>H',b[6:8])[0]<=52,n
+                      assert b'net/neoforged/' not in b and b'sonar/core/' not in b and b'mcmultipart/' not in b,n
+          print('PASS native legacy subset, Java 8 artifact and isolated test packaging')
+          PY
+      - name: Publish tested experimental preview
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          version='0.2a-legacy-preview.1'; tag="mc1.12.2-v$version"
+          mkdir -p release-files
+          cp "build/libs/FoundationsPL4-1.12.2-$version.jar" "build/libs/FoundationsPL4-1.12.2-$version-sources.jar" release-files/
+          git archive --format=zip --output="release-files/FoundationsPL4-1.12.2-$version-source.zip" HEAD
+          cp run-legacy/legacy-scenarios.json verification-logs/native.log release-files/
+          git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
+          (cd release-files && sha256sum *.jar *.zip *.json *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then echo 'Existing release is immutable; use a new revision'; exit 1; fi
+          git tag "$tag"; git push origin "$tag"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.12.2 legacy preview 1 (initial transport subset)" --notes-file "docs/releases/$version.md"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: legacy112-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release-files/
+            verification-logs/
+            run-legacy/logs/
+            run-legacy/legacy-scenarios.json
+            build/libs/
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,89 +1,49 @@
-plugins {
-    id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.147'
+buildscript {
+    repositories { maven { url='https://maven.minecraftforge.net/' }; mavenCentral() }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:3.+' }
 }
-version = '0.2a'
-group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-1.21.1' }
-java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
-neoForge {
-    version = '21.1.250'
+apply plugin:'net.minecraftforge.gradle'
+apply plugin:'java'
+version='0.2a-legacy-preview.1'
+group='net.foundations.pl4'
+archivesBaseName='FoundationsPL4-1.12.2'
+sourceCompatibility=targetCompatibility='1.8'
+sourceSets {
+    main { java.srcDirs=['src/legacy/java']; resources.srcDirs=['src/legacy/resources'] }
+    legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
+    legacyRules { java.srcDirs=['tools']; java.include 'CoreChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
+}
+minecraft {
+    mappings channel:'snapshot',version:'20171003-1.12'
     runs {
-        client { client() }
-        server { server(); programArgument '--nogui' }
-        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
-        configureEach { logLevel = org.slf4j.event.Level.INFO }
+        client { workingDirectory project.file('run'); mods { foundations_pl4 { source sourceSets.main } } }
+        server {
+            workingDirectory project.file(project.hasProperty('legacyScenarios')?'run-legacy':'run')
+            args '--nogui'
+            mods { foundations_pl4 { source sourceSets.main } }
+            if(project.hasProperty('legacyScenarios')) {
+                property 'foundations_pl4.legacyScenarios','true'
+                mods { foundations_pl4_legacytests { source sourceSets.legacyTest } }
+            }
+        }
     }
-    mods { foundations_pl4 { sourceSet sourceSets.main } }
 }
 repositories { mavenCentral() }
-dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
-test { useJUnitPlatform() }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+dependencies { minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2864' }
+tasks.withType(JavaCompile).all { options.encoding='UTF-8' }
 processResources {
-    inputs.property 'version', project.version
-    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
-}
-
-// A release cannot silently regain the old external core/multipart runtime dependencies.
-tasks.register('verifyStandalone') {
-    dependsOn tasks.named('jar')
-    inputs.file(tasks.named('jar').flatMap { it.archiveFile })
-    doLast {
-        def artifact = tasks.named('jar').get().archiveFile.get().asFile
-        def failures = []
-        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
-            zip.entries().each { entry ->
-                if (entry.name.endsWith('.class')) {
-                    def content = new String(zip.getInputStream(entry).bytes, java.nio.charset.StandardCharsets.ISO_8859_1)
-                    if (content.contains('sonar/core/') || content.contains('mcmultipart/')) failures.add(entry.name)
-                }
-                if (entry.name.endsWith('.jar')) failures.add('Unexpected nested mod JAR: ' + entry.name)
-            }
-            def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
-            if (metadata.contains('modId="sonarcore"') || metadata.contains('modId="mcmultipart"')) failures.add('Legacy dependency in mod metadata')
-            if (!metadata.contains('modId="foundations_pl4"')) failures.add('Foundations PL4 identity missing')
-            if (!metadata.contains('version="' + project.version + '"')) failures.add('Mod metadata version does not match Gradle project version')
-        }
-        if (!failures.empty) throw new GradleException('Standalone verification failed: ' + failures.join(', '))
-        logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
+    inputs.property 'version',project.version
+    filesMatching('mcmod.info') { expand 'version':project.version }
+    from('src/main/resources') {
+        include 'assets/foundations_pl4/textures/block/data_cable.png'
+        include 'assets/foundations_pl4/textures/block/model/transfer_node_remove.png'
+        include 'assets/foundations_pl4/textures/block/model/transfer_node_add.png'
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
-tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
-apply from: 'gradle/verify-client-assets.gradle'
-
-apply from: 'gradle/verify-screen-layers.gradle'
-
-apply from: 'gradle/verify-r5-rules.gradle'
-
-apply from: 'gradle/verify-r6-rules.gradle'
-
-apply from: 'gradle/verify-r7-rules.gradle'
-
-apply from: 'gradle/verify-r8-rules.gradle'
-
-apply from: 'gradle/verify-r9-rules.gradle'
-
-apply from: 'gradle/verify-r10-rules.gradle'
-
-apply from: 'gradle/verify-r11-rules.gradle'
-
-apply from: 'gradle/verify-r12-rules.gradle'
-
-apply from: 'gradle/verify-r13-rules.gradle'
-
-apply from: 'gradle/verify-r14-rules.gradle'
-
-apply from: 'gradle/verify-r17-rules.gradle'
-
-apply from: 'gradle/verify-r16-rules.gradle'
-
-// Identical source produces identical release archives for safe publication retries.
-tasks.withType(AbstractArchiveTask).configureEach {
-    preserveFileTimestamps = false
-    reproducibleFileOrder = true
-}
-
-apply from: 'gradle/verify-energy-conversion.gradle'
+jar { from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE'); manifest { attributes('Implementation-Version':project.version) }; finalizedBy 'reobfJar' }
+task sourcesJar(type:Jar) { from sourceSets.main.allSource; classifier='sources' }
+task legacyRules(type:JavaExec) { dependsOn legacyRulesClasses; classpath=sourceSets.legacyRules.runtimeClasspath; main='CoreChecks' }
+check.dependsOn legacyRules
+build.dependsOn sourcesJar
+if(project.hasProperty('legacyScenarios')) tasks.matching { it.name=='runServer' }.all { dependsOn legacyTestClasses }
+tasks.withType(AbstractArchiveTask).all { preserveFileTimestamps=false; reproducibleFileOrder=true }

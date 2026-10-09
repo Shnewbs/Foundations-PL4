@@ -1,35 +1,17 @@
-# Foundations PL4 0.2a
+# Foundations PL4 1.12.2 native legacy preview
 
-Standalone NeoForge Practical Logistics 4: Foundations. **Alpha — further API testing is still required.**
+**0.2a-legacy-preview.1 is an initial item-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
 
-## New in 0.2a
+Native Forge 14.23.5.2864 / Java 8 implementation in `src/legacy`. `src/main` is excluded modern reference source only. Never relabel its binaries as legacy builds.
 
-Wireless Storage combines accessible item inventories on a physical data network, with search, quantity/name sorting, component-aware item variants, withdrawals across sources, and offhand deposits. Receivers and Entity Nodes gain searchable, server-validated component selection; supported components accept held transceiver links.
+Includes craftable owner-separated cable/export/import hosts, loaded physical network traversal, sided native item capabilities and inventory-wrapper alternatives, redstone pause, configurable rates/scan limits, and NBT-persisted transfer escrow. Inventory provider calls share a 1024-call budget across destination scans.
 
-Storage actions recheck ownership, topology, loaded targets, binding, configuration, and directional filters. Visual-only reader links do not grant inventory access. The field guide documents the network workflow.
+Built-in `/pl4legacy recipes [page]` lists actual registered PL4 recipes. `/pl4legacy inspect x y z` and right-click provide owner-checked inspection without JEI, NEI or Waila. This is a command fallback, not a complete graphical recipe viewer. Use a bound node's face to select adjacent inventory by sneak-right-clicking that face.
 
-See [0.2a release notes](docs/releases/0.2a.md), [completed port rollout evidence](docs/releases/0.2a-port-rollout.md), [the field guide](docs/FIELD_GUIDE.md), and [API/fallback testing](docs/API_TESTING.md). The original release notes describe the state when the 1.21.1 release was published; the rollout evidence records the subsequently completed 26.x builds.
+Craft cable using iron/redstone/iron in a row; craft exporter using hopper/cable/hopper. Shapelessly convert exporter to importer or back. Connect exporters and importers through cables belonging to the same player. Defaults: 8 items per exporter every 10 ticks; 256 network hosts and 256 scanned inventory slots. Powered nodes pause.
 
-## Published current-track builds
+Build: `bash gradlew clean build` using Java 8. Native scenario run: `bash gradlew clean build runServer -PlegacyScenarios` only in the workflow-created disposable test world. Test fixtures never belong in a production mod folder.
 
-| Minecraft | Runtime JAR | Java | Release |
-|---|---|---|---|
-| 1.21.1 | `FoundationsPL4-1.21.1-0.2a.jar` | 21 | [v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2a) |
-| 26.1.2 | `FoundationsPL4-26.1.2-0.2a.jar` | 25 | [mc26.1.2-v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2a) |
-| 26.3 | `FoundationsPL4-26.3-0.2a.jar` | 25 | [mc26.3-v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2a) |
+Advanced displays, multipart placement, wireless storage, fluid/energy transport, complete scripting and installed third-party API integration remain pending. Real-client visuals, multiplayer and modpack acceptance also remain pending. No arbitrary energy conversion is supplied and no performance mods are bundled.
 
-Each release contains the runtime JAR, source JAR, full source archive and checksums. Native validation covers NeoForge 21.1.250, 26.1.2.114, and separate 26.3.0.23-beta / 26.3.0.39-beta builds. The 26.3 published artifact is built against 26.3.0.23-beta. Do not relabel one target's JAR as another target.
-
-The current three-track alpha artifact rollout is complete. **This does not mean all future ports, optional integrations or functional fallbacks are complete.** Installed optional-mod APIs, live multiplayer, client visual acceptance, sustained-load acceptance and full PL2 parity remain separate work.
-
-## Additional functional ports and alternatives
-
-The next multi-version milestone targets 1.20.1, 1.19.2, 1.18.2, 1.16.5 and 1.12.2, with **1.6.4 experimental** and **1.7.10 excluded**. 26.4 is a forward target when a usable toolchain is verified. These additional ports are not yet claimed working. See [the approved plan](docs/MULTIVERSION_PORT_PLAN.md).
-
-Essential PL4 tasks must have a tested compatible optional adapter, an alternative, or a PL4-owned fallback. Recipe lookup, inspection, configuration, native storage and diagnostics must not silently disappear because an optional API is unavailable. Missing foreign energy/mechanical systems are not emulated with guessed units or conversions. Third-party mods remain optional, and not every planned fallback is implemented yet.
-
-## Installation and validation
-
-Use one runtime JAR for the exact Minecraft target; Sonar Core and MCMultiPart are not required. Back up worlds before updating. Host save schema remains 2; payload protocol is 5 and clients/servers must use matching versions. Older Wireless Storage reader/display bindings must be rebound to a Node or Transfer Node.
-
-Offline regressions, native compilation, standalone checks, and 191 registered native GameTests gate the 1.21.1 release. Each 26.x native suite executes 192 PL4 fixtures. Passing these tests does not certify installed optional mods or real-client rendering. ADD / REMOVE transfer routing retains its existing peer rules. See [release targets](docs/RELEASE_TARGETS.md) and [API acceptance](docs/API_TESTING.md).
+The new `legacy_*` block IDs and legacy schema 1 are not a migration path for modern worlds. Use a fresh test world or backups. Publication is gated by a native build, reobfuscation, portable rule tests and 21 isolated native scenarios; these are not the modern port's 191 GameTests.
