@@ -9,7 +9,7 @@
   "release_gate": [
     "offline production rules",
     "native compilation and reobfuscation",
-    "191 isolated native server scenarios",
+    "193 isolated native server scenarios",
     "exact target metadata"
   ],
   "further_api_testing_required": true,
@@ -23,7 +23,7 @@
   "loader": "Forge",
   "loader_version": "35.1.37",
   "port_status": "NATIVE_SCENARIO_VALIDATION_REQUIRED",
-  "expected_native_scenarios": 191,
+  "expected_native_scenarios": 193,
   "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
   "installed_runtime_acceptance": "PENDING"
 }

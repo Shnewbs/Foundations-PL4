@@ -46,7 +46,7 @@ public final class PortScenarioMod {
             tests.add(candidate);
         }
         tests.sort(Comparator.comparing(m->m.getDeclaringClass().getSimpleName()+"."+m.getName()));
-        if(tests.size()!=191)throw new IllegalStateException("Expected all 191 original fixtures, found "+tests.size());
+        if(tests.size()!=193)throw new IllegalStateException("Expected all 193 required fixtures, found "+tests.size());
         for(int x=-1;x<=2;x++)for(int z=-1;z<=2;z++){world.setChunkForced(x,z,true);world.getChunk(x,z);}
         LOG.info("PL4 LEGACY SCENARIOS: {} fixtures on real Minecraft 1.16.4 / Forge",tests.size());
     }
@@ -82,7 +82,7 @@ public final class PortScenarioMod {
             var errors=new com.google.gson.JsonArray();for(String failure:failures)errors.add(failure);report.add("failures",errors);
             Files.writeString(Path.of("port-scenarios.json"),new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report));
         }catch(java.io.IOException error){failures.add("Unable to write scenario report: "+error);LOG.error("Scenario report failure",error);}
-        if(failures.isEmpty())LOG.info("PL4 SCENARIOS SUCCESS: All 191 required native scenarios passed");
+        if(failures.isEmpty())LOG.info("PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed");
         else LOG.error("PL4 SCENARIOS FAILURE: {} of {} failed",failures.size(),tests.size());
         server.halt(false);
     }
