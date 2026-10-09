@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.21.1 / NeoForge / Foundations PL4 0.1b
+Minecraft 1.21.1 / NeoForge / Foundations PL4 0.2a
 
 ## Welcome to Foundations PL4
 
@@ -512,11 +512,11 @@ Sneak-right-click one of your data emitters with a Transceiver to bind it, then 
 
 ### ARRAY
 
-Sneak-right-click a block target to bind its position/side, then use the bound tool on an Array. The port supports up to eight saved links. It does not reproduce the original eight physical transceiver inventory slots.
+Sneak-right-click a block target with a Transceiver to bind its position and side, then use the bound tool on an Array or choose Add held link in the Array settings. Up to eight validated block links are saved. Entity links belong on an Entity Node, not an Array. The original eight physical transceiver inventory slots are not reproduced.
 
 ### ENTITY LINK
 
-Use the Entity Transceiver on a living entity to bind its identity, then add a supported link to an Entity Node or Array. An unlinked Entity Node can supply a nearby-entity count.
+Use the Entity Transceiver on a living entity to bind its identity, then add the held link to an Entity Node. Its settings also provide a searchable, paged list of nearby living-entity candidates. The server validates submitted identities before adding them. An unlinked Entity Node can supply a nearby-entity count.
 
 ### LOADED WORLDS
 
@@ -524,15 +524,15 @@ Cross-dimension wireless is configurable. Linked targets still need to be loaded
 
 ### WIRELESS STORAGE
 
-Wireless Storage opens a dedicated inventory screen for a bound Node. Bind by sneak-using your Node or Transfer Node, then use the tool to browse, withdraw items or deposit the offhand stack. Existing reader/display bindings must be rebound. See Wireless links and Arrays for the complete workflow.
+Wireless Storage opens a searchable, combined item list for the physical data network containing its bound Node or Transfer Node. Bind by sneak-using your Node, then use the tool to browse, withdraw items or deposit the offhand stack. Existing reader/display bindings must be rebound. Different item components remain separate variants. See Wireless Storage inventory below for the complete workflow.
 
 ### MANAGE SAVED LINKS
 
-Array, Entity Node and receiver settings show individual saved links. Scroll the settings list to inspect dimensions, positions and sides, then remove the unwanted entry. Other links remain intact. Use the existing transceiver workflow to bind new targets.
+Array, Entity Node and receiver settings show individual saved links. Scroll to inspect dimensions, positions and sides, then remove an unwanted entry without clearing the others. Receivers offer searchable emitter candidates and Entity Nodes offer nearby entity candidates, with 16 choices per page. Add held link accepts the appropriate bound Transceiver. The server checks the target type, ownership where applicable, dimension policy and duplicate links; client-supplied coordinates do not create arbitrary links.
 
 ### WIRELESS STORAGE INVENTORY
 
-Sneak-use Wireless Storage on your Node or Transfer Node to bind its attached sided inventory. Use the tool to open its dedicated screen: six slots per page, withdraw 1 or up to 64 items, Refresh, and Deposit offhand. Hold the tool in your main hand and put the stack to deposit in your offhand. This is one Node inventory, not a combined network search. Target chunks must already be loaded. Ownership, tool binding, server wireless/transfer settings and directional item filters are checked again for every action. If a slot changes item type, refresh before withdrawing. Older reader/display bindings must be rebound to a Node.
+Sneak-use Wireless Storage on your Node or Transfer Node, then use the tool to open its dedicated screen. It combines accessible sided item inventories connected through Nodes and Transfer Nodes in the same physical data network, not visual-only reader connections. Browse six item variants per page, search names or resource IDs, and sort by name or quantity. Withdraw 1 or up to 64 items across matching sources, Refresh, or Deposit offhand across available inventories. Hold the tool in your main hand and the deposit stack in your offhand. Different item components stay separate. Target chunks must already be loaded; scans are bounded to 256 endpoints and 4096 slots. Each action rechecks ownership, tool binding, topology, server wireless/transfer settings and directional filters. Disconnecting a source or losing access removes it from the next action; stale requests are rejected. Older reader/display bindings must be rebound to a Node. This screen handles items, not fluid storage.
 
 ## Transfer Nodes
 
