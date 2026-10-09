@@ -6,7 +6,7 @@ b=json.loads((A/'guide/en_us.json').read_text())
 assert b['schema']==1 and b['title']=='Foundations PL4 Field Guide'
 assert '1.21.1' in b['edition'] and 'NeoForge' in b['edition'] and 'Foundations PL4' in b['edition']
 ids=[c['id'] for c in b['chapters']]
-assert len(ids)==len(set(ids)) and {'start', 'hammer', 'tutorial_hammer', 'troubleshooting', 'cables', 'compact', 'tutorial_graphics', 'holograms', 'panels', 'tutorial_inventory', 'large', 'tutorial_energy', 'wireless', 'information', 'configuration', 'transfer', 'materials', 'fluids', 'remote', 'guide_controls', 'kubejs', 'redstone', 'status', 'tutorial_hologram', 'inventory', 'expansion', 'energy', 'nodes'}.difference({'expansion'}).union({'tutorial_expansion'}).issubset(set(ids))
+assert len(ids)==len(set(ids)) and {'start', 'hammer', 'tutorial_hammer', 'troubleshooting', 'cables', 'compact', 'tutorial_graphics', 'holograms', 'panels', 'tutorial_inventory', 'large', 'tutorial_energy', 'wireless', 'information', 'configuration', 'transfer', 'materials', 'fluids', 'remote', 'guide_controls', 'kubejs', 'redstone', 'status', 'tutorial_hologram', 'inventory', 'tutorial_expansion', 'energy', 'nodes'}.issubset(set(ids))
 categories={};words=0
 for c in b['chapters']:
  assert re.fullmatch('[a-z0-9_]{1,64}',c['id']) and len(c['title'])<=100
