@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
-version = '0.2a-port.1'
+version = '0.2a-port.2'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.18.2' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
