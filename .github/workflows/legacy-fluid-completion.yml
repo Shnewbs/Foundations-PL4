@@ -1,0 +1,104 @@
+name: Complete legacy fluid ports
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/legacy-fluid-completion.yml'
+      - 'tools/legacy-fluid-update/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: legacy-fluid-completion
+  cancel-in-progress: false
+
+jobs:
+  fluid:
+    name: Native fluid transport ${{ matrix.minecraft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: ['1.12.2', '1.6.4']
+    env:
+      TARGET: ${{ matrix.minecraft }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Check out reviewed coordinator
+        uses: actions/checkout@v4
+        with:
+          path: coordinator
+      - name: Check out existing native port
+        uses: actions/checkout@v4
+        with:
+          ref: mc/${{ matrix.minecraft }}
+          path: target
+          fetch-depth: 0
+      - name: Prepare isolated Java 7 runtime
+        if: matrix.minecraft == '1.6.4'
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '7'
+      - name: Prepare build JDKs
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+      - name: Expand and apply source update
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 coordinator/tools/legacy-fluid-update/unpack.py "$RUNNER_TEMP/pl4-fluid-update"
+          if grep -q "0.2a-legacy-preview.1" target/build.gradle; then
+            python3 "$RUNNER_TEMP/pl4-fluid-update/apply.py" target "$TARGET"
+            cd target
+            git diff --check
+            git add src/legacy tools build.gradle .github/workflows/legacy*-native.yml README.md docs/releases/0.2a-legacy-preview.2.md LEGACY_FLUID_STATUS.json
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m "Add native $TARGET fluid transport, built-in tanks and quarantined recovery cells"
+            git push origin "HEAD:mc/$TARGET"
+          else
+            test -f target/LEGACY_FLUID_STATUS.json
+            grep -q "0.2a-legacy-preview.2" target/build.gradle
+            echo 'Fluid preview already applied; testing current branch without rewriting it.'
+          fi
+      - name: Build and exercise exact native runtime
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          if [ "$TARGET" = '1.12.2' ]; then
+            export JAVA_HOME="$JAVA_HOME_8_X64"
+            export PATH="$JAVA_HOME/bin:$PATH"
+          fi
+          bash "$RUNNER_TEMP/pl4-fluid-update/$TARGET/validate.sh"
+      - name: Publish only the passing versioned target
+        shell: bash
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
+          bash "$RUNNER_TEMP/pl4-fluid-update/$TARGET/publish.sh"
+      - name: Preserve build, source and native evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-fluid-${{ matrix.minecraft }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            target/release-files/
+            target/verification-logs/
+            target/run-legacy/legacy-scenarios.json
+            target/build/libs/
+            target/LEGACY_FLUID_STATUS.json
+          retention-days: 14
+          if-no-files-found: warn
