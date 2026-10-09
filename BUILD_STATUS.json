@@ -6,12 +6,33 @@
   "release_channel": "alpha",
   "host_save_schema": 2,
   "payload_protocol": "forge-1.16.4-5",
+  "loader": "Forge",
+  "loader_version": "35.1.37",
+  "port_status": "BLOCKED_ON_FORGE35_RECORD_SCANNER",
+  "native_compilation": "PASS",
+  "native_reobfuscation": "PASS",
+  "runtime_packaging": "PASS",
+  "verified_build_source": "74969c5387e3d7ce1377ee09c169078ee2ab152b",
+  "verification_run": 37999800213,
+  "expected_native_scenarios": 193,
+  "executed_native_scenarios": 0,
+  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
+  "native_startup": "FAILED_BEFORE_SCENARIOS",
+  "blocker": "Forge 35 moddiscovery Scanner uses an older visitor contract: UnsupportedOperationException: Record requires ASM8",
+  "diagnostic_profile": {
+    "modlauncher": "8.1.3",
+    "asm": "9.2",
+    "result": "Resolves original launcher JDK access failure but does not resolve Forge's record-scanner visitor contract"
+  },
+  "release_published": false,
   "release_gate": [
     "offline production rules",
     "native compilation and reobfuscation",
     "193 isolated native server scenarios",
-    "exact target metadata"
+    "exact target metadata",
+    "reproducible installed runtime"
   ],
+  "installed_runtime_acceptance": "PENDING",
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING",
   "client_visual_acceptance": "PENDING",
@@ -19,11 +40,5 @@
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.2a-port.1.md",
-  "historical_evidence": "docs/releases/",
-  "loader": "Forge",
-  "loader_version": "35.1.37",
-  "port_status": "NATIVE_SCENARIO_VALIDATION_REQUIRED",
-  "expected_native_scenarios": 193,
-  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
-  "installed_runtime_acceptance": "PENDING"
+  "historical_evidence": "docs/releases/"
 }
