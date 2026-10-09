@@ -34,9 +34,13 @@ tasks.register('java8ScenarioJar', Jar) {
     from { zipTree(file('build/java8/tests-shaded.jar')) }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-reobf {
-    java8RuntimeJar { classpath = sourceSets.main.compileClasspath }
-    java8ScenarioJar { classpath = sourceSets.portTest.compileClasspath }
+// ForgeGradle replaces the raw Minecraft dependency after evaluation. Its reobf classpath
+// setter eagerly enumerates FileCollections, so defer that setter until replacement is complete.
+afterEvaluate {
+    reobf {
+        java8RuntimeJar { classpath = sourceSets.main.compileClasspath }
+        java8ScenarioJar { classpath = sourceSets.portTest.compileClasspath }
+    }
 }
 tasks.named('java8RuntimeJar') { finalizedBy 'reobfJava8RuntimeJar' }
 tasks.named('java8ScenarioJar') { finalizedBy 'reobfJava8ScenarioJar' }
