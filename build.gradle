@@ -72,4 +72,4 @@ tasks.register('verifyPortJar') {
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
 
-if (project.hasProperty('portScenarios')) tasks.named('runServer') { dependsOn tasks.named('portTestClasses') }
+if (project.hasProperty('portScenarios')) tasks.matching { it.name == 'runServer' }.configureEach { dependsOn tasks.named('portTestClasses') }
