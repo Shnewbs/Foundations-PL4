@@ -21,28 +21,40 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Prepare exact native target
+      - name: Prepare exact native target and isolated test module
         shell: bash
         run: |
           set -euo pipefail
           python3 tools/prepare_1171.py
+          python3 tools/fix_1171_native.py
           git diff --check
-          git add src build.gradle BUILD_STATUS.json tools/run_port_checks.py docs/FIELD_GUIDE.md
+          git add src build.gradle BUILD_STATUS.json tools/run_port_checks.py docs/FIELD_GUIDE.md README.md docs/releases/
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Configure exact 1.17.1 full feature source and native tags'
+            git commit -m 'Adapt Forge 37 APIs and preserve 193 isolated native scenarios'
             git push origin HEAD:mc/1.17.1
           fi
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
           git rev-parse HEAD > verification-logs/source-commit.txt
-      - name: Native compilation, rules and full behavior suite
+      - name: Native compilation, rules and all 193 scenarios
         shell: bash
         run: |
           set -euo pipefail
-          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
-          grep -F 'All 193 required tests passed' verification-logs/native.log
+          mkdir -p run-scenarios
+          printf 'eula=true\n' > run-scenarios/eula.txt
+          printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=scenario-world\nlevel-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-scenarios/server.properties
+          bash gradlew --no-daemon --console=plain clean build runServer -PportScenarios 2>&1 | tee verification-logs/native.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          report=json.loads(Path('run-scenarios/port-scenarios.json').read_text())
+          text=Path('verification-logs/native.log').read_text()
+          assert report['minecraft']=='1.17.1' and (report['total'],report['passed'],report['failed'])==(193,193,0),report
+          assert 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' in text
+          assert re.search(r'Starting minecraft server version 1\.17\.1\b',text,re.I)
+          PY
       - name: Publish only the passing exact target
         shell: bash
         env:
@@ -60,7 +72,7 @@ jobs:
           mkdir -p release-files
           cp "build/libs/FoundationsPL4-1.17.1-$version.jar" "build/libs/FoundationsPL4-1.17.1-$version-sources.jar" release-files/
           git archive --format=zip --output="release-files/FoundationsPL4-1.17.1-$version-source.zip" HEAD
-          cp verification-logs/native.log verification-logs/source-commit.txt release-files/
+          cp run-scenarios/port-scenarios.json verification-logs/native.log verification-logs/source-commit.txt release-files/
           (cd release-files && sha256sum * > SHA256SUMS.txt)
           git tag "$tag"; git push origin "$tag"
           gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.17.1 $version" --notes-file "docs/releases/$version.md"
@@ -71,7 +83,8 @@ jobs:
           path: |
             release-files/
             verification-logs/
-            run/logs/
+            run-scenarios/logs/
+            run-scenarios/port-scenarios.json
             build/reports/
           retention-days: 14
           if-no-files-found: warn
