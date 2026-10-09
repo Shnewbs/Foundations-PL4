@@ -1,0 +1,50 @@
+"""Explicit Forge 35.1.37 / current Java 8 launch profile; no binary patch or Java agent."""
+from pathlib import Path
+import argparse, hashlib, json, os, re, subprocess, urllib.request, zipfile
+
+URL='https://maven.minecraftforge.net/cpw/mods/modlauncher/8.1.3/modlauncher-8.1.3.jar'
+
+def prepare(server: Path):
+    server=server.resolve()
+    forge=server/'forge-1.16.4-35.1.37.jar'
+    if not forge.is_file():
+        raise ValueError('Install exact Forge 1.16.4-35.1.37 into this directory first')
+    with zipfile.ZipFile(forge) as z:
+        manifest=z.read('META-INF/MANIFEST.MF').decode().replace('\r\n','\n').replace('\n ','')
+    if 'ServerLaunchArgs:' not in manifest or '--fml.mcVersion 1.16.4' not in manifest:
+        raise ValueError('Unexpected Forge server launcher manifest')
+    # Precede, but never overwrite or relabel, the original ModLauncher library.
+    library=server/'pl4-launch-profile/modlauncher-8.1.3.jar'
+    library.parent.mkdir(exist_ok=True)
+    request=urllib.request.Request(URL+'.sha1',headers={'User-Agent':'FoundationsPL4-compat-profile'})
+    with urllib.request.urlopen(request,timeout=60) as r:
+        expected=r.read(1024).decode().strip().split()[0]
+    if not re.fullmatch('[0-9a-fA-F]{40}',expected):raise ValueError('Invalid upstream library checksum')
+    if not library.exists() or hashlib.sha1(library.read_bytes()).hexdigest()!=expected.lower():
+        with urllib.request.urlopen(urllib.request.Request(URL,headers={'User-Agent':'FoundationsPL4-compat-profile'}),timeout=120) as r:
+            data=r.read(2_000_001)
+        if len(data)>2_000_000 or hashlib.sha1(data).hexdigest()!=expected.lower():raise ValueError('ModLauncher checksum mismatch')
+        temporary=library.with_suffix('.part');temporary.write_bytes(data);temporary.replace(library)
+    info={'minecraft':'1.16.4','forge':'35.1.37','runtime_java':8,'modlauncher':'8.1.3',
+          'modlauncher_url':URL,'modlauncher_sha1':expected.lower(),'modlauncher_sha256':hashlib.sha256(library.read_bytes()).hexdigest(),
+          'stock_forge_libraries':False,'replaced_on_disk':False,'runtime_agent_required':False,
+          'scope':'Explicit launch-time precedence over bundled ModLauncher 8.0.9; client profile acceptance pending'}
+    (library.parent/'profile.json').write_text(json.dumps(info,indent=2)+'\n')
+    return library,forge,info
+
+def command(server: Path, java: str, jvm_args=(), game_args=('--nogui',)):
+    library,forge,info=prepare(server)
+    return [str(java),*jvm_args,'-cp',str(library)+os.pathsep+str(forge),
+            'net.minecraftforge.server.ServerMain',*game_args],info
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--server',required=True,type=Path)
+    p.add_argument('--java',default='java',help='Path to a Java 8 executable')
+    p.add_argument('--launch',action='store_true',help='Start the server; without this flag only prepare and print the command')
+    a=p.parse_args()
+    try:
+        args,info=command(a.server,a.java,['-Xms512M','-Xmx3G'])
+        print(json.dumps({'command':args,'profile':info},indent=2))
+        if a.launch:raise SystemExit(subprocess.call(args,cwd=a.server.resolve()))
+    except (OSError,ValueError,zipfile.BadZipFile) as error:p.exit(1,str(error)+'\n')
