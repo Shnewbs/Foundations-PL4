@@ -1,6 +1,6 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Current version:** `0.1b` automation beta, on separate Minecraft 1.21.1 and 26.3 tracks.
+**Current version:** `0.1b` automation beta, on separate Minecraft 1.21.1, 26.1.2 and 26.3 tracks.
 **Further API testing is still required.** See `docs/API_TESTING.md` and `docs/releases/0.1b.md`.
 
 ## 0.1b reconciliation
