@@ -22,5 +22,5 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "47.4.26",
-  "port_status": "NATIVE_VALIDATION_REQUIRED"
+  "port_status": "ALPHA_NATIVE_RELEASE_GATED"
 }
