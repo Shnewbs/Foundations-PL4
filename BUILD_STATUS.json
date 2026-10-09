@@ -2,13 +2,13 @@
   "project": "Foundations PL4",
   "version": "0.2a-port.1",
   "minecraft": "1.16.4",
-  "java": 17,
+  "java": 8,
   "release_channel": "alpha",
   "host_save_schema": 2,
   "payload_protocol": "forge-1.16.4-5",
   "loader": "Forge",
   "loader_version": "35.1.37",
-  "port_status": "BLOCKED_ON_FORGE35_RECORD_SCANNER",
+  "port_status": "JAVA8_NATIVE_ACCEPTANCE_PENDING",
   "native_compilation": "PASS",
   "native_reobfuscation": "PASS",
   "runtime_packaging": "PASS",
@@ -26,11 +26,11 @@
   },
   "release_published": false,
   "release_gate": [
-    "offline production rules",
-    "native compilation and reobfuscation",
-    "193 isolated native server scenarios",
-    "exact target metadata",
-    "reproducible installed runtime"
+    "production rule suites",
+    "native compilation",
+    "Java 8 conversion and reobfuscation",
+    "isolated installed Forge scenarios",
+    "exact target archive and license checks"
   ],
   "installed_runtime_acceptance": "PENDING",
   "further_api_testing_required": true,
@@ -40,5 +40,6 @@
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.2a-port.1.md",
-  "historical_evidence": "docs/releases/"
+  "historical_evidence": "docs/releases/",
+  "build_java": 17
 }

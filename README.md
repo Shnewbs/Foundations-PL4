@@ -1,9 +1,29 @@
-# Foundations PL4 - Minecraft 1.16.4 / Forge
+# Foundations PL4 1.16.4 0.2a-port.1 - native Java 8 compatibility
 
-Independent **0.2a-port.1** alpha source target. **Forge 35.1.37 / Java 17 required. Further API testing is still required.**
+Alpha feature port. **Further API testing is still required.**
 
-This branch targets 1.16.4 specifically, while `mc/1.16.5` and `mc/1.18.2` retain their own builds. The full-feature 1.16.5 source port is the starting point, not the limited legacy transport subset. Branch creation and compilation are not proof of gameplay or optional-provider stability.
+Retains the modern-source cable, multipart, reader/display, editor, item network storage,
+item/fluid/energy routing, ownership, persistence and field-guide implementation already
+adapted for this Minecraft target. This update converts records, sealed classes and newer
+JDK API usages at build time before Forge reobfuscation instead of requiring a patched
+Forge scanner or runtime Java agent.
 
-Run `bash gradlew build` for the runtime and sources. The isolated `src/portTest` harness executes 193 adapted server scenarios using `bash gradlew runServer -PportScenarios` in a disposable checkout. It is never bundled as part of the runtime. The branch workflow records actual target identity and gates publication.
+Runtime: Minecraft 1.16.4 / Forge 35.1.37 / Java 8. Build: Java 17.
+The published runtime is built from the `-java8.jar` artifact, NOT the unconverted intermediate
+JAR. Only required relocated JvmDowngrader 2.0.1 API helpers are included, with notices,
+LGPL-2.1 license, matching source asset, and reproducible relinking scripts.
 
-See [release scope and acceptance limits](docs/releases/0.2a-port.1.md). Client visuals, ordinary installed-launcher boot, live multiplayer, installed optional APIs and sustained performance checks remain pending. No Java 8 or broad 1.16.x binary compatibility is asserted. Exact per-version coverage, not relabelled artifacts, is the goal.
+Publication requires the complete existing native scenario suite on an installed server
+using the packaged runtime. Exact results and artifact hashes are in java8-summary.json;
+this note alone is not evidence that tests passed. Real-client visuals, third-party API
+mod combinations and live multiplayer acceptance remain pending. This does not add missing
+external provider APIs or claim full PL2 parity. Use matching client/server PL4 builds and
+back up worlds. Do not install source, input, unconverted or scenario JARs.
+
+Reproduction in a clean disposable checkout with JAVA_HOME_17_X64 and JAVA_HOME_8_X64:
+`JAVA_HOME="$JAVA_HOME_17_X64" bash gradlew --no-daemon clean build`
+`python3 tools/java8/runtime.py native`
+
+The source remains Java 17 for maintainability; the tested release output targets Java 8.
+
+See docs/FIELD_GUIDE.md for usage, and docs/API_TESTING.md for remaining integration acceptance.

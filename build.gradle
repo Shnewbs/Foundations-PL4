@@ -38,7 +38,6 @@ minecraft {
 }
 repositories { mavenCentral() }
 dependencies { minecraft 'net.minecraftforge:forge:1.16.4-35.1.37' }
-apply from: 'gradle/forge35-java17.gradle'
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs','1000'] }
 // Forge recompiles its vanilla dependencies using Java 8. Do not inject --release into that compiler.
 ['compileJava','compileTestJava','compilePortTestJava'].each { name ->
@@ -77,3 +76,5 @@ tasks.register('verifyPortJar') {
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
 if (project.hasProperty('portScenarios')) tasks.matching { it.name == 'runServer' }.configureEach { dependsOn tasks.named('portTestClasses') }
+
+apply from: 'tools/java8/runtime.gradle'
