@@ -120,7 +120,7 @@ public final class NativeScenarios {
     public static final class ExternalTank extends TileEntity implements net.minecraftforge.fluids.capability.IFluidHandler {
         final FluidTank tank=new FluidTank(16000);boolean deny,refuse,fail;int executed;
         @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> c,net.minecraft.util.EnumFacing side){return c==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY&&!deny&&side==net.minecraft.util.EnumFacing.WEST;}
-        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> c,net.minecraft.util.EnumFacing side){return hasCapability(c,side)?c.cast(this):null;}
+        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> c,net.minecraft.util.EnumFacing side){return hasCapability(c,side)?net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this):null;}
         public net.minecraftforge.fluids.capability.IFluidTankProperties[] getTankProperties(){return tank.getTankProperties();}
         public int fill(FluidStack f,boolean actual){if(actual){executed++;if(fail)throw new IllegalStateException("native provider failure");if(refuse)return 0;}return tank.fill(f,actual);}
         public FluidStack drain(FluidStack f,boolean actual){return tank.drain(f,actual);}

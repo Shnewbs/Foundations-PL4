@@ -85,5 +85,5 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public ConservingFluids.Port<net.minecraftforge.fluids.FluidStack> fluids(){return LegacyFluidPlatform.resolve(this);}
     private net.minecraftforge.fluids.capability.IFluidHandler nativeFluids;
     @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,EnumFacing face){return role()==5&&cap==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY||super.hasCapability(cap,face);}
-    @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,EnumFacing face){if(role()==5&&cap==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){if(nativeFluids==null)nativeFluids=LegacyFluidPlatform.nativeTank(this);return cap.cast(nativeFluids);}return super.getCapability(cap,face);}
+    @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,EnumFacing face){if(role()==5&&cap==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){if(nativeFluids==null)nativeFluids=LegacyFluidPlatform.nativeTank(this);return net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(nativeFluids);}return super.getCapability(cap,face);}
 }
