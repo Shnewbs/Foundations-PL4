@@ -30,7 +30,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          version=$(python3 -c "import re,pathlib; print(re.search(r\"^version = '([A-Za-z0-9._-]+)'\",pathlib.Path('build.gradle').read_text(),re.M).group(1))")
+          version=$(python3 -c "import re,pathlib; print(re.search(r\"^version\s*=\s*'([A-Za-z0-9._-]+)'\",pathlib.Path('build.gradle').read_text(),re.M).group(1))")
           tag="mc1.12.2-v$version"
           if git show-ref --verify --quiet "refs/tags/$tag"; then
             git diff --exit-code "$tag" HEAD -- src/legacy build.gradle settings.gradle gradle.properties gradle/
@@ -49,6 +49,10 @@ jobs:
           git tag "$tag"
           git push origin "$tag"
           gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.12.2 $version" --notes-file "docs/releases/$version.md"
+      - name: Archive exact verified branch source
+        if: success()
+        shell: bash
+        run: git archive --format=zip --output=verification-logs/verified-branch-source.zip HEAD
       - uses: actions/upload-artifact@v4
         if: always()
         with:
