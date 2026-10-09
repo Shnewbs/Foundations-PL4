@@ -17,7 +17,7 @@ minecraft {
         }
         client { }
         server { args '--nogui' }
-        gameTestServer { property 'forge.enabledGameTestNamespaces', 'foundations_pl4' }
+        gameTestServer { property 'forge.enabledGameTestNamespaces', 'foundations_pl4'; property 'foundations_pl4.isolatedGameTestConfig','true' }
     }
 }
 repositories { mavenCentral() }

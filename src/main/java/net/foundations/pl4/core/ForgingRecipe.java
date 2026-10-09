@@ -35,11 +35,16 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
   private static final Codec<Ingredient> INGREDIENT=Codec.PASSTHROUGH.comapFlatMap(dynamic->{try{return DataResult.success(Ingredient.fromJson(dynamic.convert(JsonOps.INSTANCE).getValue(),false));}catch(RuntimeException bad){return DataResult.error(bad::getMessage);}},ingredient->new Dynamic<>(JsonOps.INSTANCE,ingredient.toJson()));
   private static final MapCodec<ForgingRecipe> CODEC=RecordCodecBuilder.mapCodec(instance->instance.group(
    INGREDIENT.fieldOf("ingredient").forGetter(ForgingRecipe::ingredient),
-   Codec.intRange(1,64).optionalFieldOf("input_count",1).forGetter(ForgingRecipe::inputCount),
+   optional(Codec.intRange(1,64),"input_count",1).forGetter(ForgingRecipe::inputCount),
    ItemStack.CODEC.fieldOf("result").forGetter(ForgingRecipe::result),
-   Codec.intRange(1,72000).optionalFieldOf("processing_ticks",100).forGetter(ForgingRecipe::processingTicks),
-   Codec.intRange(0,72000).optionalFieldOf("cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
+   optional(Codec.intRange(1,72000),"processing_ticks",100).forGetter(ForgingRecipe::processingTicks),
+   optional(Codec.intRange(0,72000),"cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
   ).apply(instance,ForgingRecipe::new));
+  private static <A> MapCodec<A> optional(Codec<A> codec,String name,A fallback){return new MapCodec<>(){
+   @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);return value==null?DataResult.success(fallback):codec.parse(ops,value);}
+   @Override public <T> RecordBuilder<T> encode(A value,DynamicOps<T> ops,RecordBuilder<T> prefix){return prefix.add(name,codec.encodeStart(ops,value));}
+   @Override public <T> java.util.stream.Stream<T> keys(DynamicOps<T> ops){return java.util.stream.Stream.of(ops.createString(name));}
+  };}
   public MapCodec<ForgingRecipe> codec(){return CODEC;}
   @Override public ForgingRecipe fromJson(ResourceLocation id,JsonObject json){
    JsonObject result=GsonHelper.getAsJsonObject(json,"result").deepCopy();

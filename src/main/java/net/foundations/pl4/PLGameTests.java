@@ -14,6 +14,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 @PrefixGameTestTemplate(false)
 public final class PLGameTests {
+    /** CI-only isolation: transient test values must not race Forge's autosave file watcher.
+     * Normal server configuration remains file-backed; no fixture assertions are relaxed. */
+    @net.minecraft.gametest.framework.BeforeBatch(batch="defaultBatch")
+    public static void isolatedConfig(net.minecraft.server.level.ServerLevel level){
+        if(!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig"))return;
+        var memory=com.electronwill.nightconfig.core.CommentedConfig.inMemory();
+        PLConfig.SPEC.correct(memory);PLConfig.SPEC.setConfig(memory);
+    }
+
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000001");
     public static void register(RegisterGameTestsEvent e){e.register(PLGameTests.class);e.register(R5GameTests.class);e.register(R6GameTests.class);e.register(R7GameTests.class);e.register(R8GameTests.class);e.register(R9GameTests.class);e.register(R10GameTests.class);e.register(R11GameTests.class);e.register(R13GameTests.class);e.register(R16GameTests.class);e.register(PerformanceGameTests.class);e.register(EnergyIntegrationGameTests.class);}
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face){
