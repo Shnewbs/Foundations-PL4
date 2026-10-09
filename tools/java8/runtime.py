@@ -120,7 +120,12 @@ def native():
     launch=work/('forge-'+forge+'.jar')
     if not launch.is_file():raise ValueError('Installer did not create the expected Forge server JAR')
     logs=ROOT/'verification-logs';logs.mkdir(exist_ok=True)
-    cmd=[str(java),'-Xms512M','-Xmx3G','-Dfoundations_pl4.portScenarioServer=true','-jar',str(launch),'--nogui']
+    from forge35_profile import command
+    # Avoid the native loader's first-run async-config-write race in the test workspace.
+    (work/'config').mkdir(exist_ok=True)
+    (work/'config/fml.toml').write_text('maxThreads=1\ndefaultConfigPath="defaultconfigs"\n')
+    cmd,profile=command(work,str(java),['-Xms512M','-Xmx3G','-Dfoundations_pl4.portScenarioServer=true'])
+    (logs/'launch-profile.json').write_text(json.dumps(profile,indent=2)+'\n')
     print('+ installed Java 8 server: '+' '.join(cmd),flush=True)
     with (logs/'installed-native.log').open('w') as out:
         process=subprocess.run(cmd,cwd=work,stdout=out,stderr=subprocess.STDOUT,timeout=900)
@@ -138,7 +143,7 @@ def native():
     summary={'minecraft':target,'version':version,'runtime_java':8,'build_java':17,'forge':status['loader_version'],
         'native_total':expected,'native_passed':report['passed'],'native_failed':report['failed'],'runtime_sha256':sha(runtime),
         'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        'installed_runtime':'PASS','stock_forge_libraries':True,'runtime_agent_required':False,
+        'installed_runtime':'PASS','stock_forge_libraries':False,'modlauncher':'8.1.3','runtime_agent_required':False,
         'client_visuals':'PENDING','installed_optional_apis':'PENDING','multiplayer':'PENDING','further_api_testing_required':True}
     (logs/'java8-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     shutil.copyfile(work/'port-scenarios.json',logs/'port-scenarios.json')

@@ -41,5 +41,7 @@
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.2a-port.1.md",
   "historical_evidence": "docs/releases/",
-  "build_java": 17
+  "build_java": 17,
+  "runtime_profile": "Forge 35.1.37 / Java 8 with explicit ModLauncher 8.1.3 precedence",
+  "stock_forge_runtime_compatible": false
 }
