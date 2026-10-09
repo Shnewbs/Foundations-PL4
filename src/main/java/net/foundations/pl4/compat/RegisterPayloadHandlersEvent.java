@@ -10,7 +10,7 @@ public final class RegisterPayloadHandlersEvent {
  public static SimpleChannel channel;
  public Registrar registrar(String protocol){
   if(channel!=null)throw new IllegalStateException("PL4 packets already registered");
-  String version="forge-1.16.5-"+protocol;
+  String version="forge-1.15.2-"+protocol;
   channel=NetworkRegistry.newSimpleChannel(FoundationsPL4.id("main"),()->version,version::equals,version::equals);
   return new Registrar();
  }

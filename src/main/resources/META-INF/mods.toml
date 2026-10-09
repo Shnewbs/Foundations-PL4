@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[31,32)"
 license="MIT"
 [[mods]]
 modId="foundations_pl4"
@@ -10,12 +10,12 @@ description="Standalone Practical Logistics. Forge port development build; furth
 [[dependencies.foundations_pl4]]
 modId="forge"
 mandatory=true
-versionRange="[36.2.42,37)"
+versionRange="[31.2.62,32)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.foundations_pl4]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.16.5,1.17)"
+versionRange="[1.15.2]"
 ordering="NONE"
 side="BOTH"

@@ -2,9 +2,9 @@ plugins {
     id 'java-library'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
-version = '0.2a-port.2'
+version = '0.2a-port.1'
 group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-1.16.5' }
+base { archivesName = 'FoundationsPL4-1.15.2' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
 sourceSets {
     portTest {
@@ -17,7 +17,7 @@ configurations {
     portTestRuntimeOnly.extendsFrom runtimeOnly
 }
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.15.2'
     copyIdeResources = true
     runs {
         configureEach {
@@ -37,7 +37,7 @@ minecraft {
     }
 }
 repositories { mavenCentral() }
-dependencies { minecraft 'net.minecraftforge:forge:1.16.5-36.2.42' }
+dependencies { minecraft 'net.minecraftforge:forge:1.15.2-31.2.62' }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs','1000'] }
 // Forge recompiles its vanilla dependencies using Java 8. Do not inject --release into that compiler.
 ['compileJava','compileTestJava','compilePortTestJava'].each { name ->
@@ -61,7 +61,7 @@ tasks.register('verifyPortJar') {
         def archive=tasks.jar.archiveFile.get().asFile
         new java.util.zip.ZipFile(archive).withCloseable { zip ->
             def metadata=zip.getInputStream(zip.getEntry('META-INF/mods.toml')).getText('UTF-8')
-            if (!metadata.contains('version="'+project.version+'"') || !metadata.contains('versionRange="[1.16.5,1.17)"')) throw new GradleException('Incorrect Forge target metadata')
+            if (!metadata.contains('version="'+project.version+'"') || !metadata.contains('versionRange="[1.15.2]"')) throw new GradleException('Incorrect Forge target metadata')
             zip.entries().each { entry ->
                 if (entry.name.contains('compat/scenarios/') || entry.name.endsWith('GameTests.class')) throw new GradleException('Test fixture leaked into runtime: '+entry.name)
                 if (entry.name.endsWith('.jar')) throw new GradleException('Unexpected bundled mod: '+entry.name)
@@ -71,7 +71,7 @@ tasks.register('verifyPortJar') {
                 }
             }
         }
-        logger.lifecycle('PASS standalone Forge 1.16.5 artifact identity and dependencies')
+        logger.lifecycle('PASS standalone Forge 1.15.2 artifact identity and dependencies')
     }
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }

@@ -16,7 +16,7 @@ def run(*args, cwd=ROOT, timeout=1200):
 def metadata():
     status = json.loads((ROOT/'BUILD_STATUS.json').read_text())
     target = status['minecraft']
-    if target not in {'1.16.4','1.16.5'}:
+    if target not in {'1.16.4','1.15.2'}:
         raise ValueError('Unsupported Java 8 port target')
     version = re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'", (ROOT/'build.gradle').read_text(), re.M).group(1)
     return status, target, version, 'FoundationsPL4-'+target+'-'+version
