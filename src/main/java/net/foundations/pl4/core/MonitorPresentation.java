@@ -26,7 +26,7 @@ public final class MonitorPresentation {
         if(status==null||status.isBlank())return "Monitor";
         String name=status.replaceFirst(" \\(\\d+ x \\d+\\)$", "");
         return switch(name){
-            case "inventoryreader"->"PlayerInventory";case "fluidreader"->"Fluids";
+            case "inventoryreader"->"Inventory";case "fluidreader"->"Fluids";
             case "energyreader"->"Energy";case "inforeader"->"Information";
             case "networkreader"->"Network";default->name;
         };
