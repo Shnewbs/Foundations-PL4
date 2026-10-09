@@ -2,7 +2,7 @@ package net.foundations.pl4.compat.scenarios;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 /** Fixture semantics on a real isolated server; not Mojang's modern GameTest API. */
 public final class GameTestHelper {
