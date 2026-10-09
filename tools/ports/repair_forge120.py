@@ -1,4 +1,4 @@
-"""One-time, idempotent corrections found by the first real Forge GameTest run."""
+"""Idempotent corrections found by the first real Forge GameTest run."""
 from pathlib import Path
 import json
 R=Path(__file__).resolve().parents[2];J=R/'src/main/java/net/foundations/pl4'
@@ -18,10 +18,11 @@ root=R/'src/main/resources/data'
 aliases={'chests/wooden':['minecraft:chest','minecraft:trapped_chest'],'dusts/redstone':['minecraft:redstone'],'ingots/iron':['minecraft:iron_ingot'],'rods/wooden':['minecraft:stick'],'stones':['minecraft:stone','minecraft:andesite','minecraft:diorite','minecraft:granite'],'ender_pearls':['minecraft:ender_pearl'],'gems/diamond':['minecraft:diamond']}
 for name,fallback in aliases.items():
  p=root/'c/tags/items'/(name+'.json');p.parent.mkdir(parents=True,exist_ok=True)
- expected={'replace':False,'values':[{'id':'#forge:'+name,'required':False}]+fallback}
- if p.exists():
-  assert json.loads(p.read_text())==expected,('Refusing to overwrite changed tag',p)
- else:p.write_text(json.dumps(expected,indent=2)+'\n')
+ tag=json.loads(p.read_text()) if p.exists() else {'replace':False,'values':[]}
+ assert tag.get('replace',False) is False and isinstance(tag.get('values'),list),('Unexpected tag shape',p)
+ for value in [{'id':'#forge:'+name,'required':False}]+fallback:
+  if value not in tag['values']:tag['values'].append(value)
+ p.write_text(json.dumps(tag,indent=2)+'\n')
 p=J/'PLGameTests.java';s=p.read_text()
 if 'void isolatedConfig(' not in s:
  marker='public final class PLGameTests {';assert marker in s
