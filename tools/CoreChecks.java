@@ -19,6 +19,7 @@ public final class CoreChecks {
     }
     static final class Buffer implements ConservingItems.Escrow<Stack>{Stack held;public Stack get(){return held;}public void set(Stack s){held=s;}int count(){return held==null?0:held.n;}}
     public static void main(String[] args){
+        FluidChecks.main(args);
         for(int source=0;source<=64;source++)for(int occupied=0;occupied<=64;occupied++)for(int rate:new int[]{1,8,64}){
             Store a=new Store(source,64),b=new Store(occupied,64);Buffer e=new Buffer();int moved=ConservingItems.move(STACKS,e,a,b,rate,1);
             check(moved==Math.min(source,Math.min(rate,64-occupied)),"bounded move");check(a.count()+b.count()+e.count()==source+occupied,"conservation");check(e.count()==0,"normal escrow drains");

@@ -1,6 +1,6 @@
 # Foundations PL4 1.6.4 experimental native preview
 
-**0.2a-legacy-preview.1 is an initial item-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
+**0.2a-legacy-preview.2 is an item/fluid-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
 
 Native implementation in `src/legacy`; `src/main` is excluded reference source. The compiler uses the available Forge 9.11.1.960 development API with Java 8 to produce Java 7 bytecode. The build runs with Java 21 / Gradle 9.5.0 / ForgeGradle 7.0.28. Native acceptance is performed separately on the actual published **Forge 9.11.1.1345 / Java 7** runtime; no 960 installer or universal JAR is assumed to exist. Check the release-attached scenario report for completed runtime evidence.
 
@@ -12,4 +12,8 @@ Legacy block IDs default to 3500/3501/3502 and are checked for collisions before
 
 Build: `bash gradlew clean build` with Java 21 plus a discoverable Java 8 compiler. Only the remapped `-srg.jar` is suitable for runtime installation; the publication workflow names the validated runtime without that classifier. Never install the native-scenarios fixture JAR in a real world. The native workflow installs Forge inside a disposable directory and executes 21 isolated scenarios on the remapped runtime; its test fixture includes the production class hierarchy when remapping inherited Minecraft methods.
 
-Advanced displays, multipart placement, wireless storage, fluid/energy transport, complete scripting and installed third-party APIs remain unfinished. No arbitrary power conversions or mismatched newer mods are bundled as substitutes. Client visuals, multiplayer and modpack acceptance are pending. The 1.6.4 branch remains experimental even after its initial native scenarios pass.
+Advanced displays, multipart placement, wireless storage, energy transport, complete scripting and installed third-party APIs remain unfinished. No arbitrary power conversions or mismatched newer mods are bundled as substitutes. Client visuals, multiplayer and modpack acceptance are pending. The 1.6.4 branch remains experimental even after its initial native scenarios pass.
+
+## Fluid preview 2
+
+Native fluid endpoints, a 16-bucket tank, vanilla bucket interactions and sealed fluid recovery cells are now included. Crafting and setup, quarantine behavior and limitations are in [the preview 2 release notes](docs/releases/0.2a-legacy-preview.2.md). Vanilla-texture full-block models remain preliminary. Native fluid handlers are supported; installed external mod compatibility is not yet certified.
