@@ -1,0 +1,43 @@
+name: Resolve isolated Forge 1.12.2
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/legacy-112-toolchain.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+      - name: Verify and resolve isolated official developer archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p workspace evidence
+          curl --fail --location --retry 3 'https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2864/forge-1.12.2-14.23.5.2864-mdk.zip' -o evidence/developer.zip
+          echo '9485662cf5d197c1bfbe60fc7e6048a598cd5a4c  evidence/developer.zip' | sha1sum -c -
+          unzip -q evidence/developer.zip -d workspace
+          echo "rootProject.name='pl4-112-toolchain'" > workspace/settings.gradle
+          cat >> workspace/build.gradle <<'GRADLE'
+          task exportPortClasspath(type: Copy) {
+              from configurations.compileClasspath
+              into '../evidence/classpath'
+          }
+          GRADLE
+          cd workspace
+          bash gradlew --no-daemon --console=plain -Dorg.gradle.jvmargs=-Xmx4G exportPortClasspath 2>&1 | tee ../evidence/resolution.log
+          mkdir -p ../evidence/mapped-sources
+          find "$HOME/.gradle/caches/forge_gradle" -type f -name '*sources.jar' -exec cp -t ../evidence/mapped-sources/ {} +
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: internal-forge-112-toolchain
+          path: evidence/
+          retention-days: 7
+          if-no-files-found: error
