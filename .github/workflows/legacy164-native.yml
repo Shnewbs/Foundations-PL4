@@ -49,21 +49,25 @@ jobs:
                   assert 'assets/foundations_pl4/textures/blocks/'+name+'.png' in z.namelist()
           print('PASS isolated Java 7 runtime packaging and legacy atlas resources')
           PY
-      - name: Exercise exact SRG runtime on installed Forge 960
+      - name: Exercise exact SRG runtime on published Forge 1345
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p run-legacy/mods
-          base='https://maven.minecraftforge.net/net/minecraftforge/forge/1.6.4-9.11.1.960/forge-1.6.4-9.11.1.960-installer.jar'
+          # Build API 960 has userdev files but no published installer/universal.
+          # Runtime acceptance is independently performed on the actual published 1345 loader.
+          base='https://maven.minecraftforge.net/net/minecraftforge/forge/1.6.4-9.11.1.1345/forge-1.6.4-9.11.1.1345-installer.jar'
           curl --fail --location --retry 3 "$base" -o forge-installer.jar
-          curl --fail --location --retry 3 "$base.sha1" -o installer.sha1
-          printf '%s  forge-installer.jar\n' "$(cat installer.sha1 | tr -d '\r\n ')" | sha1sum -c -
+          printf '7a57c0febe74260bfdee1a5d4968982d8863a02c  forge-installer.jar\n' | sha1sum -c -
           sha256sum forge-installer.jar > verification-logs/installer-SHA256.txt
           "$JAVA_HOME_8_X64/bin/java" -jar forge-installer.jar --installServer run-legacy 2>&1 | tee verification-logs/install.log
           printf 'eula=true\n' > run-legacy/eula.txt
           printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=pl4-legacy-test-world\nlevel-type=FLAT\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-legacy/server.properties
-          cp build/libs/FoundationsPL4-1.6.4-0.2a-legacy-preview.1-srg.jar build/libs/FoundationsPL4-1.6.4-0.2a-legacy-preview.1-native-scenarios-srg.jar run-legacy/mods/
-          mapfile -t launchers < <(find run-legacy -maxdepth 1 -type f -name '*forge*9.11.1.960*.jar')
+          cp build/libs/FoundationsPL4-1.6.4-0.2a-legacy-preview.1-srg.jar run-legacy/mods/
+          mapfile -t fixtures < <(find build/libs -maxdepth 1 -type f -name '*native-scenarios*-srg.jar')
+          test "${#fixtures[@]}" -eq 1
+          cp "${fixtures[0]}" run-legacy/mods/pl4-native-scenarios.jar
+          mapfile -t launchers < <(find run-legacy -maxdepth 1 -type f -name '*forge*9.11.1.1345*.jar')
           test "${#launchers[@]}" -eq 1
           launcher=$(basename "${launchers[0]}")
           (cd run-legacy && timeout 300 "$JAVA_HOME_7_X64/bin/java" -Xmx2G -Dfoundations_pl4.legacyScenarios=true -jar "$launcher" nogui) 2>&1 | tee verification-logs/native.log
@@ -72,7 +76,9 @@ jobs:
           from pathlib import Path
           report=json.loads(Path('run-legacy/legacy-scenarios.json').read_text())
           assert report['minecraft']=='1.6.4' and report['total']==21 and report['passed']==21 and report['failed']==0,report
-          print('PASS all 21 isolated native 1.6.4 transport scenarios')
+          report.update(build_api_forge='9.11.1.960',runtime_forge='9.11.1.1345',runtime_java=7)
+          Path('run-legacy/legacy-scenarios.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('PASS all 21 isolated native 1.6.4 transport scenarios on Forge 1345')
           PY
       - name: Publish tested experimental subset
         shell: bash
@@ -91,7 +97,9 @@ jobs:
           (cd release-files && sha256sum *.jar *.zip *.json *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
           if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then echo 'Existing release is immutable; use a new revision'; exit 1; fi
           git tag "$tag"; git push origin "$tag"
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 experimental preview 1 (initial transport subset)" --notes-file "docs/releases/$version.md"
+          cp "docs/releases/$version.md" release-notes.md
+          printf '\n## Validated runtime distinction\nBuilt using the available Forge 9.11.1.960 development API; the published runtime was independently tested on Forge 9.11.1.1345 and Java 7. The exact native report is attached. There is no Forge 960 installer/runtime compatibility claim.\n' >> release-notes.md
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 experimental preview 1 (initial transport subset)" --notes-file release-notes.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
