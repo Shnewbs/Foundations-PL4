@@ -1,0 +1,70 @@
+name: Forge port toolchains
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/forge-port-toolchains.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  toolchain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mc: '1.20.1', forge: '47.4.26', java: '17', archive: mdk, sha1: '34859392cc1eddcc05a0596d8e0af690a5fe8f17' }
+          - { mc: '1.19.2', forge: '43.5.2', java: '17', archive: mdk, sha1: '076be5c843632eed34998403a07a1abbf31cb2f8' }
+          - { mc: '1.18.2', forge: '40.3.12', java: '17', archive: mdk, sha1: '09f37844ff263853972902a7c2cebb6e90eddb3a' }
+          - { mc: '1.16.5', forge: '36.2.42', java: '8', archive: mdk, sha1: '3d95dac7c4f3ec7a0bdafed3f3c5cb6d284cec06' }
+          - { mc: '1.12.2', forge: '14.23.5.2864', java: '8', archive: mdk, sha1: '9485662cf5d197c1bfbe60fc7e6048a598cd5a4c' }
+          - { mc: '1.6.4', forge: '9.11.1.1345', java: '8', archive: src, sha1: '6447fe894c48e665304d0dd4af157a3343ecadb2' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: Download and verify official developer archive
+        shell: bash
+        env:
+          MC: ${{ matrix.mc }}
+          FORGE: ${{ matrix.forge }}
+          ARCHIVE: ${{ matrix.archive }}
+          EXPECTED: ${{ matrix.sha1 }}
+        run: |
+          set -euo pipefail
+          mkdir -p toolchain/export toolchain/mdk
+          url="https://maven.minecraftforge.net/net/minecraftforge/forge/$MC-$FORGE/forge-$MC-$FORGE-$ARCHIVE.zip"
+          curl --fail --location --retry 3 "$url" -o toolchain/export/developer.zip
+          printf '%s  %s\n' "$EXPECTED" toolchain/export/developer.zip | sha1sum -c -
+          sha256sum toolchain/export/developer.zip > toolchain/export/SHA256SUMS.txt
+          printf '%s\n' "$url" > toolchain/export/UPSTREAM.txt
+          unzip -q toolchain/export/developer.zip -d toolchain/mdk
+          java -version 2> toolchain/export/java.txt
+      - name: Resolve native compile classpath
+        if: matrix.mc != '1.6.4'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd toolchain/mdk
+          cat >> build.gradle <<'GRADLE'
+          
+          task exportPortClasspath(type: Copy) {
+              from configurations.compileClasspath
+              into '../export/classpath'
+          }
+          GRADLE
+          bash gradlew --no-daemon --console=plain -Dorg.gradle.jvmargs=-Xmx4G exportPortClasspath 2>&1 | tee ../export/resolution.log
+          find "$HOME/.gradle/caches" -type f -name '*sources.jar' -print > ../export/source-paths.txt
+          mkdir -p ../export/mapped-sources
+          find "$HOME/.gradle/caches/forge_gradle" -type f -name '*sources.jar' -exec cp -t ../export/mapped-sources/ {} + || true
+      - name: Preserve toolchain evidence (not distributable mod builds)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-toolchain-${{ matrix.mc }}
+          path: toolchain/export/
+          retention-days: 7
+          if-no-files-found: error
