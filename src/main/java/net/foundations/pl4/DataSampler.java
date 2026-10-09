@@ -5,7 +5,7 @@ import net.minecraft.core.*;
 import net.minecraft.core.Registry;
 import net.foundations.pl4.compat.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import net.foundations.pl4.compat.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
@@ -39,13 +39,13 @@ public final class DataSampler {
     public static boolean matches(ItemStack stack,Part part){
         if(part.filter.isBlank())return true;
         ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.ITEM.getKey(stack.getItem()).toString());
-        if(!match)for(var tag:filter.itemTags())if(stack.is(tag)){match=true;break;}
+        if(!match)for(var tag:filter.itemTags())if(tag.contains(stack.getItem())){match=true;break;}
         return match==part.whitelist;
     }
     public static boolean matches(FluidStack stack,Part part){
         if(part.filter.isBlank())return true;
         ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.FLUID.getKey(stack.getFluid()).toString());
-        if(!match)for(var tag:filter.fluidTags())if(stack.getFluid().is(tag)){match=true;break;}
+        if(!match)for(var tag:filter.fluidTags())if(tag.contains(stack.getFluid())){match=true;break;}
         return match==part.whitelist;
     }
     public static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> targets,int hosts){
