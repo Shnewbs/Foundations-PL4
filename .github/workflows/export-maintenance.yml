@@ -1,0 +1,36 @@
+name: Export multi-target maintenance sources
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/export-maintenance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Capture source branches and port history
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p maintenance
+          for target in 26.1.2 26.3; do
+            git archive --format=zip --output="maintenance/source-$target.zip" "origin/mc/$target"
+            git log -20 --oneline "origin/mc/$target" > "maintenance/history-$target.txt"
+            git diff --name-status origin/main "origin/mc/$target" > "maintenance/diff-$target.txt"
+          done
+          git archive --format=zip --output=maintenance/source-main.zip origin/main
+          git diff 16117bb6eafd46f1b638d5034ee477b4e80e2a36 a76df436f7fed5513ee02f37ea361e91b9e013e2 -- src > maintenance/feature-0.2a.patch
+          git for-each-ref --format='%(refname) %(objectname)' > maintenance/refs.txt
+          curl --fail --silent --show-error https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml > maintenance/neoforge-metadata.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multi-target-maintenance-${{ github.sha }}
+          path: maintenance/
+          retention-days: 14
+          if-no-files-found: error
