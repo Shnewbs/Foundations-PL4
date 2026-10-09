@@ -58,9 +58,13 @@ jobs:
           python3 coordinator/tools/legacy-fluid-update/unpack.py "$RUNNER_TEMP/pl4-fluid-update"
           if grep -q "0.2a-legacy-preview.1" target/build.gradle; then
             python3 "$RUNNER_TEMP/pl4-fluid-update/apply.py" target "$TARGET"
+            cp "$RUNNER_TEMP/pl4-fluid-update/$TARGET/validate.sh" target/tools/validate_legacy_fluids.sh
+            cp "$RUNNER_TEMP/pl4-fluid-update/$TARGET/publish.sh" target/tools/publish_legacy_fluids.sh
             cd target
+            # Workflow changes require a separately authorized connector edit, not this job token.
+            git restore .github/workflows
             git diff --check
-            git add src/legacy tools build.gradle .github/workflows/legacy*-native.yml README.md docs/releases/0.2a-legacy-preview.2.md LEGACY_FLUID_STATUS.json
+            git add src/legacy src/legacyTest tools build.gradle README.md docs/releases/0.2a-legacy-preview.2.md LEGACY_FLUID_STATUS.json
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git commit -m "Add native $TARGET fluid transport, built-in tanks and quarantined recovery cells"
@@ -79,7 +83,7 @@ jobs:
             export JAVA_HOME="$JAVA_HOME_8_X64"
             export PATH="$JAVA_HOME/bin:$PATH"
           fi
-          bash "$RUNNER_TEMP/pl4-fluid-update/$TARGET/validate.sh"
+          bash tools/validate_legacy_fluids.sh
       - name: Publish only the passing versioned target
         shell: bash
         working-directory: target
@@ -88,7 +92,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
-          bash "$RUNNER_TEMP/pl4-fluid-update/$TARGET/publish.sh"
+          bash tools/publish_legacy_fluids.sh
       - name: Preserve build, source and native evidence
         if: always()
         uses: actions/upload-artifact@v4
