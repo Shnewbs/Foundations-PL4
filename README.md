@@ -2,7 +2,7 @@
 
 **0.2a-legacy-preview.1 is an initial item-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
 
-Native Forge 9.11.1.960 implementation in `src/legacy`, compiled to Java 7 bytecode by Java 8. The build runs with Java 21 / Gradle 9.5.0 / ForgeGradle 7.0.28. `src/main` is excluded reference source. Forge 9.11.1.1345 has not passed this build setup and is not claimed compatible.
+Native implementation in `src/legacy`; `src/main` is excluded reference source. The compiler uses the available Forge 9.11.1.960 development API with Java 8 to produce Java 7 bytecode. The build runs with Java 21 / Gradle 9.5.0 / ForgeGradle 7.0.28. Native acceptance is performed separately on the actual published **Forge 9.11.1.1345 / Java 7** runtime; no 960 installer or universal JAR is assumed to exist. Check the release-attached scenario report for completed runtime evidence.
 
 Includes craftable cables and export/import nodes, owner-partitioned loaded physical networks, native sided inventory handling, bounded scans/provider work, redstone pause and saved item-transfer escrow. Full-block host geometry is intentional for this initial legacy subset; it is not the modern multipart model.
 
@@ -10,6 +10,6 @@ Craft eight cables using iron/redstone/iron in a row. Craft exporter using hoppe
 
 Legacy block IDs default to 3500/3501/3502 and are checked for collisions before registration. Ownership uses the normalized legacy player name, not the modern authenticated-account UUID contract. Use only isolated test worlds or trusted test servers; this preview is not an assurance that obsolete runtime/loader security or authentication is suitable for public servers.
 
-Build: `bash gradlew clean build` with Java 21 plus a discoverable Java 8 compiler. Only the remapped `-srg.jar` is suitable for runtime installation; the publication workflow names the validated runtime without that classifier. Never install the native-scenarios fixture JAR in a real world.
+Build: `bash gradlew clean build` with Java 21 plus a discoverable Java 8 compiler. Only the remapped `-srg.jar` is suitable for runtime installation; the publication workflow names the validated runtime without that classifier. Never install the native-scenarios fixture JAR in a real world. The native workflow installs Forge inside a disposable directory and executes 21 isolated scenarios on the remapped runtime; its test fixture includes the production class hierarchy when remapping inherited Minecraft methods.
 
 Advanced displays, multipart placement, wireless storage, fluid/energy transport, complete scripting and installed third-party APIs remain unfinished. No arbitrary power conversions or mismatched newer mods are bundled as substitutes. Client visuals, multiplayer and modpack acceptance are pending. The 1.6.4 branch remains experimental even after its initial native scenarios pass.

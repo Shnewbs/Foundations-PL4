@@ -15,6 +15,8 @@ sourceSets {
 tasks.withType(JavaCompile).configureEach { sourceCompatibility='1.7'; targetCompatibility='1.7'; options.encoding='UTF-8' }
 repositories { mavenCentral(); minecraft.mavenizer(it); maven fg.forgeMaven; maven fg.minecraftLibsMaven }
 minecraft { mappings channel:'snapshot',version:'20130918-1.6.3' }
+// 960 supplies reproducible development APIs. Acceptance uses the separately installed
+// published Forge 1345 runtime, not a fabricated 960 installer/universal artifact.
 dependencies { implementation minecraft.dependency('net.minecraftforge:forge:1.6.4-9.11.1.960') }
 processResources {
     inputs.property 'version',project.version
@@ -35,7 +37,11 @@ tasks.named('jar',Jar) { from('LICENSE');from('LICENSE-SonarCore');from('NOTICE'
 renamer.mappings.from minecraft.dependency.toSrgFile
 def runtimeJar=renamer.classes(tasks.named('jar',Jar)) { map.from minecraft.dependency.toSrgFile;archiveClassifier='srg' }
 def fixtures=tasks.register('legacyTestJar',Jar) { dependsOn 'legacyTestClasses';from sourceSets.legacyTest.output;archiveClassifier='native-scenarios' }
-def testJar=renamer.classes(fixtures) { map.from minecraft.dependency.toSrgFile;archiveClassifier='native-scenarios-srg' }
+def testJar=renamer.classes(fixtures) {
+    map.from minecraft.dependency.toSrgFile
+    libraries.setFrom(sourceSets.legacyTest.compileClasspath)
+    archiveClassifier='native-scenarios-srg'
+}
 tasks.register('legacyRules',JavaExec) { dependsOn 'legacyRulesClasses';classpath=sourceSets.legacyRules.runtimeClasspath;mainClass='CoreChecks';javaLauncher=javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(8)} }
 tasks.named('check') { dependsOn 'legacyRules' }
 tasks.named('build') { dependsOn runtimeJar,testJar }

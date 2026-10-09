@@ -54,13 +54,11 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p run-legacy/mods
-          # Build API 960 has userdev files but no published installer/universal.
-          # Runtime acceptance is independently performed on the actual published 1345 loader.
           base='https://maven.minecraftforge.net/net/minecraftforge/forge/1.6.4-9.11.1.1345/forge-1.6.4-9.11.1.1345-installer.jar'
           curl --fail --location --retry 3 "$base" -o forge-installer.jar
           printf '7a57c0febe74260bfdee1a5d4968982d8863a02c  forge-installer.jar\n' | sha1sum -c -
           sha256sum forge-installer.jar > verification-logs/installer-SHA256.txt
-          "$JAVA_HOME_8_X64/bin/java" -jar forge-installer.jar --installServer run-legacy 2>&1 | tee verification-logs/install.log
+          bash tools/install_legacy164.sh 2>&1 | tee verification-logs/install.log
           printf 'eula=true\n' > run-legacy/eula.txt
           printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=pl4-legacy-test-world\nlevel-type=FLAT\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-legacy/server.properties
           cp build/libs/FoundationsPL4-1.6.4-0.2a-legacy-preview.1-srg.jar run-legacy/mods/
@@ -97,9 +95,7 @@ jobs:
           (cd release-files && sha256sum *.jar *.zip *.json *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
           if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then echo 'Existing release is immutable; use a new revision'; exit 1; fi
           git tag "$tag"; git push origin "$tag"
-          cp "docs/releases/$version.md" release-notes.md
-          printf '\n## Validated runtime distinction\nBuilt using the available Forge 9.11.1.960 development API; the published runtime was independently tested on Forge 9.11.1.1345 and Java 7. The exact native report is attached. There is no Forge 960 installer/runtime compatibility claim.\n' >> release-notes.md
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 experimental preview 1 (initial transport subset)" --notes-file release-notes.md
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 experimental preview 1 (initial transport subset)" --notes-file "docs/releases/$version.md"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,10 +1,12 @@
 {
-  "minecraft":"1.6.4", "loader":"Forge", "loader_version":"9.11.1.960",
+  "minecraft":"1.6.4", "loader":"Forge", "build_api_loader_version":"9.11.1.960",
+  "native_validation_loader_version":"9.11.1.1345", "native_validation_java":7,
   "java_bytecode":7, "build_java":21, "compiler_java":8,
-  "version":"0.2a-legacy-preview.1", "port_status":"EXPERIMENTAL_NATIVE_VALIDATION_PENDING",
+  "version":"0.2a-legacy-preview.1", "port_status":"EXPERIMENTAL_NATIVE_RELEASE_GATED",
   "parity":"INITIAL_ITEM_TRANSPORT_SUBSET", "expected_native_scenarios":21,
   "further_api_testing_required":true, "client_visual_acceptance":"PENDING",
   "live_multiplayer_acceptance":"PENDING", "installed_optional_provider_acceptance":"PENDING",
   "native_source":"src/legacy", "excluded_reference_source":"src/main",
-  "ownership":"NORMALIZED_LEGACY_PLAYER_NAME", "legacy_save_schema":1
+  "ownership":"NORMALIZED_LEGACY_PLAYER_NAME", "legacy_save_schema":1,
+  "acceptance_evidence":"Release-attached legacy-scenarios.json and native.log, only after all gates pass"
 }
