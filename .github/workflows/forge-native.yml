@@ -4,7 +4,7 @@ on:
     branches: [mc/1.16.4]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: forge1164-native-validation
   cancel-in-progress: false
@@ -21,24 +21,15 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Configure and commit the exact new target
+      - name: Preserve exact source and target settings
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/prepare_1164.py
-          python3 tools/prepare_config1164.py
-          git diff --check
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add build.gradle BUILD_STATUS.json src/ README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md tools/run_port_checks.py
-          if ! git diff --cached --quiet; then
-            git commit -m 'Align exact 1.16.4 target and 193 native regression scenarios'
-            git push origin HEAD:mc/1.16.4
-          fi
+          git diff --exit-code
           git rev-parse HEAD > source-commit.txt
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-      - name: Build and execute all native server scenarios
+      - name: Build and execute native scenarios with explicit Java 17 profile
         shell: bash
         run: |
           set -euo pipefail
@@ -54,40 +45,17 @@ jobs:
           assert report['minecraft']=='1.16.4' and report['total']==193 and report['passed']==193 and report['failed']==0,report
           assert 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' in log
           assert re.search(r'Starting minecraft server version 1\.16\.4\b',log,re.I),'Actual native Minecraft version not established'
-          print('PASS 193 native scenarios on actual 1.16.4; not modern GameTests or ordinary client acceptance')
+          assert 'ModLauncher 8.1.3' in log,'Pinned launcher profile not used'
+          print('PASS 193 native scenarios on Minecraft 1.16.4 / Forge 35.1.37 with explicit Java 17 launch profile')
           PY
-      - name: Publish only the successful independent target
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          version='0.2a-port.1'; tag="mc1.16.4-v$version"
-          test "$(git ls-remote origin refs/heads/mc/1.16.4 | cut -f1)" = "$(git rev-parse HEAD)"
-          git diff --exit-code
-          mkdir -p release-files
-          cp "build/libs/FoundationsPL4-1.16.4-$version.jar" "build/libs/FoundationsPL4-1.16.4-$version-sources.jar" release-files/
-          git archive --format=zip --output="release-files/FoundationsPL4-1.16.4-$version-source.zip" HEAD
-          cp verification-logs/native.log "release-files/FoundationsPL4-1.16.4-$version-native-tests.log"
-          cp run-scenarios/port-scenarios.json source-commit.txt release-files/
-          (cd release-files && sha256sum *.jar *.zip *.log *.json source-commit.txt > SHA256SUMS.txt)
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
-            git fetch origin "refs/tags/$tag:refs/tags/$tag"
-            git diff --exit-code "$tag" HEAD -- src/ build.gradle settings.gradle gradle.properties gradle/
-            gh release view "$tag"
-            echo 'Existing release retained; no assets overwritten.'
-          else
-            git tag "$tag"; git push origin "$tag"
-            gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $version - Minecraft 1.16.4 Forge" --notes-file docs/releases/0.2a-port.1.md
-          fi
+      - name: Release remains gated on reproducible installed runtime
+        run: echo 'No publication from this diagnostic job. Development launch success does not certify ordinary installed Forge 35.'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: forge1164-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             source-commit.txt
-            release-files/
             verification-logs/
             run-scenarios/port-scenarios.json
             run-scenarios/logs/
