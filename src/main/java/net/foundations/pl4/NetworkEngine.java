@@ -1,15 +1,16 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.core.*;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.*;
-import net.minecraft.server.*;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.event.server.ServerStoppedEvent;
-import org.slf4j.LoggerFactory;
+import net.minecraft.util.math.BlockPos;
+import net.foundations.pl4.compat.Registries;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
+import org.apache.logging.log4j.LogManager;
 
 /** All capability access, sampling and transfers run on the server thread. Never force-load chunks. */
 public final class NetworkEngine {
@@ -23,22 +24,22 @@ public final class NetworkEngine {
     private static int cachedMaxNetwork;
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
     public record Ref(HostEntity host,Part part) {
-        public ServerLevel level(){return (ServerLevel)host.getLevel();}
+        public ServerWorld level(){return (ServerWorld)host.getLevel();}
         public Part.Link adjacent(){return new Part.Link(level().dimension().location().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
     }
     public static void add(HostEntity h){if(LOADED.add(h))dirty=true;}
     public static void remove(HostEntity h){if(LOADED.remove(h))dirty=true;}
-    public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
+    public static void invalidate(World l){if(!l.isClientSide)dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
-    public static void stopped(ServerStoppedEvent e){
+    public static void stopped(FMLServerStoppedEvent e){
         EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
-    public static ServerLevel level(MinecraftServer server,Part.Link link){
-        ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));
+    public static ServerWorld level(MinecraftServer server,Part.Link link){
+        ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(RegistryKey.create(Registries.DIMENSION,id));
     }
-    public static boolean loaded(MinecraftServer server,Part.Link link){ServerLevel l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
+    public static boolean loaded(MinecraftServer server,Part.Link link){ServerWorld l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
     private static boolean loadedHost(HostEntity h,MinecraftServer s){
-        return !h.isRemoved()&&h.getLevel() instanceof ServerLevel l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
+        return !h.isRemoved()&&h.getLevel() instanceof ServerWorld l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
     }
     public static List<Ref> all(MinecraftServer s){
         List<Ref> result=new ArrayList<>();
@@ -98,14 +99,14 @@ public final class NetworkEngine {
                 if(r.part.kind==Kind.ARRAY||r.part.kind==Kind.ENTITY_NODE)uniqueTargets.addAll(r.part.links);
             }
             List<Ref> groupReaders=ordered.stream().filter(r->r.part.kind.reader()).toList();
-            complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.getFirst().part.kind.redstone(),
+            complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.get(0).part.kind.redstone(),
                 List.copyOf(uniqueTargets),groupReaders,TransferEngine.prepare(ordered)));
         }
         // A visual reader export adds telemetry visibility to the destination cable bus,
         // NEVER an edge to its machine/transfer network. Wireless unions are already resolved.
         Map<Integer,Set<Ref>> busReaders=new HashMap<>();Set<Integer> usable=new HashSet<>();
         for(Group group:complete)if(group.hostCount<=PLConfig.MAX_NETWORK.get()){
-            int id=sets.find(index.get(group.parts.getFirst().part));usable.add(id);
+            int id=sets.find(index.get(group.parts.get(0).part));usable.add(id);
             Set<Ref> readers=busReaders.computeIfAbsent(id,k->new LinkedHashSet<>());
             for(Ref r:group.parts)if(r.part.kind.reader())readers.add(r);
         }
@@ -128,7 +129,7 @@ public final class NetworkEngine {
     }
     /** Publish exact local cable geometry now; defer the expensive global graph rebuild by one tick. */
     public static void refreshCableGeometry(HostEntity anchor){
-        if(!(anchor.getLevel() instanceof ServerLevel))return;
+        if(!(anchor.getLevel() instanceof ServerWorld))return;
         CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }
@@ -146,8 +147,9 @@ public final class NetworkEngine {
         return List.of();
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
-    public static void tick(ServerTickEvent.Post e){
-        MinecraftServer server=e.getServer();
+    public static void tick(ServerTickEvent e){
+        if(e.phase!=net.minecraftforge.event.TickEvent.Phase.END)return;
+        MinecraftServer server=net.minecraftforge.fml.server.ServerLifecycleHooks.getCurrentServer();if(server==null)return;
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
         boolean sample=server.getTickCount()%PLConfig.TICK_RATE.get()==0;
         if(sample&&!dirty)for(HostEntity h:cachedHosts)if(!loadedHost(h,server)){dirty=true;break;}
@@ -160,7 +162,7 @@ public final class NetworkEngine {
             }
             try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers,group.transfers); }
             catch(RuntimeException ex) {
-                LoggerFactory.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.getFirst().host.getBlockPos(),ex);
+                LogManager.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.get(0).host.getBlockPos(),ex);
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Provider error; check server log";setSignal(r,0);}
             }
         }
@@ -183,7 +185,7 @@ public final class NetworkEngine {
             if(r.part.kind!=Kind.ENERGY_READER)r.part.status=targets.isEmpty()?"No node connections":"Connected: "+targets.size()+" targets / "+hosts+" hosts";
             if(!r.part.targetChannel.isEmpty()){
                 if(selectedTargets.isEmpty())r.part.status="Selected target disconnected";
-                else if(!ReaderChannels.available(server,selectedTargets.getFirst()))r.part.status="Selected target unloaded";
+                else if(!ReaderChannels.available(server,selectedTargets.get(0)))r.part.status="Selected target unloaded";
                 else r.part.status="Channel: "+ReaderChannels.label(r.part)+" · "+r.part.status;
             }
         }
@@ -192,7 +194,7 @@ public final class NetworkEngine {
             Part p=r.part;
             if(p.kind.cable()||p.kind==Kind.NODE||p.kind==Kind.ARRAY)p.status=connectionStatus;
             if(p.kind==Kind.ENTITY_NODE&&p.links.isEmpty()){
-                int count=r.level().getEntities(null,new net.minecraft.world.phys.AABB(r.host.getBlockPos()).inflate(PLConfig.ENTITY_RANGE.get())).size();
+                int count=r.level().getEntities(null,new net.minecraft.util.math.AxisAlignedBB(r.host.getBlockPos()).inflate(PLConfig.ENTITY_RANGE.get())).size();
                 p.rows.clear();p.rows.add(new Part.Row("entities","Nearby entities",count,0,""));
             }
             if(p.kind==Kind.SIGNALLER||p.kind==Kind.DATA_EMITTER){

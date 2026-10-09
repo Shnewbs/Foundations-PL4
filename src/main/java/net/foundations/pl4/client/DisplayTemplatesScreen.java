@@ -1,25 +1,29 @@
 package net.foundations.pl4.client;
 
 import java.util.*;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.*;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.foundations.pl4.compat.GuiGraphics;
+
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.foundations.pl4.compat.Button;
+import net.foundations.pl4.compat.EditBox;
+import net.foundations.pl4.compat.Tooltip;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.ITextComponent;
 import net.foundations.pl4.LayoutTemplate;
 import net.foundations.pl4.core.DisplayElements;
 
 /** Preview first, then apply a revision-fenced, undoable whole-layout edit. */
-final class DisplayTemplatesScreen extends Screen {
+final class DisplayTemplatesScreen extends net.foundations.pl4.compat.PortScreen {
     private final DisplayEditorScreen parent;private int left,top,w,h,page;private EditBox name;
     private long previewRevision;private List<DisplayElements.Spec> previewElements=List.of();private int previewWidth,previewHeight;private boolean validPreview;private LayoutTemplate preview;private boolean fit=true,clearReaders;private String status="";private List<String> names=List.of();private String savedName="layout";private int selected,preset;
-    DisplayTemplatesScreen(DisplayEditorScreen parent){super(Component.literal("Layout library"));this.parent=parent;}
+    DisplayTemplatesScreen(DisplayEditorScreen parent){super(new net.minecraft.util.text.StringTextComponent("Layout library"));this.parent=parent;}
     @Override public boolean isPauseScreen(){return false;}
     private interface Action{void run()throws Exception;}
     private void action(Action action){try{action.run();}catch(Exception e){status=e.getMessage()==null?"Invalid layout/template":e.getMessage();}}
     private void refresh()throws Exception{names=DisplayTemplateLibrary.names();selected=Math.min(selected,Math.max(0,names.size()-1));}
     @Override protected void init(){
         w=Math.min(480,width-16);h=Math.min(348,height-16);left=(width-w)/2;top=(height-h)/2;int cw=(w-28)/3;
-        name=addRenderableWidget(new EditBox(font,left+10,top+31,w-20,20,Component.literal("Template name")));name.setMaxLength(48);name.setValue(savedName);name.setResponder(v->savedName=v);
+        name=addRenderableWidget(new EditBox(font,left+10,top+31,w-20,20,new net.minecraft.util.text.StringTextComponent("Template name")));name.setMaxLength(48);name.setValue(savedName);name.setResponder(v->savedName=v);
         action(()->refresh());
         button("Save current",0,55,cw,()->{DisplayTemplateLibrary.save(name.getValue(),parent.exportLayout());refresh();status="Saved "+name.getValue();});
         button("Browse names",1,55,cw,()->{if(names.isEmpty())throw new IllegalArgumentException("No local templates");name.setValue(names.get(selected));selected=(selected+1)%names.size();status="Selected "+name.getValue();});
@@ -35,10 +39,10 @@ final class DisplayTemplatesScreen extends Screen {
         button("Discard preview",2,127,cw,()->{preview=null;status="Preview discarded";});
         validPreview=false;
         if(preview!=null)try{previewElements=preview.prepare(parent.spaceW(),parent.spaceH(),fit,clearReaders);previewWidth=parent.spaceW();previewHeight=parent.spaceH();validPreview=true;}catch(IllegalArgumentException e){previewElements=preview.elements();previewWidth=preview.width();previewHeight=preview.height();status=e.getMessage();}
-        var apply=addRenderableWidget(Button.builder(Component.literal("Apply all pages"),b->action(()->{if(preview==null)throw new IllegalArgumentException("Load a preview first");parent.importLayout(preview,fit,clearReaders,previewRevision);if(parent.layoutPending())onClose();else status=parent.message;})).bounds(left+10,top+h-28,(w-28)/2,20).build());apply.active=parent.editable&&!parent.layoutPending()&&validPreview;
-        addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+18+(w-28)/2,top+h-28,(w-28)/2,20).build());
+        var apply=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Apply all pages"),b->action(()->{if(preview==null)throw new IllegalArgumentException("Load a preview first");parent.importLayout(preview,fit,clearReaders,previewRevision);if(parent.layoutPending())onClose();else status=parent.message;})).bounds(left+10,top+h-28,(w-28)/2,20).build());apply.active=parent.editable&&!parent.layoutPending()&&validPreview;
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Back"),b->onClose()).bounds(left+18+(w-28)/2,top+h-28,(w-28)/2,20).build());
     }
-    private void button(String text,int column,int y,int cw,Action action){addRenderableWidget(Button.builder(Component.literal(text),b->{action(action);rebuildWidgets();}).bounds(left+10+column*(cw+4),top+y,cw,20).build());}
+    private void button(String text,int column,int y,int cw,Action action){addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent(text),b->{action(action);rebuildWidgets();}).bounds(left+10+column*(cw+4),top+y,cw,20).build());}
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA182229);g.drawString(font,title,left+10,top+10,0xFFE3F2F4,false);
         int px=left+10,py=top+152,pw=w-20,ph=Math.max(10,h-208);g.fill(px,py,px+pw,py+ph,0xFF0B1014);

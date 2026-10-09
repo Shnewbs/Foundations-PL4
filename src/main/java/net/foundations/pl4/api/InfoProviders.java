@@ -2,12 +2,12 @@ package net.foundations.pl4.api;
 
 import java.util.*;
 import net.foundations.pl4.*;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.entity.Entity;
 
 /** Server-thread, read-only extension point for Info Reader telemetry. See docs/INFO_PROVIDER_API.md. */
 public final class InfoProviders {
-    public record Context(ServerLevel level,Part.Link target,Entity entity) {}
+    public record Context(ServerWorld level,Part.Link target,Entity entity) {}
     @FunctionalInterface public interface Sink { void add(String key,String name,double value,double capacity,String unit); }
     @FunctionalInterface public interface Provider { void sample(Context context,Sink sink); }
     public interface Registration extends AutoCloseable { @Override void close(); }
@@ -32,7 +32,7 @@ public final class InfoProviders {
     /** Immutable deterministic inventory for integration diagnostics; includes the builtin provider. */
     public static List<String> registeredIds(){List<String> ids=new ArrayList<>();ids.add(VANILLA.id);for(var entry:snapshot)ids.add(entry.id);return List.copyOf(ids);}
     /** Never loads chunks; only connected targets supplied by the reader should be passed here. */
-    public static List<Part.Row> sample(ServerLevel level,Part.Link target){
+    public static List<Part.Row> sample(ServerWorld level,Part.Link target){
         Objects.requireNonNull(level);Objects.requireNonNull(target);
         if(!level.getServer().isSameThread())throw new IllegalStateException("InfoProviders.sample requires the server thread");
         if(!level.dimension().location().toString().equals(target.dimension()))return List.of();
@@ -58,7 +58,7 @@ public final class InfoProviders {
             });
             result.addAll(pending.values());
         }catch(RuntimeException|LinkageError ex){
-            synchronized(entry){if(!entry.warned){entry.warned=true;org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}
+            synchronized(entry){if(!entry.warned){entry.warned=true;org.apache.logging.log4j.LogManager.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}
         }finally{active[0]=false;}
     }
     private static String clean(String value,int limit){String text=value.replaceAll("[\\p{Cntrl}§]","");return text.substring(0,Math.min(limit,text.length()));}

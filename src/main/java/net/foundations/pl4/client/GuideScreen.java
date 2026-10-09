@@ -1,30 +1,30 @@
 package net.foundations.pl4.client;
 
 import java.util.*;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.item.ItemStack;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.EditBox;
+import net.foundations.pl4.compat.Button;
+import net.foundations.pl4.compat.Tooltip;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.item.ItemStack;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
 import net.foundations.pl4.core.GuideLayout;
 import net.foundations.pl4.core.GuideNavigation;
 
 /** Foundations technical binder: Calculator-style two-pane reference layout in PL4 graphite/cyan. All text remains native GUI scale. */
-public final class GuideScreen extends Screen {
+public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private static final ResourceLocation COVER=FoundationsPL4.id("field_guide/cover"),PAGE=FoundationsPL4.id("field_guide/page");
     private static final String[] CATEGORIES={"start","network","display","reference"};
     private static final String[] TAB_NAMES={"Welcome and tutorials","Networks","Displays","Reference"};
     private static final String[] TAB_SHORT={"START","NET","DISP","REF"};
     private static final String[] TAB_ICONS={"plguide","datacable","largedisplayscreen","operator"};
     private static final int INK=0xFF263239,MUTED=0xFF485E64,ACCENT=0xFF185769;
-    private record Line(FormattedCharSequence text,int y,boolean heading) {}
+    private record Line(IReorderingProcessor text,int y,boolean heading) {}
     private GuideBook book;private GuideBook.Chapter chapter;private GuideResources.Preferences preferences;
     private GuideLayout.Layout layout;private EditBox search;
     private String category="start",query="";private boolean savedOnly,contents;
@@ -34,12 +34,12 @@ public final class GuideScreen extends Screen {
     private final Map<String,ItemStack> icons=new HashMap<>();
     private int bookmarkWidth,footerJumpX;
     private static final String[] SPECIMEN={"node","datacable","inventoryreader","displayscreen"};
-    public GuideScreen(){super(Component.literal("Foundations PL4 Field Guide"));}
+    public GuideScreen(){super(new net.minecraft.util.text.StringTextComponent("Foundations PL4 Field Guide"));}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         if(book==null){
-            book=GuideResources.load(minecraft.getResourceManager(),minecraft.getLanguageManager().getSelected());preferences=GuideResources.preferences();
-            chapter=book.chapters().stream().filter(c->c.id().equals(preferences.chapter)).findFirst().orElse(book.chapters().getFirst());category=chapter.category();
+            book=GuideResources.load(minecraft.getResourceManager(),minecraft.getLanguageManager().getSelected().getCode());preferences=GuideResources.preferences();
+            chapter=book.chapters().stream().filter(c->c.id().equals(preferences.chapter)).findFirst().orElse(book.chapters().get(0));category=chapter.category();
             preferences.saved.removeIf(id->book.chapters().stream().noneMatch(c->c.id().equals(id)));
         }
         layout=GuideLayout.fit(width,height);drag=0;footerJumpX=width;chapterButtons.clear();
@@ -76,7 +76,7 @@ public final class GuideScreen extends Screen {
             int sx=layout.compact()?list.x()+4:list.x();
             search=new GuideSearchBox(font,sx,sy,Math.max(30,list.width()-bookmarkWidth-7),17);
             search.setBordered(true);search.setMaxLength(96);search.setTextColor(0xFFEAF3F2);search.setTextColorUneditable(0xFF91A9AD);search.setValue(query);
-            search.setTooltip(Tooltip.create(Component.literal("Search all chapters; clear to return to this section")));
+            search.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent("Search all chapters; clear to return to this section")));
             search.setResponder(value->{query=value;listScroll=0;refreshList();});addRenderableWidget(search);
             GuideButton saved=button(list.right()-bookmarkWidth,sy,bookmarkWidth,19,"Saved","Show only bookmarked chapters",false,ItemStack.EMPTY,v->{savedOnly=!savedOnly;listScroll=0;refreshList();((GuideButton)v).selected=savedOnly;});saved.selected=savedOnly;
             refreshList();
@@ -84,7 +84,7 @@ public final class GuideScreen extends Screen {
         wrapBody();
     }
     private GuideButton button(int x,int y,int w,int h,String text,String tip,boolean left,ItemStack icon,Button.OnPress press){return addRenderableWidget(new GuideButton(x,y,w,h,text,tip,left,icon,press));}
-    private ItemStack item(String id){return icons.computeIfAbsent(id,value->{var key=ResourceLocation.tryParse(value);return key==null?ItemStack.EMPTY:new ItemStack(BuiltInRegistries.ITEM.get(key));});}
+    private ItemStack item(String id){return icons.computeIfAbsent(id,value->{var key=ResourceLocation.tryParse(value);return key==null?ItemStack.EMPTY:new ItemStack(Registry.ITEM.get(key));});}
     private boolean listVisible(){return !layout.compact()||contents;}
     private boolean detailVisible(){return !layout.compact()||!contents;}
     private void select(GuideBook.Chapter next){chapter=next;category=next.category();preferences.chapter=next.id();bodyScroll=0;contents=false;rebuildWidgets();}
@@ -103,10 +103,10 @@ public final class GuideScreen extends Screen {
     private void wrapBody(){
         List<Line> result=new ArrayList<>();int y=0,w=layout.detail().width()-13;
         for(var section:chapter.sections()){
-            for(var line:font.split(Component.literal(section.heading()),Math.max(16,w-12))){result.add(new Line(line,y,true));y+=18;}
+            for(var line:font.split(new net.minecraft.util.text.StringTextComponent(section.heading()),Math.max(16,w-12))){result.add(new Line(line,y,true));y+=18;}
             y+=5;
             for(String paragraph:section.body().split("\\n",-1)){
-                for(var line:font.split(Component.literal(paragraph),Math.max(16,w-4))){result.add(new Line(line,y,false));y+=12;}
+                for(var line:font.split(new net.minecraft.util.text.StringTextComponent(paragraph),Math.max(16,w-4))){result.add(new Line(line,y,false));y+=12;}
             }
             y+=13;
         }
@@ -128,7 +128,7 @@ public final class GuideScreen extends Screen {
             scrollbar(g,list,listScroll,filtered.size()*25);
             var description=chapter;
             for(int i=listScroll/25;i<filtered.size();i++){int rowY=list.y()+i*25-listScroll;if(rowY+22>list.bottom())break;if(rowY>=list.y()&&x>=list.x()&&x<list.right()-9&&y>=rowY&&y<rowY+22){description=filtered.get(i);break;}}
-            int lineY=list.bottom()+5,count=0;for(var line:font.split(Component.literal(description.summary()),list.width()-8)){if(count++==2)break;g.drawString(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
+            int lineY=list.bottom()+5,count=0;for(var line:font.split(new net.minecraft.util.text.StringTextComponent(description.summary()),list.width()-8)){if(count++==2)break;g.drawString(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
 
         }
         if(detailVisible()){

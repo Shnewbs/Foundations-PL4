@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+[[mods]]
+modId="foundations_pl4"
+version="${version}"
+displayName="Foundations PL4"
+authors="Foundations; original Practical Logistics and Sonar Core by Ollie Lansdell (SonarSonic)"
+description="Standalone Practical Logistics. Forge port development build; further API testing is required."
+[[dependencies.foundations_pl4]]
+modId="forge"
+mandatory=true
+versionRange="[36.2.42,37)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.foundations_pl4]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"

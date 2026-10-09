@@ -1,15 +1,15 @@
 package net.foundations.pl4;
 
 import net.foundations.pl4.core.*;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 /** Server-resolved page links. Sneak-use always opens the editor instead. */
 final class DisplayActions {
-    static boolean activate(ServerPlayer player,HostEntity anchor,Part clicked){
-        if(!player.serverLevel().mayInteract(player,anchor.getBlockPos())||player.isShiftKeyDown()||player.isSpectator()||!clicked.kind.display()||!anchor.canEdit(player)||player.distanceToSqr(anchor.getBlockPos().getCenter())>64)return false;
+    static boolean activate(ServerPlayerEntity player,HostEntity anchor,Part clicked){
+        if(!player.getLevel().mayInteract(player,anchor.getBlockPos())||player.isShiftKeyDown()||player.isSpectator()||!clicked.kind.display()||!anchor.canEdit(player)||player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(anchor.getBlockPos()))>64)return false;
         var controller=DisplayNetworks.controller(anchor,clicked);var host=controller.host();var p=controller.part();
         if(p.displayMode!=DisplayElements.Mode.CUSTOM||p.layoutRevision==Long.MAX_VALUE||!DisplayNetworks.canEditCanvas(player,anchor,clicked))return false;
-        var eye=player.getEyePosition().subtract(host.getBlockPos().getX(),host.getBlockPos().getY(),host.getBlockPos().getZ());
+        var eye=player.getEyePosition(1.0F).subtract(host.getBlockPos().getX(),host.getBlockPos().getY(),host.getBlockPos().getZ());
         var look=player.getLookAngle();DisplayFacing.Frame frame;double ox,oy,oz;
         if(p.hologram()){
             var projection=HologramProjection.forCamera(p.face.ordinal(),p.hologramView,p.kind==Kind.ADVANCED_HOLOGRAM,new HologramProjection.Point(eye.x,eye.y,eye.z));

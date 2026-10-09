@@ -1,8 +1,9 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.core.*;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Direction;
+import net.minecraft.world.World;
 import net.foundations.pl4.core.MultipartTopology;
 
 /** Bounded local geometry, independent of sampling and server network membership.
@@ -11,7 +12,7 @@ import net.foundations.pl4.core.MultipartTopology;
 public final class CableGeometry {
     private static final Direction[] FACES=Direction.values();
     public static void refresh(HostEntity anchor){
-        Level level=anchor.getLevel();if(level==null)return;
+        World level=anchor.getLevel();if(level==null)return;
         Map<BlockPos,HostEntity> centres=new LinkedHashMap<>();
         add(level,anchor.getBlockPos(),centres);
         for(Direction face:FACES)add(level,anchor.getBlockPos().relative(face),centres);
@@ -32,7 +33,7 @@ public final class CableGeometry {
             if(!level.isClientSide)host.syncIfChanged();
         }
     }
-    private static void add(Level level,BlockPos pos,Map<BlockPos,HostEntity> hosts){
+    private static void add(World level,BlockPos pos,Map<BlockPos,HostEntity> hosts){
         if(!hosts.containsKey(pos)&&level.hasChunkAt(pos)&&level.getBlockEntity(pos) instanceof HostEntity host&&!host.isRemoved())hosts.put(pos,host);
     }
     private CableGeometry(){}

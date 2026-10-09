@@ -17,12 +17,12 @@ public record LayoutTemplate(int width,int height,List<DisplayElements.Spec> ele
         for(var e:elements)if(e.bounds().right()>width||e.bounds().bottom()>height)throw new IllegalArgumentException("Element outside template canvas");
     }
     public String encode(){
-        JsonObject j=new JsonObject();j.addProperty("format","foundations_pl4:layout");j.addProperty("schema",1);j.addProperty("width",width);j.addProperty("height",height);j.add("elements",JsonParser.parseString(ElementJson.encodeList(elements)));
+        JsonObject j=new JsonObject();j.addProperty("format","foundations_pl4:layout");j.addProperty("schema",1);j.addProperty("width",width);j.addProperty("height",height);j.add("elements",new JsonParser().parse(ElementJson.encodeList(elements)));
         String text=j.toString();if(text.length()>MAX_TEXT)throw new IllegalArgumentException("Template too large");return text;
     }
     public static LayoutTemplate decode(String text){
         if(text==null||text.length()>MAX_TEXT)throw new IllegalArgumentException("Template too large");
-        JsonObject j=JsonParser.parseString(text).getAsJsonObject();
+        JsonObject j=new JsonParser().parse(text).getAsJsonObject();
         if(!j.get("format").getAsString().equals("foundations_pl4:layout")||j.get("schema").getAsBigDecimal().intValueExact()!=1)throw new IllegalArgumentException("Unsupported template format/schema");
         int w=j.get("width").getAsBigDecimal().intValueExact(),h=j.get("height").getAsBigDecimal().intValueExact();
         for(var value:j.getAsJsonArray("elements")){
@@ -33,7 +33,7 @@ public record LayoutTemplate(int width,int height,List<DisplayElements.Spec> ele
     }
     public static LayoutTemplate preset(int preset,int width,int height){
         if(width<64||height<48)throw new IllegalArgumentException("Starter boards need at least 64 x 48 pixels");
-        String title=switch(preset){case 0->"Inventory overview";case 1->"Fluid overview";case 2->"Energy overview";default->throw new IllegalArgumentException("Unknown starter board");};
+        String title=switch(preset){case 0->"PlayerInventory overview";case 1->"Fluid overview";case 2->"Energy overview";default->throw new IllegalArgumentException("Unknown starter board");};
         var type=preset==0?DisplayElements.Type.INVENTORY:preset==1?DisplayElements.Type.FLUID_GRID:DisplayElements.Type.BAR;
         var header=new DisplayElements.Spec(UUID.randomUUID(),DisplayElements.Type.TEXT,title,"","","",new DisplayElements.Rect(4,4,width-8,14),0x62C7D6,false,false,1,0,0,false,false,DisplayElements.TextAlign.CENTER,false,1F);
         var body=new DisplayElements.Spec(UUID.randomUUID(),type,"","",preset==2?"storage":"","",new DisplayElements.Rect(4,22,width-8,height-26),0x73D86B,true,true,3,0,0,false,false,DisplayElements.TextAlign.LEFT,false,1F);

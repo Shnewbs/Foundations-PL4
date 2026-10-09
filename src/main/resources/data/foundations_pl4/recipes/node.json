@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:node"
+  },
+  "pattern": [
+    " C ",
+    "PDP"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "D": {
+      "tag": "c:dusts/sapphire"
+    },
+    "C": {
+      "item": "foundations_pl4:datacable"
+    }
+  }
+}

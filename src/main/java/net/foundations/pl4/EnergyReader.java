@@ -3,11 +3,14 @@ package net.foundations.pl4;
 import java.util.*;
 import net.foundations.pl4.core.EnergyValues;
 import net.foundations.pl4.core.ReflectiveEnergyAccess;
-import net.minecraft.core.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Direction;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.capabilities.*;
-import org.slf4j.LoggerFactory;
+import net.minecraft.world.server.ServerWorld;
+import net.foundations.pl4.compat.Capabilities;
+import net.foundations.pl4.compat.BlockCapability;
+import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
+import org.apache.logging.log4j.LogManager;
 
 /** Server-thread, sided, read-only energy telemetry. The native provider wins over its FE wrapper.
  * Missing/blocked APIs are not reported as an empty battery. All handler references are local to a sample.
@@ -18,7 +21,7 @@ public final class EnergyReader {
     private record Sample(Target target,String name,EnergyValues.Reading reading){}
     private static List<Probe> probes;
     private static final Set<String> warned=new HashSet<>(); // At most one entry per built-in provider, not per block.
-    private static void warn(String provider,Exception failure){if(warned.add(provider))LoggerFactory.getLogger("FoundationsPL4").warn("Energy reader provider {} unavailable/failed; check API versions and node side. Subsequent identical provider warnings suppressed.",provider,failure);}
+    private static void warn(String provider,Exception failure){if(warned.add(provider))LogManager.getLogger("FoundationsPL4").warn("Energy reader provider {} unavailable/failed; check API versions and node side. Subsequent identical provider warnings suppressed.",provider,failure);}
     public static void clear(){probes=null;warned.clear();OptionalPowerTelemetry.clear();}
     @SuppressWarnings("unchecked")
     private static List<Probe> probes(){
@@ -35,17 +38,17 @@ public final class EnergyReader {
         }
         probes=List.copyOf(found);return probes;
     }
-    private static EnergyValues.Reading read(ServerLevel level,BlockPos pos,List<Direction> sides,Part reader,int[] failures){
+    private static EnergyValues.Reading read(ServerWorld level,BlockPos pos,List<Direction> sides,Part reader,int[] failures){
         for(Probe probe:probes()){
             if(!EnergyValues.accepts(reader.energySystem,probe.unit))continue;
             if(probe.unit.equals("J")&&!PLConfig.MEKANISM_READS.get()||probe.unit.equals("EU")&&!PLConfig.GREGTECH_READS.get())continue;
             for(Direction side:sides)try{
-                Object handler=level.getCapability(probe.capability,pos,side);
+                Object handler=net.foundations.pl4.compat.PortCapabilities.get(level,probe.capability,pos,side);
                 var result=probe.access.read(handler,PLConfig.MAX_ENERGY_CONTAINERS.get());if(result!=null)return result;
             }catch(ReflectiveOperationException|RuntimeException failure){failures[0]++;warn(probe.id,failure);}
         }
         if(EnergyValues.accepts(reader.energySystem,"FE"))for(Direction side:sides)try{
-            var handler=level.getCapability(Capabilities.EnergyStorage.BLOCK,pos,side);
+            var handler=net.foundations.pl4.compat.PortCapabilities.get(level,Capabilities.EnergyStorage.BLOCK,pos,side);
             if(handler!=null)return new EnergyValues.Reading("neoforge","FE",handler.getEnergyStored(),handler.getMaxEnergyStored());
         }catch(RuntimeException failure){failures[0]++;warn("neoforge:energy",failure);}
         return null;

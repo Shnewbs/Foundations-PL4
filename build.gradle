@@ -1,89 +1,75 @@
 plugins {
     id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.147'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
-version = '0.2a'
+version = '0.2a-port.1'
 group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-1.21.1' }
-java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
-neoForge {
-    version = '21.1.250'
-    runs {
-        client { client() }
-        server { server(); programArgument '--nogui' }
-        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
-        configureEach { logLevel = org.slf4j.event.Level.INFO }
+base { archivesName = 'FoundationsPL4-1.16.5' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
+sourceSets {
+    portTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
     }
-    mods { foundations_pl4 { sourceSet sourceSets.main } }
+}
+configurations {
+    portTestImplementation.extendsFrom implementation
+    portTestRuntimeOnly.extendsFrom runtimeOnly
+}
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            mods { foundations_pl4 { source sourceSets.main } }
+        }
+        client { }
+        server {
+            args '--nogui'
+            if (project.hasProperty('portScenarios')) {
+                workingDirectory project.file('run-scenarios')
+                property 'foundations_pl4.portScenarioServer','true'
+                mods { foundations_pl4_porttests { source sourceSets.portTest } }
+            }
+        }
+    }
 }
 repositories { mavenCentral() }
-dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
-test { useJUnitPlatform() }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+dependencies { minecraft 'net.minecraftforge:forge:1.16.5-36.2.42' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release=17; options.compilerArgs += ['-Xmaxerrs','1000'] }
+tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false; reproducibleFileOrder=true }
 processResources {
-    inputs.property 'version', project.version
-    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
+    inputs.property 'version',project.version
+    filesMatching('META-INF/mods.toml') { expand 'version':project.version }
 }
-
-// A release cannot silently regain the old external core/multipart runtime dependencies.
-tasks.register('verifyStandalone') {
-    dependsOn tasks.named('jar')
-    inputs.file(tasks.named('jar').flatMap { it.archiveFile })
+jar {
+    from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE')
+    manifest { attributes('Implementation-Version':project.version) }
+    finalizedBy 'reobfJar'
+}
+tasks.register('verifyPortRules',Exec) { commandLine 'python3','tools/run_port_checks.py' }
+tasks.named('check') { dependsOn 'verifyPortRules' }
+tasks.register('verifyPortJar') {
+    dependsOn 'reobfJar'
     doLast {
-        def artifact = tasks.named('jar').get().archiveFile.get().asFile
-        def failures = []
-        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+        def archive=tasks.jar.archiveFile.get().asFile
+        new java.util.zip.ZipFile(archive).withCloseable { zip ->
+            def metadata=zip.getInputStream(zip.getEntry('META-INF/mods.toml')).getText('UTF-8')
+            if (!metadata.contains('version="'+project.version+'"') || !metadata.contains('versionRange="[1.16.5,1.17)"')) throw new GradleException('Incorrect Forge target metadata')
             zip.entries().each { entry ->
+                if (entry.name.contains('compat/scenarios/') || entry.name.endsWith('GameTests.class')) throw new GradleException('Test fixture leaked into runtime: '+entry.name)
+                if (entry.name.endsWith('.jar')) throw new GradleException('Unexpected bundled mod: '+entry.name)
                 if (entry.name.endsWith('.class')) {
-                    def content = new String(zip.getInputStream(entry).bytes, java.nio.charset.StandardCharsets.ISO_8859_1)
-                    if (content.contains('sonar/core/') || content.contains('mcmultipart/')) failures.add(entry.name)
+                    def content=new String(zip.getInputStream(entry).bytes,java.nio.charset.StandardCharsets.ISO_8859_1)
+                    for (invalid in ['sonar/core/','mcmultipart/','net/neoforged/']) if (content.contains(invalid)) throw new GradleException('Foreign-loader dependency in '+entry.name)
                 }
-                if (entry.name.endsWith('.jar')) failures.add('Unexpected nested mod JAR: ' + entry.name)
             }
-            def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
-            if (metadata.contains('modId="sonarcore"') || metadata.contains('modId="mcmultipart"')) failures.add('Legacy dependency in mod metadata')
-            if (!metadata.contains('modId="foundations_pl4"')) failures.add('Foundations PL4 identity missing')
-            if (!metadata.contains('version="' + project.version + '"')) failures.add('Mod metadata version does not match Gradle project version')
         }
-        if (!failures.empty) throw new GradleException('Standalone verification failed: ' + failures.join(', '))
-        logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
+        logger.lifecycle('PASS standalone Forge 1.16.5 artifact identity and dependencies')
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
-tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
-apply from: 'gradle/verify-client-assets.gradle'
+tasks.named('build') { dependsOn 'verifyPortJar' }
 
-apply from: 'gradle/verify-screen-layers.gradle'
-
-apply from: 'gradle/verify-r5-rules.gradle'
-
-apply from: 'gradle/verify-r6-rules.gradle'
-
-apply from: 'gradle/verify-r7-rules.gradle'
-
-apply from: 'gradle/verify-r8-rules.gradle'
-
-apply from: 'gradle/verify-r9-rules.gradle'
-
-apply from: 'gradle/verify-r10-rules.gradle'
-
-apply from: 'gradle/verify-r11-rules.gradle'
-
-apply from: 'gradle/verify-r12-rules.gradle'
-
-apply from: 'gradle/verify-r13-rules.gradle'
-
-apply from: 'gradle/verify-r14-rules.gradle'
-
-apply from: 'gradle/verify-r17-rules.gradle'
-
-apply from: 'gradle/verify-r16-rules.gradle'
-
-// Identical source produces identical release archives for safe publication retries.
-tasks.withType(AbstractArchiveTask).configureEach {
-    preserveFileTimestamps = false
-    reproducibleFileOrder = true
-}
-
-apply from: 'gradle/verify-energy-conversion.gradle'
+if (project.hasProperty('portScenarios')) tasks.named('runServer') { dependsOn tasks.named('portTestClasses') }

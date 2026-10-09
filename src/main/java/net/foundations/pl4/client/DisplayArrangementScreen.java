@@ -1,27 +1,27 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.ITextComponent;
 
 /** Explicit alignment controls for the current-page selection. */
-final class DisplayArrangementScreen extends Screen {
+final class DisplayArrangementScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;
     private int left,top,w,h;
     private static final String[] LABELS={"Align left","Align right","Align top","Align bottom","Centre horizontally","Centre vertically","Space horizontally","Space vertically"};
     private static final String[] ACTIONS={"align_left","align_right","align_top","align_bottom","align_hcenter","align_vcenter","distribute_x","distribute_y"};
-    DisplayArrangementScreen(DisplayEditorScreen parent){super(Component.literal("Arrange elements"));this.parent=parent;}
+    DisplayArrangementScreen(DisplayEditorScreen parent){super(new net.minecraft.util.text.StringTextComponent("Arrange elements"));this.parent=parent;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         w=Math.min(360,width-16);h=Math.min(216,height-16);left=(width-w)/2;top=(height-h)/2;
         int count=parent.selectionCount(),bw=(w-28)/2,step=Math.min(25,Math.max(16,(h-98)/4));
         for(int i=0;i<ACTIONS.length;i++){
             final String action=ACTIONS[i];
-            var button=addRenderableWidget(Button.builder(Component.literal(LABELS[i]),b->{parent.arrange(action);minecraft.setScreen(parent);}).bounds(left+10+(i%2)*(bw+8),top+57+(i/2)*step,bw,Math.min(20,step-2)).build());
+            var button=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent(LABELS[i]),b->{parent.arrange(action);minecraft.setScreen(parent);}).bounds(left+10+(i%2)*(bw+8),top+57+(i/2)*step,bw,Math.min(20,step-2)).build());
             button.active=count>=(i>=6?3:1);
         }
-        addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+10,top+h-28,w-20,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Back"),b->onClose()).bounds(left+10,top+h-28,w-20,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);

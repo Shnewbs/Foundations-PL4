@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "count": 2,
+    "item": "foundations_pl4:minidisplay"
+  },
+  "ingredients": [
+    {
+      "item": "foundations_pl4:displayscreen"
+    }
+  ]
+}

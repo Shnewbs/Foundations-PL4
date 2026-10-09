@@ -2,11 +2,11 @@ package net.foundations.pl4.client;
 
 import java.util.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import net.foundations.pl4.Part;
 import net.foundations.pl4.core.DisplayElements;
 import net.foundations.pl4.core.MonitorPresentation;
@@ -15,7 +15,7 @@ import net.foundations.pl4.core.MonitorPresentation;
 final class DisplayPainter {
     private record Batch(List<Part.Row> rows,DisplayElements.Scene scene){}
     private record Compiled(List<Part.Element> elements,List<Part.Row> rows,Map<String,List<Part.Row>> sources,int page,List<Batch> batches){}
-    private final Map<Part,Compiled> cache=new WeakHashMap<>(); // Values never retain Part/Host/Level.
+    private final Map<Part,Compiled> cache=new WeakHashMap<>(); // Values never retain Part/Host/World.
     void paint(Part part,List<Part.Element> elements,DisplayCanvas canvas,MonitorPresentation.Region area,boolean editing){
         if(MonitorPresentation.automatic(part.displayMode,editing)&&elements.equals(part.elements)){
             automatic(part,canvas,area);return;
@@ -61,11 +61,11 @@ final class DisplayPainter {
         if(!spec.asset().isBlank()){
             var id=ResourceLocation.tryParse(spec.asset());if(id==null)return List.of();
             if(spec.type()==DisplayElements.Type.FLUID||spec.type()==DisplayElements.Type.FLUID_GRID){
-                var value=BuiltInRegistries.FLUID.get(id);if(value==net.minecraft.world.level.material.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
-                return List.of(new Part.Row(spec.asset(),fluid.getHoverName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new CompoundTag(),new CompoundTag()));
+                var value=Registry.FLUID.get(id);if(value==net.minecraft.fluid.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
+                return List.of(new Part.Row(spec.asset(),fluid.getDisplayName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new CompoundNBT(),new CompoundNBT()));
             }
-            ItemStack item=new ItemStack(BuiltInRegistries.ITEM.get(id));if(item.isEmpty())return List.of();
-            return List.of(new Part.Row(spec.asset(),item.getHoverName().getString(),1,0,"items",item,FluidStack.EMPTY,new CompoundTag(),new CompoundTag()));
+            ItemStack item=new ItemStack(Registry.ITEM.get(id));if(item.isEmpty())return List.of();
+            return List.of(new Part.Row(spec.asset(),item.getHoverName().getString(),1,0,"items",item,FluidStack.EMPTY,new CompoundNBT(),new CompoundNBT()));
         }
         return spec.reader().isBlank()?List.copyOf(part.rows):part.sourceRows.getOrDefault(spec.reader(),List.of());
     }

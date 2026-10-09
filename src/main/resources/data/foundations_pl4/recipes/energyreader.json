@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:energyreader"
+  },
+  "ingredients": [
+    {
+      "item": "foundations_pl4:inforeader"
+    },
+    {
+      "tag": "c:gems/sapphire"
+    }
+  ]
+}

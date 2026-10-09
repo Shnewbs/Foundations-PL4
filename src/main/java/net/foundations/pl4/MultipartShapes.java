@@ -1,16 +1,17 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.util.Direction;
+import net.minecraft.block.Block;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.shapes.VoxelShape;
 
 /** Paired reader/display geometry and actual external endpoint leads; no world lookup in rendering. */
 public final class MultipartShapes {
     private static final VoxelShape[] READER_WITH_DISPLAY=new VoxelShape[6];
     private static final EnumMap<Kind,VoxelShape[]> LEADS=new EnumMap<>(Kind.class);
     static {
-        for(Direction face:Direction.values())READER_WITH_DISPLAY[face.ordinal()]=Shapes.or(
+        for(Direction face:Direction.values())READER_WITH_DISPLAY[face.ordinal()]=VoxelShapes.or(
             PartShapes.rotate(new double[]{5.5,1,5.5,10.5,6,10.5},face),
             PartShapes.rotate(new double[]{5,1,5,11,5,11},face)).optimize();
         for(Kind kind:Kind.values())if(!kind.cable()){
@@ -37,13 +38,13 @@ public final class MultipartShapes {
         if(part.hologram()){
             int turns=net.foundations.pl4.core.HologramProjection.baseYaw(part.face.ordinal(),part.hologramView)/90;
             for(int i=0;i<turns;i++){
-                var rotated=Shapes.empty();
-                for(var box:shape.toAabbs())rotated=Shapes.or(rotated,Shapes.box(box.minZ,box.minY,1-box.maxX,box.maxZ,box.maxY,1-box.minX));
+                var rotated=VoxelShapes.empty();
+                for(var box:shape.toAabbs())rotated=VoxelShapes.or(rotated,VoxelShapes.box(box.minZ,box.minY,1-box.maxX,box.maxZ,box.maxY,1-box.minX));
                 shape=rotated.optimize();
             }
         }
         return shape;
     }
-    public static VoxelShape lead(Part part){return part.kind.cable()?Shapes.empty():LEADS.get(part.kind)[part.face.ordinal()];}
+    public static VoxelShape lead(Part part){return part.kind.cable()?VoxelShapes.empty():LEADS.get(part.kind)[part.face.ordinal()];}
     private MultipartShapes(){}
 }

@@ -2,7 +2,7 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.foundations.pl4.core.MechanicalEnergyAccess;
-import net.minecraft.core.Direction;
+import net.minecraft.util.Direction;
 import net.minecraft.server.MinecraftServer;
 
 /** Loaded-target-only telemetry; multiple AE2 nodes on the same grid are counted once. */
@@ -11,7 +11,7 @@ final class OptionalPowerTelemetry {
     private static MechanicalEnergyAccess.AE2 ae2;
     private static boolean resolved;private static final Set<String> warned=new HashSet<>();
     static void clear(){resolved=false;create=null;ae2=null;warned.clear();}
-    private static void warn(String provider,Throwable e){if(warned.add(provider))org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("{} telemetry unavailable; check installed API version",provider,e);}
+    private static void warn(String provider,Throwable e){if(warned.add(provider))org.apache.logging.log4j.LogManager.getLogger("FoundationsPL4").warn("{} telemetry unavailable; check installed API version",provider,e);}
     private static void resolve(){
         if(resolved)return;resolved=true;
         try{create=new MechanicalEnergyAccess.Create(Class.forName("com.simibubi.create.content.kinetics.base.KineticBlockEntity",false,OptionalPowerTelemetry.class.getClassLoader()));}catch(ClassNotFoundException absent){}catch(ReflectiveOperationException|RuntimeException|LinkageError e){warn("Create",e);}

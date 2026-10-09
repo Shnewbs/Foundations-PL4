@@ -30,7 +30,7 @@ public final class R11RegressionTests {
     var base=DisplayElements.create(DisplayElements.Type.TEXT,0,248,120);
     var styled=base.textStyle(DisplayElements.TextAlign.CENTER,true,2F);
     check(styled.bounds(base.bounds()).textAlign()==DisplayElements.TextAlign.CENTER&&styled.onPage(1).wrap()&&styled.identity(styled.id()).textScale()==2F,"element copies preserve text style and scale");
-    var draw=(DisplayElements.Text)DisplayElements.plan(styled,List.of()).draws().getFirst();
+    var draw=(DisplayElements.Text)DisplayElements.plan(styled,List.of()).draws().get(0);
     check(draw.alignment()==DisplayElements.TextAlign.CENTER&&draw.wrap()&&draw.scale()==2F&&draw.height()==styled.bounds().height(),"text scene carries alignment, wrapping, scale and clipping height");
     check(DisplayElements.TextAlign.parse("right")==DisplayElements.TextAlign.RIGHT&&DisplayElements.TextAlign.parse("unknown")==DisplayElements.TextAlign.LEFT,"alignment parsing is case-insensitive and safely defaults");
     check(base.textScale()==1F,"default text scale is 1x");

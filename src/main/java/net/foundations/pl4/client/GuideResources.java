@@ -5,26 +5,26 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 import com.google.gson.*;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
-import net.neoforged.fml.loading.FMLPaths;
-import org.slf4j.LoggerFactory;
+import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.LogManager;
 
 /** Loaded only when opening the guide. No world subscriptions, polling threads or static screen references. */
 final class GuideResources {
     private static final Gson JSON=new GsonBuilder().setPrettyPrinting().create();
-    static GuideBook load(ResourceManager manager,String language){
+    static GuideBook load(IResourceManager manager,String language){
         try{
             String safe=language!=null&&language.matches("[a-z_]{2,16}")?language:"en_us";
-            var resource=manager.getResource(FoundationsPL4.id("guide/"+safe+".json"));
-            if(resource.isEmpty())resource=manager.getResource(FoundationsPL4.id("guide/en_us.json"));
-            try(var in=resource.orElseThrow(()->new IOException("Missing PL4 guide resource")).open()){
+            var id=FoundationsPL4.id("guide/"+safe+".json");
+            if(!manager.hasResource(id))id=FoundationsPL4.id("guide/en_us.json");
+            try(var resource=manager.getResource(id);var in=resource.getInputStream()){
                 byte[] bytes=in.readNBytes(1_048_577);if(bytes.length>1_048_576)throw new IOException("Guide exceeds 1 MiB limit");
-                return decode(JsonParser.parseString(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject());
+                return decode(new JsonParser().parse(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject());
             }
         }catch(IOException|RuntimeException error){
-            LoggerFactory.getLogger("FoundationsPL4").warn("Cannot load PL4 Field Guide resource",error);
+            LogManager.getLogger("FoundationsPL4").warn("Cannot load PL4 Field Guide resource",error);
             return new GuideBook("Foundations PL4 Field Guide","Resource recovery",List.of(new GuideBook.Chapter("recovery","start","Guide resource error",
                 "Restore the bundled guide or fix your resource pack.","foundations_pl4:plguide",List.of(new GuideBook.Section("RECOVERY",
                 "A guide resource could not be loaded. Restore assets/foundations_pl4/guide/en_us.json in your resource pack, reload resources, then reopen this guide. The client log contains the validation error. Your world data is unchanged.")))));
@@ -44,10 +44,10 @@ final class GuideResources {
     private static Path path(){return FMLPaths.CONFIGDIR.get().resolve("foundations").resolve("pl4_guide.json");}
     static Preferences preferences(){
         Preferences p=new Preferences();Path file=path();
-        try{if(Files.isRegularFile(file)&&Files.size(file)<=16_384){var json=JsonParser.parseString(Files.readString(file)).getAsJsonObject();
+        try{if(Files.isRegularFile(file)&&Files.size(file)<=16_384){var json=new JsonParser().parse(Files.readString(file)).getAsJsonObject();
             if(json.has("chapter"))p.chapter=json.get("chapter").getAsString();
             if(json.has("saved"))for(var id:json.getAsJsonArray("saved")){if(p.saved.size()>=128)break;p.saved.add(id.getAsString());}
-        }}catch(IOException|RuntimeException e){LoggerFactory.getLogger("FoundationsPL4").warn("Cannot read guide preferences; using defaults",e);}
+        }}catch(IOException|RuntimeException e){LogManager.getLogger("FoundationsPL4").warn("Cannot read guide preferences; using defaults",e);}
         return p;
     }
     static void save(Preferences p){
@@ -58,7 +58,7 @@ final class GuideResources {
             Files.writeString(temp,JSON.toJson(json),StandardCharsets.UTF_8);
             try{Files.move(temp,file,StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);}
             catch(AtomicMoveNotSupportedException e){Files.move(temp,file,StandardCopyOption.REPLACE_EXISTING);}
-        }catch(IOException e){LoggerFactory.getLogger("FoundationsPL4").warn("Cannot save guide preferences",e);}
+        }catch(IOException e){LogManager.getLogger("FoundationsPL4").warn("Cannot save guide preferences",e);}
         finally{if(temp!=null)try{Files.deleteIfExists(temp);}catch(IOException ignored){}}
     }
     private GuideResources(){}

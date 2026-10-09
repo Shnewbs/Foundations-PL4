@@ -1,9 +1,10 @@
 package net.foundations.pl4;
 
 import java.util.EnumMap;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.util.Direction;
+import net.minecraft.block.Block;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.foundations.pl4.core.ConnectionRules;
 
 /** Static model-matched part shapes, generated from the retained PL2 JSON elements. */
@@ -42,14 +43,14 @@ public final class PartShapes {
         private static void add(Kind kind,double[][] boxes) {
             VoxelShape[] directions=new VoxelShape[6];
             for(Direction face:Direction.values()) {
-                VoxelShape shape=Shapes.empty();
-                for(double[] box:boxes) shape=Shapes.or(shape,rotate(box,face));
+                VoxelShape shape=VoxelShapes.empty();
+                for(double[] box:boxes) shape=VoxelShapes.or(shape,rotate(box,face));
                 directions[face.ordinal()]=shape.optimize();
             }
             SHAPES.put(kind,directions);
         }
         public static VoxelShape part(Part part) { return SHAPES.get(part.kind)[part.face.ordinal()]; }
-        public static VoxelShape arm(int type,Direction face) { return type<1||type>3?Shapes.empty():ARMS[type][face.ordinal()]; }
+        public static VoxelShape arm(int type,Direction face) { return type<1||type>3?VoxelShapes.empty():ARMS[type][face.ordinal()]; }
         static VoxelShape rotate(double[] b,Direction face) {
             double[] lo={16,16,16},hi={0,0,0};
             for(int a=0;a<8;a++) {

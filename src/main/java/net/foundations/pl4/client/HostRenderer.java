@@ -1,29 +1,31 @@
 package net.foundations.pl4.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.blockentity.*;
-import net.minecraft.core.Direction;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.Direction;
 import net.foundations.pl4.*;
 
-public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
+public final class HostRenderer extends TileEntityRenderer<HostEntity> {
     private static final Direction[] FACES=Direction.values();
     private final DisplayPainter displayPainter=new DisplayPainter();
-    private final net.minecraft.world.level.block.state.BlockState[][][] cableStates=new net.minecraft.world.level.block.state.BlockState[3][4][6];
-    private final net.minecraft.world.level.block.state.BlockState[][] kineticStates=new net.minecraft.world.level.block.state.BlockState[2][6],ae2States=new net.minecraft.world.level.block.state.BlockState[2][6];
-    private final java.util.EnumMap<Kind,net.minecraft.world.level.block.state.BlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
-    private final net.minecraft.world.level.block.state.BlockState[][][] largeStates=new net.minecraft.world.level.block.state.BlockState[2][6][16];
-    private final java.util.EnumMap<Kind,net.minecraft.world.level.block.state.BlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
-    public HostRenderer(BlockEntityRendererProvider.Context c){
+    private final net.minecraft.block.BlockState[][][] cableStates=new net.minecraft.block.BlockState[3][4][6];
+    private final net.minecraft.block.BlockState[][] kineticStates=new net.minecraft.block.BlockState[2][6],ae2States=new net.minecraft.block.BlockState[2][6];
+    private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
+    private final net.minecraft.block.BlockState[][][] largeStates=new net.minecraft.block.BlockState[2][6][16];
+    private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
+    public HostRenderer(TileEntityRendererDispatcher c){super(c);
         String[] materials={"data","redstone_off","redstone_on"},connectors={"centre","cable","internal","half"};
-        var leadStates=new java.util.HashMap<String,net.minecraft.world.level.block.state.BlockState[]>();
+        var leadStates=new java.util.HashMap<String,net.minecraft.block.BlockState[]>();
         for(int m=0;m<3;m++)for(int type=0;type<4;type++)for(Direction face:FACES)
             cableStates[m][type][face.ordinal()]=FoundationsPL4.CABLE_MODELS.get(materials[m]+"_"+connectors[type]).get().defaultBlockState().setValue(CableModelBlock.FACING,face);
         for(Kind kind:Kind.values()){
-            var states=new net.minecraft.world.level.block.state.BlockState[2][6];
+            var states=new net.minecraft.block.BlockState[2][6];
             for(int side=0;side<2;side++)for(Direction face:FACES)states[side][face.ordinal()]=FoundationsPL4.MODELS.get(kind).get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.FRONT_OUTWARD,side==1).setValue(PartModelBlock.HAS_DISPLAY,kind.reader()&&side==1);
             partStates.put(kind,states);
         }
@@ -32,18 +34,18 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
             ae2States[covered][face.ordinal()]=FoundationsPL4.AE2_READER_MODEL.get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.HAS_DISPLAY,covered==1);
         }
         for(String material:materials)for(String depth:new String[]{"1","15","2","3","4","6"}){
-            String key=material+"_lead_"+depth;var states=new net.minecraft.world.level.block.state.BlockState[6];
+            String key=material+"_lead_"+depth;var states=new net.minecraft.block.BlockState[6];
             for(Direction face:FACES)states[face.ordinal()]=FoundationsPL4.CABLE_MODELS.get(key).get().defaultBlockState().setValue(CableModelBlock.FACING,face);
             leadStates.put(key,states);
         }
         for(Kind kind:Kind.values()){
-            var states=new net.minecraft.world.level.block.state.BlockState[3][];
+            var states=new net.minecraft.block.BlockState[3][];
             for(int material=0;material<3;material++)states[material]=leadStates.get(materials[material]+"_lead_"+MultipartShapes.leadKey(kind));
             leadModels.put(kind,states);
         }
         for(int side=0;side<2;side++)for(Direction face:FACES)for(int mask=0;mask<16;mask++)largeStates[side][face.ordinal()][mask]=FoundationsPL4.LARGE_MODEL.get().defaultBlockState().setValue(LargeDisplayModelBlock.FACING,face).setValue(LargeDisplayModelBlock.CONNECTIONS,mask).setValue(LargeDisplayModelBlock.FRONT_OUTWARD,side==1);
     }
-    @Override public void render(HostEntity host,float partial,PoseStack pose,MultiBufferSource buffer,int light,int overlay){
+    @Override public void render(HostEntity host,float partial,MatrixStack pose,IRenderTypeBuffer buffer,int light,int overlay){
         Minecraft mc=Minecraft.getInstance();
         for(Part part:host.parts.values()){
             if(part.kind.cable()) {
@@ -60,7 +62,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
                 pose.pushPose();
                 if(part.hologram()){
                     int yaw=net.foundations.pl4.core.HologramProjection.baseYaw(part.face.ordinal(),part.hologramView);
-                    pose.translate(.5,.5,.5);pose.mulPose(Axis.YP.rotationDegrees(yaw));pose.translate(-.5,-.5,-.5);
+                    pose.translate(.5,.5,.5);pose.mulPose(Vector3f.YP.rotationDegrees(yaw));pose.translate(-.5,-.5,-.5);
                 }
                 var model=partStates.get(part.kind)[part.kind.reader()?(host.readerHasDisplay(part)?1:0):(part.displayOutward?1:0)][part.face.ordinal()];
                 if(part.kind==Kind.ENERGY_READER){if(part.energySystem.equals("CREATE"))model=kineticStates[host.readerHasDisplay(part)?1:0][part.face.ordinal()];else if(part.energySystem.equals("AE2"))model=ae2States[host.readerHasDisplay(part)?1:0][part.face.ordinal()];}
@@ -74,7 +76,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
             if(part.kind.display()&&(part.kind!=Kind.LARGE_DISPLAY||(part.canvasColumn==0&&part.canvasRow==0)))display(host,part,pose,buffer,mc.font);
         }
     }
-    private void display(HostEntity host,Part p,PoseStack pose,MultiBufferSource buffer,Font font){
+    private void display(HostEntity host,Part p,MatrixStack pose,IRenderTypeBuffer buffer,FontRenderer font){
         var eye=Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         net.foundations.pl4.core.DisplayFacing.Frame frame;
         double ox,oy,oz;
@@ -89,8 +91,8 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
             if((eye.x-host.getBlockPos().getX()-ox)*frame.normal().x()+(eye.y-host.getBlockPos().getY()-oy)*frame.normal().y()+(eye.z-host.getBlockPos().getZ()-oz)*frame.normal().z()<=0)return;
         }
         pose.pushPose();pose.translate(ox,oy,oz);
-        if(frame.rotationX()!=0)pose.mulPose(Axis.XP.rotationDegrees(frame.rotationX()));
-        if(frame.rotationY()!=0)pose.mulPose(Axis.YP.rotationDegrees(frame.rotationY()));
+        if(frame.rotationX()!=0)pose.mulPose(Vector3f.XP.rotationDegrees(frame.rotationX()));
+        if(frame.rotationY()!=0)pose.mulPose(Vector3f.YP.rotationDegrees(frame.rotationY()));
         float scale=p.kind==Kind.MINI_DISPLAY?.0018F:.0035F;
         int logicalW=net.foundations.pl4.core.DisplayElements.WIDTH,logicalH=net.foundations.pl4.core.DisplayElements.HEIGHT;
         if(p.kind==Kind.LARGE_DISPLAY){
@@ -108,18 +110,18 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
         if(editor!=null){editor.capture(pose.last().pose());editor.drawOnMonitor(canvas,p);}
         pose.popPose();
     }
-    private void text(Font font,String text,int x,int y,int color,PoseStack pose,MultiBufferSource buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.plainSubstrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}
-    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(HostEntity host){
-        var bounds=new net.minecraft.world.phys.AABB(host.getBlockPos());
+    private void text(FontRenderer font,String text,int x,int y,int color,MatrixStack pose,IRenderTypeBuffer buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.plainSubstrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,false,0,15728880);}
+    public static net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox(HostEntity host){
+        var bounds=new net.minecraft.util.math.AxisAlignedBB(host.getBlockPos());
         for(Part p:host.parts.values())if(p.kind==Kind.LARGE_DISPLAY&&p.canvasColumn==0&&p.canvasRow==0){
             var end=host.getBlockPos().relative(DisplayNetworks.right(p),p.canvasWidth-1).relative(DisplayNetworks.up(p).getOpposite(),p.canvasHeight-1);
-            bounds=bounds.minmax(new net.minecraft.world.phys.AABB(end));
+            bounds=bounds.minmax(new net.minecraft.util.math.AxisAlignedBB(end));
         }
         // Projected text extends outside the projector base; include both view faces in frustum bounds.
         for(Part p:host.parts.values())if(p.hologram()){
             var centre=net.foundations.pl4.core.HologramProjection.centre(p.face.ordinal(),p.hologramView,p.kind==Kind.ADVANCED_HOLOGRAM);
             var origin=host.getBlockPos();
-            bounds=bounds.minmax(new net.minecraft.world.phys.AABB(origin.getX()+centre.x()-.55,origin.getY()+centre.y()-.35,origin.getZ()+centre.z()-.55,
+            bounds=bounds.minmax(new net.minecraft.util.math.AxisAlignedBB(origin.getX()+centre.x()-.55,origin.getY()+centre.y()-.35,origin.getZ()+centre.z()-.55,
                 origin.getX()+centre.x()+.55,origin.getY()+centre.y()+.35,origin.getZ()+centre.z()+.55));
         }
         // Left controls are 17 logical pixels outside the canvas. Include them at the largest
@@ -128,5 +130,5 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
         if(editor!=null&&host.parts.values().stream().anyMatch(p->p.kind.display()&&editor.matches(host,p)))return bounds.inflate(1.25);
         return bounds.inflate(.063);
     }
-    @Override public int getViewDistance(){return 64;}
+    public int getViewDistance(){return 64;}
 }

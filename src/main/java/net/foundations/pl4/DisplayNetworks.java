@@ -1,15 +1,16 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.core.*;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Direction;
+import net.minecraft.world.server.ServerWorld;
 import net.foundations.pl4.core.DisplayLayout;
 
 /** Display joining never joins electrical/data cable networks. Only an explicit connected reader is sampled.
  * The active layout is mirrored to each member at rebuild/edit, so growth, root removal and reload are stable.
  */
 public final class DisplayNetworks {
-    private record Plane(ServerLevel level,UUID owner,Direction face,int depth,boolean outward) {}
+    private record Plane(ServerWorld level,UUID owner,Direction face,int depth,boolean outward) {}
     private record Canvas(NetworkEngine.Ref root,List<NetworkEngine.Ref> tiles,List<NetworkEngine.Ref> readers) {}
     private static final Map<Part,NetworkEngine.Ref> ROOTS=new IdentityHashMap<>();
     private static List<Canvas> canvases=List.of();
@@ -77,7 +78,7 @@ public final class DisplayNetworks {
     }
     private static Comparator<NetworkEngine.Ref> readerOrder(){return Comparator.comparingInt((NetworkEngine.Ref r)->r.part().priority).reversed().thenComparing(r->r.level().dimension().location().toString()).thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());}
     /** Bounded preflight of the proposed connected plane; never requests an unloaded chunk. */
-    public static boolean canExtendAt(net.minecraft.world.level.Level level,BlockPos position,Part template,net.minecraft.world.entity.player.Player player){
+    public static boolean canExtendAt(net.minecraft.world.World level,BlockPos position,Part template,net.minecraft.entity.player.PlayerEntity player){
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();queue.add(position);seen.add(position);
         List<DisplayLayout.Cell> cells=new ArrayList<>();Direction right=right(template),up=up(template);
         while(!queue.isEmpty()){
@@ -96,7 +97,7 @@ public final class DisplayNetworks {
         }
         return true;
     }
-    public static boolean canEditCanvas(net.minecraft.server.level.ServerPlayer player,HostEntity host,Part part){
+    public static boolean canEditCanvas(net.minecraft.entity.player.ServerPlayerEntity player,HostEntity host,Part part){
         if(!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos()))return false;
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part))
             for(var tile:canvas.tiles)if(!tile.host().canEdit(player)||!tile.level().mayInteract(player,tile.host().getBlockPos()))return false;
@@ -116,15 +117,15 @@ public final class DisplayNetworks {
     }
     public static void layoutEdited(HostEntity host,Part part){applyLayout(host,part,part.displaySettings(),nextLayoutRevision(part));}
     public static NetworkEngine.Ref controller(HostEntity host,Part part){
-        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof ServerWorld level)NetworkEngine.ensureCurrent(level.getServer());
         return ROOTS.getOrDefault(part,new NetworkEngine.Ref(host,part));
     }
     /** Preflight the possible merged front before any settings are mirrored into neighboring tiles. */
-    private static boolean canFlipInto(net.minecraft.server.level.ServerPlayer player,List<NetworkEngine.Ref> tiles,boolean outward){
-        if(tiles.getFirst().part().kind!=Kind.LARGE_DISPLAY)return true;
+    private static boolean canFlipInto(net.minecraft.entity.player.ServerPlayerEntity player,List<NetworkEngine.Ref> tiles,boolean outward){
+        if(tiles.get(0).part().kind!=Kind.LARGE_DISPLAY)return true;
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();
         for(var tile:tiles){seen.add(tile.host().getBlockPos());queue.add(tile.host().getBlockPos());}
-        Part template=tiles.getFirst().part();var level=tiles.getFirst().level();Direction right=right(template),up=up(template);
+        Part template=tiles.get(0).part();var level=tiles.get(0).level();Direction right=right(template),up=up(template);
         while(!queue.isEmpty()){
             BlockPos pos=queue.removeFirst();
             for(Direction side:List.of(right,right.getOpposite(),up,up.getOpposite())){
@@ -143,7 +144,7 @@ public final class DisplayNetworks {
         return true;
     }
     /** Explicit whole-canvas flip retains a snapshot of the active settings, even if a new donor appears. */
-    public static boolean flip(net.minecraft.server.level.ServerPlayer player,HostEntity anchor,Part part,boolean outward){
+    public static boolean flip(net.minecraft.entity.player.ServerPlayerEntity player,HostEntity anchor,Part part,boolean outward){
         NetworkEngine.ensureCurrent(player.getServer());
         var root=controller(anchor,part);
         List<NetworkEngine.Ref> tiles=List.of(new NetworkEngine.Ref(anchor,part));
@@ -159,12 +160,12 @@ public final class DisplayNetworks {
         return true;
     }
     private static NetworkEngine.Ref reader(List<NetworkEngine.Ref> readers,String selector){
-        if(selector.isEmpty())return readers.isEmpty()?null:readers.getFirst();
+        if(selector.isEmpty())return readers.isEmpty()?null:readers.get(0);
         var exact=readers.stream().filter(r->r.part().identity.toString().equals(selector)).findFirst();if(exact.isPresent())return exact.get();
-        var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.getFirst():null;
+        var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.get(0):null;
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
-        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof ServerWorld level)NetworkEngine.ensureCurrent(level.getServer());
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){
             var ref=reader(canvas.readers,selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
         }return List.of();

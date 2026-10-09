@@ -1,18 +1,22 @@
 package net.foundations.pl4;
 
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.*;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.*;
 
 /** Original two-slot / 176x143 layout, with server-authoritative vanilla container transactions. */
-public final class HammerMenu extends AbstractContainerMenu {
+public final class HammerMenu extends Container {
     private static final int PLAYER_START=2,MAIN_END=29,END=38;
     private final HammerEntity hammer;
-    private final ContainerData data;
+    private final IIntArray data;
     // Client has a fresh dummy inventory. No local world inventory is ever modified by slot prediction.
-    public HammerMenu(int id,Inventory playerInventory){this(id,playerInventory,null,new SimpleContainerData(5));}
-    public HammerMenu(int id,Inventory playerInventory,HammerEntity hammer,ContainerData data){
+    public HammerMenu(int id,PlayerInventory playerInventory){this(id,playerInventory,null,new IntArray(5));}
+    public HammerMenu(int id,PlayerInventory playerInventory,HammerEntity hammer,IIntArray data){
         super(FoundationsPL4.HAMMER_MENU.get(),id);this.hammer=hammer;this.data=data;
         checkContainerDataCount(data,5);
         IItemHandler inventory=hammer==null?new ItemStackHandler(2):hammer.inventory;
@@ -24,13 +28,13 @@ public final class HammerMenu extends AbstractContainerMenu {
     }
     public int progress(){return data.get(0);} public int duration(){return Math.max(1,data.get(1));}
     public int cooldown(){return data.get(2);} public int status(){return data.get(4);}
-    @Override public boolean stillValid(Player player){
-        return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level()
-            &&player.level().getBlockEntity(hammer.getBlockPos())==hammer
-            &&player.level().getBlockState(hammer.getBlockPos()).is(FoundationsPL4.HAMMER.get())
-            &&player.distanceToSqr(hammer.getBlockPos().getCenter())<=64);
+    @Override public boolean stillValid(PlayerEntity player){
+        return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level
+            &&player.level.getBlockEntity(hammer.getBlockPos())==hammer
+            &&(player.level.getBlockState(hammer.getBlockPos()).getBlock()==FoundationsPL4.HAMMER.get())
+            &&player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(hammer.getBlockPos()))<=64);
     }
-    @Override public ItemStack quickMoveStack(Player player,int index){
+    @Override public ItemStack quickMoveStack(PlayerEntity player,int index){
         if(index<0||index>=slots.size()||!stillValid(player))return ItemStack.EMPTY;
         Slot slot=slots.get(index);if(!slot.hasItem()||!slot.mayPickup(player))return ItemStack.EMPTY;
         ItemStack source=slot.getItem(),original=source.copy();

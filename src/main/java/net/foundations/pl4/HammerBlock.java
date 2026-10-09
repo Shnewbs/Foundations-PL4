@@ -1,52 +1,60 @@
 package net.foundations.pl4;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.*;
-import net.minecraft.world.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.Block;
+import net.minecraft.util.Mirror;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.util.Rotation;
+import net.minecraft.tileentity.TileEntity;
 
-public final class HammerBlock extends BaseEntityBlock {
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.shapes.VoxelShape;
+
+public final class HammerBlock extends ContainerBlock {
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
-    private static final VoxelShape BASE=Shapes.or(box(0,8,0,16,12,16),box(4,12,4,12,14,12),
+    private static final VoxelShape BASE=VoxelShapes.or(box(0,8,0,16,12,16),box(4,12,4,12,14,12),
         box(0,0,0,16,2,16),box(1,0,1,4,16,4),box(12,0,1,15,16,4),box(1,0,12,4,16,15),box(12,0,12,15,16,15));
     public HammerBlock(Properties p){super(p);registerDefaultState(stateDefinition.any().setValue(FACING,Direction.NORTH));}
-    @Override protected MapCodec<? extends BaseEntityBlock> codec(){return simpleCodec(HammerBlock::new);}
-    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> b){b.add(FACING);}
-    @Override public BlockState getStateForPlacement(BlockPlaceContext c){
+    @Override public void createBlockStateDefinition(StateContainer.Builder<Block,BlockState> b){b.add(FACING);}
+    @Override public BlockState getStateForPlacement(BlockItemUseContext c){
         if(!HammerStructure.canPlace(c.getLevel(),c.getClickedPos()))return null;
-        Player player=c.getPlayer();
+        PlayerEntity player=c.getPlayer();
         if(player!=null)for(int i=1;i<=2;i++)if(!c.getLevel().mayInteract(player,c.getClickedPos().above(i))
             ||!player.mayUseItemAt(c.getClickedPos().above(i),Direction.UP,c.getItemInHand()))return null;
         return defaultBlockState().setValue(FACING,c.getHorizontalDirection().getOpposite());
     }
-    @Override protected BlockState rotate(BlockState s,Rotation r){return s.setValue(FACING,r.rotate(s.getValue(FACING)));}
-    @Override protected BlockState mirror(BlockState s,Mirror m){return rotate(s,m.getRotation(s.getValue(FACING)));}
-    @Override protected RenderShape getRenderShape(BlockState s){return RenderShape.ENTITYBLOCK_ANIMATED;}
-    @Override protected VoxelShape getShape(BlockState s,BlockGetter l,BlockPos p,CollisionContext c){return BASE;}
-    @Override protected void onPlace(BlockState s,Level l,BlockPos p,BlockState old,boolean moving){
-        super.onPlace(s,l,p,old,moving);if(!old.is(this)&&!l.isClientSide)HammerStructure.ensure(l,p);
+    @Override public BlockState rotate(BlockState s,Rotation r){return s.setValue(FACING,r.rotate(s.getValue(FACING)));}
+    @Override public BlockState mirror(BlockState s,Mirror m){return rotate(s,m.getRotation(s.getValue(FACING)));}
+    @Override public BlockRenderType getRenderShape(BlockState s){return BlockRenderType.ENTITYBLOCK_ANIMATED;}
+    @Override public VoxelShape getShape(BlockState s,IBlockReader l,BlockPos p,ISelectionContext c){return BASE;}
+    @Override public void onPlace(BlockState s,World l,BlockPos p,BlockState old,boolean moving){
+        super.onPlace(s,l,p,old,moving);if(!(old.getBlock()==this)&&!l.isClientSide)HammerStructure.ensure(l,p);
     }
-    @Override public BlockEntity newBlockEntity(BlockPos p,BlockState s){return new HammerEntity(p,s);}
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level l,BlockState s,BlockEntityType<T> type){
-        return l.isClientSide?null:createTickerHelper(type,FoundationsPL4.HAMMER_ENTITY.get(),HammerEntity::tick);
+    @Override public TileEntity newBlockEntity(IBlockReader world){return new HammerEntity();}
+
+    @Override public ActionResultType use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit);}
+    public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
+        return HammerStructure.open(l,pos,p)?ActionResultType.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }
-    @Override protected ItemInteractionResult useItemOn(ItemStack stack,BlockState s,Level l,BlockPos pos,Player p,InteractionHand hand,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?ItemInteractionResult.sidedSuccess(l.isClientSide):ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
-    @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
-        return HammerStructure.open(l,pos,p)?InteractionResult.sidedSuccess(l.isClientSide):InteractionResult.PASS;
-    }
-    @Override protected void onRemove(BlockState s,Level l,BlockPos pos,BlockState next,boolean moving){
-        if(!s.is(next.getBlock())&&!l.isClientSide&&l.getBlockEntity(pos) instanceof HammerEntity h) {
+    @Override public void onRemove(BlockState s,World l,BlockPos pos,BlockState next,boolean moving){
+        if(!(s.getBlock()==next.getBlock())&&!l.isClientSide&&l.getBlockEntity(pos) instanceof HammerEntity h) {
             // Clear before dropping so callbacks cannot observe the same inventory twice.
             for(int i=0;i<h.inventory.getSlots();i++) {
                 ItemStack stack=h.inventory.getStackInSlot(i).copy();h.inventory.setStackInSlot(i,ItemStack.EMPTY);
@@ -54,6 +62,7 @@ public final class HammerBlock extends BaseEntityBlock {
             }
         }
         super.onRemove(s,l,pos,next,moving);
-        if(!s.is(next.getBlock()))HammerStructure.removeOwnedSpaces(l,pos);
+        if(!(s.getBlock()==next.getBlock()))HammerStructure.removeOwnedSpaces(l,pos);
     }
+    @Override public net.minecraft.block.material.PushReaction getPistonPushReaction(BlockState state){return net.minecraft.block.material.PushReaction.BLOCK;}
 }

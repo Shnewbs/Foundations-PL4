@@ -1,29 +1,17 @@
 package net.foundations.pl4.client;
-
-import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.model.geom.*;
-import net.minecraft.client.model.geom.builders.*;
-import net.foundations.pl4.FoundationsPL4;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.foundations.pl4.core.HammerGeometry;
-
-/** Baked original PL2 boxes/UVs. The texture is a model skin, not a block-face atlas. */
+/** Same model boxes, UVs and animation rules on the native pre-layer model API. */
 public final class HammerModel {
-    public static final ModelLayerLocation LAYER = new ModelLayerLocation(FoundationsPL4.id("hammer"),"main");
-    private final ModelPart root;
-    public HammerModel(ModelPart root){this.root=root;}
-    public static LayerDefinition layer(){
-        MeshDefinition mesh=new MeshDefinition();
-        for(var p:HammerGeometry.PIECES)mesh.getRoot().addOrReplaceChild(p.name(),
-            CubeListBuilder.create().texOffs(p.u(),p.v()).addBox(p.x(),p.y(),p.z(),p.width(),p.height(),p.depth()),
-            PartPose.offsetAndRotation(p.px(),p.py(),p.pz(),p.rx(),p.ry(),p.rz()));
-        return LayerDefinition.create(mesh,HammerGeometry.TEXTURE_WIDTH,HammerGeometry.TEXTURE_HEIGHT);
-    }
-    public void render(PoseStack pose,VertexConsumer vertices,int light,int overlay,double progress,boolean assembled){
-        for(var piece:HammerGeometry.PIECES){
-            ModelPart part=root.getChild(piece.name());
-            part.visible=!piece.upper()||assembled;
-            part.y=piece.py()+(piece.moving()?HammerGeometry.TRAVEL*(float)progress:0);
-        }
-        root.render(pose,vertices,light,overlay);
-    }
+ private final java.util.Map<String,ModelRenderer> parts=new java.util.LinkedHashMap<>();
+ public HammerModel(){for(var piece:HammerGeometry.PIECES){
+  ModelRenderer part=new ModelRenderer(HammerGeometry.TEXTURE_WIDTH,HammerGeometry.TEXTURE_HEIGHT,piece.u(),piece.v());
+  part.addBox(piece.x(),piece.y(),piece.z(),piece.width(),piece.height(),piece.depth());part.setPos(piece.px(),piece.py(),piece.pz());
+  part.xRot=piece.rx();part.yRot=piece.ry();part.zRot=piece.rz();parts.put(piece.name(),part);
+ }}
+ public void render(MatrixStack pose,IVertexBuilder vertices,int light,int overlay,double progress,boolean assembled){for(var piece:HammerGeometry.PIECES){
+  var part=parts.get(piece.name());part.visible=!piece.upper()||assembled;part.y=piece.py()+(piece.moving()?HammerGeometry.TRAVEL*(float)progress:0);part.render(pose,vertices,light,overlay);
+ }}
 }
