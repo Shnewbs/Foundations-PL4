@@ -1,13 +1,13 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.foundations.pl4.core.DisplayElements;
 
 /** Page-local element list, frontmost first. Selection is shared with the world editor. */
-final class DisplayLayersScreen extends Screen {
+final class DisplayLayersScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;
     private int left,top,w,h,offset,rows;
     private long revision;
@@ -16,7 +16,7 @@ final class DisplayLayersScreen extends Screen {
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         w=Math.min(380,width-16);h=Math.min(426,height-16);left=(width-w)/2;top=(height-h)/2;
-        rows=Math.max(1,(h-200)/22);var layers=parent.pageLayers();offset=Math.clamp(offset,0,Math.max(0,layers.size()-rows));
+        rows=Math.max(1,(h-200)/22);var layers=parent.pageLayers();offset=net.foundations.pl4.compat.PortMath.clamp(offset,0,Math.max(0,layers.size()-rows));
         revision=parent.part.layoutRevision;pending=parent.layoutPending();
         for(int i=0;i<rows&&offset+i<layers.size();i++){
             var element=layers.get(offset+i);String detail=element.text().isBlank()?(element.asset().isBlank()?element.key():element.asset()):element.text();

@@ -1,6 +1,6 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.foundations.pl4.compat.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +9,7 @@ import net.foundations.pl4.*;
 import net.foundations.pl4.core.HammerMotion;
 
 /** Original 176x143 container texture and slot positions; status text occupies the unused separator. */
-public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
+public final class HammerScreen extends net.foundations.pl4.compat.PortContainerScreen<HammerMenu> {
     private static final ResourceLocation TEXTURE=FoundationsPL4.id("textures/gui/hammer.png");
     public HammerScreen(HammerMenu menu,Inventory inventory,Component title){
         super(menu,inventory,title);imageWidth=176;imageHeight=143;titleLabelY=6;
@@ -27,7 +27,7 @@ public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float partial){
         // Native AbstractContainerScreen performs the background pass BEFORE renderBg/slots.
-        super.render(g,mouseX,mouseY,partial);
+        renderBackground(g);super.render(g,mouseX,mouseY,partial);
         renderTooltip(g,mouseX,mouseY);
         if(mouseX>=leftPos+76&&mouseX<leftPos+100&&mouseY>=topPos+24&&mouseY<topPos+40)
             g.renderTooltip(font,Component.literal(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);

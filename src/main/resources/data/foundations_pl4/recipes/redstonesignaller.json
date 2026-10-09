@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:redstonesignaller"
+  },
+  "pattern": [
+    " T ",
+    " R ",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "R": {
+      "item": "foundations_pl4:signallingplate"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "C": {
+      "item": "foundations_pl4:datacable"
+    }
+  }
+}

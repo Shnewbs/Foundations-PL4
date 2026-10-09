@@ -1,8 +1,8 @@
 package net.foundations.pl4.client;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.EditBox;
 import net.minecraft.network.chat.Component;
 /** Draw the empty hint once and without Minecraft's dark text shadow on parchment. */
 final class GuideSearchBox extends EditBox {

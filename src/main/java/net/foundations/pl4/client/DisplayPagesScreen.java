@@ -1,13 +1,13 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.foundations.pl4.core.DisplayElements;
 
 /** Eight stable page slots. Clearing page contents never renumbers other pages. */
-final class DisplayPagesScreen extends Screen {
+final class DisplayPagesScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;
     private int left,top,w,h;
     private long revision;
@@ -23,7 +23,7 @@ final class DisplayPagesScreen extends Screen {
             var select=addRenderableWidget(Button.builder(Component.literal(label),b->{parent.pageAction("page",Integer.toString(target));rebuildWidgets();}).bounds(x,y,cellW-48,20).build());select.active=parent.editable&&!pending&&page!=parent.part.displayPage;
             var copy=addRenderableWidget(Button.builder(Component.literal("Copy"),b->{parent.pageAction("page_copy",Integer.toString(target));rebuildWidgets();}).bounds(x+cellW-46,y,46,20).build());copy.active=parent.editable&&!pending&&page!=parent.part.displayPage&&count==0&&source>0&&parent.part.elements.size()+source<=DisplayElements.MAX_ELEMENTS;
         }
-        var name=addRenderableWidget(new net.minecraft.client.gui.components.EditBox(font,left+10,top+h-79,w-98,20,Component.literal("Page name")));name.setMaxLength(32);name.setValue(parent.part.pageNames.get(parent.part.displayPage));name.setEditable(parent.editable&&!pending);
+        var name=addRenderableWidget(new net.foundations.pl4.compat.EditBox(font,left+10,top+h-79,w-98,20,Component.literal("Page name")));name.setMaxLength(32);name.setValue(parent.part.pageNames.get(parent.part.displayPage));name.setEditable(parent.editable&&!pending);
         var rename=addRenderableWidget(Button.builder(Component.literal("Rename"),b->parent.commit("page_name",null,name.getValue(),parent.part.layoutRevision)).bounds(left+w-80,top+h-79,70,20).build());rename.active=parent.editable&&!pending;
         var clear=addRenderableWidget(Button.builder(Component.literal("Clear current page"),b->{parent.pageAction("page_clear","");rebuildWidgets();}).bounds(left+10,top+h-49,(w-28)/2,20).build());clear.active=parent.editable&&!pending&&source>0;
         addRenderableWidget(Button.builder(Component.literal("Back to editor"),b->onClose()).bounds(left+18+(w-28)/2,top+h-49,(w-28)/2,20).build());

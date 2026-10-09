@@ -6,7 +6,9 @@ import net.foundations.pl4.core.ReflectiveEnergyTransfer;
 import net.foundations.pl4.core.ReflectiveElectrodynamicTransfer;
 import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
-import net.neoforged.neoforge.capabilities.*;
+import net.foundations.pl4.compat.Capabilities;
+import net.foundations.pl4.compat.BlockCapability;
+import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
 import org.slf4j.LoggerFactory;
 
 /** Sided optional adapters; no external mod classes are linked or world handlers retained. */
@@ -38,14 +40,14 @@ public final class EnergyPorts {
         if(!enabled(unit))return null;Part.Link link=ref.adjacent();if(!NetworkEngine.loaded(server,link))return null;
         var level=NetworkEngine.level(server,link);
         if(unit.equals("FE")){
-            var storage=level.getCapability(Capabilities.EnergyStorage.BLOCK,link.pos(),link.side());if(storage==null)return null;
+            var storage=net.foundations.pl4.compat.PortCapabilities.get(level,Capabilities.EnergyStorage.BLOCK,link.pos(),link.side());if(storage==null)return null;
             return new EnergyConversion.Port(){
                 public long extract(long n,boolean simulate){return storage.extractEnergy((int)Math.min(Integer.MAX_VALUE,n),simulate);}
                 public long insert(long n,boolean simulate){return storage.receiveEnergy((int)Math.min(Integer.MAX_VALUE,n),simulate);}
             };
         }
         Adapter adapter=adapters().get(unit);if(adapter==null)return null;
-        Object handler=level.getCapability(adapter.capability,link.pos(),link.side());
+        Object handler=net.foundations.pl4.compat.PortCapabilities.get(level,adapter.capability,link.pos(),link.side());
         return adapter.electro!=null?adapter.electro.bind(handler):adapter.access.bind(handler,link.side(),ref.part().energyVoltage,PLConfig.MAX_ENERGY_CONTAINERS.get());
     }
     private EnergyPorts(){}

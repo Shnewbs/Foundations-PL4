@@ -29,7 +29,7 @@ public final class R8RegressionTests {
         for(int w=1;w<=17;w++)for(int h=1;h<=17;h++){
             List<DisplayLayout.Cell> cells=new ArrayList<>();for(int x=0;x<w;x++)for(int y=0;y<h;y++)cells.add(new DisplayLayout.Cell(x-8,y-8));
             ok(DisplayPlacement.withinLimits(cells)==(w<=16&&h<=16),"Canvas maximum sides");
-            if(w>1&&h>1&&w<=16&&h<=16){cells.removeLast();ok(DisplayPlacement.withinLimits(cells),"Temporary L/hole may be completed");ok(DisplayLayout.rectangle(cells).isEmpty(),"Still no false rectangular join");}
+            if(w>1&&h>1&&w<=16&&h<=16){net.foundations.pl4.compat.PortLists.removeLast(cells);ok(DisplayPlacement.withinLimits(cells),"Temporary L/hole may be completed");ok(DisplayLayout.rectangle(cells).isEmpty(),"Still no false rectangular join");}
         }
         ok(!DisplayPlacement.withinLimits(List.of(new DisplayLayout.Cell(Integer.MIN_VALUE,0),new DisplayLayout.Cell(Integer.MAX_VALUE,0))),"Extent math does not overflow");
     }

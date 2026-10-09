@@ -121,10 +121,10 @@ public final class DisplayNetworks {
     }
     /** Preflight the possible merged front before any settings are mirrored into neighboring tiles. */
     private static boolean canFlipInto(net.minecraft.server.level.ServerPlayer player,List<NetworkEngine.Ref> tiles,boolean outward){
-        if(tiles.getFirst().part().kind!=Kind.LARGE_DISPLAY)return true;
+        if(tiles.get(0).part().kind!=Kind.LARGE_DISPLAY)return true;
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();
         for(var tile:tiles){seen.add(tile.host().getBlockPos());queue.add(tile.host().getBlockPos());}
-        Part template=tiles.getFirst().part();var level=tiles.getFirst().level();Direction right=right(template),up=up(template);
+        Part template=tiles.get(0).part();var level=tiles.get(0).level();Direction right=right(template),up=up(template);
         while(!queue.isEmpty()){
             BlockPos pos=queue.removeFirst();
             for(Direction side:List.of(right,right.getOpposite(),up,up.getOpposite())){
@@ -159,9 +159,9 @@ public final class DisplayNetworks {
         return true;
     }
     private static NetworkEngine.Ref reader(List<NetworkEngine.Ref> readers,String selector){
-        if(selector.isEmpty())return readers.isEmpty()?null:readers.getFirst();
+        if(selector.isEmpty())return readers.isEmpty()?null:readers.get(0);
         var exact=readers.stream().filter(r->r.part().identity.toString().equals(selector)).findFirst();if(exact.isPresent())return exact.get();
-        var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.getFirst():null;
+        var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.get(0):null;
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
         if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());

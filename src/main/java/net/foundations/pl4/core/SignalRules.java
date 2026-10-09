@@ -22,7 +22,7 @@ public final class SignalRules {
         if(statements.isEmpty()||statements.size()>MAX_STATEMENTS)return 0;
         boolean result=all;
         for(Statement statement:statements){boolean pass=compare(lookup.apply(statement),statement.threshold(),statement.operator());if(all)result&=pass;else result|=pass;}
-        return result?Math.clamp(strength,0,15):0;
+        return result?net.foundations.pl4.compat.PortMath.clamp(strength,0,15):0;
     }
     private SignalRules(){}
 }

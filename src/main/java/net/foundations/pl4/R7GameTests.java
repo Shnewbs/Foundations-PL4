@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native fixtures: separate from the executed, dependency-free planner tests. */
 @PrefixGameTestTemplate(false)
@@ -22,25 +22,25 @@ public final class R7GameTests {
     private static void compact(GameTestHelper h,Direction face,boolean external){
         BlockPos pos=new BlockPos(3,3,3);var target=host(h,pos);
         var reader=put(target,Kind.INVENTORY_READER,face);Part panel=new Part(Kind.LARGE_DISPLAY,face,OWNER);panel.displayOutward=true;
-        h.assertTrue(HostBlock.canAdd(target,panel),"Reader and display need independent same-face slots and non-overlapping paired geometry");
+        net.foundations.pl4.compat.PortAssertions.check(HostBlock.canAdd(target,panel),"Reader and display need independent same-face slots and non-overlapping paired geometry");
         target.parts.put(panel.slot(),panel);target.changed();
         var input=external?host(h,pos.relative(face.getOpposite())):target;
         put(input,Kind.DATA_CABLE,Direction.DOWN);put(input,Kind.NODE,face.getOpposite());
         chest(h,external?pos.relative(face.getOpposite(),2):pos.relative(face.getOpposite()),17);
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
-        h.assertTrue(target.readerHasDisplay(reader),"Paired reader skin must activate");
-        h.assertTrue(!target.externalLead(reader),"Empty endpoint centre must never generate a free cable lead");
-        h.assertTrue(external?!target.parts.containsKey(6):target.parts.containsKey(6),"Bare endpoint must not acquire an item/cable silently");
+        net.foundations.pl4.compat.PortAssertions.check(target.readerHasDisplay(reader),"Paired reader skin must activate");
+        net.foundations.pl4.compat.PortAssertions.check(!target.externalLead(reader),"Empty endpoint centre must never generate a free cable lead");
+        net.foundations.pl4.compat.PortAssertions.check(external?!target.parts.containsKey(6):target.parts.containsKey(6),"Bare endpoint must not acquire an item/cable silently");
         h.runAtTickTime(45,()->{
             if(external){
-                h.assertTrue(!amount(reader,17)&&!amount(panel,17),"Missing local cable must leave reader disconnected on "+face);
+                net.foundations.pl4.compat.PortAssertions.check(!amount(reader,17)&&!amount(panel,17),"Missing local cable must leave reader disconnected on "+face);
                 put(target,Kind.DATA_CABLE,Direction.DOWN);
                 h.runAtTickTime(85,()->{
-                    h.assertTrue(amount(reader,17)&&amount(panel,17),"Placing the missing cable must complete the run on "+face);
+                    net.foundations.pl4.compat.PortAssertions.check(amount(reader,17)&&amount(panel,17),"Placing the missing cable must complete the run on "+face);
                     h.succeed();
                 });
             }else{
-                h.assertTrue(amount(reader,17)&&amount(panel,17),"Compact pair must receive Node inventory on "+face);
+                net.foundations.pl4.compat.PortAssertions.check(amount(reader,17)&&amount(panel,17),"Compact pair must receive Node inventory on "+face);
                 h.succeed();
             }
         });
@@ -70,9 +70,9 @@ public final class R7GameTests {
         Part display=put(output,Kind.DISPLAY,side.getOpposite());display.selected=reader.identity.toString();
         chest(h,outputPos.relative(side),29);input.changed();output.changed();
         h.runAtTickTime(45,()->{
-            h.assertTrue(amount(reader,17)&&amount(secondReader,29),"Visual port cannot merge source and destination inventories");
-            h.assertTrue(amount(display,17),"Remote screen must see the reader through its visual output");
-            h.assertTrue(source.pendingItem.isEmpty(),"Visual-only link must not authorize transfer extraction");
+            net.foundations.pl4.compat.PortAssertions.check(amount(reader,17)&&amount(secondReader,29),"Visual port cannot merge source and destination inventories");
+            net.foundations.pl4.compat.PortAssertions.check(amount(display,17),"Remote screen must see the reader through its visual output");
+            net.foundations.pl4.compat.PortAssertions.check(source.pendingItem.isEmpty(),"Visual-only link must not authorize transfer extraction");
             h.succeed();
         });
     }
@@ -91,8 +91,8 @@ public final class R7GameTests {
         ListTag parts=new ListTag();parts.add(reader.save(h.getLevel().registryAccess(),false));parts.add(screen.save(h.getLevel().registryAccess(),false));
         CompoundTag old=new CompoundTag();old.putInt("schema",1);old.put("parts",parts);target.loadAdditional(old,h.getLevel().registryAccess());
         Part loaded=target.parts.get(9);
-        h.assertTrue(target.parts.get(0).energySystem.equals("EU")&&!target.parts.containsKey(2),"Only display indices migrate");
-        h.assertTrue(loaded.identity.equals(screen.identity)&&loaded.elements.equals(screen.elements)&&loaded.displayOutward&&loaded.selected.equals(screen.selected),"All R6 identity/front/reader/layout data survives");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(target.parts.get(0).energySystem.equals("EU")&&!target.parts.containsKey(2),"Only display indices migrate");
+        net.foundations.pl4.compat.PortAssertions.check(loaded.identity.equals(screen.identity)&&loaded.elements.equals(screen.elements)&&loaded.displayOutward&&loaded.selected.equals(screen.selected),"All R6 identity/front/reader/layout data survives");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void codecPreservesAllThirteenSlots(GameTestHelper h){
@@ -100,21 +100,21 @@ public final class R7GameTests {
         for(Direction f:Direction.values()){put(target,Kind.INVENTORY_READER,f);put(target,Kind.MINI_DISPLAY,f);}
         CompoundTag saved=new CompoundTag();target.saveAdditional(saved,h.getLevel().registryAccess());
         var loaded=new HostEntity(target.getBlockPos(),target.getBlockState());loaded.loadAdditional(saved,h.getLevel().registryAccess());
-        h.assertTrue(loaded.parts.size()==13,"NBT loading must not truncate at the former seven-part limit");
-        for(var e:target.parts.entrySet())h.assertTrue(loaded.parts.get(e.getKey()).identity.equals(e.getValue().identity),"Slot/identity round trip");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(loaded.parts.size()==13,"NBT loading must not truncate at the former seven-part limit");
+        for(var e:target.parts.entrySet())net.foundations.pl4.compat.PortAssertions.check(loaded.parts.get(e.getKey()).identity.equals(e.getValue().identity),"Slot/identity round trip");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pairedGeometryAndHitSelection(GameTestHelper h){
         var target=host(h,new BlockPos(3,3,3));
         for(Direction face:Direction.values()){
             target.parts.clear();Part reader=put(target,Kind.INVENTORY_READER,face);Part panel=new Part(Kind.DISPLAY,face,OWNER);
-            h.assertTrue(HostBlock.canAdd(target,panel),"Thin screen fits the original ReaderWithDisplay model");target.parts.put(panel.slot(),panel);target.changed();
-            h.assertTrue(!Shapes.joinIsNotEmpty(MultipartShapes.part(target.parts.values(),reader),MultipartShapes.part(target.parts.values(),panel),BooleanOp.AND),"No reader/display collision overlap");
+            net.foundations.pl4.compat.PortAssertions.check(HostBlock.canAdd(target,panel),"Thin screen fits the original ReaderWithDisplay model");target.parts.put(panel.slot(),panel);target.changed();
+            net.foundations.pl4.compat.PortAssertions.check(!Shapes.joinIsNotEmpty(MultipartShapes.part(target.parts.values(),reader),MultipartShapes.part(target.parts.values(),panel),BooleanOp.AND),"No reader/display collision overlap");
             var point=Vec3.atCenterOf(target.getBlockPos()).add(face.getStepX()*.4999,face.getStepY()*.4999,face.getStepZ()*.4999);
             var hit=new BlockHitResult(point,face,target.getBlockPos(),false);
-            h.assertTrue(target.hit(hit)==panel&&target.interactionTarget(hit,true)==reader,"Front click hits screen; empty-hand sneak click addresses covered reader");
-            h.assertTrue(!HostBlock.canAdd(target,new Part(Kind.MINI_DISPLAY,face,OWNER)),"Two displays cannot claim one display slot");
-            target.parts.remove(panel.slot());target.changed();h.assertTrue(!target.readerHasDisplay(reader),"Reader skin restores when screen is removed");
+            net.foundations.pl4.compat.PortAssertions.check(target.hit(hit)==panel&&target.interactionTarget(hit,true)==reader,"Front click hits screen; empty-hand sneak click addresses covered reader");
+            net.foundations.pl4.compat.PortAssertions.check(!HostBlock.canAdd(target,new Part(Kind.MINI_DISPLAY,face,OWNER)),"Two displays cannot claim one display slot");
+            target.parts.remove(panel.slot());target.changed();net.foundations.pl4.compat.PortAssertions.check(!target.readerHasDisplay(reader),"Reader skin restores when screen is removed");
         }
         h.succeed();
     }
@@ -122,25 +122,25 @@ public final class R7GameTests {
     public static void remoteDisplayDisconnectClearsRows(GameTestHelper h){
         var input=host(h,new BlockPos(2,2,2));put(input,Kind.DATA_CABLE,Direction.DOWN);Part reader=put(input,Kind.INVENTORY_READER,Direction.EAST);put(input,Kind.NODE,Direction.WEST);chest(h,new BlockPos(1,2,2),17);
         var output=host(h,new BlockPos(3,2,2));Part cable=put(output,Kind.DATA_CABLE,Direction.DOWN);Part panel=put(output,Kind.LARGE_DISPLAY,Direction.NORTH);
-        h.runAtTickTime(40,()->{h.assertTrue(amount(panel,17),"Remote output initially readable");cable.blockedFaces=1<<Direction.WEST.ordinal();output.changed();});
-        h.runAtTickTime(80,()->{h.assertTrue(panel.rows.isEmpty(),"Disabled visual input must clear stale data, not freeze the last good reading");h.succeed();});
+        h.runAtTickTime(40,()->{net.foundations.pl4.compat.PortAssertions.check(amount(panel,17),"Remote output initially readable");cable.blockedFaces=1<<Direction.WEST.ordinal();output.changed();});
+        h.runAtTickTime(80,()->{net.foundations.pl4.compat.PortAssertions.check(panel.rows.isEmpty(),"Disabled visual input must clear stale data, not freeze the last good reading");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void panelItemStaysOnReaderAndDuplicateDoesNotConsume(GameTestHelper h){
         var target=host(h,new BlockPos(3,3,3));Part reader=put(target,Kind.INVENTORY_READER,Direction.EAST);put(target,Kind.DATA_CABLE,Direction.DOWN);
-        var player=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
+        var player=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
         player.getInventory().clearContent();player.getAbilities().instabuild=false;
         Vec3 front=Vec3.atCenterOf(target.getBlockPos()).add(.5,0,0);player.setPos(front.x+1,front.y,front.z);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DISPLAY).get(),2);player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(front,Direction.EAST,target.getBlockPos(),false);
         var context=new net.minecraft.world.item.context.UseOnContext(player,net.minecraft.world.InteractionHand.MAIN_HAND,hit);
         stack.getItem().useOn(context);
-        h.assertTrue(target.parts.containsKey(12)&&target.parts.get(12).displayOutward&&stack.getCount()==1,"Display item must occupy same host/front, not move into adjacent air");
-        h.assertTrue(h.getLevel().isEmptyBlock(target.getBlockPos().east()),"No adjacent host or extra cable branch created");
+        net.foundations.pl4.compat.PortAssertions.check(target.parts.containsKey(12)&&target.parts.get(12).displayOutward&&stack.getCount()==1,"Display item must occupy same host/front, not move into adjacent air");
+        net.foundations.pl4.compat.PortAssertions.check(h.getLevel().isEmptyBlock(target.getBlockPos().east()),"No adjacent host or extra cable branch created");
         // Explicit reader front target when occupied must not consume or replace the existing panel.
         Part duplicate=new Part(Kind.MINI_DISPLAY,Direction.EAST,OWNER);
-        h.assertTrue(!HostBlock.canAdd(target,duplicate),"Display layer occupancy is exclusive");
-        h.assertTrue(target.parts.get(5)==reader,"Pairing cannot replace the reader");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(!HostBlock.canAdd(target,duplicate),"Display layer occupancy is exclusive");
+        net.foundations.pl4.compat.PortAssertions.check(target.parts.get(5)==reader,"Pairing cannot replace the reader");h.succeed();
     }
 
 }

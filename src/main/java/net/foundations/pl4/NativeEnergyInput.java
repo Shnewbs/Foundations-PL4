@@ -1,13 +1,13 @@
 package net.foundations.pl4;
 
 import java.lang.reflect.Proxy;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.foundations.pl4.compat.Capabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.foundations.pl4.core.EnergyConversion;
 import net.foundations.pl4.core.TransferRules;
 import net.minecraft.core.Direction;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.foundations.pl4.compat.BlockCapability;
+import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
 
 /** Receive GregTech's push-only sources into the same persistent, bounded conversion escrow. */
 final class NativeEnergyInput {

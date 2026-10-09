@@ -4,7 +4,7 @@ import java.util.*;
 import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native acceptance fixtures. Execution requires a full Minecraft/NeoForge test server. */
 @PrefixGameTestTemplate(false)
@@ -15,17 +15,17 @@ public final class R6GameTests {
         Part display=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,OWNER);display.displayOutward=true;display.label="Power";display.selected="plant";
         display.elements.add(new Part.Element("", "", "storage:eu",10,10,0xFFFFFF,false));
         Part loaded=Part.load(display.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
-        h.assertTrue(loaded.displayOutward&&loaded.face==Direction.NORTH&&loaded.slot()==display.slot(),"Front change must not change mount or port");
-        h.assertTrue(loaded.elements.equals(display.elements)&&loaded.selected.equals("plant"),"Retain display layout");
+        net.foundations.pl4.compat.PortAssertions.check(loaded.displayOutward&&loaded.face==Direction.NORTH&&loaded.slot()==display.slot(),"Front change must not change mount or port");
+        net.foundations.pl4.compat.PortAssertions.check(loaded.elements.equals(display.elements)&&loaded.selected.equals("plant"),"Retain display layout");
         Part energy=new Part(Kind.ENERGY_READER,Direction.DOWN,OWNER);energy.energySystem="EU";
-        h.assertTrue(Part.load(energy.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess()).energySystem.equals("EU"),"Energy system must persist");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(Part.load(energy.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess()).energySystem.equals("EU"),"Energy system must persist");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void r5SaveDoesNotSilentlyFlip(GameTestHelper h){
         Part old=new Part(Kind.LARGE_DISPLAY,Direction.SOUTH,OWNER);old.label="Keep this layout";
         var tag=old.save(h.getLevel().registryAccess(),false);tag.remove("displayOutward");tag.remove("energySystem");
         var loaded=Part.load(tag,h.getLevel().registryAccess());
-        h.assertTrue(!loaded.displayOutward&&loaded.energySystem.equals("AUTO")&&loaded.label.equals(old.label),"Legacy saves keep their front/controller; explicit flip is user-controlled");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(!loaded.displayOutward&&loaded.energySystem.equals("AUTO")&&loaded.label.equals(old.label),"Legacy saves keep their front/controller; explicit flip is user-controlled");h.succeed();
     }
     private static NetworkEngine.Ref reader(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,1);h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
@@ -35,13 +35,13 @@ public final class R6GameTests {
     public static void unsupportedEnergyIsNotEmptyBattery(GameTestHelper h){
         h.setBlock(new BlockPos(1,1,1),Blocks.STONE);var ref=reader(h);
         var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(ref.adjacent()),1);
-        h.assertTrue(rows.isEmpty()&&ref.part().status.contains("No supported energy"),"Missing capability must not synthesize Storage 0 FE");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(rows.isEmpty()&&ref.part().status.contains("No supported energy"),"Missing capability must not synthesize Storage 0 FE");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void energyReaderNeverLoadsRemoteChunk(GameTestHelper h){
         var ref=reader(h);BlockPos far=new BlockPos(1000000,80,1000000);
-        h.assertTrue(!h.getLevel().hasChunkAt(far),"Fixture must be unloaded");
+        net.foundations.pl4.compat.PortAssertions.check(!h.getLevel().hasChunkAt(far),"Fixture must be unloaded");
         var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(new Part.Link(h.getLevel().dimension().location().toString(),far,Direction.UP,null,null)),1);
-        h.assertTrue(rows.isEmpty()&&!h.getLevel().hasChunkAt(far)&&ref.part().status.contains("unloaded"),"Unloaded is not zero energy and must not force-load");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(rows.isEmpty()&&!h.getLevel().hasChunkAt(far)&&ref.part().status.contains("unloaded"),"Unloaded is not zero energy and must not force-load");h.succeed();
     }
 }

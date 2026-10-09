@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:redstoneemitter"
+  },
+  "pattern": [
+    "DPD",
+    "PCP",
+    "DDD"
+  ],
+  "key": {
+    "P": {
+      "tag": "c:dusts/redstone"
+    },
+    "D": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "C": {
+      "item": "foundations_pl4:signallingplate"
+    }
+  }
+}

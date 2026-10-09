@@ -1,12 +1,12 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /** Explicit alignment controls for the current-page selection. */
-final class DisplayArrangementScreen extends Screen {
+final class DisplayArrangementScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;
     private int left,top,w,h;
     private static final String[] LABELS={"Align left","Align right","Align top","Align bottom","Centre horizontally","Centre vertically","Space horizontally","Space vertically"};

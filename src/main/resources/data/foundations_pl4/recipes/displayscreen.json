@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:displayscreen"
+  },
+  "ingredients": [
+    {
+      "item": "foundations_pl4:stoneplate"
+    },
+    {
+      "tag": "c:dusts/sapphire"
+    },
+    {
+      "item": "foundations_pl4:datacable"
+    }
+  ]
+}

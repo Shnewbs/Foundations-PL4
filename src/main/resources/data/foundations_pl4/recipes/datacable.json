@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 16,
+    "item": "foundations_pl4:datacable"
+  },
+  "pattern": [
+    "PPP",
+    "DDD",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "D": {
+      "tag": "c:dusts/sapphire"
+    }
+  }
+}

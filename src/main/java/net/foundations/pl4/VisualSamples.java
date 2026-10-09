@@ -4,11 +4,11 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.util.*;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.foundations.pl4.compat.DataComponents;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.*;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 /** Component-aware aggregation with bounded visual snapshots. No per-slot serialization or client-side queries.
  * Nested container inventories and block entity NBT are not copied into public picture metadata. */
@@ -17,35 +17,35 @@ public final class VisualSamples {
     private static final class Sum {ItemStack item=ItemStack.EMPTY;FluidStack fluid=FluidStack.EMPTY;double value,capacity;}
     private final Map<Key,Sum> sums=new LinkedHashMap<>();
     public void item(ItemStack stack){
-        ItemStack picture=stack.copyWithCount(1);picture.remove(DataComponents.CONTAINER);picture.remove(DataComponents.BLOCK_ENTITY_DATA);
-        Key key=new Key(picture.getItem(),picture.getComponentsPatch());Sum sum=sums.computeIfAbsent(key,k->{Sum s=new Sum();s.item=picture;return s;});sum.value+=stack.getCount();
+        ItemStack picture=net.foundations.pl4.compat.PortData.copyWithCount(stack,1);net.foundations.pl4.compat.PortData.remove(picture,DataComponents.CONTAINER);net.foundations.pl4.compat.PortData.remove(picture,DataComponents.BLOCK_ENTITY_DATA);
+        Key key=new Key(picture.getItem(),net.foundations.pl4.compat.PortData.components(picture));Sum sum=sums.computeIfAbsent(key,k->{Sum s=new Sum();s.item=picture;return s;});sum.value+=stack.getCount();
     }
     public void fluid(FluidStack stack,int capacity){
-        Key key=new Key(stack.getFluid(),stack.getComponentsPatch());Sum sum=sums.computeIfAbsent(key,k->{Sum s=new Sum();s.fluid=stack.copyWithAmount(1);return s;});sum.value+=stack.getAmount();sum.capacity+=capacity;
+        Key key=new Key(stack.getFluid(),net.foundations.pl4.compat.PortData.components(stack));Sum sum=sums.computeIfAbsent(key,k->{Sum s=new Sum();s.fluid=net.foundations.pl4.compat.PortData.copyWithAmount(stack,1);return s;});sum.value+=stack.getAmount();sum.capacity+=capacity;
     }
-    public List<Part.Row> rows(HolderLookup.Provider registry,boolean descending,int limit,int offset){
+    public List<Part.Row> rows(net.minecraft.core.RegistryAccess registry,boolean descending,int limit,int offset){
         var sorted=new ArrayList<>(sums.values());Comparator<Sum> order=Comparator.comparingDouble(s->s.value);if(descending)order=order.reversed();sorted.sort(order);
         List<Part.Row> rows=new ArrayList<>();int budget=32768;
         for(int index=Math.max(0,offset);index<sorted.size();index++){Sum sum=sorted.get(index);if(rows.size()>=limit)break;
             ItemStack item=sum.item.copy();FluidStack fluid=sum.fluid.copy();String id,name,unit;CompoundTag it=new CompoundTag(),ft=new CompoundTag();
             if(!item.isEmpty()){
-                id=BuiltInRegistries.ITEM.getKey(item.getItem()).toString();name=item.getHoverName().getString();unit="items";
+                id=Registry.ITEM.getKey(item.getItem()).toString();name=item.getHoverName().getString();unit="items";
                 // Rendering is allowed to retain custom models, dyes, enchantment glint and other bounded visual components.
-                item.remove(DataComponents.CONTAINER);item.remove(DataComponents.BLOCK_ENTITY_DATA);
-                it=(CompoundTag)item.save(registry);byte[] encoded=bounded(it,4096);
-                String variant=encoded!=null&&!sum.item.getComponentsPatch().isEmpty()?fingerprint(it):"";
-                if(encoded==null||encoded.length>budget){item=new ItemStack(item.getItem());it=(CompoundTag)item.save(registry);encoded=bounded(it,Math.min(4096,budget));}
+                net.foundations.pl4.compat.PortData.remove(item,DataComponents.CONTAINER);net.foundations.pl4.compat.PortData.remove(item,DataComponents.BLOCK_ENTITY_DATA);
+                it=(CompoundTag)net.foundations.pl4.compat.PortData.save(item,registry);byte[] encoded=bounded(it,4096);
+                String variant=encoded!=null&&!net.foundations.pl4.compat.PortData.components(sum.item).isEmpty()?fingerprint(it):"";
+                if(encoded==null||encoded.length>budget){item=new ItemStack(item.getItem());it=(CompoundTag)net.foundations.pl4.compat.PortData.save(item,registry);encoded=bounded(it,Math.min(4096,budget));}
                 if(encoded==null)it=new CompoundTag();
                 budget=Math.max(0,budget-(encoded==null?0:encoded.length));
-                if(!variant.isEmpty())id+="~"+variant;else if(!sum.item.getComponentsPatch().isEmpty()&&!it.isEmpty())id+="~"+fingerprint(it);
+                if(!variant.isEmpty())id+="~"+variant;else if(!net.foundations.pl4.compat.PortData.components(sum.item).isEmpty()&&!it.isEmpty())id+="~"+fingerprint(it);
             }else{
-                id=BuiltInRegistries.FLUID.getKey(fluid.getFluid()).toString();name=fluid.getHoverName().getString();unit="mB";
-                ft=(CompoundTag)fluid.save(registry);byte[] encoded=bounded(ft,4096);
-                String variant=encoded!=null&&!sum.fluid.getComponentsPatch().isEmpty()?fingerprint(ft):"";
-                if(encoded==null||encoded.length>budget){fluid=new FluidStack(fluid.getFluid(),1);ft=(CompoundTag)fluid.save(registry);encoded=bounded(ft,Math.min(4096,budget));}
+                id=Registry.FLUID.getKey(fluid.getFluid()).toString();name=fluid.getDisplayName().getString();unit="mB";
+                ft=(CompoundTag)net.foundations.pl4.compat.PortData.save(fluid,registry);byte[] encoded=bounded(ft,4096);
+                String variant=encoded!=null&&!net.foundations.pl4.compat.PortData.components(sum.fluid).isEmpty()?fingerprint(ft):"";
+                if(encoded==null||encoded.length>budget){fluid=new FluidStack(fluid.getFluid(),1);ft=(CompoundTag)net.foundations.pl4.compat.PortData.save(fluid,registry);encoded=bounded(ft,Math.min(4096,budget));}
                 if(encoded==null)ft=new CompoundTag();
                 budget=Math.max(0,budget-(encoded==null?0:encoded.length));
-                if(!variant.isEmpty())id+="~"+variant;else if(!sum.fluid.getComponentsPatch().isEmpty()&&!ft.isEmpty())id+="~"+fingerprint(ft);
+                if(!variant.isEmpty())id+="~"+variant;else if(!net.foundations.pl4.compat.PortData.components(sum.fluid).isEmpty()&&!ft.isEmpty())id+="~"+fingerprint(ft);
             }
             rows.add(new Part.Row(id,cleanName(name),sum.value,sum.capacity,unit,item,fluid,it,ft));
         }return rows;

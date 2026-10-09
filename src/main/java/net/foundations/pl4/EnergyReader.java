@@ -6,7 +6,9 @@ import net.foundations.pl4.core.ReflectiveEnergyAccess;
 import net.minecraft.core.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.capabilities.*;
+import net.foundations.pl4.compat.Capabilities;
+import net.foundations.pl4.compat.BlockCapability;
+import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
 import org.slf4j.LoggerFactory;
 
 /** Server-thread, sided, read-only energy telemetry. The native provider wins over its FE wrapper.
@@ -40,12 +42,12 @@ public final class EnergyReader {
             if(!EnergyValues.accepts(reader.energySystem,probe.unit))continue;
             if(probe.unit.equals("J")&&!PLConfig.MEKANISM_READS.get()||probe.unit.equals("EU")&&!PLConfig.GREGTECH_READS.get())continue;
             for(Direction side:sides)try{
-                Object handler=level.getCapability(probe.capability,pos,side);
+                Object handler=net.foundations.pl4.compat.PortCapabilities.get(level,probe.capability,pos,side);
                 var result=probe.access.read(handler,PLConfig.MAX_ENERGY_CONTAINERS.get());if(result!=null)return result;
             }catch(ReflectiveOperationException|RuntimeException failure){failures[0]++;warn(probe.id,failure);}
         }
         if(EnergyValues.accepts(reader.energySystem,"FE"))for(Direction side:sides)try{
-            var handler=level.getCapability(Capabilities.EnergyStorage.BLOCK,pos,side);
+            var handler=net.foundations.pl4.compat.PortCapabilities.get(level,Capabilities.EnergyStorage.BLOCK,pos,side);
             if(handler!=null)return new EnergyValues.Reading("neoforge","FE",handler.getEnergyStored(),handler.getMaxEnergyStored());
         }catch(RuntimeException failure){failures[0]++;warn("neoforge:energy",failure);}
         return null;

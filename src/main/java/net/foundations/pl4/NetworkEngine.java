@@ -2,13 +2,13 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.core.registries.Registries;
+import net.foundations.pl4.compat.Registries;
 import net.minecraft.resources.*;
 import net.minecraft.server.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import org.slf4j.LoggerFactory;
 
 /** All capability access, sampling and transfers run on the server thread. Never force-load chunks. */
@@ -98,14 +98,14 @@ public final class NetworkEngine {
                 if(r.part.kind==Kind.ARRAY||r.part.kind==Kind.ENTITY_NODE)uniqueTargets.addAll(r.part.links);
             }
             List<Ref> groupReaders=ordered.stream().filter(r->r.part.kind.reader()).toList();
-            complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.getFirst().part.kind.redstone(),
+            complete.add(new Group(List.copyOf(ordered),hosts.size(),ordered.get(0).part.kind.redstone(),
                 List.copyOf(uniqueTargets),groupReaders,TransferEngine.prepare(ordered)));
         }
         // A visual reader export adds telemetry visibility to the destination cable bus,
         // NEVER an edge to its machine/transfer network. Wireless unions are already resolved.
         Map<Integer,Set<Ref>> busReaders=new HashMap<>();Set<Integer> usable=new HashSet<>();
         for(Group group:complete)if(group.hostCount<=PLConfig.MAX_NETWORK.get()){
-            int id=sets.find(index.get(group.parts.getFirst().part));usable.add(id);
+            int id=sets.find(index.get(group.parts.get(0).part));usable.add(id);
             Set<Ref> readers=busReaders.computeIfAbsent(id,k->new LinkedHashSet<>());
             for(Ref r:group.parts)if(r.part.kind.reader())readers.add(r);
         }
@@ -146,7 +146,8 @@ public final class NetworkEngine {
         return List.of();
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
-    public static void tick(ServerTickEvent.Post e){
+    public static void tick(ServerTickEvent e){
+        if(e.phase!=net.minecraftforge.event.TickEvent.Phase.END)return;
         MinecraftServer server=e.getServer();
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
         boolean sample=server.getTickCount()%PLConfig.TICK_RATE.get()==0;
@@ -160,7 +161,7 @@ public final class NetworkEngine {
             }
             try { process(server,group.parts,group.hostCount,group.redstone,group.targets,group.readers,group.transfers); }
             catch(RuntimeException ex) {
-                LoggerFactory.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.getFirst().host.getBlockPos(),ex);
+                LoggerFactory.getLogger("FoundationsPL4").error("Network operation failed at {}",group.parts.get(0).host.getBlockPos(),ex);
                 for(Ref r:group.parts){r.part.rows.clear();r.part.status="Provider error; check server log";setSignal(r,0);}
             }
         }
@@ -183,7 +184,7 @@ public final class NetworkEngine {
             if(r.part.kind!=Kind.ENERGY_READER)r.part.status=targets.isEmpty()?"No node connections":"Connected: "+targets.size()+" targets / "+hosts+" hosts";
             if(!r.part.targetChannel.isEmpty()){
                 if(selectedTargets.isEmpty())r.part.status="Selected target disconnected";
-                else if(!ReaderChannels.available(server,selectedTargets.getFirst()))r.part.status="Selected target unloaded";
+                else if(!ReaderChannels.available(server,selectedTargets.get(0)))r.part.status="Selected target unloaded";
                 else r.part.status="Channel: "+ReaderChannels.label(r.part)+" · "+r.part.status;
             }
         }

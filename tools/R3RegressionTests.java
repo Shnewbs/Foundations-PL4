@@ -19,10 +19,10 @@ public final class R3RegressionTests {
         check(!LayoutTransactions.applyOrganization(g,1,"hide",List.of(other.id())).accepted(),"other page rejected");
         check(!LayoutTransactions.applyOrganization(g,1,"hide",List.of(a.id(),a.id())).accepted(),"duplicates rejected");
         var copied=LayoutTransactions.apply(g,1,"page_copy",null,null,"2");
-        check(copied.accepted()&&!copied.state().elements().get(3).options().group().equals(g.elements().getFirst().options().group()),"copied page groups have independent IDs");
+        check(copied.accepted()&&!copied.state().elements().get(3).options().group().equals(g.elements().get(0).options().group()),"copied page groups have independent IDs");
         check(copied.state().elements().get(3).options().group().equals(copied.state().elements().get(4).options().group()),"page copy preserves within-group relationship");
         var hidden=LayoutTransactions.applyOrganization(g,1,"hide",ids).state();
-        check(DisplayElements.plan(hidden.elements().getFirst(),List.of()).draws().isEmpty(),"hidden does not render");
+        check(DisplayElements.plan(hidden.elements().get(0),List.of()).draws().isEmpty(),"hidden does not render");
         check(EditorSelection.inBox(hidden.elements(),0,new DisplayElements.Rect(0,0,248,120)).isEmpty(),"hidden not marquee picked");
         var locked=LayoutTransactions.applyOrganization(g,1,"lock",ids).state();
         check(!LayoutTransactions.applyMove(locked,2,ids,4,4,248,120).accepted(),"locked cannot move");
@@ -33,7 +33,7 @@ public final class R3RegressionTests {
         check(!LayoutTransactions.apply(locked,2,"page_clear",null,null,"").accepted(),"locked cannot page-clear");
         check(!LayoutTransactions.apply(locked,2,"clear",null,null,"").accepted(),"locked cannot clear all");
         var unlocked=LayoutTransactions.applyOrganization(locked,2,"unlock",ids);
-        check(unlocked.accepted()&&!unlocked.state().elements().getFirst().options().locked(),"unlock available");
+        check(unlocked.accepted()&&!unlocked.state().elements().get(0).options().locked(),"unlock available");
         check(LayoutTransactions.applyReplace(locked,2,state.elements()).accepted(),"authorized undo restores pre-lock snapshot");
         var styled=a.options(new DisplayElements.Options("group",true,false,0x112233,0x445566,7));
         check(styled.bounds(new DisplayElements.Rect(10,10,40,20)).options().equals(styled.options()),"move preserves metadata");

@@ -1,16 +1,16 @@
 package net.foundations.pl4;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class PLConfig {
-    public static final ModConfigSpec SPEC;
-    public static final ModConfigSpec.BooleanValue MEKANISM_TRANSFERS, GREGTECH_TRANSFERS, ELECTRODYNAMICS_TRANSFERS, ENERGY_CONVERSION;
-    public static final ModConfigSpec.IntValue FE_PER_1000_J, FE_PER_EU, FE_PER_ED_J, CONVERSION_EFFICIENCY;
-    public static final ModConfigSpec.IntValue TICK_RATE, MAX_NETWORK, MAX_ROWS, ITEM_RATE, FLUID_RATE, ENERGY_RATE, ENTITY_RANGE;
-    public static final ModConfigSpec.BooleanValue TRANSFERS, WIRELESS, CROSS_DIMENSION, MEKANISM_READS, GREGTECH_READS, CREATE_READS, AE2_READS;
-    public static final ModConfigSpec.IntValue MAX_ENERGY_CONTAINERS, NETWORK_ITEM_RATE, NETWORK_FLUID_RATE, NETWORK_ENERGY_RATE;
+    public static final ForgeConfigSpec SPEC;
+    public static final ForgeConfigSpec.BooleanValue MEKANISM_TRANSFERS, GREGTECH_TRANSFERS, ELECTRODYNAMICS_TRANSFERS, ENERGY_CONVERSION;
+    public static final ForgeConfigSpec.IntValue FE_PER_1000_J, FE_PER_EU, FE_PER_ED_J, CONVERSION_EFFICIENCY;
+    public static final ForgeConfigSpec.IntValue TICK_RATE, MAX_NETWORK, MAX_ROWS, ITEM_RATE, FLUID_RATE, ENERGY_RATE, ENTITY_RANGE;
+    public static final ForgeConfigSpec.BooleanValue TRANSFERS, WIRELESS, CROSS_DIMENSION, MEKANISM_READS, GREGTECH_READS, CREATE_READS, AE2_READS;
+    public static final ForgeConfigSpec.IntValue MAX_ENERGY_CONTAINERS, NETWORK_ITEM_RATE, NETWORK_FLUID_RATE, NETWORK_ENERGY_RATE;
     static {
-        ModConfigSpec.Builder b = new ModConfigSpec.Builder();
+        ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
         b.push("network");
         TICK_RATE = b.comment("Network sample/transfer interval in ticks. Never zero.").defineInRange("updateTicks", 20, 1, 1200);
         MAX_NETWORK = b.comment("Maximum loaded host blocks visited in one network. Larger networks stop safely.").defineInRange("maximumHosts", 4096, 16, 65536);

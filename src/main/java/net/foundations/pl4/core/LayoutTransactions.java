@@ -82,8 +82,8 @@ public final class LayoutTransactions {
             List<DisplayElements.Spec> ordered=new ArrayList<>(picked);
             ordered.sort(Comparator.comparingInt(e->horizontal?e.bounds().x():e.bounds().y()));
             // Keep the outer elements fixed and divide the available space into equal edge gaps.
-            int first=horizontal?ordered.getFirst().bounds().x():ordered.getFirst().bounds().y();
-            var last=ordered.getLast().bounds();int end=horizontal?last.right():last.bottom();
+            int first=horizontal?ordered.get(0).bounds().x():ordered.get(0).bounds().y();
+            var last=net.foundations.pl4.compat.PortLists.last(ordered).bounds();int end=horizontal?last.right():last.bottom();
             int occupied=ordered.stream().mapToInt(e->horizontal?e.bounds().width():e.bounds().height()).sum();
             int free=end-first-occupied;
             if(free<0)return fail(before,"Not enough space for non-overlapping elements.");

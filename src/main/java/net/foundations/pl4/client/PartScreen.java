@@ -1,15 +1,19 @@
 package net.foundations.pl4.client;
+import net.foundations.pl4.compat.GuiGraphics;
 
 import java.util.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.components.*;
+import net.foundations.pl4.compat.Button;
+import net.foundations.pl4.compat.EditBox;
+import net.foundations.pl4.compat.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.foundations.pl4.compat.PacketDistributor;
 import net.foundations.pl4.*;
 
-public final class PartScreen extends Screen {
+public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
     private final BlockPos pos;private Part part;private final boolean editable;
     private final java.util.UUID clickedIdentity;private final int clickedSlot;
     private int left,top,w,h,scroll,tab,contentScroll;
@@ -75,7 +79,7 @@ public final class PartScreen extends Screen {
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
             fields.get("filter").setTooltip(Tooltip.create(Component.literal("Comma-separated IDs or #tags, e.g. minecraft:stone,#c:ingots. Applies to item/fluid lists; STORAGE shows the full target.")));
             if(part.kind==Kind.INVENTORY_READER||part.kind==Kind.TRANSFER_NODE){
-                button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
+                button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.Registry.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
                 button("Clear filter",left+150,y,104,b->fields.get("filter").setValue(""));y+=28;
             }
             if(part.kind==Kind.NODE||part.kind==Kind.TRANSFER_NODE){
@@ -157,7 +161,7 @@ public final class PartScreen extends Screen {
     }
     private int contentHeight(){return contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20-(top+52);}
     private int settingsViewport(){return Math.max(1,h-90);}
-    private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=Math.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.setY(y-contentScroll);widget.visible=widget.getY()>=top+52&&widget.getY()+20<=top+h-35;});}
+    private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=net.foundations.pl4.compat.PortMath.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.y=y-contentScroll;widget.visible=widget.y>=top+52&&widget.y+20<=top+h-35;});}
     private static String next(String[] values,String current){for(int i=0;i<values.length;i++)if(values[i].equals(current))return values[(i+1)%values.length];return values[0];}
     private void toggle(String key,String label,boolean initial,int x,int y){button(label+": "+(initial?"On":"Off"),x,y,72,new Button.OnPress(){boolean value=initial;public void onPress(Button b){value=!value;send(key,Boolean.toString(value));b.setMessage(Component.literal(label+": "+(value?"On":"Off")));}});}
     private static Tooltip transferTooltip(int mode){return Tooltip.create(Component.literal(switch(mode){
@@ -192,7 +196,7 @@ public final class PartScreen extends Screen {
         if(!displayError.isBlank())g.drawString(font,font.plainSubstrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
         if(tab==0){
             g.drawString(font,font.plainSubstrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
-            int count=Math.max(1,(h-112)/19);scroll=Math.clamp(scroll,0,Math.max(0,part.rows.size()-count));
+            int count=Math.max(1,(h-112)/19);scroll=net.foundations.pl4.compat.PortMath.clamp(scroll,0,Math.max(0,part.rows.size()-count));
             for(int i=0;i<count&&i+scroll<part.rows.size();i++){
                 Part.Row row=part.rows.get(i+scroll);int y=top+73+i*19;
                 if(i%2==0)g.fill(left+8,y-2,left+w-12,y+16,0x442C465E);

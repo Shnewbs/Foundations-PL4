@@ -45,7 +45,7 @@ public final class HammerStructure {
         for(int i=1;i<=2;i++)if(ownSpace(level.getBlockState(base.above(i)),i))level.removeBlock(base.above(i),false);
     }
     public static boolean open(Level level,BlockPos base,Player player) {
-        if(!level.hasChunkAt(base)||!level.mayInteract(player,base)||player.distanceToSqr(base.getCenter())>64)return false;
+        if(!level.hasChunkAt(base)||!level.mayInteract(player,base)||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(base))>64)return false;
         if(!(level.getBlockEntity(base) instanceof HammerEntity hammer))return false;
         if(player instanceof ServerPlayer sp)sp.openMenu(hammer);
         return true;
