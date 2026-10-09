@@ -44,7 +44,7 @@ jar { from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE'); manifest { att
 // Acceptance runs the reobfuscated runtime and separate fixture JAR on an installed Forge server.
 // Development MergeTool APIs must never be copied into the production server classpath.
 task legacyTestJar(type:Jar) { dependsOn legacyTestClasses; from sourceSets.legacyTest.output; classifier='native-scenarios' }
-reobf { legacyTestJar {} }
+reobf { legacyTestJar { classpath=sourceSets.legacyTest.compileClasspath } }
 legacyTestJar.finalizedBy reobfLegacyTestJar
 task sourcesJar(type:Jar) { from sourceSets.main.allSource; classifier='sources' }
 task legacyRules(type:JavaExec) { dependsOn legacyRulesClasses; classpath=sourceSets.legacyRules.runtimeClasspath; main='CoreChecks' }
