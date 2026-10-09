@@ -22,7 +22,7 @@ public final class PartScreen extends Screen {
     private final Map<AbstractWidget,Integer> contentWidgets=new LinkedHashMap<>();
     public PartScreen(BlockPos pos,Part part,boolean editable){super(Component.translatable("block."+FoundationsPL4.ID+"."+part.kind.id));this.pos=pos;this.part=part;this.editable=editable;this.clickedIdentity=part.identity;this.clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
-    public void update(Part p){boolean linksChanged=!p.links.equals(part.links)||!p.statements.equals(part.statements);if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
+    public void update(Part p){boolean linksChanged=!p.links.equals(part.links)||!p.statements.equals(part.statements)||(ComponentLinks.supported(p)&&(!p.targetChoices.equals(part.targetChoices)||p.targetPage!=part.targetPage));if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(Component.literal("View: "+part.displayMode));
         if(channelPageButton!=null)channelPageButton.setMessage(Component.literal("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64)));
         if(channelButton!=null){channelButton.setMessage(Component.literal(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(Component.literal(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
         if(energyInputButton!=null){energyInputButton.setMessage(Component.literal("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
@@ -137,9 +137,18 @@ public final class PartScreen extends Screen {
                 fields.get("energy_voltage").setEditable(editable&&part.energyRouteEditable());
                 fields.get("energy_voltage").setTooltip(Tooltip.create(Component.literal("EU insertion voltage; maximum accepted voltage from a pushing EU source. Set to match the source tier.")));
             }else if(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver()){
+                button("Add held Transceiver link",left+12,y,188,b->send("link_held",""));y+=28;
+                if(part.kind.receiver()||part.kind==Kind.ENTITY_NODE){
+                    field("link_query","Find emitter / entity",part.targetQuery,x,y,fw);y+=28;
+                    button("Search",left+12,y,80,b->send("link_query",fields.get("link_query").getValue()));
+                    button("Previous",left+98,y,80,b->send("link_page",Integer.toString(Math.max(0,part.targetPage-1))));
+                    button("Next",left+184,y,60,b->send("link_page",Integer.toString(part.targetPage+1)));y+=28;
+                    for(var choice:part.targetChoices){button(font.plainSubstrByWidth("Add: "+choice.name(),w-48),left+12,y,w-24,b->send("link_add",choice.id()));y+=24;}
+                }
                 button("Clear links ("+part.links.size()+")",left+12,y,140,b->send("clear_links",""));y+=28;
                 for(var link:part.links){String id=ReaderChannels.id(link);String detail=link.dimension()+" "+link.pos().getX()+", "+link.pos().getY()+", "+link.pos().getZ()+" "+link.side().getName()+(link.entity()==null?"":" · entity "+link.entity());
                     var remove=button(font.plainSubstrByWidth("Remove: "+detail,w-48),left+12,y,w-24,b->send("remove_link",id));remove.setTooltip(Tooltip.create(Component.literal(detail+" · remove only this saved link")));y+=24;
+                    button("Make first target",left+12,y,132,b->send("link_first",id));y+=24;
                 }
             }
             button("Apply fields",left+12,top+h-27,104,b->{Map<String,String> values=new LinkedHashMap<>();fields.forEach((key,box)->values.put(key,box.getValue()));values.forEach(this::send);});
