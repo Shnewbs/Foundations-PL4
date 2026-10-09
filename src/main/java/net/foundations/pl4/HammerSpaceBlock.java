@@ -25,7 +25,7 @@ public final class HammerSpaceBlock extends Block {
     public InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player p,BlockHitResult hit){
         return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?InteractionResult.sidedSuccess(l.isClientSide):InteractionResult.PASS;
     }
-    @Override public boolean onDestroyedByPlayer(BlockState s,Level l,BlockPos p,Player player,boolean willHarvest,FluidState fluid){
+    @Override public boolean removedByPlayer(BlockState s,Level l,BlockPos p,Player player,boolean willHarvest,FluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));
         if(!l.isClientSide&&l.getBlockState(base).is(FoundationsPL4.HAMMER.get())) {
             if(player!=null&&!l.mayInteract(player,base))return false;
@@ -40,6 +40,6 @@ public final class HammerSpaceBlock extends Block {
             if(l.getBlockState(base).is(FoundationsPL4.HAMMER.get()))l.destroyBlock(base,true);
         }
     }
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
+    @Override public ItemStack getPickBlock(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
     @Override public net.minecraft.world.level.material.PushReaction getPistonPushReaction(BlockState state){return net.minecraft.world.level.material.PushReaction.BLOCK;}
 }

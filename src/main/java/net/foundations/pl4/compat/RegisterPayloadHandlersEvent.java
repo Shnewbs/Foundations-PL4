@@ -1,8 +1,8 @@
 package net.foundations.pl4.compat;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.*;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.*;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 import net.foundations.pl4.FoundationsPL4;
 import java.util.function.*;
 /** Forge SimpleChannel implementation preserving direction checks and server-thread mutation. */

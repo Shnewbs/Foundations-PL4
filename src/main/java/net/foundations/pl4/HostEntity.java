@@ -98,7 +98,7 @@ public final class HostEntity extends BlockEntity {
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
-    protected void saveAdditional(CompoundTag t,net.minecraft.core.RegistryAccess r){super.saveAdditional(t);write(t,r,false);}
+    protected void saveAdditional(CompoundTag t,net.minecraft.core.RegistryAccess r){super.save(t);write(t,r,false);}
     private void write(CompoundTag t,net.minecraft.core.RegistryAccess r,boolean sync){
         ListTag list=new ListTag();parts.values().forEach(p->list.add(p.save(r,sync)));t.put("parts",list);t.putInt("schema",2);
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
@@ -114,9 +114,9 @@ public final class HostEntity extends BlockEntity {
         if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
     public CompoundTag getUpdateTag(net.minecraft.core.RegistryAccess r){CompoundTag t=new CompoundTag();write(t,r,true);return t;}
-    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
+    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return new ClientboundBlockEntityDataPacket(worldPosition,0,getUpdateTag());}
 
-    @Override protected void saveAdditional(CompoundTag tag){saveAdditional(tag,null);}
+    @Override public CompoundTag save(CompoundTag tag){saveAdditional(tag,null);return tag;}
     @Override public void load(CompoundTag tag){loadAdditional(tag,null);}
     @Override public CompoundTag getUpdateTag(){return getUpdateTag(null);}
 }

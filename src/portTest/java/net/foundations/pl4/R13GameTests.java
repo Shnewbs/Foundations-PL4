@@ -3,11 +3,11 @@ package net.foundations.pl4;
 import java.util.UUID;
 import net.minecraft.core.Direction;
 import net.foundations.pl4.compat.DataComponents;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native item-form persistence fixtures for the final 0.0.1a cleanup. */
 @PrefixGameTestTemplate(false)

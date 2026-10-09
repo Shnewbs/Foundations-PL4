@@ -2,14 +2,14 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.nbt.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native fixtures: separate from the executed, dependency-free planner tests. */
 @PrefixGameTestTemplate(false)

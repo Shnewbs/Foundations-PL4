@@ -8,7 +8,7 @@ import net.minecraft.server.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
 import org.slf4j.LoggerFactory;
 
 /** All capability access, sampling and transfers run on the server thread. Never force-load chunks. */
@@ -30,7 +30,7 @@ public final class NetworkEngine {
     public static void remove(HostEntity h){if(LOADED.remove(h))dirty=true;}
     public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
-    public static void stopped(ServerStoppedEvent e){
+    public static void stopped(FMLServerStoppedEvent e){
         EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
     public static ServerLevel level(MinecraftServer server,Part.Link link){
@@ -148,7 +148,7 @@ public final class NetworkEngine {
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent e){
         if(e.phase!=net.minecraftforge.event.TickEvent.Phase.END)return;
-        MinecraftServer server=net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();if(server==null)return;
+        MinecraftServer server=net.minecraftforge.fmllegacy.server.ServerLifecycleHooks.getCurrentServer();if(server==null)return;
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
         boolean sample=server.getTickCount()%PLConfig.TICK_RATE.get()==0;
         if(sample&&!dirty)for(HostEntity h:cachedHosts)if(!loadedHost(h,server)){dirty=true;break;}

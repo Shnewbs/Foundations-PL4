@@ -6,7 +6,7 @@ This port carries the modern-source cable/multipart network, readers, displays a
 wireless item storage, routing, item/fluid/energy escrow, ownership and field guide forward
 from the 1.18.2 feature branch. It is not the reduced legacy transport implementation.
 
-Native tags and sapphire generation are adapted to this exact target. The complete 193-test
+Native tags and sapphire generation are adapted to this exact target. The complete 193-scenario
 suite, production-rule checks, reobfuscation and exact-target resources must pass before
 publication. A branch or successful compiler exit is not a finished port.
 
@@ -14,5 +14,7 @@ publication. A branch or successful compiler exit is not a finished port.
 visuals, multiplayer and sustained performance acceptance remain pending. No unavailable
 foreign energy API receives invented conversion ratios. Full PL2 parity is not claimed.
 
-Build and native tests: `bash gradlew --no-daemon clean build runGameTestServer` with Java 17.
+Build and native scenarios: `bash gradlew --no-daemon clean build runServer -PportScenarios` with Java 17.
 Install only a published runtime JAR for this exact target; back up worlds and match client/server versions.
+
+The 193 scenarios execute in a separate isolated dedicated-server harness because this target predates Forge's modern GameTest registration hook. The runtime JAR excludes all scenario classes.

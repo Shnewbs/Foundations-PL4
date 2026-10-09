@@ -21,7 +21,7 @@ final class GuideResources {
             if(!manager.hasResource(id))id=FoundationsPL4.id("guide/en_us.json");
             try(var resource=manager.getResource(id);var in=resource.getInputStream()){
                 byte[] bytes=in.readNBytes(1_048_577);if(bytes.length>1_048_576)throw new IOException("Guide exceeds 1 MiB limit");
-                return decode(JsonParser.parseString(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject());
+                return decode(new JsonParser().parse(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject());
             }
         }catch(IOException|RuntimeException error){
             LoggerFactory.getLogger("FoundationsPL4").warn("Cannot load PL4 Field Guide resource",error);
@@ -44,7 +44,7 @@ final class GuideResources {
     private static Path path(){return FMLPaths.CONFIGDIR.get().resolve("foundations").resolve("pl4_guide.json");}
     static Preferences preferences(){
         Preferences p=new Preferences();Path file=path();
-        try{if(Files.isRegularFile(file)&&Files.size(file)<=16_384){var json=JsonParser.parseString(Files.readString(file)).getAsJsonObject();
+        try{if(Files.isRegularFile(file)&&Files.size(file)<=16_384){var json=new JsonParser().parse(Files.readString(file)).getAsJsonObject();
             if(json.has("chapter"))p.chapter=json.get("chapter").getAsString();
             if(json.has("saved"))for(var id:json.getAsJsonArray("saved")){if(p.saved.size()>=128)break;p.saved.add(id.getAsString());}
         }}catch(IOException|RuntimeException e){LoggerFactory.getLogger("FoundationsPL4").warn("Cannot read guide preferences; using defaults",e);}

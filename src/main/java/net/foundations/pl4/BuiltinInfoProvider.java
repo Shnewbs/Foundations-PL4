@@ -25,7 +25,7 @@ public final class BuiltinInfoProvider {
         if(state.getBlock() instanceof CropBlock crop)put(rows,"crop_age","Crop growth",state.getValue(crop.getAgeProperty()),crop.getMaxAge(),"");
         for(var property:state.getProperties())if(state.getValue(property) instanceof Number number)put(rows,"state."+property.getName(),property.getName(),number.doubleValue(),0,"");
         if(l.getBlockEntity(pos) instanceof net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity furnace){
-            var tag=furnace.saveWithoutMetadata();
+            var tag=furnace.save(new net.minecraft.nbt.CompoundTag());
             put(rows,"burn_time","Burn time",tag.getShort("BurnTime"),0,"ticks");put(rows,"cook_time","Cooking",tag.getShort("CookTime"),tag.getShort("CookTimeTotal"),"ticks");
         }
     }

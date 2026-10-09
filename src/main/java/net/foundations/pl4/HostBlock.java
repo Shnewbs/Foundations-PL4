@@ -49,7 +49,7 @@ public final class HostBlock extends BaseEntityBlock {
     @Override public boolean isSignalSource(BlockState s){return true;}
     @Override public int getSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return l.getBlockEntity(p) instanceof HostEntity h?h.output(side):0;}
     @Override public int getDirectSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return getSignal(s,l,p,side);}
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){
+    @Override public ItemStack getPickBlock(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){
         if(target instanceof BlockHitResult hit && l.getBlockEntity(p) instanceof HostEntity h){Part part=h.hit(hit);if(part!=null)return new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());}return ItemStack.EMPTY;
     }
 }

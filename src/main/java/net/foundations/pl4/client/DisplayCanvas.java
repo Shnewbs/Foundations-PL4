@@ -87,9 +87,9 @@ final class DisplayCanvas {
     private static void warn(String id,RuntimeException error){if(WARNED.size()<64&&WARNED.add(id))org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Cannot render display picture {}",id,error);}
     private void quad(ResourceLocation texture,double x,double y,double w,double h,float u0,float v0,float u1,float v1,int color,double z){
         var v=buffers.getBuffer(RenderType.entityTranslucent(texture));var p=pose.last();
-        v.vertex(p.pose(),(float)x,(float)y,(float)z).color(color).uv(u0,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
-        v.vertex(p.pose(),(float)x,(float)(y+h),(float)z).color(color).uv(u0,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
-        v.vertex(p.pose(),(float)(x+w),(float)(y+h),(float)z).color(color).uv(u1,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
-        v.vertex(p.pose(),(float)(x+w),(float)y,(float)z).color(color).uv(u1,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)x,(float)y,(float)z).color((color>>>16)&255,(color>>>8)&255,color&255,(color>>>24)&255).uv(u0,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)x,(float)(y+h),(float)z).color((color>>>16)&255,(color>>>8)&255,color&255,(color>>>24)&255).uv(u0,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)(x+w),(float)(y+h),(float)z).color((color>>>16)&255,(color>>>8)&255,color&255,(color>>>24)&255).uv(u1,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)(x+w),(float)y,(float)z).color((color>>>16)&255,(color>>>8)&255,color&255,(color>>>24)&255).uv(u1,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
     }
 }

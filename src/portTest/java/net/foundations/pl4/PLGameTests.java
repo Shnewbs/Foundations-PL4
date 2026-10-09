@@ -2,13 +2,13 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.event.RegisterGameTestsEvent;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.RegisterGameTestsEvent;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 import net.foundations.pl4.compat.Capabilities;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 public final class PLGameTests {
     /** CI-only isolation: transient test values must not race Forge's autosave file watcher.
      * Normal server configuration remains file-backed; no fixture assertions are relaxed. */
-    @net.minecraft.gametest.framework.BeforeBatch(batch="defaultBatch")
+    @net.foundations.pl4.compat.scenarios.BeforeBatch(batch="defaultBatch")
     public static void isolatedConfig(net.minecraft.server.level.ServerLevel level){
         if(!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig"))return;
         var memory=com.electronwill.nightconfig.core.CommentedConfig.inMemory();
@@ -156,7 +156,7 @@ public final class PLGameTests {
         ItemStack output=new ItemStack(Items.EMERALD,4);net.foundations.pl4.compat.PortData.set(output,net.foundations.pl4.compat.DataComponents.CUSTOM_NAME,new net.minecraft.network.chat.TextComponent("Recipe codec fixture"));
         var recipe=new net.foundations.pl4.core.ForgingRecipe(net.minecraft.world.item.crafting.Ingredient.of(Items.DIAMOND),3,output,11,7);
         var codec=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get().codec().codec();
-        var ops=net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE,h.getLevel().registryAccess());
+        var ops=com.mojang.serialization.JsonOps.INSTANCE;
         var encoded=codec.encodeStart(ops,recipe).getOrThrow(false,message->{throw new IllegalArgumentException(message);});var decoded=codec.parse(ops,encoded).getOrThrow(false,message->{throw new IllegalArgumentException(message);});
         net.foundations.pl4.compat.PortAssertions.check(!decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,2)),h.getLevel()),"Insufficient input count must not match");
         net.foundations.pl4.compat.PortAssertions.check(decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,3)),h.getLevel()),"Required input count must match");

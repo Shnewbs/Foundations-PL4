@@ -2,9 +2,9 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native acceptance fixtures. Execution requires a full Minecraft/NeoForge test server. */
 @PrefixGameTestTemplate(false)

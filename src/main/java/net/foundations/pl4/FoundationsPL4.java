@@ -18,14 +18,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.*;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 @Mod(FoundationsPL4.ID)
 public final class FoundationsPL4 {
     public static final String ID = "foundations_pl4";
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK,ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM,ID);
-    public static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE,ID);
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU,ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,ID);
+    public static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES,ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS,ID);
     public static final RegistryObject<MenuType<HammerMenu>> HAMMER_MENU = MENUS.register("hammer", () -> new MenuType<>(HammerMenu::new));
     public static final CreativeModeTab TAB=new CreativeModeTab("foundations_pl4"){
         @Override public ItemStack makeIcon(){return new ItemStack(item("sapphire"));}
@@ -82,7 +83,6 @@ public final class FoundationsPL4 {
             HammerEntity.capabilities(caps);NativeEnergyInput.register(caps);
         });
         MinecraftForge.EVENT_BUS.addGenericListener(net.minecraft.world.level.block.entity.BlockEntity.class,net.foundations.pl4.compat.PortCapabilities::attach);
-        bus.addListener(PLGameTests::register);
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::tick);
         MinecraftForge.EVENT_BUS.addListener(PortWorldgen::biome);
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::stopped);

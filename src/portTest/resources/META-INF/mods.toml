@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[37,38)"
+license="MIT"
+[[mods]]
+modId="foundations_pl4_porttests"
+version="1"
+displayName="PL4 isolated 1.17.1 scenarios (development only)"
+[[dependencies.foundations_pl4_porttests]]
+modId="foundations_pl4"
+mandatory=true
+versionRange="[0,)"
+ordering="AFTER"
+side="SERVER"

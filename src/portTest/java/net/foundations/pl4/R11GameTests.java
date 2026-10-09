@@ -2,8 +2,8 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.Direction;
-import net.minecraft.gametest.framework.*;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.*;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 import net.foundations.pl4.core.*;
 
 /** Native fixtures for R11 logical-canvas persistence/migration. Client rendering still requires graphical acceptance. */

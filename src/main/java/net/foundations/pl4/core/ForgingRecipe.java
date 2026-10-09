@@ -49,7 +49,7 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
   };}
   public MapCodec<ForgingRecipe> codec(){return CODEC;}
   @Override public ForgingRecipe fromJson(ResourceLocation id,JsonObject json){
-   JsonObject result=GsonHelper.getAsJsonObject(json,"result").deepCopy();
+   JsonObject result=new com.google.gson.JsonParser().parse(GsonHelper.getAsJsonObject(json,"result").toString()).getAsJsonObject();
    if(result.has("id")&&!result.has("item"))result.add("item",result.remove("id"));
    return new ForgingRecipe(Ingredient.fromJson(json.get("ingredient")),GsonHelper.getAsInt(json,"input_count",1),net.minecraftforge.common.crafting.CraftingHelper.getItemStack(result,true),GsonHelper.getAsInt(json,"processing_ticks",100),GsonHelper.getAsInt(json,"cooldown_ticks",200),id);
   }

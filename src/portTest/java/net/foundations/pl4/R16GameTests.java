@@ -2,11 +2,11 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native item-path acceptance for the R16 passive-node transfer pool. */
 @PrefixGameTestTemplate(false)

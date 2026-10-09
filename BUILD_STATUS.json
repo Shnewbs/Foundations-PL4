@@ -22,6 +22,9 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "37.1.1",
-  "port_status": "NATIVE_BUILD_AND_TESTS_PENDING",
-  "installed_runtime_acceptance": "PENDING"
+  "port_status": "NATIVE_VALIDATION_PENDING",
+  "installed_runtime_acceptance": "PENDING",
+  "dedicated_scenario_port": true,
+  "expected_native_scenarios": 193,
+  "test_harness": "PL4 isolated native server scenarios; not modern GameTests"
 }

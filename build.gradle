@@ -6,6 +6,13 @@ version = '0.2a-port.1'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.17.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
+sourceSets {
+    portTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+configurations { portTestImplementation.extendsFrom implementation; portTestRuntimeOnly.extendsFrom runtimeOnly }
 minecraft {
     mappings channel: 'official', version: '1.17.1'
     copyIdeResources = true
@@ -16,15 +23,21 @@ minecraft {
             mods { foundations_pl4 { source sourceSets.main } }
         }
         client { }
-        server { args '--nogui' }
-        gameTestServer { property 'forge.enabledGameTestNamespaces', 'foundations_pl4'; property 'foundations_pl4.isolatedGameTestConfig','true' }
+        server {
+            args '--nogui'
+            if(project.hasProperty('portScenarios')) {
+                workingDirectory project.file('run-scenarios')
+                property 'foundations_pl4.portScenarioServer','true'
+                mods { foundations_pl4_porttests { source sourceSets.portTest } }
+            }
+        }
     }
 }
 repositories { mavenCentral() }
 dependencies { minecraft 'net.minecraftforge:forge:1.17.1-37.1.1' }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs','1000'] }
 // Do not inject Java 17 flags into Forge's Java 16 dependency recompilation task.
-['compileJava','compileTestJava'].each { name -> tasks.named(name,JavaCompile) { options.release=17 } }
+['compileJava','compileTestJava','compilePortTestJava'].each { name -> tasks.named(name,JavaCompile) { options.release=17 } }
 tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false; reproducibleFileOrder=true }
 processResources {
     inputs.property 'version',project.version
@@ -45,6 +58,7 @@ tasks.register('verifyPortJar') {
             def metadata=zip.getInputStream(zip.getEntry('META-INF/mods.toml')).getText('UTF-8')
             if (!metadata.contains('version="'+project.version+'"') || !metadata.contains('versionRange="[1.17.1]"')) throw new GradleException('Incorrect Forge target metadata')
             zip.entries().each { entry ->
+                if(entry.name.endsWith('GameTests.class') || entry.name.contains('compat/scenarios/')) throw new GradleException('Leaked scenario class: '+entry.name)
                 if (entry.name.endsWith('.jar')) throw new GradleException('Unexpected bundled mod: '+entry.name)
                 if (entry.name.endsWith('.class')) {
                     def content=new String(zip.getInputStream(entry).bytes,java.nio.charset.StandardCharsets.ISO_8859_1)
@@ -56,3 +70,5 @@ tasks.register('verifyPortJar') {
     }
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
+
+if(project.hasProperty('portScenarios')) tasks.matching { it.name=='runServer' }.configureEach { dependsOn tasks.named('portTestClasses') }

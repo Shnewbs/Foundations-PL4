@@ -103,7 +103,7 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
         tag.putInt("processingTicks",processingTicks);tag.putInt("cooldownTotal",cooldownTotal);tag.putInt("status",status);
         tag.putBoolean("structureReady",structureReady);tag.putBoolean("working",working);tag.putLong("animationTime",animationTime);
     }
-    protected void saveAdditional(CompoundTag tag,net.minecraft.core.RegistryAccess r){super.saveAdditional(tag);write(tag,r);}
+    protected void saveAdditional(CompoundTag tag,net.minecraft.core.RegistryAccess r){super.save(tag);write(tag,r);}
     protected void loadAdditional(CompoundTag tag,net.minecraft.core.RegistryAccess r){
         super.load(tag);inventory.deserializeNBT(tag.getCompound("inventory"));
         progress=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("progress"),0,72000);cooldown=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("cooldown"),0,72000);activeRecipe=tag.getString("activeRecipe");
@@ -112,9 +112,9 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
         status=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("status"),0,5);structureReady=tag.getBoolean("structureReady");working=tag.getBoolean("working");animationTime=tag.getLong("animationTime");visualDirty=true;
     }
     public CompoundTag getUpdateTag(net.minecraft.core.RegistryAccess r){CompoundTag tag=new CompoundTag();write(tag,r);return tag;}
-    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
+    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return new ClientboundBlockEntityDataPacket(worldPosition,0,getUpdateTag());}
 
-    @Override protected void saveAdditional(CompoundTag tag){saveAdditional(tag,null);}
+    @Override public CompoundTag save(CompoundTag tag){saveAdditional(tag,null);return tag;}
     @Override public void load(CompoundTag tag){loadAdditional(tag,null);}
     @Override public CompoundTag getUpdateTag(){return getUpdateTag(null);}
 }

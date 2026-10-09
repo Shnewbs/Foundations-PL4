@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import java.util.*;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.*;
 import net.minecraft.world.item.*;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.util.*;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native server fixtures. These require an actual Minecraft/NeoForge build and are NOT offline passes. */
 @PrefixGameTestTemplate(false)

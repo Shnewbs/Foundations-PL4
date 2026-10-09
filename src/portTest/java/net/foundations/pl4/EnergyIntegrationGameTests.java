@@ -3,10 +3,10 @@ package net.foundations.pl4;
 import java.util.*;
 import net.foundations.pl4.core.*;
 import net.minecraft.core.*;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.foundations.pl4.compat.DataComponents;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Native server fixtures for the production route engine; optional provider contracts are also
  * exercised by the dependency-free verifier. Injected ports avoid requiring third-party mods. */

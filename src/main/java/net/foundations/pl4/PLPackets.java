@@ -166,7 +166,7 @@ public final class PLPackets {
                 case "statement_add" -> {
                     if(p.kind!=Kind.SIGNALLER||p.statements.size()>=net.foundations.pl4.core.SignalRules.MAX_STATEMENTS)return;
                     try{
-                        var json=com.google.gson.JsonParser.parseString(v).getAsJsonObject();
+                        var json=new com.google.gson.JsonParser().parse(v).getAsJsonObject();
                         String reader=clean(json.get("reader").getAsString(),64),key=clean(json.get("key").getAsString(),128);
                         p.statements.add(new net.foundations.pl4.core.SignalRules.Statement(UUID.randomUUID(),reader,key,json.get("operator").getAsString(),json.get("threshold").getAsDouble()));
                     }catch(RuntimeException invalid){return;}

@@ -1,10 +1,10 @@
 package net.foundations.pl4;
 import net.minecraft.core.*;
 import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 import net.foundations.pl4.compat.PortAssertions;
 @PrefixGameTestTemplate(false)
 public final class PortWorldgenGameTests {

@@ -4,7 +4,7 @@ import java.util.*;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.*;
 import net.foundations.pl4.compat.DataComponents;
-import net.minecraft.gametest.framework.*;
+import net.foundations.pl4.compat.scenarios.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.foundations.pl4.core.*;
 import net.minecraftforge.common.util.*;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
 /** Minecraft/NeoForge integration fixtures. Not executed by the dependency-free runner. */
 @PrefixGameTestTemplate(false)
@@ -97,7 +97,7 @@ public final class R9GameTests {
         net.foundations.pl4.compat.PortAssertions.check(legacy.textAlign()==DisplayElements.TextAlign.LEFT&&!legacy.wrap()&&legacy.textScale()==1F,"Legacy JSON defaults text to left/no-wrap/1x scale");
         String valid=ElementJson.encode(s);boolean badType=false,badNumber=false;
         try{ElementJson.decode(valid.replace("\""+s.type().name()+"\"","\"CLASSLOADER\""));}catch(RuntimeException expected){badType=true;}
-        var parsed=com.google.gson.JsonParser.parseString(valid).getAsJsonObject();parsed.addProperty("x",1.5);try{ElementJson.decode(parsed.toString());}catch(RuntimeException expected){badNumber=true;}
+        var parsed=new com.google.gson.JsonParser().parse(valid).getAsJsonObject();parsed.addProperty("x",1.5);try{ElementJson.decode(parsed.toString());}catch(RuntimeException expected){badNumber=true;}
         net.foundations.pl4.compat.PortAssertions.check(badType&&badNumber,"Whitelist types and exact integer geometry are required");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

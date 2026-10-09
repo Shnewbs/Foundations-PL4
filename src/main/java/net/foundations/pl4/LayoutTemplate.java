@@ -17,12 +17,12 @@ public record LayoutTemplate(int width,int height,List<DisplayElements.Spec> ele
         for(var e:elements)if(e.bounds().right()>width||e.bounds().bottom()>height)throw new IllegalArgumentException("Element outside template canvas");
     }
     public String encode(){
-        JsonObject j=new JsonObject();j.addProperty("format","foundations_pl4:layout");j.addProperty("schema",1);j.addProperty("width",width);j.addProperty("height",height);j.add("elements",JsonParser.parseString(ElementJson.encodeList(elements)));
+        JsonObject j=new JsonObject();j.addProperty("format","foundations_pl4:layout");j.addProperty("schema",1);j.addProperty("width",width);j.addProperty("height",height);j.add("elements",new JsonParser().parse(ElementJson.encodeList(elements)));
         String text=j.toString();if(text.length()>MAX_TEXT)throw new IllegalArgumentException("Template too large");return text;
     }
     public static LayoutTemplate decode(String text){
         if(text==null||text.length()>MAX_TEXT)throw new IllegalArgumentException("Template too large");
-        JsonObject j=JsonParser.parseString(text).getAsJsonObject();
+        JsonObject j=new JsonParser().parse(text).getAsJsonObject();
         if(!j.get("format").getAsString().equals("foundations_pl4:layout")||j.get("schema").getAsBigDecimal().intValueExact()!=1)throw new IllegalArgumentException("Unsupported template format/schema");
         int w=j.get("width").getAsBigDecimal().intValueExact(),h=j.get("height").getAsBigDecimal().intValueExact();
         for(var value:j.getAsJsonArray("elements")){
