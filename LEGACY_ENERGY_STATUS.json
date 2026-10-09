@@ -1,0 +1,15 @@
+{
+  "version": "0.2a-legacy-preview.3",
+  "minecraft": "1.6.4",
+  "native_scenarios_expected": 89,
+  "scope": "Legacy item/fluid/energy transport subset, not full modern parity",
+  "energy_api": "PL4-owned sided energy extension (not RF/FE/EU/J compatibility)",
+  "energy_capacity": 100000,
+  "rate_per_operation": 400,
+  "manual_charge": 40,
+  "manual_cooldown_ticks": 10,
+  "installed_third_party_mods": "NOT_TESTED",
+  "client_visuals": "NOT_TESTED",
+  "multiplayer": "NOT_TESTED",
+  "further_api_testing_required": true
+}

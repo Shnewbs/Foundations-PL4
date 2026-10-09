@@ -3,14 +3,14 @@ plugins {
     id 'net.minecraftforge.gradle' version '7.0.28'
     id 'net.minecraftforge.renamer' version '1.1.2'
 }
-version='0.2a-legacy-preview.2'
+version='0.2a-legacy-preview.3'
 group='net.foundations.pl4'
 base.archivesName='FoundationsPL4-1.6.4'
 java { toolchain.languageVersion=JavaLanguageVersion.of(8); withSourcesJar() }
 sourceSets {
     main { java.setSrcDirs(['src/legacy/java']); resources.setSrcDirs(['src/legacy/resources']) }
     legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
-    legacyRules { java.setSrcDirs(['tools']); java.include 'CoreChecks.java','FluidChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
+    legacyRules { java.setSrcDirs(['tools']); java.include 'CoreChecks.java','FluidChecks.java','EnergyChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
 }
 tasks.withType(JavaCompile).configureEach { sourceCompatibility='1.7'; targetCompatibility='1.7'; options.encoding='UTF-8' }
 repositories { mavenCentral(); minecraft.mavenizer(it); maven fg.forgeMaven; maven fg.minecraftLibsMaven }

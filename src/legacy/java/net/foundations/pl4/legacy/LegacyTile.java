@@ -10,8 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.Block;
 /** Native pre-capability adapter. Name ownership is explicit for 1.6.4, not a claimed modern account-UUID contract. */
-public final class LegacyTile extends TileEntity implements net.minecraftforge.fluids.IFluidHandler {
+public final class LegacyTile extends TileEntity implements net.minecraftforge.fluids.IFluidHandler,LegacyEnergyAccess {
     public final LegacyFluids.State fluid=new LegacyFluids.State(this);
+    public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending;public String status="Idle";
     private long lastRun=Long.MIN_VALUE,lastError=Long.MIN_VALUE;
     public static String identity(EntityPlayer player){return player.username.toLowerCase(Locale.ROOT);}
@@ -20,15 +21,16 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public BoundedNetwork.Point point(){return new BoundedNetwork.Point(xCoord,yCoord,zCoord);}
     public BoundedNetwork.Point target(){return point().offset(side);}
     public NativeInventory inventory(){BoundedNetwork.Point p=target();if(worldObj==null||!worldObj.blockExists(p.x,p.y,p.z))return null;TileEntity tile=worldObj.getBlockTileEntity(p.x,p.y,p.z);return tile instanceof IInventory&&!(tile instanceof LegacyTile)?new NativeInventory((IInventory)tile,side^1):null;}
-    public BoundedNetwork.Plan network(){return BoundedNetwork.scan(new BoundedNetwork.Graph(){public boolean connected(BoundedNetwork.Point p){if(worldObj==null||owner.isEmpty()||!worldObj.blockExists(p.x,p.y,p.z))return false;TileEntity tile=worldObj.getBlockTileEntity(p.x,p.y,p.z);return tile instanceof LegacyTile&&((LegacyTile)tile).role()!=5&&owner.equals(((LegacyTile)tile).owner);}},point(),LegacyPL4.nodeLimit);}
+    public BoundedNetwork.Plan network(){return BoundedNetwork.scan(new BoundedNetwork.Graph(){public boolean connected(BoundedNetwork.Point p){if(worldObj==null||owner.isEmpty()||!worldObj.blockExists(p.x,p.y,p.z))return false;TileEntity tile=worldObj.getBlockTileEntity(p.x,p.y,p.z);return tile instanceof LegacyTile&&((LegacyTile)tile).role()!=5&&((LegacyTile)tile).role()!=8&&owner.equals(((LegacyTile)tile).owner);}},point(),LegacyPL4.nodeLimit);}
     @Override public void updateEntity(){
-        if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3)||!LegacyPL4.enabled||owner.isEmpty())return;long tick=worldObj.getTotalWorldTime();long phase=tick+xCoord*31L+yCoord*17L+zCoord;
+        if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty())return;long tick=worldObj.getTotalWorldTime();long phase=tick+xCoord*31L+yCoord*17L+zCoord;
         if(tick==lastRun||((phase%LegacyPL4.interval)+LegacyPL4.interval)%LegacyPL4.interval!=0)return;lastRun=tick;
         try{transferOnce();}catch(RuntimeException error){status="Provider error; retained escrow";if(lastError==Long.MIN_VALUE||tick-lastError>=1200){lastError=tick;if(LegacyPL4.logger!=null)LegacyPL4.logger.log(java.util.logging.Level.WARNING,"PL4 legacy transfer stopped at "+point(),error);}}
     }
     public int transferOnce(){
+        if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
-        if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3)||!LegacyPL4.enabled||owner.isEmpty()||worldObj.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord))return 0;
+        if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||worldObj.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}NativeInventory source=inventory();if(source==null&&pending==null)return 0;
         ConservingItems.Work work=new ConservingItems.Work(1024);Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();seen.add(target());int moved=0;
         for(BoundedNetwork.Point p:plan.nodes){
@@ -42,9 +44,10 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
         status=moved>0?"Moved "+moved+" items":pending==null?"Waiting for items or space":"Waiting with "+pending.stackSize+" items in escrow";return moved;
     }
     public String describe(){
+        if(role()>=6)return LegacyEnergy.describe(this);
         if(role()>=3)return LegacyFluids.describe(this);BoundedNetwork.Plan plan=network();NativeInventory inventory=inventory();int slots=inventory==null?0:inventory.slots();long count=0;for(int i=0;i<slots;i++){ItemStack s=inventory.inventory.getStackInSlot(inventory.indices[i]);if(s!=null)count+=Math.max(0,s.stackSize);}return "PL4 "+(role()==0?"Cable":role()==1?"Export":"Import")+" | Side "+side+" | Hosts "+(plan.overflow?"LIMIT":plan.nodes.size())+" | Items "+count+" | Escrow "+(pending==null?0:pending.stackSize)+" | "+status;}
-    @Override public void writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",2);fluid.write(tag);tag.setString("OwnerName",owner);tag.setInteger("Side",side);if(pending!=null)tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");}
-    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);fluid.read(tag);owner=tag.getString("OwnerName").toLowerCase(Locale.ROOT);side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow")?ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Escrow")):null;}
+    @Override public void writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);energy.write(tag);fluid.write(tag);tag.setString("OwnerName",owner);tag.setInteger("Side",side);if(pending!=null)tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");}
+    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);energy.read(tag);fluid.read(tag);owner=tag.getString("OwnerName").toLowerCase(Locale.ROOT);side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow")?ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Escrow")):null;}
     public static final ConservingItems.Stacks<ItemStack> STACKS=new ConservingItems.Stacks<ItemStack>(){
         public boolean empty(ItemStack s){return s==null||s.stackSize<=0;}public int count(ItemStack s){return empty(s)?0:s.stackSize;}
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}
@@ -82,4 +85,5 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public boolean canFill(net.minecraftforge.common.ForgeDirection from,net.minecraftforge.fluids.Fluid f){return role()==5&&!fluid.blocked();}
     public boolean canDrain(net.minecraftforge.common.ForgeDirection from,net.minecraftforge.fluids.Fluid f){return role()==5&&!fluid.blocked();}
     public net.minecraftforge.fluids.FluidTankInfo[] getTankInfo(net.minecraftforge.common.ForgeDirection from){return role()==5?new net.minecraftforge.fluids.FluidTankInfo[]{new net.minecraftforge.fluids.FluidTankInfo(fluid.contents(),LegacyFluids.CAPACITY)}:new net.minecraftforge.fluids.FluidTankInfo[0];}
+    public ConservingEnergy.Port pl4EnergyPort(int face){return face>=0&&face<6&&role()==8?energy:null;}
 }
