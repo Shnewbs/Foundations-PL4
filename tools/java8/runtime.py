@@ -1,4 +1,4 @@
-"""Build-time Java 8 compatibility, archive checks and isolated native acceptance for Forge 1.16.x."""
+"""Build-time Java 8 compatibility, archive checks and isolated native acceptance for Forge 1.16.4."""
 from __future__ import annotations
 import argparse, hashlib, json, os, re, shutil, struct, subprocess, sys, urllib.request, zipfile
 from pathlib import Path
@@ -16,24 +16,20 @@ def run(*args, cwd=ROOT, timeout=1200):
 def metadata():
     status = json.loads((ROOT/'BUILD_STATUS.json').read_text())
     target = status['minecraft']
-    if target not in {'1.16.4','1.16.5'}:
-        raise ValueError('Unsupported Java 8 port target')
+    if target != '1.16.4':raise ValueError('Unsupported Java 8 port target')
     version = re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'", (ROOT/'build.gradle').read_text(), re.M).group(1)
     return status, target, version, 'FoundationsPL4-'+target+'-'+version
 
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def fetch(url, dest, expected=None):
     dest.parent.mkdir(parents=True, exist_ok=True)
     if not dest.is_file() or (expected and sha(dest)!=expected):
         temp=dest.with_suffix(dest.suffix+'.part')
         with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent':'FoundationsPL4-build'}), timeout=120) as response:
-            with temp.open('wb') as out:
-                shutil.copyfileobj(response,out)
+            with temp.open('wb') as out:shutil.copyfileobj(response,out)
         temp.replace(dest)
-    if expected and sha(dest)!=expected:
-        raise ValueError('Checksum mismatch: '+dest.name)
+    if expected and sha(dest)!=expected:raise ValueError('Checksum mismatch: '+dest.name)
     return dest
 
 def convert():
@@ -50,8 +46,6 @@ def convert():
     java=Path(os.environ.get('JAVA_HOME_17_X64',os.environ.get('JAVA_HOME','')))/'bin/java'
     if not java.is_file():raise ValueError('A Java 17 build JDK is required')
     cp=(work/'classpath.txt').read_text().strip()
-    # Each input sees the mapped hierarchy. Production signatures do not expose newer-JDK
-    # stub types; isolate test helpers to avoid duplicate, separately minimized API classes.
     for label,classifier in [('runtime','java8-input'),('tests','java8-tests-input')]:
         src=ROOT/'build/libs'/(name+'-'+classifier+'.jar')
         run(java,'-jar',tool,'-nc','-c','52','downgrade','-t',src,work/(label+'-downgraded.jar'),'-cp',cp)
@@ -65,17 +59,13 @@ def convert():
                 'Tool version: '+TOOL_VERSION+'; SHA256: '+TOOL_SHA256+'\n'
                 'PL4 sources and this build script allow rebuilding/relinking.\n'
                 'Matching upstream source is included as a separate release asset.\n')
-    # Duplicate API classes must agree byte-for-byte; tests may not replace production classes.
     with zipfile.ZipFile(work/'runtime-shaded.jar') as prod,zipfile.ZipFile(work/'tests-shaded.jar') as tests:
-        common=set(prod.namelist())&set(tests.namelist())
-        for entry in common:
-            if entry.endswith('.class') and prod.read(entry)!=tests.read(entry):
-                raise ValueError('Different duplicate class in fixtures: '+entry)
+        for entry in set(prod.namelist())&set(tests.namelist()):
+            if entry.endswith('.class') and prod.read(entry)!=tests.read(entry):raise ValueError('Different duplicate class in fixtures: '+entry)
     (work/'toolchain.json').write_text(json.dumps({'tool':TOOL_VERSION,'tool_sha256':sha(tool),'source_commit':TOOL_COMMIT,'source_zip_sha256':sha(source),'minecraft':target,'version':version},indent=2)+'\n')
 
 def verify():
-    status,target,_,name=metadata()
-    counts={}
+    status,target,_,name=metadata();counts={}
     for kind,suffix in [('runtime','java8'),('scenarios','java8-scenarios')]:
         jar=ROOT/'build/libs'/(name+'-'+suffix+'.jar')
         with zipfile.ZipFile(jar) as z:
@@ -84,32 +74,27 @@ def verify():
             count=0
             for entry in names:
                 if entry.endswith('.jar'):raise ValueError('Nested dependency JAR: '+entry)
-                if entry.startswith(('net/minecraft/','net/minecraftforge/','cpw/mods/')):
-                    raise ValueError('Bundled loader/game class: '+entry)
-                if kind=='runtime' and (entry.endswith('GameTests.class') or '/compat/scenarios/' in entry):
-                    raise ValueError('Native fixture leaked into production: '+entry)
+                if entry.startswith(('net/minecraft/','net/minecraftforge/','cpw/mods/')):raise ValueError('Bundled loader/game class: '+entry)
+                if kind=='runtime' and (entry.endswith('GameTests.class') or '/compat/scenarios/' in entry):raise ValueError('Native fixture leaked into production: '+entry)
                 if entry.endswith('.class'):
-                    data=z.read(entry);magic,minor,major=struct.unpack('>IHH',data[:8])
+                    magic,minor,major=struct.unpack('>IHH',z.read(entry)[:8])
                     if magic!=0xCAFEBABE or major>52:raise ValueError('Non-Java8 class: '+entry)
                     count+=1
             if not count:raise ValueError('Empty runtime')
             toml=z.read('META-INF/mods.toml').decode()
             if kind=='runtime':
-                if 'version="'+status['version']+'"' not in toml or 'versionRange="['+target not in toml:
-                    raise ValueError('Wrong artifact identity')
+                if 'version="'+status['version']+'"' not in toml or 'versionRange="['+target not in toml:raise ValueError('Wrong artifact identity')
                 if 'META-INF/PL4-JAVA8-NOTICE.txt' not in names:raise ValueError('Missing compatibility notice')
             counts[kind]={'classes':count,'sha256':sha(jar)}
     (ROOT/'build/java8/archive-check.json').write_text(json.dumps(counts,indent=2)+'\n')
     print('PASS Java 8 archive versions, exact metadata, licenses and fixture isolation: '+str(counts),flush=True)
 
 def native():
-    status,target,version,name=metadata()
-    work=ROOT/'run-java8'
-    if work.exists():
-        raise ValueError('Native acceptance requires a fresh disposable run-java8 directory')
+    from forge35_profile import command
+    status,target,version,name=metadata();work=ROOT/'run-java8'
+    if work.exists():raise ValueError('Native acceptance requires a fresh disposable run-java8 directory')
     work.mkdir();(work/'mods').mkdir()
-    java=Path(os.environ['JAVA_HOME_8_X64'])/'bin/java'
-    forge=target+'-'+status['loader_version']
+    java=Path(os.environ['JAVA_HOME_8_X64'])/'bin/java';forge=target+'-'+status['loader_version']
     installer=fetch('https://maven.minecraftforge.net/net/minecraftforge/forge/'+forge+'/forge-'+forge+'-installer.jar',ROOT/'.java8-toolchain'/('forge-'+forge+'-installer.jar'))
     run(java,'-jar',installer,'--installServer',cwd=work)
     runtime=ROOT/'build/libs'/(name+'-java8.jar')
@@ -120,22 +105,17 @@ def native():
     launch=work/('forge-'+forge+'.jar')
     if not launch.is_file():raise ValueError('Installer did not create the expected Forge server JAR')
     logs=ROOT/'verification-logs';logs.mkdir(exist_ok=True)
-    from forge35_profile import command
-    # Avoid the native loader's first-run async-config-write race in the test workspace.
+    # Complete the loader's own configuration before its watcher starts in the disposable fixture.
     (work/'config').mkdir(exist_ok=True)
-    (work/'config/fml.toml').write_text('maxThreads=1\ndefaultConfigPath="defaultconfigs"\n')
+    (work/'config/fml.toml').write_text('versionCheck=true\nsplashscreen=true\nmaxThreads=1\ndefaultConfigPath="defaultconfigs"\n')
     cmd,profile=command(work,str(java),['-Xms512M','-Xmx3G','-Dfoundations_pl4.portScenarioServer=true'])
     (logs/'launch-profile.json').write_text(json.dumps(profile,indent=2)+'\n')
     print('+ installed Java 8 server: '+' '.join(cmd),flush=True)
-    with (logs/'installed-native.log').open('w') as out:
-        process=subprocess.run(cmd,cwd=work,stdout=out,stderr=subprocess.STDOUT,timeout=900)
-    log=(logs/'installed-native.log').read_text(errors='replace')
-    print(log[-24000:],flush=True)
+    with (logs/'installed-native.log').open('w') as out:process=subprocess.run(cmd,cwd=work,stdout=out,stderr=subprocess.STDOUT,timeout=900)
+    log=(logs/'installed-native.log').read_text(errors='replace');print(log[-24000:],flush=True)
     if process.returncode:raise ValueError('Installed runtime exited '+str(process.returncode))
-    report=json.loads((work/'port-scenarios.json').read_text())
-    expected=status['expected_native_scenarios']
-    if report['minecraft']!=target or (report['total'],report['passed'],report['failed'])!=(expected,expected,0):
-        raise ValueError('Native scenario failure: '+str(report))
+    report=json.loads((work/'port-scenarios.json').read_text());expected=status['expected_native_scenarios']
+    if report['minecraft']!=target or (report['total'],report['passed'],report['failed'])!=(expected,expected,0):raise ValueError('Native scenario failure: '+str(report))
     if not re.search(r'Starting minecraft server version '+re.escape(target)+r'\b',log,re.I):raise ValueError('Missing native version evidence')
     if 'PL4 SCENARIOS SUCCESS: All '+str(expected)+' required native scenarios passed' not in log:raise ValueError('Missing completion marker')
     if 'Record requires ASM8' in log or 'UnsupportedClassVersionError' in log:raise ValueError('Java 8 loader compatibility failed')
@@ -152,5 +132,4 @@ def native():
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=['convert','verify','native'])
     try:globals()[parser.parse_args().action]()
-    except (OSError,ValueError,KeyError,StopIteration,subprocess.SubprocessError,zipfile.BadZipFile) as error:
-        sys.exit('JAVA8 PORT FAILED: '+str(error))
+    except (OSError,ValueError,KeyError,StopIteration,subprocess.SubprocessError,zipfile.BadZipFile) as error:sys.exit('JAVA8 PORT FAILED: '+str(error))

@@ -1,10 +1,10 @@
-name: Forge 1.16.4 independent native validation
+name: Forge 1.16.4 installed Java 8 feature validation
 on:
   push:
     branches: [mc/1.16.4]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: forge1164-native-validation
   cancel-in-progress: false
@@ -13,6 +13,8 @@ jobs:
     if: github.ref == 'refs/heads/mc/1.16.4'
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    env:
+      GH_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,46 +22,58 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
-      - name: Preserve exact source and target settings
+          java-version: |
+            8
+            17
+      - name: Preserve exact source and build Java 8 production and test artifacts
         shell: bash
         run: |
           set -euo pipefail
-          git diff --exit-code
-          git rev-parse HEAD > source-commit.txt
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-      - name: Build and execute native scenarios with explicit Java 17 profile
+          bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
+      - name: All 193 scenarios on installed Forge with declared launcher profile
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p verification-logs run-scenarios
-          printf 'eula=true\n' > run-scenarios/eula.txt
-          printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=scenario-world\nlevel-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-scenarios/server.properties
-          bash gradlew --no-daemon --console=plain clean build runServer -PportScenarios 2>&1 | tee verification-logs/native.log
-          python3 - <<'PY'
-          import json,re
-          from pathlib import Path
-          report=json.loads(Path('run-scenarios/port-scenarios.json').read_text())
-          log=Path('verification-logs/native.log').read_text()
-          assert report['minecraft']=='1.16.4' and report['total']==193 and report['passed']==193 and report['failed']==0,report
-          assert 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' in log
-          assert re.search(r'Starting minecraft server version 1\.16\.4\b',log,re.I),'Actual native Minecraft version not established'
-          assert 'ModLauncher 8.1.3' in log,'Pinned launcher profile not used'
-          print('PASS 193 native scenarios on Minecraft 1.16.4 / Forge 35.1.37 with explicit Java 17 launch profile')
-          PY
-      - name: Release remains gated on reproducible installed runtime
-        run: echo 'No publication from this diagnostic job. Development launch success does not certify ordinary installed Forge 35.'
+          python3 tools/java8/runtime.py native 2>&1 | tee verification-logs/native-run.log
+      - name: Publish only passed exact-target artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TARGET=1.16.4
+          test "$(git ls-remote origin refs/heads/mc/$TARGET | cut -f1)" = "$(git rev-parse HEAD)"
+          VERSION=$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["version"])')
+          TAG="mc$TARGET-v$VERSION"
+          if git show-ref --verify --quiet "refs/tags/$TAG"; then
+            git diff --exit-code "$TAG" HEAD -- src/main build.gradle tools/java8 gradle/ gradle.properties settings.gradle
+            gh release view "$TAG"
+            echo 'Existing runtime/build inputs unchanged; published assets retained.'
+            exit 0
+          fi
+          NAME="FoundationsPL4-$TARGET-$VERSION"
+          mkdir -p release-files
+          cp "build/libs/$NAME-java8.jar" "release-files/$NAME.jar"
+          cp "build/libs/$NAME-sources.jar" release-files/
+          git archive --format=zip --output="release-files/$NAME-source.zip" HEAD
+          cp .java8-toolchain/jvmdowngrader-source.zip release-files/JvmDowngrader-2.0.1-source.zip
+          cp tools/java8/forge35_profile.py verification-logs/launch-profile.json release-files/
+          cp verification-logs/installed-native.log verification-logs/java8-summary.json verification-logs/port-scenarios.json build/java8/archive-check.json build/java8/toolchain.json release-files/
+          git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
+          (cd release-files && sha256sum * > SHA256SUMS.txt)
+          git tag "$TAG"; git push origin "$TAG"
+          gh release create "$TAG" release-files/* --verify-tag --prerelease --title "Foundations PL4 $TARGET $VERSION - Java 8 compatibility profile" --notes-file "docs/releases/$VERSION.md"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: forge1164-${{ github.run_id }}-${{ github.run_attempt }}
+          name: forge1164-java8-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            source-commit.txt
+            release-files/
             verification-logs/
-            run-scenarios/port-scenarios.json
-            run-scenarios/logs/
-            build/reports/
-            build/libs/
+            build/java8/*.json
+            run-java8/port-scenarios.json
+            run-java8/crash-reports/
           retention-days: 14
           if-no-files-found: warn
