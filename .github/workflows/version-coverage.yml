@@ -1,0 +1,39 @@
+name: Audit all final-version coverage gaps
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/version-coverage.yml'
+      - 'tools/audit_version_coverage.py'
+      - 'tools/test_version_coverage.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test exact-target inventory rules
+        run: python3 tools/test_version_coverage.py
+      - name: Capture official release and loader manifests and current repository assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p coverage
+          curl --fail --location --retry 3 https://piston-meta.mojang.com/mc/game/version_manifest_v2.json -o coverage/minecraft.json
+          curl --fail --location --retry 3 https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml -o coverage/forge.xml
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/branches?per_page=100" > coverage/branches.json
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > coverage/releases.json
+          python3 tools/audit_version_coverage.py --minecraft coverage/minecraft.json --forge coverage/forge.xml --branches coverage/branches.json --releases coverage/releases.json --output coverage/VERSION_COVERAGE.json | tee coverage/summary.txt
+          git rev-parse HEAD > coverage/AUDIT_SOURCE_COMMIT.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: version-coverage-${{ github.run_id }}
+          path: coverage/
+          retention-days: 14
+          if-no-files-found: error
