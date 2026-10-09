@@ -1,4 +1,4 @@
-name: Validate 26.x port
+name: Validate and release Minecraft 26.3
 on:
   push:
     branches: ['mc/26.3']
@@ -8,6 +8,8 @@ permissions:
   actions: read
 jobs:
   port:
+    if: github.ref == 'refs/heads/mc/26.3'
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -22,13 +24,13 @@ jobs:
           cache: gradle
       - name: Compile port
         run: |
-          set -o pipefail
+          set -euo pipefail
           bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
       - name: Offline regression checks
         run: python3 tools/run_offline_checks.py
       - name: Build and native tests
         run: |
-          set -o pipefail
+          set -euo pipefail
           bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain build
           bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain runGameTestServer 2>&1 | tee port-native.log
           python3 tools/verify_native_port_run.py port-native.log
@@ -56,6 +58,7 @@ jobs:
   publish:
     needs: port
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     concurrency:
       group: port-26-release-publication
       cancel-in-progress: false
@@ -68,14 +71,17 @@ jobs:
       - name: Prepare validated release
         run: |
           python3 - <<'PYTHON'
-          import pathlib, re, shutil, hashlib, os
+          import pathlib, re, shutil, hashlib, os, subprocess
           root=pathlib.Path('validated')
           version=re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'",pathlib.Path('build.gradle').read_text(),re.M).group(1)
           jars=[f'FoundationsPL4-26.3-{version}.jar',f'FoundationsPL4-26.3-{version}-sources.jar']
           out=pathlib.Path('build/libs');out.mkdir(parents=True,exist_ok=True)
-          hashes=[]
+          archive=out/f'FoundationsPL4-26.3-{version}-source.zip'
+          subprocess.run(['git','archive','--format=zip','--output='+str(archive),'HEAD'],check=True)
+          hashes=[hashlib.sha256(archive.read_bytes()).hexdigest()+'  '+archive.name]
           for name in jars:
-              found=list(root.rglob(name));assert len(found)==1
+              found=list(root.rglob(name))
+              if len(found)!=1: raise SystemExit('Missing or ambiguous tested artifact: '+name)
               target=out/name;shutil.copy2(found[0],target)
               hashes.append(hashlib.sha256(target.read_bytes()).hexdigest()+'  '+name)
           (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
@@ -87,8 +93,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.3 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/SHA256SUMS.txt
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+            test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$GITHUB_SHA" || { echo 'Existing release has different source; use a new revision.'; exit 1; }
+          else
+            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.3 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/*.zip build/libs/SHA256SUMS.txt
           fi
       - name: Publish validated runtime to CurseForge
         env:
@@ -96,3 +105,13 @@ jobs:
           CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
         run: python3 tools/upload_curseforge.py
+      - name: Preserve release files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-files-26.3-${{ github.sha }}
+          path: |
+            build/libs/
+            curseforge-upload.json
+          retention-days: 14
+          if-no-files-found: warn
