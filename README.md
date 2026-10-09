@@ -6,6 +6,10 @@ Standalone logistics, live machine displays and automation for Minecraft 26.1.2 
 
 Download the matching runtime JAR from [GitHub Releases](https://github.com/Shnewbs/Foundations-PL4/releases). Sources JARs are for development. See [0.1b release notes](docs/releases/0.1b.md), [API testing matrix](docs/API_TESTING.md), [integration status](docs/INTEGRATION_STATUS.md) and the [Field Guide](docs/FIELD_GUIDE.md).
 
+## Minecraft release targets
+
+Separate releases are maintained for **1.21.1, 26.1.2 and 26.3**. Each is compiled and tested against its own Minecraft APIs. See [release targets](docs/RELEASE_TARGETS.md) for branches, loader versions and publication rules.
+
 ## Build and validate
 
 Use Java 25:

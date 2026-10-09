@@ -26,7 +26,7 @@ for kind in ('displayscreen','minidisplay','large_display_model'):
   assert (text-skin)*VECTORS[front][axis]>0,(kind,key,text,skin)
   checks+=1
 renderer=(J/'client/HostRenderer.java').read_text();assert 'DisplayFacing.frame' in renderer and 'displayOutward' in renderer
-assert 'mainCamera().position()' in renderer and 'frame.normal()' in renderer
+assert 'getMainCamera().position()' in renderer and 'frame.normal()' in renderer
 assert 'DisplayNetworks.right(p)' in renderer
 net=(J/'DisplayNetworks.java').read_text();assert 'boolean outward' in net and 'newRoot.part().applyDisplaySettings(settings,revision)' in net and 'canFlipInto(player,tiles,outward)' in net and 'mayInteract' in net
 sampler=(J/'DataSampler.java').read_text();assert 'EnergyReader.sample' in sampler and 'Capabilities.EnergyStorage' not in sampler

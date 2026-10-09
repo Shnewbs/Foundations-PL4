@@ -11,5 +11,5 @@ assert 'DynamicCanvasLayout.large' in H and 'logicalW' in H and 'logicalH' in H
 assert 'spaceW()' in E and 'spaceH()' in E and 'EditorChrome.toolRect(i)' in E
 assert 'layoutWidth' in P and 'layoutHeight' in P
 assert 'DynamicCanvasLayout.migrate' in N
-b=json.loads((R/'src/main/resources/assets/foundations_pl4/guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '26.3' in b['edition']
+b=json.loads((R/'src/main/resources/assets/foundations_pl4/guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '26.1.2' in b['edition']
 print('PASS R11 source wiring: dynamic whole-board canvas, proportional migration, editor bounds and guide edition.')

@@ -4,7 +4,7 @@ import json,re,struct
 R=Path(__file__).resolve().parents[1];A=R/'src/main/resources/assets/foundations_pl4';J=R/'src/main/java/net/foundations/pl4'
 b=json.loads((A/'guide/en_us.json').read_text())
 assert b['schema']==1 and b['title']=='Foundations PL4 Field Guide'
-assert '26.3' in b['edition'] and 'NeoForge' in b['edition'] and 'Foundations PL4' in b['edition']
+assert '26.1.2' in b['edition'] and 'NeoForge' in b['edition'] and 'Foundations PL4' in b['edition']
 ids=[c['id'] for c in b['chapters']]
 assert len(ids)==len(set(ids)) and {'start', 'hammer', 'tutorial_hammer', 'troubleshooting', 'cables', 'compact', 'tutorial_graphics', 'holograms', 'panels', 'tutorial_inventory', 'large', 'tutorial_energy', 'wireless', 'information', 'configuration', 'transfer', 'materials', 'fluids', 'remote', 'guide_controls', 'kubejs', 'redstone', 'status', 'tutorial_hologram', 'inventory', 'tutorial_expansion', 'energy', 'nodes'}.issubset(set(ids))
 categories={};words=0

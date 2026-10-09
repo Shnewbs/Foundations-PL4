@@ -39,7 +39,7 @@ assert 'R9GameTests.class'  in source('PortTestInstance.java')
 tests=source('R9GameTests.java').count('@PortGameTest(');assert tests==35,tests
 for path in A.rglob('*.json'):json.loads(path.read_text())
 white=(A/'textures/gui/display_white.png').read_bytes();assert white[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II',white[16:24])==(1,1)
-b=json.loads((A/'guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '26.3' in b['edition']
+b=json.loads((A/'guide/en_us.json').read_text());assert 'Foundations PL4' in b['edition'] and '26.1.2' in b['edition']
 text='\n'.join(s['body'] for c in b['chapters'] for s in c['sections'])
 for term in ['Block model','Inventory grid','Fluid tank','AUTO_LIST','CUSTOM','eight pages','Bookmarks','Quantity']:assert term in text,term
 assert 'full original drag/resize/icon/page editor is not implemented' not in text
