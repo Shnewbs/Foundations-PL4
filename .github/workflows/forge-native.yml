@@ -26,12 +26,13 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/prepare_1164.py
+          python3 tools/prepare_config1164.py
           git diff --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add build.gradle BUILD_STATUS.json src/ docs/FIELD_GUIDE.md tools/run_port_checks.py
+          git add build.gradle BUILD_STATUS.json src/ README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md tools/run_port_checks.py
           if ! git diff --cached --quiet; then
-            git commit -m 'Configure exact Minecraft 1.16.4 Forge 35.1.37 source and payload identity'
+            git commit -m 'Align exact 1.16.4 target and 193 native regression scenarios'
             git push origin HEAD:mc/1.16.4
           fi
           git rev-parse HEAD > source-commit.txt
@@ -50,10 +51,10 @@ jobs:
           from pathlib import Path
           report=json.loads(Path('run-scenarios/port-scenarios.json').read_text())
           log=Path('verification-logs/native.log').read_text()
-          assert report['minecraft']=='1.16.4' and report['total']==191 and report['passed']==191 and report['failed']==0,report
-          assert 'PL4 SCENARIOS SUCCESS: All 191 required native scenarios passed' in log
+          assert report['minecraft']=='1.16.4' and report['total']==193 and report['passed']==193 and report['failed']==0,report
+          assert 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' in log
           assert re.search(r'Starting minecraft server version 1\.16\.4\b',log,re.I),'Actual native Minecraft version not established'
-          print('PASS 191 native scenarios on actual 1.16.4; not modern GameTests or ordinary client acceptance')
+          print('PASS 193 native scenarios on actual 1.16.4; not modern GameTests or ordinary client acceptance')
           PY
       - name: Publish only the successful independent target
         shell: bash
