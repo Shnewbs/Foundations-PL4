@@ -1,7 +1,7 @@
 {
   "version": "0.2a-legacy-preview.2",
   "minecraft": "1.12.2",
-  "native_scenarios_expected": 51,
+  "native_scenarios_expected": 52,
   "shared_fluid_assertions": 50727,
   "further_api_testing_required": true,
   "client_visual_acceptance": "PENDING",

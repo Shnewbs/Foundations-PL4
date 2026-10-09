@@ -15,7 +15,8 @@ sha256sum forge-installer.jar > verification-logs/installer-SHA256.txt
 java -jar forge-installer.jar --installServer run-legacy 2>&1 | tee verification-logs/install.log
 printf 'eula=true\n' > run-legacy/eula.txt
 printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=pl4-legacy-test-world\nlevel-type=FLAT\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-legacy/server.properties
-cp build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.2.jar build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.2-native-scenarios.jar run-legacy/mods/
+cp "${PL4_VERIFICATION_RUNTIME:-build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.2.jar}" run-legacy/mods/FoundationsPL4-1.12.2-0.2a-legacy-preview.2.jar
+cp build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.2-native-scenarios.jar run-legacy/mods/
 mapfile -t launchers < <(find run-legacy -maxdepth 1 -type f -name 'forge-1.12.2-14.23.5.2864*.jar')
 test "${#launchers[@]}" -eq 1
 launcher=$(basename "${launchers[0]}")
@@ -24,7 +25,7 @@ python3 - <<'PY'
 import json,zipfile,struct
 from pathlib import Path
 report=json.loads(Path('run-legacy/legacy-scenarios.json').read_text())
-assert report['minecraft']=='1.12.2' and report['total']==51 and report['passed']==51 and report['failed']==0,report
+assert report['minecraft']=='1.12.2' and report['total']==52 and report['passed']==52 and report['failed']==0,report
 jar=Path('build/libs/FoundationsPL4-1.12.2-0.2a-legacy-preview.2.jar')
 with zipfile.ZipFile(jar) as z:
     assert json.loads(z.read('mcmod.info'))[0]['version']=='0.2a-legacy-preview.2'
@@ -36,3 +37,5 @@ with zipfile.ZipFile(jar) as z:
 print('PASS native legacy subset on installed Forge, Java 8 artifact and isolated test packaging')
 PY
 
+
+python3 tools/check_legacy_fluid_verification.py 1.12.2
