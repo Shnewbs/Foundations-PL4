@@ -1,0 +1,64 @@
+name: Prepare consistent release version
+
+on:
+  push:
+    branches: [main]
+    paths: ['release-version.txt']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: release-version-preparation
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate requested version and source head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA"
+          VERSION=$(cat release-version.txt)
+          python3 tools/test_set_version.py
+          python3 tools/set_version.py "$VERSION" --check
+          if git show-ref --verify --quiet "refs/tags/v$VERSION"; then
+            echo "This version is already tagged; request a new version instead."
+            exit 1
+          fi
+          printf 'VERSION=%s\n' "$VERSION" >> "$GITHUB_ENV"
+      - name: Apply consistent metadata and guide updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/set_version.py "$VERSION"
+          python3 tools/verify_r8.py
+          python3 tools/verify_r9.py
+          python3 tools/verify_r16.py
+          git add build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md src/main/resources/assets/foundations_pl4/guide/en_us.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --cached --quiet; then
+            git commit -m "Prepare $VERSION release metadata and current field guide"
+            git push origin HEAD:main
+          fi
+      - name: Dispatch validation and gated release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # GITHUB_TOKEN pushes do not start push workflows; dispatch them explicitly.
+          gh workflow run verify.yml --ref main
+          gh workflow run release.yml --ref main

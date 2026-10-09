@@ -1,28 +1,23 @@
-# Foundations PL4 0.1b
+# Foundations PL4 0.2a
 
-Standalone logistics, live machine displays and automation for Minecraft 1.21.1 / NeoForge. No Sonar Core or MCMultiPart runtime dependency.
+Standalone NeoForge Practical Logistics 4: Foundations. **Alpha — further API testing is still required.**
 
-**Further API testing is still required.** This beta includes a dedicated Wireless Storage screen, new directional item/fluid filters, multi-condition Signallers and provider API safeguards, alongside the 0.0.2a editor, routing and telemetry work. It does not claim full PL2 parity or installed-mod compatibility certification.
+## New in 0.2a
 
-Download the matching runtime JAR from [GitHub Releases](https://github.com/Shnewbs/Foundations-PL4/releases). Sources JARs are for development. See [0.1b release notes](docs/releases/0.1b.md), [API testing matrix](docs/API_TESTING.md), [integration status](docs/INTEGRATION_STATUS.md) and the [Field Guide](docs/FIELD_GUIDE.md).
+Wireless Storage combines accessible item inventories on a physical data network, with search, quantity/name sorting, component-aware item variants, withdrawals across sources, and offhand deposits. Receivers and Entity Nodes gain searchable, server-validated component selection; supported components accept held transceiver links.
 
-## Minecraft release targets
+Storage actions recheck ownership, topology, loaded targets, binding, configuration, and directional filters. Visual-only reader links do not grant inventory access. The field guide now documents the network workflow.
 
-Separate releases are maintained for **1.21.1, 26.1.2 and 26.3**. Each is compiled and tested against its own Minecraft APIs. See [release targets](docs/RELEASE_TARGETS.md) for branches, loader versions and publication rules.
+See [0.2a release notes](docs/releases/0.2a.md), [the field guide](docs/FIELD_GUIDE.md), and [API testing](docs/API_TESTING.md).
 
-## Build and validate
+## Builds and release targets
 
-Use Java 21:
+The primary build is `FoundationsPL4-1.21.1-0.2a.jar`, for Minecraft 1.21.1, NeoForge 21.1.250, and Java 21. GitHub Releases include the runtime JAR, source JAR, source archive, and checksums after the release gates pass.
 
-```sh
-./gradlew --no-daemon --console=plain clean build runGameTestServer
-python tools/run_offline_checks.py
-```
+Minecraft **1.21.1, 26.1.2, and 26.3** are separate [release targets](docs/RELEASE_TARGETS.md), each requiring its own compilation and tests. **The 26.1.2 and 26.3 builds of 0.2a are pending; the complete three-target rollout is not yet finished.** Never relabel one target's JAR as another target.
 
-Windows: use `gradlew.bat` for Gradle. The runtime artifact is `build/libs/FoundationsPL4-1.21.1-0.1b.jar`. Publication runs native checks before distributing artifacts; client visuals and installed API acceptance are separate.
+## Installation and validation
 
-## World compatibility
+Use one runtime JAR; Sonar Core and MCMultiPart are not required. Back up worlds before updating. Host save schema remains 2; payload protocol is 5 and clients/servers must use matching versions. Older Wireless Storage reader/display bindings must be rebound to a Node or Transfer Node.
 
-Back up before upgrading. Schema 2 gains optional fields; existing filters inherit their previous behavior and Signallers keep their single-condition mode until statements are added. Do not downgrade configured worlds: older versions discard filters, statements and channel metadata. ADD/REMOVE remains explicit-peer only.
-
-The master roadmap retains historical audits and unfinished work. See its current reconciliation before interpreting old checkboxes.
+Offline regressions, native compilation, standalone checks, and 191 registered native GameTests gate the 1.21.1 release. Installed optional-mod API acceptance, live multiplayer acceptance, client visual acceptance, and full PL2 parity remain separate from those automated checks. ADD / REMOVE transfer routing retains its existing peer rules.

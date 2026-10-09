@@ -1,0 +1,27 @@
+[
+  {
+    "chapter": "wireless",
+    "heading": "ARRAY",
+    "body": "Sneak-right-click a block target with a Transceiver to bind its position and side, then use the bound tool on an Array or choose Add held link in the Array settings. Up to eight validated block links are saved. Entity links belong on an Entity Node, not an Array. The original eight physical transceiver inventory slots are not reproduced."
+  },
+  {
+    "chapter": "wireless",
+    "heading": "ENTITY LINK",
+    "body": "Use the Entity Transceiver on a living entity to bind its identity, then add the held link to an Entity Node. Its settings also provide a searchable, paged list of nearby living-entity candidates. The server validates submitted identities before adding them. An unlinked Entity Node can supply a nearby-entity count."
+  },
+  {
+    "chapter": "wireless",
+    "heading": "WIRELESS STORAGE",
+    "body": "Wireless Storage opens a searchable, combined item list for the physical data network containing its bound Node or Transfer Node. Bind by sneak-using your Node, then use the tool to browse, withdraw items or deposit the offhand stack. Existing reader/display bindings must be rebound. Different item components remain separate variants. See Wireless Storage inventory below for the complete workflow."
+  },
+  {
+    "chapter": "wireless",
+    "heading": "MANAGE SAVED LINKS",
+    "body": "Array, Entity Node and receiver settings show individual saved links. Scroll to inspect dimensions, positions and sides, then remove an unwanted entry without clearing the others. Receivers offer searchable emitter candidates and Entity Nodes offer nearby entity candidates, with 16 choices per page. Add held link accepts the appropriate bound Transceiver. The server checks the target type, ownership where applicable, dimension policy and duplicate links; client-supplied coordinates do not create arbitrary links."
+  },
+  {
+    "chapter": "wireless",
+    "heading": "WIRELESS STORAGE INVENTORY",
+    "body": "Sneak-use Wireless Storage on your Node or Transfer Node, then use the tool to open its dedicated screen. It combines accessible sided item inventories connected through Nodes and Transfer Nodes in the same physical data network, not visual-only reader connections. Browse six item variants per page, search names or resource IDs, and sort by name or quantity. Withdraw 1 or up to 64 items across matching sources, Refresh, or Deposit offhand across available inventories. Hold the tool in your main hand and the deposit stack in your offhand. Different item components stay separate. Target chunks must already be loaded; scans are bounded to 256 endpoints and 4096 slots. Each action rechecks ownership, tool binding, topology, server wireless/transfer settings and directional filters. Disconnecting a source or losing access removes it from the next action; stale requests are rejected. Older reader/display bindings must be rebound to a Node. This screen handles items, not fluid storage."
+  }
+]
