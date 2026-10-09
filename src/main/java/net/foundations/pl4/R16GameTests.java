@@ -244,4 +244,75 @@ public final class R16GameTests {
         f.node().owner=OWNER;token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().identity=UUID.randomUUID();
         WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==17,"Replacing a Node cannot inherit another binding's authority");h.succeed();
     }
+    private record NetworkStorageFixture(StorageFixture first,HostEntity secondHost,Part second,ChestBlockEntity secondChest){}
+    private static NetworkStorageFixture networkStorage(GameTestHelper h,String name){
+        var first=storageFixture(h,name);var secondChest=chest(h,new BlockPos(4,1,1));var secondHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
+        NetworkEngine.rebuild(h.getLevel().getServer());return new NetworkStorageFixture(first,secondHost,part(secondHost,Direction.EAST),secondChest);
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStorageAggregatesAndWithdrawsAcrossNodes(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-A");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,17));f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
+        UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).equals(List.of(40L)),"Matching variants combine across connected inventories");
+        WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
+        int count=0;for(int slot=0;slot<36;slot++)if(f.first().player().getInventory().getItem(slot).is(Items.DIAMOND))count+=f.first().player().getInventory().getItem(slot).getCount();
+        h.assertTrue(count==40&&f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).isEmpty(),"Withdrawal conserves all 40 items across sources");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStorageRevokesNewlyForeignEndpoint(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-B");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
+        UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.second().owner=UUID.randomUUID();
+        WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
+        h.assertTrue(f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).getCount()==23,"Every remote Node ownership is rechecked, not just the anchor");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStorageDropsDisconnectedSources(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-C");f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
+        UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        f.first().host().parts.get(6).blockedFaces=1<<Direction.EAST.ordinal();f.secondHost().parts.get(6).blockedFaces=1<<Direction.WEST.ordinal();f.first().host().changed();f.secondHost().changed();
+        WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
+        h.assertTrue(f.secondChest().getItem(0).getCount()==23,"Stale session cannot reach an endpoint after cable disconnection");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStorageSearchAndCountSort(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-D");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,new ItemStack(Items.EMERALD,23));
+        UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"search",0,0,"","COUNT"));
+        h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).equals(List.of(23L,5L)),"Count sort orders combined counts descending");
+        token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"search",0,0,"minecraft:emerald","NAME"));
+        h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).equals(List.of(23L)),"Search matches item registry identifiers");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStorageDepositsPastFullInventory(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-E");for(int i=0;i<27;i++)f.first().chest().setItem(i,new ItemStack(Items.STONE,64));
+        f.first().player().setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,new ItemStack(Items.DIAMOND,11));
+        UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"deposit",0,0));
+        h.assertTrue(f.first().player().getOffhandItem().isEmpty()&&f.secondChest().getItem(0).getCount()==11,"Deposit finds space on a connected Node and conserves items");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void networkStoragePreservesComponentVariants(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Network-F");ItemStack named=new ItemStack(Items.DIAMOND,7);named.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Named diamond"));
+        f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,named);
+        WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).size()==2,"Distinct item components never collapse into one withdrawable variant");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void componentLinksValidateTypesAndDeduplicate(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Links-A");Part array=new Part(Kind.ARRAY,Direction.NORTH,OWNER);f.host().parts.put(array.slot(),array);
+        Part entity=new Part(Kind.ENTITY_NODE,Direction.SOUTH,OWNER);f.host().parts.put(entity.slot(),entity);
+        var block=new Part.Link(h.getLevel().dimension().identifier().toString(),f.chest().getBlockPos(),Direction.UP,null,null);
+        h.assertTrue(ComponentLinks.add(f.player(),f.host(),array,block),"Array accepts a permitted loaded block link");
+        h.assertTrue(!ComponentLinks.add(f.player(),f.host(),array,block)&&array.links.size()==1,"Duplicate links do not consume another Array slot");
+        h.assertTrue(!ComponentLinks.add(f.player(),f.host(),entity,block),"Entity Node rejects block links");h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void componentLinksRejectForeignEmitters(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Links-B");Part receiver=new Part(Kind.DATA_RECEIVER,Direction.NORTH,OWNER);f.host().parts.put(receiver.slot(),receiver);
+        var remote=host(h,new BlockPos(4,1,1),Kind.DATA_EMITTER,Direction.UP);Part emitter=part(remote,Direction.UP);
+        var link=new Part.Link(h.getLevel().dimension().identifier().toString(),remote.getBlockPos(),emitter.face,null,emitter.identity);
+        emitter.owner=UUID.randomUUID();h.assertTrue(!ComponentLinks.add(f.player(),f.host(),receiver,link),"Foreign emitter never grants a wireless network edge");
+        emitter.owner=OWNER;h.assertTrue(ComponentLinks.add(f.player(),f.host(),receiver,link),"Owned matching emitter can be selected");h.succeed();
+    }
+
 }

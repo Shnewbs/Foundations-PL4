@@ -4,7 +4,7 @@ import json,re,struct
 R=Path(__file__).resolve().parents[1];J=R/'src/main/java/net/foundations/pl4';A=R/'src/main/resources/assets/foundations_pl4'
 def source(name):return (J/name).read_text()
 part=source('Part.java');packet=source('PLPackets.java');net=source('DisplayNetworks.java');painter=source('client/DisplayPainter.java');canvas=source('client/DisplayCanvas.java');editor=source('client/DisplayEditorScreen.java');guide=source('client/GuideScreen.java')
-assert 'event.registrar("4")' in packet
+assert 'event.registrar("5")' in packet
 assert 'result.accepted()' in packet and packet.index('if(!result.accepted())')<packet.index('DisplayNetworks.applyLayout(host,part,settings,nextRevision)')
 assert 'DisplayNetworks.canEditCanvas' in packet and '!clicked.identity.equals(packet.identity)' in packet
 assert 'player.isSpectator()' in packet and 'player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64' in packet

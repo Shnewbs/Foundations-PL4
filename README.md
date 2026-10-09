@@ -1,24 +1,17 @@
-# Foundations PL4 0.1b
+# Foundations PL4 - Minecraft 26.3 - 0.2a
 
-Standalone logistics, live machine displays and automation for Minecraft 26.3 / NeoForge. No Sonar Core or MCMultiPart runtime dependency.
+Standalone NeoForge alpha port. Java 25. Further API testing is still required.
 
-**Further API testing is still required.** This beta includes a dedicated Wireless Storage screen, new directional item/fluid filters, multi-condition Signallers and provider API safeguards, alongside the 0.0.2a editor, routing and telemetry work. It does not claim full PL2 parity or installed-mod compatibility certification.
+Network-wide Wireless Storage with search/sorting, cross-inventory withdrawals,
+offhand deposits, permission revalidation and component-safe variants. Receiver
+and Entity Node settings provide validated component selection.
 
-Download the matching runtime JAR from [GitHub Releases](https://github.com/Shnewbs/Foundations-PL4/releases). Sources JARs are for development. See [0.1b release notes](docs/releases/0.1b.md), [API testing matrix](docs/API_TESTING.md), [integration status](docs/INTEGRATION_STATUS.md) and the [Field Guide](docs/FIELD_GUIDE.md).
+Build with `bash gradlew build runGameTestServer`. The release workflow verifies
+all 192 registered native tests, offline regressions and standalone packaging
+before publishing the target-specific JAR, source JAR, source ZIP and checksums.
+A successful compile is not installed-mod or real-client acceptance.
 
-## Build and validate
-
-Use Java 25:
-
-```sh
-./gradlew --no-daemon --console=plain clean build runGameTestServer
-python tools/run_offline_checks.py
-```
-
-Windows: use `gradlew.bat` for Gradle. The runtime artifact is `build/libs/FoundationsPL4-26.3-0.1b.jar`. Publication runs native checks before distributing artifacts; client visuals and installed API acceptance are separate.
-
-## World compatibility
-
-Back up before upgrading. Schema 2 gains optional fields; existing filters inherit their previous behavior and Signallers keep their single-condition mode until statements are added. Do not downgrade configured worlds: older versions discard filters, statements and channel metadata. ADD/REMOVE remains explicit-peer only.
-
-The master roadmap retains historical audits and unfinished work. See its current reconciliation before interpreting old checkboxes.
+Use only the JAR for this exact Minecraft version. Both client and server must
+use protocol 5 builds. Back up worlds before upgrading. No Sonar Core or
+MCMultiPart runtime dependency is required. See [release notes](docs/releases/0.2a.md)
+and [field guide](docs/FIELD_GUIDE.md).

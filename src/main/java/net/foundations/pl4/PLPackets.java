@@ -28,9 +28,10 @@ public final class PLPackets {
         public static final StreamCodec<RegistryFriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,65536);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(65536)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
-    public record StorageRequest(UUID token,String action,int index,int amount) implements CustomPacketPayload {
+    public record StorageRequest(UUID token,String action,int index,int amount,String query,String sort) implements CustomPacketPayload {
+        public StorageRequest(UUID token,String action,int index,int amount){this(token,action,index,amount,"","NAME");}
         public static final Type<StorageRequest> TYPE=new Type<>(FoundationsPL4.id("storage_request"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,StorageRequest> CODEC=StreamCodec.of((b,p)->{b.writeUUID(p.token);b.writeUtf(p.action,16);b.writeVarInt(p.index);b.writeVarInt(p.amount);},b->new StorageRequest(b.readUUID(),b.readUtf(16),b.readVarInt(),b.readVarInt()));
+        public static final StreamCodec<RegistryFriendlyByteBuf,StorageRequest> CODEC=StreamCodec.of((b,p)->{b.writeUUID(p.token);b.writeUtf(p.action,16);b.writeVarInt(p.index);b.writeVarInt(p.amount);b.writeUtf(p.query,64);b.writeUtf(p.sort,8);},b->new StorageRequest(b.readUUID(),b.readUtf(16),b.readVarInt(),b.readVarInt(),b.readUtf(64),b.readUtf(8)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private record Rate(long tick,int count){}
@@ -86,7 +87,7 @@ public final class PLPackets {
     }
     private static void openWithError(ServerPlayer player,HostEntity host,Part part,String error){sendOpen(player,host,part,error,true);}
     public static void register(RegisterPayloadHandlersEvent event){
-        var r=event.registrar("4");
+        var r=event.registrar("5");
         r.playToServer(StorageRequest.TYPE,StorageRequest.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayer player)WirelessStorage.request(player,packet);}));
         r.playToServer(LayoutEdit.TYPE,LayoutEdit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayer player)editLayout(player,packet);}));
         r.playToClient(Open.TYPE,Open.CODEC,(packet,context)->context.enqueueWork(()->clientOpen.accept(packet)));
@@ -95,6 +96,7 @@ public final class PLPackets {
     public static void open(ServerPlayer player,HostEntity host,Part p){sendOpen(player,host,p,"",false);}
     private static void reply(ServerPlayer player,HostEntity host,Part p){sendOpen(player,host,p,"",true);}
     private static void sendOpen(ServerPlayer player,HostEntity host,Part p,String error,boolean reply){
+        if(ComponentLinks.supported(p))ComponentLinks.refresh(player,host,p);
         var target=DisplayNetworks.controller(host,p);
         CompoundTag t=target.part().save(host.getLevel().registryAccess(),true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
@@ -187,6 +189,11 @@ public final class PLPackets {
                 case "energy" -> p.energy=Boolean.parseBoolean(v);
                 case "descending" -> p.descending=Boolean.parseBoolean(v);
                 case "whitelist" -> {if((p.kind==Kind.NODE||p.kind==Kind.TRANSFER_NODE)&&!p.routeEditable())return;p.whitelist=Boolean.parseBoolean(v);}
+                case "link_add" -> {if(!ComponentLinks.addChoice(player,h,p,v))return;}
+                case "link_held" -> {if(!ComponentLinks.addHeld(player,h,p))return;}
+                case "link_query" -> {if(!ComponentLinks.supported(p))return;p.targetQuery=ReaderChannels.clean(v);p.targetPage=0;}
+                case "link_page" -> {if(!ComponentLinks.supported(p))return;p.targetPage=Math.clamp(Integer.parseInt(v),0,65535);}
+                case "link_first" -> {if(!ComponentLinks.supported(p))return;var link=p.links.stream().filter(l->ReaderChannels.id(l).equals(v)).findFirst().orElse(null);if(link==null)return;p.links.remove(link);p.links.addFirst(link);}
                 case "remove_link" -> {if(p.kind!=Kind.ARRAY&&p.kind!=Kind.ENTITY_NODE&&!p.kind.receiver())return;p.links.removeIf(link->ReaderChannels.id(link).equals(v));}
                 case "clock_pulse", "clock_phase" -> {if(p.kind!=Kind.CLOCK)return;int n=Integer.parseInt(v);if(n<0||n>(packet.field.equals("clock_pulse")?24000:23999))return;if(packet.field.equals("clock_pulse"))p.clockPulse=n;else p.clockPhase=n;}
                 case "clock_paused" -> {if(p.kind!=Kind.CLOCK||!Set.of("true","false").contains(v))return;p.clockPaused=Boolean.parseBoolean(v);}
@@ -201,6 +208,7 @@ public final class PLPackets {
                 default -> {return;}
             }
         }catch(IllegalArgumentException ignored){return;}
+        if(Set.of("link_query","link_page").contains(packet.field)){h.setChanged();reply(player,anchorHost,anchorPart);return;}
         if(p.kind.display())DisplayNetworks.layoutEdited(h,p);
         if(p.kind.reader()&&Set.of("target_channel","target_query","target_page","channel_name").contains(packet.field)){
             ReaderChannels.refresh(h.getLevel().getServer(),p,NetworkEngine.targetsFor(h.getLevel().getServer(),p));
