@@ -109,7 +109,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
         pose.popPose();
     }
     private void text(Font font,String text,int x,int y,int color,PoseStack pose,MultiBufferSource buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.plainSubstrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}
-    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(HostEntity host){
+    public static net.minecraft.world.phys.AABB getRenderBoundingBox(HostEntity host){
         var bounds=new net.minecraft.world.phys.AABB(host.getBlockPos());
         for(Part p:host.parts.values())if(p.kind==Kind.LARGE_DISPLAY&&p.canvasColumn==0&&p.canvasRow==0){
             var end=host.getBlockPos().relative(DisplayNetworks.right(p),p.canvasWidth-1).relative(DisplayNetworks.up(p).getOpposite(),p.canvasHeight-1);

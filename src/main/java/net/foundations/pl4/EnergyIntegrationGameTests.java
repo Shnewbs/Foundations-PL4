@@ -4,9 +4,9 @@ import java.util.*;
 import net.foundations.pl4.core.*;
 import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
-import net.minecraft.core.component.DataComponents;
+import net.foundations.pl4.compat.DataComponents;
 import net.minecraft.network.chat.ClickEvent;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native server fixtures for the production route engine; optional provider contracts are also
  * exercised by the dependency-free verifier. Injected ports avoid requiring third-party mods. */
@@ -39,7 +39,7 @@ public final class EnergyIntegrationGameTests {
         var template=new LayoutTemplate(100,100,List.of(e));var decoded=LayoutTemplate.decode(template.encode());
         h.assertTrue(decoded.elements().equals(template.elements()),"Versioned JSON preserves pages and text styles");
         var prepared=decoded.prepare(20,20,true,false);
-        h.assertTrue(!prepared.getFirst().id().equals(e.id())&&prepared.getFirst().page()==7&&prepared.getFirst().bounds().right()<=20&&prepared.getFirst().bounds().bottom()<=20,"Fit imports fresh IDs inside a smaller canvas without losing page identity");
+        h.assertTrue(!prepared.get(0).id().equals(e.id())&&prepared.get(0).page()==7&&prepared.get(0).bounds().right()<=20&&prepared.get(0).bounds().bottom()<=20,"Fit imports fresh IDs inside a smaller canvas without losing page identity");
         boolean rejected=false;try{decoded.prepare(20,20,false,false);}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Oversized layouts require explicit fitting");
         rejected=false;try{LayoutTemplate.decode(template.encode().replace("\"schema\":1","\"schema\":2"));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Unknown schema is rejected");
         rejected=false;try{new LayoutTemplate(100,100,List.of(e,e));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Duplicate IDs are rejected");
@@ -57,7 +57,7 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pushedForgeEnergyIsSidedSimulatedBoundedAndRevoked(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,Direction.WEST);Part p=ref.part();p.transferMode=2;
-        var cap=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),Direction.WEST);
+        var cap=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),Direction.WEST);
         h.assertTrue(cap!=null&&cap.canReceive()&&!cap.canExtract(),"Pushing generators discover a receive-only FE input");
         h.assertTrue(cap.receiveEnergy(100,true)==100&&p.energyCredits()==0,"Simulation must not alter escrow");
         h.assertTrue(cap.receiveEnergy(100,false)==100&&p.energyCredits()==100*EnergyConversion.FE,"Accepted FE is conserved in persistent escrow");
@@ -117,7 +117,7 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fractionalEscrowAndRouteSurviveDropsAndRestart(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.energyInput="ED_J";p.energyOutput="EU";p.energyConvert=true;p.energyVoltage=128;p.transferMode=2;p.energyCredits(1);p.pendingEnergyUnit="EU";p.pendingEnergyJRate=400;p.pendingEnergyEURate=4;p.pendingEnergyEDRate=1;
-        var data=PartItem.stack(p,h.getLevel().registryAccess()).get(DataComponents.CUSTOM_DATA);
+        var data=net.foundations.pl4.compat.PortData.get(PartItem.stack(p,h.getLevel().registryAccess()),DataComponents.CUSTOM_DATA);
         h.assertTrue(data!=null,"Sub-FE escrow must never be lost in a normal node drop");
         Part restored=Part.load(data.copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
         h.assertTrue(restored.energyCredits()==1&&restored.pendingEnergy==0&&restored.pendingEnergyUnit.equals("EU")&&restored.pendingEnergyEDRate==1,"Exact credits and profile survive persistence");
@@ -256,14 +256,14 @@ public final class EnergyIntegrationGameTests {
         ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
         h.assertTrue(reader.targetChoices.size()==64&&reader.targetCount==130&&!ReaderChannels.label(reader).contains("disconnected"),"Pinned endpoint beyond first page remains identifiable");
         reader.targetPage=2;ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
-        h.assertTrue(reader.targetChoices.size()==2&&reader.targetChoices.getLast().id().equals(reader.targetChannel),"Last page exposes targets beyond original limit");
+        h.assertTrue(reader.targetChoices.size()==2&&net.foundations.pl4.compat.PortLists.last(reader.targetChoices).id().equals(reader.targetChannel),"Last page exposes targets beyond original limit");
         h.assertTrue(ReaderChannels.rename(reader," Main Tank "),"Selected channel can be named");reader.targetQuery="MAIN TANK";
         ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
-        h.assertTrue(reader.targetPage==0&&reader.targetCount==1&&reader.targetChoices.getFirst().name().startsWith("Main Tank"),"Case-insensitive alias search and page clamp");
+        h.assertTrue(reader.targetPage==0&&reader.targetCount==1&&reader.targetChoices.get(0).name().startsWith("Main Tank"),"Case-insensitive alias search and page clamp");
         var disk=Part.load(reader.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
         h.assertTrue(disk.channelNames.equals(reader.channelNames)&&disk.targetQuery.equals(reader.targetQuery),"Aliases and query survive saves");
         reader.targetQuery="no matching target";ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
-        h.assertTrue(reader.targetChoices.isEmpty()&&!ReaderChannels.label(reader).contains("disconnected")&&ReaderChannels.select(reader,links).equals(List.of(links.getLast())),"Search does not change the selected sampling endpoint");
+        h.assertTrue(reader.targetChoices.isEmpty()&&!ReaderChannels.label(reader).contains("disconnected")&&ReaderChannels.select(reader,links).equals(List.of(net.foundations.pl4.compat.PortLists.last(links))),"Search does not change the selected sampling endpoint");
         ReaderChannels.refresh(h.getLevel().getServer(),reader,List.of());h.assertTrue(ReaderChannels.label(reader).contains("disconnected"),"Actual endpoint removal is reported");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -287,9 +287,9 @@ public final class EnergyIntegrationGameTests {
         ((net.minecraft.world.level.block.entity.ChestBlockEntity)h.getLevel().getBlockEntity(right)).setItem(0,new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND,3));
         var a=new Part.Link("minecraft:overworld",left,Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",right,Direction.NORTH,null,null);
         var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b,a),1);
-        h.assertTrue(rows.size()==1&&rows.getFirst().value()==20,"Both halves and repeated links count one combined inventory");
-        reader.part().mode="STORAGE";var storage=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b),1).getFirst();
-        var nativeHandler=h.getLevel().getCapability(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,left,Direction.UP);
+        h.assertTrue(rows.size()==1&&rows.get(0).value()==20,"Both halves and repeated links count one combined inventory");
+        reader.part().mode="STORAGE";var storage=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b),1).get(0);
+        var nativeHandler=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.ItemHandler.BLOCK,left,Direction.UP);
         h.assertTrue(nativeHandler!=null&&nativeHandler.getSlots()==54,"Fixture exposes the whole double chest");
         long expectedCapacity=0;for(int i=0;i<54;i++)expectedCapacity+=nativeHandler.getSlotLimit(i);
         h.assertTrue(storage.value()==20&&storage.capacity()==expectedCapacity&&expectedCapacity>0,"Storage reports the native general capacity once, not a guessed stack size: "+storage.capacity()+" / "+expectedCapacity);h.succeed();
@@ -319,12 +319,12 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readerEditsRejectForeignOwnersStaleIdsAndForgedTargets(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,Direction.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
-        var stranger=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
+        var stranger=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
         stranger.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);
         h.assertTrue(!ref.host().canEdit(stranger),"Fixture uses a foreign non-operator");
         PLPackets.edit(stranger,new PLPackets.Edit(pos,part.slot(),part.identity,"label","forged"));
         h.assertTrue(part.label.isEmpty(),"Foreign owner cannot rename the reader");
-        var owner=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-owner"));
+        var owner=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-owner"));
         owner.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);h.assertTrue(ref.host().canEdit(owner),"Fixture owner can edit");
         PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),UUID.randomUUID(),"label","stale"));
         h.assertTrue(part.label.isEmpty(),"Replaced part identity rejects old UI edits");
@@ -353,7 +353,7 @@ public final class EnergyIntegrationGameTests {
                 if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
             }
         };
-        h.getLevel().setBlockEntity(to);h.getLevel().invalidateCapabilities(absolute);
+        h.getLevel().setBlockEntity(to);net.foundations.pl4.compat.PortCapabilities.invalidate(to);
         var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         var sink=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);sink.part().transferMode=1;
         boolean thrown=false;try{TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));}catch(IllegalStateException expected){
@@ -370,7 +370,7 @@ public final class EnergyIntegrationGameTests {
         var samples=new VisualSamples();var last=net.minecraft.world.item.ItemStack.EMPTY;
         for(int i=0;i<256;i++){
             var item=new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE);
-            item.set(DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal(i+":"+"x".repeat(1500)));
+            net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal(i+":"+"x".repeat(1500)));
             samples.item(item);last=item;
         }
         var rows=samples.rows(h.getLevel().registryAccess(),true,256,0);int bytes=0;boolean omitted=false;
@@ -380,7 +380,7 @@ public final class EnergyIntegrationGameTests {
         }
         var alone=new VisualSamples();alone.item(last);
         h.assertTrue(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
-        h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&rows.getLast().key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).getFirst().key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
+        h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&net.foundations.pl4.compat.PortLists.last(rows).key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).get(0).key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){

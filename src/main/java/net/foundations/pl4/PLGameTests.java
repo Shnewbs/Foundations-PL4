@@ -7,10 +7,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.event.RegisterGameTestsEvent;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.event.RegisterGameTestsEvent;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.foundations.pl4.compat.Capabilities;
+import net.minecraftforge.fluids.FluidStack;
 
 @PrefixGameTestTemplate(false)
 public final class PLGameTests {
@@ -38,7 +38,7 @@ public final class PLGameTests {
     public static void hammerAutomationCannotExtractInput(GameTestHelper h){
         BlockPos p=new BlockPos(1,1,1);h.setBlock(p,FoundationsPL4.HAMMER.get());HammerEntity hammer=(HammerEntity)h.getBlockEntity(p);
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND));
-        var capability=h.getLevel().getCapability(Capabilities.ItemHandler.BLOCK,h.absolutePos(p),Direction.UP);
+        var capability=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),Capabilities.ItemHandler.BLOCK,h.absolutePos(p),Direction.UP);
         h.assertTrue(capability!=null,"Item capability must exist");
         h.assertTrue(capability.extractItem(0,1,false).isEmpty(),"Automation must not extract hammer input");
         h.assertTrue(capability.insertItem(1,new ItemStack(Items.DIAMOND),false).getCount()==1,"Automation must not insert output");h.succeed();
@@ -82,9 +82,9 @@ public final class PLGameTests {
         ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));chest.setItem(0,new ItemStack(Items.DIAMOND,17));chest.setItem(1,new ItemStack(Items.IRON_INGOT,32));
         HostEntity host=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.WEST);Part p=host.parts.get(Direction.WEST.ordinal());p.filter="minecraft:diamond";
         var ref=new NetworkEngine.Ref(host,p);var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(ref.adjacent()),1);
-        h.assertTrue(rows.size()==1&&rows.getFirst().value()==17,"Reader must apply item filter and preserve count");
+        h.assertTrue(rows.size()==1&&rows.get(0).value()==17,"Reader must apply item filter and preserve count");
         p.whitelist=false;rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(ref.adjacent()),1);
-        h.assertTrue(rows.size()==1&&rows.getFirst().value()==32,"Exclusion filter must invert");h.succeed();
+        h.assertTrue(rows.size()==1&&rows.get(0).value()==32,"Exclusion filter must invert");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void networkUpdatesLiveDisplay(GameTestHelper h){
@@ -125,7 +125,7 @@ public final class PLGameTests {
     public static void removedNodeItemRetainsAllEscrow(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.DOWN,OWNER);p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
         ItemStack drop=PartItem.stack(p,h.getLevel().registryAccess());
-        Part restored=Part.load(drop.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
+        Part restored=Part.load(net.foundations.pl4.compat.PortData.get(drop,net.foundations.pl4.compat.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
         h.assertTrue(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Breaking a node must preserve item, fluid and energy escrow in its dropped item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -135,7 +135,7 @@ public final class PLGameTests {
         Item[] inputs={FoundationsPL4.item("sapphire"),FoundationsPL4.ORE.get().asItem(),Blocks.STONE.asItem(),Items.DIAMOND,Items.REDSTONE,Items.ENDER_PEARL};
         String[] outputs={"sapphiredust","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate"};int[] counts={1,2,4,4,4,4};
         for(int i=0;i<inputs.length;i++){
-            var recipe=h.getLevel().getRecipeManager().getRecipeFor(type,new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(inputs[i])),h.getLevel());
+            var recipe=h.getLevel().getRecipeManager().getRecipeFor(type,new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(inputs[i])),h.getLevel());
             h.assertTrue(recipe.isPresent(),"Missing ingredient tag match: "+inputs[i]);
             var output=recipe.orElseThrow().value().result();
             h.assertTrue(output.is(FoundationsPL4.item(outputs[i]))&&output.getCount()==counts[i],"Incorrect bundled forging result");
@@ -144,14 +144,14 @@ public final class PLGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void internalRecipeCodecPreservesCountsAndComponents(GameTestHelper h){
-        ItemStack output=new ItemStack(Items.EMERALD,4);output.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Recipe codec fixture"));
+        ItemStack output=new ItemStack(Items.EMERALD,4);net.foundations.pl4.compat.PortData.set(output,net.foundations.pl4.compat.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Recipe codec fixture"));
         var recipe=new net.foundations.pl4.core.ForgingRecipe(net.minecraft.world.item.crafting.Ingredient.of(Items.DIAMOND),3,output,11,7);
         var codec=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get().codec().codec();
         var ops=net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE,h.getLevel().registryAccess());
-        var encoded=codec.encodeStart(ops,recipe).getOrThrow();var decoded=codec.parse(ops,encoded).getOrThrow();
-        h.assertTrue(!decoded.matches(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.DIAMOND,2)),h.getLevel()),"Insufficient input count must not match");
-        h.assertTrue(decoded.matches(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.DIAMOND,3)),h.getLevel()),"Required input count must match");
-        h.assertTrue(decoded.processingTicks()==11&&decoded.cooldownTicks()==7&&ItemStack.isSameItemSameComponents(decoded.result(),output),"Recipe fields and result components must survive codec round trip");
+        var encoded=codec.encodeStart(ops,recipe).getOrThrow(false,message->{throw new IllegalArgumentException(message);});var decoded=codec.parse(ops,encoded).getOrThrow(false,message->{throw new IllegalArgumentException(message);});
+        h.assertTrue(!decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,2)),h.getLevel()),"Insufficient input count must not match");
+        h.assertTrue(decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,3)),h.getLevel()),"Required input count must match");
+        h.assertTrue(decoded.processingTicks()==11&&decoded.cooldownTicks()==7&&ItemStack.isSameItemSameTags(decoded.result(),output),"Recipe fields and result components must survive codec round trip");
         decoded.result().shrink(4);h.assertTrue(decoded.result().getCount()==4,"Returned result stacks must not mutate the recipe");
         encoded.getAsJsonObject().addProperty("input_count",0);h.assertTrue(codec.parse(ops,encoded).result().isEmpty(),"Zero-input forging recipes must be rejected");h.succeed();
     }

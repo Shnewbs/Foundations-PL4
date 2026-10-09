@@ -5,8 +5,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
+import net.foundations.pl4.compat.DataComponents;
+import net.foundations.pl4.compat.CustomData;
 import net.minecraft.nbt.CompoundTag;
 import net.foundations.pl4.core.PartItemDataRules;
 
@@ -82,7 +82,7 @@ public final class PartItem extends Item {
     private Part placementPart(UseOnContext c,Direction face,boolean outward,boolean extending){
         var player=c.getPlayer();Part part=new Part(kind,face,player.getUUID());part.displayOutward=outward;
         if(part.hologram())part.hologramView=net.foundations.pl4.core.HologramProjection.view(face.ordinal(),player.getDirection().getOpposite().ordinal());
-        var saved=c.getItemInHand().get(DataComponents.CUSTOM_DATA);
+        var saved=net.foundations.pl4.compat.PortData.get(c.getItemInHand(),DataComponents.CUSTOM_DATA);
         if(saved!=null&&saved.contains("pl_part")){
             var tag=saved.copyTag().getCompound("pl_part");tag.putString("kind",kind.id);tag.putInt("face",face.ordinal());
             Part restored=Part.load(tag,c.getLevel().registryAccess());
@@ -94,7 +94,7 @@ public final class PartItem extends Item {
     @Override public String getDescriptionId() { return "block."+FoundationsPL4.ID+"."+kind.id; }
     /** Normal block-break drop. Unconfigured parts carry no CustomData and therefore stack normally.
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
-    public static ItemStack stack(Part part,HolderLookup.Provider registry) {
+    public static ItemStack stack(Part part,net.minecraft.core.RegistryAccess registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());
         if(PartItemDataRules.needsEscrowPayload(!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
             Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
@@ -108,7 +108,7 @@ public final class PartItem extends Item {
         return stack;
     }
     /** Operator removal deliberately preserves meaningful configuration, but never runtime identity/owner/ticks/signal/revision. */
-    public static ItemStack savedStack(Part part,HolderLookup.Provider registry) {
+    public static ItemStack savedStack(Part part,net.minecraft.core.RegistryAccess registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());putSaved(stack,canonical(part.save(registry,false)));return stack;
     }
     private static void putSaved(ItemStack stack,CompoundTag tag){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_part",tag));}

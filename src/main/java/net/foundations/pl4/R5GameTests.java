@@ -12,8 +12,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.util.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.common.util.*;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native server acceptance cases. Added in R5; NOT executed in the offline packaging environment. */
 @PrefixGameTestTemplate(false)
@@ -72,8 +72,8 @@ public final class R5GameTests {
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
-        var result=FoundationsPL4.HOST.get().useItemOn(stack,a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
-        h.assertTrue(result==ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION,"Held parts must not be swallowed by the host GUI");
+        var result=FoundationsPL4.HOST.get().use(a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
+        h.assertTrue(result==InteractionResult.PASS,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
         h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }

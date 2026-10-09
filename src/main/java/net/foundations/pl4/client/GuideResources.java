@@ -8,7 +8,7 @@ import com.google.gson.*;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
-import net.neoforged.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.LoggerFactory;
 
 /** Loaded only when opening the guide. No world subscriptions, polling threads or static screen references. */

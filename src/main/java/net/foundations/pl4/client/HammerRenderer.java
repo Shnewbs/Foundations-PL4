@@ -31,6 +31,6 @@ public final class HammerRenderer implements BlockEntityRenderer<HammerEntity> {
             pose.popPose();
         }
     }
-    @Override public AABB getRenderBoundingBox(HammerEntity hammer){return new AABB(hammer.getBlockPos()).expandTowards(0,2,0);}
+    public AABB getRenderBoundingBox(HammerEntity hammer){return new AABB(hammer.getBlockPos()).expandTowards(0,2,0);}
     @Override public int getViewDistance(){return 64;}
 }

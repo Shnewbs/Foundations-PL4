@@ -24,7 +24,7 @@ public final class VerifyScreenLayers {
 
     private static void verify(Path file, boolean partScreen) throws IOException {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        if (compiler == null) throw new IllegalStateException("Run with a Java 21 JDK, not a JRE.");
+        if (compiler == null) throw new IllegalStateException("Run with a Java 17 JDK, not a JRE.");
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
         Map<String, MethodTree> methods = new HashMap<>();
         try (StandardJavaFileManager manager = compiler.getStandardFileManager(diagnostics, null, java.nio.charset.StandardCharsets.UTF_8)) {
@@ -88,7 +88,7 @@ public final class VerifyScreenLayers {
     private static void requireFirstCall(Path file, MethodTree method, String expected) {
         if (method.getBody() == null || method.getParameters().size() != 4 || method.getBody().getStatements().isEmpty())
             fail(file, "Expected four-parameter rendering method: " + method.getName());
-        StatementTree statement = method.getBody().getStatements().getFirst();
+        StatementTree statement = method.getBody().getStatements().get(0);
         if (!(statement instanceof ExpressionStatementTree expression)
                 || !(expression.getExpression() instanceof MethodInvocationTree call)
                 || !call.getMethodSelect().toString().equals(expected) || call.getArguments().size() != 4)

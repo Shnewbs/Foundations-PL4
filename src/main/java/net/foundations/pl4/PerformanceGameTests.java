@@ -7,8 +7,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Operation-count regressions and native correctness for the cable/tick performance pass. */
 @PrefixGameTestTemplate(false)

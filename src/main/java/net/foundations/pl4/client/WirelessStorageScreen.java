@@ -8,10 +8,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.foundations.pl4.compat.PacketDistributor;
 
 /** Server snapshots only: no client inventory mutation or remote coordinates in actions. */
-public final class WirelessStorageScreen extends Screen {
+public final class WirelessStorageScreen extends net.foundations.pl4.compat.PortScreen {
     private record Row(int slot,String name,long count){}
     private final List<Row> rows=new ArrayList<>();
     private UUID token;private int page,slots,endpoints,left,top,w;private boolean limited;private String query="",sort="NAME";private EditBox search;private String status="";private boolean closed,busy;

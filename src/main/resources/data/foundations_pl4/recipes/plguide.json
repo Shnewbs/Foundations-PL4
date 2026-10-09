@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:plguide"
+  },
+  "ingredients": [
+    {
+      "tag": "c:gems/sapphire"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.*;
+import net.minecraftforge.items.*;
 
 /** Original two-slot / 176x143 layout, with server-authoritative vanilla container transactions. */
 public final class HammerMenu extends AbstractContainerMenu {

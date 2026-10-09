@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.foundations.pl4.core.EditorPalette;
 
 /** Simple visual palette that fills the normal hex field; no hidden colour format is introduced. */
-final class DisplayColorPickerScreen extends Screen {
+final class DisplayColorPickerScreen extends net.foundations.pl4.compat.PortScreen {
     private final DisplayPropertiesScreen parent;private int selected;private int left,top,w,h;
     DisplayColorPickerScreen(DisplayPropertiesScreen parent,int selected){super(Component.literal("Choose display colour"));this.parent=parent;this.selected=selected&0xFFFFFF;}
     @Override public boolean isPauseScreen(){return false;}

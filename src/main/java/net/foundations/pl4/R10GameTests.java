@@ -4,7 +4,7 @@ import java.util.*;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import net.foundations.pl4.core.*;
 
 /** Native fixtures for display page/save paths. No claims about client item-pose appearance. */
@@ -22,7 +22,7 @@ public final class R10GameTests {
         Part p=new Part(Kind.DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=5;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.ITEM,5)));
         Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
-        h.assertTrue(restored!=null&&restored.displayPage==5&&restored.displayMode==DisplayElements.Mode.CUSTOM&&restored.elements.getFirst().spec().page()==5,"Native save keeps the revealed custom page");h.succeed();
+        h.assertTrue(restored!=null&&restored.displayPage==5&&restored.displayMode==DisplayElements.Mode.CUSTOM&&restored.elements.get(0).spec().page()==5,"Native save keeps the revealed custom page");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void realStoneStillUsesBlockPicture(GameTestHelper h){
@@ -37,7 +37,7 @@ public final class R10GameTests {
         Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.AUTO_LIST;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,2)));
         Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
-        h.assertTrue(restored!=null&&restored.elements.size()==1&&restored.elements.getFirst().spec().type()==DisplayElements.Type.BLOCK,"Switching view retains layout");
+        h.assertTrue(restored!=null&&restored.elements.size()==1&&restored.elements.get(0).spec().type()==DisplayElements.Type.BLOCK,"Switching view retains layout");
         h.assertTrue(!MonitorPresentation.automatic(restored.displayMode,true)&&MonitorPresentation.automatic(restored.displayMode,false),"Editor preview is independent of saved resting view");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

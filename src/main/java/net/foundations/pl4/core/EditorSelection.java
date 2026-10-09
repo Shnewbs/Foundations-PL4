@@ -5,8 +5,8 @@ import java.util.*;
 /** Page-local marquee selection and rigid translation shared by preview and server edits. */
 public final class EditorSelection {
     public static DisplayElements.Rect box(double ax,double ay,double bx,double by,int width,int height){
-        int left=(int)Math.floor(Math.clamp(Math.min(ax,bx),0,width)),top=(int)Math.floor(Math.clamp(Math.min(ay,by),0,height));
-        int right=(int)Math.ceil(Math.clamp(Math.max(ax,bx),0,width)),bottom=(int)Math.ceil(Math.clamp(Math.max(ay,by),0,height));
+        int left=(int)Math.floor(net.foundations.pl4.compat.PortMath.clamp(Math.min(ax,bx),0,width)),top=(int)Math.floor(net.foundations.pl4.compat.PortMath.clamp(Math.min(ay,by),0,height));
+        int right=(int)Math.ceil(net.foundations.pl4.compat.PortMath.clamp(Math.max(ax,bx),0,width)),bottom=(int)Math.ceil(net.foundations.pl4.compat.PortMath.clamp(Math.max(ay,by),0,height));
         return new DisplayElements.Rect(left,top,right-left,bottom-top);
     }
     public static List<UUID> inBox(List<DisplayElements.Spec> elements,int page,DisplayElements.Rect box){
@@ -20,7 +20,7 @@ public final class EditorSelection {
         int left=elements.stream().mapToInt(e->e.bounds().x()).min().orElseThrow(),top=elements.stream().mapToInt(e->e.bounds().y()).min().orElseThrow();
         int right=elements.stream().mapToInt(e->e.bounds().right()).max().orElseThrow(),bottom=elements.stream().mapToInt(e->e.bounds().bottom()).max().orElseThrow();
         if(right>width||bottom>height)throw new IllegalArgumentException("Selection does not fit this canvas.");
-        int x=Math.clamp(dx,-left,width-right),y=Math.clamp(dy,-top,height-bottom);
+        int x=net.foundations.pl4.compat.PortMath.clamp(dx,-left,width-right),y=net.foundations.pl4.compat.PortMath.clamp(dy,-top,height-bottom);
         return elements.stream().map(e->{var b=e.bounds();return e.bounds(new DisplayElements.Rect(b.x()+x,b.y()+y,b.width(),b.height()));}).toList();
     }
     private EditorSelection(){}

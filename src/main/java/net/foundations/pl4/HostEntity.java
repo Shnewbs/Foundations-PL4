@@ -10,6 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 
 public final class HostEntity extends BlockEntity {
+    public static java.util.function.Function<HostEntity,net.minecraft.world.phys.AABB> clientRenderBounds=h->new net.minecraft.world.phys.AABB(h.getBlockPos());
+    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(){return clientRenderBounds.apply(this);}
+
     public final Map<Integer,Part> parts=new TreeMap<>();
     private CompoundTag lastSync;
     private record CableSync(Part part,String status,int signal,List<Part.Row> rows) {}
@@ -74,7 +77,7 @@ public final class HostEntity extends BlockEntity {
     public void changed(){
         cachedOutline=null;lastCableSync=null;setChanged();
         if(level!=null){
-            if(!level.isClientSide){level.invalidateCapabilities(worldPosition);NetworkEngine.add(this);}
+            if(!level.isClientSide){net.foundations.pl4.compat.PortCapabilities.invalidate(this);NetworkEngine.add(this);}
             NetworkEngine.invalidate(level);level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
             level.updateNeighborsAt(worldPosition,getBlockState().getBlock());
         }
@@ -95,14 +98,14 @@ public final class HostEntity extends BlockEntity {
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
-    @Override protected void saveAdditional(CompoundTag t,HolderLookup.Provider r){super.saveAdditional(t,r);write(t,r,false);}
-    private void write(CompoundTag t,HolderLookup.Provider r,boolean sync){
+    protected void saveAdditional(CompoundTag t,net.minecraft.core.RegistryAccess r){super.saveAdditional(t);write(t,r,false);}
+    private void write(CompoundTag t,net.minecraft.core.RegistryAccess r,boolean sync){
         ListTag list=new ListTag();parts.values().forEach(p->list.add(p.save(r,sync)));t.put("parts",list);t.putInt("schema",2);
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
     }
-    @Override protected void loadAdditional(CompoundTag t,HolderLookup.Provider r){
-        super.loadAdditional(t,r);cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
-        int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=Math.clamp(arms[a],0,3);
+    protected void loadAdditional(CompoundTag t,net.minecraft.core.RegistryAccess r){
+        super.load(t);cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
+        int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=net.foundations.pl4.compat.PortMath.clamp(arms[a],0,3);
         externalLeads=t.getInt("externalLeads")&8191;parts.clear();ListTag list=t.getList("parts",Tag.TAG_COMPOUND);
         // R6 stored kind+face, not a persisted slot key. Reindex displays without changing identity/layout.
         for(int i=0;i<Math.min(list.size(),net.foundations.pl4.core.MultipartTopology.SLOT_COUNT);i++){
@@ -110,6 +113,10 @@ public final class HostEntity extends BlockEntity {
         }
         if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
-    @Override public CompoundTag getUpdateTag(HolderLookup.Provider r){CompoundTag t=new CompoundTag();write(t,r,true);return t;}
+    public CompoundTag getUpdateTag(net.minecraft.core.RegistryAccess r){CompoundTag t=new CompoundTag();write(t,r,true);return t;}
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){return ClientboundBlockEntityDataPacket.create(this);}
+
+    @Override protected void saveAdditional(CompoundTag tag){saveAdditional(tag,net.minecraft.core.RegistryAccess.EMPTY);}
+    @Override public void load(CompoundTag tag){loadAdditional(tag,net.minecraft.core.RegistryAccess.EMPTY);}
+    @Override public CompoundTag getUpdateTag(){return getUpdateTag(net.minecraft.core.RegistryAccess.EMPTY);}
 }

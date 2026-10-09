@@ -10,7 +10,7 @@ import net.foundations.pl4.core.DisplayElements;
 import net.foundations.pl4.core.EditorPalette;
 
 /** PL2-like element configuration, separate from reader data modes. Changes are committed atomically. */
-final class DisplayPropertiesScreen extends Screen {
+final class DisplayPropertiesScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;private DisplayElements.Spec spec;private final boolean add;private final long revision;
     private final Map<String,EditBox> fields=new LinkedHashMap<>();private final Map<AbstractWidget,Integer> positions=new LinkedHashMap<>();
     private int left,top,w,h,scroll;private String error="";
@@ -56,13 +56,13 @@ final class DisplayPropertiesScreen extends Screen {
     void reader(String id){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),id,"",spec.asset(),spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());parent.inspect(id);minecraft.setScreen(this);}
     void key(String key){spec=new DisplayElements.Spec(spec.id(),spec.type(),spec.text(),spec.reader(),key,"",spec.bounds(),spec.color(),spec.count(),spec.names(),spec.columns(),spec.offset(),spec.page(),spec.vertical(),spec.compact(),spec.textAlign(),spec.wrap(),spec.textScale(),spec.options());minecraft.setScreen(this);}
     String reader(){return spec.reader();}
-    private void layout(){int end=positions.values().stream().mapToInt(Integer::intValue).max().orElse(0)+20;scroll=Math.clamp(scroll,0,Math.max(0,end-(top+h-38)));positions.forEach((b,y)->{b.setY(y-scroll);b.visible=b.getY()>=top+31&&b.getY()+20<=top+h-35;});}
+    private void layout(){int end=positions.values().stream().mapToInt(Integer::intValue).max().orElse(0)+20;scroll=net.foundations.pl4.compat.PortMath.clamp(scroll,0,Math.max(0,end-(top+h-38)));positions.forEach((b,y)->{b.setY(y-scroll);b.visible=b.getY()>=top+31&&b.getY()+20<=top+h-35;});}
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA181818);g.fill(left,top,left+w,top+24,0xFF3C3C3C);g.drawString(font,title,left+10,top+8,0xFFFFFFFF,false);
         for(var entry:fields.entrySet()){var b=entry.getValue();if(!b.visible)continue;String label=switch(entry.getKey()){case "key"->"Data key";case "asset"->"Static resource";case "text"->"Caption";case "w"->"Width";case "h"->"Height";case "color"->"Colour";default->entry.getKey();};int x=b.getX()==left+230?b.getX()-48:left+10;g.drawString(font,label,x,b.getY()+6,0xFFDADADA,false);}
         if(!error.isBlank())g.drawString(font,font.plainSubstrByWidth(error,w-20),left+10,top+h-37,0xFFFF9999,false);
         var colorBox=fields.get("color");if(colorBox!=null&&colorBox.visible){int c=EditorPalette.parse(colorBox.getValue(),spec.color());int px=Math.min(left+w-30,colorBox.getX()+194);g.fill(px,colorBox.getY()+2,px+18,colorBox.getY()+18,0xFF000000|c);g.renderOutline(px,colorBox.getY()+2,18,16,0xFFBFD7DA);}
-        var columnsBox=fields.get("columns");if(columnsBox!=null&&columnsBox.visible&&(spec.type()==DisplayElements.Type.INVENTORY||spec.type()==DisplayElements.Type.FLUID_GRID)){int cols=3;try{cols=Math.clamp(Integer.parseInt(columnsBox.getValue()),1,16);}catch(NumberFormatException ignored){}int px=Math.min(left+w-102,columnsBox.getX()+72),py=columnsBox.getY()+2,pw=84,ph=16;g.fill(px,py,px+pw,py+ph,0xFF20282C);int cell=Math.max(2,(pw-4)/cols);for(int i=0;i<cols;i++){int sx=px+2+i*cell;g.fill(sx,py+2,Math.min(px+pw-2,sx+cell-2),py+ph-2,0xFF3B4B50);}g.drawString(font,cols+" cols",px+4,py+4,0xFFB8DCE0,false);}
+        var columnsBox=fields.get("columns");if(columnsBox!=null&&columnsBox.visible&&(spec.type()==DisplayElements.Type.INVENTORY||spec.type()==DisplayElements.Type.FLUID_GRID)){int cols=3;try{cols=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(columnsBox.getValue()),1,16);}catch(NumberFormatException ignored){}int px=Math.min(left+w-102,columnsBox.getX()+72),py=columnsBox.getY()+2,pw=84,ph=16;g.fill(px,py,px+pw,py+ph,0xFF20282C);int cell=Math.max(2,(pw-4)/cols);for(int i=0;i<cols;i++){int sx=px+2+i*cell;g.fill(sx,py+2,Math.min(px+pw-2,sx+cell-2),py+ph-2,0xFF3B4B50);}g.drawString(font,cols+" cols",px+4,py+4,0xFFB8DCE0,false);}
     }
     @Override public boolean mouseClicked(double x,double y,int button){if(button==1){onClose();return true;}return super.mouseClicked(x,y,button);}
     @Override public boolean mouseScrolled(double x,double y,double dx,double dy){scroll-=(int)Math.signum(dy)*28;layout();return true;}

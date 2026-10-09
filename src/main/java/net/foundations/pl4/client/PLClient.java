@@ -1,17 +1,17 @@
 package net.foundations.pl4.client;
 
 import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+
 import net.foundations.pl4.*;
 
-@EventBusSubscriber(modid=FoundationsPL4.ID,value=Dist.CLIENT)
+@EventBusSubscriber(modid=FoundationsPL4.ID,value=Dist.CLIENT,bus=EventBusSubscriber.Bus.MOD)
 public final class PLClient {
-    @SubscribeEvent public static void setup(FMLClientSetupEvent e){e.enqueueWork(()->{net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CommunityWelcome::login);PLPackets.clientOpen=packet->{
+    @SubscribeEvent public static void setup(FMLClientSetupEvent e){e.enqueueWork(()->{HostEntity.clientRenderBounds=HostRenderer::getRenderBoundingBox;net.minecraft.client.gui.screens.MenuScreens.register(FoundationsPL4.HAMMER_MENU.get(),HammerScreen::new);net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CommunityWelcome::login);PLPackets.clientOpen=packet->{
         Minecraft mc=Minecraft.getInstance();if(mc.level==null)return;
         if(packet.tag().getBoolean("guide")){mc.setScreen(new GuideScreen());return;}
         if(packet.tag().getBoolean("wirelessStorage")){if(mc.screen instanceof WirelessStorageScreen storage)storage.update(packet.tag());else if(!packet.tag().getBoolean("reply"))mc.setScreen(new WirelessStorageScreen(packet.tag()));return;}
@@ -23,6 +23,5 @@ public final class PLClient {
     };});}
     @SubscribeEvent public static void renderers(EntityRenderersEvent.RegisterRenderers e){e.registerBlockEntityRenderer(FoundationsPL4.HOST_ENTITY.get(),HostRenderer::new);e.registerBlockEntityRenderer(FoundationsPL4.HAMMER_ENTITY.get(),HammerRenderer::new);}
     @SubscribeEvent public static void layers(EntityRenderersEvent.RegisterLayerDefinitions e){e.registerLayerDefinition(HammerModel.LAYER,HammerModel::layer);}
-    @SubscribeEvent public static void screens(RegisterMenuScreensEvent e){e.register(FoundationsPL4.HAMMER_MENU.get(),HammerScreen::new);}
 }
 

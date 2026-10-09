@@ -8,14 +8,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.foundations.pl4.compat.PacketDistributor;
 import org.joml.Matrix4f;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.*;
 
 /** PL2-style editing directly on the world display. Only final gestures are transmitted.
  * Identity is anchored to the clicked tile; joined-canvas roots may be elsewhere. */
-public final class DisplayEditorScreen extends Screen {
+public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortScreen {
     final BlockPos pos;final UUID clickedIdentity;final int clickedSlot;final boolean editable;
     Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private List<DisplayElements.Spec> clipboard=List.of(),dragSpecs=List.of(),draftSpecs=List.of();private DisplayPicking.Point boxStart,boxEnd;private boolean additiveBox;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
     private double[] inverse;private long captureTime;private boolean snap=true,pending;private int waitTicks;
@@ -145,7 +145,7 @@ public final class DisplayEditorScreen extends Screen {
         commit(action,null,value,part.layoutRevision);
     }
     void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
-    List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
+    List<DisplayElements.Spec> pageLayers(){return net.foundations.pl4.compat.PortLists.reversed(selectionOnPage());}
     boolean layerSelected(UUID id){return selectedIds.contains(id);}
     boolean layoutPending(){return pending;}
     void selectLayer(UUID id,boolean additive){
@@ -215,7 +215,7 @@ public final class DisplayEditorScreen extends Screen {
             var result=LayoutTransactions.applyPaste(before,part.layoutRevision,copies,spaceW(),spaceH());
             if(!result.accepted()){message=result.message();return;}
             pushUndo();pending=true;waitTicks=0;message="Saving...";
-            selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=copies.getLast().id();
+            selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=net.foundations.pl4.compat.PortLists.last(copies).id();
             PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
         }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }

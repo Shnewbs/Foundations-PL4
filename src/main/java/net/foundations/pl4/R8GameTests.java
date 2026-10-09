@@ -10,8 +10,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.util.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.common.util.*;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native server fixtures. These require an actual Minecraft/NeoForge build and are NOT offline passes. */
 @PrefixGameTestTemplate(false)

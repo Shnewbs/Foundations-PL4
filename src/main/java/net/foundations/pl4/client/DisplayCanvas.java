@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.DisplayElements;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 /** Depth-tested, very shallow world-space canvas. Does not disable depth testing globally.
  * The model-space 0.01 steps are normalized by canvas scale, so a 16x16 board is not 16x deeper.
@@ -28,7 +28,7 @@ final class DisplayCanvas {
     private int order;
     private final PoseStack pose;private final MultiBufferSource buffers;private final double scale;private final Minecraft mc;
     DisplayCanvas(PoseStack pose,MultiBufferSource buffers,double scale){this.pose=pose;this.buffers=buffers;this.scale=scale;mc=Minecraft.getInstance();}
-    void order(int order){this.order=Math.clamp(order,0,31);}
+    void order(int order){this.order=net.foundations.pl4.compat.PortMath.clamp(order,0,31);}
     double depth(int layer){return (DisplayElements.worldDepth(layer)+(layer>0&&layer<5?order*.004/(16.0*32):0))/scale;}
     void rect(double x,double y,double w,double h,int color,int layer){if(w<=0||h<=0)return;quad(WHITE,x,y,w,h,0,0,1,1,color,depth(layer));}
     void outline(DisplayElements.Rect r,int color,int layer){rect(r.x(),r.y(),r.width(),.6,color,layer);rect(r.x(),r.bottom()-.6,r.width(),.6,color,layer);rect(r.x(),r.y(),.6,r.height(),color,layer);rect(r.right()-.6,r.y(),.6,r.height(),color,layer);}
@@ -74,7 +74,7 @@ final class DisplayCanvas {
         try{
             var ext=IClientFluidTypeExtensions.of(sample.fluid().getFluid());var id=ext.getStillTexture(sample.fluid());if(id==null)return;
             var sprite=mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(id);int color=ext.getTintColor(sample.fluid());
-            double fill=r.height()*Math.clamp(fraction,0,1),top=r.bottom()-fill;
+            double fill=r.height()*net.foundations.pl4.compat.PortMath.clamp(fraction,0,1),top=r.bottom()-fill;
             // Tile/crop instead of stretching a fluid sprite over the entire tank.
             for(double x=r.x();x<r.right();x+=16)for(double y=top;y<r.bottom();y+=16){double w=Math.min(16,r.right()-x),h=Math.min(16,r.bottom()-y);
                 float u1=sprite.getU0()+(sprite.getU1()-sprite.getU0())*(float)(w/16),v1=sprite.getV0()+(sprite.getV1()-sprite.getV0())*(float)(h/16);
@@ -86,9 +86,9 @@ final class DisplayCanvas {
     private static void warn(String id,RuntimeException error){if(WARNED.size()<64&&WARNED.add(id))org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Cannot render display picture {}",id,error);}
     private void quad(ResourceLocation texture,double x,double y,double w,double h,float u0,float v0,float u1,float v1,int color,double z){
         var v=buffers.getBuffer(RenderType.entityTranslucent(texture));var p=pose.last();
-        v.addVertex(p,(float)x,(float)y,(float)z).setColor(color).setUv(u0,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);
-        v.addVertex(p,(float)x,(float)(y+h),(float)z).setColor(color).setUv(u0,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);
-        v.addVertex(p,(float)(x+w),(float)(y+h),(float)z).setColor(color).setUv(u1,v1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);
-        v.addVertex(p,(float)(x+w),(float)y,(float)z).setColor(color).setUv(u1,v0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(p,0,0,1);
+        v.vertex(p.pose(),(float)x,(float)y,(float)z).color(color).uv(u0,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)x,(float)(y+h),(float)z).color(color).uv(u0,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)(x+w),(float)(y+h),(float)z).color(color).uv(u1,v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
+        v.vertex(p.pose(),(float)(x+w),(float)y,(float)z).color(color).uv(u1,v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(p.normal(),0,0,1).endVertex();
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.foundations.pl4.core.DisplayElements;
 
 /** Eight stable page slots. Clearing page contents never renumbers other pages. */
-final class DisplayPagesScreen extends Screen {
+final class DisplayPagesScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayEditorScreen parent;
     private int left,top,w,h;
     private long revision;

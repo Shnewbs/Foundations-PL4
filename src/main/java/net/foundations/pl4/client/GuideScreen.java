@@ -17,7 +17,7 @@ import net.foundations.pl4.core.GuideLayout;
 import net.foundations.pl4.core.GuideNavigation;
 
 /** Foundations technical binder: Calculator-style two-pane reference layout in PL4 graphite/cyan. All text remains native GUI scale. */
-public final class GuideScreen extends Screen {
+public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private static final ResourceLocation COVER=FoundationsPL4.id("field_guide/cover"),PAGE=FoundationsPL4.id("field_guide/page");
     private static final String[] CATEGORIES={"start","network","display","reference"};
     private static final String[] TAB_NAMES={"Welcome and tutorials","Networks","Displays","Reference"};
@@ -39,7 +39,7 @@ public final class GuideScreen extends Screen {
     @Override protected void init(){
         if(book==null){
             book=GuideResources.load(minecraft.getResourceManager(),minecraft.getLanguageManager().getSelected());preferences=GuideResources.preferences();
-            chapter=book.chapters().stream().filter(c->c.id().equals(preferences.chapter)).findFirst().orElse(book.chapters().getFirst());category=chapter.category();
+            chapter=book.chapters().stream().filter(c->c.id().equals(preferences.chapter)).findFirst().orElse(book.chapters().get(0));category=chapter.category();
             preferences.saved.removeIf(id->book.chapters().stream().noneMatch(c->c.id().equals(id)));
         }
         layout=GuideLayout.fit(width,height);drag=0;footerJumpX=width;chapterButtons.clear();

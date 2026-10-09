@@ -46,7 +46,7 @@ public final class ReaderChannels {
             if(id.equals(reader.targetChannel))reader.targetLabel=label+(available(server,t)?"":" [unloaded]");
             if(query.isEmpty()||label.toLowerCase(Locale.ROOT).contains(query)||id.contains(query))matches.add(t);
         }
-        reader.targetCount=matches.size();reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matches.size()-1)/64));
+        reader.targetCount=matches.size();reader.targetPage=net.foundations.pl4.compat.PortMath.clamp(reader.targetPage,0,Math.max(0,(matches.size()-1)/64));
         int start=reader.targetPage*64;
         for(int i=start;i<Math.min(start+64,matches.size());i++){
             var t=matches.get(i);String label=description(reader,t);

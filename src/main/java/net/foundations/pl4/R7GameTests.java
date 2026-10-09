@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native fixtures: separate from the executed, dependency-free planner tests. */
 @PrefixGameTestTemplate(false)
@@ -128,7 +128,7 @@ public final class R7GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void panelItemStaysOnReaderAndDuplicateDoesNotConsume(GameTestHelper h){
         var target=host(h,new BlockPos(3,3,3));Part reader=put(target,Kind.INVENTORY_READER,Direction.EAST);put(target,Kind.DATA_CABLE,Direction.DOWN);
-        var player=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
+        var player=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
         player.getInventory().clearContent();player.getAbilities().instabuild=false;
         Vec3 front=Vec3.atCenterOf(target.getBlockPos()).add(.5,0,0);player.setPos(front.x+1,front.y,front.z);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DISPLAY).get(),2);player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,stack);

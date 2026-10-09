@@ -5,10 +5,10 @@ import net.foundations.pl4.core.SignalRules;
 
 final class SignallerLogic {
     static Part reader(List<NetworkEngine.Ref> readers,String selection){
-        if(selection.isEmpty())return readers.isEmpty()?null:readers.getFirst().part();
+        if(selection.isEmpty())return readers.isEmpty()?null:readers.get(0).part();
         for(var ref:readers)if(ref.part().identity.toString().equals(selection))return ref.part();
         var named=readers.stream().filter(ref->ref.part().label.equals(selection)).toList();
-        return named.size()==1?named.getFirst().part():null;
+        return named.size()==1?named.get(0).part():null;
     }
     static Double value(List<NetworkEngine.Ref> readers,SignalRules.Statement statement){
         Part reader=reader(readers,statement.reader());if(reader==null)return null;

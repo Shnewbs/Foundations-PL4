@@ -4,7 +4,7 @@ import java.util.*;
 import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native acceptance fixtures. Execution requires a full Minecraft/NeoForge test server. */
 @PrefixGameTestTemplate(false)

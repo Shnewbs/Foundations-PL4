@@ -5,7 +5,7 @@ import net.minecraft.core.registries.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 /** Independent receive/send filters. INHERIT preserves the old Transfer Node filter. */
 public final class TransferFilters {

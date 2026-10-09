@@ -30,7 +30,7 @@ public final class ComponentLinks {
     public static void refresh(ServerPlayer player,HostEntity host,Part part){
         if(!supported(part))return;part.targetChoices.clear();
         List<Part.Link> choices=candidates(player,host,part).stream().filter(l->label(player,l).toLowerCase(Locale.ROOT).contains(part.targetQuery.toLowerCase(Locale.ROOT))).toList();
-        part.targetCount=choices.size();part.targetPage=Math.clamp(part.targetPage,0,Math.max(0,(choices.size()-1)/16));
+        part.targetCount=choices.size();part.targetPage=net.foundations.pl4.compat.PortMath.clamp(part.targetPage,0,Math.max(0,(choices.size()-1)/16));
         for(var link:choices.stream().skip(part.targetPage*16L).limit(16).toList())part.targetChoices.add(new Part.ReaderChoice(choiceId(link),label(player,link),"link"));
     }
     private static String choiceId(Part.Link link){return link.entity()==null?ReaderChannels.id(link):link.entity().toString();}

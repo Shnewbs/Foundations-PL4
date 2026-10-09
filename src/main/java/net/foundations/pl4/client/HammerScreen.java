@@ -27,7 +27,7 @@ public final class HammerScreen extends AbstractContainerScreen<HammerMenu> {
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float partial){
         // Native AbstractContainerScreen performs the background pass BEFORE renderBg/slots.
-        super.render(g,mouseX,mouseY,partial);
+        renderBackground(g);super.render(g,mouseX,mouseY,partial);
         renderTooltip(g,mouseX,mouseY);
         if(mouseX>=leftPos+76&&mouseX<leftPos+100&&mouseY>=topPos+24&&mouseY<topPos+40)
             g.renderTooltip(font,Component.literal(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);

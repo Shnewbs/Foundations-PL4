@@ -18,7 +18,7 @@ public final class MonitorPresentation {
     }
     public static Table table(Region area,int available) {
         int inset=6,top=area.y()+6,rowHeight=12,first=top+28,footer=area.bottom()-15;
-        int count=Math.clamp(Math.min(available,Math.max(0,(footer-first-5)/rowHeight)),0,24);
+        int count=net.foundations.pl4.compat.PortMath.clamp(Math.min(available,Math.max(0,(footer-first-5)/rowHeight)),0,24);
         return new Table(area,inset,top,top+14,first,rowHeight,count,footer);
     }
     public static String title(String label,String status) {

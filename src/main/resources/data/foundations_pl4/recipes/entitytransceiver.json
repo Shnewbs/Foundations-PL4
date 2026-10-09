@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:entitytransceiver"
+  },
+  "pattern": [
+    "SPD",
+    "WBW",
+    "SPD"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "B": {
+      "item": "foundations_pl4:entitynode"
+    },
+    "S": {
+      "tag": "c:dusts/sapphire"
+    },
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "W": {
+      "item": "foundations_pl4:wirelessplate"
+    }
+  }
+}

@@ -3,17 +3,17 @@ package net.foundations.pl4;
 import java.util.*;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.*;
-import net.minecraft.core.component.DataComponents;
+import net.foundations.pl4.compat.DataComponents;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemContainerContents;
+import net.foundations.pl4.compat.ItemContainerContents;
 import net.minecraft.world.level.material.Fluids;
 import net.foundations.pl4.core.*;
-import net.neoforged.neoforge.common.util.*;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.common.util.*;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Minecraft/NeoForge integration fixtures. Not executed by the dependency-free runner. */
 @PrefixGameTestTemplate(false)
@@ -55,36 +55,36 @@ public final class R9GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void visualItemCountIsSeparateFromPicture(GameTestHelper h){
         VisualSamples samples=new VisualSamples();samples.item(new ItemStack(Items.STONE,64));samples.item(new ItemStack(Items.STONE,33));var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
-        h.assertTrue(rows.size()==1&&rows.getFirst().value()==97&&rows.getFirst().item().getCount()==1&&rows.getFirst().hasBlock(),"Real total is not capped by one-item picture");h.succeed();
+        h.assertTrue(rows.size()==1&&rows.get(0).value()==97&&rows.get(0).item().getCount()==1&&rows.get(0).hasBlock(),"Real total is not capped by one-item picture");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void boundedVisualComponentVariantsStaySeparate(GameTestHelper h){
-        var a=new ItemStack(Items.STONE,5);a.set(DataComponents.CUSTOM_NAME,Component.literal("Alpha"));var b=new ItemStack(Items.STONE,7);b.set(DataComponents.CUSTOM_NAME,Component.literal("Beta"));
+        var a=new ItemStack(Items.STONE,5);net.foundations.pl4.compat.PortData.set(a,DataComponents.CUSTOM_NAME,Component.literal("Alpha"));var b=new ItemStack(Items.STONE,7);net.foundations.pl4.compat.PortData.set(b,DataComponents.CUSTOM_NAME,Component.literal("Beta"));
         VisualSamples samples=new VisualSamples();samples.item(a);samples.item(b);var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
         h.assertTrue(rows.size()==2&&!rows.get(0).key().equals(rows.get(1).key())&&rows.get(0).value()==7,"Named visual variants have separate counts and keys");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void visualRowsRoundTripNativeItemComponents(GameTestHelper h){
-        var item=new ItemStack(Items.DIAMOND_SWORD,2);item.set(DataComponents.CUSTOM_NAME,Component.literal("Model fixture"));VisualSamples samples=new VisualSamples();samples.item(item);
-        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).getFirst();var copy=Part.Row.load(row.save(),h.getLevel().registryAccess());
+        var item=new ItemStack(Items.DIAMOND_SWORD,2);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,Component.literal("Model fixture"));VisualSamples samples=new VisualSamples();samples.item(item);
+        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);var copy=Part.Row.load(row.save(),h.getLevel().registryAccess());
         h.assertTrue(copy.hasItem()&&!copy.hasBlock()&&copy.value()==2&&copy.item().getHoverName().getString().equals("Model fixture")&&copy.key().equals(row.key()),"Synced visual picture retains bounded native components");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void nestedInventoriesAreNotSentAsPictureMetadata(GameTestHelper h){
-        ItemStack box=new ItemStack(Items.SHULKER_BOX);box.set(DataComponents.CONTAINER,ItemContainerContents.fromItems(List.of(new ItemStack(Items.DIAMOND,64))));
-        VisualSamples samples=new VisualSamples();samples.item(box);var row=samples.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
-        h.assertTrue(!row.item().has(DataComponents.CONTAINER)&&!row.item().has(DataComponents.BLOCK_ENTITY_DATA),"A display picture must not contain nested machine/inventory contents");h.succeed();
+        ItemStack box=new ItemStack(Items.SHULKER_BOX);net.foundations.pl4.compat.PortData.set(box,DataComponents.CONTAINER,ItemContainerContents.fromItems(List.of(new ItemStack(Items.DIAMOND,64))));
+        VisualSamples samples=new VisualSamples();samples.item(box);var row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        h.assertTrue(!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.CONTAINER)&&!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.BLOCK_ENTITY_DATA),"A display picture must not contain nested machine/inventory contents");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hugeVisualComponentFallsBackWithinCap(GameTestHelper h){
-        ItemStack item=new ItemStack(Items.STONE,12);item.set(DataComponents.CUSTOM_NAME,Component.literal("x".repeat(8192)));VisualSamples samples=new VisualSamples();samples.item(item);
-        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
-        h.assertTrue(row.value()==12&&row.item().is(Items.STONE)&&!row.item().has(DataComponents.CUSTOM_NAME)&&VisualSamples.bounded(row.previewItem(),4096)!=null,"Oversized pictures preserve total and fall back to base item");h.succeed();
+        ItemStack item=new ItemStack(Items.STONE,12);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,Component.literal("x".repeat(8192)));VisualSamples samples=new VisualSamples();samples.item(item);
+        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        h.assertTrue(row.value()==12&&row.item().is(Items.STONE)&&!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.CUSTOM_NAME)&&VisualSamples.bounded(row.previewItem(),4096)!=null,"Oversized pictures preserve total and fall back to base item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fluidRowsCarryTypeAmountAndCapacity(GameTestHelper h){
         VisualSamples samples=new VisualSamples();samples.fluid(new FluidStack(Fluids.WATER,500),1000);samples.fluid(new FluidStack(Fluids.WATER,250),1000);samples.fluid(new FluidStack(Fluids.LAVA,100),1000);
-        var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);var row=Part.Row.load(rows.getFirst().save(),h.getLevel().registryAccess());
+        var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);var row=Part.Row.load(rows.get(0).save(),h.getLevel().registryAccess());
         h.assertTrue(rows.size()==2&&row.fluid().getFluid()==Fluids.WATER&&row.fluid().getAmount()==1&&row.value()==750&&row.capacity()==2000,"Fluid preview is separate from aggregate amount/capacity");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -104,7 +104,7 @@ public final class R9GameTests {
     public static void ownedTypedEditCommitsAndSelectsCustom(GameTestHelper h){
         var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.BLOCK);var p=player(h,host,true);
         PLPackets.editLayout(p,packet(host,0,"add",s,""));
-        h.assertTrue(part(host).elements.size()==1&&part(host).elements.getFirst().spec().type()==DisplayElements.Type.BLOCK&&part(host).displayMode==DisplayElements.Mode.CUSTOM&&part(host).layoutRevision==1,"Block selection must commit a block renderer, not just a reader mode");h.succeed();
+        h.assertTrue(part(host).elements.size()==1&&part(host).elements.get(0).spec().type()==DisplayElements.Type.BLOCK&&part(host).displayMode==DisplayElements.Mode.CUSTOM&&part(host).layoutRevision==1,"Block selection must commit a block renderer, not just a reader mode");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void staleTypedEditCannotOverwriteLayout(GameTestHelper h){
@@ -140,7 +140,7 @@ public final class R9GameTests {
         h.assertTrue(part(host).elements.size()==2,"Second add must have applied before the undo restore");
         var restore=new PLPackets.LayoutEdit(host.getBlockPos(),part(host).slot(),part(host).identity,part(host).layoutRevision,"replace",new UUID(0,0),ElementJson.encodeList(snapshot));
         PLPackets.editLayout(p,restore);
-        h.assertTrue(part(host).elements.size()==1&&part(host).elements.getFirst().spec().equals(a)&&part(host).layoutRevision==3,"Replace must restore the exact prior snapshot as an atomic, revision-fenced edit");h.succeed();
+        h.assertTrue(part(host).elements.size()==1&&part(host).elements.get(0).spec().equals(a)&&part(host).layoutRevision==3,"Replace must restore the exact prior snapshot as an atomic, revision-fenced edit");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void replaceActionRejectsOversizedSnapshot(GameTestHelper h){
@@ -159,7 +159,7 @@ public final class R9GameTests {
     public static void modeSwitchKeepsTypedLayout(GameTestHelper h){
         var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.FLUID);part(host).elements.add(new Part.Element(s));part(host).displayMode=DisplayElements.Mode.CUSTOM;
         PLPackets.editLayout(player(h,host,true),packet(host,0,"mode",null,"AUTO_LIST"));
-        h.assertTrue(part(host).displayMode==DisplayElements.Mode.AUTO_LIST&&part(host).elements.getFirst().spec().equals(s),"Switching view must preserve user layout");h.succeed();
+        h.assertTrue(part(host).displayMode==DisplayElements.Mode.AUTO_LIST&&part(host).elements.get(0).spec().equals(s),"Switching view must preserve user layout");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void typedJoinedSettingsSurviveRootRemoval(GameTestHelper h){
@@ -178,8 +178,8 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void componentVariantKeyIsStableAcrossSave(GameTestHelper h){
-        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);item.set(DataComponents.CUSTOM_NAME,Component.literal("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
-        var restored=ItemStack.parseOptional(h.getLevel().registryAccess(),(CompoundTag)item.save(h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).getFirst();
+        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,Component.literal("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        var restored=net.foundations.pl4.compat.PortData.parseItem(h.getLevel().registryAccess(),(CompoundTag)net.foundations.pl4.compat.PortData.save(item,h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).get(0);
         h.assertTrue(r.key().equals(r2.key())&&r.value()==r2.value(),"Variant bindings must not drift simply because an item was saved");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -188,7 +188,7 @@ public final class R9GameTests {
         var p=part(host);p.elements.add(new Part.Element(s));p.displayMode=DisplayElements.Mode.CUSTOM;
         var user=player(h,host,true);
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"align_right",new UUID(0,0),s.id().toString()));
-        var arranged=part(host).elements.getFirst().spec();
+        var arranged=part(host).elements.get(0).spec();
         h.assertTrue(arranged.bounds().right()==p.layoutWidth&&arranged.wrap()&&arranged.textScale()==1.5F&&arranged.textAlign()==DisplayElements.TextAlign.RIGHT&&p.layoutRevision==1,"Server canvas dimensions and style must be retained");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -197,13 +197,13 @@ public final class R9GameTests {
         var user=player(h,host,true);
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,1,"align_left",new UUID(0,0),s.id().toString()));
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"align_left",new UUID(0,0),s.id().toString()));
-        h.assertTrue(p.layoutRevision==2&&p.elements.getFirst().spec().equals(s),"Stale and cross-page edits must leave the layout unchanged");h.succeed();
+        h.assertTrue(p.layoutRevision==2&&p.elements.get(0).spec().equals(s),"Stale and cross-page edits must leave the layout unchanged");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void arrangementRejectsUnauthorizedPlayer(GameTestHelper h){
         var host=display(h,2,Kind.DISPLAY);var s=spec(DisplayElements.Type.TEXT);var p=part(host);p.elements.add(new Part.Element(s));p.owner=UUID.randomUUID();
         PLPackets.editLayout(player(h,host,false),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,0,"align_left",new UUID(0,0),s.id().toString()));
-        h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(s),"Arrangement must enforce the existing ownership gate");h.succeed();
+        h.assertTrue(p.layoutRevision==0&&p.elements.get(0).spec().equals(s),"Arrangement must enforce the existing ownership gate");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void multiMoveIsAtomicAndClampsSharedDelta(GameTestHelper h){
@@ -219,7 +219,7 @@ public final class R9GameTests {
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,1,"move_selection",new UUID(0,0),"4;4;"+a.id()));
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"move_selection",new UUID(0,0),"4;4;"+a.id()+","+UUID.randomUUID()));
         p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,2,"move_selection",new UUID(0,0),"4;4;"+a.id()));
-        h.assertTrue(p.layoutRevision==2&&p.elements.getFirst().spec().equals(a),"Invalid moves cannot partially change selection");h.succeed();
+        h.assertTrue(p.layoutRevision==2&&p.elements.get(0).spec().equals(a),"Invalid moves cannot partially change selection");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void multiPasteRejectsInvisibleReaderAndAcceptsWholeBatch(GameTestHelper h){
@@ -253,7 +253,7 @@ public final class R9GameTests {
         var host=display(h,2,Kind.DISPLAY);var p=part(host);var a=spec(DisplayElements.Type.TEXT);var b=spec(DisplayElements.Type.BAR);for(var s:List.of(a,b))p.elements.add(new Part.Element(s));
         PLPackets.editLayout(player(h,host,true),new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),UUID.randomUUID(),0,"layer_front",new UUID(0,0),a.id().toString()));
         p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),packet(host,0,"layer_front",null,a.id().toString()));
-        h.assertTrue(p.layoutRevision==0&&p.elements.getFirst().spec().equals(a),"Layer controls retain both identity and ownership fences");h.succeed();
+        h.assertTrue(p.layoutRevision==0&&p.elements.get(0).spec().equals(a),"Layer controls retain both identity and ownership fences");h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -284,13 +284,13 @@ public final class R9GameTests {
         PLPackets.editLayout(user,packet(host,3,"page_name",null,"Production"));
         var restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
         h.assertTrue(restored.elements.equals(p.elements)&&restored.pageName(0).equals("Production"),"Metadata and page names survive save/load");
-        h.assertTrue(p.elements.getFirst().spec().options().locked()&&p.elements.getFirst().spec().options().hidden(),"Server applied metadata");
+        h.assertTrue(p.elements.get(0).spec().options().locked()&&p.elements.get(0).spec().options().hidden(),"Server applied metadata");
         var json=ElementJson.decodeList(ElementJson.encodeList(p.elements.stream().map(Part.Element::spec).toList()));
         h.assertTrue(json.equals(p.elements.stream().map(Part.Element::spec).toList()),"JSON snapshots preserve metadata");
         PLPackets.editLayout(user,new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,4,"delete",a.id(),""));
         h.assertTrue(p.elements.size()==2&&p.layoutRevision==4,"Locked delete rejected");
         p.owner=UUID.randomUUID();PLPackets.editLayout(player(h,host,false),packet(host,4,"unlock",null,ids));
-        h.assertTrue(p.layoutRevision==4&&p.elements.getFirst().spec().options().locked(),"Foreign owner cannot unlock");h.succeed();
+        h.assertTrue(p.layoutRevision==4&&p.elements.get(0).spec().options().locked(),"Foreign owner cannot unlock");h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -301,7 +301,7 @@ public final class R9GameTests {
         h.assertTrue(DisplayActions.activate(user,host,p)&&p.displayPage==1&&p.layoutRevision==1,"Owner click switches page using server ray");
         p.displayPage=0;p.elements.add(new Part.Element(e.identity(UUID.randomUUID()).options(DisplayElements.Options.DEFAULT)));
         h.assertTrue(!DisplayActions.activate(user,host,p)&&p.displayPage==0,"Non-action front layer blocks link below");
-        p.elements.removeLast();p.elements.set(0,new Part.Element(e.options(new DisplayElements.Options("",false,true,-1,-1,1))));
+        net.foundations.pl4.compat.PortLists.removeLast(p.elements);p.elements.set(0,new Part.Element(e.options(new DisplayElements.Options("",false,true,-1,-1,1))));
         h.assertTrue(!DisplayActions.activate(user,host,p),"Hidden action cannot fire");
         p.elements.set(0,new Part.Element(e));p.owner=UUID.randomUUID();
         h.assertTrue(!DisplayActions.activate(user,host,p)&&p.displayPage==0,"Foreign owner cannot change displayed page");h.succeed();

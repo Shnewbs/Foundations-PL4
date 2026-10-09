@@ -1,7 +1,7 @@
 package net.foundations.pl4;
 
 import net.minecraft.core.*;
-import net.minecraft.core.component.DataComponents;
+import net.foundations.pl4.compat.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,18 +9,18 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.CustomData;
+import net.foundations.pl4.compat.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.foundations.pl4.compat.PacketDistributor;
 
 public final class ToolItem extends Item {
     public enum Mode{OPERATOR,BLOCK_LINK,ENTITY_LINK,MONITOR,STORAGE,GUIDE}
     private final Mode mode;
     public ToolItem(Mode m,Properties p){super(p);mode=m;}
-    static Part.Link link(ItemStack stack){var data=stack.get(DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link"));}
+    static Part.Link link(ItemStack stack){var data=net.foundations.pl4.compat.PortData.get(stack,DataComponents.CUSTOM_DATA);return data==null||!data.contains("pl_link")?null:Part.Link.load(data.copyTag().getCompound("pl_link"));}
     private static void save(ItemStack stack,Part.Link link){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_link",link.save()));}
     @Override public InteractionResult useOn(UseOnContext c){
         if(!(c.getPlayer() instanceof ServerPlayer player))return InteractionResult.SUCCESS;
