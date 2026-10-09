@@ -1,89 +1,42 @@
 plugins {
-    id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.147'
+    id 'java'
+    id 'net.minecraftforge.gradle' version '7.0.28'
+    id 'net.minecraftforge.renamer' version '1.1.2'
 }
-version = '0.2a'
-group = 'net.foundations.pl4'
-base { archivesName = 'FoundationsPL4-1.21.1' }
-java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
-neoForge {
-    version = '21.1.250'
-    runs {
-        client { client() }
-        server { server(); programArgument '--nogui' }
-        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
-        configureEach { logLevel = org.slf4j.event.Level.INFO }
-    }
-    mods { foundations_pl4 { sourceSet sourceSets.main } }
+version='0.2a-legacy-preview.1'
+group='net.foundations.pl4'
+base.archivesName='FoundationsPL4-1.6.4'
+java { toolchain.languageVersion=JavaLanguageVersion.of(8); withSourcesJar() }
+sourceSets {
+    main { java.setSrcDirs(['src/legacy/java']); resources.setSrcDirs(['src/legacy/resources']) }
+    legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
+    legacyRules { java.setSrcDirs(['tools']); java.include 'CoreChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
 }
-repositories { mavenCentral() }
-dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
-test { useJUnitPlatform() }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+tasks.withType(JavaCompile).configureEach { sourceCompatibility='1.7'; targetCompatibility='1.7'; options.encoding='UTF-8' }
+repositories { mavenCentral(); minecraft.mavenizer(it); maven fg.forgeMaven; maven fg.minecraftLibsMaven }
+minecraft { mappings channel:'snapshot',version:'20130918-1.6.3' }
+dependencies { implementation minecraft.dependency('net.minecraftforge:forge:1.6.4-9.11.1.960') }
 processResources {
-    inputs.property 'version', project.version
-    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
-}
-
-// A release cannot silently regain the old external core/multipart runtime dependencies.
-tasks.register('verifyStandalone') {
-    dependsOn tasks.named('jar')
-    inputs.file(tasks.named('jar').flatMap { it.archiveFile })
-    doLast {
-        def artifact = tasks.named('jar').get().archiveFile.get().asFile
-        def failures = []
-        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
-            zip.entries().each { entry ->
-                if (entry.name.endsWith('.class')) {
-                    def content = new String(zip.getInputStream(entry).bytes, java.nio.charset.StandardCharsets.ISO_8859_1)
-                    if (content.contains('sonar/core/') || content.contains('mcmultipart/')) failures.add(entry.name)
-                }
-                if (entry.name.endsWith('.jar')) failures.add('Unexpected nested mod JAR: ' + entry.name)
-            }
-            def metadata = zip.getInputStream(zip.getEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
-            if (metadata.contains('modId="sonarcore"') || metadata.contains('modId="mcmultipart"')) failures.add('Legacy dependency in mod metadata')
-            if (!metadata.contains('modId="foundations_pl4"')) failures.add('Foundations PL4 identity missing')
-            if (!metadata.contains('version="' + project.version + '"')) failures.add('Mod metadata version does not match Gradle project version')
-        }
-        if (!failures.empty) throw new GradleException('Standalone verification failed: ' + failures.join(', '))
-        logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
+    inputs.property 'version',project.version
+    filesMatching('mcmod.info') { expand 'version':project.version }
+    from('src/main/resources/assets/foundations_pl4/textures/block') {
+        include 'data_cable.png'
+        rename 'data_cable.png','legacy_cable.png'
+        into 'assets/foundations_pl4/textures/blocks'
+    }
+    from('src/main/resources/assets/foundations_pl4/textures/block/model') {
+        include 'transfer_node_remove.png','transfer_node_add.png'
+        rename 'transfer_node_remove.png','legacy_export.png'
+        rename 'transfer_node_add.png','legacy_import.png'
+        into 'assets/foundations_pl4/textures/blocks'
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
-tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
-apply from: 'gradle/verify-client-assets.gradle'
-
-apply from: 'gradle/verify-screen-layers.gradle'
-
-apply from: 'gradle/verify-r5-rules.gradle'
-
-apply from: 'gradle/verify-r6-rules.gradle'
-
-apply from: 'gradle/verify-r7-rules.gradle'
-
-apply from: 'gradle/verify-r8-rules.gradle'
-
-apply from: 'gradle/verify-r9-rules.gradle'
-
-apply from: 'gradle/verify-r10-rules.gradle'
-
-apply from: 'gradle/verify-r11-rules.gradle'
-
-apply from: 'gradle/verify-r12-rules.gradle'
-
-apply from: 'gradle/verify-r13-rules.gradle'
-
-apply from: 'gradle/verify-r14-rules.gradle'
-
-apply from: 'gradle/verify-r17-rules.gradle'
-
-apply from: 'gradle/verify-r16-rules.gradle'
-
-// Identical source produces identical release archives for safe publication retries.
-tasks.withType(AbstractArchiveTask).configureEach {
-    preserveFileTimestamps = false
-    reproducibleFileOrder = true
-}
-
-apply from: 'gradle/verify-energy-conversion.gradle'
+tasks.named('jar',Jar) { from('LICENSE');from('LICENSE-SonarCore');from('NOTICE');manifest { attributes('Implementation-Version':project.version) } }
+renamer.mappings.from minecraft.dependency.toSrgFile
+def runtimeJar=renamer.classes(tasks.named('jar',Jar)) { map.from minecraft.dependency.toSrgFile;archiveClassifier='srg' }
+def fixtures=tasks.register('legacyTestJar',Jar) { dependsOn 'legacyTestClasses';from sourceSets.legacyTest.output;archiveClassifier='native-scenarios' }
+def testJar=renamer.classes(fixtures) { map.from minecraft.dependency.toSrgFile;archiveClassifier='native-scenarios-srg' }
+tasks.register('legacyRules',JavaExec) { dependsOn 'legacyRulesClasses';classpath=sourceSets.legacyRules.runtimeClasspath;mainClass='CoreChecks';javaLauncher=javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(8)} }
+tasks.named('check') { dependsOn 'legacyRules' }
+tasks.named('build') { dependsOn runtimeJar,testJar }
+tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false;reproducibleFileOrder=true }
