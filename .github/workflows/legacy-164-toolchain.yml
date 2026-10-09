@@ -1,0 +1,67 @@
+name: Resolve isolated Forge 1.6.4
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/legacy-164-toolchain.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        forge: ['9.11.1.1345', '9.11.1.960']
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.0'
+      - name: Resolve exact native dependencies without substituting another Minecraft version
+        shell: bash
+        env:
+          FORGE: ${{ matrix.forge }}
+        run: |
+          set -euo pipefail
+          mkdir -p workspace evidence
+          cat > workspace/settings.gradle <<'GRADLE'
+          pluginManagement {
+              repositories { maven { url = 'https://maven.minecraftforge.net/' }; gradlePluginPortal() }
+          }
+          rootProject.name = 'pl4-164-environment'
+          GRADLE
+          cat > workspace/build.gradle <<'GRADLE'
+          plugins {
+              id 'java'
+              id 'net.minecraftforge.gradle' version '7.0.28'
+              id 'net.minecraftforge.renamer' version '1.1.2'
+          }
+          java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+          tasks.withType(JavaCompile).configureEach { sourceCompatibility='1.7'; targetCompatibility='1.7'; options.encoding='UTF-8' }
+          repositories {
+              mavenCentral()
+              minecraft.mavenizer(it)
+              maven fg.forgeMaven
+              maven fg.minecraftLibsMaven
+          }
+          minecraft { mappings channel: 'snapshot', version: '20130918-1.6.3' }
+          dependencies { implementation minecraft.dependency('net.minecraftforge:forge:1.6.4-' + System.getenv('FORGE')) }
+          tasks.register('exportPortClasspath', Copy) { from configurations.compileClasspath; into '../evidence/classpath' }
+          GRADLE
+          cp workspace/*.gradle evidence/
+          gradle -p workspace --no-daemon --console=plain -Dorg.gradle.jvmargs=-Xmx4G exportPortClasspath 2>&1 | tee evidence/resolution.log
+          find evidence/classpath -type f -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: internal-forge164-${{ matrix.forge }}-${{ github.run_id }}
+          path: evidence/
+          retention-days: 7
+          if-no-files-found: error
