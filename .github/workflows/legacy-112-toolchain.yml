@@ -24,6 +24,7 @@ jobs:
           echo '9485662cf5d197c1bfbe60fc7e6048a598cd5a4c  evidence/developer.zip' | sha1sum -c -
           unzip -q evidence/developer.zip -d workspace
           echo "rootProject.name='pl4-112-toolchain'" > workspace/settings.gradle
+          printf '\n\n' >> workspace/build.gradle
           cat >> workspace/build.gradle <<'GRADLE'
           task exportPortClasspath(type: Copy) {
               from configurations.compileClasspath
