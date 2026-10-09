@@ -138,6 +138,13 @@ public final class NetworkEngine {
         for(Group group:cachedGroups)if(!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&group.readers.stream().anyMatch(r->r.part==reader))return group.targets;
         return List.of();
     }
+    /** Physical data network only: visual reader exports never grant inventory access. */
+    public static List<Ref> storageNodes(MinecraftServer server,Part anchor){
+        ensureCurrent(server);
+        for(Group group:cachedGroups)if(!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&group.parts.stream().anyMatch(r->r.part==anchor))
+            return group.parts.stream().filter(r->r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE).toList();
+        return List.of();
+    }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent.Post e){
         MinecraftServer server=e.getServer();

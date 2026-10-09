@@ -36,7 +36,7 @@ assert flip.index('canFlipInto')<flip.index('tile.part().displayOutward=outward'
 assert flip.index('var settings=root.part().displaySettings()')<flip.index('NetworkEngine.invalidate')
 assert 'HologramProjection.forCamera' in rend and 'HologramProjection.baseYaw' in rend
 assert 'HologramProjection.baseYaw' in (J/'MultipartShapes.java').read_text()
-assert 'registrar("4")' in packets and 'case "hologram_view"' in packets and 'Shapes.joinIsNotEmpty' in packets
+assert 'registrar("5")' in packets and 'case "hologram_view"' in packets and 'Shapes.joinIsNotEmpty' in packets
 assert 'GuideResources.load' in guide and 'GuideLayout.fit(width,height)' in guide and 'I18n.get(' not in guide
 assert 'pose().scale' not in guide and 'scale(' not in guide
 for method in ['mouseScrolled','mouseDragged','mouseClicked','mouseReleased','keyPressed','removed','wrapBody','beginDrag','scrollbar']:

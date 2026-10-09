@@ -65,13 +65,8 @@ public final class ToolItem extends Item {
             }
             Part.Link link=link(c.getItemInHand());
             if(host!=null&&part!=null&&link!=null&&(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())){
-                if(!host.canEdit(player)||!level.mayInteract(player,pos))return InteractionResult.FAIL;
-                if(part.links.size()>=(part.kind.receiver()?64:8)){player.sendOverlayMessage(Component.literal("Link limit reached"));return InteractionResult.FAIL;}
-                if(part.kind.receiver()){
-                    var target=NetworkEngine.all(player.level().getServer()).stream().filter(r->r.part().identity.equals(link.part())).findFirst().orElse(null);
-                    if(target==null||!target.part().kind.emitter()||target.part().kind.redstone()!=part.kind.redstone()||!java.util.Objects.equals(target.part().owner,part.owner)){player.sendOverlayMessage(Component.literal("Select one of your matching emitters first"));return InteractionResult.FAIL;}
-                }
-                if(!part.links.contains(link))part.links.add(link);host.changed();player.sendOverlayMessage(Component.literal("Added link ("+part.links.size()+")"));return InteractionResult.CONSUME;
+                if(!ComponentLinks.add(player,host,part,link)){player.sendOverlayMessage(Component.literal("Link rejected: check type, owner, loaded target, dimension policy and free link slots."));return InteractionResult.FAIL;}
+                host.changed();player.sendOverlayMessage(Component.literal("Added link ("+part.links.size()+")"));return InteractionResult.CONSUME;
             }
         }
         return use(level,player,c.getHand());

@@ -28,7 +28,7 @@ for material in ['data','redstone_off','redstone_on']:
   assert m['from']==[7,depth,7] and m['to']==[9,16,9]
 host=(J/'HostEntity.java').read_text();packets=(J/'PLPackets.java').read_text();net=(J/'NetworkEngine.java').read_text();renderer=(J/'client/HostRenderer.java').read_text();placement=(J/'PartItem.java').read_text()
 assert 'MultipartTopology.SLOT_COUNT' in host and 't.putInt("schema",2)' in host
-assert 'MultipartTopology.SLOT_COUNT' in packets and 'event.registrar("4")' in packets  # R9 typed snapshots/edits require matching clients.
+assert 'MultipartTopology.SLOT_COUNT' in packets and 'event.registrar("5")' in packets  # R9 typed snapshots/edits require matching clients.
 assert 'MultipartTopology.plan(nodes)' in net and 'topology.network()' in net
 assert 'sets.union' not in net[net.index('for(var export:topology.visual())'):net.index('Map<Part,List<Ref>> visible')]
 assert 'DisplayNetworks.rebuild(refs,visible)' in net and 'DisplayNetworks.sample();' in net
