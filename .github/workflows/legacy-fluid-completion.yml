@@ -61,7 +61,6 @@ jobs:
             cp "$RUNNER_TEMP/pl4-fluid-update/$TARGET/validate.sh" target/tools/validate_legacy_fluids.sh
             cp "$RUNNER_TEMP/pl4-fluid-update/$TARGET/publish.sh" target/tools/publish_legacy_fluids.sh
             cd target
-            # Workflow changes require a separately authorized connector edit, not this job token.
             git restore .github/workflows
             git diff --check
             git add src/legacy src/legacyTest tools build.gradle README.md docs/releases/0.2a-legacy-preview.2.md LEGACY_FLUID_STATUS.json
@@ -73,6 +72,20 @@ jobs:
             test -f target/LEGACY_FLUID_STATUS.json
             grep -q "0.2a-legacy-preview.2" target/build.gradle
             echo 'Fluid preview already applied; testing current branch without rewriting it.'
+          fi
+      - name: Apply compiler-verified compatibility corrections
+        shell: bash
+        working-directory: target
+        run: |
+          set -euo pipefail
+          python3 ../coordinator/tools/legacy-fluid-update/repair_compat.py . "$TARGET"
+          git diff --check
+          if ! git diff --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add src/legacy src/legacyTest
+            git commit -m "Correct $TARGET fluid capability generic types"
+            git push origin "HEAD:mc/$TARGET"
           fi
       - name: Build and exercise exact native runtime
         shell: bash
@@ -92,7 +105,15 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
-          bash tools/publish_legacy_fluids.sh
+          tag="mc$TARGET-v0.2a-legacy-preview.2"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            test "$(git rev-parse "$tag^{commit}")" = "$(git rev-parse HEAD)"
+            gh release view "$tag"
+            echo 'This exact source is already released; no artifacts overwritten.'
+          else
+            bash tools/publish_legacy_fluids.sh
+          fi
       - name: Preserve build, source and native evidence
         if: always()
         uses: actions/upload-artifact@v4
