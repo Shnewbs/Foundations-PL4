@@ -22,7 +22,9 @@ minecraft {
 }
 repositories { mavenCentral() }
 dependencies { minecraft 'net.minecraftforge:forge:1.17.1-37.1.1' }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release=17; options.compilerArgs += ['-Xmaxerrs','1000'] }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs','1000'] }
+// Do not inject Java 17 flags into Forge's Java 16 dependency recompilation task.
+['compileJava','compileTestJava'].each { name -> tasks.named(name,JavaCompile) { options.release=17 } }
 tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false; reproducibleFileOrder=true }
 processResources {
     inputs.property 'version',project.version
