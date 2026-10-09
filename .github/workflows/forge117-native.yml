@@ -1,4 +1,4 @@
-name: Forge 1.17.1 full feature port validation
+name: Forge 1.17.1 installed full feature validation
 on:
   push:
     branches: [mc/1.17.1]
@@ -21,41 +21,20 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Prepare exact native target and isolated test module
+      - name: Compile exact target and isolated combined test artifact
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/prepare_1171.py
-          python3 tools/fix_1171_native.py
-          git diff --check
-          git add src build.gradle BUILD_STATUS.json tools/run_port_checks.py docs/FIELD_GUIDE.md README.md docs/releases/
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Adapt Forge 37 APIs and preserve 193 isolated native scenarios'
-            git push origin HEAD:mc/1.17.1
-          fi
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
           git rev-parse HEAD > verification-logs/source-commit.txt
-      - name: Native compilation, rules and all 193 scenarios
+          bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
+      - name: Verify production identity, all scenarios and production-only boot
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p run-scenarios
-          printf 'eula=true\n' > run-scenarios/eula.txt
-          printf 'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=scenario-world\nlevel-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n' > run-scenarios/server.properties
-          bash gradlew --no-daemon --console=plain clean build runServer -PportScenarios 2>&1 | tee verification-logs/native.log
-          python3 - <<'PY'
-          from pathlib import Path
-          import json,re
-          report=json.loads(Path('run-scenarios/port-scenarios.json').read_text())
-          text=Path('verification-logs/native.log').read_text()
-          assert report['minecraft']=='1.17.1' and (report['total'],report['passed'],report['failed'])==(193,193,0),report
-          assert 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' in text
-          assert re.search(r'Starting minecraft server version 1\.17\.1\b',text,re.I)
-          PY
-      - name: Publish only the passing exact target
+          python3 tools/verify_installed117.py 2>&1 | tee verification-logs/native.log
+      - name: Publish only the passed target
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -63,16 +42,16 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git ls-remote origin refs/heads/mc/1.17.1 | cut -f1)" = "$(git rev-parse HEAD)"
-          version='0.2a-port.1'; tag="mc1.17.1-v$version"
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
-            git fetch origin "refs/tags/$tag:refs/tags/$tag"
-            test "$(git rev-parse "$tag^{commit}")" = "$(git rev-parse HEAD)"
+          version=$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["version"])')
+          tag="mc1.17.1-v$version"
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            git diff --exit-code "$tag" HEAD -- src/main build.gradle tools/installed117.gradle gradle/
             gh release view "$tag"; exit 0
           fi
           mkdir -p release-files
           cp "build/libs/FoundationsPL4-1.17.1-$version.jar" "build/libs/FoundationsPL4-1.17.1-$version-sources.jar" release-files/
           git archive --format=zip --output="release-files/FoundationsPL4-1.17.1-$version-source.zip" HEAD
-          cp run-scenarios/port-scenarios.json verification-logs/native.log verification-logs/source-commit.txt release-files/
+          cp verification-logs/installed-scenarios.log verification-logs/production-boot.log verification-logs/installed-summary.json verification-logs/port-scenarios.json verification-logs/source-commit.txt release-files/
           (cd release-files && sha256sum * > SHA256SUMS.txt)
           git tag "$tag"; git push origin "$tag"
           gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.17.1 $version" --notes-file "docs/releases/$version.md"
@@ -83,8 +62,8 @@ jobs:
           path: |
             release-files/
             verification-logs/
-            run-scenarios/logs/
-            run-scenarios/port-scenarios.json
+            run-installed-117/port-scenarios.json
+            run-installed-117/crash-reports/
             build/reports/
           retention-days: 14
           if-no-files-found: warn

@@ -1,0 +1,29 @@
+// Test-only combined module avoids JPMS split packages. Published runtime excludes these fixtures.
+tasks.register('scenarioMetadata') {
+    dependsOn 'processResources'
+    outputs.dir layout.buildDirectory.dir('scenario-metadata')
+    doLast {
+        def out=file('build/scenario-metadata/META-INF/mods.toml'); out.parentFile.mkdirs()
+        out.text=file('build/resources/main/META-INF/mods.toml').text + '''
+[[mods]]
+modId="foundations_pl4_porttests"
+version="1"
+displayName="PL4 isolated native scenarios (not for production)"
+'''
+    }
+}
+tasks.register('scenarioRuntimeJar', Jar) {
+    dependsOn 'classes','portTestClasses','scenarioMetadata'
+    archiveClassifier='native-scenarios'
+    from(sourceSets.main.output) { exclude 'META-INF/mods.toml' }
+    from(sourceSets.portTest.output) { exclude 'META-INF/mods.toml'; exclude 'pack.mcmeta' }
+    from('build/scenario-metadata')
+    from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE')
+    manifest { attributes('Implementation-Version':project.version) }
+    duplicatesStrategy=DuplicatesStrategy.FAIL
+    finalizedBy 'reobfScenarioRuntimeJar'
+}
+afterEvaluate {
+    reobf { scenarioRuntimeJar { classpath=sourceSets.portTest.compileClasspath } }
+}
+tasks.named('build') { dependsOn 'reobfScenarioRuntimeJar' }

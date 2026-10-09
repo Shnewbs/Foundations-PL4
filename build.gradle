@@ -23,20 +23,13 @@ minecraft {
             mods { foundations_pl4 { source sourceSets.main } }
         }
         client { }
-        server {
-            args '--nogui'
-            if(project.hasProperty('portScenarios')) {
-                workingDirectory project.file('run-scenarios')
-                property 'foundations_pl4.portScenarioServer','true'
-                mods { foundations_pl4_porttests { source sourceSets.portTest } }
-            }
-        }
+        server { args '--nogui' }
     }
 }
 repositories { mavenCentral() }
 dependencies { minecraft 'net.minecraftforge:forge:1.17.1-37.1.1' }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xmaxerrs','1000'] }
-// Do not inject Java 17 flags into Forge's Java 16 dependency recompilation task.
+// Forge recompiles its dependencies with Java 16. Only PL4's source tasks use Java 17 flags.
 ['compileJava','compileTestJava','compilePortTestJava'].each { name -> tasks.named(name,JavaCompile) { options.release=17 } }
 tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false; reproducibleFileOrder=true }
 processResources {
@@ -70,5 +63,4 @@ tasks.register('verifyPortJar') {
     }
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
-
-if(project.hasProperty('portScenarios')) tasks.matching { it.name=='runServer' }.configureEach { dependsOn tasks.named('portTestClasses') }
+apply from: 'tools/installed117.gradle'
