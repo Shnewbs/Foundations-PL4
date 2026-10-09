@@ -67,7 +67,7 @@ def check_wiring(root):
     assert 'MonitorPresentation.amount(row)' in painter and 'table.left()' in painter
     assert 'DisplayElements.plan(spec,rows)' in painter and 'No mode or world data is mutated' in painter
     assert ('drawHelp(canvas)' in editor) or ('drawHudHelp(g)' in editor)
-    assert 'event.registrar("4")' in source('PLPackets.java'),'No packet/schema change intended'
+    assert 'event.registrar("5")' in source('PLPackets.java'),'0.2a storage query/sort packets require protocol 5'
     assert source('R10GameTests.java').count('@GameTest(')==5
     assert 'R10GameTests.class' in source('PLGameTests.java')
     return True
