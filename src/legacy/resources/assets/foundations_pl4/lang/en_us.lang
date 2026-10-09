@@ -1,3 +1,8 @@
 tile.foundations_pl4.legacy_cable.name=PL4 Legacy Data Cable
 tile.foundations_pl4.legacy_export.name=PL4 Legacy Export Node
 tile.foundations_pl4.legacy_import.name=PL4 Legacy Import Node
+
+tile.foundations_pl4.legacy_fluid_export.name=PL4 Legacy Fluid Export Node
+tile.foundations_pl4.legacy_fluid_import.name=PL4 Legacy Fluid Import Node
+tile.foundations_pl4.legacy_tank.name=PL4 Legacy Tank (16 buckets)
+item.foundations_pl4.legacy_fluid_cell.name=PL4 Sealed Fluid Recovery Cell

@@ -27,12 +27,13 @@ public final class LegacyBlock extends BlockContainer {
     @Override public boolean onBlockActivated(World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing face,float x,float y,float z){
         if(world.isRemote)return true;TileEntity raw=world.getTileEntity(pos);if(!(raw instanceof LegacyTile))return false;LegacyTile tile=(LegacyTile)raw;
         if(!tile.canEdit(player)){player.sendMessage(new TextComponentString("PL4: This host belongs to another player."));return true;}
-        if(player.isSneaking()&&role!=0){tile.side=face.getIndex();tile.markDirty();}
+        if(LegacyFluidPlatform.interact(tile,player,player.getHeldItem(hand))){player.sendMessage(new TextComponentString(tile.describe()));return true;}
+        if(player.isSneaking()&&role!=0&&role!=5){tile.side=face.getIndex();tile.markDirty();}
         player.sendMessage(new TextComponentString(tile.describe()));
         player.sendMessage(new TextComponentString("Sneak-click a node face to choose its adjacent inventory. /pl4legacy recipes lists registered recipes."));return true;
     }
     @Override public void breakBlock(World world,BlockPos pos,IBlockState state){
-        if(!world.isRemote&&world.getTileEntity(pos) instanceof LegacyTile){LegacyTile tile=(LegacyTile)world.getTileEntity(pos);if(!tile.pending.isEmpty()){ItemStack held=tile.pending;tile.pending=ItemStack.EMPTY;tile.markDirty();world.spawnEntity(new EntityItem(world,pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,held));}}
+        if(!world.isRemote&&world.getTileEntity(pos) instanceof LegacyTile){LegacyTile tile=(LegacyTile)world.getTileEntity(pos);LegacyFluidPlatform.drop(tile);if(!tile.pending.isEmpty()){ItemStack held=tile.pending;tile.pending=ItemStack.EMPTY;tile.markDirty();world.spawnEntity(new EntityItem(world,pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,held));}}
         super.breakBlock(world,pos,state);
     }
     @Override public net.minecraft.block.material.EnumPushReaction getMobilityFlag(IBlockState state){return net.minecraft.block.material.EnumPushReaction.BLOCK;}

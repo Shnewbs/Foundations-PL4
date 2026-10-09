@@ -1,6 +1,6 @@
 # Foundations PL4 1.12.2 native legacy preview
 
-**0.2a-legacy-preview.1 is an initial item-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
+**0.2a-legacy-preview.2 is an item/fluid-transport subset, NOT full modern 0.2a parity. Further API testing is still required.**
 
 Native Forge 14.23.5.2864 / Java 8 implementation in `src/legacy`. `src/main` is excluded modern reference source only. Never relabel its binaries as legacy builds.
 
@@ -12,6 +12,10 @@ Craft cable using iron/redstone/iron in a row; craft exporter using hopper/cable
 
 Build: `bash gradlew clean build` using Java 8. Native scenario run: `bash gradlew clean build runServer -PlegacyScenarios` only in the workflow-created disposable test world. Test fixtures never belong in a production mod folder.
 
-Advanced displays, multipart placement, wireless storage, fluid/energy transport, complete scripting and installed third-party API integration remain pending. Real-client visuals, multiplayer and modpack acceptance also remain pending. No arbitrary energy conversion is supplied and no performance mods are bundled.
+Advanced displays, multipart placement, wireless storage, energy transport, complete scripting and installed third-party API integration remain pending. Real-client visuals, multiplayer and modpack acceptance also remain pending. No arbitrary energy conversion is supplied and no performance mods are bundled.
 
-The new `legacy_*` block IDs and legacy schema 1 are not a migration path for modern worlds. Use a fresh test world or backups. Publication is gated by a native build, reobfuscation, portable rule tests and 21 isolated native scenarios; these are not the modern port's 191 GameTests.
+The new `legacy_*` block IDs and legacy schema 1 are not a migration path for modern worlds. Use a fresh test world or backups. Publication is gated by a native build, reobfuscation, portable rule tests and 51 isolated native scenarios; these are not the modern port's 191 GameTests.
+
+## Fluid preview 2
+
+Native fluid endpoints, a 16-bucket tank, vanilla bucket interactions and sealed fluid recovery cells are now included. Crafting and setup, quarantine behavior and limitations are in [the preview 2 release notes](docs/releases/0.2a-legacy-preview.2.md). Vanilla-texture full-block models remain preliminary. Native fluid handlers are supported; installed external mod compatibility is not yet certified.

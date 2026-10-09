@@ -20,7 +20,7 @@ public final class LegacyCommands extends CommandBase {
     @Override public String getUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | status";}
     @Override public int getRequiredPermissionLevel(){return 0;}
     @Override public void execute(MinecraftServer server,ICommandSender sender,String[] args)throws CommandException{
-        if(args.length==0||"status".equals(args[0])){send(sender,"Foundations PL4 1.12.2 native legacy preview: item transport, persisted escrow, owner-partitioned cables and recipe/inspection fallbacks. Advanced displays, wireless storage, fluids and power parity remain pending. Further API testing is still required.");return;}
+        if(args.length==0||"status".equals(args[0])){send(sender,"Foundations PL4 1.12.2 native legacy preview: item/fluid transport, persisted escrow, owner-partitioned cables and recipe/inspection fallbacks. Advanced displays, wireless storage and power parity remain pending. Further API testing is still required.");return;}
         if("recipes".equals(args[0])){
             int page=args.length>1?parseInt(args[1],1,10000):1;List<IRecipe> recipes=new ArrayList<IRecipe>();
             for(IRecipe recipe:ForgeRegistries.RECIPES)if(recipe.getRegistryName()!=null&&LegacyPL4.ID.equals(recipe.getRegistryName().getResourceDomain()))recipes.add(recipe);
