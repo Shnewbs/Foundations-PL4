@@ -1,15 +1,17 @@
 {
   "project": "Foundations PL4",
-  "version": "0.2a-port.1",
+  "version": "0.2a-port.2",
   "minecraft": "1.16.5",
-  "java": 17,
+  "java": 8,
   "release_channel": "alpha",
   "host_save_schema": 2,
   "payload_protocol": "forge-1.16.5-5",
   "release_gate": [
-    "offline regressions",
-    "native build",
-    "native GameTests"
+    "production rule suites",
+    "native compilation",
+    "Java 8 conversion and reobfuscation",
+    "isolated installed Forge scenarios",
+    "exact target archive and license checks"
   ],
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING",
@@ -17,11 +19,13 @@
   "live_multiplayer_acceptance": "PENDING",
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
-  "release_notes": "docs/releases/0.2a-port.1.md",
+  "release_notes": "docs/releases/0.2a-port.2.md",
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "36.2.42",
-  "port_status": "NATIVE_SCENARIO_VALIDATION_REQUIRED",
+  "port_status": "JAVA8_NATIVE_ACCEPTANCE_PENDING",
   "expected_native_scenarios": 191,
-  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests"
+  "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
+  "build_java": 17,
+  "installed_runtime_acceptance": "PENDING"
 }
