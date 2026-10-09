@@ -1,21 +1,21 @@
 package net.foundations.pl4.client;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.foundations.pl4.core.EditorPalette;
 
 /** Simple visual palette that fills the normal hex field; no hidden colour format is introduced. */
-final class DisplayColorPickerScreen extends Screen {
+final class DisplayColorPickerScreen extends net.foundations.pl4.compat.PortScreen {
     private final DisplayPropertiesScreen parent;private int selected;private int left,top,w,h;
-    DisplayColorPickerScreen(DisplayPropertiesScreen parent,int selected){super(Component.literal("Choose display colour"));this.parent=parent;this.selected=selected&0xFFFFFF;}
+    DisplayColorPickerScreen(DisplayPropertiesScreen parent,int selected){super(new net.minecraft.network.chat.TextComponent("Choose display colour"));this.parent=parent;this.selected=selected&0xFFFFFF;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         w=Math.min(392,width-16);h=Math.min(268,height-16);left=(width-w)/2;top=(height-h)/2;
-        addRenderableWidget(Button.builder(Component.literal("PL4 default"),b->selected=EditorPalette.DEFAULT).bounds(left+10,top+h-26,86,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+w-138,top+h-26,56,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Use colour"),b->{parent.color(selected);minecraft.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("PL4 default"),b->selected=EditorPalette.DEFAULT).bounds(left+10,top+h-26,86,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Back"),b->onClose()).bounds(left+w-138,top+h-26,56,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Use colour"),b->{parent.color(selected);minecraft.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
     }
     private int columns(){return 6;}private int cell(){return 34;}private int gap(){return 5;}
     private int gridX(){return left+14;}private int gridY(){return top+56;}

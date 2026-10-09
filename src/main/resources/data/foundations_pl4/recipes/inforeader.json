@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:inforeader"
+  },
+  "pattern": [
+    "PIP",
+    "RDS",
+    "PIP"
+  ],
+  "key": {
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "D": {
+      "item": "foundations_pl4:datacable"
+    },
+    "S": {
+      "tag": "c:dusts/sapphire"
+    }
+  }
+}

@@ -5,8 +5,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
+import net.foundations.pl4.compat.DataComponents;
+import net.foundations.pl4.compat.CustomData;
 import net.minecraft.nbt.CompoundTag;
 import net.foundations.pl4.core.PartItemDataRules;
 
@@ -32,7 +32,7 @@ public final class PartItem extends Item {
             var point=c.getClickLocation().subtract(net.minecraft.world.phys.Vec3.atLowerCornerOf(pos));
             var direction=net.foundations.pl4.core.DisplayPlacement.extension(clicked.face.ordinal(),clicked.displayOutward,c.getClickedFace().ordinal(),point.x,point.y,point.z);
             if(direction.isEmpty()){
-                if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
+                if(!l.isClientSide)player.displayClientMessage(new net.minecraft.network.chat.TextComponent("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
                 return InteractionResult.FAIL;
             }
             if(!l.isClientSide){
@@ -43,7 +43,7 @@ public final class PartItem extends Item {
             face=clicked.face;outward=clicked.displayOutward;pos=pos.relative(Direction.from3DDataValue(direction.getAsInt()));
             if(!l.hasChunkAt(pos)||l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos))return InteractionResult.FAIL;
             if(!DisplayNetworks.canExtendAt(l,pos,clicked,player)){
-                if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."),true);
+                if(!l.isClientSide)player.displayClientMessage(new net.minecraft.network.chat.TextComponent("Cannot extend: the joined area is protected or exceeds 16 x 16 tiles."),true);
                 return InteractionResult.FAIL;
             }
             host=l.getBlockEntity(pos) instanceof HostEntity h?h:null;
@@ -61,7 +61,7 @@ public final class PartItem extends Item {
         Part part=candidate;
         if(l.isOutsideBuildHeight(pos)||!l.getWorldBorder().isWithinBounds(pos)||!l.hasChunkAt(pos)||!player.mayUseItemAt(pos,c.getClickedFace(),c.getItemInHand())||!l.mayInteract(player,pos))return InteractionResult.FAIL;
         if(host!=null&&(!host.canEdit(player)||!HostBlock.canAdd(host,part)))return InteractionResult.FAIL;
-        if(host==null&&!l.getBlockState(pos).canBeReplaced())return InteractionResult.FAIL;
+        if(host==null&&!l.getBlockState(pos).getMaterial().isReplaceable())return InteractionResult.FAIL;
         if(l.isClientSide)return InteractionResult.SUCCESS;
         if(host==null) {
             if(!l.setBlock(pos,FoundationsPL4.HOST.get().defaultBlockState(),3))return InteractionResult.FAIL;
@@ -82,7 +82,7 @@ public final class PartItem extends Item {
     private Part placementPart(UseOnContext c,Direction face,boolean outward,boolean extending){
         var player=c.getPlayer();Part part=new Part(kind,face,player.getUUID());part.displayOutward=outward;
         if(part.hologram())part.hologramView=net.foundations.pl4.core.HologramProjection.view(face.ordinal(),player.getDirection().getOpposite().ordinal());
-        var saved=c.getItemInHand().get(DataComponents.CUSTOM_DATA);
+        var saved=net.foundations.pl4.compat.PortData.get(c.getItemInHand(),DataComponents.CUSTOM_DATA);
         if(saved!=null&&saved.contains("pl_part")){
             var tag=saved.copyTag().getCompound("pl_part");tag.putString("kind",kind.id);tag.putInt("face",face.ordinal());
             Part restored=Part.load(tag,c.getLevel().registryAccess());
@@ -94,7 +94,7 @@ public final class PartItem extends Item {
     @Override public String getDescriptionId() { return "block."+FoundationsPL4.ID+"."+kind.id; }
     /** Normal block-break drop. Unconfigured parts carry no CustomData and therefore stack normally.
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
-    public static ItemStack stack(Part part,HolderLookup.Provider registry) {
+    public static ItemStack stack(Part part,net.minecraft.core.RegistryAccess registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());
         if(PartItemDataRules.needsEscrowPayload(!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
             Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
@@ -108,7 +108,7 @@ public final class PartItem extends Item {
         return stack;
     }
     /** Operator removal deliberately preserves meaningful configuration, but never runtime identity/owner/ticks/signal/revision. */
-    public static ItemStack savedStack(Part part,HolderLookup.Provider registry) {
+    public static ItemStack savedStack(Part part,net.minecraft.core.RegistryAccess registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());putSaved(stack,canonical(part.save(registry,false)));return stack;
     }
     private static void putSaved(ItemStack stack,CompoundTag tag){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_part",tag));}

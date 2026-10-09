@@ -4,42 +4,42 @@ import java.util.*;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.foundations.pl4.compat.StreamCodec;
+import net.foundations.pl4.compat.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.foundations.pl4.compat.PacketDistributor;
+import net.foundations.pl4.compat.RegisterPayloadHandlersEvent;
 
 public final class PLPackets {
     public static Consumer<Open> clientOpen=packet->{};
     public record Open(BlockPos pos,int slot,CompoundTag tag) implements CustomPacketPayload {
         public static final Type<Open> TYPE=new Type<>(FoundationsPL4.id("open"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,Open> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeNbt(p.tag);},b->new Open(b.readBlockPos(),b.readVarInt(),Objects.requireNonNull(b.readNbt())));
+        public static final StreamCodec<FriendlyByteBuf,Open> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeNbt(p.tag);},b->new Open(b.readBlockPos(),b.readVarInt(),Objects.requireNonNull(b.readNbt())));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     public record Edit(BlockPos pos,int slot,UUID identity,String field,String value) implements CustomPacketPayload {
         public static final Type<Edit> TYPE=new Type<>(FoundationsPL4.id("edit"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,Edit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeUtf(p.field,32);b.writeUtf(p.value,1024);},b->new Edit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readUtf(32),b.readUtf(1024)));
+        public static final StreamCodec<FriendlyByteBuf,Edit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeUtf(p.field,32);b.writeUtf(p.value,1024);},b->new Edit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readUtf(32),b.readUtf(1024)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     public record LayoutEdit(BlockPos pos,int slot,UUID identity,long revision,String action,UUID element,String value) implements CustomPacketPayload {
         public static final Type<LayoutEdit> TYPE=new Type<>(FoundationsPL4.id("layout_edit"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,65536);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(65536)));
+        public static final StreamCodec<FriendlyByteBuf,LayoutEdit> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeUUID(p.identity);b.writeLong(p.revision);b.writeUtf(p.action,16);b.writeUUID(p.element);b.writeUtf(p.value,65536);},b->new LayoutEdit(b.readBlockPos(),b.readVarInt(),b.readUUID(),b.readLong(),b.readUtf(16),b.readUUID(),b.readUtf(65536)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     public record StorageRequest(UUID token,String action,int index,int amount,String query,String sort) implements CustomPacketPayload {
         public StorageRequest(UUID token,String action,int index,int amount){this(token,action,index,amount,"","NAME");}
         public static final Type<StorageRequest> TYPE=new Type<>(FoundationsPL4.id("storage_request"));
-        public static final StreamCodec<RegistryFriendlyByteBuf,StorageRequest> CODEC=StreamCodec.of((b,p)->{b.writeUUID(p.token);b.writeUtf(p.action,16);b.writeVarInt(p.index);b.writeVarInt(p.amount);b.writeUtf(p.query,64);b.writeUtf(p.sort,8);},b->new StorageRequest(b.readUUID(),b.readUtf(16),b.readVarInt(),b.readVarInt(),b.readUtf(64),b.readUtf(8)));
+        public static final StreamCodec<FriendlyByteBuf,StorageRequest> CODEC=StreamCodec.of((b,p)->{b.writeUUID(p.token);b.writeUtf(p.action,16);b.writeVarInt(p.index);b.writeVarInt(p.amount);b.writeUtf(p.query,64);b.writeUtf(p.sort,8);},b->new StorageRequest(b.readUUID(),b.readUtf(16),b.readVarInt(),b.readVarInt(),b.readUtf(64),b.readUtf(8)));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private record Rate(long tick,int count){}
     private static final Map<ServerPlayer,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
     static void editLayout(ServerPlayer player,LayoutEdit packet){
-        long tick=player.serverLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.pos.getCenter())>64||!player.serverLevel().hasChunkAt(packet.pos)||!player.serverLevel().mayInteract(player,packet.pos))return;
-        if(!(player.serverLevel().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
+        long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
+        if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
         Part clicked=anchor.parts.get(packet.slot);if(clicked==null||!clicked.identity.equals(packet.identity)||!clicked.kind.display()||!anchor.canEdit(player))return;
         var target=DisplayNetworks.controller(anchor,clicked);HostEntity host=target.host();Part part=target.part();
         if(!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos())||!DisplayNetworks.canEditCanvas(player,anchor,clicked))return;
@@ -100,15 +100,15 @@ public final class PLPackets {
         var target=DisplayNetworks.controller(host,p);
         CompoundTag t=target.part().save(host.getLevel().registryAccess(),true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
-        t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(host.getBlockPos().getCenter())<=64);
+        t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(host.getBlockPos()))<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
     static void edit(ServerPlayer player,Edit packet){
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(packet.pos.getCenter())>64||!player.serverLevel().hasChunkAt(packet.pos)||!player.serverLevel().mayInteract(player,packet.pos))return;
-        if(!(player.serverLevel().getBlockEntity(packet.pos) instanceof HostEntity h))return;
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
+        if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){
-            long tick=player.serverLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
+            long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
             if(!p.kind.display()||packet.value.length()>64)return;var target=DisplayNetworks.controller(h,p);
             CompoundTag tag=target.part().save(h.getLevel().registryAccess(),true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
             var rows=new net.minecraft.nbt.ListTag();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;
@@ -151,7 +151,7 @@ public final class PLPackets {
                     if(p.mode.equals("CHANNEL")){p.mode="LIST";p.index=0;}
                 }
                 case "target_query" -> {if(!p.kind.reader())return;p.targetQuery=ReaderChannels.clean(v);p.targetPage=0;}
-                case "target_page" -> {if(!p.kind.reader())return;p.targetPage=Math.clamp(Integer.parseInt(v),0,65535);}
+                case "target_page" -> {if(!p.kind.reader())return;p.targetPage=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(v),0,65535);}
                 case "channel_name" -> {if(!p.kind.reader()||!ReaderChannels.rename(p,v))return;}
                 case "label" -> p.label=clean(v,48);
                 case "input_channel", "output_channel" -> {
@@ -178,12 +178,12 @@ public final class PLPackets {
                 case "selected" -> p.selected=clean(v,64);
                 case "metric" -> p.metric=clean(v,128);
                 case "mode" -> {if(p.kind.display())return;if(Set.of("LIST","STACK","SLOT","POS","STORAGE","CHANNEL").contains(v))p.mode=v;}
-                case "index" -> p.index=Math.clamp(Integer.parseInt(v),0,65535);
-                case "priority" -> p.priority=Math.clamp(Integer.parseInt(v),-1000,1000);
+                case "index" -> p.index=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(v),0,65535);
+                case "priority" -> p.priority=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(v),-1000,1000);
                 case "comparison" -> {if(Set.of(">=","<=",">","<","=","!=").contains(v))p.comparison=v;}
                 case "threshold" -> {double n=Double.parseDouble(v);if(Double.isFinite(n)&&Math.abs(n)<=1e15)p.threshold=n;}
                 case "color" -> p.color=Integer.parseUnsignedInt(v.replace("#",""),16)&0xFFFFFF;
-                case "transfer" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.routeEditable())return;p.transferMode=Math.clamp(Integer.parseInt(v),0,3);}
+                case "transfer" -> {if(p.kind!=Kind.TRANSFER_NODE||!p.routeEditable())return;p.transferMode=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(v),0,3);}
                 case "items" -> p.items=Boolean.parseBoolean(v);
                 case "fluids" -> p.fluids=Boolean.parseBoolean(v);
                 case "energy" -> p.energy=Boolean.parseBoolean(v);
@@ -192,8 +192,8 @@ public final class PLPackets {
                 case "link_add" -> {if(!ComponentLinks.addChoice(player,h,p,v))return;}
                 case "link_held" -> {if(!ComponentLinks.addHeld(player,h,p))return;}
                 case "link_query" -> {if(!ComponentLinks.supported(p))return;p.targetQuery=ReaderChannels.clean(v);p.targetPage=0;}
-                case "link_page" -> {if(!ComponentLinks.supported(p))return;p.targetPage=Math.clamp(Integer.parseInt(v),0,65535);}
-                case "link_first" -> {if(!ComponentLinks.supported(p))return;var link=p.links.stream().filter(l->ReaderChannels.id(l).equals(v)).findFirst().orElse(null);if(link==null)return;p.links.remove(link);p.links.addFirst(link);}
+                case "link_page" -> {if(!ComponentLinks.supported(p))return;p.targetPage=net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(v),0,65535);}
+                case "link_first" -> {if(!ComponentLinks.supported(p))return;var link=p.links.stream().filter(l->ReaderChannels.id(l).equals(v)).findFirst().orElse(null);if(link==null)return;p.links.remove(link);p.links.add(0,link);}
                 case "remove_link" -> {if(p.kind!=Kind.ARRAY&&p.kind!=Kind.ENTITY_NODE&&!p.kind.receiver())return;p.links.removeIf(link->ReaderChannels.id(link).equals(v));}
                 case "clock_pulse", "clock_phase" -> {if(p.kind!=Kind.CLOCK)return;int n=Integer.parseInt(v);if(n<0||n>(packet.field.equals("clock_pulse")?24000:23999))return;if(packet.field.equals("clock_pulse"))p.clockPulse=n;else p.clockPhase=n;}
                 case "clock_paused" -> {if(p.kind!=Kind.CLOCK||!Set.of("true","false").contains(v))return;p.clockPaused=Boolean.parseBoolean(v);}
@@ -203,7 +203,7 @@ public final class PLPackets {
                 case "element" -> {
                     if(!p.kind.display()||p.elements.size()>=32)break;
                     String[] fields=v.split("\\|",6);
-                    if(fields.length==6){p.displayMode=net.foundations.pl4.core.DisplayElements.Mode.CUSTOM;p.elements.add(new Part.Element(clean(fields[5],128),"",clean(fields[4],128),Math.clamp(Integer.parseInt(fields[0]),0,240),Math.clamp(Integer.parseInt(fields[1]),0,120),Integer.parseUnsignedInt(fields[2],16)&0xFFFFFF,Boolean.parseBoolean(fields[3])));}
+                    if(fields.length==6){p.displayMode=net.foundations.pl4.core.DisplayElements.Mode.CUSTOM;p.elements.add(new Part.Element(clean(fields[5],128),"",clean(fields[4],128),net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(fields[0]),0,240),net.foundations.pl4.compat.PortMath.clamp(Integer.parseInt(fields[1]),0,120),Integer.parseUnsignedInt(fields[2],16)&0xFFFFFF,Boolean.parseBoolean(fields[3])));}
                 }
                 default -> {return;}
             }

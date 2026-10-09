@@ -1,7 +1,7 @@
 package net.foundations.pl4.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.*;
@@ -60,7 +60,7 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
                 pose.pushPose();
                 if(part.hologram()){
                     int yaw=net.foundations.pl4.core.HologramProjection.baseYaw(part.face.ordinal(),part.hologramView);
-                    pose.translate(.5,.5,.5);pose.mulPose(Axis.YP.rotationDegrees(yaw));pose.translate(-.5,-.5,-.5);
+                    pose.translate(.5,.5,.5);pose.mulPose(Vector3f.YP.rotationDegrees(yaw));pose.translate(-.5,-.5,-.5);
                 }
                 var model=partStates.get(part.kind)[part.kind.reader()?(host.readerHasDisplay(part)?1:0):(part.displayOutward?1:0)][part.face.ordinal()];
                 if(part.kind==Kind.ENERGY_READER){if(part.energySystem.equals("CREATE"))model=kineticStates[host.readerHasDisplay(part)?1:0][part.face.ordinal()];else if(part.energySystem.equals("AE2"))model=ae2States[host.readerHasDisplay(part)?1:0][part.face.ordinal()];}
@@ -89,8 +89,8 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
             if((eye.x-host.getBlockPos().getX()-ox)*frame.normal().x()+(eye.y-host.getBlockPos().getY()-oy)*frame.normal().y()+(eye.z-host.getBlockPos().getZ()-oz)*frame.normal().z()<=0)return;
         }
         pose.pushPose();pose.translate(ox,oy,oz);
-        if(frame.rotationX()!=0)pose.mulPose(Axis.XP.rotationDegrees(frame.rotationX()));
-        if(frame.rotationY()!=0)pose.mulPose(Axis.YP.rotationDegrees(frame.rotationY()));
+        if(frame.rotationX()!=0)pose.mulPose(Vector3f.XP.rotationDegrees(frame.rotationX()));
+        if(frame.rotationY()!=0)pose.mulPose(Vector3f.YP.rotationDegrees(frame.rotationY()));
         float scale=p.kind==Kind.MINI_DISPLAY?.0018F:.0035F;
         int logicalW=net.foundations.pl4.core.DisplayElements.WIDTH,logicalH=net.foundations.pl4.core.DisplayElements.HEIGHT;
         if(p.kind==Kind.LARGE_DISPLAY){
@@ -108,8 +108,8 @@ public final class HostRenderer implements BlockEntityRenderer<HostEntity> {
         if(editor!=null){editor.capture(pose.last().pose());editor.drawOnMonitor(canvas,p);}
         pose.popPose();
     }
-    private void text(Font font,String text,int x,int y,int color,PoseStack pose,MultiBufferSource buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.plainSubstrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);}
-    @Override public net.minecraft.world.phys.AABB getRenderBoundingBox(HostEntity host){
+    private void text(Font font,String text,int x,int y,int color,PoseStack pose,MultiBufferSource buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.plainSubstrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,false,0,LightTexture.FULL_BRIGHT);}
+    public static net.minecraft.world.phys.AABB getRenderBoundingBox(HostEntity host){
         var bounds=new net.minecraft.world.phys.AABB(host.getBlockPos());
         for(Part p:host.parts.values())if(p.kind==Kind.LARGE_DISPLAY&&p.canvasColumn==0&&p.canvasRow==0){
             var end=host.getBlockPos().relative(DisplayNetworks.right(p),p.canvasWidth-1).relative(DisplayNetworks.up(p).getOpposite(),p.canvasHeight-1);

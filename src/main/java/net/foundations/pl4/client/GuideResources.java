@@ -8,7 +8,7 @@ import com.google.gson.*;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
-import net.neoforged.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.LoggerFactory;
 
 /** Loaded only when opening the guide. No world subscriptions, polling threads or static screen references. */
@@ -17,9 +17,9 @@ final class GuideResources {
     static GuideBook load(ResourceManager manager,String language){
         try{
             String safe=language!=null&&language.matches("[a-z_]{2,16}")?language:"en_us";
-            var resource=manager.getResource(FoundationsPL4.id("guide/"+safe+".json"));
-            if(resource.isEmpty())resource=manager.getResource(FoundationsPL4.id("guide/en_us.json"));
-            try(var in=resource.orElseThrow(()->new IOException("Missing PL4 guide resource")).open()){
+            var id=FoundationsPL4.id("guide/"+safe+".json");
+            if(!manager.hasResource(id))id=FoundationsPL4.id("guide/en_us.json");
+            try(var resource=manager.getResource(id);var in=resource.getInputStream()){
                 byte[] bytes=in.readNBytes(1_048_577);if(bytes.length>1_048_576)throw new IOException("Guide exceeds 1 MiB limit");
                 return decode(JsonParser.parseString(new String(bytes,StandardCharsets.UTF_8)).getAsJsonObject());
             }

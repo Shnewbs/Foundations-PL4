@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.*;
+import net.minecraftforge.items.*;
 
 /** Original two-slot / 176x143 layout, with server-authoritative vanilla container transactions. */
 public final class HammerMenu extends AbstractContainerMenu {
@@ -25,10 +25,10 @@ public final class HammerMenu extends AbstractContainerMenu {
     public int progress(){return data.get(0);} public int duration(){return Math.max(1,data.get(1));}
     public int cooldown(){return data.get(2);} public int status(){return data.get(4);}
     @Override public boolean stillValid(Player player){
-        return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level()
-            &&player.level().getBlockEntity(hammer.getBlockPos())==hammer
-            &&player.level().getBlockState(hammer.getBlockPos()).is(FoundationsPL4.HAMMER.get())
-            &&player.distanceToSqr(hammer.getBlockPos().getCenter())<=64);
+        return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level
+            &&player.level.getBlockEntity(hammer.getBlockPos())==hammer
+            &&player.level.getBlockState(hammer.getBlockPos()).is(FoundationsPL4.HAMMER.get())
+            &&player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(hammer.getBlockPos()))<=64);
     }
     @Override public ItemStack quickMoveStack(Player player,int index){
         if(index<0||index>=slots.size()||!stillValid(player))return ItemStack.EMPTY;

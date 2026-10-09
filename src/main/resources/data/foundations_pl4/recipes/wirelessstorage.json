@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:wirelessstorage"
+  },
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GBH"
+  ],
+  "key": {
+    "A": {
+      "item": "foundations_pl4:inventoryreader"
+    },
+    "B": {
+      "item": "foundations_pl4:wirelessplate"
+    },
+    "C": {
+      "item": "foundations_pl4:fluidreader"
+    },
+    "D": {
+      "item": "foundations_pl4:transceiver"
+    },
+    "E": {
+      "item": "foundations_pl4:etchedplate"
+    },
+    "F": {
+      "item": "foundations_pl4:entitytransceiver"
+    },
+    "G": {
+      "item": "foundations_pl4:inforeader"
+    },
+    "H": {
+      "item": "foundations_pl4:energyreader"
+    }
+  }
+}

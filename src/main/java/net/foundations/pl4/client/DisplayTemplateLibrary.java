@@ -9,7 +9,7 @@ import net.foundations.pl4.LayoutTemplate;
 /** Client-local named templates; names cannot select arbitrary filesystem paths. */
 final class DisplayTemplateLibrary {
     private static Path directory()throws IOException{
-        Path dir=net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get().resolve("foundations_pl4").resolve("display_templates");
+        Path dir=net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get().resolve("foundations_pl4").resolve("display_templates");
         if(Files.isSymbolicLink(dir)||Files.isSymbolicLink(dir.getParent()))throw new IOException("Template folder cannot be a symbolic link");
         Files.createDirectories(dir);return dir;
     }

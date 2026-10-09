@@ -24,7 +24,7 @@ public final class DisplayElements {
     /** Optional editor and presentation metadata. Defaults preserve existing worlds. */
     public record Options(String group,boolean locked,boolean hidden,int background,int border,int actionPage) {
         public static final Options DEFAULT=new Options("",false,false,-1,-1,-1);
-        public Options {group=clean(group,48);background=background<0?-1:background&0xFFFFFF;border=border<0?-1:border&0xFFFFFF;actionPage=Math.clamp(actionPage,-1,MAX_PAGES-1);}
+        public Options {group=clean(group,48);background=background<0?-1:background&0xFFFFFF;border=border<0?-1:border&0xFFFFFF;actionPage=net.foundations.pl4.compat.PortMath.clamp(actionPage,-1,MAX_PAGES-1);}
         public Options organization(String name,boolean lock,boolean hide){return new Options(name,lock,hide,background,border,actionPage);}
     }
     public record Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
@@ -34,10 +34,10 @@ public final class DisplayElements {
             id=Objects.requireNonNull(id);type=Objects.requireNonNull(type);options=Objects.requireNonNullElse(options,Options.DEFAULT);
             textAlign=Objects.requireNonNullElse(textAlign,TextAlign.LEFT);
             text=clean(text,128);reader=clean(reader,64);key=clean(key,192);asset=clean(asset,192);
-            int x=Math.clamp(bounds.x(),0,MAX_CANVAS-8),y=Math.clamp(bounds.y(),0,MAX_CANVAS-9);
-            bounds=new Rect(x,y,Math.clamp(bounds.width(),8,MAX_CANVAS-x),Math.clamp(bounds.height(),9,MAX_CANVAS-y));
-            color&=0xFFFFFF;columns=Math.clamp(columns,1,16);offset=Math.clamp(offset,0,65535);page=Math.clamp(page,0,MAX_PAGES-1);
-            textScale=Double.isFinite(textScale)&&textScale>0?Math.clamp(textScale,MIN_TEXT_SCALE,MAX_TEXT_SCALE):1F;
+            int x=net.foundations.pl4.compat.PortMath.clamp(bounds.x(),0,MAX_CANVAS-8),y=net.foundations.pl4.compat.PortMath.clamp(bounds.y(),0,MAX_CANVAS-9);
+            bounds=new Rect(x,y,net.foundations.pl4.compat.PortMath.clamp(bounds.width(),8,MAX_CANVAS-x),net.foundations.pl4.compat.PortMath.clamp(bounds.height(),9,MAX_CANVAS-y));
+            color&=0xFFFFFF;columns=net.foundations.pl4.compat.PortMath.clamp(columns,1,16);offset=net.foundations.pl4.compat.PortMath.clamp(offset,0,65535);page=net.foundations.pl4.compat.PortMath.clamp(page,0,MAX_PAGES-1);
+            textScale=Double.isFinite(textScale)&&textScale>0?net.foundations.pl4.compat.PortMath.clamp(textScale,MIN_TEXT_SCALE,MAX_TEXT_SCALE):1F;
         }
         public Spec(UUID id,Type type,String text,String reader,String key,String asset,Rect bounds,
                     int color,boolean count,boolean names,int columns,int offset,int page,boolean vertical,boolean compact,
@@ -62,11 +62,11 @@ public final class DisplayElements {
     }
     public sealed interface Draw permits Box,Text,Icon,Liquid {}
     public record Box(Rect rect,int color,boolean filled,int layer) implements Draw {
-        public Box { layer=Math.clamp(layer,1,3); }
+        public Box { layer=net.foundations.pl4.compat.PortMath.clamp(layer,1,3); }
     }
     public record Text(String value,int x,int y,int width,int height,int color,TextAlign alignment,boolean wrap,float scale,boolean overlay) implements Draw {
         public Text {
-            scale=Double.isFinite(scale)&&scale>0?Math.clamp(scale,MIN_TEXT_SCALE,MAX_TEXT_SCALE):1F;
+            scale=Double.isFinite(scale)&&scale>0?net.foundations.pl4.compat.PortMath.clamp(scale,MIN_TEXT_SCALE,MAX_TEXT_SCALE):1F;
         }
         public Text(String value,int x,int y,int width,int color,boolean right,boolean overlay){
             this(value,x,y,width,12,color,right?TextAlign.RIGHT:TextAlign.LEFT,false,1F,overlay);
@@ -84,15 +84,15 @@ public final class DisplayElements {
     public static int defaultColumns(Type type){return type==Type.INVENTORY||type==Type.FLUID_GRID?3:1;}
     public static Spec move(Spec s,double dx,double dy,boolean resize,boolean snap){return move(s,dx,dy,resize,snap,WIDTH,HEIGHT);}
     public static Spec move(Spec s,double dx,double dy,boolean resize,boolean snap,int spaceW,int spaceH){
-        spaceW=Math.clamp(spaceW,8,MAX_CANVAS);spaceH=Math.clamp(spaceH,9,MAX_CANVAS);
+        spaceW=net.foundations.pl4.compat.PortMath.clamp(spaceW,8,MAX_CANVAS);spaceH=net.foundations.pl4.compat.PortMath.clamp(spaceH,9,MAX_CANVAS);
         int x=s.bounds.x(),y=s.bounds.y(),w=s.bounds.width(),h=s.bounds.height();int step=snap?4:1;
-        x=Math.clamp(x,0,Math.max(0,spaceW-8));y=Math.clamp(y,0,Math.max(0,spaceH-9));w=Math.clamp(w,8,Math.max(8,spaceW-x));h=Math.clamp(h,9,Math.max(9,spaceH-y));
-        if(resize){w=(int)Math.round((w+dx)/step)*step;h=(int)Math.round((h+dy)/step)*step;w=Math.clamp(w,8,Math.max(8,spaceW-x));h=Math.clamp(h,9,Math.max(9,spaceH-y));}
-        else{x=(int)Math.round((x+dx)/step)*step;y=(int)Math.round((y+dy)/step)*step;x=Math.clamp(x,0,Math.max(0,spaceW-w));y=Math.clamp(y,0,Math.max(0,spaceH-h));}
+        x=net.foundations.pl4.compat.PortMath.clamp(x,0,Math.max(0,spaceW-8));y=net.foundations.pl4.compat.PortMath.clamp(y,0,Math.max(0,spaceH-9));w=net.foundations.pl4.compat.PortMath.clamp(w,8,Math.max(8,spaceW-x));h=net.foundations.pl4.compat.PortMath.clamp(h,9,Math.max(9,spaceH-y));
+        if(resize){w=(int)Math.round((w+dx)/step)*step;h=(int)Math.round((h+dy)/step)*step;w=net.foundations.pl4.compat.PortMath.clamp(w,8,Math.max(8,spaceW-x));h=net.foundations.pl4.compat.PortMath.clamp(h,9,Math.max(9,spaceH-y));}
+        else{x=(int)Math.round((x+dx)/step)*step;y=(int)Math.round((y+dy)/step)*step;x=net.foundations.pl4.compat.PortMath.clamp(x,0,Math.max(0,spaceW-w));y=net.foundations.pl4.compat.PortMath.clamp(y,0,Math.max(0,spaceH-h));}
         return s.bounds(new Rect(x,y,w,h));
     }
     public static String clean(String s,int max){if(s==null)return "";String out=s.replaceAll("[\\p{Cntrl}§]","");return out.substring(0,Math.min(max,out.length()));}
-    public static double fraction(double value,double capacity){return Double.isFinite(value)&&Double.isFinite(capacity)&&capacity>0?Math.clamp(value/capacity,0,1):0;}
+    public static double fraction(double value,double capacity){return Double.isFinite(value)&&Double.isFinite(capacity)&&capacity>0?net.foundations.pl4.compat.PortMath.clamp(value/capacity,0,1):0;}
     public static String number(double value,boolean compact){
         if(!Double.isFinite(value))return "?";
         if(compact&&Math.abs(value)>=1000){String[] units={"k","M","G","T","P","E"};int n=-1;double v=value;do{v/=1000;n++;}while(Math.abs(v)>=1000&&n<units.length-1);return String.format(Locale.ROOT,Math.abs(v)<10?"%.1f%s":"%.0f%s",v,units[n]);}
@@ -153,7 +153,7 @@ public final class DisplayElements {
     }
     /** Model-space hundredths; divide by 16, then by canvas scale before applying to the pose.
      * A block-depth value of .03 is intentionally never used. Item geometry fits inside its layer. */
-    public static double worldDepth(int layer){return Math.clamp(layer,0,8)*.01/16.0;}
+    public static double worldDepth(int layer){return net.foundations.pl4.compat.PortMath.clamp(layer,0,8)*.01/16.0;}
     public static double logicalDepth(int layer,double scale){if(!Double.isFinite(scale)||scale<=0)throw new IllegalArgumentException("Invalid canvas scale");return worldDepth(layer)/scale;}
     private DisplayElements(){}
 }

@@ -79,7 +79,7 @@ public final class R5RegressionTests {
             List<DisplayLayout.Cell> cells=new ArrayList<>();for(int y=0;y<h;y++)for(int x=0;x<w;x++)cells.add(new DisplayLayout.Cell(x-23,y+7));
             var rect=DisplayLayout.rectangle(cells).orElseThrow();check(rect.width()==w&&rect.height()==h&&rect.x()==-23&&rect.y()==7,"Negative-coordinate rectangle bounds");
             for(var c:cells){int x=c.x()+23,y=c.y()-7,m=rect.mask(c);check(((m&1)!=0)==(x>0)&&((m&2)!=0)==(x<w-1)&&((m&4)!=0)==(y>0)&&((m&8)!=0)==(y<h-1),"Only joined seams are borderless");}
-            List<DisplayLayout.Cell> duplicate=new ArrayList<>(cells);duplicate.add(cells.getFirst());check(DisplayLayout.rectangle(duplicate).isEmpty(),"Duplicate cell rejected");
+            List<DisplayLayout.Cell> duplicate=new ArrayList<>(cells);duplicate.add(cells.get(0));check(DisplayLayout.rectangle(duplicate).isEmpty(),"Duplicate cell rejected");
             if(w>2&&h>2){cells.remove(new DisplayLayout.Cell(-22,8));check(DisplayLayout.rectangle(cells).isEmpty(),"Holes must not form a canvas");}
         }
         check(DisplayLayout.rectangle(List.of()).isEmpty(),"Empty canvas rejected");

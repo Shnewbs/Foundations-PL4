@@ -40,12 +40,12 @@ public final class EditorChrome {
     private static int snap(int value,int step){return (int)Math.round(value/(double)step)*step;}
     public static DisplayElements.Spec resize(DisplayElements.Spec s,Corner corner,double dx,double dy,boolean grid,int spaceW,int spaceH){
         if(corner==Corner.NONE)return s;
-        spaceW=Math.clamp(spaceW,8,DisplayElements.MAX_CANVAS);spaceH=Math.clamp(spaceH,9,DisplayElements.MAX_CANVAS);int step=grid?4:1;
+        spaceW=net.foundations.pl4.compat.PortMath.clamp(spaceW,8,DisplayElements.MAX_CANVAS);spaceH=net.foundations.pl4.compat.PortMath.clamp(spaceH,9,DisplayElements.MAX_CANVAS);int step=grid?4:1;
         var b=s.bounds();int left=b.x(),top=b.y(),right=b.right(),bottom=b.bottom();
-        if(corner==Corner.NW||corner==Corner.SW){left=snap((int)Math.round(left+dx),step);left=Math.clamp(left,0,right-8);}
-        else{right=snap((int)Math.round(right+dx),step);right=Math.clamp(right,left+8,spaceW);}
-        if(corner==Corner.NW||corner==Corner.NE){top=snap((int)Math.round(top+dy),step);top=Math.clamp(top,0,bottom-9);}
-        else{bottom=snap((int)Math.round(bottom+dy),step);bottom=Math.clamp(bottom,top+9,spaceH);}
+        if(corner==Corner.NW||corner==Corner.SW){left=snap((int)Math.round(left+dx),step);left=net.foundations.pl4.compat.PortMath.clamp(left,0,right-8);}
+        else{right=snap((int)Math.round(right+dx),step);right=net.foundations.pl4.compat.PortMath.clamp(right,left+8,spaceW);}
+        if(corner==Corner.NW||corner==Corner.NE){top=snap((int)Math.round(top+dy),step);top=net.foundations.pl4.compat.PortMath.clamp(top,0,bottom-9);}
+        else{bottom=snap((int)Math.round(bottom+dy),step);bottom=net.foundations.pl4.compat.PortMath.clamp(bottom,top+9,spaceH);}
         return s.bounds(new DisplayElements.Rect(left,top,right-left,bottom-top));
     }
     private EditorChrome(){}

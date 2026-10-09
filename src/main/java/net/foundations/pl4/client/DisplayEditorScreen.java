@@ -3,19 +3,19 @@ package net.foundations.pl4.client;
 import java.util.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.joml.Matrix4f;
+import net.foundations.pl4.compat.PacketDistributor;
+import com.mojang.math.Matrix4f;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.*;
 
 /** PL2-style editing directly on the world display. Only final gestures are transmitted.
  * Identity is anchored to the clicked tile; joined-canvas roots may be elsewhere. */
-public final class DisplayEditorScreen extends Screen {
+public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortScreen {
     final BlockPos pos;final UUID clickedIdentity;final int clickedSlot;final boolean editable;
     Part part;UUID selected;private final LinkedHashSet<UUID> selectedIds=new LinkedHashSet<>();private List<DisplayElements.Spec> clipboard=List.of(),dragSpecs=List.of(),draftSpecs=List.of();private DisplayPicking.Point boxStart,boxEnd;private boolean additiveBox;private DisplayElements.Spec draft,start;private DisplayPicking.Point dragStart;private long dragRevision;
     private double[] inverse;private long captureTime;private boolean snap=true,pending;private int waitTicks;
@@ -27,7 +27,7 @@ public final class DisplayEditorScreen extends Screen {
     private static final String[] TOOLS={"+","E","X","C","^","v","#","?"};
     private static final String[] HELP={"Add element","Edit selected element","Delete selected element","Duplicate selected element","Bring forward","Send backward","Toggle 4-pixel snap","Data / settings"};
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
-    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(Component.literal("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
+    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(new net.minecraft.network.chat.TextComponent("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
     static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
@@ -41,11 +41,11 @@ public final class DisplayEditorScreen extends Screen {
     }
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
+        var arrange=addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
-        addRenderableWidget(Button.builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.network.chat.TextComponent("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){
@@ -60,8 +60,8 @@ public final class DisplayEditorScreen extends Screen {
         List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
     }
     public void capture(Matrix4f localPose){
-        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix()).mul(RenderSystem.getModelViewMatrix()).mul(localPose);
-        float[] values=new float[16];matrix.get(values);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
+        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix());matrix.multiply(RenderSystem.getModelViewMatrix());matrix.multiply(localPose);
+        float[] values=new float[16];var buffer=java.nio.FloatBuffer.wrap(values);matrix.store(buffer);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
     }
     private Optional<DisplayPicking.Point> point(double x,double y){if(System.nanoTime()-captureTime>300_000_000L)return Optional.empty();return DisplayPicking.hit(inverse,x,y,width,height);}
@@ -145,7 +145,7 @@ public final class DisplayEditorScreen extends Screen {
         commit(action,null,value,part.layoutRevision);
     }
     void layersScreen(){if(!pending)minecraft.setScreen(new DisplayLayersScreen(this));}
-    List<DisplayElements.Spec> pageLayers(){return selectionOnPage().reversed();}
+    List<DisplayElements.Spec> pageLayers(){return net.foundations.pl4.compat.PortLists.reversed(selectionOnPage());}
     boolean layerSelected(UUID id){return selectedIds.contains(id);}
     boolean layoutPending(){return pending;}
     void selectLayer(UUID id,boolean additive){
@@ -215,13 +215,13 @@ public final class DisplayEditorScreen extends Screen {
             var result=LayoutTransactions.applyPaste(before,part.layoutRevision,copies,spaceW(),spaceH());
             if(!result.accepted()){message=result.message();return;}
             pushUndo();pending=true;waitTicks=0;message="Saving...";
-            selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=copies.getLast().id();
+            selectedIds.clear();copies.forEach(e->selectedIds.add(e.id()));selected=net.foundations.pl4.compat.PortLists.last(copies).id();
             PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
         }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }
     Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
     @Override public void tick(){
-        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(pos.getCenter())>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
+        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos))>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
         var anchor=host.parts.get(clickedSlot);if(anchor==null||!anchor.identity.equals(clickedIdentity)){onClose();return;}
         BlockPos root=anchor.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(anchor),-anchor.canvasColumn).relative(DisplayNetworks.up(anchor),anchor.canvasRow):pos;
         if(minecraft.level.getBlockEntity(root) instanceof HostEntity h){Part live=h.parts.get(clickedSlot);if(live!=null&&live.layoutRevision>=part.layoutRevision)part=live;}

@@ -1,9 +1,9 @@
 package net.foundations.pl4.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.foundations.pl4.compat.GuiGraphics;
+import net.foundations.pl4.compat.Button;
+import net.foundations.pl4.compat.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,9 +12,9 @@ final class GuideButton extends Button {
     private static final int[][] NODES={{1,5},{6,1},{11,5},{6,11}};
     int glyph=-1,chapterNumber;boolean selected;private final boolean leftAlign;private final ItemStack icon;
     GuideButton(int x,int y,int width,int height,String label,String tooltip,boolean leftAlign,ItemStack icon,OnPress press){
-        super(x,y,width,height,Component.literal(label),press,DEFAULT_NARRATION);
+        super(x,y,width,height,new net.minecraft.network.chat.TextComponent(label),press,DEFAULT_NARRATION);
         this.leftAlign=leftAlign;this.icon=icon;
-        if(tooltip!=null&&!tooltip.isBlank())setTooltip(Tooltip.create(Component.literal(tooltip)));
+        if(tooltip!=null&&!tooltip.isBlank())setTooltip(Tooltip.create(new net.minecraft.network.chat.TextComponent(tooltip)));
     }
     private static void drawGlyph(GuiGraphics g,int x,int y,int type,int c){
         if(type==0){g.fill(x+2,y+1,x+13,y+15,c);g.fill(x+4,y+2,x+12,y+14,0xFF27343B);g.fill(x+6,y+5,x+11,y+6,c);g.fill(x+6,y+8,x+11,y+9,c);}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "item": "foundations_pl4:clock"
+  },
+  "pattern": [
+    "DCR",
+    "PSP"
+  ],
+  "key": {
+    "P": {
+      "item": "foundations_pl4:stoneplate"
+    },
+    "S": {
+      "item": "foundations_pl4:signallingplate"
+    },
+    "D": {
+      "tag": "c:dusts/sapphire"
+    },
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  }
+}

@@ -12,8 +12,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.util.*;
-import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.common.util.*;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native server acceptance cases. Added in R5; NOT executed in the offline packaging environment. */
 @PrefixGameTestTemplate(false)
@@ -35,15 +35,15 @@ public final class R5GameTests {
     public static void cableArmsRespectDomains(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);
         var b=host(h,new BlockPos(3,1,2),Kind.DATA_CABLE,Direction.DOWN,false);rebuild(h);
-        h.assertTrue(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"Both cable ends need real external arms");
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"Both cable ends need real external arms");
         b.parts.put(6,new Part(Kind.REDSTONE_CABLE,Direction.DOWN,OWNER));b.changed();rebuild(h);
-        h.assertTrue(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Data and redstone cable families cannot connect");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Data and redstone cable families cannot connect");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void uncabledFaceDevicesDoNotRelay(GameTestHelper h){
         chest(h,new BlockPos(1,1,1));host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST,false);
         var r=host(h,new BlockPos(3,1,1),Kind.INVENTORY_READER,Direction.DOWN,false);
-        h.runAtTickTime(45,()->{h.assertTrue(r.parts.get(0).rows.isEmpty(),"Touching devices are not an implicit wired network");h.succeed();});
+        h.runAtTickTime(45,()->{net.foundations.pl4.compat.PortAssertions.check(r.parts.get(0).rows.isEmpty(),"Touching devices are not an implicit wired network");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=120)
     public static void disabledPortSplitsLiveNetwork(GameTestHelper h){
@@ -51,53 +51,53 @@ public final class R5GameTests {
         var bridge=host(h,new BlockPos(3,1,1),Kind.DATA_CABLE,Direction.DOWN,false);
         var reader=host(h,new BlockPos(4,1,1),Kind.INVENTORY_READER,Direction.DOWN,true).parts.get(0);
         h.runAtTickTime(45,()->{
-            h.assertTrue(reader.rows.stream().anyMatch(r->r.value()==17),"Fixture must first carry live data");
+            net.foundations.pl4.compat.PortAssertions.check(reader.rows.stream().anyMatch(r->r.value()==17),"Fixture must first carry live data");
             bridge.parts.get(6).blockedFaces=1<<Direction.EAST.ordinal();bridge.changed();
         });
-        h.runAtTickTime(85,()->{h.assertTrue(reader.rows.isEmpty()&&bridge.connection(Direction.EAST)==0,"Disabled port must remove data and the visual arm");h.succeed();});
+        h.runAtTickTime(85,()->{net.foundations.pl4.compat.PortAssertions.check(reader.rows.isEmpty()&&bridge.connection(Direction.EAST)==0,"Disabled port must remove data and the visual arm");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void collisionAndOutlineFollowConnections(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);rebuild(h);
-        h.assertTrue(Math.abs(a.outline().bounds().maxX-.625)<.0001,"Isolated cable is not a full host cube");
+        net.foundations.pl4.compat.PortAssertions.check(Math.abs(a.outline().bounds().maxX-.625)<.0001,"Isolated cable is not a full host cube");
         var b=host(h,new BlockPos(3,1,2),Kind.DATA_CABLE,Direction.DOWN,false);rebuild(h);
-        h.assertTrue(a.outline().bounds().maxX==1,"Connected arm must be included in picking/collision");
+        net.foundations.pl4.compat.PortAssertions.check(a.outline().bounds().maxX==1,"Connected arm must be included in picking/collision");
         h.getLevel().removeBlock(b.getBlockPos(),false);rebuild(h);
-        h.assertTrue(Math.abs(a.outline().bounds().maxX-.625)<.0001,"Removed arm must leave no stale collision");
+        net.foundations.pl4.compat.PortAssertions.check(Math.abs(a.outline().bounds().maxX-.625)<.0001,"Removed arm must leave no stale collision");
         var sideHit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.95,.5,.5),Direction.UP,a.getBlockPos(),false);
-        h.assertTrue(a.cableDirection(sideHit)==Direction.EAST,"Clicking a rod side must select that rod, not its surface normal");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(a.cableDirection(sideHit)==Direction.EAST,"Clicking a rod side must select that rod, not its surface normal");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void partPlacementBypassesReaderGui(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
-        var result=FoundationsPL4.HOST.get().useItemOn(stack,a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
-        h.assertTrue(result==ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION,"Held parts must not be swallowed by the host GUI");
+        var result=FoundationsPL4.HOST.get().use(a.getBlockState(),h.getLevel(),a.getBlockPos(),player,InteractionHand.MAIN_HAND,hit);
+        net.foundations.pl4.compat.PortAssertions.check(result==InteractionResult.PASS,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
-        h.assertTrue(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=20)
     public static void cablePlacementFillsMissingEndpointCell(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);
         var endpoint=host(h,new BlockPos(3,1,2),Kind.INVENTORY_READER,Direction.EAST,false);rebuild(h);
-        h.assertTrue(a.connection(Direction.EAST)==0&&!endpoint.parts.containsKey(6),"Unplaced endpoint centre must not gain a cable arm");
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==0&&!endpoint.parts.containsKey(6),"Unplaced endpoint centre must not gain a cable arm");
         long builds=NetworkEngine.topologyBuildCount();
         var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DATA_CABLE).get());
         player.setItemInHand(InteractionHand.MAIN_HAND,stack);
         var hit=new BlockHitResult(Vec3.atLowerCornerOf(a.getBlockPos()).add(.5625,.5,.5),Direction.EAST,a.getBlockPos(),false);
         stack.getItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,hit));
-        h.assertTrue(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the cable east face must fill the endpoint cell and consume exactly one cable");
-        h.assertTrue(NetworkEngine.topologyBuildCount()==builds,"Cable placement must not synchronously rebuild the entire loaded network");
-        h.assertTrue(a.connection(Direction.EAST)==1&&endpoint.connection(Direction.WEST)==1,"The placed cable must publish its local connection immediately");
-        h.runAtTickTime(4,()->{h.assertTrue(NetworkEngine.topologyBuildCount()>builds,"The authoritative full network rebuild must follow on the next tick");h.succeed();});
+        net.foundations.pl4.compat.PortAssertions.check(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the cable east face must fill the endpoint cell and consume exactly one cable");
+        net.foundations.pl4.compat.PortAssertions.check(NetworkEngine.topologyBuildCount()==builds,"Cable placement must not synchronously rebuild the entire loaded network");
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&endpoint.connection(Direction.WEST)==1,"The placed cable must publish its local connection immediately");
+        h.runAtTickTime(4,()->{net.foundations.pl4.compat.PortAssertions.check(NetworkEngine.topologyBuildCount()>builds,"The authoritative full network rebuild must follow on the next tick");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void unchangedTopologyIsReused(GameTestHelper h){
         host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);NetworkEngine.ensureCurrent(h.getLevel().getServer());long count=NetworkEngine.topologyBuildCount();
         NetworkEngine.ensureCurrent(h.getLevel().getServer());NetworkEngine.ensureCurrent(h.getLevel().getServer());
-        h.assertTrue(count==NetworkEngine.topologyBuildCount(),"Unchanged graph must not be rebuilt on every access");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(count==NetworkEngine.topologyBuildCount(),"Unchanged graph must not be rebuilt on every access");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=120)
     public static void topologyRebuildRefreshesCachedTargetPriority(GameTestHelper h){
@@ -108,11 +108,11 @@ public final class R5GameTests {
         left.priority=10;right.priority=0;reader.mode="CHANNEL";reader.index=1;
         host.parts.put(right.slot(),right);host.parts.put(reader.slot(),reader);host.changed();
         h.runAtTickTime(45,()->{
-            h.assertTrue(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:diamond")&&r.value()==17),"Cached priority order selects the higher-priority first target");
+            net.foundations.pl4.compat.PortAssertions.check(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:diamond")&&r.value()==17),"Cached priority order selects the higher-priority first target");
             left.priority=-1;right.priority=10;host.changed();
         });
         h.runAtTickTime(85,()->{
-            h.assertTrue(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:stone")&&r.value()==5),"A priority edit must invalidate and refresh cached target order");
+            net.foundations.pl4.compat.PortAssertions.check(reader.rows.stream().anyMatch(r->r.itemId().equals("minecraft:stone")&&r.value()==5),"A priority edit must invalidate and refresh cached target order");
             h.succeed();
         });
     }
@@ -120,42 +120,42 @@ public final class R5GameTests {
     public static void cablePortStateRoundTrips(GameTestHelper h){
         Part cable=new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER);cable.blockedFaces=42;
         var loaded=Part.load(cable.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
-        h.assertTrue(loaded.blockedFaces==42&&loaded.identity.equals(cable.identity),"Port mask and part identity must persist");
+        net.foundations.pl4.compat.PortAssertions.check(loaded.blockedFaces==42&&loaded.identity.equals(cable.identity),"Port mask and part identity must persist");
         var old=cable.save(h.getLevel().registryAccess(),false);old.remove("blockedFaces");
-        h.assertTrue(Part.load(old,h.getLevel().registryAccess()).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(Part.load(old,h.getLevel().registryAccess()).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void obstructedLegacyHammerDoesNotOverwriteBlocks(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos.above(2),Blocks.STONE);h.setBlock(pos,FoundationsPL4.HAMMER.get());
         var hammer=(HammerEntity)h.getBlockEntity(pos);hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=7;
         for(int i=0;i<30;i++)HammerEntity.tick(h.getLevel(),hammer.getBlockPos(),hammer.getBlockState(),hammer);
-        h.assertTrue(h.getLevel().getBlockState(h.absolutePos(pos.above(2))).is(Blocks.STONE)&&h.getLevel().isEmptyBlock(h.absolutePos(pos.above())),"Check both upper cells before changing either");
-        h.assertTrue(hammer.progress==7&&hammer.inventory.getStackInSlot(0).getCount()==17,"Blocked old hammer must preserve its state and inventory");
-        h.setBlock(pos.above(2),Blocks.AIR);h.assertTrue(HammerStructure.ensure(h.getLevel(),hammer.getBlockPos()),"Clearing headroom permits safe structure creation");
-        h.assertTrue(HammerStructure.complete(h.getLevel(),hammer.getBlockPos()),"Exactly two owned upper cells must exist");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(h.getLevel().getBlockState(h.absolutePos(pos.above(2))).is(Blocks.STONE)&&h.getLevel().isEmptyBlock(h.absolutePos(pos.above())),"Check both upper cells before changing either");
+        net.foundations.pl4.compat.PortAssertions.check(hammer.progress==7&&hammer.inventory.getStackInSlot(0).getCount()==17,"Blocked old hammer must preserve its state and inventory");
+        h.setBlock(pos.above(2),Blocks.AIR);net.foundations.pl4.compat.PortAssertions.check(HammerStructure.ensure(h.getLevel(),hammer.getBlockPos()),"Clearing headroom permits safe structure creation");
+        net.foundations.pl4.compat.PortAssertions.check(HammerStructure.complete(h.getLevel(),hammer.getBlockPos()),"Exactly two owned upper cells must exist");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void breakingHammerUpperDropsOnce(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));h.getLevel().destroyBlock(hammer.getBlockPos().above(2),true);
-        for(int i=0;i<3;i++)h.assertTrue(h.getLevel().isEmptyBlock(h.absolutePos(pos.above(i))),"Breaking the top must remove all three machine cells");
+        for(int i=0;i<3;i++)net.foundations.pl4.compat.PortAssertions.check(h.getLevel().isEmptyBlock(h.absolutePos(pos.above(i))),"Breaking the top must remove all three machine cells");
         var items=h.getLevel().getEntitiesOfClass(ItemEntity.class,new AABB(h.absolutePos(pos)).inflate(2));
         int machines=items.stream().filter(e->e.getItem().is(FoundationsPL4.HAMMER.get().asItem())).mapToInt(e->e.getItem().getCount()).sum();
         int diamonds=items.stream().filter(e->e.getItem().is(Items.DIAMOND)).mapToInt(e->e.getItem().getCount()).sum();
-        h.assertTrue(machines==1&&diamonds==17,"Upper blocks must not duplicate the base item or inventory");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(machines==1&&diamonds==17,"Upper blocks must not duplicate the base item or inventory");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerMenuSlotsShiftClickAndDistance(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);var player=player(h,new BlockPos(2,1,3));
         var menu=(HammerMenu)hammer.createMenu(1,player.getInventory(),player);
-        h.assertTrue(menu.slots.size()==38&&menu.slots.get(0).x==53&&menu.slots.get(0).y==24&&menu.slots.get(1).x==107,"Original container slot layout");
-        h.assertTrue(!menu.slots.get(1).mayPlace(new ItemStack(Items.DIAMOND)),"Output slot is extraction-only");
+        net.foundations.pl4.compat.PortAssertions.check(menu.slots.size()==38&&menu.slots.get(0).x==53&&menu.slots.get(0).y==24&&menu.slots.get(1).x==107,"Original container slot layout");
+        net.foundations.pl4.compat.PortAssertions.check(!menu.slots.get(1).mayPlace(new ItemStack(Items.DIAMOND)),"Output slot is extraction-only");
         player.getInventory().setItem(9,new ItemStack(Items.DIAMOND,17));menu.quickMoveStack(player,2);
-        h.assertTrue(hammer.inventory.getStackInSlot(0).getCount()==17&&player.getInventory().getItem(9).isEmpty(),"Shift-click inserts into input exactly once");
+        net.foundations.pl4.compat.PortAssertions.check(hammer.inventory.getStackInSlot(0).getCount()==17&&player.getInventory().getItem(9).isEmpty(),"Shift-click inserts into input exactly once");
         hammer.inventory.setStackInSlot(1,new ItemStack(FoundationsPL4.item("stoneplate"),4));menu.quickMoveStack(player,1);
         int plates=0;for(int i=0;i<player.getInventory().getContainerSize();i++)if(player.getInventory().getItem(i).is(FoundationsPL4.item("stoneplate")))plates+=player.getInventory().getItem(i).getCount();
-        h.assertTrue(plates==4&&hammer.inventory.getStackInSlot(1).isEmpty(),"Shift-click extracts exactly four plates");
-        player.setPos(hammer.getBlockPos().getX()+20,hammer.getBlockPos().getY(),hammer.getBlockPos().getZ());h.assertTrue(!menu.stillValid(player),"Out-of-range menus close");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(plates==4&&hammer.inventory.getStackInSlot(1).isEmpty(),"Shift-click extracts exactly four plates");
+        player.setPos(hammer.getBlockPos().getX()+20,hammer.getBlockPos().getY(),hammer.getBlockPos().getZ());net.foundations.pl4.compat.PortAssertions.check(!menu.stillValid(player),"Out-of-range menus close");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hammerInventoryAndProgressRoundTrip(GameTestHelper h){
@@ -163,24 +163,24 @@ public final class R5GameTests {
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=33;hammer.cooldown=9;
         CompoundTag saved=new CompoundTag();hammer.saveAdditional(saved,h.getLevel().registryAccess());
         var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevel(h.getLevel());loaded.loadAdditional(saved,h.getLevel().registryAccess());
-        h.assertTrue(loaded.progress==33&&loaded.cooldown==9&&loaded.inventory.getStackInSlot(0).getCount()==17,"Existing hammer state must survive save/load");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(loaded.progress==33&&loaded.cooldown==9&&loaded.inventory.getStackInSlot(0).getCount()==17,"Existing hammer state must survive save/load");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void joinedDisplaysPreserveSharedLayoutWhenSplit(GameTestHelper h){
         var a=host(h,new BlockPos(2,2,2),Kind.LARGE_DISPLAY,Direction.NORTH,false);var b=host(h,new BlockPos(3,2,2),Kind.LARGE_DISPLAY,Direction.NORTH,false);
         Part left=a.parts.get(9),right=b.parts.get(9);left.label="Left saved layout";right.label="Right saved layout";rebuild(h);
-        h.assertTrue(left.canvasWidth==2&&left.canvasMask==2&&right.canvasColumn==1&&right.canvasMask==1,"Adjacent same-plane screens share one rectangular canvas");
-        h.assertTrue(DisplayNetworks.controller(b,right).part()==left,"Any tile must resolve the same editor controller");
+        net.foundations.pl4.compat.PortAssertions.check(left.canvasWidth==2&&left.canvasMask==2&&right.canvasColumn==1&&right.canvasMask==1,"Adjacent same-plane screens share one rectangular canvas");
+        net.foundations.pl4.compat.PortAssertions.check(DisplayNetworks.controller(b,right).part()==left,"Any tile must resolve the same editor controller");
         h.getLevel().removeBlock(a.getBlockPos(),false);rebuild(h);
-        h.assertTrue(right.canvasWidth==1&&right.canvasColumn==0&&right.label.equals("Left saved layout"),"R8 split retains the active shared layout mirrored to the surviving tile");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(right.canvasWidth==1&&right.canvasColumn==0&&right.label.equals("Left saved layout"),"R8 split retains the active shared layout mirrored to the surviving tile");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void irregularOrDifferentOwnerScreensStayIndependent(GameTestHelper h){
         var a=host(h,new BlockPos(2,2,2),Kind.LARGE_DISPLAY,Direction.NORTH,false);var b=host(h,new BlockPos(3,2,2),Kind.LARGE_DISPLAY,Direction.NORTH,false);
         var c=host(h,new BlockPos(2,3,2),Kind.LARGE_DISPLAY,Direction.NORTH,false);rebuild(h);
-        h.assertTrue(a.parts.get(9).canvasWidth==1&&b.parts.get(9).canvasWidth==1&&c.parts.get(9).canvasWidth==1,"Incomplete rectangles must not create a stretched or hidden canvas");
+        net.foundations.pl4.compat.PortAssertions.check(a.parts.get(9).canvasWidth==1&&b.parts.get(9).canvasWidth==1&&c.parts.get(9).canvasWidth==1,"Incomplete rectangles must not create a stretched or hidden canvas");
         h.getLevel().removeBlock(c.getBlockPos(),false);b.parts.get(9).owner=UUID.randomUUID();b.changed();rebuild(h);
-        h.assertTrue(a.parts.get(9).canvasWidth==1&&b.parts.get(9).canvasWidth==1,"Different owners must not be joined");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(a.parts.get(9).canvasWidth==1&&b.parts.get(9).canvasWidth==1,"Different owners must not be joined");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void anyCanvasTileCanSupplyAReader(GameTestHelper h){
@@ -188,7 +188,7 @@ public final class R5GameTests {
         host(h,new BlockPos(4,1,2),Kind.LARGE_DISPLAY,Direction.DOWN,true);
         host(h,new BlockPos(4,1,3),Kind.NODE,Direction.EAST,true);chest(h,new BlockPos(5,1,3));
         host(h,new BlockPos(4,1,4),Kind.INVENTORY_READER,Direction.DOWN,true);
-        h.runAtTickTime(45,()->{h.assertTrue(a.parts.get(7).canvasWidth==2&&a.parts.get(7).rows.stream().anyMatch(r->r.value()==17),"Shared controller must receive data from a reader connected to another tile");h.succeed();});
+        h.runAtTickTime(45,()->{net.foundations.pl4.compat.PortAssertions.check(a.parts.get(7).canvasWidth==2&&a.parts.get(7).rows.stream().anyMatch(r->r.value()==17),"Shared controller must receive data from a reader connected to another tile");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
     public static void displayJoiningNeverBridgesWiredPartitions(GameTestHelper h){
@@ -196,6 +196,6 @@ public final class R5GameTests {
         HostEntity a=host(h,new BlockPos(3,1,2),Kind.LARGE_DISPLAY,Direction.DOWN,true),b=host(h,new BlockPos(4,1,2),Kind.LARGE_DISPLAY,Direction.DOWN,true);
         a.parts.get(6).blockedFaces=1<<Direction.EAST.ordinal();b.parts.get(6).blockedFaces=1<<Direction.WEST.ordinal();
         b.parts.put(Direction.EAST.ordinal(),new Part(Kind.NODE,Direction.EAST,OWNER));a.changed();b.changed();chest(h,new BlockPos(5,1,2));
-        h.runAtTickTime(45,()->{h.assertTrue(a.parts.get(7).canvasWidth==2&&reader.rows.isEmpty(),"A shared screen must not bypass a disconnected data cable");h.succeed();});
+        h.runAtTickTime(45,()->{net.foundations.pl4.compat.PortAssertions.check(a.parts.get(7).canvasWidth==2&&reader.rows.isEmpty(),"A shared screen must not bypass a disconnected data cable");h.succeed();});
     }
 }

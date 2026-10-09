@@ -2,15 +2,16 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.core.*;
-import net.minecraft.core.registries.*;
+import net.minecraft.core.Registry;
+import net.foundations.pl4.compat.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.foundations.pl4.compat.Capabilities;
+import net.minecraftforge.fluids.FluidStack;
 
 public final class DataSampler {
     private record ParsedFilter(String source,Set<String> ids,
@@ -37,13 +38,13 @@ public final class DataSampler {
     }
     public static boolean matches(ItemStack stack,Part part){
         if(part.filter.isBlank())return true;
-        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.ITEM.getKey(stack.getItem()).toString());
         if(!match)for(var tag:filter.itemTags())if(stack.is(tag)){match=true;break;}
         return match==part.whitelist;
     }
     public static boolean matches(FluidStack stack,Part part){
         if(part.filter.isBlank())return true;
-        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.FLUID.getKey(stack.getFluid()).toString());
         if(!match)for(var tag:filter.fluidTags())if(stack.getFluid().is(tag)){match=true;break;}
         return match==part.whitelist;
     }
@@ -61,7 +62,7 @@ public final class DataSampler {
             if(link.entity()!=null){Entity entity=l.getEntity(link.entity());if(entity!=null&&p.kind==Kind.INFO_READER){for(var row:net.foundations.pl4.api.InfoProviders.sample(l,link))rows.put(row.key(),row);break;}continue;}
             if(!l.hasChunkAt(link.pos()))continue;
             if(p.kind==Kind.INVENTORY_READER){
-                var handler=l.getCapability(Capabilities.ItemHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
+                var handler=net.foundations.pl4.compat.PortCapabilities.get(l,Capabilities.ItemHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
                 if(!sources.inventory(l,link,handler,handler.getSlots()))continue;
                 for(int slot=0;slot<Math.min(handler.getSlots(),65536);slot++){
                     ItemStack stack=handler.getStackInSlot(slot);capacity+=handler.getSlotLimit(slot);total+=stack.getCount();
@@ -70,7 +71,7 @@ public final class DataSampler {
                     pictures.item(stack);
                 }
             }else if(p.kind==Kind.FLUID_READER){
-                var handler=l.getCapability(Capabilities.FluidHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
+                var handler=net.foundations.pl4.compat.PortCapabilities.get(l,Capabilities.FluidHandler.BLOCK,link.pos(),link.side());if(handler==null)continue;
                 if(!sources.fluid(handler))continue;
                 for(int tank=0;tank<Math.min(handler.getTanks(),65536);tank++){
                     FluidStack stack=handler.getFluidInTank(tank);capacity+=handler.getTankCapacity(tank);total+=stack.getAmount();

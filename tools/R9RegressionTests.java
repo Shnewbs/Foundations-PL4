@@ -95,7 +95,7 @@ public final class R9RegressionTests {
         for(String action:List.of("align_left","align_right","align_top","align_bottom","align_hcenter","align_vcenter")){
             var r=LayoutTransactions.applyArrange(before,7,action,List.of(a.id()),248,120);
             check(r.accepted()&&r.state().revision()==8,"single canvas alignment "+action);
-            var changed=r.state().elements().getFirst();var box=changed.bounds();
+            var changed=r.state().elements().get(0);var box=changed.bounds();
             int expectedX=switch(action){case "align_left"->0;case "align_right"->228;case "align_hcenter"->114;default->20;};
             int expectedY=switch(action){case "align_top"->0;case "align_bottom"->108;case "align_vcenter"->54;default->15;};
             check(box.x()==expectedX&&box.y()==expectedY,"canvas anchor "+action);
@@ -103,7 +103,7 @@ public final class R9RegressionTests {
             check(r.state().elements().subList(1,4).equals(before.elements().subList(1,4)),"unselected and other-page elements preserved");
         }
         var aligned=LayoutTransactions.applyArrange(before,7,"align_bottom",List.of(a.id(),b.id()),248,120);
-        check(aligned.accepted()&&aligned.state().elements().getFirst().bounds().bottom()==58,"selection anchor, not canvas anchor");
+        check(aligned.accepted()&&aligned.state().elements().get(0).bounds().bottom()==58,"selection anchor, not canvas anchor");
         var spaced=LayoutTransactions.applyArrange(before,7,"distribute_x",List.of(c.id(),a.id(),b.id()),248,120);
         check(spaced.accepted(),"unordered selection can distribute");
         var list=spaced.state().elements();check(list.get(0).equals(a)&&list.get(2).equals(c),"distribution fixes outer elements");
@@ -147,7 +147,7 @@ public final class R9RegressionTests {
         check(pasted.accepted()&&pasted.state().revision()==8&&pasted.state().elements().size()==5,"atomic multi paste");
         check(pasted.state().elements().subList(0,3).equals(before.elements()),"paste preserves existing layer order");
         check(!LayoutTransactions.applyPaste(before,7,List.of(a),248,120).accepted(),"paste cannot reuse existing identity");
-        check(!LayoutTransactions.applyPaste(before,7,List.of(copies.getFirst(),copies.getFirst()),248,120).accepted(),"duplicate copy identity rejects all");
+        check(!LayoutTransactions.applyPaste(before,7,List.of(copies.get(0),copies.get(0)),248,120).accepted(),"duplicate copy identity rejects all");
         check(!LayoutTransactions.applyPaste(before,7,List.of(other.identity(UUID.randomUUID())),248,120).accepted(),"paste other page rejected");
         check(!LayoutTransactions.applyPaste(before,7,List.of(a.identity(UUID.randomUUID()).bounds(new DisplayElements.Rect(240,20,30,18))),248,120).accepted(),"out of canvas paste rejected");
         var full=new ArrayList<DisplayElements.Spec>();for(int i=0;i<32;i++)full.add(a.identity(UUID.randomUUID()));
