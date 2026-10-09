@@ -1,9 +1,18 @@
-# Foundations PL4 — Minecraft 1.18.2 / Forge
+# Foundations PL4 - Minecraft 1.17.1 feature port
 
-Development port **0.2a-port.2**, Forge **40.3.12**, Java **17**.
+Current target: Forge 37.1.1 / Java 17 / `0.2a-port.1`.
 
-Native Forge source port, not a renamed NeoForge JAR. Retains multipart cables, readers, displays, network item storage, transfer escrow, ownership checks and the built-in field guide. Forge SimpleChannel networking and sided capabilities replace NeoForge interfaces. Native NBT preserves item and fluid variants on this Minecraft generation.
+This port carries the modern-source cable/multipart network, readers, displays and editor,
+wireless item storage, routing, item/fluid/energy escrow, ownership and field guide forward
+from the 1.18.2 feature branch. It is not the reduced legacy transport implementation.
 
-Build with `bash gradlew build runGameTestServer`. Java compilation is not client, multiplayer or installed-provider acceptance. **Further API testing is still required.** See BUILD_STATUS.json and docs/releases/0.2a-port.2.md.
+Native tags and sapphire generation are adapted to this exact target. The complete 193-test
+suite, production-rule checks, reobfuscation and exact-target resources must pass before
+publication. A branch or successful compiler exit is not a finished port.
 
-Back up worlds; use matching client/server builds. Worlds and JARs are not interchangeable between Minecraft versions. Unavailable third-party power APIs remain disabled rather than using guessed units or conversion ratios.
+**Further API testing is still required.** Installed third-party providers, ordinary client
+visuals, multiplayer and sustained performance acceptance remain pending. No unavailable
+foreign energy API receives invented conversion ratios. Full PL2 parity is not claimed.
+
+Build and native tests: `bash gradlew --no-daemon clean build runGameTestServer` with Java 17.
+Install only a published runtime JAR for this exact target; back up worlds and match client/server versions.
