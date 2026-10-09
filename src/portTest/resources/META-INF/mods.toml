@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[35,36)"
 license="MIT"
 [[mods]]
 modId="foundations_pl4_porttests"
@@ -10,4 +10,10 @@ modId="foundations_pl4"
 mandatory=true
 versionRange="[0,)"
 ordering="AFTER"
+side="SERVER"
+[[dependencies.foundations_pl4_porttests]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.4]"
+ordering="NONE"
 side="SERVER"
