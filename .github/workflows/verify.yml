@@ -12,13 +12,39 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
+      - name: Archive exact tracked source for reproducible diagnostics
+        run: git archive --format=zip --output=source-snapshot.zip HEAD
+      - name: Preserve source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-${{ github.sha }}
+          path: source-snapshot.zip
+          retention-days: 7
+          if-no-files-found: error
       - name: Run offline regression checks
-        run: python3 tools/run_offline_checks.py
+        shell: bash
+        run: |
+          mkdir -p verification-logs
+          python3 tools/run_offline_checks.py 2>&1 | tee verification-logs/offline.log
       - name: Compile and run native GameTests
-        run: bash gradlew --no-daemon --console=plain clean build runGameTestServer
+        shell: bash
+        run: bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+      - name: Preserve verification results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            verification-logs/
+            build/libs/*.jar
+            build/test-results/
+            build/reports/
+          retention-days: 14
+          if-no-files-found: warn
