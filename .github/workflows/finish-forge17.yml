@@ -1,0 +1,100 @@
+name: Finish Forge Java 17 ports
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/finish-forge17.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: finish-forge17
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mc: '1.20.1', expected: '58d7dfbdc9b57e90c80c6299e7b7b7aede496e49' }
+          - { mc: '1.19.2', expected: 'af2a671603a718002f6e124543f7609c179a0215' }
+          - { mc: '1.18.2', expected: 'f33044c7bc011afd08e16e382af80056b1a72dab' }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mc/${{ matrix.mc }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Apply strict decode correction and retain acceptance boundaries
+        shell: bash
+        env:
+          MC: ${{ matrix.mc }}
+          EXPECTED: ${{ matrix.expected }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED"
+          python3 - <<'PY'
+          from pathlib import Path
+          import os,json
+          mc=os.environ['MC'];p=Path('src/main/java/net/foundations/pl4/core/ForgingRecipe.java');s=p.read_text()
+          old='T value=input.get(name);return value==null?DataResult.success(fallback):codec.parse(ops,value);'
+          if mc!='1.20.1':
+              assert old in s
+              s=s.replace(old,'T value=input.get(name);if(value==null)return DataResult.success(fallback);DataResult<A> decoded=codec.parse(ops,value);if(decoded.error().isPresent())return DataResult.error(decoded.error().get().message());return decoded;')
+              p.write_text(s)
+          p=Path('BUILD_STATUS.json');status=json.loads(p.read_text());status['port_status']='ALPHA_NATIVE_RELEASE_GATED';status['further_api_testing_required']=True;p.write_text(json.dumps(status,indent=2)+'\n')
+          p=Path('docs/releases/0.2a-port.1.md');text=p.read_text();text+='\n## Release validation\n\nThis target is published only after its own complete native Forge build, standalone/reobfuscation checks, production-rule regression suites and all 191 required native GameTests pass. The release includes the exact tested source, runtime JAR, source JAR, SHA256 checksums and native log. A successful headless test suite is not visual, installed-provider, multiplayer or full optional-fallback acceptance. **Further API testing is still required.**\n';p.write_text(text)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src BUILD_STATUS.json docs/releases/0.2a-port.1.md
+          git commit -m "Finish Forge $MC alpha port and strict recipe decoding"
+          git push origin "HEAD:mc/$MC"
+          git rev-parse HEAD > source-commit.txt
+      - name: Build, reobfuscate and run all required native tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification-logs
+          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+          grep -F 'All 191 required tests passed' verification-logs/native.log
+      - name: Publish exact tested target alpha
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          MC: ${{ matrix.mc }}
+        run: |
+          set -euo pipefail
+          version='0.2a-port.1'
+          tag="mc$MC-v$version"
+          mkdir -p release-files
+          cp "build/libs/FoundationsPL4-$MC-$version.jar" "build/libs/FoundationsPL4-$MC-$version-sources.jar" release-files/
+          git archive --format=zip --output="release-files/FoundationsPL4-$MC-$version-source.zip" HEAD
+          cp verification-logs/native.log "release-files/FoundationsPL4-$MC-$version-native-tests.log"
+          cp source-commit.txt release-files/SOURCE_COMMIT.txt
+          (cd release-files && sha256sum *.jar *.zip *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo 'Existing tag is immutable; use a new port revision.'
+            exit 1
+          fi
+          git tag "$tag"
+          git push origin "$tag"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $version — Minecraft $MC Forge" --notes-file docs/releases/0.2a-port.1.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forge-final-${{ matrix.mc }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release-files/
+            source-commit.txt
+            verification-logs/
+            build/reports/
+            build/test-results/
+            run/logs/
+          retention-days: 14
+          if-no-files-found: warn
