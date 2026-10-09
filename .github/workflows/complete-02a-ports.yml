@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: complete-02a-native-ports
@@ -52,6 +51,9 @@ jobs:
           python3 reference/tools/test_prepare_02a_ports.py
           python3 reference/tools/prepare_02a_ports.py reference port "$TARGET" --check
           python3 reference/tools/prepare_02a_ports.py reference port "$TARGET"
+          # Workflow administration is a separate authorized maintainer action.
+          # The automatic token commits source only and never edits workflows.
+          git -C port restore .github/workflows/port-26.yml
           git -C port diff --check
       - name: Validate migrated source before committing
         working-directory: port
@@ -59,23 +61,20 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/run_offline_checks.py 2>&1 | tee migration-offline.log
-      - name: Commit target and request its native build gates
+      - name: Commit migrated source only
         working-directory: port
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$BASE"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a.md tools/verify_r7.py tools/verify_r8.py tools/verify_r9.py tools/verify_r10.py tools/verify_r16.py .github/workflows/port-26.yml
+          git add src build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a.md tools/verify_r7.py tools/verify_r8.py tools/verify_r9.py tools/verify_r10.py tools/verify_r16.py
           git commit -m "Port 0.2a network storage and component selection to Minecraft $TARGET"
-          git push origin "HEAD:refs/heads/mc/$TARGET"
-          # Token-authored pushes do not launch push workflows automatically.
-          gh workflow run port-26.yml --ref "mc/$TARGET"
           git archive --format=zip --output=port-source.zip HEAD
+          git push origin "HEAD:refs/heads/mc/$TARGET"
+          # Native compilation/publication remains gated by port-26.yml.
+          # The reviewed workflow update or a maintainer dispatch starts it.
       - name: Preserve migration evidence
         if: always()
         uses: actions/upload-artifact@v4
