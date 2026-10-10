@@ -1,4 +1,4 @@
-"""Explicit Forge 35.1.37 / current Java 8 launch profile; no binary patch or Java agent."""
+"""Explicit Forge 32.0.108 / current Java 8 launch profile; no binary patch or Java agent."""
 from pathlib import Path
 import argparse, hashlib, json, os, subprocess, urllib.request, zipfile
 
@@ -7,12 +7,12 @@ SHA256='4e0d846f75ffd0dd5042c9b1aa86b8fcc758acd27a004c259d26aebc100ffdf2'
 
 def prepare(server: Path):
     server=server.resolve()
-    forge=server/'forge-1.16.4-35.1.37.jar'
+    forge=server/'forge-1.16.1-32.0.108.jar'
     if not forge.is_file():
-        raise ValueError('Install exact Forge 1.16.4-35.1.37 into this directory first')
+        raise ValueError('Install exact Forge 1.16.1-32.0.108 into this directory first')
     with zipfile.ZipFile(forge) as z:
         manifest=z.read('META-INF/MANIFEST.MF').decode().replace('\r\n','\n').replace('\n ','')
-    if 'ServerLaunchArgs:' not in manifest or '--fml.mcVersion 1.16.4' not in manifest:
+    if 'ServerLaunchArgs:' not in manifest or '--fml.mcVersion 1.16.1' not in manifest:
         raise ValueError('Unexpected Forge server launcher manifest')
     library=server/'pl4-launch-profile/modlauncher-8.1.3.jar'
     library.parent.mkdir(exist_ok=True)
@@ -22,7 +22,7 @@ def prepare(server: Path):
         if len(data)>2_000_000 or hashlib.sha256(data).hexdigest()!=SHA256:
             raise ValueError('Pinned ModLauncher SHA256 mismatch')
         temporary=library.with_suffix('.part');temporary.write_bytes(data);temporary.replace(library)
-    info={'minecraft':'1.16.4','forge':'35.1.37','runtime_java':8,'modlauncher':'8.1.3',
+    info={'minecraft':'1.16.1','forge':'32.0.108','runtime_java':8,'modlauncher':'8.1.3',
           'modlauncher_url':URL,'modlauncher_sha256':SHA256,
           'stock_forge_libraries':False,'replaced_on_disk':False,'runtime_agent_required':False,
           'scope':'Explicit launch-time precedence over bundled ModLauncher 8.0.9; client profile acceptance pending'}
