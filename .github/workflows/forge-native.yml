@@ -27,6 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/prepare_1132.py
+          python3 tools/backport_1132_mcp_names.py
           git diff --check
           git add src tools/java8 tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/releases/0.2a-port.1.md
           if ! git diff --cached --quiet; then
