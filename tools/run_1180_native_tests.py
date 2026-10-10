@@ -6,7 +6,50 @@ captures actual server output, and requires a genuine 193/193 completion marker.
 It NEVER substitutes compile counts or portable assertions for native tests.
 """
 from pathlib import Path
-import json, os, queue, re, subprocess, sys, threading, time
+import json, os, queue, re, subprocess, sys, threading, time, socket, struct, secrets
+
+
+
+def remote_command(command, password, port=25575):
+    """Authenticated local-only Minecraft RCON using its length-prefixed protocol."""
+    def packet(identity, kind, payload):
+        data=struct.pack('<ii', identity, kind)+payload.encode('utf-8')+b'\x00\x00'
+        return struct.pack('<i',len(data))+data
+    def receive(sock):
+        size_data=b''
+        while len(size_data)<4:
+            chunk=sock.recv(4-len(size_data))
+            if not chunk:raise ConnectionError('RCON closed before size')
+            size_data+=chunk
+        length=struct.unpack('<i',size_data)[0]
+        if length<10 or length>1_048_576:raise ValueError('Invalid RCON response length')
+        data=b''
+        while len(data)<length:
+            chunk=sock.recv(length-len(data))
+            if not chunk:raise ConnectionError('RCON closed before payload')
+            data+=chunk
+        ident,kind=struct.unpack('<ii',data[:8])
+        return ident, data[8:-2].decode('utf-8',errors='replace')
+    with socket.create_connection(('127.0.0.1',port),timeout=5) as connection:
+        connection.settimeout(5)
+        connection.sendall(packet(37,3,password))
+        auth_id,_=receive(connection)
+        if auth_id not in (37,-1):raise RuntimeError('Unexpected RCON authorization response')
+        # Some protocol versions send an empty SERVERDATA_RESPONSE_VALUE first.
+        if auth_id==-1:raise PermissionError('Minecraft RCON rejected credentials')
+        connection.sendall(packet(38,2,command))
+        for _ in range(3):
+            ident,response=receive(connection)
+            if ident==38:return response
+        raise RuntimeError('No authenticated RCON command response')
+
+
+def send_rcon(command,password):
+    for attempt in range(20):
+        try:return remote_command(command,password)
+        except (OSError,ConnectionError):
+            if attempt==19:raise
+            time.sleep(0.5)
 
 R=Path(__file__).resolve().parents[1]
 W=R/'run-1180-native'
@@ -21,9 +64,11 @@ if W.exists():
 W.mkdir()
 OUT.mkdir(exist_ok=True)
 (W/'eula.txt').write_text('eula=true\n')
+password=secrets.token_urlsafe(28)
 (W/'server.properties').write_text(
     'server-ip=127.0.0.1\nonline-mode=false\nlevel-name=pl4-gametest-world\n'
-    'level-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n')
+    'level-type=flat\nview-distance=3\nmax-players=1\nspawn-protection=0\n'
+    'enable-rcon=true\nrcon.port=25575\nrcon.password='+password+'\n')
 cmd=['bash','gradlew','--no-daemon','--console=plain','runServer']
 events=queue.Queue()
 lines=[]
@@ -58,10 +103,16 @@ with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                     break
                 if ('Done (' in line and 'For help' in line) and not started:
                     started=True
-                    process.stdin.write('test runall\n')
-                    command_at=time.monotonic()
-                    process.stdin.flush()
-                    sent=True
+                    try:
+                        response=send_rcon('test runall',password)
+                        print('Native RCON test command response: '+response[:500],flush=True)
+                        sent=True;command_at=time.monotonic()
+                        if re.search(r'unknown|incomplete|not found',response,re.I):
+                            print('Forge38 server lacks a compatible GameTest command; refusing acceptance',flush=True)
+                            break
+                    except (OSError,ValueError,RuntimeError,PermissionError) as e:
+                        print('Could not issue authenticated native test command: '+str(e),flush=True)
+                        break
                 if re.search(r'All 193 required tests passed',line):
                     complete=True
                     process.stdin.write('stop\n')
