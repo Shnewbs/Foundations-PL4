@@ -29,7 +29,7 @@ public final class PLGameTests {
     }
 
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000001");
-    public static void register(RegisterGameTestsEvent e){e.register(PLGameTests.class);e.register(R5GameTests.class);e.register(R6GameTests.class);e.register(R7GameTests.class);e.register(R8GameTests.class);e.register(R9GameTests.class);e.register(R10GameTests.class);e.register(R11GameTests.class);e.register(R13GameTests.class);e.register(R16GameTests.class);e.register(PerformanceGameTests.class);e.register(EnergyIntegrationGameTests.class);e.register(VersionConfigGameTests.class);}
+    public static void register(RegisterGameTestsEvent e){e.register(PLGameTests.class);e.register(R5GameTests.class);e.register(R6GameTests.class);e.register(R7GameTests.class);e.register(R8GameTests.class);e.register(R9GameTests.class);e.register(R10GameTests.class);e.register(R11GameTests.class);e.register(R13GameTests.class);e.register(R16GameTests.class);e.register(PerformanceGameTests.class);e.register(EnergyIntegrationGameTests.class);e.register(VersionConfigGameTests.class);e.register(PortWorldgenGameTests.class);}
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face){
         h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(p);host.parts.put(net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()),new Part(kind,face,OWNER));
         // R5 fixtures explicitly include a centre cable: adjacent face devices are not implicit wires.

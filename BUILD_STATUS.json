@@ -15,7 +15,7 @@
   "payload_protocol": "forge-1.16.2-5",
   "source_baseline": "26403a7f5efac28a737ac027d17c7621fd28a086",
   "port_status": "NATIVE_ACCEPTANCE_PENDING",
-  "expected_native_scenarios": 193,
+  "expected_native_scenarios": 195,
   "installed_runtime_acceptance": "PENDING",
   "installed_optional_provider_acceptance": "PENDING",
   "client_visual_acceptance": "PENDING",
@@ -26,8 +26,9 @@
     "production rule suites",
     "native compile and reobfuscation",
     "Java 8 archive isolation",
-    "193 installed native scenarios",
+    "195 installed native scenarios",
     "production-only server boot",
     "exact source and checksums"
-  ]
+  ],
+  "native_worldgen_adapter": "Forge 33 setup/world-load feature-list copy; no per-tick reflection"
 }

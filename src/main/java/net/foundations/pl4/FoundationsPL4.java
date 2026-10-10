@@ -88,7 +88,7 @@ public final class FoundationsPL4 {
         MinecraftForge.EVENT_BUS.addGenericListener(net.minecraft.tileentity.TileEntity.class,net.foundations.pl4.compat.PortCapabilities::attach);
         
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::tick);
-        MinecraftForge.EVENT_BUS.addListener(PortWorldgen::biome);
+        MinecraftForge.EVENT_BUS.addListener(PortWorldgen::world);
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }
     public static ResourceLocation id(String path) { return new ResourceLocation(ID,path); }

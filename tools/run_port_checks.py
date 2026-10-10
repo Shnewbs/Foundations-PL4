@@ -33,7 +33,7 @@ def main():
     fixtures=ROOT/'src/portTest/java/net/foundations/pl4'
     registered=re.findall(r'e\.register\((\w+)\.class\)',(fixtures/'PLGameTests.java').read_text())
     count_tests=sum((fixtures/(name+'.java')).read_text().count('@GameTest(') for name in registered)
-    assert count_tests==193==status['expected_native_scenarios'],count_tests
+    assert count_tests==195==status['expected_native_scenarios'],count_tests
     packet=(source/'compat/RegisterPayloadHandlersEvent.java').read_text()
     assert 'NetworkDirection.PLAY_TO_SERVER' in packet and 'NetworkDirection.PLAY_TO_CLIENT' in packet
     assert 'version::equals,version::equals' in packet and 'setPacketHandled(true)' in packet

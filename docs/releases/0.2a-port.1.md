@@ -12,7 +12,7 @@ This old Forge track uses an explicit **ModLauncher 8.1.3 launch profile**. This
 
 ## Release gates
 
-Independent target compilation/reobfuscation, original production-rule suites, all 193 required native server scenarios on the exact installed runtime, Java 8 bytecode/archive checks, and a separate production-only startup without the test mod. Check the attached runtime summary for actual results. Source status before CI remains PENDING; this is not proof of a passing run.
+Independent target compilation/reobfuscation, original production-rule suites, all 195 required native server scenarios on the exact installed runtime, Java 8 bytecode/archive checks, and a separate production-only startup without the test mod. Check the attached runtime summary for actual results. Source status before CI remains PENDING; this is not proof of a passing run.
 
 Clients and servers must use matching exact-target versions. Back up worlds and do not downgrade existing worlds. No cross-version world migration is promised.
 
