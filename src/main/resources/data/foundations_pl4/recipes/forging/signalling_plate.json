@@ -6,7 +6,7 @@
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:signallingplate",
-    "count": 4
+    "Count": 4
   },
   "processing_ticks": 100,
   "cooldown_ticks": 200

@@ -6,7 +6,7 @@
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:sapphiredust",
-    "count": 1
+    "Count": 1
   },
   "processing_ticks": 100,
   "cooldown_ticks": 200
