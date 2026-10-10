@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native fixtures: separate from the executed, dependency-free planner tests. */
-@PrefixGameTestTemplate(false)
+@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestDontPrefix
 public final class R7GameTests {
     private static final UUID OWNER=UUID.fromString("77770000-0000-0000-0000-000000000007");
     private static HostEntity host(GameTestHelper h,BlockPos pos){h.setBlock(pos,FoundationsPL4.HOST.get());return (HostEntity)h.getBlockEntity(pos);}
@@ -45,18 +45,18 @@ public final class R7GameTests {
             }
         });
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactDown(GameTestHelper h){compact(h,Direction.DOWN,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactUp(GameTestHelper h){compact(h,Direction.UP,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactNorth(GameTestHelper h){compact(h,Direction.NORTH,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactSouth(GameTestHelper h){compact(h,Direction.SOUTH,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactWest(GameTestHelper h){compact(h,Direction.WEST,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void compactEast(GameTestHelper h){compact(h,Direction.EAST,false);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearDown(GameTestHelper h){compact(h,Direction.DOWN,true);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearUp(GameTestHelper h){compact(h,Direction.UP,true);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearNorth(GameTestHelper h){compact(h,Direction.NORTH,true);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearSouth(GameTestHelper h){compact(h,Direction.SOUTH,true);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearWest(GameTestHelper h){compact(h,Direction.WEST,true);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearEast(GameTestHelper h){compact(h,Direction.EAST,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactDown(GameTestHelper h){compact(h,Direction.DOWN,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactUp(GameTestHelper h){compact(h,Direction.UP,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactNorth(GameTestHelper h){compact(h,Direction.NORTH,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactSouth(GameTestHelper h){compact(h,Direction.SOUTH,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactWest(GameTestHelper h){compact(h,Direction.WEST,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void compactEast(GameTestHelper h){compact(h,Direction.EAST,false);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearDown(GameTestHelper h){compact(h,Direction.DOWN,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearUp(GameTestHelper h){compact(h,Direction.UP,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearNorth(GameTestHelper h){compact(h,Direction.NORTH,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearSouth(GameTestHelper h){compact(h,Direction.SOUTH,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearWest(GameTestHelper h){compact(h,Direction.WEST,true);}
+    @GameTest(template="empty",timeoutTicks=100) public static void bareRearEast(GameTestHelper h){compact(h,Direction.EAST,true);}
 
     private static void isolated(GameTestHelper h,Direction front){
         BlockPos pos=new BlockPos(3,3,3);var input=host(h,pos);put(input,Kind.DATA_CABLE,Direction.DOWN);
@@ -76,14 +76,14 @@ public final class R7GameTests {
             h.succeed();
         });
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationDown(GameTestHelper h){isolated(h,Direction.DOWN);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationUp(GameTestHelper h){isolated(h,Direction.UP);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationNorth(GameTestHelper h){isolated(h,Direction.NORTH);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationSouth(GameTestHelper h){isolated(h,Direction.SOUTH);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationWest(GameTestHelper h){isolated(h,Direction.WEST);}
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void visualIsolationEast(GameTestHelper h){isolated(h,Direction.EAST);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationDown(GameTestHelper h){isolated(h,Direction.DOWN);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationUp(GameTestHelper h){isolated(h,Direction.UP);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationNorth(GameTestHelper h){isolated(h,Direction.NORTH);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationSouth(GameTestHelper h){isolated(h,Direction.SOUTH);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationWest(GameTestHelper h){isolated(h,Direction.WEST);}
+    @GameTest(template="empty",timeoutTicks=100) public static void visualIsolationEast(GameTestHelper h){isolated(h,Direction.EAST);}
 
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="empty")
     public static void r6SaveReindexesDisplaysWithoutLosingState(GameTestHelper h){
         var target=host(h,new BlockPos(2,2,2));Part reader=new Part(Kind.ENERGY_READER,Direction.DOWN,OWNER);reader.energySystem="EU";
         Part screen=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,OWNER);screen.label="Saved display";screen.selected=reader.identity.toString();screen.displayOutward=true;
@@ -94,7 +94,7 @@ public final class R7GameTests {
         h.assertTrue(target.parts.get(0).energySystem.equals("EU")&&!target.parts.containsKey(2),"Only display indices migrate");
         h.assertTrue(loaded.identity.equals(screen.identity)&&loaded.elements.equals(screen.elements)&&loaded.displayOutward&&loaded.selected.equals(screen.selected),"All R6 identity/front/reader/layout data survives");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="empty")
     public static void codecPreservesAllThirteenSlots(GameTestHelper h){
         var target=host(h,new BlockPos(2,2,2));put(target,Kind.DATA_CABLE,Direction.DOWN);
         for(Direction f:Direction.values()){put(target,Kind.INVENTORY_READER,f);put(target,Kind.MINI_DISPLAY,f);}
@@ -103,7 +103,7 @@ public final class R7GameTests {
         h.assertTrue(loaded.parts.size()==13,"NBT loading must not truncate at the former seven-part limit");
         for(var e:target.parts.entrySet())h.assertTrue(loaded.parts.get(e.getKey()).identity.equals(e.getValue().identity),"Slot/identity round trip");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="empty")
     public static void pairedGeometryAndHitSelection(GameTestHelper h){
         var target=host(h,new BlockPos(3,3,3));
         for(Direction face:Direction.values()){
@@ -118,14 +118,14 @@ public final class R7GameTests {
         }
         h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=120)
+    @GameTest(template="empty",timeoutTicks=120)
     public static void remoteDisplayDisconnectClearsRows(GameTestHelper h){
         var input=host(h,new BlockPos(2,2,2));put(input,Kind.DATA_CABLE,Direction.DOWN);Part reader=put(input,Kind.INVENTORY_READER,Direction.EAST);put(input,Kind.NODE,Direction.WEST);chest(h,new BlockPos(1,2,2),17);
         var output=host(h,new BlockPos(3,2,2));Part cable=put(output,Kind.DATA_CABLE,Direction.DOWN);Part panel=put(output,Kind.LARGE_DISPLAY,Direction.NORTH);
         h.runAtTickTime(40,()->{h.assertTrue(amount(panel,17),"Remote output initially readable");cable.blockedFaces=1<<Direction.WEST.ordinal();output.changed();});
         h.runAtTickTime(80,()->{h.assertTrue(panel.rows.isEmpty(),"Disabled visual input must clear stale data, not freeze the last good reading");h.succeed();});
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="empty")
     public static void panelItemStaysOnReaderAndDuplicateDoesNotConsume(GameTestHelper h){
         var target=host(h,new BlockPos(3,3,3));Part reader=put(target,Kind.INVENTORY_READER,Direction.EAST);put(target,Kind.DATA_CABLE,Direction.DOWN);
         var player=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
