@@ -16,6 +16,19 @@ import uuid
 
 API = "https://minecraft.curseforge.com/api"
 MARKER = "curseforge-upload.json"
+TAG_PATTERN = re.compile(r"(?:(?:mc(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?))-)?v(?P<version>[A-Za-z0-9][A-Za-z0-9._-]*)\Z")
+
+
+def parse_tag(tag):
+    """Derive the exact Minecraft target from a published PL4 release tag."""
+    match = TAG_PATTERN.fullmatch(tag)
+    if match is None:
+        raise ValueError("Unsupported Foundations PL4 release tag")
+    minecraft, version = match.group("minecraft") or "1.21.1", match.group("version")
+    if minecraft == "1.7.10":
+        raise ValueError("Minecraft 1.7.10 is explicitly excluded from PL4")
+    loader = "NeoForge" if minecraft == "1.21.1" or minecraft.startswith("26.") else "Forge"
+    return minecraft, version, loader
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -47,10 +60,12 @@ def request_json(path, token, data=None, content_type=None):
 
 
 def release_type(version):
-    if re.search(r"alpha|\da(?:\.|$)", version, re.I):
-        return "alpha"
-    if re.search(r"beta|rc|\db(?:\.|$)", version, re.I):
+    """Never label an alpha port or preview as a stable CurseForge release."""
+    text = version.lower()
+    if re.search(r"beta|(?:^|[.\-])rc\d*(?:[.\-]|$)|\db(?:[.\-]|$)", text):
         return "beta"
+    if re.search(r"alpha|preview|experimental|(?:^|[.\-])port(?:[.\-]|$)|\da(?:[.\-]|$)", text):
+        return "alpha"
     return "release"
 
 
@@ -76,34 +91,54 @@ def main():
         return
     if not project.isdecimal() or int(project) <= 0 or not token:
         raise RuntimeError("Set a numeric CURSEFORGE_PROJECT_ID repository variable and CURSEFORGE_API_TOKEN secret.")
-    version, tag, repo = (os.environ[k] for k in ("VERSION", "RELEASE_TAG", "GITHUB_REPOSITORY"))
-    if not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != "v" + version:
-        raise RuntimeError("Invalid release version/tag.")
-    jar = Path(f"build/libs/FoundationsPL4-1.21.1-{version}.jar")
-    if not jar.is_file():
-        raise RuntimeError("The tested runtime JAR is missing.")
+    tag, repo = (os.environ[k] for k in ("RELEASE_TAG", "GITHUB_REPOSITORY"))
+    minecraft, version, loader = parse_tag(tag)
+    if (os.environ.get("VERSION", version) != version
+            or os.environ.get("MINECRAFT_VERSION", minecraft) != minecraft
+            or os.environ.get("MOD_LOADER", loader) != loader):
+        raise RuntimeError("Release version, Minecraft target, or loader differs from its immutable tag.")
+    jar = Path(f"build/libs/FoundationsPL4-{minecraft}-{version}.jar")
+    if not jar.is_file() or not jar.stat().st_size:
+        raise RuntimeError("Exact validated runtime JAR is missing: " + str(jar))
     digest = hashlib.sha256(jar.read_bytes()).hexdigest()
-    release = json.loads(gh("release", "view", tag, "--repo", repo, "--json", "assets"))
+    release = json.loads(gh("release", "view", tag, "--repo", repo, "--json", "assets,isDraft"))
+    if release.get("isDraft"):
+        raise RuntimeError("Draft releases cannot be submitted to CurseForge.")
+    if not any(a["name"] == jar.name for a in release["assets"]):
+        raise RuntimeError("The exact target JAR is absent from the published GitHub release.")
     with tempfile.TemporaryDirectory() as directory:
         marker = Path(directory) / MARKER
         if any(a["name"] == MARKER for a in release["assets"]):
             gh("release", "download", tag, "--repo", repo, "--pattern", MARKER, "--dir", directory)
             prior = json.loads(marker.read_text())
-            if prior.get("project_id") != project or prior.get("sha256") != digest:
-                raise RuntimeError("The existing CurseForge upload record differs. Do not overwrite or duplicate this version.")
-            print(f"CurseForge file {prior['file_id']} already uploaded; skipped.")
+            if (str(prior.get("project_id")) != project or prior.get("sha256") != digest
+                    or prior.get("version", version) != version
+                    or prior.get("minecraft", minecraft) != minecraft
+                    or prior.get("loader", loader) != loader):
+                raise RuntimeError("Existing CurseForge receipt differs; refusing a duplicate or overwrite.")
+            print(f"CurseForge file {prior['file_id']} already submitted for {minecraft} {version}; skipped.")
             return
         # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
+        game_versions = [minecraft, loader, "Client", "Server"]
+        maturity = release_type(version)
+        metadata = {"changelog": changelog, "changelogType": "markdown",
+                    "displayName": f"Foundations PL4 {minecraft} {version} ({loader})",
+                    "gameVersionNames": game_versions, "releaseType": maturity}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")
         if not isinstance(file_id, int) or isinstance(file_id, bool) or file_id <= 0:
             raise RuntimeError("CurseForge did not return a file ID; check the project before retrying.")
         print(f"CurseForge accepted file {file_id}; publication remains subject to CurseForge approval.")
-        marker.write_text(json.dumps({"project_id": project, "file_id": file_id, "version": version, "sha256": digest}, indent=2) + "\n")
+        marker.write_text(json.dumps({
+            "project_id": project, "file_id": file_id,
+            "minecraft": minecraft, "loader": loader, "tag": tag,
+            "version": version, "sha256": digest,
+            "game_version_names": game_versions, "release_type": maturity,
+            "upload_status": "accepted_by_api_not_moderation_verified"
+        }, indent=2) + "\n")
         try:
             gh("release", "upload", tag, str(marker), "--repo", repo)
         except subprocess.CalledProcessError:
