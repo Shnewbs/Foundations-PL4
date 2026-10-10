@@ -22,3 +22,12 @@ The full-feature Minecraft 1.14.4 / Forge 28.2.26 / Java 8 port is now **publish
 Native test successes do not establish full client graphics, all installed optional mods, public multiplayer, performance under real modpacks, or feature parity with 1.21.1 and 26.x. Optional APIs must have safe PL4-owned core alternatives where their functionality can be implemented natively; foreign power conversion cannot be invented from absent APIs. Maintain separate statuses for each Minecraft patch version. Do not substitute a neighboring-version JAR.
 
 **Further API testing is still required.**
+
+
+## Additional independently started version-gap ports
+
+**1.18.1:** created `mc/1.18.1`, targeting exact Minecraft 1.18.1 / Forge 39.1.2 / Java 17. It is derived from the separately tested full-feature 1.18.2 branch, with its own mod metadata, Gradle target, protocol identity and 193-test native release gate. Development starts at [source setup commit](https://github.com/Shnewbs/Foundations-PL4/commit/219acc3791640d47076ced615732125d4d67e47a). Native acceptance and release are distinct and must be verified; branch presence alone does not mean a working runtime.
+
+**1.13.2:** created `mc/1.13.2` targeting exact Minecraft 1.13.2 / Forge 25.0.223 / Java 8. Initial native build [38019426280](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38019426280) failed because Mojang official ProGuard mappings are unavailable for 1.13.2. Updated Gradle to archived MCP `snapshot:20180921-1.13`; [native build 38019579683](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38019579683) got past mapping setup but revealed substantial MCP-era class/API naming incompatibilities inherited from the 1.14.4 feature source. **1.13.2 native compilation and scenarios are NOT complete; no runtime was published.** This will require a dedicated MCP source backport, not another loader version-string change. Keep Java 8 and the correct native test harness separate from modern GameTests.
+
+Both tracks retain full-feature parity as a goal, rather than claiming it or substituting a compiled neighboring Minecraft JAR. Optional installed-provider testing, visuals, multiplayer and performance remain independently open.
