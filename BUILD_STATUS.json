@@ -1,11 +1,11 @@
 {
   "project": "Foundations PL4",
   "version": "0.2a-port.1",
-  "minecraft": "1.19.1",
+  "minecraft": "1.19",
   "java": 17,
   "release_channel": "alpha",
   "host_save_schema": 2,
-  "payload_protocol": "forge-1.19.1-5",
+  "payload_protocol": "forge-1.19-5",
   "release_gate": [
     "offline regressions",
     "native build",
@@ -21,8 +21,9 @@
   "release_notes": "docs/releases/0.2a-port.1.md",
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
-  "loader_version": "42.0.9",
-  "port_status": "INDEPENDENT_NATIVE_ACCEPTANCE_PENDING",
+  "loader_version": "41.1.0",
+  "port_status": "NATIVE_API_PORT_PENDING",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING"
+  "installed_runtime_acceptance": "PENDING",
+  "native_compilation": "PENDING"
 }

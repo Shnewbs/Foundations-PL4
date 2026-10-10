@@ -1,16 +1,14 @@
-# Foundations PL4 — Minecraft 1.19.1 / Forge42
+# Foundations PL4 1.19 — Forge41 source port
 
-Minecraft **1.19.1** / Forge **42.0.9** / Java **17**, independently
-ported from the full-feature 1.19.2 source.
+This branch independently targets **Minecraft 1.19 / Forge 41.1.0 / Java 17**
+using the separately tested full-feature 1.19.1 source. It is not a
+relabelled 1.19.1 JAR. The full multipart network, storage, displays/editor,
+energy and fluid routing, ownership and saved transfers remain in source.
 
-This is not a relabeled 1.19.2 JAR. Native API and gameplay tests must pass
-before release. Original multipart cable/data networks, displays and editors,
-owner-separated wireless storage, Forge-sided item/fluid/energy transfers and
-saved escrow, sapphire ore and forging work remain the feature baseline.
+A playable alpha needs independent Forge41 compilation, artifact metadata and
+reobfuscation checks, and **191 original native GameTests passed**. Real-client,
+installed optional APIs, live multiplayer, and sustained modpack performance
+remain separate acceptance gates; third-party energy conversions must be
+grounded in actual adapters and conservation semantics.
 
-Publication is gated on exact-version Forge compilation, reobfuscation,
-191/191 native GameTests, resource identity and SHA256-verified JAR/sources.
-Installed optional third-party APIs, real-client visuals, live multiplayer
-and sustained modpack performance remain independent acceptance steps.
-
-**Further API testing is still required.**
+**Further API testing is required.**
