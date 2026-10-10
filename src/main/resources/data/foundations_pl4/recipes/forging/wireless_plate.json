@@ -1,8 +1,13 @@
 {
   "type": "foundations_pl4:forging_hammer",
-  "ingredient": {
-    "tag": "c:ender_pearls"
-  },
+  "ingredient": [
+    {
+      "tag": "c:ender_pearls"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    }
+  ],
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:wirelessplate",

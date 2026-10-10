@@ -1,8 +1,16 @@
 {
   "type": "foundations_pl4:forging_hammer",
-  "ingredient": {
-    "tag": "c:dusts/redstone"
-  },
+  "ingredient": [
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
   "input_count": 1,
   "result": {
     "id": "foundations_pl4:signallingplate",
