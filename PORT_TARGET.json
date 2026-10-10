@@ -1,0 +1,9 @@
+{
+  "minecraft": "1.20",
+  "forge": "46.0.14",
+  "loader": "Forge",
+  "java": 17,
+  "source_baseline": "mc/1.20.1",
+  "required_native_tests": 191,
+  "release_allowed": false
+}
