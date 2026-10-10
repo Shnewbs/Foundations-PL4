@@ -319,12 +319,12 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty")
     public static void readerEditsRejectForeignOwnersStaleIdsAndForgedTargets(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,Direction.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
-        var stranger=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
+        var stranger=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
         stranger.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);
         h.assertTrue(!ref.host().canEdit(stranger),"Fixture uses a foreign non-operator");
         PLPackets.edit(stranger,new PLPackets.Edit(pos,part.slot(),part.identity,"label","forged"));
         h.assertTrue(part.label.isEmpty(),"Foreign owner cannot rename the reader");
-        var owner=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-owner"));
+        var owner=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-owner"));
         owner.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);h.assertTrue(ref.host().canEdit(owner),"Fixture owner can edit");
         PLPackets.edit(owner,new PLPackets.Edit(pos,part.slot(),UUID.randomUUID(),"label","stale"));
         h.assertTrue(part.label.isEmpty(),"Replaced part identity rejects old UI edits");

@@ -116,7 +116,7 @@ public final class R16GameTests {
     public static void r3ComponentControlsPreserveOtherLinksAndClockSettings(GameTestHelper h){
         var array=host(h,new BlockPos(2,1,1),Kind.ARRAY,Direction.WEST);var p=part(array,Direction.WEST);
         var a=new Part.Link("minecraft:overworld",new BlockPos(1,1,1),Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",new BlockPos(5,1,1),Direction.DOWN,null,null);p.links.add(a);p.links.add(b);
-        var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R3-Test"));var at=array.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R3-Test"));var at=array.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
         var remove=new PLPackets.Edit(at,p.slot(),p.identity,"remove_link",ReaderChannels.id(a));PLPackets.edit(user,remove);PLPackets.edit(user,remove);
         h.assertTrue(p.links.equals(List.of(b)),"Repeated stale removal cannot delete the next link");
         var clock=host(h,new BlockPos(4,1,1),Kind.CLOCK,Direction.WEST);var c=part(clock,Direction.WEST);var cp=clock.getBlockPos();user.setPos(cp.getX(),cp.getY()+1,cp.getZ());
@@ -154,7 +154,7 @@ public final class R16GameTests {
     @GameTest(template="empty")
     public static void escrowBlocksRouteAndFilterEditsAndSyncsToClient(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.UP);Part p=part(host,Direction.UP);p.transferMode=2;p.pendingItem=new ItemStack(Items.DIAMOND,3);
-        var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
         for(var entry:Map.of("input_filter","minecraft:stone","output_filter_mode","DENY","transfer","1","input_channel","other","filter","minecraft:dirt","whitelist","false").entrySet())PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,entry.getKey(),entry.getValue()));
         h.assertTrue(p.inputFilter.isEmpty()&&p.outputFilterMode.equals("INHERIT")&&p.transferMode==2&&p.inputChannel.isEmpty()&&p.filter.isEmpty()&&p.whitelist,"Buffered resources protect route semantics from settings edits");
         Part client=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
@@ -178,7 +178,7 @@ public final class R16GameTests {
     @GameTest(template="empty")
     public static void signallerStatementPacketsAreBoundedPersistentAndIdentitySafe(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(2,1,1),Kind.SIGNALLER,Direction.UP);Part p=part(host,Direction.UP);
-        var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Rules"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
+        var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Rules"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
         for(String invalid:List.of("{}","null","[]","{\"threshold\":true}"))PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statement_add",invalid));
         h.assertTrue(p.statements.isEmpty(),"Malformed statements are rejected without mutation");
         var json=new com.google.gson.JsonObject();json.addProperty("reader","");json.addProperty("key","value");json.addProperty("operator",">=");json.addProperty("threshold",2);
@@ -206,7 +206,7 @@ public final class R16GameTests {
     private record StorageFixture(HostEntity host,Part node,ChestBlockEntity chest,net.minecraft.server.level.ServerPlayer player,ItemStack tool){}
     private static StorageFixture storageFixture(GameTestHelper h,String name){
         ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));HostEntity host=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);Part node=part(host,Direction.WEST);
-        var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,name));user.getInventory().clearContent();
+        var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,name));user.getInventory().clearContent();
         ItemStack tool=new ItemStack(FoundationsPL4.item("wirelessstorage"));var binding=new Part.Link(h.getLevel().dimension().location().toString(),host.getBlockPos(),node.face,null,node.identity);
         net.foundations.pl4.compat.CustomData.update(net.foundations.pl4.compat.DataComponents.CUSTOM_DATA,tool,t->t.put("pl_link",binding.save()));
         user.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,tool);return new StorageFixture(host,node,chest,user,tool);

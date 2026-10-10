@@ -22,8 +22,8 @@ public final class R8GameTests {
         var part=new Part(Kind.LARGE_DISPLAY,face,OWNER);part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind==Kind.LARGE_DISPLAY).findFirst().orElseThrow();}
-    private static FakePlayer player(GameTestHelper h,HostEntity at,ItemStack stack){
-        var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;p.setShiftKeyDown(false);
+    private static net.minecraft.server.level.ServerPlayer player(GameTestHelper h,HostEntity at,ItemStack stack){
+        var p=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;p.setShiftKeyDown(false);
         var centre=at.getBlockPos().getCenter();p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(InteractionHand.MAIN_HAND,stack);return p;
     }
     private static void configure(Part p){p.label="Saved machine board";p.selected="power_main";p.color=0x53AACC;p.elements.add(new Part.Element("EU","","storage:eu",7,19,0xABDEEF,false));p.layoutRevision=20;}

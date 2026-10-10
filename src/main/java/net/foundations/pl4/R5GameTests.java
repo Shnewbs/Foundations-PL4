@@ -27,8 +27,8 @@ public final class R5GameTests {
     }
     private static void rebuild(GameTestHelper h){NetworkEngine.rebuild(h.getLevel().getServer());}
     private static void chest(GameTestHelper h,BlockPos pos){h.setBlock(pos,Blocks.CHEST);((ChestBlockEntity)h.getBlockEntity(pos)).setItem(0,new ItemStack(Items.DIAMOND,17));}
-    private static FakePlayer player(GameTestHelper h,BlockPos pos){
-        var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R5-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;
+    private static net.minecraft.server.level.ServerPlayer player(GameTestHelper h,BlockPos pos){
+        var p=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new GameProfile(OWNER,"PL4-R5-Test"));p.getInventory().clearContent();p.getAbilities().instabuild=false;
         var absolute=h.absolutePos(pos);p.setPos(absolute.getX()+.5,absolute.getY(),absolute.getZ()+.5);return p;
     }
     @GameTest(template="empty")
