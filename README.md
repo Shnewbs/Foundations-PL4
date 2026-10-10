@@ -11,7 +11,9 @@ in progress; source presence is not completed feature acceptance.
 Build-time JvmDowngrader conversion retains the minimal relocated JDK compatibility helpers,
 license and matching upstream sources. No runtime agent is used. Only a successfully tested
 converted, reobfuscated runtime may be released; unconverted intermediates are not installable
-release files. The full 191-scenario suite is retained in a separate test module.
+release files. The full 193-scenario suite is retained in a separate test module.
 
 **Further API testing is still required.** Client graphics, optional-provider combinations,
 multiplayer and sustained performance acceptance remain separate. No full PL2 parity claim.
+
+Forge 31 uses native JSON recipe serialization and global NBT item/fluid registries rather than newer Mojang codecs. Strict optional field validation, result NBT, and registry-name dimension links are retained. Two target-specific scenarios cover native ore attachment and malformed JSON fields.

@@ -85,7 +85,7 @@ public final class DataSampler {
             }
         }
         if(!p.mode.equals("STORAGE")&&(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER)){
-            for(Part.Row row:pictures.rows(ref.level().registryAccess(),p.descending,p.mode.equals("POS")?1:PLConfig.MAX_ROWS.get(),p.mode.equals("POS")?p.index:0))merge(rows,row);
+            for(Part.Row row:pictures.rows(null,p.descending,p.mode.equals("POS")?1:PLConfig.MAX_ROWS.get(),p.mode.equals("POS")?p.index:0))merge(rows,row);
         }
         if(p.mode.equals("STORAGE")&&(p.kind==Kind.INVENTORY_READER||p.kind==Kind.FLUID_READER)){
             String unit=p.kind==Kind.FLUID_READER?"mB":"items";

@@ -2,7 +2,7 @@ package net.foundations.pl4;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
-import net.minecraft.util.registry.DynamicRegistries;
+
 import net.minecraft.util.ActionResultType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ public final class PartItem extends Item {
         Part.DisplaySettings inherited=null;long inheritedRevision=0;
         if(extend){
             if(!host.canEdit(player)||!l.mayInteract(player,pos))return ActionResultType.FAIL;
-            var point=c.getClickLocation().subtract(net.minecraft.util.math.vector.Vector3d.atLowerCornerOf(pos));
+            var point=c.getClickLocation().subtract(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(pos));
             var direction=net.foundations.pl4.core.DisplayPlacement.extension(clicked.face.ordinal(),clicked.displayOutward,c.getClickedFace().ordinal(),point.x,point.y,point.z);
             if(direction.isEmpty()){
                 if(!l.isClientSide)player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
@@ -88,7 +88,7 @@ public final class PartItem extends Item {
         var saved=net.foundations.pl4.compat.PortData.get(c.getItemInHand(),DataComponents.CUSTOM_DATA);
         if(saved!=null&&saved.contains("pl_part")){
             var tag=saved.copyTag().getCompound("pl_part");tag.putString("kind",kind.id);tag.putInt("face",face.ordinal());
-            Part restored=Part.load(tag,c.getLevel().registryAccess());
+            Part restored=Part.load(tag,null);
             if(restored!=null){part=restored;part.owner=player.getUUID();part.identity=java.util.UUID.randomUUID();}
         }
         if(extending)part.displayOutward=outward;
@@ -97,7 +97,7 @@ public final class PartItem extends Item {
     @Override public String getDescriptionId() { return "block."+FoundationsPL4.ID+"."+kind.id; }
     /** Normal block-break drop. Unconfigured parts carry no CustomData and therefore stack normally.
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
-    public static ItemStack stack(Part part,net.minecraft.util.registry.DynamicRegistries registry) {
+    public static ItemStack stack(Part part,Object registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());
         if(PartItemDataRules.needsEscrowPayload(!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
             Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
@@ -111,7 +111,7 @@ public final class PartItem extends Item {
         return stack;
     }
     /** Operator removal deliberately preserves meaningful configuration, but never runtime identity/owner/ticks/signal/revision. */
-    public static ItemStack savedStack(Part part,net.minecraft.util.registry.DynamicRegistries registry) {
+    public static ItemStack savedStack(Part part,Object registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());putSaved(stack,canonical(part.save(registry,false)));return stack;
     }
     private static void putSaved(ItemStack stack,CompoundNBT tag){CustomData.update(DataComponents.CUSTOM_DATA,stack,t->t.put("pl_part",tag));}

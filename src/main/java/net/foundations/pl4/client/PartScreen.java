@@ -30,7 +30,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
     public UUID identity(){return clickedIdentity;}
     public void update(Part p){boolean linksChanged=!p.links.equals(part.links)||!p.statements.equals(part.statements)||(ComponentLinks.supported(p)&&(!p.targetChoices.equals(part.targetChoices)||p.targetPage!=part.targetPage));if(!p.targetChannel.equals(part.targetChannel)&&fields.containsKey("channel_name"))fields.get("channel_name").setValue(p.channelNames.getOrDefault(p.targetChannel,""));if(!p.kind.display()||p.layoutRevision>=part.layoutRevision)part=p;if(viewToggle!=null)viewToggle.setMessage(new net.minecraft.util.text.StringTextComponent("View: "+part.displayMode));
         if(channelPageButton!=null)channelPageButton.setMessage(new net.minecraft.util.text.StringTextComponent("Next: "+(part.targetPage+1)+" / "+Math.max(1,(part.targetCount+63)/64)));
-        if(channelButton!=null){channelButton.setMessage(new net.minecraft.util.text.StringTextComponent(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
+        if(channelButton!=null){channelButton.setMessage(new net.minecraft.util.text.StringTextComponent(font.substrByWidth("Target: "+ReaderChannels.label(part),w-52)));channelButton.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(ReaderChannels.label(part)+" · click for next target; 64 targets per page")));}
         if(energyInputButton!=null){energyInputButton.setMessage(new net.minecraft.util.text.StringTextComponent("Input: "+EnergyPorts.label(part.energyInput)));energyInputButton.active=editable&&part.energyRouteEditable();}
         if(energyOutputButton!=null){energyOutputButton.setMessage(new net.minecraft.util.text.StringTextComponent("Output: "+EnergyPorts.label(part.energyOutput)));energyOutputButton.active=editable&&part.energyRouteEditable()&&part.energyConvert;}
         if(energyModeButton!=null){energyModeButton.setMessage(new net.minecraft.util.text.StringTextComponent("Conversion: "+(part.energyConvert?"On":"Off")));energyModeButton.active=editable&&part.energyRouteEditable();}
@@ -43,7 +43,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
         w=Math.min(540,width-12);h=Math.min(360,height-12);left=(width-w)/2;top=(height-h)/2;fields.clear();contentWidgets.clear();viewToggle=null;channelButton=null;channelPageButton=null;energyInputButton=energyOutputButton=energyModeButton=null;
         button("Data",left+10,top+25,60,b->{tab=0;scroll=0;rebuildWidgets();});
         button("Settings",left+74,top+25,80,b->{tab=1;rebuildWidgets();});
-        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
+        if(part.kind.display())button("Edit screen",left+158,top+25,82,b->{Part anchor=Part.load(part.save(null,true),null);anchor.identity=clickedIdentity;minecraft.setScreen(new DisplayEditorScreen(pos,anchor,editable));});
         button("Done",left+w-66,top+h-27,56,b->onClose());
         if(tab==1){
             int x=left+112,y=top+58,fw=Math.max(90,w-132);
@@ -65,7 +65,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
                 button(label,left+12,y,Math.min(w-24,font.width("Energy: CREATE")+24),b->{String value=next(new String[]{"AUTO","FE","EU","J","CREATE","AE2"},part.energySystem);send("energy_system",value);b.setMessage(new net.minecraft.util.text.StringTextComponent("Energy: "+value));});y+=28;
             }
             if(part.kind.reader()){
-                channelButton=button(font.plainSubstrByWidth("Target: "+ReaderChannels.label(part),w-52),left+12,y,w-24,b->{
+                channelButton=button(font.substrByWidth("Target: "+ReaderChannels.label(part),w-52),left+12,y,w-24,b->{
                     List<String> ids=new ArrayList<>();ids.add("");part.targetChoices.forEach(c->ids.add(c.id()));
                     int next=(ids.indexOf(part.targetChannel)+1)%ids.size();send("target_channel",ids.get(next));
                 });channelButton.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent("Cycle stable block/entity targets on this page. All targets clears selection. Slot/tank and list mode stay separate.")));y+=28;
@@ -118,7 +118,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
                     try{var json=new com.google.gson.JsonObject();json.addProperty("reader",fields.get("selected").getValue());json.addProperty("key",fields.get("metric").getValue());json.addProperty("operator",part.comparison);json.addProperty("threshold",Double.parseDouble(fields.get("threshold").getValue()));send("statement_add",json.toString());}catch(IllegalArgumentException invalid){displayError="Enter a finite threshold.";}
                 }).active=editable&&part.statements.size()<net.foundations.pl4.core.SignalRules.MAX_STATEMENTS;y+=28;
                 for(var statement:part.statements){String label=(statement.reader().isEmpty()?"First reader":statement.reader())+" / "+(statement.key().isEmpty()?"first value":statement.key())+" "+statement.operator()+" "+statement.threshold();
-                    Button remove=button(font.plainSubstrByWidth("Remove: "+label,w-48),left+12,y,w-24,b->send("statement_remove",statement.id().toString()));remove.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(label+" · remove this statement. With no statements, the original single condition is used.")));y+=24;
+                    Button remove=button(font.substrByWidth("Remove: "+label,w-48),left+12,y,w-24,b->send("statement_remove",statement.id().toString()));remove.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(label+" · remove this statement. With no statements, the original single condition is used.")));y+=24;
                 }
             }
             if(!part.kind.display())button("Data: "+part.mode,left+12,y,132,b->{String v=next(new String[]{"LIST","STACK","SLOT","POS","STORAGE","CHANNEL"},part.mode);send("mode",v);b.setMessage(new net.minecraft.util.text.StringTextComponent("Data: "+v));});
@@ -149,11 +149,11 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
                     button("Search",left+12,y,80,b->send("link_query",fields.get("link_query").getValue()));
                     button("Previous",left+98,y,80,b->send("link_page",Integer.toString(Math.max(0,part.targetPage-1))));
                     button("Next",left+184,y,60,b->send("link_page",Integer.toString(part.targetPage+1)));y+=28;
-                    for(var choice:part.targetChoices){button(font.plainSubstrByWidth("Add: "+choice.name(),w-48),left+12,y,w-24,b->send("link_add",choice.id()));y+=24;}
+                    for(var choice:part.targetChoices){button(font.substrByWidth("Add: "+choice.name(),w-48),left+12,y,w-24,b->send("link_add",choice.id()));y+=24;}
                 }
                 button("Clear links ("+part.links.size()+")",left+12,y,140,b->send("clear_links",""));y+=28;
                 for(var link:part.links){String id=ReaderChannels.id(link);String detail=link.dimension()+" "+link.pos().getX()+", "+link.pos().getY()+", "+link.pos().getZ()+" "+link.side().getName()+(link.entity()==null?"":" · entity "+link.entity());
-                    var remove=button(font.plainSubstrByWidth("Remove: "+detail,w-48),left+12,y,w-24,b->send("remove_link",id));remove.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(detail+" · remove only this saved link")));y+=24;
+                    var remove=button(font.substrByWidth("Remove: "+detail,w-48),left+12,y,w-24,b->send("remove_link",id));remove.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent(detail+" · remove only this saved link")));y+=24;
                     button("Make first target",left+12,y,132,b->send("link_first",id));y+=24;
                 }
             }
@@ -195,14 +195,14 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
         hoveredRowTooltip=null;
         g.fill(left,top,left+w,top+h,0xF21B2533);g.fill(left,top,left+w,top+22,0xFF293D56);
         g.drawString(font,title,left+10,top+7,0xFFE4F3FF,false);
-        if(!displayError.isBlank())g.drawString(font,font.plainSubstrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
+        if(!displayError.isBlank())g.drawString(font,font.substrByWidth(displayError,w-180),left+126,top+h-21,0xFFFFA5A5,false);
         if(tab==0){
-            g.drawString(font,font.plainSubstrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
+            g.drawString(font,font.substrByWidth(part.status,w-20),left+10,top+52,0xFF8CAEC5,false);
             int count=Math.max(1,(h-112)/19);scroll=net.foundations.pl4.compat.PortMath.clamp(scroll,0,Math.max(0,part.rows.size()-count));
             for(int i=0;i<count&&i+scroll<part.rows.size();i++){
                 Part.Row row=part.rows.get(i+scroll);int y=top+73+i*19;
                 if(i%2==0)g.fill(left+8,y-2,left+w-12,y+16,0x442C465E);
-                g.drawString(font,font.plainSubstrByWidth(row.text(),w-34),left+13,y+2,0xFFDBEFFF,false);
+                g.drawString(font,font.substrByWidth(row.text(),w-34),left+13,y+2,0xFFDBEFFF,false);
                 if(mx>=left+8&&mx<left+w-12&&my>=y&&my<y+18)hoveredRowTooltip=new net.minecraft.util.text.StringTextComponent(row.key()+" · click to copy");
             }
             if(part.rows.size()>count){int track=h-112;int thumb=Math.max(12,track*count/part.rows.size());int sy=top+73+(track-thumb)*scroll/Math.max(1,part.rows.size()-count);g.fill(left+w-8,top+73,left+w-5,top+73+track,0xFF30445C);g.fill(left+w-8,sy,left+w-5,sy+thumb,0xFF79D3FF);}

@@ -27,8 +27,8 @@ final class DisplayArrangementScreen extends net.foundations.pl4.compat.PortScre
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);
         g.drawString(font,title,left+10,top+10,0xFFE3F2F4,false);
         String selection=parent.selectionCount()+" selected · Shift-click to add elements";
-        g.drawString(font,font.plainSubstrByWidth(selection,w-20),left+10,top+27,0xFF92CAD2,false);
-        g.drawString(font,font.plainSubstrByWidth("One: canvas edges. Multiple: selection bounds.",w-20),left+10,top+41,0xFFB8C4CC,false);
+        g.drawString(font,font.substrByWidth(selection,w-20),left+10,top+27,0xFF92CAD2,false);
+        g.drawString(font,font.substrByWidth("One: canvas edges. Multiple: selection bounds.",w-20),left+10,top+41,0xFFB8C4CC,false);
     }
     @Override public void tick(){parent.tick();}
     @Override public boolean mouseClicked(double x,double y,int button){if(button==1){onClose();return true;}return super.mouseClicked(x,y,button);}

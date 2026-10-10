@@ -34,7 +34,7 @@ public final class ToolItem extends Item {
         if(mode==Mode.OPERATOR&&host!=null&&part!=null){
             if(!host.canEdit(player)||!level.mayInteract(player,pos))return ActionResultType.FAIL;
             if(player.isShiftKeyDown()){
-                host.parts.remove(part.slot());Block.popResource(level,pos,PartItem.savedStack(part,level.registryAccess()));
+                host.parts.remove(part.slot());Block.popResource(level,pos,PartItem.savedStack(part,null));
                 if(host.parts.isEmpty())level.removeBlock(pos,false);else host.changed();
             }else if(part.kind.cable()) {
                 Direction side=host.cableDirection(new BlockRayTraceResult(c.getClickLocation(),c.getClickedFace(),pos,false));
@@ -57,15 +57,15 @@ public final class ToolItem extends Item {
         if(mode==Mode.STORAGE){
             if(player.isShiftKeyDown()){
                 if(host==null||part==null||(part.kind!=Kind.NODE&&part.kind!=Kind.TRANSFER_NODE)||!host.canEdit(player)||!level.mayInteract(player,pos))return ActionResultType.FAIL;
-                save(c.getItemInHand(),new Part.Link(level.dimension().location().toString(),pos,part.face,null,part.identity));
+                save(c.getItemInHand(),new Part.Link(level.dimension.getType().getRegistryName().toString(),pos,part.face,null,part.identity));
                 player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Wireless Storage bound to inventory Node"),true);
             }else WirelessStorage.open(player,c.getHand());
             return ActionResultType.CONSUME;
         }
         if(mode==Mode.BLOCK_LINK||mode==Mode.MONITOR||mode==Mode.ENTITY_LINK){
             if(player.isShiftKeyDown()){
-                save(c.getItemInHand(),new Part.Link(level.dimension().location().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
-                player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+pos.toShortString()+" in "+level.dimension().location()),true);return ActionResultType.CONSUME;
+                save(c.getItemInHand(),new Part.Link(level.dimension.getType().getRegistryName().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
+                player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+pos.toShortString()+" in "+level.dimension.getType().getRegistryName()),true);return ActionResultType.CONSUME;
             }
             Part.Link link=link(c.getItemInHand());
             if(host!=null&&part!=null&&link!=null&&(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())){
@@ -77,7 +77,7 @@ public final class ToolItem extends Item {
     }
     @Override public ActionResultType interactLivingEntity(ItemStack stack,PlayerEntity player,LivingEntity entity,Hand hand){
         if(mode!=Mode.ENTITY_LINK)return ActionResultType.PASS;
-        if(!player.level.isClientSide){save(stack,new Part.Link(entity.level.dimension().location().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+entity.getName().getString()),true);}return ActionResultType.sidedSuccess(player.level.isClientSide);
+        if(!player.level.isClientSide){save(stack,new Part.Link(entity.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+entity.getName().getString()),true);}return net.foundations.pl4.compat.PortInteractions.sidedSuccess(player.level.isClientSide);
     }
     @Override public ActionResult<ItemStack> use(World l,PlayerEntity player,Hand hand){
         ItemStack stack=player.getItemInHand(hand);
@@ -94,6 +94,6 @@ public final class ToolItem extends Item {
                 }else sp.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked target is not loaded"),true);
             }
         }
-        return ActionResult.sidedSuccess(stack,l.isClientSide);
+        return net.foundations.pl4.compat.PortInteractions.sidedSuccess(stack,l.isClientSide);
     }
 }

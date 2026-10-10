@@ -17,7 +17,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.*;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
@@ -70,14 +70,14 @@ public final class R5GameTests {
         net.foundations.pl4.compat.PortAssertions.check(a.outline().bounds().maxX==1,"Connected arm must be included in picking/collision");
         h.getLevel().removeBlock(b.getBlockPos(),false);rebuild(h);
         net.foundations.pl4.compat.PortAssertions.check(Math.abs(a.outline().bounds().maxX-.625)<.0001,"Removed arm must leave no stale collision");
-        var sideHit=new BlockRayTraceResult(Vector3d.atLowerCornerOf(a.getBlockPos()).add(.95,.5,.5),Direction.UP,a.getBlockPos(),false);
+        var sideHit=new BlockRayTraceResult(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(a.getBlockPos()).add(.95,.5,.5),Direction.UP,a.getBlockPos(),false);
         net.foundations.pl4.compat.PortAssertions.check(a.cableDirection(sideHit)==Direction.EAST,"Clicking a rod side must select that rod, not its surface normal");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void partPlacementBypassesReaderGui(GameTestHelper h){
         var a=host(h,new BlockPos(2,1,2),Kind.DATA_CABLE,Direction.DOWN,false);var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(Hand.MAIN_HAND,stack);
-        var hit=new BlockRayTraceResult(Vector3d.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
+        var hit=new BlockRayTraceResult(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
         var result=FoundationsPL4.HOST.get().use(a.getBlockState(),h.getLevel(),a.getBlockPos(),player,Hand.MAIN_HAND,hit);
         net.foundations.pl4.compat.PortAssertions.check(result==ActionResultType.PASS,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new ItemUseContext(player,Hand.MAIN_HAND,hit));
@@ -92,7 +92,7 @@ public final class R5GameTests {
         var player=player(h,new BlockPos(2,1,3));
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DATA_CABLE).get());
         player.setItemInHand(Hand.MAIN_HAND,stack);
-        var hit=new BlockRayTraceResult(Vector3d.atLowerCornerOf(a.getBlockPos()).add(.5625,.5,.5),Direction.EAST,a.getBlockPos(),false);
+        var hit=new BlockRayTraceResult(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(a.getBlockPos()).add(.5625,.5,.5),Direction.EAST,a.getBlockPos(),false);
         stack.getItem().useOn(new ItemUseContext(player,Hand.MAIN_HAND,hit));
         net.foundations.pl4.compat.PortAssertions.check(endpoint.parts.containsKey(6)&&stack.isEmpty(),"Clicking the cable east face must fill the endpoint cell and consume exactly one cable");
         net.foundations.pl4.compat.PortAssertions.check(NetworkEngine.topologyBuildCount()==builds,"Cable placement must not synchronously rebuild the entire loaded network");
@@ -125,10 +125,10 @@ public final class R5GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void cablePortStateRoundTrips(GameTestHelper h){
         Part cable=new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER);cable.blockedFaces=42;
-        var loaded=Part.load(cable.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var loaded=Part.load(cable.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.blockedFaces==42&&loaded.identity.equals(cable.identity),"Port mask and part identity must persist");
-        var old=cable.save(h.getLevel().registryAccess(),false);old.remove("blockedFaces");
-        net.foundations.pl4.compat.PortAssertions.check(Part.load(old,h.getLevel().registryAccess()).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
+        var old=cable.save(null,false);old.remove("blockedFaces");
+        net.foundations.pl4.compat.PortAssertions.check(Part.load(old,null).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void obstructedLegacyHammerDoesNotOverwriteBlocks(GameTestHelper h){
@@ -167,8 +167,8 @@ public final class R5GameTests {
     public static void hammerInventoryAndProgressRoundTrip(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=33;hammer.cooldown=9;
-        CompoundNBT saved=new CompoundNBT();hammer.saveAdditional(saved,h.getLevel().registryAccess());
-        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevelAndPosition(h.getLevel(),hammer.getBlockPos());loaded.loadAdditional(saved,h.getLevel().registryAccess());
+        CompoundNBT saved=new CompoundNBT();hammer.saveAdditional(saved,null);
+        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevelAndPosition(h.getLevel(),hammer.getBlockPos());loaded.loadAdditional(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.progress==33&&loaded.cooldown==9&&loaded.inventory.getStackInSlot(0).getCount()==17,"Existing hammer state must survive save/load");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

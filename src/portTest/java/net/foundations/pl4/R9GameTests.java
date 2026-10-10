@@ -31,7 +31,7 @@ public final class R9GameTests {
     private static FakePlayer player(GameTestHelper h,HostEntity at,boolean allowed){
         UUID id=allowed?owner(h):UUID.nameUUIDFromBytes((owner(h)+"-other").getBytes(java.nio.charset.StandardCharsets.UTF_8));
         FakePlayer player=FakePlayerFactory.get(h.getLevel(),new GameProfile(id,"PL4-R9-Test"));
-        var p=net.minecraft.util.math.vector.Vector3d.atCenterOf(at.getBlockPos());player.setPos(p.x+1,p.y,p.z+1);return player;
+        var p=net.foundations.pl4.compat.PortVectors.atCenterOf(at.getBlockPos());player.setPos(p.x+1,p.y,p.z+1);return player;
     }
     private static PLPackets.LayoutEdit packet(HostEntity host,long revision,String action,DisplayElements.Spec spec,String value){
         Part p=part(host);return new PLPackets.LayoutEdit(host.getBlockPos(),p.slot(),p.identity,revision,action,spec==null?new UUID(0,0):spec.id(),spec==null?value:ElementJson.encode(spec));
@@ -41,54 +41,54 @@ public final class R9GameTests {
     public static void allTypedElementsPersist(GameTestHelper h){
         Part p=new Part(Kind.DISPLAY,Direction.NORTH,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=3;
         for(var type:DisplayElements.Type.values())p.elements.add(new Part.Element(spec(type).onPage(3)));
-        Part copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part copy=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(copy.displayMode==p.displayMode&&copy.displayPage==3&&copy.elements.equals(p.elements),"All seven types and stable element IDs/page must survive NBT");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void oldTextAndBarMigrateWithoutInventoryFallback(GameTestHelper h){
-        Part p=new Part(Kind.DISPLAY,Direction.UP,owner(h));CompoundNBT saved=p.save(h.getLevel().registryAccess(),false);saved.remove("displayMode");
+        Part p=new Part(Kind.DISPLAY,Direction.UP,owner(h));CompoundNBT saved=p.save(null,false);saved.remove("displayMode");
         ListNBT elements=new ListNBT();for(boolean bar:new boolean[]{false,true}){CompoundNBT e=new CompoundNBT();e.putString("text","Legacy");e.putString("key","storage");e.putInt("x",10);e.putInt("y",bar?30:10);e.putInt("color",0xAAFFEE);e.putBoolean("bar",bar);elements.add(e);}saved.put("elements",elements);
-        Part copy=Part.load(saved,h.getLevel().registryAccess());
+        Part copy=Part.load(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(copy.displayMode==DisplayElements.Mode.CUSTOM&&copy.elements.get(0).spec().type()==DisplayElements.Type.TEXT&&copy.elements.get(1).spec().type()==DisplayElements.Type.BAR,"Legacy elements become typed custom layout");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void emptyCustomLayoutDoesNotResurrectList(GameTestHelper h){
         Part p=new Part(Kind.DISPLAY,Direction.WEST,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;
-        Part copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());net.foundations.pl4.compat.PortAssertions.check(copy.elements.isEmpty()&&copy.displayMode==DisplayElements.Mode.CUSTOM,"Saved blank custom canvas is not automatic list");h.succeed();
+        Part copy=Part.load(p.save(null,false),null);net.foundations.pl4.compat.PortAssertions.check(copy.elements.isEmpty()&&copy.displayMode==DisplayElements.Mode.CUSTOM,"Saved blank custom canvas is not automatic list");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void visualItemCountIsSeparateFromPicture(GameTestHelper h){
-        VisualSamples samples=new VisualSamples();samples.item(new ItemStack(Items.STONE,64));samples.item(new ItemStack(Items.STONE,33));var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
+        VisualSamples samples=new VisualSamples();samples.item(new ItemStack(Items.STONE,64));samples.item(new ItemStack(Items.STONE,33));var rows=samples.rows(null,true,128,0);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==1&&rows.get(0).value()==97&&rows.get(0).item().getCount()==1&&rows.get(0).hasBlock(),"Real total is not capped by one-item picture");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void boundedVisualComponentVariantsStaySeparate(GameTestHelper h){
         var a=new ItemStack(Items.STONE,5);net.foundations.pl4.compat.PortData.set(a,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Alpha"));var b=new ItemStack(Items.STONE,7);net.foundations.pl4.compat.PortData.set(b,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Beta"));
-        VisualSamples samples=new VisualSamples();samples.item(a);samples.item(b);var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
+        VisualSamples samples=new VisualSamples();samples.item(a);samples.item(b);var rows=samples.rows(null,true,128,0);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==2&&!rows.get(0).key().equals(rows.get(1).key())&&rows.get(0).value()==7,"Named visual variants have separate counts and keys");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void visualRowsRoundTripNativeItemComponents(GameTestHelper h){
         var item=new ItemStack(Items.DIAMOND_SWORD,2);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Model fixture"));VisualSamples samples=new VisualSamples();samples.item(item);
-        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);var copy=Part.Row.load(row.save(),h.getLevel().registryAccess());
+        Part.Row row=samples.rows(null,true,128,0).get(0);var copy=Part.Row.load(row.save(),null);
         net.foundations.pl4.compat.PortAssertions.check(copy.hasItem()&&!copy.hasBlock()&&copy.value()==2&&copy.item().getHoverName().getString().equals("Model fixture")&&copy.key().equals(row.key()),"Synced visual picture retains bounded native components");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void nestedInventoriesAreNotSentAsPictureMetadata(GameTestHelper h){
         ItemStack box=new ItemStack(Items.SHULKER_BOX);net.foundations.pl4.compat.PortData.set(box,DataComponents.CONTAINER,ItemContainerContents.fromItems(List.of(new ItemStack(Items.DIAMOND,64))));
-        VisualSamples samples=new VisualSamples();samples.item(box);var row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        VisualSamples samples=new VisualSamples();samples.item(box);var row=samples.rows(null,true,128,0).get(0);
         net.foundations.pl4.compat.PortAssertions.check(!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.CONTAINER)&&!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.BLOCK_ENTITY_DATA),"A display picture must not contain nested machine/inventory contents");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hugeVisualComponentFallsBackWithinCap(GameTestHelper h){
         ItemStack item=new ItemStack(Items.STONE,12);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("x".repeat(8192)));VisualSamples samples=new VisualSamples();samples.item(item);
-        Part.Row row=samples.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        Part.Row row=samples.rows(null,true,128,0).get(0);
         net.foundations.pl4.compat.PortAssertions.check(row.value()==12&&(row.item().getItem()==Items.STONE)&&!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.CUSTOM_NAME)&&VisualSamples.bounded(row.previewItem(),4096)!=null,"Oversized pictures preserve total and fall back to base item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fluidRowsCarryTypeAmountAndCapacity(GameTestHelper h){
         VisualSamples samples=new VisualSamples();samples.fluid(new FluidStack(Fluids.WATER,500),1000);samples.fluid(new FluidStack(Fluids.WATER,250),1000);samples.fluid(new FluidStack(Fluids.LAVA,100),1000);
-        var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);var row=Part.Row.load(rows.get(0).save(),h.getLevel().registryAccess());
+        var rows=samples.rows(null,true,128,0);var row=Part.Row.load(rows.get(0).save(),null);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==2&&row.fluid().getFluid()==Fluids.WATER&&row.fluid().getAmount()==1&&row.value()==750&&row.capacity()==2000,"Fluid preview is separate from aggregate amount/capacity");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -182,8 +182,8 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void componentVariantKeyIsStableAcrossSave(GameTestHelper h){
-        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(h.getLevel().registryAccess(),true,128,0).get(0);
-        var restored=net.foundations.pl4.compat.PortData.parseItem(h.getLevel().registryAccess(),(CompoundNBT)net.foundations.pl4.compat.PortData.save(item,h.getLevel().registryAccess()));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(h.getLevel().registryAccess(),true,128,0).get(0);
+        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(null,true,128,0).get(0);
+        var restored=net.foundations.pl4.compat.PortData.parseItem(null,(CompoundNBT)net.foundations.pl4.compat.PortData.save(item,null));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(null,true,128,0).get(0);
         net.foundations.pl4.compat.PortAssertions.check(r.key().equals(r2.key())&&r.value()==r2.value(),"Variant bindings must not drift simply because an item was saved");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -240,7 +240,7 @@ public final class R9GameTests {
         p.displayMode=DisplayElements.Mode.CUSTOM;for(var s:List.of(a,other,b,c))p.elements.add(new Part.Element(s));
         PLPackets.editLayout(player(h,host,true),packet(host,0,"layer_front",null,b.id()+","+a.id()));
         var expected=List.of(c,other,a,b);net.foundations.pl4.compat.PortAssertions.check(p.layoutRevision==1&&p.elements.stream().map(Part.Element::spec).toList().equals(expected),"Atomic layer selection preserves styles and other page slots");
-        var copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var copy=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(copy.elements.equals(p.elements)&&copy.layoutRevision==1,"Layer order survives native NBT reload");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -267,7 +267,7 @@ public final class R9GameTests {
         net.foundations.pl4.compat.PortAssertions.check(p.layoutRevision==1&&p.elements.size()==3&&p.elements.get(2).spec().page()==7&&!p.elements.get(2).id().equals(a.id())&&p.elements.get(2).spec().identity(a.id()).onPage(0).equals(a),"Copy page once with fresh identity and retained styles");
         PLPackets.editLayout(user,packet(host,1,"page_clear",null,""));
         net.foundations.pl4.compat.PortAssertions.check(p.layoutRevision==2&&p.elements.size()==2&&p.elements.get(0).spec().equals(other)&&p.elements.get(1).spec().page()==7,"Clear only source page");
-        var copy=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());net.foundations.pl4.compat.PortAssertions.check(copy.elements.equals(p.elements)&&copy.layoutRevision==2,"Page edits persist natively");h.succeed();
+        var copy=Part.load(p.save(null,false),null);net.foundations.pl4.compat.PortAssertions.check(copy.elements.equals(p.elements)&&copy.layoutRevision==2,"Page edits persist natively");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pageCopyRejectsOverwriteStaleCapacityAndForeignOwner(GameTestHelper h){
@@ -286,7 +286,7 @@ public final class R9GameTests {
         var user=player(h,host,true);String ids=a.id()+","+b.id();
         PLPackets.editLayout(user,packet(host,0,"group",null,ids));PLPackets.editLayout(user,packet(host,1,"lock",null,ids));PLPackets.editLayout(user,packet(host,2,"hide",null,ids));
         PLPackets.editLayout(user,packet(host,3,"page_name",null,"Production"));
-        var restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.elements.equals(p.elements)&&restored.pageName(0).equals("Production"),"Metadata and page names survive save/load");
         net.foundations.pl4.compat.PortAssertions.check(p.elements.get(0).spec().options().locked()&&p.elements.get(0).spec().options().hidden(),"Server applied metadata");
         var json=ElementJson.decodeList(ElementJson.encodeList(p.elements.stream().map(Part.Element::spec).toList()));

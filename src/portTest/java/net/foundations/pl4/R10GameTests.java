@@ -23,13 +23,13 @@ public final class R10GameTests {
     public static void revealedCustomPageSurvivesSave(GameTestHelper h){
         Part p=new Part(Kind.DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=5;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.ITEM,5)));
-        Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.displayPage==5&&restored.displayMode==DisplayElements.Mode.CUSTOM&&restored.elements.get(0).spec().page()==5,"Native save keeps the revealed custom page");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void realStoneStillUsesBlockPicture(GameTestHelper h){
         VisualSamples samples=new VisualSamples();samples.item(new ItemStack(Items.STONE,22));
-        var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
+        var rows=samples.rows(null,true,128,0);
         var scene=DisplayElements.plan(DisplayElements.create(DisplayElements.Type.BLOCK,0),rows);
         net.foundations.pl4.compat.PortAssertions.check(scene.draws().stream().anyMatch(d->d instanceof DisplayElements.Icon icon&&icon.block()),"Block presentation cannot silently become text list");
         net.foundations.pl4.compat.PortAssertions.check(scene.draws().stream().anyMatch(d->d instanceof DisplayElements.Text text&&text.overlay()&&text.value().equals("22")),"Quantity remains independent of picture stack size");h.succeed();
@@ -38,7 +38,7 @@ public final class R10GameTests {
     public static void restingAutoModeDoesNotDiscardTypedElements(GameTestHelper h){
         Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.AUTO_LIST;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,2)));
-        Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.elements.size()==1&&restored.elements.get(0).spec().type()==DisplayElements.Type.BLOCK,"Switching view retains layout");
         net.foundations.pl4.compat.PortAssertions.check(!MonitorPresentation.automatic(restored.displayMode,true)&&MonitorPresentation.automatic(restored.displayMode,false),"Editor preview is independent of saved resting view");h.succeed();
     }

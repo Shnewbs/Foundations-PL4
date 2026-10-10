@@ -18,12 +18,12 @@ public final class ComponentLinks {
             for(var ref:NetworkEngine.all(player.getLevel().getServer())){
                 if(!ref.part().kind.emitter()||ref.part().kind.redstone()!=part.kind.redstone()||!Objects.equals(ref.part().owner,part.owner)||!ref.host().canEdit(player)||!ref.level().mayInteract(player,ref.host().getBlockPos()))continue;
                 if(!PLConfig.CROSS_DIMENSION.get()&&ref.level()!=host.getLevel())continue;
-                links.add(new Part.Link(ref.level().dimension().location().toString(),ref.host().getBlockPos(),ref.part().face,null,ref.part().identity));
+                links.add(new Part.Link(ref.level().dimension.getType().getRegistryName().toString(),ref.host().getBlockPos(),ref.part().face,null,ref.part().identity));
             }
         }else if(part.kind==Kind.ENTITY_NODE){
             double radius=Math.min(32,PLConfig.ENTITY_RANGE.get());
             for(var entity:player.getLevel().getEntitiesOfClass(LivingEntity.class,new AxisAlignedBB(host.getBlockPos()).inflate(radius),e->e.isAlive()&&!e.isSpectator()))
-                if(player.getLevel().mayInteract(player,entity.blockPosition()))links.add(new Part.Link(player.level.dimension().location().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));
+                if(player.getLevel().mayInteract(player,entity.getCommandSenderBlockPosition()))links.add(new Part.Link(player.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),Direction.UP,entity.getUUID(),null));
         }
         links.sort(Comparator.comparing(ComponentLinks::choiceId));return links;
     }
@@ -52,14 +52,14 @@ public final class ComponentLinks {
     }
     static boolean add(ServerPlayerEntity player,HostEntity host,Part part,Part.Link link){
         if(!supported(part)||link==null||!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos())||part.links.size()>=(part.kind.receiver()?64:8))return false;
-        if(!PLConfig.CROSS_DIMENSION.get()&&!host.getLevel().dimension().location().toString().equals(link.dimension()))return false;
+        if(!PLConfig.CROSS_DIMENSION.get()&&!host.getLevel().dimension.getType().getRegistryName().toString().equals(link.dimension()))return false;
         var world=NetworkEngine.level(player.getLevel().getServer(),link);if(world==null)return false;
         if(part.kind.receiver()){
             if(!PLConfig.WIRELESS.get()||link.entity()!=null||link.part()==null||!world.hasChunkAt(link.pos())||!(world.getBlockEntity(link.pos()) instanceof HostEntity remote)||!remote.canEdit(player)||!world.mayInteract(player,link.pos()))return false;
             Part target=remote.parts.values().stream().filter(p->p.identity.equals(link.part())).findFirst().orElse(null);
             if(target==null||!target.kind.emitter()||target.kind.redstone()!=part.kind.redstone()||!Objects.equals(target.owner,part.owner))return false;
         }else if(part.kind==Kind.ENTITY_NODE){
-            var entity=link.entity()==null?null:world.getEntity(link.entity());if(entity==null||!entity.isAlive()||!world.mayInteract(player,entity.blockPosition()))return false;
+            var entity=link.entity()==null?null:world.getEntity(link.entity());if(entity==null||!entity.isAlive()||!world.mayInteract(player,entity.getCommandSenderBlockPosition()))return false;
         }else if(link.entity()!=null||!world.hasChunkAt(link.pos())||!world.mayInteract(player,link.pos()))return false;
         boolean duplicate=part.links.stream().anyMatch(l->link.entity()!=null?link.entity().equals(l.entity())&&link.dimension().equals(l.dimension()):l.equals(link));
         if(duplicate)return false;part.links.add(link);return true;

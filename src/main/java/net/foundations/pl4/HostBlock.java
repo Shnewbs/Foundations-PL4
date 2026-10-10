@@ -1,6 +1,6 @@
 package net.foundations.pl4;
 
-import com.mojang.serialization.MapCodec;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -44,12 +44,12 @@ public final class HostBlock extends ContainerBlock {
         return useWithoutItem(s,l,p,player,hit);
     }
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos p,PlayerEntity player,BlockRayTraceResult hit){
-        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayerEntity sp&&!DisplayActions.activate(sp,h,part))PLPackets.open(sp,h,part); return ActionResultType.sidedSuccess(l.isClientSide);}}
+        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayerEntity sp&&!DisplayActions.activate(sp,h,part))PLPackets.open(sp,h,part); return net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide);}}
         return ActionResultType.PASS;
     }
     @Override public void onRemove(BlockState s,World l,BlockPos p,BlockState next,boolean moving){
         if(s.getBlock()!=next.getBlock() && l.getBlockEntity(p) instanceof HostEntity h && !l.isClientSide){
-            for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,l.registryAccess()));
+            for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,null));
             NetworkEngine.invalidate(l); l.updateNeighborsAt(p,this);
         }
         super.onRemove(s,l,p,next,moving);

@@ -21,7 +21,7 @@ final class DisplayLayersScreen extends net.foundations.pl4.compat.PortScreen {
         for(int i=0;i<rows&&offset+i<layers.size();i++){
             var element=layers.get(offset+i);String detail=element.text().isBlank()?(element.asset().isBlank()?element.key():element.asset()):element.text();
             String label=(parent.layerSelected(element.id())?"[x] ":"[ ] ")+"#"+(offset+i+1)+" "+element.type()+" "+(element.options().locked()?"[locked] ":"")+(element.options().hidden()?"[hidden] ":"")+(element.options().group().isEmpty()?"":"[group] ")+detail;
-            var button=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent(font.plainSubstrByWidth(label,w-32)),b->{parent.selectLayer(element.id(),hasShiftDown());rebuildWidgets();}).bounds(left+10,top+55+i*22,w-20,20).build());button.active=!pending;
+            var button=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent(font.substrByWidth(label,w-32)),b->{parent.selectLayer(element.id(),hasShiftDown());rebuildWidgets();}).bounds(left+10,top+55+i*22,w-20,20).build());button.active=!pending;
         }
         var previous=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Previous"),b->{offset=Math.max(0,offset-rows);rebuildWidgets();}).bounds(left+10,top+h-147,(w-28)/2,20).build());previous.active=offset>0;
         var next=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Next"),b->{offset+=rows;rebuildWidgets();}).bounds(left+18+(w-28)/2,top+h-147,(w-28)/2,20).build());next.active=offset+rows<layers.size();
@@ -38,9 +38,9 @@ final class DisplayLayersScreen extends net.foundations.pl4.compat.PortScreen {
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);
         g.drawString(font,title,left+10,top+9,0xFFE3F2F4,false);
-        g.drawString(font,font.plainSubstrByWidth("Page "+(parent.part.displayPage+1)+" · Frontmost first · "+parent.selectionCount()+" selected",w-20),left+10,top+25,0xFF92CAD2,false);
+        g.drawString(font,font.substrByWidth("Page "+(parent.part.displayPage+1)+" · Frontmost first · "+parent.selectionCount()+" selected",w-20),left+10,top+25,0xFF92CAD2,false);
         String hint=parent.message.isBlank()?"Shift: toggle selection · Ctrl+A: select page":parent.message;
-        g.drawString(font,font.plainSubstrByWidth(hint,w-20),left+10,top+40,0xFFB8C4CC,false);
+        g.drawString(font,font.substrByWidth(hint,w-20),left+10,top+40,0xFFB8C4CC,false);
     }
     @Override public void tick(){parent.tick();if(revision!=parent.part.layoutRevision||pending!=parent.layoutPending())rebuildWidgets();}
     @Override public boolean keyPressed(int key,int scan,int mods){

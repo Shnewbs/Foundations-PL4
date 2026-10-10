@@ -101,13 +101,13 @@ public final class TransferEngine {
     private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0;}
     private static Comparator<NetworkEngine.Ref> driverOrder(){
         return Comparator.<NetworkEngine.Ref>comparingInt(r->r.part().priority).reversed()
-            .thenComparing(r->r.level().dimension().location().toString())
+            .thenComparing(r->r.level().dimension.getType().getRegistryName().toString())
             .thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());
     }
     private static Comparator<NetworkEngine.Ref> endpointOrder(){
         return Comparator.<NetworkEngine.Ref>comparingInt(r->TransferRules.endpointClass(r.part().kind==Kind.TRANSFER_NODE)).reversed()
             .thenComparing(Comparator.<NetworkEngine.Ref>comparingInt(r->r.part().kind==Kind.TRANSFER_NODE?r.part().priority:0).reversed())
-            .thenComparing(r->r.level().dimension().location().toString())
+            .thenComparing(r->r.level().dimension.getType().getRegistryName().toString())
             .thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());
     }
     private static List<NetworkEngine.Ref> rotateTies(List<NetworkEngine.Ref> refs,long cursor){

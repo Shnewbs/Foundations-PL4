@@ -19,7 +19,7 @@ final class DisplayPagesScreen extends net.foundations.pl4.compat.PortScreen {
         int cellW=(w-28)/2,step=Math.max(24,(h-138)/4),source=parent.pageElementCount(parent.part.displayPage);
         for(int page=0;page<DisplayElements.MAX_PAGES;page++){
             final int target=page;int count=parent.pageElementCount(page),x=left+10+(page%2)*(cellW+8),y=top+53+(page/2)*step;
-            String label=(page==parent.part.displayPage?"> ":"")+font.plainSubstrByWidth(parent.part.pageName(page),Math.max(20,cellW-78))+": "+count;
+            String label=(page==parent.part.displayPage?"> ":"")+font.substrByWidth(parent.part.pageName(page),Math.max(20,cellW-78))+": "+count;
             var select=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent(label),b->{parent.pageAction("page",Integer.toString(target));rebuildWidgets();}).bounds(x,y,cellW-48,20).build());select.active=parent.editable&&!pending&&page!=parent.part.displayPage;
             var copy=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Copy"),b->{parent.pageAction("page_copy",Integer.toString(target));rebuildWidgets();}).bounds(x+cellW-46,y,46,20).build());copy.active=parent.editable&&!pending&&page!=parent.part.displayPage&&count==0&&source>0&&parent.part.elements.size()+source<=DisplayElements.MAX_ELEMENTS;
         }
@@ -31,9 +31,9 @@ final class DisplayPagesScreen extends net.foundations.pl4.compat.PortScreen {
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);
         g.drawString(font,title,left+10,top+9,0xFFE3F2F4,false);
-        g.drawString(font,font.plainSubstrByWidth("Copy current page into an empty slot. Ctrl+Z in editor undoes it.",w-20),left+10,top+25,0xFF92CAD2,false);
-        g.drawString(font,font.plainSubstrByWidth(parent.message.isBlank()?"32 elements total · Eight fixed page slots":parent.message,w-20),left+10,top+40,0xFFB8C4CC,false);
-        g.drawString(font,font.plainSubstrByWidth("Clear removes this page's contents; other pages stay intact.",w-20),left+10,top+h-21,0xFFB8C4CC,false);
+        g.drawString(font,font.substrByWidth("Copy current page into an empty slot. Ctrl+Z in editor undoes it.",w-20),left+10,top+25,0xFF92CAD2,false);
+        g.drawString(font,font.substrByWidth(parent.message.isBlank()?"32 elements total · Eight fixed page slots":parent.message,w-20),left+10,top+40,0xFFB8C4CC,false);
+        g.drawString(font,font.substrByWidth("Clear removes this page's contents; other pages stay intact.",w-20),left+10,top+h-21,0xFFB8C4CC,false);
     }
     @Override public void tick(){parent.tick();if(revision!=parent.part.layoutRevision||pending!=parent.layoutPending())rebuildWidgets();}
     @Override public boolean keyPressed(int key,int scan,int mods){if(key==256){onClose();return true;}return super.keyPressed(key,scan,mods);}

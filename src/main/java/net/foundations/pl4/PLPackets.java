@@ -38,7 +38,7 @@ public final class PLPackets {
     private static final Map<ServerPlayerEntity,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
     static void editLayout(ServerPlayerEntity player,LayoutEdit packet){
         long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
         if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
         Part clicked=anchor.parts.get(packet.slot);if(clicked==null||!clicked.identity.equals(packet.identity)||!clicked.kind.display()||!anchor.canEdit(player))return;
         var target=DisplayNetworks.controller(anchor,clicked);HostEntity host=target.host();Part part=target.part();
@@ -98,19 +98,19 @@ public final class PLPackets {
     private static void sendOpen(ServerPlayerEntity player,HostEntity host,Part p,String error,boolean reply){
         if(ComponentLinks.supported(p))ComponentLinks.refresh(player,host,p);
         var target=DisplayNetworks.controller(host,p);
-        CompoundNBT t=target.part().save(host.getLevel().registryAccess(),true);
+        CompoundNBT t=target.part().save(null,true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
-        t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(host.getBlockPos()))<=64);
+        t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(host.getBlockPos()))<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
     static void edit(ServerPlayerEntity player,Edit packet){
-        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
+        if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
         if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){
             long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
             if(!p.kind.display()||packet.value.length()>64)return;var target=DisplayNetworks.controller(h,p);
-            CompoundNBT tag=target.part().save(h.getLevel().registryAccess(),true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
+            CompoundNBT tag=target.part().save(null,true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
             var rows=new net.minecraft.nbt.ListNBT();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;
         }
         if(packet.field.equals("refresh")){reply(player,h,p);return;}

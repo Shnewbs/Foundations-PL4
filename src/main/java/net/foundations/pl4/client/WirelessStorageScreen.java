@@ -43,7 +43,7 @@ public final class WirelessStorageScreen extends net.foundations.pl4.compat.Port
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+254,0xF21B2533);g.fill(left,top,left+w,top+25,0xFF293D56);
         g.drawString(font,title,left+10,top+8,0xFFE4F3FF,false);
         g.drawString(font,"Page "+(page+1)+" / "+Math.max(1,(slots+WirelessStorage.PAGE_SIZE-1)/WirelessStorage.PAGE_SIZE)+" · "+slots+" variants · "+endpoints+" inventories",left+10,top+29,0xFF8CAEC5,false);
-        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+79+i*23;g.drawString(font,font.plainSubstrByWidth((row.slot()+1)+". "+row.name()+" × "+row.count(),w-108),left+10,y,0xFFDBEFFF,false);}
-        g.drawString(font,font.plainSubstrByWidth(status.isEmpty()?(limited?"Scan limit reached · narrow the network":"Main hand: tool · offhand: stack to deposit"):status,w-20),left+10,top+240,0xFF8CAEC5,false);
+        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+79+i*23;g.drawString(font,font.substrByWidth((row.slot()+1)+". "+row.name()+" × "+row.count(),w-108),left+10,y,0xFFDBEFFF,false);}
+        g.drawString(font,font.substrByWidth(status.isEmpty()?(limited?"Scan limit reached · narrow the network":"Main hand: tool · offhand: stack to deposit"):status,w-20),left+10,top+240,0xFF8CAEC5,false);
     }
 }

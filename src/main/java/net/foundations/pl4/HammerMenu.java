@@ -32,7 +32,7 @@ public final class HammerMenu extends Container {
         return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level
             &&player.level.getBlockEntity(hammer.getBlockPos())==hammer
             &&(player.level.getBlockState(hammer.getBlockPos()).getBlock()==FoundationsPL4.HAMMER.get())
-            &&player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(hammer.getBlockPos()))<=64);
+            &&player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(hammer.getBlockPos()))<=64);
     }
     @Override public ItemStack quickMoveStack(PlayerEntity player,int index){
         if(index<0||index>=slots.size()||!stillValid(player))return ItemStack.EMPTY;

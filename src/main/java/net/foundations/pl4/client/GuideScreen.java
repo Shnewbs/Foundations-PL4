@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.IReorderingProcessor;
+
 import net.minecraft.item.ItemStack;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
@@ -24,7 +24,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private static final String[] TAB_SHORT={"START","NET","DISP","REF"};
     private static final String[] TAB_ICONS={"plguide","datacable","largedisplayscreen","operator"};
     private static final int INK=0xFF263239,MUTED=0xFF485E64,ACCENT=0xFF185769;
-    private record Line(IReorderingProcessor text,int y,boolean heading) {}
+    private record Line(String text,int y,boolean heading) {}
     private GuideBook book;private GuideBook.Chapter chapter;private GuideResources.Preferences preferences;
     private GuideLayout.Layout layout;private EditBox search;
     private String category="start",query="";private boolean savedOnly,contents;
@@ -103,10 +103,10 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private void wrapBody(){
         List<Line> result=new ArrayList<>();int y=0,w=layout.detail().width()-13;
         for(var section:chapter.sections()){
-            for(var line:font.split(new net.minecraft.util.text.StringTextComponent(section.heading()),Math.max(16,w-12))){result.add(new Line(line,y,true));y+=18;}
+            for(var line:font.split(section.heading(),Math.max(16,w-12))){result.add(new Line(line,y,true));y+=18;}
             y+=5;
             for(String paragraph:section.body().split("\\n",-1)){
-                for(var line:font.split(new net.minecraft.util.text.StringTextComponent(paragraph),Math.max(16,w-4))){result.add(new Line(line,y,false));y+=12;}
+                for(var line:font.split(paragraph,Math.max(16,w-4))){result.add(new Line(line,y,false));y+=12;}
             }
             y+=13;
         }
@@ -117,10 +117,10 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
         super.renderBackground(g,x,y,partial);
         var b=layout.book();drawBook(g,b);
         int leftWidth=layout.compact()?b.width()-62:b.width()/2-44;
-        String name=font.plainSubstrByWidth("FOUNDATIONS PL4 FIELD GUIDE",leftWidth);
+        String name=font.substrByWidth("FOUNDATIONS PL4 FIELD GUIDE",leftWidth);
         g.drawString(font,name,b.x()+22,b.y()+20,INK,false);
         if(!layout.compact()){
-            g.drawString(font,font.plainSubstrByWidth("TECHNICAL MANUAL  /  1.21.1",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
+            g.drawString(font,font.substrByWidth("TECHNICAL MANUAL  /  1.15.2",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
             if(listVisible()){int ry=b.y()+69;g.drawString(font,"DATA",layout.list().x(),ry,ACCENT,false);g.drawString(font,">  READER  >  VIEW",layout.list().x()+35,ry,MUTED,false);}
         }
         if(listVisible()){
@@ -128,15 +128,15 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
             scrollbar(g,list,listScroll,filtered.size()*25);
             var description=chapter;
             for(int i=listScroll/25;i<filtered.size();i++){int rowY=list.y()+i*25-listScroll;if(rowY+22>list.bottom())break;if(rowY>=list.y()&&x>=list.x()&&x<list.right()-9&&y>=rowY&&y<rowY+22){description=filtered.get(i);break;}}
-            int lineY=list.bottom()+5,count=0;for(var line:font.split(new net.minecraft.util.text.StringTextComponent(description.summary()),list.width()-8)){if(count++==2)break;g.drawString(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
+            int lineY=list.bottom()+5,count=0;for(var line:font.split(description.summary(),list.width()-8)){if(count++==2)break;g.drawString(font,line,list.x()+2,lineY,MUTED,false);lineY+=10;}
 
         }
         if(detailVisible()){
             var r=layout.detail();int headerY=layout.compact()?b.y()+64:b.y()+26;
-            String heading=font.plainSubstrByWidth(chapter.title(),r.width()-14);
+            String heading=font.substrByWidth(chapter.title(),r.width()-14);
             g.drawString(font,heading,r.x(),headerY,INK,false);
             if(!layout.compact()){
-                g.drawString(font,font.plainSubstrByWidth(GuideNavigation.heading(chapter.category()),r.width()-14),r.x(),b.y()+42,ACCENT,false);
+                g.drawString(font,font.substrByWidth(GuideNavigation.heading(chapter.category()),r.width()-14),r.x(),b.y()+42,ACCENT,false);
                 g.fill(r.x(),b.y()+59,r.right()-9,b.y()+60,0xFF648B91);
             }
             g.enableScissor(r.x(),r.y(),r.right()-7,r.bottom());

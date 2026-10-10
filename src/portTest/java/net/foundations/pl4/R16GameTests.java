@@ -98,7 +98,7 @@ public final class R16GameTests {
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).getCount()==17&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),"Different channels cannot extract or deliver");
         sink.inputChannel="ore";TransferEngine.run(h.getLevel().getServer(),plan);
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Matching live channel works without rebuilding plan");
-        var restored=Part.load(source.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var restored=Part.load(source.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
     }
 
@@ -124,7 +124,7 @@ public final class R16GameTests {
         net.foundations.pl4.compat.PortAssertions.check(p.links.equals(List.of(b)),"Repeated stale removal cannot delete the next link");
         var clock=host(h,new BlockPos(4,1,1),Kind.CLOCK,Direction.WEST);var c=part(clock,Direction.WEST);var cp=clock.getBlockPos();user.setPos(cp.getX(),cp.getY()+1,cp.getZ());
         PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","12"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","30"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_paused","true"));
-        var restored=Part.load(c.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var restored=Part.load(c.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.clockPulse==12&&restored.clockPhase==30&&restored.clockPaused,"Clock controls persist");
         PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","-1"));net.foundations.pl4.compat.PortAssertions.check(c.clockPulse==12,"Invalid clock setting rejected");
         c.owner=UUID.randomUUID();PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","7"));net.foundations.pl4.compat.PortAssertions.check(c.clockPhase==30,"Foreign owner cannot edit clock");h.succeed();
@@ -151,7 +151,7 @@ public final class R16GameTests {
         p.outputFilterMode="ALLOW";p.outputFilter="minecraft:lava";
         net.foundations.pl4.compat.PortAssertions.check(TransferFilters.fluids(lava,p,false)&&!TransferFilters.fluids(water,p,false)&&TransferFilters.fluids(water,p,true),"Receive and send fluid filters are independent");
         p.outputFilterMode="DENY";net.foundations.pl4.compat.PortAssertions.check(!TransferFilters.fluids(lava,p,false)&&TransferFilters.fluids(water,p,false),"Mode changes do not leave stale cached results");
-        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part saved=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(saved.outputFilterMode.equals("DENY")&&saved.outputFilter.equals("minecraft:lava"),"Directional filters survive restart serialization");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -160,7 +160,7 @@ public final class R16GameTests {
         var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
         for(var entry:Map.of("input_filter","minecraft:stone","output_filter_mode","DENY","transfer","1","input_channel","other","filter","minecraft:dirt","whitelist","false").entrySet())PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,entry.getKey(),entry.getValue()));
         net.foundations.pl4.compat.PortAssertions.check(p.inputFilter.isEmpty()&&p.outputFilterMode.equals("INHERIT")&&p.transferMode==2&&p.inputChannel.isEmpty()&&p.filter.isEmpty()&&p.whitelist,"Buffered resources protect route semantics from settings edits");
-        Part client=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
+        Part client=Part.load(p.save(null,true),null);
         net.foundations.pl4.compat.PortAssertions.check(client.pendingItem.isEmpty()&&!client.routeEditable(),"Client knows escrow exists without receiving inventory contents");
         p.pendingItem=ItemStack.EMPTY;PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"output_filter_mode","DENY"));
         net.foundations.pl4.compat.PortAssertions.check(p.outputFilterMode.equals("DENY"),"Drained route becomes editable");h.succeed();
@@ -188,7 +188,7 @@ public final class R16GameTests {
         for(int i=0;i<20;i++)PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statement_add",json.toString()));
         net.foundations.pl4.compat.PortAssertions.check(p.statements.size()==16,"Statements are capped at sixteen");
         PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statements_all","false"));PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"signal_strength","9"));
-        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part saved=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(saved.statements.equals(p.statements)&&!saved.statementsAll&&saved.signalStrength==9,"Statement identities, conditions and mode survive save/reload");
         String id=p.statements.get(0).id().toString();var remove=new PLPackets.Edit(at,p.slot(),p.identity,"statement_remove",id);PLPackets.edit(user,remove);PLPackets.edit(user,remove);
         net.foundations.pl4.compat.PortAssertions.check(p.statements.size()==15,"Repeated stale removal does not remove a different statement");h.succeed();
@@ -210,7 +210,7 @@ public final class R16GameTests {
     private static StorageFixture storageFixture(GameTestHelper h,String name){
         ChestTileEntity chest=chest(h,new BlockPos(1,1,1));HostEntity host=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);Part node=part(host,Direction.WEST);
         var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,name));user.inventory.clearContent();
-        ItemStack tool=new ItemStack(FoundationsPL4.item("wirelessstorage"));var binding=new Part.Link(h.getLevel().dimension().location().toString(),host.getBlockPos(),node.face,null,node.identity);
+        ItemStack tool=new ItemStack(FoundationsPL4.item("wirelessstorage"));var binding=new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),host.getBlockPos(),node.face,null,node.identity);
         net.foundations.pl4.compat.CustomData.update(net.foundations.pl4.compat.DataComponents.CUSTOM_DATA,tool,t->t.put("pl_link",binding.save()));
         user.setItemInHand(net.minecraft.util.Hand.MAIN_HAND,tool);return new StorageFixture(host,node,chest,user,tool);
     }
@@ -305,7 +305,7 @@ public final class R16GameTests {
     public static void componentLinksValidateTypesAndDeduplicate(GameTestHelper h){
         var f=storageFixture(h,"PL4-Links-A");Part array=new Part(Kind.ARRAY,Direction.NORTH,OWNER);f.host().parts.put(array.slot(),array);
         Part entity=new Part(Kind.ENTITY_NODE,Direction.SOUTH,OWNER);f.host().parts.put(entity.slot(),entity);
-        var block=new Part.Link(h.getLevel().dimension().location().toString(),f.chest().getBlockPos(),Direction.UP,null,null);
+        var block=new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),f.chest().getBlockPos(),Direction.UP,null,null);
         net.foundations.pl4.compat.PortAssertions.check(ComponentLinks.add(f.player(),f.host(),array,block),"Array accepts a permitted loaded block link");
         net.foundations.pl4.compat.PortAssertions.check(!ComponentLinks.add(f.player(),f.host(),array,block)&&array.links.size()==1,"Duplicate links do not consume another Array slot");
         net.foundations.pl4.compat.PortAssertions.check(!ComponentLinks.add(f.player(),f.host(),entity,block),"Entity Node rejects block links");h.succeed();
@@ -314,7 +314,7 @@ public final class R16GameTests {
     public static void componentLinksRejectForeignEmitters(GameTestHelper h){
         var f=storageFixture(h,"PL4-Links-B");Part receiver=new Part(Kind.DATA_RECEIVER,Direction.NORTH,OWNER);f.host().parts.put(receiver.slot(),receiver);
         var remote=host(h,new BlockPos(4,1,1),Kind.DATA_EMITTER,Direction.UP);Part emitter=part(remote,Direction.UP);
-        var link=new Part.Link(h.getLevel().dimension().location().toString(),remote.getBlockPos(),emitter.face,null,emitter.identity);
+        var link=new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),remote.getBlockPos(),emitter.face,null,emitter.identity);
         emitter.owner=UUID.randomUUID();net.foundations.pl4.compat.PortAssertions.check(!ComponentLinks.add(f.player(),f.host(),receiver,link),"Foreign emitter never grants a wireless network edge");
         emitter.owner=OWNER;net.foundations.pl4.compat.PortAssertions.check(ComponentLinks.add(f.player(),f.host(),receiver,link),"Owned matching emitter can be selected");h.succeed();
     }

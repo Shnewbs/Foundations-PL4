@@ -35,7 +35,7 @@ public final class InfoProviders {
     public static List<Part.Row> sample(ServerWorld level,Part.Link target){
         Objects.requireNonNull(level);Objects.requireNonNull(target);
         if(!level.getServer().isSameThread())throw new IllegalStateException("InfoProviders.sample requires the server thread");
-        if(!level.dimension().location().toString().equals(target.dimension()))return List.of();
+        if(!level.dimension.getType().getRegistryName().toString().equals(target.dimension()))return List.of();
         Entity entity=target.entity()==null?null:level.getEntity(target.entity());
         if(target.entity()!=null?entity==null:!level.hasChunkAt(target.pos()))return List.of();
         Context context=new Context(level,target,entity);List<Part.Row> result=new ArrayList<>();

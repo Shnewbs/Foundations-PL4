@@ -29,7 +29,7 @@ public final class PLGameTests {
     }
 
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000001");
-    public static void register(RegisterGameTestsEvent e){e.register(PLGameTests.class);e.register(R5GameTests.class);e.register(R6GameTests.class);e.register(R7GameTests.class);e.register(R8GameTests.class);e.register(R9GameTests.class);e.register(R10GameTests.class);e.register(R11GameTests.class);e.register(R13GameTests.class);e.register(R16GameTests.class);e.register(PerformanceGameTests.class);e.register(EnergyIntegrationGameTests.class);}
+    public static void register(RegisterGameTestsEvent e){e.register(PLGameTests.class);e.register(Port115GameTests.class);e.register(R5GameTests.class);e.register(R6GameTests.class);e.register(R7GameTests.class);e.register(R8GameTests.class);e.register(R9GameTests.class);e.register(R10GameTests.class);e.register(R11GameTests.class);e.register(R13GameTests.class);e.register(R16GameTests.class);e.register(PerformanceGameTests.class);e.register(EnergyIntegrationGameTests.class);}
     private static HostEntity host(GameTestHelper h,BlockPos p,Kind kind,Direction face){
         h.setBlock(p,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(p);host.parts.put(net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()),new Part(kind,face,OWNER));
         // R5 fixtures explicitly include a centre cable: adjacent face devices are not implicit wires.
@@ -61,7 +61,7 @@ public final class PLGameTests {
     public static void persistentEscrowRoundTrip(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,725);p.pendingEnergy=12345;p.transferMode=2;p.filter="#c:gems/diamond";
         p.links.add(new Part.Link("minecraft:overworld",new BlockPos(4,80,9),Direction.NORTH,null,UUID.randomUUID()));
-        Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.identity.equals(p.identity)&&restored.owner.equals(OWNER),"Identity and owner must persist");
         net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==725&&restored.pendingEnergy==12345,"All pending resources must persist");
         net.foundations.pl4.compat.PortAssertions.check(restored.links.equals(p.links)&&restored.transferMode==2&&restored.filter.equals(p.filter),"Links and settings must persist");h.succeed();
@@ -117,7 +117,7 @@ public final class PLGameTests {
         chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN),receiver=host(h,new BlockPos(6,1,1),Kind.DATA_RECEIVER,Direction.DOWN),reader=host(h,new BlockPos(7,1,1),Kind.INVENTORY_READER,Direction.DOWN);
         Part ep=emitter.parts.get(0),rp=receiver.parts.get(0),read=reader.parts.get(0);
-        rp.links.add(new Part.Link(h.getLevel().dimension().location().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
+        rp.links.add(new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
         h.runAtTickTime(45,()->{net.foundations.pl4.compat.PortAssertions.check(read.rows.stream().anyMatch(r->r.value()==17),"Owned wireless link must carry reader data");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
@@ -125,27 +125,27 @@ public final class PLGameTests {
         chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN),receiver=host(h,new BlockPos(6,1,1),Kind.DATA_RECEIVER,Direction.DOWN),reader=host(h,new BlockPos(7,1,1),Kind.INVENTORY_READER,Direction.DOWN);
         Part ep=emitter.parts.get(0),rp=receiver.parts.get(0),read=reader.parts.get(0);ep.owner=UUID.randomUUID();
-        rp.links.add(new Part.Link(h.getLevel().dimension().location().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
+        rp.links.add(new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
         h.runAtTickTime(45,()->{net.foundations.pl4.compat.PortAssertions.check(read.rows.isEmpty(),"Forged cross-owner link must be ignored");h.succeed();});
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readingUnloadedTargetDoesNotLoadChunk(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(1,1,1),Kind.INVENTORY_READER,Direction.DOWN);Part p=host.parts.get(0);
         BlockPos distant=new BlockPos(1000000,80,1000000);net.foundations.pl4.compat.PortAssertions.check(!h.getLevel().hasChunkAt(distant),"Fixture must start unloaded");
-        var rows=DataSampler.sample(h.getLevel().getServer(),new NetworkEngine.Ref(host,p),List.of(new Part.Link(h.getLevel().dimension().location().toString(),distant,Direction.UP,null,null)),1);
+        var rows=DataSampler.sample(h.getLevel().getServer(),new NetworkEngine.Ref(host,p),List.of(new Part.Link(h.getLevel().dimension.getType().getRegistryName().toString(),distant,Direction.UP,null,null)),1);
         net.foundations.pl4.compat.PortAssertions.check(rows.isEmpty()&&!h.getLevel().hasChunkAt(distant),"A read must never force-load a target chunk");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void removedNodeItemRetainsAllEscrow(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.DOWN,OWNER);p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
-        ItemStack drop=PartItem.stack(p,h.getLevel().registryAccess());
-        Part restored=Part.load(net.foundations.pl4.compat.PortData.get(drop,net.foundations.pl4.compat.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
+        ItemStack drop=PartItem.stack(p,null);
+        Part restored=Part.load(net.foundations.pl4.compat.PortData.get(drop,net.foundations.pl4.compat.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Breaking a node must preserve item, fluid and energy escrow in its dropped item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void internalForgingRecipesLoadAndMatchTags(GameTestHelper h){
         var type=net.foundations.pl4.core.CoreRecipes.HAMMER.get();
-        net.foundations.pl4.compat.PortAssertions.check(h.getLevel().getRecipeManager().getAllRecipesFor(type).size()==6,"Six bundled forging recipes must load");
+        net.foundations.pl4.compat.PortAssertions.check(h.getLevel().getRecipeManager().getRecipes().stream().filter(r->r.getType()==type).count()==6,"Six bundled forging recipes must load");
         Item[] inputs={FoundationsPL4.item("sapphire"),FoundationsPL4.ORE.get().asItem(),Blocks.STONE.asItem(),Items.DIAMOND,Items.REDSTONE,Items.ENDER_PEARL};
         String[] outputs={"sapphiredust","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate"};int[] counts={1,2,4,4,4,4};
         for(int i=0;i<inputs.length;i++){
@@ -160,14 +160,13 @@ public final class PLGameTests {
     public static void internalRecipeCodecPreservesCountsAndComponents(GameTestHelper h){
         ItemStack output=new ItemStack(Items.EMERALD,4);net.foundations.pl4.compat.PortData.set(output,net.foundations.pl4.compat.DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("IRecipe codec fixture"));
         var recipe=new net.foundations.pl4.core.ForgingRecipe(net.minecraft.item.crafting.Ingredient.of(Items.DIAMOND),3,output,11,7);
-        var codec=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get().codec().codec();
-        var ops=com.mojang.serialization.JsonOps.INSTANCE;
-        var encoded=codec.encodeStart(ops,recipe).getOrThrow(false,message->{throw new IllegalArgumentException(message);});var decoded=codec.parse(ops,encoded).getOrThrow(false,message->{throw new IllegalArgumentException(message);});
+        var serializer=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get();
+        var encoded=serializer.toJson(recipe);var decoded=serializer.fromJson(recipe.getId(),encoded);
         net.foundations.pl4.compat.PortAssertions.check(!decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,2)),h.getLevel()),"Insufficient input count must not match");
         net.foundations.pl4.compat.PortAssertions.check(decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,3)),h.getLevel()),"Required input count must match");
         net.foundations.pl4.compat.PortAssertions.check(decoded.processingTicks()==11&&decoded.cooldownTicks()==7&&net.foundations.pl4.compat.PortData.sameItem(decoded.result(),output),"IRecipe fields and result components must survive codec round trip");
         decoded.result().shrink(4);net.foundations.pl4.compat.PortAssertions.check(decoded.result().getCount()==4,"Returned result stacks must not mutate the recipe");
-        encoded.getAsJsonObject().addProperty("input_count",0);net.foundations.pl4.compat.PortAssertions.check(codec.parse(ops,encoded).result().isEmpty(),"Zero-input forging recipes must be rejected");h.succeed();
+        encoded.addProperty("input_count",0);boolean rejected=false;try{serializer.fromJson(recipe.getId(),encoded);}catch(IllegalArgumentException|com.google.gson.JsonParseException expected){rejected=true;}net.foundations.pl4.compat.PortAssertions.check(rejected,"Zero-input forging recipes must be rejected");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void changingForgingRecipeResetsProgress(GameTestHelper h){

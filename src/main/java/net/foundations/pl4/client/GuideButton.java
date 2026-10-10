@@ -33,7 +33,7 @@ final class GuideButton extends Button {
             g.fill(x+5,y+5,x+23,y+h-5,selected?0xFF2C5662:0xFF5B6D6E);
             var font=Minecraft.getInstance().font;String number=chapterNumber<10?"0"+chapterNumber:Integer.toString(chapterNumber);
             g.drawString(font,number,x+14-font.width(number)/2,y+(h-8)/2,0xFFE9F0E8,false);
-            String text=font.plainSubstrByWidth(getMessage().getString(),Math.max(1,w-34));
+            String text=font.substrByWidth(getMessage(),Math.max(1,w-34));
             g.drawString(font,text,x+29,y+(h-8)/2,ink,false);return;
         }
         int border=selected?0xFF69C9D9:hot?0xFF92C3C9:0xFF607679;
@@ -42,7 +42,7 @@ final class GuideButton extends Button {
         if(selected)g.fill(x+1,y+1,x+3,y+h-1,0xFF79D3FF);
         if(glyph>=0){drawGlyph(g,x+(w-16)/2,y+(h-16)/2,glyph,selected?0xFF9CE8ED:0xFFE1EBE9);return;}
         if(!icon.isEmpty()){g.renderItem(icon,x+(w-16)/2,y+(h-16)/2);return;}
-        var font=Minecraft.getInstance().font;String value=font.plainSubstrByWidth(getMessage().getString(),Math.max(1,w-10));
+        var font=Minecraft.getInstance().font;String value=font.substrByWidth(getMessage(),Math.max(1,w-10));
         g.drawString(font,value,leftAlign?x+6:x+(w-font.width(value))/2,y+(h-8)/2,active?0xFFF0F2EB:0xFF899292,false);
     }
 }

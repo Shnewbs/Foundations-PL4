@@ -31,7 +31,7 @@ final class DisplayPickerScreen extends net.foundations.pl4.compat.PortScreen {
         int count=Math.max(1,(h-94)/22);for(int i=0;i<count&&i+scroll<choices.size();i++){var c=choices.get(i+scroll);int y=top+58+i*22;
             g.fill(left+8,y,left+w-8,y+21,mx>=left+8&&mx<left+w-8&&my>=y&&my<y+21?0xFF404F3F:0xFF282828);
             int x=left+12;if(c.row!=null&&c.row.hasItem()){g.renderItem(c.row.item(),x,y+2);x+=22;}
-            g.drawString(font,font.plainSubstrByWidth(c.label,w-(x-left)-16),x,y+6,0xFFEEEEEE,false);
+            g.drawString(font,font.substrByWidth(c.label,w-(x-left)-16),x,y+6,0xFFEEEEEE,false);
         }
         if(choices.isEmpty())g.drawString(font,readers?"No connected readers":"No matching rows; check reader data mode",left+12,top+64,0xFFE1B1A5,false);
     }

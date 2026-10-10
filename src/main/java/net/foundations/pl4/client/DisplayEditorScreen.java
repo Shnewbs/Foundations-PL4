@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.foundations.pl4.compat.PacketDistributor;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.Matrix4f;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.*;
 
@@ -35,7 +35,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
         if(packet.tag().contains("previewReader")){
             String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
-            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
+            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),null));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
         }
         selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)&&e.spec().page()==part.displayPage));selected=selectedIds.stream().findFirst().orElse(null);
     }
@@ -98,7 +98,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         int x=8,y=8,w=Math.min(width-16,420),h=34;
         g.fill(x,y,x+w,y+h,0xD0141B20);g.fill(x,y,x+3,y+h,0xFF62C7D6);
         String line=hoveredTool>=0?HELP[hoveredTool]:(hoveredCorner!=EditorChrome.Corner.NONE?"Resize from this corner":"Box: drag empty space • Shift: toggle • RMB back • side tools stay active");
-        g.drawString(font,font.plainSubstrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
+        g.drawString(font,font.substrByWidth(line,w-12),x+8,y+5,0xFFE3F2F4,false);
         int kx=x+8,ky=y+18;kx=hudKey(g,kx,ky,"E",0xFF63C7FF);kx=hudKey(g,kx+4,ky,"DEL",0xFFFF6B6B);kx=hudKey(g,kx+4,ky,"G",0xFF75E56B);kx=hudKey(g,kx+4,ky,"ESC",0xFFFFC45C);hudKey(g,kx+4,ky,"CTRL+Z",0xFFAA88FF);
     }
     private int hudKey(GuiGraphics g,int x,int y,String key,int color){int w=Math.max(14,font.width(key)+8);g.fill(x,y,x+w,y+12,0xE6263238);g.fill(x,y,x+2,y+12,color);g.drawString(font,key,x+5,y+2,color,false);return x+w;}
@@ -219,9 +219,9 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
             PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
         }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }
-    Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
+    Part anchoredPart(){var p=Part.load(part.save(null,true),null);p.identity=clickedIdentity;return p;}
     @Override public void tick(){
-        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(pos))>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
+        if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(pos))>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
         var anchor=host.parts.get(clickedSlot);if(anchor==null||!anchor.identity.equals(clickedIdentity)){onClose();return;}
         BlockPos root=anchor.kind==Kind.LARGE_DISPLAY?pos.relative(DisplayNetworks.right(anchor),-anchor.canvasColumn).relative(DisplayNetworks.up(anchor),anchor.canvasRow):pos;
         if(minecraft.level.getBlockEntity(root) instanceof HostEntity h){Part live=h.parts.get(clickedSlot);if(live!=null&&live.layoutRevision>=part.layoutRevision)part=live;}
@@ -232,7 +232,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         super.render(g,mx,my,partial);hoveredTool=-1;hoveredCorner=EditorChrome.Corner.NONE;var hit=point(mx,my);
         if(hit.isPresent()){var p=hit.get();hoveredTool=toolAt(p);if(hoveredTool<0){var e=selectedElement();if(e!=null&&e.page()==part.displayPage)hoveredCorner=EditorChrome.cornerAt(e.bounds(),p.x(),p.y());}}
         drawHudHelp(g);
-        if(!message.isBlank()){int w=Math.min(width-20,font.width(message)+12);g.fill(6,height-20,6+w,height-4,0xCC080808);g.drawString(font,font.plainSubstrByWidth(message,w-8),10,height-16,0xFFECECEC,false);}
+        if(!message.isBlank()){int w=Math.min(width-20,font.width(message)+12);g.fill(6,height-20,6+w,height-4,0xCC080808);g.drawString(font,font.substrByWidth(message,w-8),10,height-16,0xFFECECEC,false);}
     }
     @Override public boolean mouseClicked(double x,double y,int button){
         if(button==1){onClose();return true;}

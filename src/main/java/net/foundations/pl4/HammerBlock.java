@@ -1,6 +1,6 @@
 package net.foundations.pl4;
 
-import com.mojang.serialization.MapCodec;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -51,7 +51,7 @@ public final class HammerBlock extends ContainerBlock {
 
     @Override public ActionResultType use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit);}
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
-        return HammerStructure.open(l,pos,p)?ActionResultType.sidedSuccess(l.isClientSide):ActionResultType.PASS;
+        return HammerStructure.open(l,pos,p)?net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }
     @Override public void onRemove(BlockState s,World l,BlockPos pos,BlockState next,boolean moving){
         if(!(s.getBlock()==next.getBlock())&&!l.isClientSide&&l.getBlockEntity(pos) instanceof HammerEntity h) {

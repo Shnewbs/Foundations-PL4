@@ -49,7 +49,7 @@ final class DisplayTemplatesScreen extends net.foundations.pl4.compat.PortScreen
         if(preview!=null){double scale=Math.min((double)pw/previewWidth,(double)ph/previewHeight);for(var e:previewElements)if(e.page()==page){var r=e.bounds();int x=px+(int)(r.x()*scale),y=py+(int)(r.y()*scale),ew=Math.max(1,(int)(r.width()*scale)),eh=Math.max(1,(int)(r.height()*scale));g.fill(x,y,x+ew,y+eh,0xA0000000|e.color());}
             g.drawString(font,previewWidth+" x "+previewHeight+" / "+preview.elements().size()+" elements",px,py+ph+3,0xFFB8CDD0,false);
         }
-        g.drawString(font,font.plainSubstrByWidth(status.isBlank()?"Apply replaces all pages. Ctrl+Z restores the previous layout.":status,w-20),left+10,top+h-43,0xFFB8CDD0,false);
+        g.drawString(font,font.substrByWidth(status.isBlank()?"Apply replaces all pages. Ctrl+Z restores the previous layout.":status,w-20),left+10,top+h-43,0xFFB8CDD0,false);
     }
     @Override public void tick(){parent.tick();}
     @Override public void onClose(){minecraft.setScreen(parent);}

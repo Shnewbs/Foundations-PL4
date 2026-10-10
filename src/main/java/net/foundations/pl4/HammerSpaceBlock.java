@@ -30,7 +30,7 @@ public final class HammerSpaceBlock extends Block {
     @Override public VoxelShape getShape(BlockState s,IBlockReader l,BlockPos p,ISelectionContext c){return s.getValue(OFFSET)==2?TOP:POSTS;}
     @Override public ActionResultType use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit);}
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
-        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?ActionResultType.sidedSuccess(l.isClientSide):ActionResultType.PASS;
+        return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }
     @Override public boolean removedByPlayer(BlockState s,World l,BlockPos p,PlayerEntity player,boolean willHarvest,FluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));

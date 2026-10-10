@@ -23,9 +23,10 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "31.2.62",
-  "port_status": "SOURCE_API_PORTING",
-  "expected_native_scenarios": 191,
+  "port_status": "NATIVE_API_VALIDATION_PENDING",
+  "expected_native_scenarios": 193,
   "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
   "build_java": 17,
-  "installed_runtime_acceptance": "PENDING"
+  "installed_runtime_acceptance": "PENDING",
+  "forge31_api_pass": true
 }

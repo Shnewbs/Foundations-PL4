@@ -12,7 +12,7 @@ import net.minecraft.item.Items;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
@@ -94,8 +94,8 @@ public final class R7GameTests {
         var target=host(h,new BlockPos(2,2,2));Part reader=new Part(Kind.ENERGY_READER,Direction.DOWN,OWNER);reader.energySystem="EU";
         Part screen=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,OWNER);screen.label="Saved display";screen.selected=reader.identity.toString();screen.displayOutward=true;
         screen.elements.add(new Part.Element("EU","","storage:eu",3,7,0xABCDE0,false));
-        ListNBT parts=new ListNBT();parts.add(reader.save(h.getLevel().registryAccess(),false));parts.add(screen.save(h.getLevel().registryAccess(),false));
-        CompoundNBT old=new CompoundNBT();old.putInt("schema",1);old.put("parts",parts);target.loadAdditional(old,h.getLevel().registryAccess());
+        ListNBT parts=new ListNBT();parts.add(reader.save(null,false));parts.add(screen.save(null,false));
+        CompoundNBT old=new CompoundNBT();old.putInt("schema",1);old.put("parts",parts);target.loadAdditional(old,null);
         Part loaded=target.parts.get(9);
         net.foundations.pl4.compat.PortAssertions.check(target.parts.get(0).energySystem.equals("EU")&&!target.parts.containsKey(2),"Only display indices migrate");
         net.foundations.pl4.compat.PortAssertions.check(loaded.identity.equals(screen.identity)&&loaded.elements.equals(screen.elements)&&loaded.displayOutward&&loaded.selected.equals(screen.selected),"All R6 identity/front/reader/layout data survives");h.succeed();
@@ -104,8 +104,8 @@ public final class R7GameTests {
     public static void codecPreservesAllThirteenSlots(GameTestHelper h){
         var target=host(h,new BlockPos(2,2,2));put(target,Kind.DATA_CABLE,Direction.DOWN);
         for(Direction f:Direction.values()){put(target,Kind.INVENTORY_READER,f);put(target,Kind.MINI_DISPLAY,f);}
-        CompoundNBT saved=new CompoundNBT();target.saveAdditional(saved,h.getLevel().registryAccess());
-        var loaded=new HostEntity(target.getBlockPos(),target.getBlockState());loaded.loadAdditional(saved,h.getLevel().registryAccess());
+        CompoundNBT saved=new CompoundNBT();target.saveAdditional(saved,null);
+        var loaded=new HostEntity(target.getBlockPos(),target.getBlockState());loaded.loadAdditional(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.parts.size()==13,"NBT loading must not truncate at the former seven-part limit");
         for(var e:target.parts.entrySet())net.foundations.pl4.compat.PortAssertions.check(loaded.parts.get(e.getKey()).identity.equals(e.getValue().identity),"Slot/identity round trip");h.succeed();
     }
@@ -116,7 +116,7 @@ public final class R7GameTests {
             target.parts.clear();Part reader=put(target,Kind.INVENTORY_READER,face);Part panel=new Part(Kind.DISPLAY,face,OWNER);
             net.foundations.pl4.compat.PortAssertions.check(HostBlock.canAdd(target,panel),"Thin screen fits the original ReaderWithDisplay model");target.parts.put(panel.slot(),panel);target.changed();
             net.foundations.pl4.compat.PortAssertions.check(!VoxelShapes.joinIsNotEmpty(MultipartShapes.part(target.parts.values(),reader),MultipartShapes.part(target.parts.values(),panel),IBooleanFunction.AND),"No reader/display collision overlap");
-            var point=Vector3d.atCenterOf(target.getBlockPos()).add(face.getStepX()*.4999,face.getStepY()*.4999,face.getStepZ()*.4999);
+            var point=net.foundations.pl4.compat.PortVectors.atCenterOf(target.getBlockPos()).add(face.getStepX()*.4999,face.getStepY()*.4999,face.getStepZ()*.4999);
             var hit=new BlockRayTraceResult(point,face,target.getBlockPos(),false);
             net.foundations.pl4.compat.PortAssertions.check(target.hit(hit)==panel&&target.interactionTarget(hit,true)==reader,"Front click hits screen; empty-hand sneak click addresses covered reader");
             net.foundations.pl4.compat.PortAssertions.check(!HostBlock.canAdd(target,new Part(Kind.MINI_DISPLAY,face,OWNER)),"Two displays cannot claim one display slot");
@@ -136,7 +136,7 @@ public final class R7GameTests {
         var target=host(h,new BlockPos(3,3,3));Part reader=put(target,Kind.INVENTORY_READER,Direction.EAST);put(target,Kind.DATA_CABLE,Direction.DOWN);
         var player=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-R7-Test"));
         player.inventory.clearContent();player.abilities.instabuild=false;
-        Vector3d front=Vector3d.atCenterOf(target.getBlockPos()).add(.5,0,0);player.setPos(front.x+1,front.y,front.z);
+        Vec3d front=net.foundations.pl4.compat.PortVectors.atCenterOf(target.getBlockPos()).add(.5,0,0);player.setPos(front.x+1,front.y,front.z);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.DISPLAY).get(),2);player.setItemInHand(net.minecraft.util.Hand.MAIN_HAND,stack);
         var hit=new BlockRayTraceResult(front,Direction.EAST,target.getBlockPos(),false);
         var context=new net.minecraft.item.ItemUseContext(player,net.minecraft.util.Hand.MAIN_HAND,hit);

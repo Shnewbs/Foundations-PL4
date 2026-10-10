@@ -18,6 +18,6 @@ public final class CoreRecipes {
         @Override public IRecipeType<ForgingRecipe> get(){return value;}
     };
     public static final RegistryObject<ForgingRecipe.Serializer> HAMMER_SERIALIZER=SERIALIZERS.register("forging_hammer",ForgingRecipe.Serializer::new);
-    public static void register(IEventBus bus){bus.addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event)->event.enqueueWork(()->net.minecraft.util.registry.Registry.register(net.minecraft.util.registry.Registry.RECIPE_TYPE,FoundationsPL4.id("forging_hammer"),HAMMER.get())));SERIALIZERS.register(bus);}
+    public static void register(IEventBus bus){bus.addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event)->net.minecraftforge.fml.DeferredWorkQueue.runLater(()->net.minecraft.util.registry.Registry.register(net.minecraft.util.registry.Registry.RECIPE_TYPE,FoundationsPL4.id("forging_hammer"),HAMMER.get())));SERIALIZERS.register(bus);}
     private CoreRecipes(){}
 }

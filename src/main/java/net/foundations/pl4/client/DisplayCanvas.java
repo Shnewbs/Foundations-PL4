@@ -2,7 +2,7 @@ package net.foundations.pl4.client;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.Vector3f;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.IReorderingProcessor;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.BlockItem;
@@ -44,8 +44,8 @@ final class DisplayCanvas {
             pose.translate(x,y,depth(layer));pose.scale(textScale,textScale,1);
             int scaledWidth=Math.max(1,Math.round(width/textScale)),scaledHeight=Math.max(1,Math.round(height/textScale));
             int lineY=0;int maxY=scaledHeight;
-            List<IReorderingProcessor> lines=wrap?font.split(new net.minecraft.util.text.StringTextComponent(value),scaledWidth):
-                List.of(IReorderingProcessor.forward(font.plainSubstrByWidth(value,scaledWidth),net.minecraft.util.text.Style.EMPTY));
+            List<String> lines=wrap?font.split(value,scaledWidth):
+                List.of(font.substrByWidth(value,scaledWidth));
             for(var line:lines){
                 if(lineY+font.lineHeight>maxY)break;
                 int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->0;case CENTER->(scaledWidth-lineWidth)/2;case RIGHT->scaledWidth-lineWidth;};

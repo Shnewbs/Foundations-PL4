@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
-import net.minecraft.util.registry.DynamicRegistries;
+
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.INBT;
@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 
 public final class HostEntity extends TileEntity {
     public static java.util.function.Function<HostEntity,net.minecraft.util.math.AxisAlignedBB> clientRenderBounds=h->new net.minecraft.util.math.AxisAlignedBB(h.getBlockPos());
@@ -66,7 +66,7 @@ public final class HostEntity extends TileEntity {
     @Override public void setRemoved(){if(level!=null&&!level.isClientSide)NetworkEngine.remove(this);super.setRemoved();if(level!=null&&level.isClientSide)CableGeometry.refresh(this);}
     public boolean canEdit(PlayerEntity p){return p.hasPermissions(2)||parts.values().stream().allMatch(a->a.owner==null||a.owner.equals(p.getUUID()));}
     public Part hit(BlockRayTraceResult h){
-        Vector3d local=h.getLocation().subtract(Vector3d.atLowerCornerOf(worldPosition));
+        Vec3d local=h.getLocation().subtract(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(worldPosition));
         // A front hit belongs to the thin display, never its covered reader; use real paired geometry.
         for(boolean display:new boolean[]{true,false})for(Part p:parts.values())if(!p.kind.cable()&&p.kind.display()==display)
             for(AxisAlignedBB b:MultipartShapes.part(parts.values(),p).toAabbs())if(b.inflate(.0001).contains(local))return p;
@@ -74,7 +74,7 @@ public final class HostEntity extends TileEntity {
         return parts.getOrDefault(6,parts.values().stream().findFirst().orElse(null));
     }
     public Direction cableDirection(BlockRayTraceResult hit){
-        Vector3d point=hit.getLocation().subtract(Vector3d.atCenterOf(worldPosition));
+        Vec3d point=hit.getLocation().subtract(net.foundations.pl4.compat.PortVectors.atCenterOf(worldPosition));
         double x=Math.abs(point.x),y=Math.abs(point.y),z=Math.abs(point.z);
         if(Math.max(x,Math.max(y,z))<=.126)return hit.getDirection();
         if(x>=y&&x>=z)return point.x<0?Direction.WEST:Direction.EAST;
@@ -98,19 +98,19 @@ public final class HostEntity extends TileEntity {
             &&lastCableSync.signal()==cable.signal&&lastCableSync.status().equals(cable.status)
             &&lastCableSync.rows().equals(cable.rows))return;
         syncTagBuilds++;
-        CompoundNBT tag=getUpdateTag(level.registryAccess());
+        CompoundNBT tag=getUpdateTag(null);
         if(!tag.equals(lastSync)){lastSync=tag;level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),2);}
         lastCableSync=cable!=null&&cable.kind.cable()?new CableSync(cable,cable.status,cable.signal,List.copyOf(cable.rows)):null;
     }
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
-    protected void saveAdditional(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r){super.save(t);write(t,r,false);}
-    private void write(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r,boolean sync){
+    protected void saveAdditional(CompoundNBT t,Object r){super.save(t);write(t,r,false);}
+    private void write(CompoundNBT t,Object r,boolean sync){
         ListNBT list=new ListNBT();parts.values().forEach(p->list.add(p.save(r,sync)));t.put("parts",list);t.putInt("schema",2);
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
     }
-    protected void loadAdditional(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r){
+    protected void loadAdditional(CompoundNBT t,Object r){
         cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
         int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=net.foundations.pl4.compat.PortMath.clamp(arms[a],0,3);
         externalLeads=t.getInt("externalLeads")&8191;parts.clear();ListNBT list=t.getList("parts",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
@@ -120,11 +120,11 @@ public final class HostEntity extends TileEntity {
         }
         if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
-    public CompoundNBT getUpdateTag(net.minecraft.util.registry.DynamicRegistries r){CompoundNBT t=new CompoundNBT();write(t,r,true);return t;}
+    public CompoundNBT getUpdateTag(Object r){CompoundNBT t=new CompoundNBT();write(t,r,true);return t;}
     @Override public SUpdateTileEntityPacket getUpdatePacket(){return new SUpdateTileEntityPacket(getBlockPos(),0,getUpdateTag());}
 
     @Override public CompoundNBT save(CompoundNBT tag){saveAdditional(tag,null);return tag;}
-    @Override public void load(BlockState state,CompoundNBT tag){super.load(state,tag);loadAdditional(tag,null);}
+    @Override public void load(CompoundNBT tag){super.load(tag);loadAdditional(tag,null);}
     @Override public CompoundNBT getUpdateTag(){CompoundNBT t=super.getUpdateTag();t.merge(getUpdateTag(null));return t;}
-    @Override public void onDataPacket(net.minecraft.network.NetworkManager manager,SUpdateTileEntityPacket packet){load(getBlockState(),packet.getTag());}
+    @Override public void onDataPacket(net.minecraft.network.NetworkManager manager,SUpdateTileEntityPacket packet){load(packet.getTag());}
 }

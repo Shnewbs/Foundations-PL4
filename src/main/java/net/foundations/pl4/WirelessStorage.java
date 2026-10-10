@@ -29,7 +29,7 @@ public final class WirelessStorage {
     private static final Map<ServerPlayerEntity,Rate> RATES=new WeakHashMap<>();
     private static HostEntity anchor(ServerPlayerEntity player,Part.Link binding){
         if(player.isSpectator()||binding==null||binding.part()==null||binding.entity()!=null||!PLConfig.WIRELESS.get()||!PLConfig.TRANSFERS.get())return null;
-        if(!PLConfig.CROSS_DIMENSION.get()&&!player.level.dimension().location().toString().equals(binding.dimension()))return null;
+        if(!PLConfig.CROSS_DIMENSION.get()&&!player.level.dimension.getType().getRegistryName().toString().equals(binding.dimension()))return null;
         var server=player.getLevel().getServer();if(!NetworkEngine.loaded(server,binding))return null;
         var world=NetworkEngine.level(server,binding);
         if(!(world.getBlockEntity(binding.pos()) instanceof HostEntity host)||!host.canEdit(player)||!world.mayInteract(player,binding.pos()))return null;

@@ -20,7 +20,7 @@ public final class CableGeometry {
         Map<BlockPos,HostEntity> footprint=new LinkedHashMap<>(centres);
         for(HostEntity centre:centres.values())for(Direction face:FACES)add(level,centre.getBlockPos().relative(face),footprint);
         List<MultipartTopology.Node> nodes=new ArrayList<>();Map<Part,Integer> ids=new IdentityHashMap<>();
-        String dimension=level.dimension().location().toString();
+        String dimension=level.dimension.getType().getRegistryName().toString();
         for(HostEntity host:footprint.values())for(Part part:host.parts.values()){
             int id=nodes.size();ids.put(part,id);BlockPos pos=host.getBlockPos();
             nodes.add(new MultipartTopology.Node(id,new MultipartTopology.Cell(dimension,pos.getX(),pos.getY(),pos.getZ()),part.kind,part.face.ordinal(),part.blockedFaces));

@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.foundations.pl4.compat.Registries;
-import net.minecraft.util.RegistryKey;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.server.ServerWorld;
@@ -25,7 +25,7 @@ public final class NetworkEngine {
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
     public record Ref(HostEntity host,Part part) {
         public ServerWorld level(){return (ServerWorld)host.getLevel();}
-        public Part.Link adjacent(){return new Part.Link(level().dimension().location().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
+        public Part.Link adjacent(){return new Part.Link(level().dimension.getType().getRegistryName().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
     }
     public static void add(HostEntity h){if(LOADED.add(h))dirty=true;}
     public static void remove(HostEntity h){if(LOADED.remove(h))dirty=true;}
@@ -35,7 +35,7 @@ public final class NetworkEngine {
         EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
     public static ServerWorld level(MinecraftServer server,Part.Link link){
-        ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(RegistryKey.create(Registries.DIMENSION,id));
+        ResourceLocation id=ResourceLocation.tryParse(link.dimension());if(id==null)return null;var type=net.minecraft.world.dimension.DimensionType.getByName(id);return type==null?null:server.getLevel(type);
     }
     public static boolean loaded(MinecraftServer server,Part.Link link){ServerWorld l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
     private static boolean loadedHost(HostEntity h,MinecraftServer s){
@@ -54,7 +54,7 @@ public final class NetworkEngine {
             if(!loadedHost(host,server)){iterator.remove();continue;}
             host.parts.values().forEach(part->refs.add(new Ref(host,part)));
         }
-        refs.sort(Comparator.comparing((Ref r)->r.level().dimension().location().toString())
+        refs.sort(Comparator.comparing((Ref r)->r.level().dimension.getType().getRegistryName().toString())
             .thenComparingLong(r->r.host.getBlockPos().asLong()).thenComparingInt(r->r.part.slot()));
         var sets=new net.foundations.pl4.core.DisjointSets(refs.size());
         Map<Part,Integer> index=new IdentityHashMap<>();
@@ -68,7 +68,7 @@ public final class NetworkEngine {
         for(int i=0;i<refs.size();i++){
             Ref r=refs.get(i);BlockPos p=r.host.getBlockPos();
             nodes.add(new net.foundations.pl4.core.MultipartTopology.Node(i,
-                new net.foundations.pl4.core.MultipartTopology.Cell(r.level().dimension().location().toString(),p.getX(),p.getY(),p.getZ()),
+                new net.foundations.pl4.core.MultipartTopology.Cell(r.level().dimension.getType().getRegistryName().toString(),p.getX(),p.getY(),p.getZ()),
                 r.part.kind,r.part.face.ordinal(),r.part.blockedFaces));
         }
         var topology=net.foundations.pl4.core.MultipartTopology.plan(nodes);

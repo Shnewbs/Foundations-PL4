@@ -33,7 +33,7 @@ public final class PerformanceGameTests {
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+2,"Connection geometry must invalidate immediately");
         host.setExternalLeads(1);host.syncIfChanged();
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+3,"External lead geometry must invalidate immediately");
-        var saved=host.getUpdateTag(h.getLevel().registryAccess());host.loadAdditional(saved,h.getLevel().registryAccess());host.syncIfChanged();
+        var saved=host.getUpdateTag(null);host.loadAdditional(saved,null);host.syncIfChanged();
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+4,"Reload must invalidate even when serialized content matches");
         Part reader=new Part(Kind.NETWORK_READER,Direction.NORTH,OWNER);host.parts.put(reader.slot(),reader);host.changed();
         host.syncIfChanged();reader.status="Live reader";host.syncIfChanged();
@@ -93,13 +93,13 @@ public final class PerformanceGameTests {
         var d=host(h,new BlockPos(4,2,2),Kind.DATA_CABLE,Direction.DOWN);
         NetworkEngine.rebuild(h.getLevel().getServer());long builds=NetworkEngine.topologyBuildCount();
         // Reproduce a received snapshot with valid parts but old/disconnected geometry.
-        var stale=b.getUpdateTag(h.getLevel().registryAccess());stale.putIntArray("cableConnections",new int[6]);
-        b.loadAdditional(stale,h.getLevel().registryAccess());
+        var stale=b.getUpdateTag(null);stale.putIntArray("cableConnections",new int[6]);
+        b.loadAdditional(stale,null);
         a.setConnections(new int[6]);CableGeometry.refresh(b);
         net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1&&b.connection(Direction.EAST)==1&&c.connection(Direction.WEST)==1,"Both ends must connect from parts in the same local refresh");
         net.foundations.pl4.compat.PortAssertions.check(c.connection(Direction.EAST)==1&&d.connection(Direction.WEST)==1,"Updating a neighbour must preserve its farther connection");
-        stale=a.getUpdateTag(h.getLevel().registryAccess());stale.putIntArray("cableConnections",new int[6]);
-        a.loadAdditional(stale,h.getLevel().registryAccess());CableGeometry.refresh(a);
+        stale=a.getUpdateTag(null);stale.putIntArray("cableConnections",new int[6]);
+        a.loadAdditional(stale,null);CableGeometry.refresh(a);
         net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"A later stale arm snapshot must not reopen the gap");
         net.foundations.pl4.compat.PortAssertions.check(NetworkEngine.topologyBuildCount()==builds,"Local geometry must not rebuild the global network");h.succeed();
     }

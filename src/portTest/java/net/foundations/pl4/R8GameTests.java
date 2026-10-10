@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.*;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
@@ -28,7 +28,7 @@ public final class R8GameTests {
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind==Kind.LARGE_DISPLAY).findFirst().orElseThrow();}
     private static FakePlayer player(GameTestHelper h,HostEntity at,ItemStack stack){
         var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.inventory.clearContent();p.abilities.instabuild=false;p.setShiftKeyDown(false);
-        var centre=net.minecraft.util.math.vector.Vector3d.atCenterOf(at.getBlockPos());p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(Hand.MAIN_HAND,stack);return p;
+        var centre=net.foundations.pl4.compat.PortVectors.atCenterOf(at.getBlockPos());p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(Hand.MAIN_HAND,stack);return p;
     }
     private static void configure(Part p){p.label="Saved machine board";p.selected="power_main";p.color=0x53AACC;p.elements.add(new Part.Element("EU","","storage:eu",7,19,0xABDEEF,false));p.layoutRevision=20;}
     private static void extend(GameTestHelper h,Direction mount){
@@ -36,7 +36,7 @@ public final class R8GameTests {
         for(Direction side:Direction.values())if(side.getAxis()!=mount.getAxis()){
             NetworkEngine.ensureCurrent(h.getLevel().getServer());
             ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var player=player(h,source,stack);
-            Vector3d centre=net.minecraft.util.math.vector.Vector3d.atCenterOf(source.getBlockPos());Vector3d hitPoint=centre.add(mount.getStepX()*.4999+side.getStepX()*.5,mount.getStepY()*.4999+side.getStepY()*.5,mount.getStepZ()*.4999+side.getStepZ()*.5);
+            Vec3d centre=net.foundations.pl4.compat.PortVectors.atCenterOf(source.getBlockPos());Vec3d hitPoint=centre.add(mount.getStepX()*.4999+side.getStepX()*.5,mount.getStepY()*.4999+side.getStepY()*.5,mount.getStepZ()*.4999+side.getStepZ()*.5);
             var result=stack.getItem().useOn(new ItemUseContext(player,Hand.MAIN_HAND,new BlockRayTraceResult(hitPoint,side,source.getBlockPos(),false)));
             BlockPos destination=source.getBlockPos().relative(side);
             net.foundations.pl4.compat.PortAssertions.check(result.consumesAction()&&h.getLevel().getBlockEntity(destination) instanceof HostEntity,"Side click must create a neighboring host, not a perpendicular face");
@@ -58,8 +58,8 @@ public final class R8GameTests {
     public static void frontRimAndSavedItemAdoptCanvas(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);configure(part(source));source.changed();
         Part saved=new Part(Kind.LARGE_DISPLAY,Direction.DOWN,OWNER);saved.displayOutward=false;saved.label="Do not override active board";saved.layoutRevision=99;
-        ItemStack stack=PartItem.savedStack(saved,h.getLevel().registryAccess());var p=player(h,source,stack);
-        Vector3d point=net.minecraft.util.math.vector.Vector3d.atCenterOf(source.getBlockPos()).add(.49,0,-.4999);
+        ItemStack stack=PartItem.savedStack(saved,null);var p=player(h,source,stack);
+        Vec3d point=net.foundations.pl4.compat.PortVectors.atCenterOf(source.getBlockPos()).add(.49,0,-.4999);
         stack.getItem().useOn(new ItemUseContext(p,Hand.MAIN_HAND,new BlockRayTraceResult(point,Direction.NORTH,source.getBlockPos(),false)));
         var next=(HostEntity)h.getLevel().getBlockEntity(source.getBlockPos().east());
         net.foundations.pl4.compat.PortAssertions.check(next!=null&&part(next).face==Direction.NORTH&&part(next).displayOutward,"Front rim extends east in original plane");
@@ -68,7 +68,7 @@ public final class R8GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void centreClickDoesNotConsumeOrRotate(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
-        var point=net.minecraft.util.math.vector.Vector3d.atCenterOf(source.getBlockPos()).add(0,0,-.4999);
+        var point=net.foundations.pl4.compat.PortVectors.atCenterOf(source.getBlockPos()).add(0,0,-.4999);
         var result=stack.getItem().useOn(new ItemUseContext(p,Hand.MAIN_HAND,new BlockRayTraceResult(point,Direction.NORTH,source.getBlockPos(),false)));
         net.foundations.pl4.compat.PortAssertions.check(result==ActionResultType.FAIL&&stack.getCount()==2&&h.getLevel().isEmptyBlock(source.getBlockPos().north()),"Ambiguous centre does not create a perpendicular or offset panel");h.succeed();
     }
@@ -76,7 +76,7 @@ public final class R8GameTests {
     public static void occupiedExtensionCannotReplaceOrConsume(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);h.setBlock(new BlockPos(4,3,3),Blocks.DIAMOND_BLOCK);
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.LARGE_DISPLAY).get(),2);var p=player(h,source,stack);
-        var point=net.minecraft.util.math.vector.Vector3d.atCenterOf(source.getBlockPos()).add(.5,0,-.4999);
+        var point=net.foundations.pl4.compat.PortVectors.atCenterOf(source.getBlockPos()).add(.5,0,-.4999);
         stack.getItem().useOn(new ItemUseContext(p,Hand.MAIN_HAND,new BlockRayTraceResult(point,Direction.EAST,source.getBlockPos(),false)));
         net.foundations.pl4.compat.PortAssertions.check(stack.getCount()==2&&(h.getLevel().getBlockState(source.getBlockPos().east()).getBlock()==Blocks.DIAMOND_BLOCK),"Solid destination remains intact");h.succeed();
     }
@@ -102,7 +102,7 @@ public final class R8GameTests {
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);configure(part(a));a.changed();NetworkEngine.ensureCurrent(h.getLevel().getServer());
         Part root=DisplayNetworks.controller(a,part(a)).part();root.label="Latest edit";root.selected="inventory_main";DisplayNetworks.layoutEdited(a,root);
         for(var host:List.of(a,b)){
-            CompoundNBT saved=new CompoundNBT();host.saveAdditional(saved,h.getLevel().registryAccess());host.loadAdditional(saved,h.getLevel().registryAccess());host.changed();
+            CompoundNBT saved=new CompoundNBT();host.saveAdditional(saved,null);host.loadAdditional(saved,null);host.changed();
         }
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
         net.foundations.pl4.compat.PortAssertions.check(part(a).label.equals("Latest edit")&&part(b).selected.equals("inventory_main")&&part(b).layoutRevision>20,"Save reload retains mirrored edit and revision");h.succeed();
@@ -117,10 +117,10 @@ public final class R8GameTests {
     public static void hologramViewPersistenceAndLegacyDefault(GameTestHelper h){
         for(Kind kind:List.of(Kind.HOLOGRAM,Kind.ADVANCED_HOLOGRAM))for(Direction face:Direction.values()){
             Part p=new Part(kind,face,OWNER);p.hologramView=Direction.WEST.ordinal();p.label="Projection";
-            var saved=p.save(h.getLevel().registryAccess(),false);var loaded=Part.load(saved,h.getLevel().registryAccess());
+            var saved=p.save(null,false);var loaded=Part.load(saved,null);
             int expected=net.foundations.pl4.core.HologramProjection.view(face.ordinal(),Direction.WEST.ordinal());
             net.foundations.pl4.compat.PortAssertions.check(loaded.hologramView==expected&&loaded.identity.equals(p.identity),"Hologram view and identity persist");
-            saved.remove("hologramView");loaded=Part.load(saved,h.getLevel().registryAccess());
+            saved.remove("hologramView");loaded=Part.load(saved,null);
             net.foundations.pl4.compat.PortAssertions.check(loaded.hologramView==net.foundations.pl4.core.HologramProjection.view(face.ordinal(),3),"Legacy projectors load without moving mount or slots");
         }h.succeed();
     }
