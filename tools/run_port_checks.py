@@ -20,7 +20,7 @@ def main():
     resources=ROOT/'src/main/resources';count=0
     for path in resources.rglob('*.json'):json.loads(path.read_text());count+=1
     status=json.loads((ROOT/'BUILD_STATUS.json').read_text())
-    assert status['minecraft']=='1.16.4' and status['java']==8 and status['build_java']==17
+    assert status['minecraft']=='1.16.3' and status['java']==8 and status['build_java']==17
     assert (resources/'META-INF/mods.toml').is_file()
     assert not (resources/'META-INF/neoforge.mods.toml').exists()
     assert json.loads((resources/'pack.mcmeta').read_text())['pack']['pack_format']==6

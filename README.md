@@ -1,47 +1,19 @@
-# Foundations PL4 1.16.4 0.2a-port.1 - native Java 8 compatibility
+# Foundations PL4 1.16.3 0.2a-port.1
 
-Alpha feature port. **Further API testing is still required.**
+Full-feature source port derived from the verified 1.16.4 track, not a renamed JAR or a transport-only preview.
 
-Retains the modern-source cable, multipart, reader/display, editor, item network storage,
-item/fluid/energy routing, ownership, persistence and field-guide implementation already
-adapted for this Minecraft target. This update converts records, sealed classes and newer
-JDK API usages at build time before Forge reobfuscation instead of requiring a patched
-Forge scanner or runtime Java agent.
+Includes multipart cable/reader/display behavior, hologram and display editing, physical-network Wireless Storage with search/sorting and transfers, sided item/fluid/FE routing with saved buffers, ownership, configuration, recipes and the built-in field guide. Foreign energy telemetry is not universal energy conversion.
 
-Runtime: Minecraft 1.16.4 / Forge 35.1.37 / Java 8. Build: Java 17.
-The published runtime is built from the `-java8.jar` artifact, NOT the unconverted intermediate
-JAR. Only required relocated JvmDowngrader 2.0.1 API helpers are included, with notices,
-LGPL-2.1 license, matching source asset, and reproducible relinking scripts.
+## Exact runtime
 
-Publication requires the complete existing native scenario suite on an installed server
-using the packaged runtime. Exact results and artifact hashes are in java8-summary.json;
-this note alone is not evidence that tests passed. Real-client visuals, third-party API
-mod combinations and live multiplayer acceptance remain pending. This does not add missing
-external provider APIs or claim full PL2 parity. Use matching client/server PL4 builds and
-back up worlds. Do not install source, input, unconverted or scenario JARs.
+Minecraft **1.16.3**, Forge **34.1.42**, **Java 8**. Java 17 is the build JDK only. Build-time conversion supplies required relocated Java compatibility code; no runtime Java agent is needed. JvmDowngrader source and license notices accompany the release.
 
-Reproduction in a clean disposable checkout with JAVA_HOME_17_X64 and JAVA_HOME_8_X64:
-`JAVA_HOME="$JAVA_HOME_17_X64" bash gradlew --no-daemon clean build`
-`python3 tools/java8/runtime.py native`
+This old Forge track uses an explicit **ModLauncher 8.1.3 launch profile**. This is NOT a stock-launcher compatibility claim. Install the exact Forge server, then run the supplied `forge35_profile.py --server SERVER_DIRECTORY --java PATH_TO_JAVA8 --launch`. The helper verifies the pinned launcher hash and uses classpath precedence without replacing the Forge JAR or its bundled libraries. Client launcher setup and graphical acceptance are still pending; do not assume this server helper configures clients.
 
-The source remains Java 17 for maintainability; the tested release output targets Java 8.
+## Release gates
 
-See docs/FIELD_GUIDE.md for usage, and docs/API_TESTING.md for remaining integration acceptance.
+Independent target compilation/reobfuscation, original production-rule suites, all 193 required native server scenarios on the exact installed runtime, Java 8 bytecode/archive checks, and a separate production-only startup without the test mod. Check the attached runtime summary for actual results. Source status before CI remains PENDING; this is not proof of a passing run.
 
-## Required Forge 35 launch profile
+Clients and servers must use matching exact-target versions. Back up worlds and do not downgrade existing worlds. No cross-version world migration is promised.
 
-Forge 35.1.37 bundles ModLauncher 8.0.9, which calls a JDK-internal constructor
-removed from current Java 8 updates. This release therefore requires **ModLauncher
-8.1.3 to precede the bundled launcher on the classpath**. This is NOT a stock
-Forge-35/current-Java-8 acceptance claim. Do not downgrade Java to avoid this issue.
-
-A standalone helper is included as `forge35_profile.py` in the release. With Python
-3 and an installed Forge 1.16.4-35.1.37 server, run:
-
-`python forge35_profile.py --server /path/to/server --java /path/to/java8 --launch`
-
-Without `--launch` it only fetches the pinned-version official library, checks the
-upstream checksum, records its SHA256 and prints the launch command. It does not
-replace or rename any installed Forge library. Clients need equivalent library
-precedence in their launcher; a ready-made client-launcher profile and graphical
-acceptance are still pending. The mod alone does not repair a broken launcher.
+**Further API testing is still required.** Real-client visuals, installed third-party APIs, multiplayer and sustained modpack performance remain unverified. Core guide/inspection/native storage and transfer fallbacks are retained, but this is not full optional-API or scripting parity.
