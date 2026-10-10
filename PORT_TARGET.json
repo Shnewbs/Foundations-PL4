@@ -1,0 +1,11 @@
+{
+  "minecraft": "1.18",
+  "loader": "Forge",
+  "loader_version": "38.0.17",
+  "runtime_java": 17,
+  "source_baseline": "mc/1.18.1",
+  "expected_native_tests": 193,
+  "release_allowed": false,
+  "installed_client": "PENDING",
+  "optional_api_acceptance": "PENDING"
+}
