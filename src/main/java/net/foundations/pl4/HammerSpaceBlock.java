@@ -40,5 +40,6 @@ public final class HammerSpaceBlock extends Block {
             if(l.getBlockState(base).is(FoundationsPL4.HAMMER.get()))l.destroyBlock(base,true);
         }
     }
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
+    @Override public ItemStack getCloneItemStack(LevelReader l,BlockPos p,BlockState s){return new ItemStack(FoundationsPL4.HAMMER.get());}
+    public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){return new ItemStack(FoundationsPL4.HAMMER.get());}
 }

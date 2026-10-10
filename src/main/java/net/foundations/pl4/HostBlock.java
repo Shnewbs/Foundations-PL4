@@ -14,6 +14,8 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
 
 public final class HostBlock extends BaseEntityBlock {
+    private static final MapCodec<HostBlock> CODEC = simpleCodec(HostBlock::new);
+    @Override protected MapCodec<? extends BaseEntityBlock> codec(){return CODEC;}
     public HostBlock(Properties p) { super(p); }
     @Override public RenderShape getRenderShape(BlockState s){return RenderShape.INVISIBLE;}
     @Override public BlockEntity newBlockEntity(BlockPos p,BlockState s){return new HostEntity(p,s);}
@@ -49,7 +51,14 @@ public final class HostBlock extends BaseEntityBlock {
     @Override public boolean isSignalSource(BlockState s){return true;}
     @Override public int getSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return l.getBlockEntity(p) instanceof HostEntity h?h.output(side):0;}
     @Override public int getDirectSignal(BlockState s,BlockGetter l,BlockPos p,Direction side){return getSignal(s,l,p,side);}
-    @Override public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){
+    @Override public ItemStack getCloneItemStack(LevelReader l,BlockPos p,BlockState s){
+        if(l.getBlockEntity(p) instanceof HostEntity h){
+            Part first=h.parts.values().stream().min(java.util.Comparator.comparingInt(Part::slot)).orElse(null);
+            if(first!=null)return new ItemStack(FoundationsPL4.PART_ITEMS.get(first.kind).get());
+        }
+        return ItemStack.EMPTY;
+    }
+    public ItemStack getCloneItemStack(BlockState s,HitResult target,BlockGetter l,BlockPos p,Player player){
         if(target instanceof BlockHitResult hit && l.getBlockEntity(p) instanceof HostEntity h){Part part=h.hit(hit);if(part!=null)return new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());}return ItemStack.EMPTY;
     }
 }

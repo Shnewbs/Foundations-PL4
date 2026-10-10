@@ -15,6 +15,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 
 public final class HammerBlock extends BaseEntityBlock {
+    private static final MapCodec<HammerBlock> CODEC = simpleCodec(HammerBlock::new);
+    @Override protected MapCodec<? extends BaseEntityBlock> codec(){return CODEC;}
     public static final DirectionProperty FACING=BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape BASE=Shapes.or(box(0,8,0,16,12,16),box(4,12,4,12,14,12),
         box(0,0,0,16,2,16),box(1,0,1,4,16,4),box(12,0,1,15,16,4),box(1,0,12,4,16,15),box(12,0,12,15,16,15));
