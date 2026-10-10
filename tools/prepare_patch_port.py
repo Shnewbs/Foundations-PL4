@@ -16,5 +16,8 @@ def prepare(root):
     if json.loads((root/'src/main/resources/pack.mcmeta').read_text())['pack']['pack_format']!=5:
         raise ValueError('Incorrect 1.16.1 resource format')
     backport(root)
+    # Removing the unsupported event subscription leaves an indented blank line.
+    p=root/'src/main/java/net/foundations/pl4/FoundationsPL4.java'
+    p.write_text('\n'.join(line.rstrip() for line in p.read_text().splitlines())+'\n',encoding='utf-8')
     print('1.16.1 source prepared; compilation and installed-runtime acceptance remain independent gates')
 if __name__=='__main__':prepare(ROOT)
