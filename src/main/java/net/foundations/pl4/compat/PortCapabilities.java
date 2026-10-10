@@ -18,7 +18,16 @@ public final class PortCapabilities {
  @SuppressWarnings("unchecked") public static <T,B extends TileEntity> void register(BlockCapability<T,Direction> cap,TileEntityType<B> type,BiFunction<B,Direction,T> provider){PROVIDERS.computeIfAbsent(type,k->new IdentityHashMap<>()).put(cap.nativeCapability(),(be,side)->provider.apply((B)be,side));}
  public static <T> T get(World level,BlockCapability<T,Direction> cap,BlockPos pos,Direction side){
   if(level==null||!level.hasChunkAt(pos))return null;
-  TileEntity be=level.getBlockEntity(pos);return be==null||be.isRemoved()?null:be.getCapability(cap.nativeCapability(),side).orElse(null);
+  TileEntity be=level.getBlockEntity(pos);
+  if(be==null||be.isRemoved())return null;
+  // Forge 32 may expose only the half-chest handler (or no native item capability).
+  // Query vanilla's obstruction-aware combined container so both halves are one
+  // inventory; never bypass an intentionally denied capability on a modded tile.
+  if(cap==Capabilities.ItemHandler.BLOCK && level.getBlockState(pos).getBlock() instanceof net.minecraft.block.ChestBlock chest){
+   net.minecraft.inventory.IInventory vanilla=net.minecraft.block.ChestBlock.getContainer(chest,level.getBlockState(pos),level,pos,false);
+   return vanilla==null?null:cap.typeClass().cast(new net.minecraftforge.items.wrapper.InvWrapper(vanilla));
+  }
+  return be.getCapability(cap.nativeCapability(),side).orElse(null);
  }
  public static void attach(AttachCapabilitiesEvent<TileEntity> event){
   TileEntity be=event.getObject();

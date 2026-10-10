@@ -1,13 +1,14 @@
 {
   "type": "foundations_pl4:forging_hammer",
-  "ingredient": {
-    "tag": "c:stones"
-  },
+  "ingredient": [
+    {"tag":"c:stones"},
+    {"item":"minecraft:stone"},
+    {"item":"minecraft:andesite"},
+    {"item":"minecraft:diorite"},
+    {"item":"minecraft:granite"}
+  ],
   "input_count": 1,
-  "result": {
-    "id": "foundations_pl4:stoneplate",
-    "count": 4
-  },
-  "processing_ticks": 100,
-  "cooldown_ticks": 200
+  "result": {"id":"foundations_pl4:stoneplate","count":4},
+  "processing_ticks":100,
+  "cooldown_ticks":200
 }
