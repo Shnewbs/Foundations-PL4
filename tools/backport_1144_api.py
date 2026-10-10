@@ -7,7 +7,7 @@ status_path=R/'BUILD_STATUS.json'
 status=json.loads(status_path.read_text())
 if status.get('minecraft')!='1.14.4' or status.get('loader_version')!='28.2.26':
  raise SystemExit('Refusing a different Minecraft/Forge target')
-if status.get('native_api_backport')=='forge28-stage1':
+if status.get('native_api_backport') in ('forge28-stage1','forge28-stage2','forge28-stage3'):
  print('Forge28 stage1 already applied')
  raise SystemExit(0)
 

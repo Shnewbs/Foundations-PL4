@@ -4,7 +4,7 @@ import json
 R=Path(__file__).resolve().parents[1]
 s=R/'BUILD_STATUS.json';status=json.loads(s.read_text())
 if status.get('minecraft')!='1.14.4':raise SystemExit('Wrong target')
-if status.get('native_api_backport')=='forge28-stage2':raise SystemExit(0)
+if status.get('native_api_backport') in ('forge28-stage2','forge28-stage3'):raise SystemExit(0)
 if status.get('native_api_backport')!='forge28-stage1':raise SystemExit('Stage 1 must run first')
 p=R/'src/main/java/net/foundations/pl4/FoundationsPL4.java'
 t=p.read_text()
