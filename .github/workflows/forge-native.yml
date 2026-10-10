@@ -1,16 +1,15 @@
-name: Forge 1.16.4 installed Java 8 feature validation
+name: Full-feature 1.16 patch port acceptance
 on:
   push:
-    branches: [mc/1.16.4]
+    branches: ['mc/1.16.1', 'mc/1.16.2', 'mc/1.16.3']
   workflow_dispatch:
 permissions:
   contents: write
 concurrency:
-  group: forge1164-native-validation
+  group: patch-port-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   verify:
-    if: github.ref == 'refs/heads/mc/1.16.4'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -25,32 +24,47 @@ jobs:
           java-version: |
             8
             17
-      - name: Preserve exact source and build Java 8 production and test artifacts
+      - name: Adapt exact full-feature source and preserve commit
         shell: bash
         run: |
           set -euo pipefail
+          TARGET=$(python3 -c 'import json; print(json.load(open("PORT_TARGET.json"))["minecraft"])')
+          test "$GITHUB_REF_NAME" = "mc/$TARGET"
+          echo "TARGET=$TARGET" >> "$GITHUB_ENV"
+          python3 tools/prepare_patch_port.py
+          git diff --check
+          git add src/ tools/java8/ tools/run_port_checks.py build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/JAVA17_RUNTIME.md docs/releases/0.2a-port.1.md
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m "Adapt exact $TARGET source, resources, native fixtures and Java 8 profile"
+            git push origin "HEAD:mc/$TARGET"
+          fi
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
+      - name: Compile actual target, run portable regressions and reobfuscate Java 8
+        shell: bash
+        run: |
+          set -euo pipefail
           bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
-      - name: All 193 scenarios on installed Forge with declared launcher profile
+      - name: Installed native scenarios and separate production-only startup
         shell: bash
         run: |
           set -euo pipefail
           python3 tools/java8/runtime.py native 2>&1 | tee verification-logs/native-run.log
-      - name: Publish only passed exact-target artifacts
+          python3 tools/production_smoke.py
+      - name: Publish only exact-target passing runtime
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TARGET=1.16.4
-          test "$(git ls-remote origin refs/heads/mc/$TARGET | cut -f1)" = "$(git rev-parse HEAD)"
+          test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
           VERSION=$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["version"])')
           TAG="mc$TARGET-v$VERSION"
           if git show-ref --verify --quiet "refs/tags/$TAG"; then
             git diff --exit-code "$TAG" HEAD -- src/main build.gradle tools/java8 gradle/ gradle.properties settings.gradle
             gh release view "$TAG"
-            echo 'Existing runtime/build inputs unchanged; published assets retained.'
             exit 0
           fi
           NAME="FoundationsPL4-$TARGET-$VERSION"
@@ -60,7 +74,7 @@ jobs:
           git archive --format=zip --output="release-files/$NAME-source.zip" HEAD
           cp .java8-toolchain/jvmdowngrader-source.zip release-files/JvmDowngrader-2.0.1-source.zip
           cp tools/java8/forge35_profile.py verification-logs/launch-profile.json release-files/
-          cp verification-logs/installed-native.log verification-logs/java8-summary.json verification-logs/port-scenarios.json build/java8/archive-check.json build/java8/toolchain.json release-files/
+          cp verification-logs/installed-native.log verification-logs/java8-summary.json verification-logs/port-scenarios.json verification-logs/production-smoke.json verification-logs/production-smoke.log build/java8/archive-check.json build/java8/toolchain.json release-files/
           git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
           (cd release-files && sha256sum * > SHA256SUMS.txt)
           git tag "$TAG"; git push origin "$TAG"
@@ -68,12 +82,13 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: forge1164-java8-${{ github.run_id }}-${{ github.run_attempt }}
+          name: full-patch-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             release-files/
             verification-logs/
             build/java8/*.json
             run-java8/port-scenarios.json
             run-java8/crash-reports/
+            run-java8-production/crash-reports/
           retention-days: 14
           if-no-files-found: warn
