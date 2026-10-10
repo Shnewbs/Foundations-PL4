@@ -3,11 +3,9 @@ import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import net.foundations.pl4.compat.PortAssertions;
-@PrefixGameTestTemplate(false)
 public final class PortWorldgenGameTests {
- @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+ @GameTest(template="foundations_pl4:empty")
  public static void sapphireIsPresentInOverworldBiomes(GameTestHelper h){
   var registry=h.getLevel().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
   var plains=registry.getOrThrow(Biomes.PLAINS);
@@ -16,7 +14,7 @@ public final class PortWorldgenGameTests {
   PortAssertions.check(!hasOre(registry.getOrThrow(Biomes.THE_END)),"End must not get overworld sapphire placement");h.succeed();
  }
  private static boolean hasOre(Biome biome){return biome.getGenerationSettings().features().stream().flatMap(set->set.stream()).anyMatch(holder->holder.get()==PortWorldgen.sapphire());}
- @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+ @GameTest(template="foundations_pl4:empty")
  public static void sapphireOreConfigurationIsNative(GameTestHelper h){
   var registry=h.getLevel().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
   var configured=registry.get(FoundationsPL4.id("sapphire_ore"));

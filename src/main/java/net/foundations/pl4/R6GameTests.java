@@ -4,13 +4,11 @@ import java.util.*;
 import net.minecraft.core.*;
 import net.minecraft.gametest.framework.*;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /** Native acceptance fixtures. Execution requires a full Minecraft/NeoForge test server. */
-@PrefixGameTestTemplate(false)
 public final class R6GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000006");
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="foundations_pl4:empty")
     public static void r6PartSettingsPersist(GameTestHelper h){
         Part display=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,OWNER);display.displayOutward=true;display.label="Power";display.selected="plant";
         display.elements.add(new Part.Element("", "", "storage:eu",10,10,0xFFFFFF,false));
@@ -20,7 +18,7 @@ public final class R6GameTests {
         Part energy=new Part(Kind.ENERGY_READER,Direction.DOWN,OWNER);energy.energySystem="EU";
         net.foundations.pl4.compat.PortAssertions.check(Part.load(energy.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess()).energySystem.equals("EU"),"Energy system must persist");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="foundations_pl4:empty")
     public static void r5SaveDoesNotSilentlyFlip(GameTestHelper h){
         Part old=new Part(Kind.LARGE_DISPLAY,Direction.SOUTH,OWNER);old.label="Keep this layout";
         var tag=old.save(h.getLevel().registryAccess(),false);tag.remove("displayOutward");tag.remove("energySystem");
@@ -31,13 +29,13 @@ public final class R6GameTests {
         BlockPos pos=new BlockPos(2,1,1);h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
         Part part=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);host.parts.put(part.slot(),part);host.changed();return new NetworkEngine.Ref(host,part);
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="foundations_pl4:empty")
     public static void unsupportedEnergyIsNotEmptyBattery(GameTestHelper h){
         h.setBlock(new BlockPos(1,1,1),Blocks.STONE);var ref=reader(h);
         var rows=DataSampler.sample(h.getLevel().getServer(),ref,List.of(ref.adjacent()),1);
         net.foundations.pl4.compat.PortAssertions.check(rows.isEmpty()&&ref.part().status.contains("No supported energy"),"Missing capability must not synthesize Storage 0 FE");h.succeed();
     }
-    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    @GameTest(template="foundations_pl4:empty")
     public static void energyReaderNeverLoadsRemoteChunk(GameTestHelper h){
         var ref=reader(h);BlockPos far=new BlockPos(1000000,80,1000000);
         net.foundations.pl4.compat.PortAssertions.check(!h.getLevel().hasChunkAt(far),"Fixture must be unloaded");
