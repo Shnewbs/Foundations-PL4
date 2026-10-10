@@ -1,7 +1,6 @@
 package net.foundations.pl4.client;
 
 import java.util.*;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.foundations.pl4.compat.GuiGraphics;
 import net.foundations.pl4.compat.Button;
@@ -9,7 +8,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.foundations.pl4.compat.PacketDistributor;
-import net.minecraft.client.renderer.Matrix4f;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.*;
 
@@ -59,10 +57,10 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         if(draft==null)return live.elements;
         List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
     }
-    public void capture(Matrix4f localPose){
-        var matrix=new Matrix4f(net.foundations.pl4.compat.PortMatrices.projection());matrix.multiply(net.foundations.pl4.compat.PortMatrices.modelView());matrix.multiply(localPose);
-        float[] values=new float[16];var buffer=java.nio.FloatBuffer.wrap(values);matrix.store(buffer);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
-        inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
+    public void capture(){
+        // The current GL modelview already includes the complete block and display transforms.
+        inverse=DisplayPicking.inverse(net.foundations.pl4.compat.PortMatrices.clipMatrix()).orElse(null);
+        captureTime=System.nanoTime();
     }
     private Optional<DisplayPicking.Point> point(double x,double y){if(System.nanoTime()-captureTime>300_000_000L)return Optional.empty();return DisplayPicking.hit(inverse,x,y,width,height);}
     void drawOnMonitor(DisplayCanvas canvas,Part live){

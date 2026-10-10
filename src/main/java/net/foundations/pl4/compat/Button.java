@@ -1,5 +1,4 @@
 package net.foundations.pl4.compat;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 public class Button extends net.minecraft.client.gui.widget.button.Button {
@@ -12,7 +11,7 @@ public class Button extends net.minecraft.client.gui.widget.button.Button {
  public void setMessage(ITextComponent value){super.setMessage(value.getColoredString());}
  public int getX(){return x;} public int getY(){return y;} public void setX(int value){x=value;} public void setY(int value){y=value;}
  public void setTooltip(Tooltip value){tooltip=value;}
- @Override public void renderButton(int x,int y,float partial){GuiGraphics g=new GuiGraphics(new MatrixStack());renderWidget(g,x,y,partial);if(tooltip!=null&&isMouseOver(x,y))g.renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);}
+ @Override public void renderButton(int x,int y,float partial){GuiGraphics g=new GuiGraphics();renderWidget(g,x,y,partial);if(tooltip!=null&&isMouseOver(x,y))g.renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);}
  protected void renderWidget(GuiGraphics graphics,int x,int y,float partial){super.renderButton(x,y,partial);}
  public static final class Builder {
   private final ITextComponent message;private final OnPress press;private int x,y,w=150,h=20;private Tooltip tip;
