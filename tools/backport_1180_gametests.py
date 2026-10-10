@@ -56,8 +56,12 @@ checks=ROOT/'tools/run_port_checks.py'
 s=checks.read_text(encoding='utf-8')
 before=r"registered=re.findall(r'e\.register\((\w+)\.class\)',(source/'PLGameTests.java').read_text())"
 after=r"registered=re.findall(r'GameTestRegistry\.register\((\w+)\.class\)',(source/'PLGameTests.java').read_text())"
-if s.count(before)!=1:raise SystemExit('Native test counting rule changed unexpectedly')
-s=s.replace(before,after)
+if s.count(before)==1:
+    s=s.replace(before,after)
+elif s.count(after)!=1:
+    raise SystemExit('Native test counting rule changed unexpectedly')
+# This source may have status/port checks updated from a previous failed
+# migration. The original 193 Java scenarios are still transformed below.
 checks.write_text(s,encoding='utf-8')
 
 status['native_test_registration']='forge38-193-v1'
