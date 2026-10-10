@@ -62,7 +62,7 @@ s=s.replace(anchor,anchor+'''
             event.registerCreativeModeTab(id("items"), builder -> builder
                 .title(Component.literal("Foundations PL4"))
                 .icon(() -> new ItemStack(item("sapphire")))
-                .displayItems(output ->
+                .displayItems((enabledFlags, output, hasPermissions) ->
                     ITEMS.getEntries().forEach(entry -> output.accept(entry.get())))));
 ''')
 mod.write_text(s,encoding='utf-8')

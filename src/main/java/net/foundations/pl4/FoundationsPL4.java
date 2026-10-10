@@ -72,7 +72,7 @@ public final class FoundationsPL4 {
             event.registerCreativeModeTab(id("items"), builder -> builder
                 .title(Component.literal("Foundations PL4"))
                 .icon(() -> new ItemStack(item("sapphire")))
-                .displayItems(output ->
+                .displayItems((enabledFlags, output, hasPermissions) ->
                     ITEMS.getEntries().forEach(entry -> output.accept(entry.get())))));
 
         net.foundations.pl4.core.CoreRecipes.register(bus);
