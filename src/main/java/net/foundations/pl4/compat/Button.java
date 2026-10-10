@@ -12,10 +12,10 @@ public class Button extends net.minecraft.client.gui.components.Button {
  public void setTooltip(Tooltip value){tooltip=value;}
  /** The native 1.19.4 GUI entrypoint changed from renderButton to renderWidget.
   * Preserve GuideButton's custom low-chrome paint path via virtual dispatch. */
- @Override protected void renderWidget(net.minecraft.client.gui.GuiGraphics nativeG,int x,int y,float partial){
-  if(getClass()==Button.class)super.renderWidget(nativeG,x,y,partial);
-  else renderWidget(new GuiGraphics(nativeG.pose()),x,y,partial);
-  if(tooltip!=null&&isMouseOver(x,y))nativeG.renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);
+ @Override public void renderWidget(com.mojang.blaze3d.vertex.PoseStack nativePose,int x,int y,float partial){
+  if(getClass()==Button.class)super.renderWidget(nativePose,x,y,partial);
+  else renderWidget(new GuiGraphics(nativePose),x,y,partial);
+  if(tooltip!=null&&isMouseOver(x,y))new GuiGraphics(nativePose).renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);
  }
  protected void renderWidget(GuiGraphics g,int x,int y,float partial){
   g.fill(getX(),getY(),getX()+getWidth(),getY()+getHeight(),0xFF34444F);

@@ -27,7 +27,6 @@ public final class FoundationsPL4 {
     public static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE,ID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU,ID);
     public static final RegistryObject<MenuType<HammerMenu>> HAMMER_MENU = MENUS.register("hammer", () -> new MenuType<>(HammerMenu::new,net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB,ID);
     public static final EnumMap<Kind, RegistryObject<PartModelBlock>> MODELS = new EnumMap<>(Kind.class);
     public static final EnumMap<Kind, RegistryObject<PartItem>> PART_ITEMS = new EnumMap<>(Kind.class);
     public static final Map<String,RegistryObject<CableModelBlock>> CABLE_MODELS = new LinkedHashMap<>();
@@ -64,14 +63,18 @@ public final class FoundationsPL4 {
         ITEMS.register("entitytransceiver", () -> new ToolItem(ToolItem.Mode.ENTITY_LINK,new Item.Properties().stacksTo(1)));
         ITEMS.register("wirelessstorage", () -> new ToolItem(ToolItem.Mode.STORAGE,new Item.Properties().stacksTo(1)));
         ITEMS.register("plguide", () -> new ToolItem(ToolItem.Mode.GUIDE,new Item.Properties().stacksTo(1)));
-        TABS.register("main",()->CreativeModeTab.builder().title(Component.literal("Foundations PL4"))
-            .icon(()->new ItemStack(item("sapphire")))
-            .displayItems((params,output)->ITEMS.getEntries().forEach(e->output.accept(e.get()))).build());
+
     }
     public FoundationsPL4() {
         IEventBus bus=net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus();
         var container=net.minecraftforge.fml.ModLoadingContext.get();
-        BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); MENUS.register(bus); TABS.register(bus);
+        BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); MENUS.register(bus);
+        bus.addListener((net.minecraftforge.event.CreativeModeTabEvent.Register event) ->
+            event.registerCreativeModeTab(id("items"), builder -> builder
+                .title(Component.literal("Foundations PL4"))
+                .icon(() -> new ItemStack(item("sapphire")))
+                .displayItems((parameters, output) ->
+                    ITEMS.getEntries().forEach(entry -> output.accept(entry.get())))));
         net.foundations.pl4.core.CoreRecipes.register(bus);
         container.registerConfig(ModConfig.Type.SERVER,PLConfig.SPEC);
         container.registerConfig(ModConfig.Type.CLIENT,PLClientConfig.SPEC);
