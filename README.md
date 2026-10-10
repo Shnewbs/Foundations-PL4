@@ -1,9 +1,15 @@
-# Foundations PL4 — Minecraft 1.20.1 / Forge
+# Foundations PL4 — Minecraft 1.20.4 / Forge 49.2.8
 
-Development port **0.2a-port.1**, Forge **47.4.26**, Java **17**.
+Independent full-feature source port from 1.20.1. No mod JAR is
+interchangeable with neighboring Minecraft versions. Minecraft 1.20.4,
+Forge 49.2.8 and Java 17 are the exact build targets, not aliases.
 
-Native Forge source port, not a renamed NeoForge JAR. Retains multipart cables, readers, displays, network item storage, transfer escrow, ownership checks and the built-in field guide. Forge SimpleChannel networking and sided capabilities replace NeoForge interfaces. Native NBT preserves item and fluid variants on this Minecraft generation.
+Original multipart cables, data networks, item/fluid/energy transfer,
+escrow, wireless inventory storage, readers, monitor GUI editor, forging
+and sapphire resources are retained as the intended functionality.
+Publication is gated on independent compilation and **191/191 GameTests**.
+An unavailable optional mod must not crash PL4's built-in core.
 
-Build with `bash gradlew build runGameTestServer`. Java compilation is not client, multiplayer or installed-provider acceptance. **Further API testing is still required.** See BUILD_STATUS.json and docs/releases/0.2a-port.1.md.
-
-Back up worlds; use matching client/server builds. Worlds and JARs are not interchangeable between Minecraft versions. Unavailable third-party power APIs remain disabled rather than using guessed units or conversion ratios.
+Real client visuals, third-party installed APIs, multiplayer and sustained
+performance remain separate acceptance milestones. **Further API testing is
+required.**
