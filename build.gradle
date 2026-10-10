@@ -63,4 +63,4 @@ tasks.named('build') { dependsOn 'verifyPortJar' }
 
 // Native 1.18 Forge38 predates the automatic gameTestServer main class.
 // Relay console commands to the real 1.18 dedicated server instead.
-tasks.named('runServer', JavaExec) { standardInput = System.in }
+tasks.withType(JavaExec).configureEach { if (name == 'runServer') standardInput = System.in }
