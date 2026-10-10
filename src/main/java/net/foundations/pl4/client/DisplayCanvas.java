@@ -5,7 +5,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.BlockItem;
 import net.foundations.pl4.*;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 final class DisplayCanvas {
     private static final ResourceLocation WHITE=FoundationsPL4.id("textures/gui/display_white.png");
-    private static final ResourceLocation ATLAS=AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+    private static final ResourceLocation ATLAS=new ResourceLocation("textures/atlas/blocks.png");
     private static final double BLOCK_MODEL_DEPTH_BLOCKS=.0006;
     private static final double FLAT_ITEM_DEPTH_BLOCKS=.000001/16.0;
     private final LegacyWorldPose pose;
