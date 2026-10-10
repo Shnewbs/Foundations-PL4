@@ -11,7 +11,7 @@ if not candidates:
  print('No mapped JAR available, see compile output')
  raise SystemExit(0)
 jar=next((p for p in candidates if p.endswith('/forge-1.14.4-28.2.26_mapped_official_1.14.4.jar')),candidates[0])
-classes=['net.minecraft.world.gen.feature.Feature','net.minecraft.world.gen.feature.ConfiguredFeature','net.minecraft.world.gen.placement.Placement','net.minecraft.world.gen.placement.ConfiguredPlacement','net.minecraft.tags.TagCollection','net.minecraft.tags.ItemTags','net.minecraft.tags.FluidTags','net.minecraft.block.Block$Properties','net.minecraft.client.renderer.tileentity.TileEntityRenderer','net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher','net.minecraft.util.ActionResultType']
+classes=['net.minecraft.world.gen.feature.Feature','net.minecraft.world.gen.feature.ConfiguredFeature','net.minecraft.world.gen.placement.Placement','net.minecraft.world.gen.placement.ConfiguredPlacement','net.minecraft.tags.TagCollection','net.minecraft.tags.ItemTags','net.minecraft.tags.FluidTags','net.minecraft.block.Block$Properties','net.minecraft.client.renderer.tileentity.TileEntityRenderer','net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher','net.minecraft.util.ActionResultType','net.minecraft.entity.Entity','net.minecraft.item.Item$Properties','net.minecraft.world.gen.feature.DecoratedFeatureConfig','net.minecraft.world.gen.feature.OreFeatureConfig']
 out=['Exact mapped JAR: '+jar]
 for name in classes:
  try:
