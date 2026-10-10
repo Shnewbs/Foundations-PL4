@@ -83,6 +83,15 @@ public final class FoundationsPL4 {
         });
         MinecraftForge.EVENT_BUS.addGenericListener(net.minecraft.world.level.block.entity.BlockEntity.class,net.foundations.pl4.compat.PortCapabilities::attach);
         PLGameTests.register();
+        // Vanilla Minecraft 1.18 contains the GameTest runner, but Forge38
+        // does not install its /test dispatcher entry automatically. Register
+        // the actual native TestCommand, preserving all 193 test functions.
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.RegisterCommandsEvent event)->{
+            net.minecraft.gametest.framework.TestCommand.register(event.getDispatcher());
+            org.slf4j.LoggerFactory.getLogger("FoundationsPL4")
+                .info("Forge38 native GameTest registry contains {} tests",
+                    net.minecraft.gametest.framework.GameTestRegistry.getAllTestFunctions().size());
+        });
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::tick);
         MinecraftForge.EVENT_BUS.addListener(PortWorldgen::biome);
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::stopped);
