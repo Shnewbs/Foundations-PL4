@@ -52,3 +52,10 @@ Both are **alphas** rather than installed-mod, real-client, multiplayer or modpa
 The [cross-version CurseForge publishing workflow](../.github/workflows/curseforge.yml) checks exact tags, checksums, loader identity, release channel and existing upload receipts; it must never submit an untested source branch or claim that CurseForge moderation has approved a file. It is scheduled hourly and also accepts manual release tags.
 
 **Further API testing is still required.**
+
+
+## Forge 38 native command transport — verification checkpoint
+
+The exact Minecraft **1.18 / Forge 38.0.17** native source compiles, but the original Forge39-only `runGameTestServer` task is unavailable on this loader. The branch `mc/1.18` now has a dedicated-server test runner with **localhost-only authenticated RCON** to send the actual `test runall` command. It checks the true 193-test completion marker and refuses publication on missing/unsupported commands, timeout, or an unclean shutdown. The first stdin-based attempts did not confirm acceptance. The RCON update is committed at `d19f9ecef5dffd81a92b4c17458d3fe6808c38a2`; CI must pass before a 1.18 runtime or CurseForge upload is claimed.
+
+The 1.19.1 and 1.19.3 alphas both passed **191/191 installed Forge GameTests** and have public GitHub runtime/source/checksum releases and version-specific CurseForge upload receipts. CurseForge moderation and real-client/API/multiplayer acceptance are separate. Minecraft 1.13.2 still has significant native MCP-era source work, and 1.6.4 stays experimental. **No 1.7.10 port.**
