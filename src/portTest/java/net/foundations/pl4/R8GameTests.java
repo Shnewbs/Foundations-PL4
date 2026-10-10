@@ -27,7 +27,7 @@ public final class R8GameTests {
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind==Kind.LARGE_DISPLAY).findFirst().orElseThrow();}
     private static FakePlayer player(GameTestHelper h,HostEntity at,ItemStack stack){
-        var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.inventory.clearContent();p.abilities.instabuild=false;p.setShiftKeyDown(false);
+        var p=FakePlayerFactory.get(h.getLevel(),new GameProfile(OWNER,"PL4-R8-Test"));p.inventory.clearContent();p.abilities.instabuild=false;p.setSneaking(false);
         var centre=net.foundations.pl4.compat.PortVectors.atCenterOf(at.getBlockPos());p.setPos(centre.x+1,centre.y,centre.z+1);p.setItemInHand(Hand.MAIN_HAND,stack);return p;
     }
     private static void configure(Part p){p.label="Saved machine board";p.selected="power_main";p.color=0x53AACC;p.elements.add(new Part.Element("EU","","storage:eu",7,19,0xABDEEF,false));p.layoutRevision=20;}
@@ -39,7 +39,7 @@ public final class R8GameTests {
             Vec3d centre=net.foundations.pl4.compat.PortVectors.atCenterOf(source.getBlockPos());Vec3d hitPoint=centre.add(mount.getStepX()*.4999+side.getStepX()*.5,mount.getStepY()*.4999+side.getStepY()*.5,mount.getStepZ()*.4999+side.getStepZ()*.5);
             var result=stack.getItem().useOn(new ItemUseContext(player,Hand.MAIN_HAND,new BlockRayTraceResult(hitPoint,side,source.getBlockPos(),false)));
             BlockPos destination=source.getBlockPos().relative(side);
-            net.foundations.pl4.compat.PortAssertions.check(result.consumesAction()&&h.getLevel().getBlockEntity(destination) instanceof HostEntity,"Side click must create a neighboring host, not a perpendicular face");
+            net.foundations.pl4.compat.PortAssertions.check(result==net.minecraft.util.ActionResultType.SUCCESS&&h.getLevel().getBlockEntity(destination) instanceof HostEntity,"Side click must create a neighboring host, not a perpendicular face");
             var added=(HostEntity)h.getLevel().getBlockEntity(destination);Part next=part(added);
             net.foundations.pl4.compat.PortAssertions.check(next.face==mount&&next.displayOutward==original.displayOutward&&Objects.equals(next.owner,original.owner),"Mount/front/owner match original");
             net.foundations.pl4.compat.PortAssertions.check(stack.getCount()==1&&original.canvasWidth*original.canvasHeight==2,"Exactly one item consumed and rectangle joins immediately");

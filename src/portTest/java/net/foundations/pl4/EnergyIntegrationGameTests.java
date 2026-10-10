@@ -355,7 +355,7 @@ public final class EnergyIntegrationGameTests {
                 if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
             }
         };
-        to.setLevelAndPosition(h.getLevel(),absolute);h.getLevel().setBlockEntity(absolute,to);net.foundations.pl4.compat.PortCapabilities.invalidate(to);
+        to.setLevel(h.getLevel());to.setPosition(absolute);h.getLevel().setBlockEntity(absolute,to);net.foundations.pl4.compat.PortCapabilities.invalidate(to);
         var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
         var sink=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);sink.part().transferMode=1;
         boolean thrown=false;try{TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));}catch(IllegalStateException expected){

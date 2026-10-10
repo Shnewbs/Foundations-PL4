@@ -79,7 +79,7 @@ public final class R5GameTests {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(Kind.NODE).get(),2);player.setItemInHand(Hand.MAIN_HAND,stack);
         var hit=new BlockRayTraceResult(net.foundations.pl4.compat.PortVectors.atLowerCornerOf(a.getBlockPos()).add(.5,.625,.5),Direction.UP,a.getBlockPos(),false);
         var result=FoundationsPL4.HOST.get().use(a.getBlockState(),h.getLevel(),a.getBlockPos(),player,Hand.MAIN_HAND,hit);
-        net.foundations.pl4.compat.PortAssertions.check(result==ActionResultType.PASS,"Held parts must not be swallowed by the host GUI");
+        net.foundations.pl4.compat.PortAssertions.check(!result,"Held parts must not be swallowed by the host GUI");
         stack.getItem().useOn(new ItemUseContext(player,Hand.MAIN_HAND,hit));
         net.foundations.pl4.compat.PortAssertions.check(a.parts.containsKey(Direction.UP.ordinal())&&a.parts.containsKey(6)&&stack.getCount()==1,"Part must attach to the clicked cable host and consume exactly one item");h.succeed();
     }
@@ -168,7 +168,7 @@ public final class R5GameTests {
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=33;hammer.cooldown=9;
         CompoundNBT saved=new CompoundNBT();hammer.saveAdditional(saved,null);
-        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevelAndPosition(h.getLevel(),hammer.getBlockPos());loaded.loadAdditional(saved,null);
+        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevel(h.getLevel());loaded.setPosition(hammer.getBlockPos());loaded.loadAdditional(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.progress==33&&loaded.cooldown==9&&loaded.inventory.getStackInSlot(0).getCount()==17,"Existing hammer state must survive save/load");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
