@@ -29,7 +29,9 @@ events=queue.Queue()
 lines=[]
 started=False;sent=False;complete=False;stopped=False
 start=time.monotonic()
-deadline=start+540
+deadline=start+240
+command_at=None
+last_server_line=None
 
 with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                       stderr=subprocess.STDOUT,text=True,bufsize=1) as process:
@@ -46,6 +48,7 @@ with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                     continue
                 if line is None:break
                 lines.append(line);log.write(line);log.flush()
+                if '[Server thread/' in line:last_server_line=time.monotonic()
                 print(line.rstrip(),flush=True)
                 if 'Unknown or incomplete command' in line or 'test runall<--[HERE]' in line:
                     print('Forge38 native /test runner unavailable: refusing false 193-test certification',flush=True)
@@ -56,6 +59,7 @@ with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                 if ('Done (' in line and 'For help' in line) and not started:
                     started=True
                     process.stdin.write('test runall\n')
+                    command_at=time.monotonic()
                     process.stdin.flush()
                     sent=True
                 if re.search(r'All 193 required tests passed',line):
@@ -63,6 +67,9 @@ with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                     process.stdin.write('stop\n')
                     process.stdin.flush()
                 if 'Stopping server' in line:stopped=True
+                if sent and not complete and command_at is not None and time.monotonic()-command_at>90:
+                    print('Native Forge38 server did not return 193-test completion within 90 seconds; refusing release',flush=True)
+                    process.stdin.write('stop\n');process.stdin.flush();break
                 if re.search(r'failed required tests|Game Tests Complete',line,re.I) and not complete:
                     # A completion report without a verified pass marker is not
                     # enough to issue a release; stop and inspect its exact log.
