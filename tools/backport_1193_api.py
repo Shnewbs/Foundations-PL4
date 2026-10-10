@@ -12,7 +12,12 @@ R=Path(__file__).resolve().parents[1];J=R/'src/main/java/net/foundations/pl4'
 p=R/'BUILD_STATUS.json';status=json.loads(p.read_text())
 if status.get('minecraft')!='1.19.3' or status.get('loader_version')!='44.1.23':
     raise SystemExit('Wrong Minecraft/Forge source target')
-if status.get('native_api_backport')=='forge44-stage1':raise SystemExit(0)
+if status.get('native_api_backport')=='forge44-stage1' and (
+    'CreativeModeTabEvent.Register' in (J/'FoundationsPL4.java').read_text()
+    and 'pl4Builder' in (J/'compat/Button.java').read_text()
+    and 'net.minecraft.core.registries.Registries.BLOCK' in (J/'compat/Registries.java').read_text()):
+    print('Forge44 source migration already materialized in the committed Java tree')
+    raise SystemExit(0)
 
 for path in J.rglob('*.java'):
     s=path.read_text(encoding='utf-8')
@@ -37,6 +42,8 @@ s=registries.read_text(encoding='utf-8')
 if 'BLOCK_REGISTRY' not in s:raise SystemExit('Expected Forge43 registry bridge')
 s=re.sub(r'net\.minecraft\.core\.Registry\.(\w+)_REGISTRY',
    lambda m:'net.minecraft.core.registries.Registries.'+m.group(1),s)
+s=re.sub(r'net\.minecraft\.core\.registries\.BuiltInRegistries\.(\w+)_REGISTRY',
+   lambda m:'net.minecraft.core.registries.Registries.'+m.group(1),s)
 registries.write_text(s,encoding='utf-8')
 
 mod=J/'FoundationsPL4.java'
@@ -55,7 +62,7 @@ s=s.replace(anchor,anchor+'''
             event.registerCreativeModeTab(id("items"), builder -> builder
                 .title(Component.literal("Foundations PL4"))
                 .icon(() -> new ItemStack(item("sapphire")))
-                .displayItems((parameters, output) ->
+                .displayItems(output ->
                     ITEMS.getEntries().forEach(entry -> output.accept(entry.get())))));
 ''')
 mod.write_text(s,encoding='utf-8')
@@ -77,6 +84,24 @@ s=s.replace('import com.mojang.math.Matrix4f;','import org.joml.Matrix4f;')
 s=s.replace('matrix.multiply(', 'matrix.mul(')
 s=s.replace('matrix.store(buffer);','matrix.get(buffer);')
 editor.write_text(s,encoding='utf-8')
+
+# Forge44 protects widget screen coordinates; use the inherited accessors
+# without losing dynamic scroll/clipping behavior in either editor.
+properties=J/'client/DisplayPropertiesScreen.java'
+s=properties.read_text(encoding='utf-8')
+old='b.y=y-scroll;b.visible=b.y>=top+31&&b.y+20<=top+h-35;'
+new='b.setY(y-scroll);b.visible=b.getY()>=top+31&&b.getY()+20<=top+h-35;'
+if old not in s:raise SystemExit('Unexpected display properties scroll/clip layout')
+s=s.replace(old,new).replace('b.y+6','b.getY()+6')
+properties.write_text(s,encoding='utf-8')
+
+parts=J/'client/PartScreen.java'
+s=parts.read_text(encoding='utf-8')
+old='widget.y=y-contentScroll;widget.visible=widget.y>=top+52&&widget.y+20<=top+h-35;'
+new='widget.setY(y-contentScroll);widget.visible=widget.getY()>=top+52&&widget.getY()+20<=top+h-35;'
+if old not in s:raise SystemExit('Unexpected node part scroll/clip layout')
+parts.write_text(s.replace(old,new),encoding='utf-8')
+
 
 axis=J/'compat/AxisRotation.java'
 axis.write_text('''package net.foundations.pl4.compat;
