@@ -25,6 +25,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/prepare_forge1202.py
+          python3 tools/backport_forge1202_native.py
           git diff --check
           git add src/main build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md tools/run_port_checks.py
           if ! git diff --cached --quiet; then
