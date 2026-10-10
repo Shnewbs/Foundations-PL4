@@ -1,0 +1,14 @@
+{
+  "minecraft": "1.20.2",
+  "loader": "Forge",
+  "forge": "48.1.0",
+  "runtime_java": 17,
+  "source_baseline": "mc/1.20.1",
+  "expected_native_tests": 191,
+  "release_gates": [
+    "native compile/reobfuscation",
+    "191/191 real GameTests",
+    "exact checksummed JAR/source"
+  ],
+  "installed_optional_mods": "PENDING"
+}
