@@ -30,7 +30,7 @@ def main():
         assert not value.get('type','').startswith('neoforge:'),path
         if value.get('type') in {'minecraft:crafting_shaped','minecraft:crafting_shapeless'}:assert 'item' in value['result'] and 'id' not in value['result'],path
     source=core.parent
-    registered=re.findall(r'e\.register\((\w+)\.class\)',(source/'PLGameTests.java').read_text())
+    registered=re.findall(r'GameTestRegistry\.register\((\w+)\.class\)',(source/'PLGameTests.java').read_text())
     count_tests=sum((source/(name+'.java')).read_text().count('@GameTest(') for name in registered)
     assert count_tests==193==status['expected_native_tests'],count_tests
     packet=(source/'compat/RegisterPayloadHandlersEvent.java').read_text()

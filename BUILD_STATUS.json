@@ -22,8 +22,10 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "38.0.17",
-  "port_status": "NATIVE_API_ACCEPTANCE_PENDING",
+  "port_status": "FORGE38_GAME_TEST_API_BACKPORT",
   "release_published": false,
   "installed_runtime_acceptance": "PENDING",
-  "build_java": 17
+  "build_java": 17,
+  "native_test_registration": "forge38-193-v1",
+  "native_compilation": "PENDING"
 }
