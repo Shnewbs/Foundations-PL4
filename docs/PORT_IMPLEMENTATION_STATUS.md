@@ -1,5 +1,7 @@
 # New-port implementation and release status
 
+**Historical verification snapshot, not the current release ledger.** This October 9 report documents the original `preview.2` and `0.2a-port.1` runs. Later [legacy `preview.3`](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.12.2-v0.2a-legacy-preview.3), 1.16.5 `port.2` and other exact-target tags are reflected in the [October 10 master roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md) and [17-target publisher receipts](CURSEFORGE_MULTIVERSION_STATUS.md). Keep the detailed test evidence below, but do not interpret its old versions or Java requirements as today's complete release inventory. Client/installed-API/PL2 parity acceptance remains separate.
+
 Updated October 9, 2026. Minecraft 1.7.10 remains excluded; 1.6.4 remains experimental. The latest completion pass adds real fluid transport to both legacy previews. It does not certify full modern PL4 parity or every optional API.
 
 ## Published native builds
