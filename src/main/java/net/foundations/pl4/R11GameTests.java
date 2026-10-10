@@ -6,7 +6,7 @@ import net.minecraft.gametest.framework.*;
 import net.foundations.pl4.core.*;
 
 /** Native fixtures for R11 logical-canvas persistence/migration. Client rendering still requires graphical acceptance. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R11GameTests {
     @GameTest(template="empty")

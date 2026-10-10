@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.*;
 import net.minecraftforge.fluids.FluidStack;
 
 /** Minecraft/NeoForge integration fixtures. Not executed by the dependency-free runner. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R9GameTests {
     private static UUID owner(GameTestHelper h){return UUID.nameUUIDFromBytes(("PL4-R9-"+h.absolutePos(BlockPos.ZERO)).getBytes(java.nio.charset.StandardCharsets.UTF_8));}

@@ -7,7 +7,7 @@ import net.minecraft.world.item.*;
 import net.foundations.pl4.core.*;
 
 /** Native fixtures for display page/save paths. No claims about client item-pose appearance. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R10GameTests {
     @GameTest(template="empty")

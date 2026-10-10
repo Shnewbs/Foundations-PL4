@@ -11,12 +11,12 @@ import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.foundations.pl4.compat.Capabilities;
 import net.minecraftforge.fluids.FluidStack;
 
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class PLGameTests {
     /** CI-only isolation: transient test values must not race Forge's autosave file watcher.
      * Normal server configuration remains file-backed; no fixture assertions are relaxed. */
-    @net.minecraft.gametest.framework.BeforeBatch(batch="defaultBatch")
+    @net.minecraft.gametest.framework.BeforeBatch(batch=FoundationsPL4.ID)
     public static void isolatedConfig(net.minecraft.server.level.ServerLevel level){
         if(!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig"))return;
         var memory=com.electronwill.nightconfig.core.CommentedConfig.inMemory();
