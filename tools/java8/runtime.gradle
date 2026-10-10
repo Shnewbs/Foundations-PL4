@@ -1,6 +1,6 @@
 // Compile modern source, then convert language features/API calls BEFORE Forge reobfuscation.
-// The official 1.16.1 mapped Widget contains a duplicate getHeight declaration.
-// Fix ONLY a temporary build-tool hierarchy, never the installed Forge/Minecraft classes.
+// Only the temporary inheritance library fixes Forge 32's identical mapped getter collision.
+// Minecraft/Forge installed libraries and Gradle's original cached classes remain untouched.
 def remapClasspath = { collection ->
     files(collection.files.collect { entry ->
         entry.name.endsWith('mapped_official_1.16.1.jar') ? file('build/java8/native-hierarchy.jar') : entry
@@ -50,13 +50,20 @@ tasks.register('java8ScenarioJar', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 afterEvaluate {
+    // RenameJarInPlace uses libraries for inheritance, not JarExec's tool classpath.
     reobf {
-        jar { classpath = remapClasspath(sourceSets.main.compileClasspath) }
-        java8RuntimeJar { classpath = remapClasspath(sourceSets.main.compileClasspath) }
-        java8ScenarioJar { classpath = remapClasspath(sourceSets.portTest.compileClasspath) }
+        jar { libraries.setFrom(remapClasspath(sourceSets.main.compileClasspath)) }
+        java8RuntimeJar { libraries.setFrom(remapClasspath(sourceSets.main.compileClasspath)) }
+        java8ScenarioJar { libraries.setFrom(remapClasspath(sourceSets.portTest.compileClasspath)) }
     }
     tasks.matching { it.name in ['reobfJar','reobfJava8RuntimeJar','reobfJava8ScenarioJar'] }.configureEach {
         dependsOn 'prepareRemapHierarchy'
+        doFirst {
+            def paths=libraries.files
+            if (paths.any { it.name.endsWith('mapped_official_1.16.1.jar') } || !paths.contains(file('build/java8/native-hierarchy.jar')))
+                throw new GradleException('Native remapper hierarchy is not isolated')
+            logger.lifecycle('PASS exact build-only inheritance mirror for '+name)
+        }
     }
 }
 tasks.named('java8RuntimeJar') { finalizedBy 'reobfJava8RuntimeJar' }
