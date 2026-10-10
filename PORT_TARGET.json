@@ -1,11 +1,9 @@
 {
-  "minecraft": "1.19.3",
-  "forge": "44.1.23",
+  "minecraft": "1.19.4",
   "loader": "Forge",
+  "loader_version": "45.4.5",
   "java": 17,
-  "baseline": "mc/1.19.2",
-  "required_native_tests": 191,
   "release_allowed": false,
-  "optional_apis": "PENDING",
-  "multiplayer": "PENDING"
+  "source_baseline": "mc/1.19.3",
+  "expected_native_tests": 191
 }

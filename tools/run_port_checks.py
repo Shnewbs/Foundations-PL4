@@ -20,10 +20,10 @@ def main():
     resources=ROOT/'src/main/resources';count=0
     for path in resources.rglob('*.json'):json.loads(path.read_text());count+=1
     status=json.loads((ROOT/'BUILD_STATUS.json').read_text())
-    assert status['minecraft']=='1.19.3' and status['java']==17
+    assert status['minecraft']=='1.19.4' and status['java']==17
     assert (resources/'META-INF/mods.toml').is_file()
     assert not (resources/'META-INF/neoforge.mods.toml').exists()
-    assert json.loads((resources/'pack.mcmeta').read_text())['pack']['pack_format']==12
+    assert json.loads((resources/'pack.mcmeta').read_text())['pack']['pack_format']==13
     assert (resources/'data/foundations_pl4/structures/empty.nbt').is_file()
     for path in (resources/'data').rglob('*.json'):
         value=json.loads(path.read_text())

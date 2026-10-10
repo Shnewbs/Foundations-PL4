@@ -1,15 +1,14 @@
-# Foundations PL4 — Minecraft 1.19.3 / Forge 44
+# Foundations PL4 — Minecraft 1.19.4 / Forge 45
 
-Exact Forge 44.1.23 source port, derived from separately tested Minecraft
-1.19.2. The branch carries full PL4 cable/network/display/wireless
-storage/transfer/energy and forging features. Native API and installed
-gameplay testing must pass before any release.
+Native source baseline: full-feature 1.19.3, independently retargeted to
+Minecraft 1.19.4, Forge 45.4.5, Java 17. Not a renamed 1.19.3 JAR.
 
-The code is compiled independently, not copied from or relabeled as a
-1.19.2 binary. The pack format is 12. Native Forge44 compilation,
-reobfuscation and all 191 original GameTests are hard release gates.
+Complete PL4 multipart networks/displays/editors, wireless storage,
+item/fluid/energy transfers, escrow and guides remain the intended baseline.
+The alpha is released only if it compiles against its own APIs and all
+191 exact-target GameTests succeed. An absent optional mod must not prevent
+the tested built-in PL4 functionality; foreign energy conversion is never
+guessed from missing APIs.
 
-Real-client display behavior, installed optional providers, live multiplayer
-and sustained performance testing remain separate.
-
-**Further API testing is still required.**
+**Further API testing is required** for graphics, optional installed mods,
+live multiplayer and modpack-scale performance.
