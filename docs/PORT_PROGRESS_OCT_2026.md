@@ -31,3 +31,24 @@ Native test successes do not establish full client graphics, all installed optio
 **1.13.2:** created `mc/1.13.2` targeting exact Minecraft 1.13.2 / Forge 25.0.223 / Java 8. Initial native build [38019426280](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38019426280) failed because Mojang official ProGuard mappings are unavailable for 1.13.2. Updated Gradle to archived MCP `snapshot:20180921-1.13`; [native build 38019579683](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38019579683) got past mapping setup but revealed substantial MCP-era class/API naming incompatibilities inherited from the 1.14.4 feature source. **1.13.2 native compilation and scenarios are NOT complete; no runtime was published.** This will require a dedicated MCP source backport, not another loader version-string change. Keep Java 8 and the correct native test harness separate from modern GameTests.
 
 Both tracks retain full-feature parity as a goal, rather than claiming it or substituting a compiled neighboring Minecraft JAR. Optional installed-provider testing, visuals, multiplayer and performance remain independently open.
+
+
+## Additional October 9–10 Forge release results
+
+### Two newly published full-feature-derived Forge alphas
+
+**Minecraft 1.19.1 / Forge 42.0.9 / Java 17:** Published [`mc1.19.1-v0.2a-port.1`](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.19.1-v0.2a-port.1), with **191/191 native GameTests**, standalone build/reobfuscation and SHA256 assets verified in [successful CI](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38024845699). Runtime JAR SHA256 `b3d6e69960fb83fdf1221b084cb7dba269a2db1bffd0647c418f933c5249c527`; exact source ZIP SHA256 `a0ef55cf2fbbcb530159239b1940015bead8ffbdeeac4c870adb5b5585273f50`. Forge42 uses sided `CapabilityItemHandler`, `CapabilityFluidHandler` and `CapabilityEnergy` rather than newer `ForgeCapabilities`.
+
+**Minecraft 1.19.3 / Forge 44.1.23 / Java 17:** Published [`mc1.19.3-v0.2a-port.1`](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.19.3-v0.2a-port.1), with **191/191 native GameTests** and checksum assets verified in [successful CI](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38024939431). Runtime JAR SHA256 `a2a8e87752d79b0e36d13f5c8d427cf701b16e02ddd198dd7ee67dc623e927d5`; matching source ZIP SHA256 `0224d5d4cfc24c4a2f12df6d8e90cb1c65b8adec217e425b9b5e6148b23f92b2`. The port migrates JOML display transforms, real creative-tab registration (Forge44's three-argument generator), native registry keys, and private widget positions. A failed workflow originally pushed the immutable tag without a release because of malformed `GH_TOKEN` configuration; the corrected release workflow verified identical production sources, preserved the original tag, and published without changing its source revision.
+
+Both are **alphas** rather than installed-mod, real-client, multiplayer or modpack stability certifications. The independent source branches carry the full-feature-derived PL4 code; remaining API alternatives and parity acceptance remain separate.
+
+### Earlier-API tracks still under development
+
+**Minecraft 1.18 / Forge 38.0.17 / Java17:** New branch `mc/1.18` derived from 1.18.1, with 193 retained tests and native source/pack metadata. This early Forge38 predates the standard Forge39 automated GameTest-server launcher. Compilation alone is not an acceptable release gate. An independent dedicated-server `/test runall` harness has been added; publication remains blocked until all 193 tests are genuinely exercised and independently reported. A prior migration script had committed its status flag before the Java source migration; the guard now verifies the actual committed GameTest source before allowing a no-op. **No 1.18 JAR is approved or uploaded.**
+
+**Minecraft 1.13.2 / Forge 25.0.223 / Java8:** Exact mapping setup was corrected to historical MCP snapshot mappings. A first legacy class-name migration is committed, but extensive method/renderer/registry incompatibilities still hit the compiler's 1,000-error reporting cap. This target needs an independent native API backport and then gameplay, client and installed-mod acceptance. **No 1.13.2 JAR is approved or uploaded.**
+
+The [cross-version CurseForge publishing workflow](../.github/workflows/curseforge.yml) checks exact tags, checksums, loader identity, release channel and existing upload receipts; it must never submit an untested source branch or claim that CurseForge moderation has approved a file. It is scheduled hourly and also accepts manual release tags.
+
+**Further API testing is still required.**
