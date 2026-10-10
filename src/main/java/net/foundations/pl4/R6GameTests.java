@@ -6,7 +6,7 @@ import net.minecraft.gametest.framework.*;
 import net.minecraft.world.level.block.Blocks;
 
 /** Native acceptance fixtures. Execution requires a full Minecraft/NeoForge test server. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R6GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000006");

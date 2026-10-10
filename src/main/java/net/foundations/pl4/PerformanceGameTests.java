@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 /** Operation-count regressions and native correctness for the cable/tick performance pass. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class PerformanceGameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000018");

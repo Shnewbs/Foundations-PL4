@@ -11,7 +11,7 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.*;
 
 /** Native fixtures: separate from the executed, dependency-free planner tests. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R7GameTests {
     private static final UUID OWNER=UUID.fromString("77770000-0000-0000-0000-000000000007");

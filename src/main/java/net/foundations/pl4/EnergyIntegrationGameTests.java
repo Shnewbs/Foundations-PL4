@@ -9,7 +9,7 @@ import net.minecraft.network.chat.ClickEvent;
 
 /** Native server fixtures for the production route engine; optional provider contracts are also
  * exercised by the dependency-free verifier. Injected ports avoid requiring third-party mods. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class EnergyIntegrationGameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000019");

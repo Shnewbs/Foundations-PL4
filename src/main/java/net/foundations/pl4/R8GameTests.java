@@ -13,7 +13,7 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.common.util.*;
 
 /** Native server fixtures. These require an actual Minecraft/NeoForge build and are NOT offline passes. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R8GameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000008");

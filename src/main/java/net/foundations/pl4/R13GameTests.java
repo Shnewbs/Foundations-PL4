@@ -9,7 +9,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 /** Native item-form persistence fixtures for the final 0.0.1a cleanup. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R13GameTests {
     @GameTest(template="empty")

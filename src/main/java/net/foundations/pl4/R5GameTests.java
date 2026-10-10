@@ -15,7 +15,7 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.common.util.*;
 
 /** Native server acceptance cases. Added in R5; NOT executed in the offline packaging environment. */
-@net.minecraftforge.gametest.GameTestHolder(namespace=FoundationsPL4.ID)
+@net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R5GameTests {
     private static final UUID OWNER=UUID.fromString("bbbb0000-0000-0000-0000-000000000005");
