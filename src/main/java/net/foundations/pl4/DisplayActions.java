@@ -6,7 +6,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 /** Server-resolved page links. Sneak-use always opens the editor instead. */
 final class DisplayActions {
     static boolean activate(ServerPlayerEntity player,HostEntity anchor,Part clicked){
-        if(!player.getLevel().mayInteract(player,anchor.getBlockPos())||player.isShiftKeyDown()||player.isSpectator()||!clicked.kind.display()||!anchor.canEdit(player)||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(anchor.getBlockPos()))>64)return false;
+        if(!player.getLevel().mayInteract(player,anchor.getBlockPos())||player.isSneaking()||player.isSpectator()||!clicked.kind.display()||!anchor.canEdit(player)||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(anchor.getBlockPos()))>64)return false;
         var controller=DisplayNetworks.controller(anchor,clicked);var host=controller.host();var p=controller.part();
         if(p.displayMode!=DisplayElements.Mode.CUSTOM||p.layoutRevision==Long.MAX_VALUE||!DisplayNetworks.canEditCanvas(player,anchor,clicked))return false;
         var eye=player.getEyePosition(1.0F).subtract(host.getBlockPos().getX(),host.getBlockPos().getY(),host.getBlockPos().getZ());

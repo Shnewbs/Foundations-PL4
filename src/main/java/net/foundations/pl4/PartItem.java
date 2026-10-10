@@ -28,7 +28,7 @@ public final class PartItem extends Item {
         Part clicked=host==null?null:host.hit(hit);
         Direction placementDirection=kind.cable()&&clicked!=null&&clicked.kind.cable()
             ?host.cableDirection(hit):c.getClickedFace();
-        boolean extend=kind==Kind.LARGE_DISPLAY&&clicked!=null&&clicked.kind==Kind.LARGE_DISPLAY&&!player.isShiftKeyDown();
+        boolean extend=kind==Kind.LARGE_DISPLAY&&clicked!=null&&clicked.kind==Kind.LARGE_DISPLAY&&!player.isSneaking();
         Part.DisplaySettings inherited=null;long inheritedRevision=0;
         if(extend){
             if(!host.canEdit(player)||!l.mayInteract(player,pos))return ActionResultType.FAIL;
@@ -79,7 +79,7 @@ public final class PartItem extends Item {
         if(part.kind.cable())NetworkEngine.refreshCableGeometry(host);
         else if(l instanceof net.minecraft.world.server.ServerWorld server)NetworkEngine.ensureCurrent(server.getServer());
         if(!player.abilities.instabuild)c.getItemInHand().shrink(1);
-        return ActionResultType.CONSUME;
+        return ActionResultType.SUCCESS;
     }
     /** Resolve saved data and base orientation before BOTH overlap checks, not after slot selection. */
     private Part placementPart(ItemUseContext c,Direction face,boolean outward,boolean extending){

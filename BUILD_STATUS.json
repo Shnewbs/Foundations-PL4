@@ -23,11 +23,13 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "28.2.26",
-  "port_status": "SOURCE_PORTING",
+  "port_status": "FORGE28_NATIVE_API_ADAPTATION",
   "expected_native_scenarios": 194,
   "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
   "build_java": 17,
   "installed_runtime_acceptance": "PENDING",
   "forge31_api_pass": false,
-  "native_compilation": "PENDING"
+  "native_compilation": "PENDING",
+  "native_api_backport": "forge28-stage1",
+  "native_scenarios": "PENDING"
 }

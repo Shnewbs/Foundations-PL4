@@ -38,13 +38,13 @@ public final class HostBlock extends ContainerBlock {
         for(Part other:host.parts.values())if(VoxelShapes.joinIsNotEmpty(shape,MultipartShapes.part(prospective,other),IBooleanFunction.AND))return false;
         return true;
     }
-    @Override public ActionResultType use(BlockState s,World l,BlockPos p,PlayerEntity player,Hand hand,BlockRayTraceResult hit){
+    @Override public boolean use(BlockState s,World l,BlockPos p,PlayerEntity player,Hand hand,BlockRayTraceResult hit){
         ItemStack held=player.getItemInHand(hand);
-        if(held.getItem() instanceof PartItem||held.getItem() instanceof ToolItem)return ActionResultType.PASS;
-        return useWithoutItem(s,l,p,player,hit);
+        if(held.getItem() instanceof PartItem||held.getItem() instanceof ToolItem)return false;
+        return useWithoutItem(s,l,p,player,hit)!=ActionResultType.PASS;
     }
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos p,PlayerEntity player,BlockRayTraceResult hit){
-        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isShiftKeyDown()); if(part!=null){if(player instanceof ServerPlayerEntity sp&&!DisplayActions.activate(sp,h,part))PLPackets.open(sp,h,part); return net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide);}}
+        if(l.getBlockEntity(p) instanceof HostEntity h){ Part part=h.interactionTarget(hit,player.isSneaking()); if(part!=null){if(player instanceof ServerPlayerEntity sp&&!DisplayActions.activate(sp,h,part))PLPackets.open(sp,h,part); return net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide);}}
         return ActionResultType.PASS;
     }
     @Override public void onRemove(BlockState s,World l,BlockPos p,BlockState next,boolean moving){

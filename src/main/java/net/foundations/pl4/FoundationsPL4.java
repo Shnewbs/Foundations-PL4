@@ -26,10 +26,10 @@ import net.minecraftforge.registries.*;
 @Mod(FoundationsPL4.ID)
 public final class FoundationsPL4 {
     public static final String ID = "foundations_pl4";
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.BLOCKS,ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.ITEMS,ID);
-    public static final DeferredRegister<TileEntityType<?>> ENTITIES = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.TILE_ENTITIES,ID);
-    public static final DeferredRegister<ContainerType<?>> MENUS = DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.CONTAINERS,ID);
+    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(net.minecraftforge.registries.ForgeRegistries.BLOCKS,ID);
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(net.minecraftforge.registries.ForgeRegistries.ITEMS,ID);
+    public static final DeferredRegister<TileEntityType<?>> ENTITIES = new DeferredRegister<>(net.minecraftforge.registries.ForgeRegistries.TILE_ENTITIES,ID);
+    public static final DeferredRegister<ContainerType<?>> MENUS = new DeferredRegister<>(net.minecraftforge.registries.ForgeRegistries.CONTAINERS,ID);
     public static final RegistryObject<ContainerType<HammerMenu>> HAMMER_MENU = MENUS.register("hammer", () -> new ContainerType<>(HammerMenu::new));
     public static final ItemGroup TAB=new ItemGroup("foundations_pl4"){
         @Override public ItemStack makeIcon(){return new ItemStack(item("sapphire"));}
@@ -39,38 +39,38 @@ public final class FoundationsPL4 {
     public static final EnumMap<Kind, RegistryObject<PartItem>> PART_ITEMS = new EnumMap<>(Kind.class);
     public static final Map<String,RegistryObject<CableModelBlock>> CABLE_MODELS = new LinkedHashMap<>();
     public static final Map<String,RegistryObject<Item>> MATERIALS = new LinkedHashMap<>();
-    public static final RegistryObject<PartModelBlock> KINETIC_READER_MODEL = BLOCKS.register("kinetic_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().noCollission()));
-    public static final RegistryObject<PartModelBlock> AE2_READER_MODEL = BLOCKS.register("ae2_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().noCollission()));
-    public static final RegistryObject<HostBlock> HOST = BLOCKS.register("multipart_host", () -> new HostBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE,MaterialColor.COLOR_BLUE).strength(.5F,25).noOcclusion().dynamicShape()));
-    public static final RegistryObject<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().noCollission()));
-    public static final RegistryObject<Block> ORE = BLOCKS.register("sapphireore", () -> new Block(Block.Properties.of(net.minecraft.block.material.Material.STONE,MaterialColor.STONE).strength(3,5).harvestTool(net.minecraftforge.common.ToolType.PICKAXE).harvestLevel(2).harvestTool(net.minecraftforge.common.ToolType.PICKAXE).harvestLevel(2)));
-    public static final RegistryObject<HammerBlock> HAMMER = BLOCKS.register("hammer", () -> new HammerBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE,MaterialColor.WOOD).strength(2.5F).noOcclusion()));
-    public static final RegistryObject<HammerSpaceBlock> HAMMER_SPACE = BLOCKS.register("hammer_air", () -> new HammerSpaceBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE,MaterialColor.WOOD).strength(2.5F).noOcclusion()));
+    public static final RegistryObject<PartModelBlock> KINETIC_READER_MODEL = BLOCKS.register("kinetic_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().doesNotBlockMovement()));
+    public static final RegistryObject<PartModelBlock> AE2_READER_MODEL = BLOCKS.register("ae2_reader_model", () -> new PartModelBlock(Kind.ENERGY_READER,Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().doesNotBlockMovement()));
+    public static final RegistryObject<HostBlock> HOST = BLOCKS.register("multipart_host", () -> new HostBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE,MaterialColor.COLOR_BLUE).hardnessAndResistance(.5F,25).notSolid()));
+    public static final RegistryObject<LargeDisplayModelBlock> LARGE_MODEL = BLOCKS.register("large_display_model", () -> new LargeDisplayModelBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().doesNotBlockMovement()));
+    public static final RegistryObject<Block> ORE = BLOCKS.register("sapphireore", () -> new Block(Block.Properties.create(net.minecraft.block.material.Material.STONE,MaterialColor.STONE).hardnessAndResistance(3,5).harvestTool(net.minecraftforge.common.ToolType.PICKAXE).harvestLevel(2).harvestTool(net.minecraftforge.common.ToolType.PICKAXE).harvestLevel(2)));
+    public static final RegistryObject<HammerBlock> HAMMER = BLOCKS.register("hammer", () -> new HammerBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE,MaterialColor.WOOD).hardnessAndResistance(2.5F).notSolid()));
+    public static final RegistryObject<HammerSpaceBlock> HAMMER_SPACE = BLOCKS.register("hammer_air", () -> new HammerSpaceBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE,MaterialColor.WOOD).hardnessAndResistance(2.5F).notSolid()));
     public static final RegistryObject<TileEntityType<HostEntity>> HOST_ENTITY = ENTITIES.register("host", () -> TileEntityType.Builder.of(HostEntity::new,HOST.get()).build(null));
     public static final RegistryObject<TileEntityType<HammerEntity>> HAMMER_ENTITY = ENTITIES.register("hammer", () -> TileEntityType.Builder.of(HammerEntity::new,HAMMER.get()).build(null));
     static {
         for (Kind k : Kind.values()) {
-            MODELS.put(k,BLOCKS.register(k.id, () -> new PartModelBlock(k,Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().strength(.5F))));
+            MODELS.put(k,BLOCKS.register(k.id, () -> new PartModelBlock(k,Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().hardnessAndResistance(.5F))));
             PART_ITEMS.put(k,ITEMS.register(k.id, () -> new PartItem(k,new Item.Properties())));
         }
         for (String material : List.of("data", "redstone_off", "redstone_on")) {
             for (String connector : List.of("cable", "internal", "half", "centre")) {
                 String name = "cable_model_" + material + "_" + connector;
                 CABLE_MODELS.put(material + "_" + connector, BLOCKS.register(name,
-                    () -> new CableModelBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().noCollission())));
+                    () -> new CableModelBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().doesNotBlockMovement())));
             }
         }
         for(String material:List.of("data","redstone_off","redstone_on"))for(String depth:List.of("1","15","2","3","4","6")){
             String key=material+"_lead_"+depth;
-            CABLE_MODELS.put(key,BLOCKS.register("cable_model_"+key,()->new CableModelBlock(Block.Properties.of(net.minecraft.block.material.Material.STONE).noOcclusion().noCollission())));
+            CABLE_MODELS.put(key,BLOCKS.register("cable_model_"+key,()->new CableModelBlock(Block.Properties.create(net.minecraft.block.material.Material.STONE).notSolid().doesNotBlockMovement())));
         }
         for (String id : List.of("sapphire","sapphiredust","stoneplate","etchedplate","signallingplate","wirelessplate")) MATERIALS.put(id,ITEMS.register(id, () -> new Item(new Item.Properties())));
         ITEMS.register("sapphireore", () -> new BlockItem(ORE.get(),new Item.Properties())); ITEMS.register("hammer", () -> new BlockItem(HAMMER.get(),new Item.Properties()));
-        ITEMS.register("operator", () -> new ToolItem(ToolItem.Mode.OPERATOR,new Item.Properties().stacksTo(1)));
-        ITEMS.register("transceiver", () -> new ToolItem(ToolItem.Mode.BLOCK_LINK,new Item.Properties().stacksTo(1)));
-        ITEMS.register("entitytransceiver", () -> new ToolItem(ToolItem.Mode.ENTITY_LINK,new Item.Properties().stacksTo(1)));
-        ITEMS.register("wirelessstorage", () -> new ToolItem(ToolItem.Mode.STORAGE,new Item.Properties().stacksTo(1)));
-        ITEMS.register("plguide", () -> new ToolItem(ToolItem.Mode.GUIDE,new Item.Properties().stacksTo(1)));
+        ITEMS.register("operator", () -> new ToolItem(ToolItem.Mode.OPERATOR,new Item.Properties().maxStackSize(1)));
+        ITEMS.register("transceiver", () -> new ToolItem(ToolItem.Mode.BLOCK_LINK,new Item.Properties().maxStackSize(1)));
+        ITEMS.register("entitytransceiver", () -> new ToolItem(ToolItem.Mode.ENTITY_LINK,new Item.Properties().maxStackSize(1)));
+        ITEMS.register("wirelessstorage", () -> new ToolItem(ToolItem.Mode.STORAGE,new Item.Properties().maxStackSize(1)));
+        ITEMS.register("plguide", () -> new ToolItem(ToolItem.Mode.GUIDE,new Item.Properties().maxStackSize(1)));
     }
     public FoundationsPL4() {
         IEventBus bus=net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus();

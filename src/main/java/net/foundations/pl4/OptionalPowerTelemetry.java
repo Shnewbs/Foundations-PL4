@@ -26,7 +26,7 @@ final class OptionalPowerTelemetry {
         for(Part.Link link:links){
             if(link.entity()!=null)continue;
             if(!NetworkEngine.loaded(server,link)){unloaded++;continue;}
-            String target=link.dimension()+":"+link.pos().toShortString();if(kinetic&&!targets.add(target))continue;
+            String target=link.dimension()+":"+link.pos().toString();if(kinetic&&!targets.add(target))continue;
             Object entity=NetworkEngine.level(server,link).getBlockEntity(link.pos());
             try{
                 if(kinetic){var v=create.read(entity);if(v==null){unsupported++;continue;}

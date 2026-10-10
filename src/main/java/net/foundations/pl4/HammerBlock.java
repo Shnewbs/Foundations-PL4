@@ -49,7 +49,7 @@ public final class HammerBlock extends ContainerBlock {
     }
     @Override public TileEntity newBlockEntity(IBlockReader world){return new HammerEntity();}
 
-    @Override public ActionResultType use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit);}
+    @Override public boolean use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit)!=ActionResultType.PASS;}
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
         return HammerStructure.open(l,pos,p)?net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }

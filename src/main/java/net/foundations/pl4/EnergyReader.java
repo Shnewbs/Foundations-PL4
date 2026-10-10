@@ -71,7 +71,7 @@ public final class EnergyReader {
                 result.add(new Part.Row(EnergyValues.totalKey(total.unit()),"Storage ("+total.unit()+")",total.stored(),total.capacity(),total.unit()));
         }catch(IllegalArgumentException failure){reader.status="Energy total exceeds telemetry range";return List.of();}
         if(!reader.mode.equals("STORAGE"))for(var sample:samples){
-            var value=sample.reading;String location=sample.target.dimension+":"+sample.target.pos.toShortString();
+            var value=sample.reading;String location=sample.target.dimension+":"+sample.target.pos.toString();
             String key=value.unit().equals("FE")?location:"energy:"+value.unit().toLowerCase(Locale.ROOT)+":"+location;
             result.add(new Part.Row(key,sample.name+" ["+value.unit()+"]",value.stored(),value.capacity(),value.unit()));
         }

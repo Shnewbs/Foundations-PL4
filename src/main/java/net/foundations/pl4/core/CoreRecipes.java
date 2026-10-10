@@ -10,7 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 
 /** Registered through the PL4 mod event bus and packaged in the same JAR. */
 public final class CoreRecipes {
-    private static final DeferredRegister<IRecipeSerializer<?>> SERIALIZERS=DeferredRegister.create(net.minecraftforge.registries.ForgeRegistries.RECIPE_SERIALIZERS,FoundationsPL4.ID);
+    private static final DeferredRegister<IRecipeSerializer<?>> SERIALIZERS=new DeferredRegister<>(net.minecraftforge.registries.ForgeRegistries.RECIPE_SERIALIZERS,FoundationsPL4.ID);
     public static final java.util.function.Supplier<IRecipeType<ForgingRecipe>> HAMMER=new java.util.function.Supplier<>() {
         private final IRecipeType<ForgingRecipe> value=new IRecipeType<>(){
         @Override public String toString(){return FoundationsPL4.ID+":forging_hammer";}

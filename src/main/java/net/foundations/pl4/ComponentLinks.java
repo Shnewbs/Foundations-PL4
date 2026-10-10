@@ -38,7 +38,7 @@ public final class ComponentLinks {
         var level=NetworkEngine.level(player.getLevel().getServer(),link);String name="Emitter";
         if(link.entity()!=null){var entity=level==null?null:level.getEntity(link.entity());name=entity==null?"Missing entity":entity.getName().getString();}
         else if(level!=null&&level.hasChunkAt(link.pos())&&level.getBlockEntity(link.pos()) instanceof HostEntity h){for(var p:h.parts.values())if(p.identity.equals(link.part())&&!p.label.isBlank())name=p.label;}
-        return ReaderChannels.clean(name+" · "+link.pos().toShortString()+" · "+link.dimension());
+        return ReaderChannels.clean(name+" · "+link.pos().toString()+" · "+link.dimension());
     }
     public static boolean addChoice(ServerPlayerEntity player,HostEntity host,Part part,String id){
         for(var link:candidates(player,host,part))if(choiceId(link).equals(id))return add(player,host,part,link);return false;

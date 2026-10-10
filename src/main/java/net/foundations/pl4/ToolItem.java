@@ -34,7 +34,7 @@ public final class ToolItem extends Item {
         Part part=host==null?null:host.hit(new BlockRayTraceResult(c.getClickLocation(),c.getClickedFace(),pos,false));
         if(mode==Mode.OPERATOR&&host!=null&&part!=null){
             if(!host.canEdit(player)||!level.mayInteract(player,pos))return ActionResultType.FAIL;
-            if(player.isShiftKeyDown()){
+            if(player.isSneaking()){
                 host.parts.remove(part.slot());Block.popResource(level,pos,PartItem.savedStack(part,null));
                 if(host.parts.isEmpty())level.removeBlock(pos,false);else host.changed();
             }else if(part.kind.cable()) {
@@ -53,25 +53,25 @@ public final class ToolItem extends Item {
                 host.changed();
                 player.displayClientMessage(new net.minecraft.util.text.StringTextComponent(side.getName()+" cable port "+(blocked?"disconnected":"enabled")),true);
             }else PLPackets.open(player,host,part);
-            return ActionResultType.CONSUME;
+            return ActionResultType.SUCCESS;
         }
         if(mode==Mode.STORAGE){
-            if(player.isShiftKeyDown()){
+            if(player.isSneaking()){
                 if(host==null||part==null||(part.kind!=Kind.NODE&&part.kind!=Kind.TRANSFER_NODE)||!host.canEdit(player)||!level.mayInteract(player,pos))return ActionResultType.FAIL;
                 save(c.getItemInHand(),new Part.Link(level.dimension.getType().getRegistryName().toString(),pos,part.face,null,part.identity));
                 player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Wireless Storage bound to inventory Node"),true);
             }else WirelessStorage.open(player,c.getHand());
-            return ActionResultType.CONSUME;
+            return ActionResultType.SUCCESS;
         }
         if(mode==Mode.BLOCK_LINK||mode==Mode.MONITOR||mode==Mode.ENTITY_LINK){
-            if(player.isShiftKeyDown()){
+            if(player.isSneaking()){
                 save(c.getItemInHand(),new Part.Link(level.dimension.getType().getRegistryName().toString(),pos,c.getClickedFace(),null,part==null?null:part.identity));
-                player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+pos.toShortString()+" in "+level.dimension.getType().getRegistryName()),true);return ActionResultType.CONSUME;
+                player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+pos.toString()+" in "+level.dimension.getType().getRegistryName()),true);return ActionResultType.SUCCESS;
             }
             Part.Link link=link(c.getItemInHand());
             if(host!=null&&part!=null&&link!=null&&(part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE||part.kind.receiver())){
                 if(!ComponentLinks.add(player,host,part,link)){player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Link rejected: check type, owner, loaded target, dimension policy and free link slots."),true);return ActionResultType.FAIL;}
-                host.changed();player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Added link ("+part.links.size()+")"),true);return ActionResultType.CONSUME;
+                host.changed();player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Added link ("+part.links.size()+")"),true);return ActionResultType.SUCCESS;
             }
         }
         return use(level,player,c.getHand()).getResult();

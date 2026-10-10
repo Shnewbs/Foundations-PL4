@@ -26,7 +26,7 @@ public final class RegisterPayloadHandlersEvent {
    Class<T> packetClass=null;
    for(Class<?> c:net.foundations.pl4.PLPackets.class.getDeclaredClasses())try{if(c.getField("TYPE").get(null)==type){packetClass=(Class<T>)c;break;}}catch(ReflectiveOperationException ignored){}
    if(packetClass==null)throw new IllegalArgumentException("Unknown PL4 packet "+type.id());
-   channel.registerMessage(next++,packetClass,(packet,buffer)->codec.encode(buffer,packet),codec::decode,(packet,supplier)->{NetworkEvent.Context context=supplier.get();handler.accept(packet,new Context(context));context.setPacketHandled(true);},java.util.Optional.of(direction));
+   channel.registerMessage(next++,packetClass,(packet,buffer)->codec.encode(buffer,packet),codec::decode,(packet,supplier)->{NetworkEvent.Context context=supplier.get();if(context.getDirection()!=direction){context.setPacketHandled(true);return;}handler.accept(packet,new Context(context));context.setPacketHandled(true);});
   }
  }
 }

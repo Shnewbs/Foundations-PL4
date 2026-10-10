@@ -28,7 +28,7 @@ public final class HammerSpaceBlock extends Block {
     @Override public void createBlockStateDefinition(StateContainer.Builder<Block,BlockState> b){b.add(OFFSET);}
     @Override public BlockRenderType getRenderShape(BlockState s){return BlockRenderType.INVISIBLE;}
     @Override public VoxelShape getShape(BlockState s,IBlockReader l,BlockPos p,ISelectionContext c){return s.getValue(OFFSET)==2?TOP:POSTS;}
-    @Override public ActionResultType use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit);}
+    @Override public boolean use(BlockState s,World l,BlockPos pos,PlayerEntity p,Hand hand,BlockRayTraceResult hit){return useWithoutItem(s,l,pos,p,hit)!=ActionResultType.PASS;}
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
         return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }
@@ -36,7 +36,7 @@ public final class HammerSpaceBlock extends Block {
         BlockPos base=p.below(s.getValue(OFFSET));
         if(!l.isClientSide&&(l.getBlockState(base).getBlock()==FoundationsPL4.HAMMER.get())) {
             if(player!=null&&!l.mayInteract(player,base))return false;
-            l.destroyBlock(base,player==null||!player.abilities.instabuild,player);
+            l.destroyBlock(base,player==null||!player.abilities.instabuild);
         }
         return l.isClientSide?l.setBlock(p,fluid.createLegacyBlock(),11):l.removeBlock(p,false)||l.getBlockState(p).isAir();
     }
