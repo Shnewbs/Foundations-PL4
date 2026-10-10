@@ -55,19 +55,31 @@ jobs:
           version=$(python3 -c 'import json;print(json.load(open("BUILD_STATUS.json"))["version"])')
           name="FoundationsPL4-$target-$version";tag="mc$target-v$version"
           test "$(git ls-remote origin "refs/heads/mc/$target" | cut -f1)" = "$(git rev-parse HEAD)"
+          source_ref=HEAD
+          has_tag=false
           if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            has_tag=true
             git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            # The exact verified runtime's production sources must match this
+            # immutable tag; workflow-only corrections may live in later commits.
             git diff --exit-code "$tag" HEAD -- src/main build.gradle settings.gradle gradle.properties
-            gh release view "$tag"
-            exit 0
+            source_ref="$tag"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "This exact source already has a release; no overwriting."
+              exit 0
+            fi
+            echo "Releasing tested runtime for existing immutable tag $tag."
           fi
           mkdir -p release-files
           cp "build/libs/$name.jar" "build/libs/$name-sources.jar" release-files/
-          git archive --format=zip --output="release-files/$name-source.zip" HEAD
+          git archive --format=zip --output="release-files/$name-source.zip" "$source_ref"
           cp verification-logs/native.log "release-files/$name-native-tests.log"
-          cp verification-logs/SOURCE_COMMIT.txt release-files/
+          git rev-parse "$source_ref^{commit}" > release-files/SOURCE_COMMIT.txt
           (cd release-files && sha256sum * > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
-          git tag "$tag";git push origin "$tag"
+          if [ "$has_tag" = false ]; then
+            git tag "$tag"
+            git push origin "$tag"
+          fi
           gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $target $version — Forge44 alpha" --notes-file "docs/releases/$version.md"
       - uses: actions/upload-artifact@v4
         if: always()
