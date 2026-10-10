@@ -1,11 +1,19 @@
-# Foundations PL4 1.14.4 native port — in progress
+# Foundations PL4 / Minecraft 1.13.2 — Forge25 port
 
-Minecraft 1.14.4 / recommended Forge 28.2.26 / Java 8, built using Java 17
-with conversion to Java 8 bytecode. Derived from full-feature 1.15.2 source,
-not the limited legacy transport implementation. Actual native APIs, storage,
-networking, visuals and recipes still require independent port validation.
+**Unreleased native port in progress.** This branch derives from the 1.14.4
+full-feature implementation and independently targets Minecraft 1.13.2,
+Forge 25.0.223 and Java 8. Forge's official download list identifies
+25.0.223 as the latest 1.13.2 build (check source below).
 
-**NOT a released runtime.** The workflow must pass target-native compilation,
-all 194 isolated scenarios, archive checks and production-only startup before
-a binary may be released. No 1.15.2 JAR is compatible by renaming.
-**Further API testing is required.**
+The inherited full-feature code still needs target-specific API adaptation
+for forge registries, world/recipe data, GUI rendering, block interaction,
+worldgen, networking and capabilities. Existing source presence is NOT proof
+that any of those features run on installed Forge25.
+
+Native gates: independent compiler/reobfuscation, Java8 archive verification,
+194 exact-target installed-server scenarios, no-fixture production startup
+and stop, then real-client, optional API and multiplayer acceptance. A binary
+from another Minecraft target must NEVER be renamed and published as 1.13.2.
+
+**Further API testing is required.** No versioned release has been certified.
+Official loader: https://files.minecraftforge.net/net/minecraftforge/forge/index_1.13.2.html

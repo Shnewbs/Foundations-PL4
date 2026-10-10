@@ -48,7 +48,7 @@ public final class PortScenarioMod {
         tests.sort(Comparator.comparing(m->m.getDeclaringClass().getSimpleName()+"."+m.getName()));
         if(tests.size()!=194)throw new IllegalStateException("Expected all 194 native fixtures, found "+tests.size());
         for(int x=-1;x<=2;x++)for(int z=-1;z<=2;z++){world.setChunkForced(x,z,true);world.getChunk(x,z);}
-        LOG.info("PL4 LEGACY SCENARIOS: {} fixtures on real Minecraft 1.14.4 / Forge",tests.size());
+        LOG.info("PL4 LEGACY SCENARIOS: {} fixtures on real Minecraft 1.13.2 / Forge",tests.size());
     }
     private void tick(TickEvent.ServerTickEvent event){
         if(event.phase!=TickEvent.Phase.END||server==null||finished)return;
@@ -77,7 +77,7 @@ public final class PortScenarioMod {
         finished=true;cleanFixtureRegion();
         for(int x=-1;x<=2;x++)for(int z=-1;z<=2;z++)world.setChunkForced(x,z,false);
         try{
-            var report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.14.4");report.addProperty("harness","PL4 isolated dedicated-server scenarios");report.addProperty("total",tests.size());report.addProperty("passed",passed);report.addProperty("failed",failures.size());report.addProperty("server_ticks",ticks);
+            var report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.13.2");report.addProperty("harness","PL4 isolated dedicated-server scenarios");report.addProperty("total",tests.size());report.addProperty("passed",passed);report.addProperty("failed",failures.size());report.addProperty("server_ticks",ticks);
             var errors=new com.google.gson.JsonArray();for(String failure:failures)errors.add(failure);report.add("failures",errors);
             Files.writeString(Path.of("port-scenarios.json"),new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report));
         }catch(java.io.IOException error){failures.add("Unable to write scenario report: "+error);LOG.error("Scenario report failure",error);}

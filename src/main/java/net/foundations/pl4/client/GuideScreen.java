@@ -120,7 +120,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
         String name=font.substrByWidth("FOUNDATIONS PL4 FIELD GUIDE",leftWidth);
         g.drawString(font,name,b.x()+22,b.y()+20,INK,false);
         if(!layout.compact()){
-            g.drawString(font,font.substrByWidth("TECHNICAL MANUAL  /  1.14.4",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
+            g.drawString(font,font.substrByWidth("TECHNICAL MANUAL  /  1.13.2",leftWidth),b.x()+22,b.y()+34,ACCENT,false);
             if(listVisible()){int ry=b.y()+69;g.drawString(font,"DATA",layout.list().x(),ry,ACCENT,false);g.drawString(font,">  READER  >  VIEW",layout.list().x()+35,ry,MUTED,false);}
         }
         if(listVisible()){

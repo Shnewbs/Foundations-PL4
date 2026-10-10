@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[28,29)"
+loaderVersion="[25,26)"
 license="MIT"
 [[mods]]
 modId="foundations_pl4_porttests"

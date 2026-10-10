@@ -1,7 +1,12 @@
 {
-  "minecraft": "1.14.4",
+  "minecraft": "1.13.2",
   "loader": "Forge",
-  "loader_version": "28.2.26",
-  "java": 8,
-  "release_allowed": false
+  "loader_version": "25.0.223",
+  "runtime_java": 8,
+  "source_base": "mc/1.14.4",
+  "production_feature_baseline": "full-feature, not limited legacy",
+  "release_allowed": false,
+  "native_scenarios_expected": 194,
+  "visuals": "PENDING",
+  "third_party_apis": "PENDING"
 }

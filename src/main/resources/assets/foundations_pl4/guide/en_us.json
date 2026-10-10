@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "title": "Foundations PL4 Field Guide",
-  "edition": "Minecraft 1.14.4 / Forge / Foundations PL4 0.2a-port.1",
+  "edition": "Minecraft 1.13.2 / Forge / Foundations PL4 0.2a-port.1",
   "chapters": [
     {
       "id": "start",
