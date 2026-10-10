@@ -51,7 +51,7 @@ public final class EnergyIntegrationGameTests {
     public static void optionalReaderSystemsPersistAndModelsKeepMultipartGeometry(GameTestHelper h){
         for(String system:List.of("CREATE","AE2")){
             Part p=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);p.energySystem=system;
-            Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+            Part restored=Part.load(p.save(null,false),null);
             net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.energySystem.equals(system),"Optional reader selection survives save/load");
         }
         net.foundations.pl4.compat.PortAssertions.check(FoundationsPL4.KINETIC_READER_MODEL.get().kind==Kind.ENERGY_READER&&FoundationsPL4.AE2_READER_MODEL.get().kind==Kind.ENERGY_READER,"Adapter models preserve Energy Reader behavior and placement");h.succeed();
@@ -119,12 +119,12 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fractionalEscrowAndRouteSurviveDropsAndRestart(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.energyInput="ED_J";p.energyOutput="EU";p.energyConvert=true;p.energyVoltage=128;p.transferMode=2;p.energyCredits(1);p.pendingEnergyUnit="EU";p.pendingEnergyJRate=400;p.pendingEnergyEURate=4;p.pendingEnergyEDRate=1;
-        var data=net.foundations.pl4.compat.PortData.get(PartItem.stack(p,h.getLevel().registryAccess()),DataComponents.CUSTOM_DATA);
+        var data=net.foundations.pl4.compat.PortData.get(PartItem.stack(p,null),DataComponents.CUSTOM_DATA);
         net.foundations.pl4.compat.PortAssertions.check(data!=null,"Sub-FE escrow must never be lost in a normal node drop");
-        Part restored=Part.load(data.copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
+        Part restored=Part.load(data.copyTag().getCompound("pl_part"),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.energyCredits()==1&&restored.pendingEnergy==0&&restored.pendingEnergyUnit.equals("EU")&&restored.pendingEnergyEDRate==1,"Exact credits and profile survive persistence");
         net.foundations.pl4.compat.PortAssertions.check(restored.energyInput.equals("ED_J")&&restored.energyOutput.equals("EU")&&restored.energyConvert&&restored.energyVoltage==128&&restored.transferMode==2&&!restored.energyRouteEditable(),"Escrow-required routing settings survive breaking/replacing and remain locked");
-        Part synced=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());net.foundations.pl4.compat.PortAssertions.check(synced.energyCredits()==0&&!synced.energyRouteEditable(),"Client receives lock but no escrow amount");
+        Part synced=Part.load(p.save(null,true),null);net.foundations.pl4.compat.PortAssertions.check(synced.energyCredits()==0&&!synced.energyRouteEditable(),"Client receives lock but no escrow amount");
         restored.energyCredits(0);net.foundations.pl4.compat.PortAssertions.check(restored.energyRouteEditable(),"Draining escrow unlocks route");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -213,8 +213,8 @@ public final class EnergyIntegrationGameTests {
         net.foundations.pl4.compat.PortAssertions.check(ReaderChannels.select(reader,List.of(a)).isEmpty(),"Missing pinned target never falls back to another inventory");
         net.foundations.pl4.compat.PortAssertions.check(!ReaderChannels.id(a).equals(ReaderChannels.id(new Part.Link(a.dimension(),a.pos(),Direction.SOUTH,null,null))),"Sided endpoints remain distinct");
         reader.targetChoices.add(new Part.ReaderChoice(ReaderChannels.id(b),"Machine B","block"));
-        Part disk=Part.load(reader.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
-        Part sync=Part.load(reader.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
+        Part disk=Part.load(reader.save(null,false),null);
+        Part sync=Part.load(reader.save(null,true),null);
         net.foundations.pl4.compat.PortAssertions.check(disk.targetChannel.equals(reader.targetChannel)&&disk.index==4&&disk.mode.equals("SLOT")&&disk.targetChoices.isEmpty(),"Save keeps independent channel/slot but excludes derived choices");
         net.foundations.pl4.compat.PortAssertions.check(sync.targetChoices.equals(reader.targetChoices),"Client receives bounded channel choices");
         reader.targetChannel="";reader.mode="CHANNEL";reader.index=2;
@@ -262,7 +262,7 @@ public final class EnergyIntegrationGameTests {
         net.foundations.pl4.compat.PortAssertions.check(ReaderChannels.rename(reader," Main Tank "),"Selected channel can be named");reader.targetQuery="MAIN TANK";
         ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
         net.foundations.pl4.compat.PortAssertions.check(reader.targetPage==0&&reader.targetCount==1&&reader.targetChoices.get(0).name().startsWith("Main Tank"),"Case-insensitive alias search and page clamp");
-        var disk=Part.load(reader.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var disk=Part.load(reader.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(disk.channelNames.equals(reader.channelNames)&&disk.targetQuery.equals(reader.targetQuery),"Aliases and query survive saves");
         reader.targetQuery="no matching target";ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
         net.foundations.pl4.compat.PortAssertions.check(reader.targetChoices.isEmpty()&&!ReaderChannels.label(reader).contains("disconnected")&&ReaderChannels.select(reader,links).equals(List.of(net.foundations.pl4.compat.PortLists.last(links))),"Search does not change the selected sampling endpoint");
@@ -362,7 +362,7 @@ public final class EnergyIntegrationGameTests {
             if(!"PL4 expected destination failure".equals(expected.getMessage()))throw expected;thrown=true;
         }
         net.foundations.pl4.compat.PortAssertions.check(thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17,"Extracted items remain owned by ADD escrow after a pre-mutation destination failure");
-        Part restored=Part.load(sink.part().save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(sink.part().save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.pendingItem.getCount()==17,"Exception escrow survives persistence");
         fail[0]=false;TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));
         net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once");h.succeed();
@@ -375,14 +375,14 @@ public final class EnergyIntegrationGameTests {
             net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent(i+":"+"x".repeat(1500)));
             samples.item(item);last=item;
         }
-        var rows=samples.rows(h.getLevel().registryAccess(),true,256,0);int bytes=0;boolean omitted=false;
+        var rows=samples.rows(null,true,256,0);int bytes=0;boolean omitted=false;
         for(var row:rows){
             if(row.previewItem().isEmpty())omitted=true;else{byte[] encoded=VisualSamples.bounded(row.previewItem(),4096);net.foundations.pl4.compat.PortAssertions.check(encoded!=null,"Each preview fits the individual bound");bytes+=encoded.length;}
             net.foundations.pl4.compat.PortAssertions.check(row.value()==1&&row.itemId().equals("minecraft:stone"),"Exhausted visual budget preserves numeric and server-side filter data");
         }
         var alone=new VisualSamples();alone.item(last);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
-        net.foundations.pl4.compat.PortAssertions.check(rows.stream().map(Part.Row::key).distinct().count()==256&&net.foundations.pl4.compat.PortLists.last(rows).key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).get(0).key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(rows.stream().map(Part.Row::key).distinct().count()==256&&net.foundations.pl4.compat.PortLists.last(rows).key().equals(alone.rows(null,true,1,0).get(0).key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){

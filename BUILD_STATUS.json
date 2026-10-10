@@ -29,5 +29,6 @@
     "193 installed native scenarios",
     "production-only server boot",
     "exact source and checksums"
-  ]
+  ],
+  "native_api_backport": "1.16.1-v1"
 }

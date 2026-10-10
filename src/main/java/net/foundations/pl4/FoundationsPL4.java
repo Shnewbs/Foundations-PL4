@@ -81,14 +81,14 @@ public final class FoundationsPL4 {
         container.registerConfig(ModConfig.Type.CLIENT,PLClientConfig.SPEC);
         bus.addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent e)->{
             PLPackets.register(new net.foundations.pl4.compat.RegisterPayloadHandlersEvent());
-            e.enqueueWork(PortWorldgen::register);
+            net.minecraftforge.fml.DeferredWorkQueue.runLater(PortWorldgen::register);
             var caps=new net.foundations.pl4.compat.RegisterCapabilitiesEvent();
             HammerEntity.capabilities(caps);NativeEnergyInput.register(caps);
         });
         MinecraftForge.EVENT_BUS.addGenericListener(net.minecraft.tileentity.TileEntity.class,net.foundations.pl4.compat.PortCapabilities::attach);
-        
+
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::tick);
-        MinecraftForge.EVENT_BUS.addListener(PortWorldgen::biome);
+
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }
     public static ResourceLocation id(String path) { return new ResourceLocation(ID,path); }

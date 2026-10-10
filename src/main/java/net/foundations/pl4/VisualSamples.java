@@ -26,7 +26,7 @@ public final class VisualSamples {
     public void fluid(FluidStack stack,int capacity){
         Key key=new Key(stack.getFluid(),net.foundations.pl4.compat.PortData.components(stack));Sum sum=sums.computeIfAbsent(key,k->{Sum s=new Sum();s.fluid=net.foundations.pl4.compat.PortData.copyWithAmount(stack,1);return s;});sum.value+=stack.getAmount();sum.capacity+=capacity;
     }
-    public List<Part.Row> rows(net.minecraft.util.registry.DynamicRegistries registry,boolean descending,int limit,int offset){
+    public List<Part.Row> rows(Object registry,boolean descending,int limit,int offset){
         var sorted=new ArrayList<>(sums.values());Comparator<Sum> order=Comparator.comparingDouble(s->s.value);if(descending)order=order.reversed();sorted.sort(order);
         List<Part.Row> rows=new ArrayList<>();int budget=32768;
         for(int index=Math.max(0,offset);index<sorted.size();index++){Sum sum=sorted.get(index);if(rows.size()>=limit)break;

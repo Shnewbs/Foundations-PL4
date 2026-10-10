@@ -49,7 +49,7 @@ public final class HostBlock extends ContainerBlock {
     }
     @Override public void onRemove(BlockState s,World l,BlockPos p,BlockState next,boolean moving){
         if(s.getBlock()!=next.getBlock() && l.getBlockEntity(p) instanceof HostEntity h && !l.isClientSide){
-            for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,l.registryAccess()));
+            for(Part part:h.parts.values())popResource(l,p,PartItem.stack(part,null));
             NetworkEngine.invalidate(l); l.updateNeighborsAt(p,this);
         }
         super.onRemove(s,l,p,next,moving);

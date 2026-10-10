@@ -34,7 +34,7 @@ public final class ToolItem extends Item {
         if(mode==Mode.OPERATOR&&host!=null&&part!=null){
             if(!host.canEdit(player)||!level.mayInteract(player,pos))return ActionResultType.FAIL;
             if(player.isShiftKeyDown()){
-                host.parts.remove(part.slot());Block.popResource(level,pos,PartItem.savedStack(part,level.registryAccess()));
+                host.parts.remove(part.slot());Block.popResource(level,pos,PartItem.savedStack(part,null));
                 if(host.parts.isEmpty())level.removeBlock(pos,false);else host.changed();
             }else if(part.kind.cable()) {
                 Direction side=host.cableDirection(new BlockRayTraceResult(c.getClickLocation(),c.getClickedFace(),pos,false));

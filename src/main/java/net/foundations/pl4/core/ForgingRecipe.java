@@ -12,7 +12,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.compat.SingleRecipeInput;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.JSONUtils;
@@ -36,8 +35,8 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
  public ForgingRecipe value(){return this;}
  @Override public ResourceLocation getId(){return id;}
  @Override public boolean matches(SingleRecipeInput input,World level){return input.item().getCount()>=inputCount&&ingredient.test(input.item());}
- public ItemStack assemble(SingleRecipeInput input,DynamicRegistries registries){return result.copy();}
- public ItemStack getResultItem(DynamicRegistries registries){return result.copy();}
+ public ItemStack assemble(SingleRecipeInput input,Object registries){return result.copy();}
+ public ItemStack getResultItem(Object registries){return result.copy();}
  @Override public NonNullList<Ingredient> getIngredients(){return NonNullList.of(Ingredient.EMPTY,ingredient);}
  @Override public boolean canCraftInDimensions(int width,int height){return width>0&&height>0;}
  @Override public boolean isSpecial(){return true;}
@@ -48,11 +47,12 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
   private static final Codec<Ingredient> INGREDIENT=Codec.PASSTHROUGH.comapFlatMap(dynamic->{try{return DataResult.success(Ingredient.fromJson(dynamic.convert(JsonOps.INSTANCE).getValue()));}catch(RuntimeException bad){return DataResult.error(bad.getMessage());}},ingredient->new Dynamic<>(JsonOps.INSTANCE,ingredient.toJson()));
   private static final MapCodec<ForgingRecipe> CODEC=RecordCodecBuilder.mapCodec(instance->instance.group(
    INGREDIENT.fieldOf("ingredient").forGetter(ForgingRecipe::ingredient),
-   optional(Codec.intRange(1,64),"input_count",1).forGetter(ForgingRecipe::inputCount),
+   optional(intRange(1,64),"input_count",1).forGetter(ForgingRecipe::inputCount),
    ItemStack.CODEC.fieldOf("result").forGetter(ForgingRecipe::result),
-   optional(Codec.intRange(1,72000),"processing_ticks",100).forGetter(ForgingRecipe::processingTicks),
-   optional(Codec.intRange(0,72000),"cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
+   optional(intRange(1,72000),"processing_ticks",100).forGetter(ForgingRecipe::processingTicks),
+   optional(intRange(0,72000),"cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
   ).apply(instance,ForgingRecipe::new));
+  private static Codec<Integer> intRange(int min,int max){return Codec.INT.flatXmap(value->value>=min&&value<=max?DataResult.success(value):DataResult.error("Integer outside "+min+".."+max),value->value>=min&&value<=max?DataResult.success(value):DataResult.error("Integer outside "+min+".."+max));}
   private static <A> MapCodec<A> optional(Codec<A> codec,String name,A fallback){return new MapCodec<>(){
    @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);if(value==null)return DataResult.success(fallback);DataResult<A> decoded=codec.parse(ops,value);if(decoded.error().isPresent())return DataResult.error(decoded.error().get().message());return decoded;}
    @Override public <T> RecordBuilder<T> encode(A value,DynamicOps<T> ops,RecordBuilder<T> prefix){return prefix.add(name,codec.encodeStart(ops,value));}

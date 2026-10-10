@@ -94,8 +94,8 @@ public final class R7GameTests {
         var target=host(h,new BlockPos(2,2,2));Part reader=new Part(Kind.ENERGY_READER,Direction.DOWN,OWNER);reader.energySystem="EU";
         Part screen=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,OWNER);screen.label="Saved display";screen.selected=reader.identity.toString();screen.displayOutward=true;
         screen.elements.add(new Part.Element("EU","","storage:eu",3,7,0xABCDE0,false));
-        ListNBT parts=new ListNBT();parts.add(reader.save(h.getLevel().registryAccess(),false));parts.add(screen.save(h.getLevel().registryAccess(),false));
-        CompoundNBT old=new CompoundNBT();old.putInt("schema",1);old.put("parts",parts);target.loadAdditional(old,h.getLevel().registryAccess());
+        ListNBT parts=new ListNBT();parts.add(reader.save(null,false));parts.add(screen.save(null,false));
+        CompoundNBT old=new CompoundNBT();old.putInt("schema",1);old.put("parts",parts);target.loadAdditional(old,null);
         Part loaded=target.parts.get(9);
         net.foundations.pl4.compat.PortAssertions.check(target.parts.get(0).energySystem.equals("EU")&&!target.parts.containsKey(2),"Only display indices migrate");
         net.foundations.pl4.compat.PortAssertions.check(loaded.identity.equals(screen.identity)&&loaded.elements.equals(screen.elements)&&loaded.displayOutward&&loaded.selected.equals(screen.selected),"All R6 identity/front/reader/layout data survives");h.succeed();
@@ -104,8 +104,8 @@ public final class R7GameTests {
     public static void codecPreservesAllThirteenSlots(GameTestHelper h){
         var target=host(h,new BlockPos(2,2,2));put(target,Kind.DATA_CABLE,Direction.DOWN);
         for(Direction f:Direction.values()){put(target,Kind.INVENTORY_READER,f);put(target,Kind.MINI_DISPLAY,f);}
-        CompoundNBT saved=new CompoundNBT();target.saveAdditional(saved,h.getLevel().registryAccess());
-        var loaded=new HostEntity(target.getBlockPos(),target.getBlockState());loaded.loadAdditional(saved,h.getLevel().registryAccess());
+        CompoundNBT saved=new CompoundNBT();target.saveAdditional(saved,null);
+        var loaded=new HostEntity(target.getBlockPos(),target.getBlockState());loaded.loadAdditional(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.parts.size()==13,"NBT loading must not truncate at the former seven-part limit");
         for(var e:target.parts.entrySet())net.foundations.pl4.compat.PortAssertions.check(loaded.parts.get(e.getKey()).identity.equals(e.getValue().identity),"Slot/identity round trip");h.succeed();
     }

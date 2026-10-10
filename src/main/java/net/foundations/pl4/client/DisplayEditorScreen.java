@@ -35,7 +35,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         if(!packet.tag().contains("previewReader")){pending=false;waitTicks=0;message=packet.tag().getString("layoutError");}
         if(packet.tag().contains("previewReader")){
             String id=packet.tag().getString("previewReader");List<Part.Row> rows=new ArrayList<>();var tags=packet.tag().getList("previewRows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
-            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),minecraft.level.registryAccess()));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
+            for(int i=0;i<Math.min(64,tags.size());i++)rows.add(Part.Row.load(tags.getCompound(i),null));if(inspected.size()>=8)inspected.clear();inspected.put(id,List.copyOf(rows));
         }
         selectedIds.removeIf(id->part.elements.stream().noneMatch(e->e.id().equals(id)&&e.spec().page()==part.displayPage));selected=selectedIds.stream().findFirst().orElse(null);
     }
@@ -219,7 +219,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
             PacketDistributor.sendToServer(new PLPackets.LayoutEdit(pos,clickedSlot,clickedIdentity,part.layoutRevision,"paste",new UUID(0,0),ElementJson.encodeList(copies)));
         }catch(IllegalArgumentException ex){message=ex.getMessage();}
     }
-    Part anchoredPart(){var p=Part.load(part.save(minecraft.level.registryAccess(),true),minecraft.level.registryAccess());p.identity=clickedIdentity;return p;}
+    Part anchoredPart(){var p=Part.load(part.save(null,true),null);p.identity=clickedIdentity;return p;}
     @Override public void tick(){
         if(minecraft.level==null||minecraft.player==null||minecraft.player.distanceToSqr(net.minecraft.util.math.vector.Vector3d.atCenterOf(pos))>64||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host)){onClose();return;}
         var anchor=host.parts.get(clickedSlot);if(anchor==null||!anchor.identity.equals(clickedIdentity)){onClose();return;}

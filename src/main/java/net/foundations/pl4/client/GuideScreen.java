@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.item.ItemStack;
 import net.foundations.pl4.FoundationsPL4;
 import net.foundations.pl4.core.GuideBook;
@@ -24,7 +24,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private static final String[] TAB_SHORT={"START","NET","DISP","REF"};
     private static final String[] TAB_ICONS={"plguide","datacable","largedisplayscreen","operator"};
     private static final int INK=0xFF263239,MUTED=0xFF485E64,ACCENT=0xFF185769;
-    private record Line(IReorderingProcessor text,int y,boolean heading) {}
+    private record Line(ITextProperties text,int y,boolean heading) {}
     private GuideBook book;private GuideBook.Chapter chapter;private GuideResources.Preferences preferences;
     private GuideLayout.Layout layout;private EditBox search;
     private String category="start",query="";private boolean savedOnly,contents;

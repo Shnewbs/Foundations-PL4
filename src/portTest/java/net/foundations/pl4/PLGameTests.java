@@ -61,7 +61,7 @@ public final class PLGameTests {
     public static void persistentEscrowRoundTrip(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,725);p.pendingEnergy=12345;p.transferMode=2;p.filter="#c:gems/diamond";
         p.links.add(new Part.Link("minecraft:overworld",new BlockPos(4,80,9),Direction.NORTH,null,UUID.randomUUID()));
-        Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.identity.equals(p.identity)&&restored.owner.equals(OWNER),"Identity and owner must persist");
         net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==725&&restored.pendingEnergy==12345,"All pending resources must persist");
         net.foundations.pl4.compat.PortAssertions.check(restored.links.equals(p.links)&&restored.transferMode==2&&restored.filter.equals(p.filter),"Links and settings must persist");h.succeed();
@@ -138,8 +138,8 @@ public final class PLGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void removedNodeItemRetainsAllEscrow(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.DOWN,OWNER);p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
-        ItemStack drop=PartItem.stack(p,h.getLevel().registryAccess());
-        Part restored=Part.load(net.foundations.pl4.compat.PortData.get(drop,net.foundations.pl4.compat.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
+        ItemStack drop=PartItem.stack(p,null);
+        Part restored=Part.load(net.foundations.pl4.compat.PortData.get(drop,net.foundations.pl4.compat.DataComponents.CUSTOM_DATA).copyTag().getCompound("pl_part"),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Breaking a node must preserve item, fluid and energy escrow in its dropped item");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

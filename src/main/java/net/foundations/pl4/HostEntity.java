@@ -3,7 +3,6 @@ package net.foundations.pl4;
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.INBT;
@@ -98,19 +97,19 @@ public final class HostEntity extends TileEntity {
             &&lastCableSync.signal()==cable.signal&&lastCableSync.status().equals(cable.status)
             &&lastCableSync.rows().equals(cable.rows))return;
         syncTagBuilds++;
-        CompoundNBT tag=getUpdateTag(level.registryAccess());
+        CompoundNBT tag=getUpdateTag(null);
         if(!tag.equals(lastSync)){lastSync=tag;level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),2);}
         lastCableSync=cable!=null&&cable.kind.cable()?new CableSync(cable,cable.status,cable.signal,List.copyOf(cable.rows)):null;
     }
     public int output(Direction side){
         return parts.values().stream().filter(p->p.kind==Kind.SIGNALLER||p.kind==Kind.REDSTONE_RECEIVER||p.kind==Kind.CLOCK).mapToInt(p->p.signal).max().orElse(0);
     }
-    protected void saveAdditional(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r){super.save(t);write(t,r,false);}
-    private void write(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r,boolean sync){
+    protected void saveAdditional(CompoundNBT t,Object r){super.save(t);write(t,r,false);}
+    private void write(CompoundNBT t,Object r,boolean sync){
         ListNBT list=new ListNBT();parts.values().forEach(p->list.add(p.save(r,sync)));t.put("parts",list);t.putInt("schema",2);
         if(sync){t.putIntArray("cableConnections",cableConnections);t.putInt("externalLeads",externalLeads);}
     }
-    protected void loadAdditional(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries r){
+    protected void loadAdditional(CompoundNBT t,Object r){
         cachedOutline=null;lastCableSync=null;java.util.Arrays.fill(cableConnections,0);
         int[] arms=t.getIntArray("cableConnections");if(arms.length==6)for(int a=0;a<6;a++)cableConnections[a]=net.foundations.pl4.compat.PortMath.clamp(arms[a],0,3);
         externalLeads=t.getInt("externalLeads")&8191;parts.clear();ListNBT list=t.getList("parts",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
@@ -120,7 +119,7 @@ public final class HostEntity extends TileEntity {
         }
         if(level!=null){if(!level.isClientSide)NetworkEngine.invalidate(level);else CableGeometry.refresh(this);}
     }
-    public CompoundNBT getUpdateTag(net.minecraft.util.registry.DynamicRegistries r){CompoundNBT t=new CompoundNBT();write(t,r,true);return t;}
+    public CompoundNBT getUpdateTag(Object r){CompoundNBT t=new CompoundNBT();write(t,r,true);return t;}
     @Override public SUpdateTileEntityPacket getUpdatePacket(){return new SUpdateTileEntityPacket(getBlockPos(),0,getUpdateTag());}
 
     @Override public CompoundNBT save(CompoundNBT tag){saveAdditional(tag,null);return tag;}

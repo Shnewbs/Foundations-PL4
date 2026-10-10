@@ -125,10 +125,10 @@ public final class R5GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void cablePortStateRoundTrips(GameTestHelper h){
         Part cable=new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER);cable.blockedFaces=42;
-        var loaded=Part.load(cable.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var loaded=Part.load(cable.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.blockedFaces==42&&loaded.identity.equals(cable.identity),"Port mask and part identity must persist");
-        var old=cable.save(h.getLevel().registryAccess(),false);old.remove("blockedFaces");
-        net.foundations.pl4.compat.PortAssertions.check(Part.load(old,h.getLevel().registryAccess()).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
+        var old=cable.save(null,false);old.remove("blockedFaces");
+        net.foundations.pl4.compat.PortAssertions.check(Part.load(old,null).blockedFaces==0,"R3/R4 cables default to all ports enabled");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void obstructedLegacyHammerDoesNotOverwriteBlocks(GameTestHelper h){
@@ -167,8 +167,8 @@ public final class R5GameTests {
     public static void hammerInventoryAndProgressRoundTrip(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,FoundationsPL4.HAMMER.get());var hammer=(HammerEntity)h.getBlockEntity(pos);
         hammer.inventory.setStackInSlot(0,new ItemStack(Items.DIAMOND,17));hammer.progress=33;hammer.cooldown=9;
-        CompoundNBT saved=new CompoundNBT();hammer.saveAdditional(saved,h.getLevel().registryAccess());
-        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevelAndPosition(h.getLevel(),hammer.getBlockPos());loaded.loadAdditional(saved,h.getLevel().registryAccess());
+        CompoundNBT saved=new CompoundNBT();hammer.saveAdditional(saved,null);
+        var loaded=new HammerEntity(hammer.getBlockPos(),hammer.getBlockState());loaded.setLevelAndPosition(h.getLevel(),hammer.getBlockPos());loaded.loadAdditional(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(loaded.progress==33&&loaded.cooldown==9&&loaded.inventory.getStackInSlot(0).getCount()==17,"Existing hammer state must survive save/load");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

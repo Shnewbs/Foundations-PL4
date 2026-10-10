@@ -98,7 +98,7 @@ public final class R16GameTests {
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).getCount()==17&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),"Different channels cannot extract or deliver");
         sink.inputChannel="ore";TransferEngine.run(h.getLevel().getServer(),plan);
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Matching live channel works without rebuilding plan");
-        var restored=Part.load(source.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var restored=Part.load(source.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
     }
 
@@ -124,7 +124,7 @@ public final class R16GameTests {
         net.foundations.pl4.compat.PortAssertions.check(p.links.equals(List.of(b)),"Repeated stale removal cannot delete the next link");
         var clock=host(h,new BlockPos(4,1,1),Kind.CLOCK,Direction.WEST);var c=part(clock,Direction.WEST);var cp=clock.getBlockPos();user.setPos(cp.getX(),cp.getY()+1,cp.getZ());
         PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","12"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","30"));PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_paused","true"));
-        var restored=Part.load(c.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        var restored=Part.load(c.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored.clockPulse==12&&restored.clockPhase==30&&restored.clockPaused,"Clock controls persist");
         PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_pulse","-1"));net.foundations.pl4.compat.PortAssertions.check(c.clockPulse==12,"Invalid clock setting rejected");
         c.owner=UUID.randomUUID();PLPackets.edit(user,new PLPackets.Edit(cp,c.slot(),c.identity,"clock_phase","7"));net.foundations.pl4.compat.PortAssertions.check(c.clockPhase==30,"Foreign owner cannot edit clock");h.succeed();
@@ -151,7 +151,7 @@ public final class R16GameTests {
         p.outputFilterMode="ALLOW";p.outputFilter="minecraft:lava";
         net.foundations.pl4.compat.PortAssertions.check(TransferFilters.fluids(lava,p,false)&&!TransferFilters.fluids(water,p,false)&&TransferFilters.fluids(water,p,true),"Receive and send fluid filters are independent");
         p.outputFilterMode="DENY";net.foundations.pl4.compat.PortAssertions.check(!TransferFilters.fluids(lava,p,false)&&TransferFilters.fluids(water,p,false),"Mode changes do not leave stale cached results");
-        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part saved=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(saved.outputFilterMode.equals("DENY")&&saved.outputFilter.equals("minecraft:lava"),"Directional filters survive restart serialization");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -160,7 +160,7 @@ public final class R16GameTests {
         var user=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
         for(var entry:Map.of("input_filter","minecraft:stone","output_filter_mode","DENY","transfer","1","input_channel","other","filter","minecraft:dirt","whitelist","false").entrySet())PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,entry.getKey(),entry.getValue()));
         net.foundations.pl4.compat.PortAssertions.check(p.inputFilter.isEmpty()&&p.outputFilterMode.equals("INHERIT")&&p.transferMode==2&&p.inputChannel.isEmpty()&&p.filter.isEmpty()&&p.whitelist,"Buffered resources protect route semantics from settings edits");
-        Part client=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());
+        Part client=Part.load(p.save(null,true),null);
         net.foundations.pl4.compat.PortAssertions.check(client.pendingItem.isEmpty()&&!client.routeEditable(),"Client knows escrow exists without receiving inventory contents");
         p.pendingItem=ItemStack.EMPTY;PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"output_filter_mode","DENY"));
         net.foundations.pl4.compat.PortAssertions.check(p.outputFilterMode.equals("DENY"),"Drained route becomes editable");h.succeed();
@@ -188,7 +188,7 @@ public final class R16GameTests {
         for(int i=0;i<20;i++)PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statement_add",json.toString()));
         net.foundations.pl4.compat.PortAssertions.check(p.statements.size()==16,"Statements are capped at sixteen");
         PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"statements_all","false"));PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"signal_strength","9"));
-        Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part saved=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(saved.statements.equals(p.statements)&&!saved.statementsAll&&saved.signalStrength==9,"Statement identities, conditions and mode survive save/reload");
         String id=p.statements.get(0).id().toString();var remove=new PLPackets.Edit(at,p.slot(),p.identity,"statement_remove",id);PLPackets.edit(user,remove);PLPackets.edit(user,remove);
         net.foundations.pl4.compat.PortAssertions.check(p.statements.size()==15,"Repeated stale removal does not remove a different statement");h.succeed();

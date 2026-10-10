@@ -23,7 +23,7 @@ public final class R11GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void logicalSpacePersists(GameTestHelper h){
         Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.layoutWidth=720;p.layoutHeight=240;p.displayMode=DisplayElements.Mode.CUSTOM;p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,0,720,240)));
-        Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
+        Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.layoutWidth==720&&restored.layoutHeight==240,"Dynamic logical dimensions survive save/load");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

@@ -5,7 +5,6 @@ import net.foundations.pl4.core.DisplayElements;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.INBT;
@@ -110,7 +109,7 @@ public final class Part {
         public static String number(double d){return DisplayElements.number(d,false);}
         public CompoundNBT save(){CompoundNBT t=new CompoundNBT();t.putString("key",key);t.putString("name",name);t.putDouble("value",value);t.putDouble("capacity",capacity);t.putString("unit",unit);if(!previewItem.isEmpty())t.put("item",previewItem.copy());if(!previewFluid.isEmpty())t.put("fluid",previewFluid.copy());return t;}
         public static Row load(CompoundNBT t){return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"));}
-        public static Row load(CompoundNBT t,net.minecraft.util.registry.DynamicRegistries registry){
+        public static Row load(CompoundNBT t,Object registry){
             ItemStack item=net.foundations.pl4.compat.PortData.parseItem(registry,t.getCompound("item"));FluidStack fluid=net.foundations.pl4.compat.PortData.parseFluid(registry,t.getCompound("fluid"));
             return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"),item,fluid,t.getCompound("item"),t.getCompound("fluid"));
         }
@@ -134,7 +133,7 @@ public final class Part {
                 DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap"),t.contains("textScale")?t.getFloat("textScale"):1F,new DisplayElements.Options(t.getString("group"),t.getBoolean("locked"),t.getBoolean("hidden"),t.contains("background")?t.getInt("background"):-1,t.contains("border")?t.getInt("border"):-1,t.contains("actionPage")?t.getInt("actionPage"):-1)));
         }
     }
-    public CompoundNBT save(net.minecraft.util.registry.DynamicRegistries registry, boolean sync) {
+    public CompoundNBT save(Object registry, boolean sync) {
         CompoundNBT t = new CompoundNBT(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putInt("clockPulse",clockPulse);t.putInt("clockPhase",clockPhase);t.putBoolean("clockPaused",clockPaused);t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
         if (owner != null) t.putUUID("owner",owner);
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
@@ -171,7 +170,7 @@ public final class Part {
         }
         return t;
     }
-    public static Part load(CompoundNBT t, net.minecraft.util.registry.DynamicRegistries registry) {
+    public static Part load(CompoundNBT t, Object registry) {
         Kind k = Kind.byId(t.getString("kind")); if (k == null) return null;
         Part p = new Part(k, Direction.from3DDataValue(t.getInt("face")), t.hasUUID("owner") ? t.getUUID("owner") : null);
         if (t.hasUUID("identity")) p.identity = t.getUUID("identity");

@@ -58,7 +58,7 @@ public final class R8GameTests {
     public static void frontRimAndSavedItemAdoptCanvas(GameTestHelper h){
         var source=panel(h,new BlockPos(3,3,3),Direction.NORTH);configure(part(source));source.changed();
         Part saved=new Part(Kind.LARGE_DISPLAY,Direction.DOWN,OWNER);saved.displayOutward=false;saved.label="Do not override active board";saved.layoutRevision=99;
-        ItemStack stack=PartItem.savedStack(saved,h.getLevel().registryAccess());var p=player(h,source,stack);
+        ItemStack stack=PartItem.savedStack(saved,null);var p=player(h,source,stack);
         Vector3d point=net.minecraft.util.math.vector.Vector3d.atCenterOf(source.getBlockPos()).add(.49,0,-.4999);
         stack.getItem().useOn(new ItemUseContext(p,Hand.MAIN_HAND,new BlockRayTraceResult(point,Direction.NORTH,source.getBlockPos(),false)));
         var next=(HostEntity)h.getLevel().getBlockEntity(source.getBlockPos().east());
@@ -102,7 +102,7 @@ public final class R8GameTests {
         var a=panel(h,new BlockPos(2,2,2),Direction.SOUTH);var b=panel(h,new BlockPos(3,2,2),Direction.SOUTH);configure(part(a));a.changed();NetworkEngine.ensureCurrent(h.getLevel().getServer());
         Part root=DisplayNetworks.controller(a,part(a)).part();root.label="Latest edit";root.selected="inventory_main";DisplayNetworks.layoutEdited(a,root);
         for(var host:List.of(a,b)){
-            CompoundNBT saved=new CompoundNBT();host.saveAdditional(saved,h.getLevel().registryAccess());host.loadAdditional(saved,h.getLevel().registryAccess());host.changed();
+            CompoundNBT saved=new CompoundNBT();host.saveAdditional(saved,null);host.loadAdditional(saved,null);host.changed();
         }
         NetworkEngine.ensureCurrent(h.getLevel().getServer());
         net.foundations.pl4.compat.PortAssertions.check(part(a).label.equals("Latest edit")&&part(b).selected.equals("inventory_main")&&part(b).layoutRevision>20,"Save reload retains mirrored edit and revision");h.succeed();
@@ -117,10 +117,10 @@ public final class R8GameTests {
     public static void hologramViewPersistenceAndLegacyDefault(GameTestHelper h){
         for(Kind kind:List.of(Kind.HOLOGRAM,Kind.ADVANCED_HOLOGRAM))for(Direction face:Direction.values()){
             Part p=new Part(kind,face,OWNER);p.hologramView=Direction.WEST.ordinal();p.label="Projection";
-            var saved=p.save(h.getLevel().registryAccess(),false);var loaded=Part.load(saved,h.getLevel().registryAccess());
+            var saved=p.save(null,false);var loaded=Part.load(saved,null);
             int expected=net.foundations.pl4.core.HologramProjection.view(face.ordinal(),Direction.WEST.ordinal());
             net.foundations.pl4.compat.PortAssertions.check(loaded.hologramView==expected&&loaded.identity.equals(p.identity),"Hologram view and identity persist");
-            saved.remove("hologramView");loaded=Part.load(saved,h.getLevel().registryAccess());
+            saved.remove("hologramView");loaded=Part.load(saved,null);
             net.foundations.pl4.compat.PortAssertions.check(loaded.hologramView==net.foundations.pl4.core.HologramProjection.view(face.ordinal(),3),"Legacy projectors load without moving mount or slots");
         }h.succeed();
     }
