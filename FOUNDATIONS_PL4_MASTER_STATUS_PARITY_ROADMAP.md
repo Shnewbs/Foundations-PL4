@@ -1,7 +1,87 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Current version:** `0.1b` automation beta, on separate Minecraft 1.21.1, 26.1.2 and 26.3 tracks.
-**Further API testing is still required.** See `docs/API_TESTING.md` and `docs/releases/0.1b.md`.
+**Roadmap reconciliation:** October 10, 2026 (America/Los_Angeles).
+**Current primary-track released baseline:** `0.2a` for Minecraft `1.21.1`, `26.1.2` and `26.3`. Independently versioned Forge ports and legacy previews are listed below.
+**Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
+**Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## October 2026 — current release, parity and port reconciliation
+
+### 1. Release evidence is not functional completion
+
+The [cross-version CurseForge synchronization report](docs/CURSEFORGE_MULTIVERSION_STATUS.md) records **17 latest tagged Minecraft targets** on October 9 (US Pacific; October 10 UTC): 14 new upload-API acceptances and three earlier NeoForge upload receipts without duplicates. This confirms submission/receipt, **not CurseForge moderator approval, public listing, installed client acceptance, end-user Java/launcher compatibility, or feature parity**. A GitHub tag, branch or successful compilation cannot substitute for exact-target gameplay evidence. Do not mutate existing release tags.
+
+A previous [version-coverage audit](docs/VERSION_COVERAGE_CHECKPOINT.md) counted **85** eligible final versions, **nine** tagged PL4 targets and **69** unbuilt gaps as of its earlier October 9 snapshot. The subsequent 17-target publication report supersedes its *publication count*; **do not reuse the 69-gap count as a live figure** until the version/release inventory is rerun. It also does not prove that all newly tagged binaries passed all user-facing acceptance gates.
+
+The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are historical compared with the current `0.2a` line. Develop from the appropriate maintained exact-Minecraft branch/tag, never replace the newer source with an older local ZIP or port by changing a filename.
+
+### 2. Published/tagged target ledger — latest known receipts
+
+| Minecraft | Branch | Tagged revision | Release/publication status | Outstanding acceptance |
+|---|---|---|---|---|
+| 1.21.1 | `main` / `mc/1.21.1` | `v0.2a` | Published NeoForge; 191 native fixtures recorded | Installed APIs, UI, multiplayer, performance, PL2 parity |
+| 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a` | Published NeoForge; 192 PL4 native fixtures recorded | Same; keep its actual 26.1.2 loader/API |
+| 26.3 | `mc/26.3` | `mc26.3-v0.2a` | Published NeoForge; 192 PL4 fixtures on each pinned 26.3.0.23/0.39 beta build | Same; published JAR built against 26.3.0.23-beta |
+| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
+| 1.19.2 | `mc/1.19.2` | `mc1.19.2-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
+| 1.18.2 | `mc/1.18.2` | `mc1.18.2-v0.2a-port.2` | Published Forge; 193 native GameTests recorded | Client/installed API/fallback/performance |
+| 1.18.1 | `mc/1.18.1` | `mc1.18.1-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Preserve exact-target native evidence; installed/client QA pending |
+| 1.17.1 | `mc/1.17.1` | `mc1.17.1-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Preserve exact-target native evidence; installed/client QA pending |
+| 1.16.5 | `mc/1.16.5` | `mc1.16.5-v0.2a-port.2` | Tagged; Java 8 compatibility output and CurseForge receipt | Verify installed client, provider combinations; do not rely on old Java-17-only status |
+| 1.16.4 | `mc/1.16.4` | `mc1.16.4-v0.2a-port.1` | Tagged; Java 8 compatibility output and CurseForge receipt | **Special Forge 35 ModLauncher 8.1.3 precedence needed**; stock launcher/client parity is not accepted |
+| 1.16.3 | `mc/1.16.3` | `mc1.16.3-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Per-target runtime/client/API/fallback acceptance |
+| 1.16.2 | `mc/1.16.2` | `mc1.16.2-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Per-target runtime/client/API/fallback acceptance |
+| 1.16.1 | `mc/1.16.1` | `mc1.16.1-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Per-target runtime/client/API/fallback acceptance |
+| 1.15.2 | `mc/1.15.2` | `mc1.15.2-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Per-target runtime/client/API/fallback acceptance |
+| 1.14.4 | `mc/1.14.4` | `mc1.14.4-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Per-target runtime/client/API/fallback acceptance |
+| 1.12.2 | `mc/1.12.2` | `mc1.12.2-v0.2a-legacy-preview.3` | Tagged legacy preview; item, fluid and **native FE** energy subset; CurseForge receipt | Missing modern PL2 displays/multipart/wireless, full fallback parity; 89-scenario release gate |
+| 1.6.4 | `mc/1.6.4` | `mc1.6.4-v0.2a-legacy-preview.3` | Tagged **experimental** legacy preview; item/fluid and **PL4-internal** energy subset; CurseForge receipt | No claim of external RF/EU/FE; missing modern parity; Java 7 runtime and legacy security restrictions |
+
+Read [current-track rollout evidence](docs/releases/0.2a-port-rollout.md), [newer Forge/legacy implementation evidence](docs/PORT_IMPLEMENTATION_STATUS.md) **with its historical preview-2 date in mind**, [legacy preview-3 release notes on the legacy tags](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.12.2-v0.2a-legacy-preview.3), and the [latest publisher receipts](docs/CURSEFORGE_MULTIVERSION_STATUS.md). A reported test count is a *native/isolated automated test*, not graphical or installed-provider acceptance. Installed acceptance is still open even for versions with a published binary.
+
+**Important reconciliations:** Earlier `docs/VERSION_COVERAGE_CHECKPOINT.md` and `mc/1.16.4/BUILD_STATUS.json` recorded a prior **0/193 native-scenario scanner failure** and no published 1.16.4 release. The later tagged `0.2a-port.1` source documents a Java-8 conversion and a special launcher profile, and the newer submission ledger records its published tag. **Treat the prior failure as historical, but do not infer stock-client compatibility from the later release.** Likewise `docs/PORT_IMPLEMENTATION_STATUS.md` still refers to legacy `preview.2` and Java-17-only 1.16.5; the later version-specific tags and `preview.3` notes supersede those *release numbers*, not missing user QA.
+
+### 3. Unfinished/version-gap implementation queue
+
+| Target(s) | Status as of this reconciliation | Next release gate |
+|---|---|---|
+| **1.13.2** / `mc/1.13.2` | **BLOCKED / SOURCE PORT**; Forge 25 native MCP/API backport and 194-scenario gate incomplete; no approved release | Restore exact API compilation, native Forge scenarios, packaged startup, then client verification |
+| **1.8.9, 1.11.2** | **NOT IMPLEMENTED** in published target set | Toolchain/license feasibility, version-exact loader, own source branch and functional scenarios |
+| **1.19, 1.19.1, 1.19.3, 1.19.4** | Branches exist for some patches; **not equivalent to validated releases** | Complete independent compatibility matrix and target-native tests |
+| **1.20, 1.20.2, 1.20.4, remaining 1.20.x** | Some source branches exist; **no blanket compatibility claim** | Exact point-version loader/adapters, compile/runtime and independent acceptance |
+| **1.21.x** (other than 1.21.1) | Coverage research pending | Validate real supported loader, transport/UI differences, separate release identity |
+| **26.1 / 26.2** | Existing refs **audit-only**; no cross-version binary equivalence | Exact toolchain, native and client verification before tagging |
+| **26.4** | **FUTURE**; usable exact-version toolchain must be verified | Create branch only once feasible; port and test independently |
+| **All other original-PL/PL2 gaps** | **AUDIT / RESEARCH**; include final patches rather than quietly skipping | Rerun Mojang/loader manifest inventory and record BUILDABLE/BLOCKED/ALTERNATIVE_LOADER_RESEARCH |
+
+**Scope decisions:** `1.16.4` and `1.16.5` are *distinct* targets. `1.18.2` is explicitly required. `1.6.4` remains optional/experimental but implemented to an honest legacy-preview subset. `1.7.10` is **excluded**; do not add a port or bundle GTNH/1.7.10-only binaries. Retain the user-approved `1.12.2` track despite original PL2 coverage. When a loader does not exist for an exact patch, record the blocker or investigate an appropriate alternative: **never rename a neighboring version's JAR as a port**. See [exact-version coverage policy](docs/VERSION_COVERAGE.md).
+
+### 4. Next engineering milestones (priority order, not claims of completion)
+
+- [ ] **P0 — Evidence and status synchronization.** Regenerate the official-version/loader/GitHub-release inventory after the 17-target submission; update the dated version-count audit, per-target `BUILD_STATUS.json` and central port/readme notes without rewriting immutable tags. For every target expose SOURCE_PORT, NATIVE_BUILD, SCENARIOS, INSTALLED_RUNTIME, INSTALLED_APIS, CLIENT_VISUALS, MULTIPLAYER, PERFORMANCE, RELEASE and CURSEFORGE_ACCEPTED vs MODERATION_APPROVED separately.
+- [ ] **P0 — Finish 1.16.4 user-installable compatibility.** Maintain the exact Java-8-transformed binary and Forge 35/ModLauncher requirements; run the 193 server scenarios with published bytes, create/test an actual client launcher profile, test stock-vs-profile behavior, and disclose limitations. No false stock-Forge compatibility claim.
+- [ ] **P0 — Complete 1.13.2.** Backport Forge 25/MCP registration, data, renderer, capability and launch APIs; compile and reobfuscate exact-target code; pass the independent 194-scenario suite and installed runtime/client checks before a GitHub/CurseForge release.
+- [ ] **P1 — Close requested version gaps.** Investigate/build `1.8.9` and `1.11.2` first, then remaining missing final point releases using the coverage audit rather than a shortlist. Ports must be independently runnable on their named Minecraft patch, not just source branches.
+- [ ] **P1 — Bring legacy 1.12.2 and 1.6.4 toward accepted feature parity.** Build beyond item/fluid/energy transport to readers, configurable displays, PL2-style graphical editing, multipart/cable rendering, wireless storage, ownership and restart-safe migrations as feasible. Record target limitations rather than shipping stubs as complete features. Preserve 1.6.4's experimental/security designation.
+- [ ] **P1 — Finish PL2 gameplay/GUI parity on current and ported branches.** Finish remaining Wireless Storage/Array/Entity Node behaviors, aggregated storage edge cases, transfer directional filters/rules, Signaller/Clock, display/GSI editing and layouts, machine data, models and missing interaction affordances. Audit against released PL2 behavior; do not treat registrations/textures alone as implemented gameplay.
+- [ ] **P1 — Supply verified optional-API alternatives.** JEI/EMI/era-appropriate NEI recipe viewing, Jade/HWYLA/Waila inspection, KubeJS/CraftTweaker or documented native declarative-rule equivalents, target-native item/fluid/energy, and optional Create/AE2/Mekanism/GTCEu/Electrodynamics telemetry. Provide PL4-owned recipe lookup, inspection, storage and configuration paths when optional mods are absent; tests must show the *actual task* works. No fabricated power units or universal RF/EU/J/kinetic conversions. Stability/performance mods are optional test profiles, not mandatory bundled dependencies.
+- [ ] **P2 — Native/API/multiplayer/performance release hardening.** Test absent/present/conflicting providers, all faces and voltage policies, no lost/duplicated resources, uncertain escrow/recovery, chunk unload, dimension/ownership changes, network restarts, simultaneous users, client GUI scale, animations and cable placement. Profile large networks, packet payloads, tick/capability budgets and allocations on every supported class of loader. Backups and migration tests must precede broader beta claims.
+- [ ] **P2 — Distribution/acceptance closeout.** For every revision publish exact-target runtime, sources, complete source ZIP, checksums and honest changelog to GitHub; then upload with matching CurseForge Minecraft/loader metadata, separately checking API acceptance, moderation and public availability. Maintain strict release-tag immutability.
+- [ ] **Future — 26.4 and beyond.** Promote only after official release/toolchain and exact-version native/client evidence; use the same matrix, fallbacks and distribution policy as all earlier ports.
+
+These tasks may run in parallel across independently maintained version branches, but **no target inherits PASS from another target**. A tagged alpha remains alpha until explicit gameplay, installed dependencies, real client, multiplayer and performance gates close. The legacy `0.0.2a.R1`–`R7` phase plan below remains a feature backlog, not a declaration that those tags are the next release identifiers.
+
+### 5. Definition of done and durable status workflow
+
+1. **Implementation:** code/assets/config exist for the exact Minecraft patch; core tasks are runnable without optional mods; missing features are explicitly marked PARTIAL or BLOCKED.
+2. **Automated:** production-source checks, real loader compilation, correct runtime remap/reobfuscation, automated native/server scenarios, resource conservation and save/restart safety pass **for that exact artifact**.
+3. **User-facing:** actual installed client, dedicated server, GUI geometry and scaling, two-player multiplayer, wireless/network transfers, performance and world migration are recorded. Standalone/native test passes do not satisfy this gate.
+4. **Optional APIs:** each compatible candidate is tested *installed* at an exact dependency revision, individually and in a compatible mixed pack, with fallback absent/present paths and units/sidedness verified.
+5. **Publishing:** immutable GitHub release contains matching runtime/source/checksums; CurseForge API receipt, moderator approval and publicly downloadable page are **three separate statuses**.
+
+On completion of any milestone, update **this section**, the exact-target status/test evidence and release notes together. Maintain [API_TESTING.md](docs/API_TESTING.md), [VERSION_COVERAGE.md](docs/VERSION_COVERAGE.md), [MULTIVERSION_PORT_PLAN.md](docs/MULTIVERSION_PORT_PLAN.md) and [CURSEFORGE_MULTIVERSION_STATUS.md](docs/CURSEFORGE_MULTIVERSION_STATUS.md) as supporting details. Historical counts are snapshots, not persistent claims of today's completeness. **Further API testing is still required.**
+
+---
 
 ## 0.1b reconciliation
 
