@@ -13,9 +13,13 @@ status_path=ROOT/'BUILD_STATUS.json'
 status=json.loads(status_path.read_text())
 if status.get('minecraft')!='1.18' or status.get('loader_version')!='38.0.17':
     raise SystemExit('Refusing non-Forge38 port')
-if status.get('native_test_registration')=='forge38-193-v1':
-    print('Forge38 GameTest adapter already installed')
+if (status.get('native_test_registration')=='forge38-193-v1'
+    and 'GameTestRegistry.register(' in (ROOT/'src/main/java/net/foundations/pl4/PLGameTests.java').read_text()
+    and 'PLGameTests.register();' in (ROOT/'src/main/java/net/foundations/pl4/FoundationsPL4.java').read_text()):
+    print('Forge38 GameTest adapter is committed in the actual Java sources')
     raise SystemExit(0)
+# An earlier job committed only status metadata; ensure the production Java
+# source is migrated and committed before compiler/native verification.
 
 source=ROOT/'src/main/java/net/foundations/pl4'
 sources=list(source.glob('*GameTests.java'))
