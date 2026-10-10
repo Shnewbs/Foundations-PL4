@@ -21,7 +21,7 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
  }
  @Override public ItemStack result(){return result.copy();}
  public ForgingRecipe value(){return this;}
- @Override public ResourceLocation getId(){return id;}
+ public ResourceLocation getId(){return id;}
  @Override public boolean matches(SingleRecipeInput input,Level level){return input.item().getCount()>=inputCount&&ingredient.test(input.item());}
  @Override public ItemStack assemble(SingleRecipeInput input,RegistryAccess registries){return result.copy();}
  @Override public ItemStack getResultItem(RegistryAccess registries){return result.copy();}
@@ -32,8 +32,8 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
  @Override public RecipeSerializer<?> getSerializer(){return CoreRecipes.HAMMER_SERIALIZER.get();}
  @Override public RecipeType<?> getType(){return CoreRecipes.HAMMER.get();}
  public static final class Serializer implements RecipeSerializer<ForgingRecipe> {
-  private static final Codec<Ingredient> INGREDIENT=Codec.PASSTHROUGH.comapFlatMap(dynamic->{try{return DataResult.success(Ingredient.fromJson(dynamic.convert(JsonOps.INSTANCE).getValue(),false));}catch(RuntimeException bad){return DataResult.error(bad::getMessage);}},ingredient->new Dynamic<>(JsonOps.INSTANCE,ingredient.toJson()));
-  private static final MapCodec<ForgingRecipe> CODEC=RecordCodecBuilder.mapCodec(instance->instance.group(
+  private static final Codec<Ingredient> INGREDIENT=Ingredient.CODEC_NONEMPTY;
+  private static final Codec<ForgingRecipe> CODEC=RecordCodecBuilder.create(instance->instance.group(
    INGREDIENT.fieldOf("ingredient").forGetter(ForgingRecipe::ingredient),
    optional(Codec.intRange(1,64),"input_count",1).forGetter(ForgingRecipe::inputCount),
    ItemStack.CODEC.fieldOf("result").forGetter(ForgingRecipe::result),
@@ -51,13 +51,8 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
    @Override public <T> RecordBuilder<T> encode(A value,DynamicOps<T> ops,RecordBuilder<T> prefix){return prefix.add(name,codec.encodeStart(ops,value));}
    @Override public <T> java.util.stream.Stream<T> keys(DynamicOps<T> ops){return java.util.stream.Stream.of(ops.createString(name));}
   };}
-  public MapCodec<ForgingRecipe> codec(){return CODEC;}
-  @Override public ForgingRecipe fromJson(ResourceLocation id,JsonObject json){
-   JsonObject result=GsonHelper.getAsJsonObject(json,"result").deepCopy();
-   if(result.has("id")&&!result.has("item"))result.add("item",result.remove("id"));
-   return new ForgingRecipe(Ingredient.fromJson(json.get("ingredient"),false),GsonHelper.getAsInt(json,"input_count",1),net.minecraftforge.common.crafting.CraftingHelper.getItemStack(result,true),GsonHelper.getAsInt(json,"processing_ticks",100),GsonHelper.getAsInt(json,"cooldown_ticks",200),id);
-  }
-  @Override public ForgingRecipe fromNetwork(ResourceLocation id,FriendlyByteBuf buffer){return new ForgingRecipe(Ingredient.fromNetwork(buffer),buffer.readVarInt(),buffer.readItem(),buffer.readVarInt(),buffer.readVarInt(),id);}
+  @Override public Codec<ForgingRecipe> codec(){return CODEC;}
+  @Override public ForgingRecipe fromNetwork(FriendlyByteBuf buffer){return new ForgingRecipe(Ingredient.fromNetwork(buffer),buffer.readVarInt(),buffer.readItem(),buffer.readVarInt(),buffer.readVarInt());}
   @Override public void toNetwork(FriendlyByteBuf buffer,ForgingRecipe recipe){recipe.ingredient().toNetwork(buffer);buffer.writeVarInt(recipe.inputCount());buffer.writeItem(recipe.result());buffer.writeVarInt(recipe.processingTicks());buffer.writeVarInt(recipe.cooldownTicks());}
  }
 }
