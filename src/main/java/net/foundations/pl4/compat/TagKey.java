@@ -5,7 +5,7 @@ import net.minecraft.util.registry.Registry;
 public record TagKey<T>(Registry<T> registry,ResourceLocation location){
  public static <T> TagKey<T> create(Registry<T> registry,ResourceLocation location){return new TagKey<>(registry,location);}
  public boolean contains(T value){
-  if(registry.equals(Registries.ITEM))return (net.minecraft.tags.ItemTags.getCollection().get(location)!=null&&net.minecraft.tags.ItemTags.getCollection().get(location).contains((net.minecraft.item.Item)value));
+  if(registry.equals(Registries.ITEM))return net.minecraft.tags.ItemTags.getAllTags().getTagOrEmpty(location).contains((net.minecraft.item.Item)value);
   if(registry.equals(Registries.FLUID))return (net.minecraft.tags.FluidTags.getCollection().get(location)!=null&&net.minecraft.tags.FluidTags.getCollection().get(location).contains((net.minecraft.fluid.Fluid)value));
   return false;
  }

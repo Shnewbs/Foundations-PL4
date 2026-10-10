@@ -30,7 +30,7 @@ public final class BuiltinInfoProvider {
         }
     }
     private static void entity(net.foundations.pl4.api.InfoProviders.Sink rows,Entity e){
-        put(rows,"x","X",e.getX(),0,"");put(rows,"y","Y",e.getY(),0,"");put(rows,"z","Z",e.getZ(),0,"");
+        put(rows,"x","X",e.getPosX(),0,"");put(rows,"y","Y",e.getPosY(),0,"");put(rows,"z","Z",e.getPosZ(),0,"");
         put(rows,"speed","Speed",e.getDeltaMovement().length()*20,0,"blocks/s");
         if(e instanceof LivingEntity living){put(rows,"health","Health",living.getHealth(),living.getMaxHealth(),"HP");put(rows,"armor","Armor",living.getArmorValue(),20,"");}
         if(e instanceof PlayerEntity player){put(rows,"food","Hunger",player.getFoodData().getFoodLevel(),20,"");put(rows,"saturation","Saturation",player.getFoodData().getSaturationLevel(),20,"");put(rows,"xp","XP level",player.experienceLevel,0,"");}
