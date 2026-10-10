@@ -1,9 +1,16 @@
-# Foundations PL4 — Minecraft 1.19.2 / Forge
+# Foundations PL4 — Minecraft 1.19.1 / Forge42
 
-Development port **0.2a-port.1**, Forge **43.5.2**, Java **17**.
+Minecraft **1.19.1** / Forge **42.0.9** / Java **17**, independently
+ported from the full-feature 1.19.2 source.
 
-Native Forge source port, not a renamed NeoForge JAR. Retains multipart cables, readers, displays, network item storage, transfer escrow, ownership checks and the built-in field guide. Forge SimpleChannel networking and sided capabilities replace NeoForge interfaces. Native NBT preserves item and fluid variants on this Minecraft generation.
+This is not a relabeled 1.19.2 JAR. Native API and gameplay tests must pass
+before release. Original multipart cable/data networks, displays and editors,
+owner-separated wireless storage, Forge-sided item/fluid/energy transfers and
+saved escrow, sapphire ore and forging work remain the feature baseline.
 
-Build with `bash gradlew build runGameTestServer`. Java compilation is not client, multiplayer or installed-provider acceptance. **Further API testing is still required.** See BUILD_STATUS.json and docs/releases/0.2a-port.1.md.
+Publication is gated on exact-version Forge compilation, reobfuscation,
+191/191 native GameTests, resource identity and SHA256-verified JAR/sources.
+Installed optional third-party APIs, real-client visuals, live multiplayer
+and sustained modpack performance remain independent acceptance steps.
 
-Back up worlds; use matching client/server builds. Worlds and JARs are not interchangeable between Minecraft versions. Unavailable third-party power APIs remain disabled rather than using guessed units or conversion ratios.
+**Further API testing is still required.**
