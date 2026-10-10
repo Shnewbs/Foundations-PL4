@@ -21,7 +21,7 @@ public final class R16GameTests {
     private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getBlockEntity(p);}
     private static NetworkEngine.Ref ref(HostEntity h,Direction face){return new NetworkEngine.Ref(h,part(h,face));}
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
@@ -29,7 +29,7 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void removeTransferNodeFeedsPassiveNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.EMERALD,13));
         HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);part(remove,Direction.WEST).transferMode=2;
@@ -37,7 +37,7 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==13,"REMOVE Transfer Node must feed a normal Node endpoint");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void explicitAddBeatsPassiveNodeOnTie(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),explicit=chest(h,new BlockPos(5,1,1)),passive=chest(h,new BlockPos(8,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST),node=host(h,new BlockPos(7,1,1),Kind.NODE,Direction.EAST);
@@ -46,7 +46,7 @@ public final class R16GameTests {
         h.assertTrue(explicit.getItem(0).getCount()==17&&passive.getItem(0).isEmpty(),"Explicit ADD peer must win an equal-priority passive endpoint");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void fullPassiveDestinationDoesNotExtract(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));for(int i=0;i<to.getContainerSize();i++)to.setItem(i,new ItemStack(Items.COBBLESTONE,64));
         HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);part(remove,Direction.WEST).transferMode=2;
@@ -54,7 +54,7 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).getCount()==17&&part(remove,Direction.WEST).pendingItem.isEmpty(),"Full passive endpoint must not extract or escrow source items");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void addFilterAppliesToPassiveSource(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.IRON_INGOT,8));from.setItem(1,new ItemStack(Items.DIAMOND,7));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);Part p=part(add,Direction.EAST);p.transferMode=1;p.filter="minecraft:diamond";
@@ -62,7 +62,7 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).getCount()==8&&from.getItem(1).isEmpty()&&to.getItem(0).is(Items.DIAMOND)&&to.getItem(0).getCount()==7,"ADD filter must constrain passive source imports");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void bidirectionalDoesNotBlindlyUsePassivePool(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,9));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),both=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(both,Direction.EAST).transferMode=3;
@@ -70,7 +70,7 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).getCount()==9&&to.getItem(0).isEmpty(),"ADD/REMOVE must be peer-only until directional filters/channels exist");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void bidirectionalCanFeedExplicitAddPeer(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.GOLD_INGOT,12));
         HostEntity both=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(both,Direction.WEST).transferMode=3;part(add,Direction.EAST).transferMode=1;
@@ -78,14 +78,14 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==12,"ADD/REMOVE may act as source for an explicit ADD peer");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void removeCanFeedBidirectionalExplicitPeer(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.REDSTONE,21));
         HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),both=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(remove,Direction.WEST).transferMode=2;part(both,Direction.EAST).transferMode=3;
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(remove,Direction.WEST),ref(both,Direction.EAST)));
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==21,"REMOVE may feed an explicit ADD/REMOVE peer");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void r3ChannelIsolationAndPersistence(GameTestHelper h){
         var from=chest(h,new BlockPos(1,1,1));var to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         var remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);
@@ -99,7 +99,7 @@ public final class R16GameTests {
         h.assertTrue(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void r3EqualPrioritySinksShareRepeatedSingleSlotExports(GameTestHelper h){
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(1);
@@ -112,7 +112,7 @@ public final class R16GameTests {
         }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void r3ComponentControlsPreserveOtherLinksAndClockSettings(GameTestHelper h){
         var array=host(h,new BlockPos(2,1,1),Kind.ARRAY,Direction.WEST);var p=part(array,Direction.WEST);
         var a=new Part.Link("minecraft:overworld",new BlockPos(1,1,1),Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",new BlockPos(5,1,1),Direction.DOWN,null,null);p.links.add(a);p.links.add(b);
@@ -128,7 +128,7 @@ public final class R16GameTests {
     }
 
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void directionalFiltersConstrainPassiveImportsAndExports(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.IRON_INGOT,8));from.setItem(1,new ItemStack(Items.DIAMOND,7));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
@@ -139,7 +139,7 @@ public final class R16GameTests {
         sink.inputFilter="minecraft:iron_ingot";TransferEngine.run(h.getLevel().getServer(),network);
         h.assertTrue(from.getItem(0).getCount()==8&&from.getItem(1).isEmpty()&&to.getItem(0).getCount()==7,"Passive output and ADD input filters route only matching items");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void directionalFiltersApplyToFluidsAndRetainLegacyDefaults(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.UP,OWNER);p.filter="minecraft:water";
         var water=new net.minecraftforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.WATER,1000);
@@ -151,7 +151,7 @@ public final class R16GameTests {
         Part saved=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
         h.assertTrue(saved.outputFilterMode.equals("DENY")&&saved.outputFilter.equals("minecraft:lava"),"Directional filters survive restart serialization");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void escrowBlocksRouteAndFilterEditsAndSyncsToClient(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.UP);Part p=part(host,Direction.UP);p.transferMode=2;p.pendingItem=new ItemStack(Items.DIAMOND,3);
         var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Test"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
@@ -162,7 +162,7 @@ public final class R16GameTests {
         p.pendingItem=ItemStack.EMPTY;PLPackets.edit(user,new PLPackets.Edit(at,p.slot(),p.identity,"output_filter_mode","DENY"));
         h.assertTrue(p.outputFilterMode.equals("DENY"),"Drained route becomes editable");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void signallerStatementsHandleMissingAndAmbiguousReaders(GameTestHelper h){
         HostEntity a=host(h,new BlockPos(1,1,1),Kind.INFO_READER,Direction.UP),b=host(h,new BlockPos(3,1,1),Kind.INFO_READER,Direction.UP);
         Part first=part(a,Direction.UP),second=part(b,Direction.UP);first.label=second.label="same";first.rows.add(new Part.Row("value","Value",10,20,""));second.rows.add(new Part.Row("value","Value",5,20,""));
@@ -175,7 +175,7 @@ public final class R16GameTests {
         h.assertTrue(SignallerLogic.evaluate(signal,readers)==0,"Duplicate reader labels cannot silently pick a different reader");
         signal.selected=first.identity.toString();h.assertTrue(SignallerLogic.evaluate(signal,readers)==7,"Stable reader UUID restores the legacy single condition");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void signallerStatementPacketsAreBoundedPersistentAndIdentitySafe(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(2,1,1),Kind.SIGNALLER,Direction.UP);Part p=part(host,Direction.UP);
         var user=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-01-Rules"));var at=host.getBlockPos();user.setPos(at.getX(),at.getY()+1,at.getZ());
@@ -191,7 +191,7 @@ public final class R16GameTests {
         h.assertTrue(p.statements.size()==15,"Repeated stale removal does not remove a different statement");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void providerApiRejectsWrongDimensionBeforeInvokingAddons(GameTestHelper h){
         int[] calls={0};
         try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:alpha_dimension",(context,out)->calls[0]++)){
@@ -211,7 +211,7 @@ public final class R16GameTests {
         net.foundations.pl4.compat.CustomData.update(net.foundations.pl4.compat.DataComponents.CUSTOM_DATA,tool,t->t.put("pl_link",binding.save()));
         user.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,tool);return new StorageFixture(host,node,chest,user,tool);
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void wirelessStorageWithdrawalCannotReplay(GameTestHelper h){
         var f=storageFixture(h,"PL4-Storage-A");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
         UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);h.assertTrue(token!=null,"Owned loaded Node opens a storage session");
@@ -219,7 +219,7 @@ public final class R16GameTests {
         int count=0;for(int slot=0;slot<36;slot++)if(f.player().getInventory().getItem(slot).is(Items.DIAMOND))count+=f.player().getInventory().getItem(slot).getCount();
         h.assertTrue(f.chest().getItem(0).getCount()==16&&count==1,"Single-use token withdraws exactly once");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void wirelessStorageRechecksSlotsFiltersAndHeldTool(GameTestHelper h){
         var f=storageFixture(h,"PL4-Storage-B");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
         UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.chest().setItem(0,new ItemStack(Items.EMERALD,9));
@@ -229,7 +229,7 @@ public final class R16GameTests {
         token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.player().setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,ItemStack.EMPTY);
         WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==9,"Removing the held tool revokes the session");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void wirelessStorageDepositConservesOffhandAndHonorsFilters(GameTestHelper h){
         var f=storageFixture(h,"PL4-Storage-C");f.player().setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,new ItemStack(Items.DIAMOND,11));f.node().inputFilterMode="DENY";f.node().inputFilter="minecraft:diamond";
         UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"deposit",0,0));
@@ -237,7 +237,7 @@ public final class R16GameTests {
         f.node().inputFilter="";token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"deposit",0,0));
         h.assertTrue(f.player().getOffhandItem().isEmpty()&&f.chest().getItem(0).getCount()==11,"Deposit moves exactly the accepted offhand stack");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void wirelessStorageRechecksOwnerAndPartIdentity(GameTestHelper h){
         var f=storageFixture(h,"PL4-Storage-D");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
         UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().owner=UUID.randomUUID();
@@ -250,7 +250,7 @@ public final class R16GameTests {
         var first=storageFixture(h,name);var secondChest=chest(h,new BlockPos(4,1,1));var secondHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
         NetworkEngine.rebuild(h.getLevel().getServer());return new NetworkStorageFixture(first,secondHost,part(secondHost,Direction.EAST),secondChest);
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStorageAggregatesAndWithdrawsAcrossNodes(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-A");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,17));f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
@@ -259,14 +259,14 @@ public final class R16GameTests {
         int count=0;for(int slot=0;slot<36;slot++)if(f.first().player().getInventory().getItem(slot).is(Items.DIAMOND))count+=f.first().player().getInventory().getItem(slot).getCount();
         h.assertTrue(count==40&&f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).isEmpty(),"Withdrawal conserves all 40 items across sources");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStorageRevokesNewlyForeignEndpoint(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-B");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.second().owner=UUID.randomUUID();
         WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
         h.assertTrue(f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).getCount()==23,"Every remote Node ownership is rechecked, not just the anchor");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStorageDropsDisconnectedSources(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-C");f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
@@ -274,7 +274,7 @@ public final class R16GameTests {
         WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
         h.assertTrue(f.secondChest().getItem(0).getCount()==23,"Stale session cannot reach an endpoint after cable disconnection");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStorageSearchAndCountSort(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-D");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,new ItemStack(Items.EMERALD,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
@@ -284,21 +284,21 @@ public final class R16GameTests {
         WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"search",0,0,"minecraft:emerald","NAME"));
         h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).equals(List.of(23L)),"Search matches item registry identifiers");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStorageDepositsPastFullInventory(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-E");for(int i=0;i<27;i++)f.first().chest().setItem(i,new ItemStack(Items.STONE,64));
         f.first().player().setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,new ItemStack(Items.DIAMOND,11));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"deposit",0,0));
         h.assertTrue(f.first().player().getOffhandItem().isEmpty()&&f.secondChest().getItem(0).getCount()==11,"Deposit finds space on a connected Node and conserves items");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkStoragePreservesComponentVariants(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-F");ItemStack named=new ItemStack(Items.DIAMOND,7);net.foundations.pl4.compat.PortData.set(named,net.foundations.pl4.compat.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Named diamond"));
         f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,named);
         WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);
         h.assertTrue(WirelessStorage.visibleCounts(f.first().player()).size()==2,"Distinct item components never collapse into one withdrawable variant");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void componentLinksValidateTypesAndDeduplicate(GameTestHelper h){
         var f=storageFixture(h,"PL4-Links-A");Part array=new Part(Kind.ARRAY,Direction.NORTH,OWNER);f.host().parts.put(array.slot(),array);
         Part entity=new Part(Kind.ENTITY_NODE,Direction.SOUTH,OWNER);f.host().parts.put(entity.slot(),entity);
@@ -307,7 +307,7 @@ public final class R16GameTests {
         h.assertTrue(!ComponentLinks.add(f.player(),f.host(),array,block)&&array.links.size()==1,"Duplicate links do not consume another Array slot");
         h.assertTrue(!ComponentLinks.add(f.player(),f.host(),entity,block),"Entity Node rejects block links");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void componentLinksRejectForeignEmitters(GameTestHelper h){
         var f=storageFixture(h,"PL4-Links-B");Part receiver=new Part(Kind.DATA_RECEIVER,Direction.NORTH,OWNER);f.host().parts.put(receiver.slot(),receiver);
         var remote=host(h,new BlockPos(4,1,1),Kind.DATA_EMITTER,Direction.UP);Part emitter=part(remote,Direction.UP);

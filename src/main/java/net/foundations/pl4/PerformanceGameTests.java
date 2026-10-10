@@ -18,7 +18,7 @@ public final class PerformanceGameTests {
         h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
         Part part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return host;
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void idleCableAvoidsSerializationAndInvalidatesOnEdits(GameTestHelper h){
         var host=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
         host.syncIfChanged();long initial=host.syncTagBuildCount();
@@ -36,7 +36,7 @@ public final class PerformanceGameTests {
         host.syncIfChanged();reader.status="Live reader";host.syncIfChanged();
         h.assertTrue(host.syncTagBuildCount()==initial+6,"Multipart hosts must retain full live synchronization");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void redstoneCableStillSynchronizesSignalAndRows(GameTestHelper h){
         var host=host(h,new BlockPos(2,2,2),Kind.REDSTONE_CABLE,Direction.DOWN);Part cable=host.parts.get(6);
         cable.status="Connected";cable.rows.add(new Part.Row("signal","Redstone",0,15,""));host.syncIfChanged();
@@ -50,7 +50,7 @@ public final class PerformanceGameTests {
         cable.status="Provider error";host.syncIfChanged();
         h.assertTrue(host.syncTagBuildCount()==initial+3,"Error/status changes must synchronize");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void preparedTransferPlanConservesItemsAndReadsLiveModes(GameTestHelper h){
         h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);
         var from=(ChestBlockEntity)h.getBlockEntity(new BlockPos(1,1,1));var to=(ChestBlockEntity)h.getBlockEntity(new BlockPos(5,1,1));
@@ -69,7 +69,7 @@ public final class PerformanceGameTests {
         TransferEngine.run(h.getLevel().getServer(),plan);
         h.assertTrue(to.getItem(0).isEmpty()&&from.getItem(0).getCount()==17&&driver.pendingItem.isEmpty(),"Cached plan must honor changed ADD mode and preserve escrow conservation");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void repeatedFiltersCompileOnceAndHonorEdits(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.DOWN,OWNER);p.filter=" minecraft:diamond , #minecraft:planks , #invalid tag ";
         var diamond=new ItemStack(Items.DIAMOND);var plank=new ItemStack(Items.OAK_PLANKS);long before=DataSampler.filterCompileCount();
@@ -82,7 +82,7 @@ public final class PerformanceGameTests {
         p.filter="#minecraft:water";h.assertTrue(DataSampler.matches(new FluidStack(Fluids.WATER,1000),p),"Fluid tag matching must remain live");
         p.filter="";p.whitelist=false;h.assertTrue(DataSampler.matches(diamond,p),"An empty filter must still allow everything");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void localGeometryRepairsStaleArmSnapshotsWithoutGraphRebuild(GameTestHelper h){
         var a=host(h,new BlockPos(1,2,2),Kind.DATA_CABLE,Direction.DOWN);
         var b=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
@@ -100,7 +100,7 @@ public final class PerformanceGameTests {
         h.assertTrue(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"A later stale arm snapshot must not reopen the gap");
         h.assertTrue(NetworkEngine.topologyBuildCount()==builds,"Local geometry must not rebuild the global network");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void localGeometryHonorsBlockedPortsAndCableFamilies(GameTestHelper h){
         var a=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
         var b=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,Direction.DOWN);
@@ -111,7 +111,7 @@ public final class PerformanceGameTests {
         b.parts.put(6,new Part(Kind.REDSTONE_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(b);
         h.assertTrue(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Different cable families must never visually connect");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void localGeometryReconcilesMultipartLeadsAndRemoval(GameTestHelper h){
         var cable=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
         var device=host(h,new BlockPos(3,2,2),Kind.NODE,Direction.EAST);
@@ -125,7 +125,7 @@ public final class PerformanceGameTests {
         h.assertTrue(cable.connection(Direction.EAST)==0,"Removed/unloaded host must be excluded even before its world slot disappears");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkItemCapIsSharedAcrossDriversAndResetsPerCycle(GameTestHelper h){
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(5);
@@ -139,7 +139,7 @@ public final class PerformanceGameTests {
             h.succeed();
         }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkItemCapBoundsEscrowAndIndependentNetworks(GameTestHelper h){
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(3);
@@ -152,7 +152,7 @@ public final class PerformanceGameTests {
             h.assertTrue(toA.getItem(0).getCount()==3&&toB.getItem(0).getCount()==3&&ar.part().pendingItem.getCount()==9&&br.part().pendingItem.getCount()==9,"Escrow cannot bypass cap; separate networks each receive a full budget");h.succeed();
         }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void nodeItemLimitStillAppliesUnderHigherSharedCap(GameTestHelper h){
         int oldCap=PLConfig.NETWORK_ITEM_RATE.get(),oldNode=PLConfig.ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(9);PLConfig.ITEM_RATE.set(2);
@@ -163,7 +163,7 @@ public final class PerformanceGameTests {
         }finally{PLConfig.NETWORK_ITEM_RATE.set(oldCap);PLConfig.ITEM_RATE.set(oldNode);}
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkItemCapAlsoBoundsAddImportsAndIncomingEscrow(GameTestHelper h){
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(3);h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,4),Blocks.CHEST);

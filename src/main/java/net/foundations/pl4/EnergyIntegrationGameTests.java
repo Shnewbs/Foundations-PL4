@@ -32,7 +32,7 @@ public final class EnergyIntegrationGameTests {
         sink.part().energyInput=wire;sink.part().energyOutput=output;sink.part().energyConvert=!wire.equals(output);sink.part().transferMode=1;
         return new Fixture(source,sink,TransferEngine.prepare(List.of(source,sink)),new Battery(amount,amount),new Battery(0,capacity));
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void layoutTemplateRoundTripFitAndMalformedInput(GameTestHelper h){
         var e=DisplayElements.create(DisplayElements.Type.TEXT,7,100,100).bounds(new DisplayElements.Rect(50,50,40,40));
         for(int preset=0;preset<3;preset++)h.assertTrue(LayoutTemplate.decode(LayoutTemplate.preset(preset,100,100).encode()).elements().size()==2,"Starter boards round-trip with typed components");
@@ -45,7 +45,7 @@ public final class EnergyIntegrationGameTests {
         rejected=false;try{new LayoutTemplate(100,100,List.of(e,e));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Duplicate IDs are rejected");
         rejected=false;try{LayoutTemplate.decode("x".repeat(LayoutTemplate.MAX_TEXT+1));}catch(IllegalArgumentException expected){rejected=true;}h.assertTrue(rejected,"Oversized clipboard input is rejected before parsing");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void optionalReaderSystemsPersistAndModelsKeepMultipartGeometry(GameTestHelper h){
         for(String system:List.of("CREATE","AE2")){
             Part p=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);p.energySystem=system;
@@ -54,7 +54,7 @@ public final class EnergyIntegrationGameTests {
         }
         h.assertTrue(FoundationsPL4.KINETIC_READER_MODEL.get().kind==Kind.ENERGY_READER&&FoundationsPL4.AE2_READER_MODEL.get().kind==Kind.ENERGY_READER,"Adapter models preserve Energy Reader behavior and placement");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void pushedForgeEnergyIsSidedSimulatedBoundedAndRevoked(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,Direction.WEST);Part p=ref.part();p.transferMode=2;
         var cap=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),Direction.WEST);
@@ -65,14 +65,14 @@ public final class EnergyIntegrationGameTests {
         p.energyCredits(0);p.transferMode=1;h.assertTrue(!cap.canReceive()&&cap.receiveEnergy(1,false)==0,"ADD mode rejects input even through cached handlers");
         p.transferMode=2;ref.host().parts.remove(p.slot());ref.host().changed();h.assertTrue(cap.receiveEnergy(1,false)==0,"Removed parts revoke cached input handlers");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void nativeJoulesRemainJoulesWhenConversionDisabled(GameTestHelper h){
         boolean old=PLConfig.ENERGY_CONVERSION.get();try{PLConfig.ENERGY_CONVERSION.set(false);
             var f=fixture(h,"J","J","J",25,100,false);f.run(h);
             h.assertTrue(f.from.stored==0&&f.to.stored==25&&f.source.part().energyCredits()==0,"Native J must transfer without FE conversion or rounding");h.succeed();
         }finally{PLConfig.ENERGY_CONVERSION.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void joulesToFEHonorsSharedCapAndTopsUpFractionalEscrow(GameTestHelper h){
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{PLConfig.NETWORK_ENERGY_RATE.set(1);
             var f=fixture(h,"J","FE","FE",25,100,false);f.run(h);
@@ -80,7 +80,7 @@ public final class EnergyIntegrationGameTests {
             f.run(h);h.assertTrue(f.from.stored==20&&f.to.stored==2&&f.source.part().energyCredits()==0,"Fractional escrow must combine with two new J without stalling or exceeding one FE/cycle");h.succeed();
         }finally{PLConfig.NETWORK_ENERGY_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void conversionPolicyAndLossCannotBeBypassed(GameTestHelper h){
         boolean old=PLConfig.ENERGY_CONVERSION.get();int loss=PLConfig.CONVERSION_EFFICIENCY.get();
         try{var f=fixture(h,"J","FE","FE",25,100,false);PLConfig.ENERGY_CONVERSION.set(false);f.run(h);
@@ -90,13 +90,13 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(f.from.stored==0&&f.to.stored==9&&f.source.part().energyCredits()==0,"25 J at 90 percent must deliver exactly nine FE");h.succeed();
         }finally{PLConfig.ENERGY_CONVERSION.set(old);PLConfig.CONVERSION_EFFICIENCY.set(loss);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void partialNativeAcceptanceRetainsAndRetriesEscrow(GameTestHelper h){
         var f=fixture(h,"J","J","J",10,100,false);f.to.actualLimit=3;f.run(h);
         h.assertTrue(f.from.stored==0&&f.to.stored==3&&f.source.part().energyCredits()==2800000,"Partial provider must leave seven J in escrow");
         f.run(h);h.assertTrue(f.to.stored==6&&f.source.part().energyCredits()==1600000&&f.from.withdrawals==1,"Retry must not extract from source twice");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void addConversionConservesAcrossFractionalRetries(GameTestHelper h){
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{PLConfig.NETWORK_ENERGY_RATE.set(1);
             var f=fixture(h,"FE","FE","J",10,100,true);
@@ -106,7 +106,7 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(f.from.stored==0&&f.to.stored==25&&f.sink.part().energyCredits()==0,"ADD conversion must eventually drain all fractions");h.succeed();
         }finally{PLConfig.NETWORK_ENERGY_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void changedConversionRatiosPauseRatherThanRevalueEscrow(GameTestHelper h){
         int old=PLConfig.FE_PER_1000_J.get();try{
             var f=fixture(h,"J","J","J",0,100,false);Part p=f.source.part();p.energyCredits(2000000);p.pendingEnergyUnit="J";p.pendingEnergyJRate=old;p.pendingEnergyEURate=PLConfig.FE_PER_EU.get();p.pendingEnergyEDRate=PLConfig.FE_PER_ED_J.get();
@@ -114,7 +114,7 @@ public final class EnergyIntegrationGameTests {
             PLConfig.FE_PER_1000_J.set(old);f.run(h);h.assertTrue(f.to.stored==5&&p.energyCredits()==0,"Restored original ratios resume native escrow");h.succeed();
         }finally{PLConfig.FE_PER_1000_J.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void fractionalEscrowAndRouteSurviveDropsAndRestart(GameTestHelper h){
         Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.energyInput="ED_J";p.energyOutput="EU";p.energyConvert=true;p.energyVoltage=128;p.transferMode=2;p.energyCredits(1);p.pendingEnergyUnit="EU";p.pendingEnergyJRate=400;p.pendingEnergyEURate=4;p.pendingEnergyEDRate=1;
         var data=net.foundations.pl4.compat.PortData.get(PartItem.stack(p,h.getLevel().registryAccess()),DataComponents.CUSTOM_DATA);
@@ -125,7 +125,7 @@ public final class EnergyIntegrationGameTests {
         Part synced=Part.load(p.save(h.getLevel().registryAccess(),true),h.getLevel().registryAccess());h.assertTrue(synced.energyCredits()==0&&!synced.energyRouteEditable(),"Client receives lock but no escrow amount");
         restored.energyCredits(0);h.assertTrue(restored.energyRouteEditable(),"Draining escrow unlocks route");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void electrodynamicsNativeFractionsAndIndependentRates(GameTestHelper h){
         var f=fixture(h,"ED_J","ED_J","ED_J",3250000,10000000,false);f.run(h);
         h.assertTrue(f.from.stored==0&&f.to.stored==3250000,"3.25 Electrodynamics J must remain exact in native microjoule transport");
@@ -144,7 +144,7 @@ public final class EnergyIntegrationGameTests {
         public boolean inputsEnergy(Direction side){return side==Direction.WEST;}public boolean outputsEnergy(Direction side){return side==Direction.EAST;}
         public long getInputVoltage(){return 32;}public long getInputAmperage(){return 2;}public long getOutputVoltage(){return 32;}public long getOutputAmperage(){return 2;}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void feToEUUsesWholeSafePacketsAndSharedCap(GameTestHelper h)throws Exception {
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{
             var f=fixture(h,"FE","FE","EU",500,1000,true);var eu=new EUBattery();var adapter=ReflectiveEnergyTransfer.gregtech(EUFixture.class,Direction.class);
@@ -159,7 +159,7 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(eu.stored==32&&f.from.stored==372&&eu.actualCalls==1,"Node voltage above machine rating must fail closed before extraction");h.succeed();
         }finally{PLConfig.NETWORK_ENERGY_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void multipleNativeDriversShareOneNetworkBudget(GameTestHelper h){
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{PLConfig.NETWORK_ENERGY_RATE.set(5);
             var f=fixture(h,"J","FE","FE",25,100,false);var second=host(h,new BlockPos(3,3,3),Kind.TRANSFER_NODE,Direction.WEST);second.part().transferMode=2;second.part().energyInput="J";second.part().energyOutput="FE";second.part().energyConvert=true;var extra=new Battery(25,25);
@@ -169,13 +169,13 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(f.source.part().energyCredits()+second.part().energyCredits()==200000,"The 13th withdrawn J's fractional excess stays in escrow");h.succeed();
         }finally{PLConfig.NETWORK_ENERGY_RATE.set(old);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void communityMessageContainsOnlyRequestedClickableDestinations(GameTestHelper h){
         var message=CommunityLinks.message();List<ClickEvent> clicks=new ArrayList<>();for(var component:message.getSiblings())if(component.getStyle().getClickEvent()!=null)clicks.add(component.getStyle().getClickEvent());
         h.assertTrue(clicks.size()==2&&clicks.get(0).getAction()==ClickEvent.Action.OPEN_URL&&clicks.get(0).getValue().equals("https://discord.gg/tCTS9xduad")&&clicks.get(1).getValue().equals("https://ko-fi.com/shnewbs"),"Exactly two requested links, no commands or automatic browser opening");
         h.assertTrue(message.getString().equals("[PL4] Discord · Support on Ko-fi"),"One short chat line");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void pushOnlyEUFeedsConversionEscrow(GameTestHelper h){
         int oldRate=PLConfig.ENERGY_RATE.get(),oldCap=PLConfig.NETWORK_ENERGY_RATE.get();
         try{PLConfig.ENERGY_RATE.set(256);PLConfig.NETWORK_ENERGY_RATE.set(128);
@@ -187,7 +187,7 @@ public final class EnergyIntegrationGameTests {
             f.run(h);h.assertTrue(f.to.stored==256&&p.energyCredits()==0&&f.from.withdrawals==0,"Pushed packets drain exactly once without pulling source storage");h.succeed();
         }finally{PLConfig.ENERGY_RATE.set(oldRate);PLConfig.NETWORK_ENERGY_RATE.set(oldCap);}
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void pushedEURespectsSideVoltageAndPolicy(GameTestHelper h){
         boolean conversion=PLConfig.ENERGY_CONVERSION.get();
         try{var f=fixture(h,"EU","FE","FE",0,1000,false);Part p=f.source.part();
@@ -201,7 +201,7 @@ public final class EnergyIntegrationGameTests {
     }
 
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void readerChannelsStayPinnedAcrossOrderAndSave(GameTestHelper h){
         Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);reader.mode="SLOT";reader.index=4;
         var a=new Part.Link("minecraft:overworld",new BlockPos(1,2,3),Direction.NORTH,null,null);
@@ -218,7 +218,7 @@ public final class EnergyIntegrationGameTests {
         reader.targetChannel="";reader.mode="CHANNEL";reader.index=2;
         h.assertTrue(ReaderChannels.select(reader,List.of(a,b)).equals(List.of(b)),"Legacy ordinal channels still load");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void infoProvidersBoundIsolateAndUnregister(GameTestHelper h){
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
         try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_failing",(context,out)->{if(!context.target().equals(target))return;out.add("partial","Partial",1,1,"");throw new IllegalStateException("Expected provider isolation fixture");});
@@ -233,7 +233,7 @@ public final class EnergyIntegrationGameTests {
         }
         h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).stream().noneMatch(r->r.key().startsWith("pl4_test:")),"Closing registrations releases providers");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void infoReaderUsesProvidersAndTrimsMetricKeys(GameTestHelper h){
         var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,Direction.UP);
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
@@ -248,7 +248,7 @@ public final class EnergyIntegrationGameTests {
         }h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void readerPagesSearchAndPinsBeyondSixtyFour(GameTestHelper h){
         Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);List<Part.Link> links=new ArrayList<>();
         for(int i=0;i<130;i++)links.add(new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(i,2,1)),Direction.NORTH,null,null));
@@ -266,7 +266,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(reader.targetChoices.isEmpty()&&!ReaderChannels.label(reader).contains("disconnected")&&ReaderChannels.select(reader,links).equals(List.of(net.foundations.pl4.compat.PortLists.last(links))),"Search does not change the selected sampling endpoint");
         ReaderChannels.refresh(h.getLevel().getServer(),reader,List.of());h.assertTrue(ReaderChannels.label(reader).contains("disconnected"),"Actual endpoint removal is reported");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void oldProviderHandleCannotRemoveReplacement(GameTestHelper h){
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
         net.foundations.pl4.api.InfoProviders.Provider callback=(c,out)->{if(c.target().equals(target))out.add("value","Value",42,100,"");};
@@ -276,7 +276,7 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).stream().anyMatch(r->r.key().equals("pl4_test:reused/value")&&r.value()==42),"Repeated close on old handle cannot remove re-registration of same callback");
         }h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void inventorySamplingDeduplicatesVanillaDoubleChest(GameTestHelper h){
         var reader=host(h,new BlockPos(5,2,2),Kind.INVENTORY_READER,Direction.UP);
         var left=h.absolutePos(new BlockPos(2,1,2));var right=left.east();
@@ -294,7 +294,7 @@ public final class EnergyIntegrationGameTests {
         long expectedCapacity=0;for(int i=0;i<54;i++)expectedCapacity+=nativeHandler.getSlotLimit(i);
         h.assertTrue(storage.value()==20&&storage.capacity()==expectedCapacity&&expectedCapacity>0,"Storage reports the native general capacity once, not a guessed stack size: "+storage.capacity()+" / "+expectedCapacity);h.succeed();
     }
-    @GameTest(template="empty",timeoutTicks=80)
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=80)
     public static void liveFurnaceReportsCookingAndFuel(GameTestHelper h){
         BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,net.minecraft.world.level.block.Blocks.FURNACE);
         var furnace=(net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
@@ -307,7 +307,7 @@ public final class EnergyIntegrationGameTests {
             h.assertTrue(rows.stream().anyMatch(r->r.key().equals("burn_time")&&r.value()>0),"Actual remaining fuel time must be reported");h.succeed();
         });
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void networkDiagnosticsSeparateUnavailableEndpoints(GameTestHelper h){
         var reader=host(h,new BlockPos(2,2,2),Kind.NETWORK_READER,Direction.UP);
         var block=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
@@ -316,7 +316,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(rows.stream().anyMatch(r->r.key().equals("targets")&&r.value()==2)&&rows.stream().anyMatch(r->r.key().equals("available")&&r.value()==1)&&rows.stream().anyMatch(r->r.key().equals("unavailable")&&r.value()==1),"Diagnostics deduplicate exact links and distinguish missing entities");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void readerEditsRejectForeignOwnersStaleIdsAndForgedTargets(GameTestHelper h){
         var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,Direction.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
         var stranger=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
@@ -340,7 +340,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(part.label.isEmpty(),"Remote UI edit is rejected");h.succeed();
     }
 
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void addItemEscrowSurvivesDestinationException(GameTestHelper h){
         BlockPos fromPos=new BlockPos(1,1,1),toPos=new BlockPos(5,1,1);
         h.setBlock(fromPos,net.minecraft.world.level.block.Blocks.CHEST);
@@ -365,7 +365,7 @@ public final class EnergyIntegrationGameTests {
         fail[0]=false;TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));
         h.assertTrue(to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void previewFallbackRespectsTotalBudgetAndStableKeys(GameTestHelper h){
         var samples=new VisualSamples();var last=net.minecraft.world.item.ItemStack.EMPTY;
         for(int i=0;i<256;i++){
@@ -382,7 +382,7 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(rows.size()==256&&bytes<=32768&&omitted,"All fallback previews share the same 32 KiB budget");
         h.assertTrue(rows.stream().map(Part.Row::key).distinct().count()==256&&net.foundations.pl4.compat.PortLists.last(rows).key().equals(alone.rows(h.getLevel().registryAccess(),true,1,0).get(0).key()),"Bounded component keys remain distinct and stable after preview exhaustion");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void layoutSnapshotRejectsExcessElements(GameTestHelper h){
         var elements=new ArrayList<DisplayElements.Spec>();
         for(int i=0;i<32;i++)elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));

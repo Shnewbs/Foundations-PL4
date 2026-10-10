@@ -10,21 +10,21 @@ import net.foundations.pl4.core.*;
 @net.minecraftforge.gametest.GameTestHolder(value=FoundationsPL4.ID,namespace=FoundationsPL4.ID)
 @net.minecraftforge.gametest.GameTestDontPrefix
 public final class R10GameTests {
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void newBlockElementRevealsItsPage(GameTestHelper h){
         var before=new LayoutTransactions.State(List.of(),DisplayElements.Mode.AUTO_LIST,0,0);
         var element=DisplayElements.create(DisplayElements.Type.BLOCK,3);
         var result=LayoutTransactions.apply(before,0,"add",element.id(),element,"");
         h.assertTrue(result.accepted()&&result.state().page()==3&&result.state().mode()==DisplayElements.Mode.CUSTOM,"A new graphic must reveal its page and exit automatic view");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void revealedCustomPageSurvivesSave(GameTestHelper h){
         Part p=new Part(Kind.DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=5;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.ITEM,5)));
         Part restored=Part.load(p.save(h.getLevel().registryAccess(),false),h.getLevel().registryAccess());
         h.assertTrue(restored!=null&&restored.displayPage==5&&restored.displayMode==DisplayElements.Mode.CUSTOM&&restored.elements.get(0).spec().page()==5,"Native save keeps the revealed custom page");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void realStoneStillUsesBlockPicture(GameTestHelper h){
         VisualSamples samples=new VisualSamples();samples.item(new ItemStack(Items.STONE,22));
         var rows=samples.rows(h.getLevel().registryAccess(),true,128,0);
@@ -32,7 +32,7 @@ public final class R10GameTests {
         h.assertTrue(scene.draws().stream().anyMatch(d->d instanceof DisplayElements.Icon icon&&icon.block()),"Block presentation cannot silently become text list");
         h.assertTrue(scene.draws().stream().anyMatch(d->d instanceof DisplayElements.Text text&&text.overlay()&&text.value().equals("22")),"Quantity remains independent of picture stack size");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void restingAutoModeDoesNotDiscardTypedElements(GameTestHelper h){
         Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.AUTO_LIST;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,2)));
@@ -40,7 +40,7 @@ public final class R10GameTests {
         h.assertTrue(restored!=null&&restored.elements.size()==1&&restored.elements.get(0).spec().type()==DisplayElements.Type.BLOCK,"Switching view retains layout");
         h.assertTrue(!MonitorPresentation.automatic(restored.displayMode,true)&&MonitorPresentation.automatic(restored.displayMode,false),"Editor preview is independent of saved resting view");h.succeed();
     }
-    @GameTest(template="empty")
+    @GameTest(batch=FoundationsPL4.ID,template="empty")
     public static void stalePageChangeLeavesSavedLayoutIntact(GameTestHelper h){
         var element=DisplayElements.create(DisplayElements.Type.BLOCK,4);
         var before=new LayoutTransactions.State(List.of(element),DisplayElements.Mode.CUSTOM,4,2);
