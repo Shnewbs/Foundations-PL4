@@ -2,6 +2,8 @@
 
 Updated: October 8, 2026 (America/Los_Angeles).
 
+**Current-status notice (October 10, 2026):** This remains the *original approved scope and engineering contract*, not a current list of unpublished ports. The [master roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md) now reconciles **17 latest tagged targets** against [CurseForge submission receipts](CURSEFORGE_MULTIVERSION_STATUS.md). Some entries in the original table and implementation order below have already received alpha/legacy-preview tags; others still need user-facing acceptance. Specifically, 1.16.4 has an exact released tag but requires a special Forge-35 launcher profile, 1.13.2 is blocked, 1.6.4 remains experimental, and 1.7.10 remains excluded. Keep the fallback requirements and per-target release gates below; use the master roadmap for today's completion status.
+
 ## Approved scope
 
 The next multi-version update must deliver usable ports, not just branches or renamed JARs. Minecraft **1.6.4 is approved as an experimental track**. Minecraft **1.7.10 is excluded**. Experimental means actual implementation and testing are required; it does not mean a working port already exists. The 1.6.4 track must not hold up validated modern releases.
