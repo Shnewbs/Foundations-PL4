@@ -1,5 +1,7 @@
 # Version coverage checkpoint - October 9, 2026
 
+**Dated audit snapshot:** The 85-version/9-PL4-release/69-gap counts below are from the specified 2026-10-09T22:29:59Z run. A *later* [17-target release/CurseForge submission reconciliation](CURSEFORGE_MULTIVERSION_STATUS.md) supersedes the nine-release publication count. This checkpoint remains immutable historical evidence; use the [master roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md) for current port status, and rerun the official-version inventory before declaring an updated gap count. The earlier 1.16.4 scanner failure was subsequently followed by a specially profiled Java-8 tagged release; stock Forge-35/client acceptance is still not established.
+
 Scope: cover final Minecraft versions absent from the original Practical Logistics / Practical Logistics 2 project listings, rather than restricting PL4 to the initial popular-version shortlist. 1.18.2 is explicitly retained. 1.16.4 is independent from 1.16.5. User-approved 1.6.4 remains experimental; 1.7.10 remains excluded.
 
 ## Full inventory
