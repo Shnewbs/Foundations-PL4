@@ -37,4 +37,19 @@ public final class Port115GameTests {
         }
         h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void entityTransceiverUsesNativeItemStackInteraction(GameTestHelper h){
+        var player=net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(h.getLevel());
+        var entity=net.minecraft.entity.EntityType.COW.create(h.getLevel());
+        PortAssertions.check(entity!=null,"A real native entity must exist");
+        entity.setPos(4,82,4);
+        var tool=new net.minecraft.item.ItemStack(FoundationsPL4.item("entitytransceiver"));
+        PortAssertions.check(tool.interactEnemy(player,entity,net.minecraft.util.Hand.MAIN_HAND),"Native ItemStack entity-use hook must be handled");
+        var link=ToolItem.link(tool);
+        PortAssertions.check(link!=null&&entity.getUUID().equals(link.entity())&&entity.getCommandSenderBlockPosition().equals(link.pos()),"Entity UUID and native position must be persisted");
+        PortAssertions.check(entity.level.dimension.getType().getRegistryName().toString().equals(link.dimension()),"Native dimension registry identity must be retained");
+        var unrelated=new net.minecraft.item.ItemStack(FoundationsPL4.item("plguide"));
+        PortAssertions.check(!unrelated.interactEnemy(player,entity,net.minecraft.util.Hand.MAIN_HAND)&&ToolItem.link(unrelated)==null,"Other tool modes must not intercept entity use");
+        h.succeed();
+    }
 }

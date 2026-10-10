@@ -6,13 +6,7 @@
   "release_channel": "alpha",
   "host_save_schema": 2,
   "payload_protocol": "forge-1.15.2-5",
-  "release_gate": [
-    "production rule suites",
-    "native compilation",
-    "Java 8 conversion and reobfuscation",
-    "isolated installed Forge scenarios",
-    "exact target archive and license checks"
-  ],
+  "release_gate": ["production rule suites", "native compilation", "Java 8 conversion and reobfuscation", "194 isolated installed Forge scenarios", "exact target archive and license checks"],
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING",
   "client_visual_acceptance": "PENDING",
@@ -24,7 +18,7 @@
   "loader": "Forge",
   "loader_version": "31.2.62",
   "port_status": "NATIVE_API_VALIDATION_PENDING",
-  "expected_native_scenarios": 193,
+  "expected_native_scenarios": 194,
   "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
   "build_java": 17,
   "installed_runtime_acceptance": "PENDING",

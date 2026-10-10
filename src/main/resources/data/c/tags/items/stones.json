@@ -1,13 +1,1 @@
-{
-  "replace": false,
-  "values": [
-    "minecraft:stone",
-    {
-      "id": "#forge:stones",
-      "required": false
-    },
-    "minecraft:andesite",
-    "minecraft:diorite",
-    "minecraft:granite"
-  ]
-}
+{"replace":false,"values":["minecraft:stone","minecraft:andesite","minecraft:diorite","minecraft:granite"],"optional":["#forge:stones"]}

@@ -46,7 +46,7 @@ public final class PortScenarioMod {
             tests.add(candidate);
         }
         tests.sort(Comparator.comparing(m->m.getDeclaringClass().getSimpleName()+"."+m.getName()));
-        if(tests.size()!=193)throw new IllegalStateException("Expected all 193 original fixtures, found "+tests.size());
+        if(tests.size()!=194)throw new IllegalStateException("Expected all 194 native fixtures, found "+tests.size());
         for(int x=-1;x<=2;x++)for(int z=-1;z<=2;z++){world.setChunkForced(x,z,true);world.getChunk(x,z);}
         LOG.info("PL4 LEGACY SCENARIOS: {} fixtures on real Minecraft 1.15.2 / Forge",tests.size());
     }
@@ -70,7 +70,6 @@ public final class PortScenarioMod {
     private String name(){return method.getDeclaringClass().getSimpleName()+"."+method.getName();}
     private void fail(Throwable error){failures.add(name()+": "+error);LOG.error("PL4 SCENARIO FAIL "+name(),error);current=null;}
     private void cleanFixtureRegion(){
-        // This module is absent from normal installations and runs only in run-scenarios.
         for(BlockPos p:BlockPos.betweenClosed(-3,76,-3,38,96,38))if(!world.isEmptyBlock(p))world.setBlock(p,Blocks.AIR.defaultBlockState(),3);
         for(var entity:new ArrayList<>(world.getEntities((net.minecraft.entity.Entity)null,new AxisAlignedBB(-8,72,-8,45,104,45))))if(!(entity instanceof PlayerEntity))entity.remove();
     }
@@ -82,7 +81,7 @@ public final class PortScenarioMod {
             var errors=new com.google.gson.JsonArray();for(String failure:failures)errors.add(failure);report.add("failures",errors);
             Files.writeString(Path.of("port-scenarios.json"),new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report));
         }catch(java.io.IOException error){failures.add("Unable to write scenario report: "+error);LOG.error("Scenario report failure",error);}
-        if(failures.isEmpty())LOG.info("PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed");
+        if(failures.isEmpty())LOG.info("PL4 SCENARIOS SUCCESS: All 194 required native scenarios passed");
         else LOG.error("PL4 SCENARIOS FAILURE: {} of {} failed",failures.size(),tests.size());
         server.halt(false);
     }

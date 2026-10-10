@@ -29,11 +29,14 @@ def main():
         value=json.loads(path.read_text())
         assert not value.get('type','').startswith('neoforge:'),path
         if value.get('type') in {'minecraft:crafting_shaped','minecraft:crafting_shapeless'}:assert 'item' in value['result'] and 'id' not in value['result'],path
+        if '/tags/' in path.as_posix():
+            assert all(isinstance(entry,str) for entry in value.get('values',[])),path
+            assert all(isinstance(entry,str) for entry in value.get('optional',[])),path
     source=core.parent
     fixtures=ROOT/'src/portTest/java/net/foundations/pl4'
     registered=re.findall(r'e\.register\((\w+)\.class\)',(fixtures/'PLGameTests.java').read_text())
     count_tests=sum((fixtures/(name+'.java')).read_text().count('@GameTest(') for name in registered)
-    assert count_tests==193==status['expected_native_scenarios'],count_tests
+    assert count_tests==194==status['expected_native_scenarios'],count_tests
     packet=(source/'compat/RegisterPayloadHandlersEvent.java').read_text()
     assert 'NetworkDirection.PLAY_TO_SERVER' in packet and 'NetworkDirection.PLAY_TO_CLIENT' in packet
     assert 'version::equals,version::equals' in packet and 'setPacketHandled(true)' in packet
