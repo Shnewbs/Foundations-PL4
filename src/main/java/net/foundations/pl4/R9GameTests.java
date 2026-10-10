@@ -24,9 +24,9 @@ public final class R9GameTests {
         Part part=new Part(kind,Direction.SOUTH,owner(h));part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind.display()).findFirst().orElseThrow();}
-    private static FakePlayer player(GameTestHelper h,HostEntity at,boolean allowed){
+    private static net.minecraft.server.level.ServerPlayer player(GameTestHelper h,HostEntity at,boolean allowed){
         UUID id=allowed?owner(h):UUID.nameUUIDFromBytes((owner(h)+"-other").getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        FakePlayer player=FakePlayerFactory.get(h.getLevel(),new GameProfile(id,"PL4-R9-Test"));
+        net.minecraft.server.level.ServerPlayer player=net.foundations.pl4.compat.TestPlayers.get(h.getLevel(),new GameProfile(id,"PL4-R9-Test"));
         var p=at.getBlockPos().getCenter();player.setPos(p.x+1,p.y,p.z+1);return player;
     }
     private static PLPackets.LayoutEdit packet(HostEntity host,long revision,String action,DisplayElements.Spec spec,String value){
