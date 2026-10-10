@@ -1,5 +1,7 @@
 # Upstream-gap coverage policy
 
+**Release-status reconciliation (October 10, 2026):** This retains the October 9 *scope and exact-version policy*, but some "new branch"/"not yet released" implementation statements below are historical. The [master roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md) and [cross-version publishing receipts](CURSEFORGE_MULTIVERSION_STATUS.md) reflect 17 tagged/submitted Minecraft targets. The 1.16.4 Java-8 tag is available but requires a special launcher profile; 1.13.2 is still blocked. See the dated [coverage inventory](VERSION_COVERAGE_CHECKPOINT.md) for the original count, not a current missing-version total.
+
 User-directed scope, October 9, 2026: Foundations PL4 must cover the Minecraft versions Practical Logistics did not reach, not only the initial popular-version shortlist. **1.18.2 is explicitly included; 1.16.4 is its own target, not shorthand for 1.16.5.** This supersedes shortlist-only wording in MULTIVERSION_PORT_PLAN.md. It does not mean all gaps already have working builds.
 
 ## Upstream evidence and boundaries
