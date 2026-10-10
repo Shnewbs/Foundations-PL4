@@ -16,7 +16,10 @@ class CurseForgePublishTests(unittest.TestCase):
             "mc26.3-v0.2a": ("26.3", "0.2a", "NeoForge"),
             "mc1.14.4-v0.2a-port.1": ("1.14.4", "0.2a-port.1", "Forge"),
             "mc1.16.1-v0.2a-port.1": ("1.16.1", "0.2a-port.1", "Forge"),
+            "mc1.18-v0.2a-port.1": ("1.18", "0.2a-port.1", "Forge"),
             "mc1.18.1-v0.2a-port.1": ("1.18.1", "0.2a-port.1", "Forge"),
+            "mc1.19.1-v0.2a-port.1": ("1.19.1", "0.2a-port.1", "Forge"),
+            "mc1.19.3-v0.2a-port.1": ("1.19.3", "0.2a-port.1", "Forge"),
             "mc1.6.4-v0.2a-legacy-preview.3": ("1.6.4", "0.2a-legacy-preview.3", "Forge")
         }.items():
             with self.subTest(tag=tag):
