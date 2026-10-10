@@ -25,5 +25,7 @@
   "port_status": "NATIVE_SOURCE_PORT_PENDING",
   "build_java": 17,
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING"
+  "installed_runtime_acceptance": "PENDING",
+  "native_compat_backport": "forge-modern-channel-gametest-v1",
+  "native_compilation": "PENDING"
 }

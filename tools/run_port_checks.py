@@ -35,7 +35,7 @@ def main():
     assert count_tests==191==status['expected_native_tests'],count_tests
     packet=(source/'compat/RegisterPayloadHandlersEvent.java').read_text()
     assert 'NetworkDirection.PLAY_TO_SERVER' in packet and 'NetworkDirection.PLAY_TO_CLIENT' in packet
-    assert 'version::equals,version::equals' in packet and 'setPacketHandled(true)' in packet
+    assert 'ChannelBuilder.named(' in packet and 'getDirection()!=direction' in packet and 'setPacketHandled(true)' in packet
     caps=(source/'compat/PortCapabilities.java').read_text()
     assert 'hasChunkAt' in caps and 'addListener' in caps and 'LazyOptional::invalidate' in caps
     models=resources/'assets/foundations_pl4/models'
