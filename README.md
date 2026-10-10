@@ -1,9 +1,15 @@
-# Foundations PL4 — Minecraft 1.19.2 / Forge
+# Foundations PL4 — Minecraft 1.19.3 / Forge 44
 
-Development port **0.2a-port.1**, Forge **43.5.2**, Java **17**.
+Exact Forge 44.1.23 source port, derived from separately tested Minecraft
+1.19.2. The branch carries full PL4 cable/network/display/wireless
+storage/transfer/energy and forging features. Native API and installed
+gameplay testing must pass before any release.
 
-Native Forge source port, not a renamed NeoForge JAR. Retains multipart cables, readers, displays, network item storage, transfer escrow, ownership checks and the built-in field guide. Forge SimpleChannel networking and sided capabilities replace NeoForge interfaces. Native NBT preserves item and fluid variants on this Minecraft generation.
+The code is compiled independently, not copied from or relabeled as a
+1.19.2 binary. The pack format is 12. Native Forge44 compilation,
+reobfuscation and all 191 original GameTests are hard release gates.
 
-Build with `bash gradlew build runGameTestServer`. Java compilation is not client, multiplayer or installed-provider acceptance. **Further API testing is still required.** See BUILD_STATUS.json and docs/releases/0.2a-port.1.md.
+Real-client display behavior, installed optional providers, live multiplayer
+and sustained performance testing remain separate.
 
-Back up worlds; use matching client/server builds. Worlds and JARs are not interchangeable between Minecraft versions. Unavailable third-party power APIs remain disabled rather than using guessed units or conversion ratios.
+**Further API testing is still required.**
