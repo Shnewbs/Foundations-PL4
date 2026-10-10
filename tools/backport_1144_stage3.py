@@ -3,9 +3,9 @@ from pathlib import Path
 import json
 R=Path(__file__).resolve().parents[1];status_path=R/'BUILD_STATUS.json'
 status=json.loads(status_path.read_text())
-if status.get('minecraft')!='1.14.4' or status.get('native_api_backport') not in ('forge28-stage2','forge28-stage3'):
+if status.get('minecraft')!='1.14.4' or status.get('native_api_backport') not in ('forge28-stage2','forge28-stage3','forge28-stage4'):
  raise SystemExit('Refusing the wrong Forge28 baseline')
-if status['native_api_backport']=='forge28-stage3':raise SystemExit(0)
+if status['native_api_backport'] in ('forge28-stage3','forge28-stage4'):raise SystemExit(0)
 p=R/'src/main/java/net/foundations/pl4/FoundationsPL4.java'
 s=p.read_text()
 assert '.notSolid()' in s,'Unexpected property shape'
