@@ -1,15 +1,15 @@
-name: Forge 1.14.4 native port investigation
+name: Forge 1.13.2 native port investigation
 on:
   push:
-    branches: [mc/1.14.4]
+    branches: [mc/1.13.2]
   workflow_dispatch:
 permissions:
   contents: write
 concurrency:
-  group: forge1144-port
+  group: forge1132-port
   cancel-in-progress: false
 jobs:
-  compile:
+  investigate:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -22,103 +22,49 @@ jobs:
           java-version: |
             8
             17
-      - name: Prepare exact sources and preserve revision
+      - name: Prepare exact native source and save revision
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/prepare_1144.py
-          python3 tools/backport_1144_api.py
-          python3 tools/backport_1144_stage2.py
-          python3 tools/backport_1144_stage3.py
-          python3 tools/backport_1144_stage4.py
+          python3 tools/prepare_1132.py
           git diff --check
-          git add src tools/java8 tools/run_port_checks.py build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md PORT_TARGET.json
+          git add src tools/java8 tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/releases/0.2a-port.1.md
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Prepare independent Minecraft 1.14.4 Forge 28 source'
-            git push origin HEAD:mc/1.14.4
+            git commit -m "Prepare exact 1.13.2 Forge25 native feature source"
+            git push origin HEAD:mc/1.13.2
           fi
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
-      - name: Compile, validate and reobfuscate exact target
+      - name: Compile and verify target sources (no release on failed gate)
         shell: bash
         run: |
           set -euo pipefail
           bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
-      - name: Run isolated native scenarios
+      - name: Installed native scenarios (exact Forge25)
         shell: bash
         run: |
           set -euo pipefail
           python3 tools/java8/runtime.py native 2>&1 | tee verification-logs/native.log
           python3 - <<'PY'
-          from pathlib import Path
-          import json
-          result=json.loads(Path('verification-logs/port-scenarios.json').read_text())
-          assert result['minecraft']=='1.14.4' and result['total']==194 and result['passed']==194 and result['failed']==0,result
-          print('PASS 194 isolated target scenarios')
-          PY
-      - name: Capture mapped Forge 28 API contracts
-        if: always()
-        shell: bash
-        run: python3 tools/inspect_1144_api.py
-      - name: Stock Forge28 production-only startup and clean stop
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 tools/production_smoke_1144.py 2>&1 | tee verification-logs/production-smoke-step.log
-      - name: Publish only when independent Forge28 runtime checks both pass
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          target=1.14.4
-          version=$(python3 -c 'import json;print(json.load(open("BUILD_STATUS.json"))["version"])')
-          tag="mc$target-v$version"
-          test "$(git ls-remote origin "refs/heads/mc/$target" | cut -f1)" = "$(git rev-parse HEAD)"
-          python3 - <<'PY'
           import json,pathlib
           r=json.loads(pathlib.Path('verification-logs/port-scenarios.json').read_text())
-          p=json.loads(pathlib.Path('verification-logs/production-smoke.json').read_text())
-          assert r['minecraft']=='1.14.4' and r['total']==194 and r['passed']==194 and r['failed']==0,r
-          assert p['minecraft']=='1.14.4' and p['production_only_startup']=='PASS' and p['clean_stop']=='PASS' and p['scenario_mod_installed'] is False,p
-          print('PASS both independent installed-runtime acceptance gates')
+          assert r['minecraft']=='1.13.2' and r['total']==194 and r['passed']==194 and r['failed']==0,r
+          print('PASS 194 native Forge25 scenarios')
           PY
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
-            git fetch origin "refs/tags/$tag:refs/tags/$tag"
-            git diff --exit-code "$tag" HEAD -- src/ build.gradle settings.gradle gradle.properties tools/java8/
-            gh release view "$tag"
-            echo "Existing exact-source release is immutable; no assets overwritten."
-            exit 0
-          fi
-          name="FoundationsPL4-$target-$version"
-          mkdir -p release-files
-          cp "build/libs/$name-java8.jar" "release-files/$name.jar"
-          cp "build/libs/$name-sources.jar" release-files/
-          git archive --format=zip --output="release-files/$name-source.zip" HEAD
-          cp .java8-toolchain/jvmdowngrader-source.zip release-files/JvmDowngrader-2.0.1-source.zip
-          cp verification-logs/installed-native.log verification-logs/java8-summary.json verification-logs/port-scenarios.json release-files/
-          cp verification-logs/production-smoke.json verification-logs/production-smoke.log release-files/
-          cp build/java8/archive-check.json build/java8/toolchain.json release-files/
-          git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
-          (cd release-files && sha256sum * > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
-          git tag "$tag"
-          git push origin "$tag"
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $target $version (Forge28 / Java8 alpha)" --notes-file "docs/releases/$version.md"
-      - name: Preserve results (native verification and alpha assets)
+      - name: Preserve exact sources and diagnostics, without publishing unverified binaries
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: forge1144-native-evidence
+          name: forge1132-native-evidence
           path: |
             verification-logs/
             build/java8/*.json
             build/reports/
             run-java8/port-scenarios.json
-            run-java8/logs/
             run-java8/crash-reports/
+            run-java8/logs/
           retention-days: 14
           if-no-files-found: warn
