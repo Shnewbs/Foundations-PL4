@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.foundations.pl4.compat.PacketDistributor;
-import com.mojang.math.Matrix4f;
+import org.joml.Matrix4f;
 import net.foundations.pl4.*;
 import net.foundations.pl4.core.*;
 
@@ -41,11 +41,11 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
     }
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        var arrange=addRenderableWidget(Button.builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
+        var arrange=addRenderableWidget(Button.pl4Builder(Component.literal("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
-        addRenderableWidget(Button.builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){
@@ -60,8 +60,8 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
         List<Part.Element> result=new ArrayList<>();for(var e:live.elements)result.add(e.id().equals(draft.id())?new Part.Element(draft):e);return result;
     }
     public void capture(Matrix4f localPose){
-        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix());matrix.multiply(RenderSystem.getModelViewMatrix());matrix.multiply(localPose);
-        float[] values=new float[16];var buffer=java.nio.FloatBuffer.wrap(values);matrix.store(buffer);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
+        var matrix=new Matrix4f(RenderSystem.getProjectionMatrix());matrix.mul(RenderSystem.getModelViewMatrix());matrix.mul(localPose);
+        float[] values=new float[16];var buffer=java.nio.FloatBuffer.wrap(values);matrix.get(buffer);double[] m=new double[16];for(int i=0;i<16;i++)m[i]=values[i];
         inverse=DisplayPicking.inverse(m).orElse(null);captureTime=System.nanoTime();
     }
     private Optional<DisplayPicking.Point> point(double x,double y){if(System.nanoTime()-captureTime>300_000_000L)return Optional.empty();return DisplayPicking.hit(inverse,x,y,width,height);}

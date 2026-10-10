@@ -20,13 +20,13 @@ final class DisplayPagesScreen extends net.foundations.pl4.compat.PortScreen {
         for(int page=0;page<DisplayElements.MAX_PAGES;page++){
             final int target=page;int count=parent.pageElementCount(page),x=left+10+(page%2)*(cellW+8),y=top+53+(page/2)*step;
             String label=(page==parent.part.displayPage?"> ":"")+font.plainSubstrByWidth(parent.part.pageName(page),Math.max(20,cellW-78))+": "+count;
-            var select=addRenderableWidget(Button.builder(Component.literal(label),b->{parent.pageAction("page",Integer.toString(target));rebuildWidgets();}).bounds(x,y,cellW-48,20).build());select.active=parent.editable&&!pending&&page!=parent.part.displayPage;
-            var copy=addRenderableWidget(Button.builder(Component.literal("Copy"),b->{parent.pageAction("page_copy",Integer.toString(target));rebuildWidgets();}).bounds(x+cellW-46,y,46,20).build());copy.active=parent.editable&&!pending&&page!=parent.part.displayPage&&count==0&&source>0&&parent.part.elements.size()+source<=DisplayElements.MAX_ELEMENTS;
+            var select=addRenderableWidget(Button.pl4Builder(Component.literal(label),b->{parent.pageAction("page",Integer.toString(target));rebuildWidgets();}).bounds(x,y,cellW-48,20).build());select.active=parent.editable&&!pending&&page!=parent.part.displayPage;
+            var copy=addRenderableWidget(Button.pl4Builder(Component.literal("Copy"),b->{parent.pageAction("page_copy",Integer.toString(target));rebuildWidgets();}).bounds(x+cellW-46,y,46,20).build());copy.active=parent.editable&&!pending&&page!=parent.part.displayPage&&count==0&&source>0&&parent.part.elements.size()+source<=DisplayElements.MAX_ELEMENTS;
         }
         var name=addRenderableWidget(new net.foundations.pl4.compat.EditBox(font,left+10,top+h-79,w-98,20,Component.literal("Page name")));name.setMaxLength(32);name.setValue(parent.part.pageNames.get(parent.part.displayPage));name.setEditable(parent.editable&&!pending);
-        var rename=addRenderableWidget(Button.builder(Component.literal("Rename"),b->parent.commit("page_name",null,name.getValue(),parent.part.layoutRevision)).bounds(left+w-80,top+h-79,70,20).build());rename.active=parent.editable&&!pending;
-        var clear=addRenderableWidget(Button.builder(Component.literal("Clear current page"),b->{parent.pageAction("page_clear","");rebuildWidgets();}).bounds(left+10,top+h-49,(w-28)/2,20).build());clear.active=parent.editable&&!pending&&source>0;
-        addRenderableWidget(Button.builder(Component.literal("Back to editor"),b->onClose()).bounds(left+18+(w-28)/2,top+h-49,(w-28)/2,20).build());
+        var rename=addRenderableWidget(Button.pl4Builder(Component.literal("Rename"),b->parent.commit("page_name",null,name.getValue(),parent.part.layoutRevision)).bounds(left+w-80,top+h-79,70,20).build());rename.active=parent.editable&&!pending;
+        var clear=addRenderableWidget(Button.pl4Builder(Component.literal("Clear current page"),b->{parent.pageAction("page_clear","");rebuildWidgets();}).bounds(left+10,top+h-49,(w-28)/2,20).build());clear.active=parent.editable&&!pending&&source>0;
+        addRenderableWidget(Button.pl4Builder(Component.literal("Back to editor"),b->onClose()).bounds(left+18+(w-28)/2,top+h-49,(w-28)/2,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);

@@ -99,8 +99,8 @@ public final class Part {
     public record Row(String key,String name,double value,double capacity,String unit,ItemStack item,FluidStack fluid,CompoundTag previewItem,CompoundTag previewFluid) implements DisplayElements.Sample {
         public Row(String key,String name,double value,double capacity,String unit){this(key,name,value,capacity,unit,ItemStack.EMPTY,FluidStack.EMPTY,new CompoundTag(),new CompoundTag());}
         public boolean hasItem(){return !item.isEmpty();}public boolean hasBlock(){return hasItem()&&item.getItem() instanceof net.minecraft.world.item.BlockItem;}public boolean hasFluid(){return !fluid.isEmpty();}
-        public String itemId(){return hasItem()?net.minecraft.core.Registry.ITEM.getKey(item.getItem()).toString():"";}
-        public String fluidId(){return hasFluid()?net.minecraft.core.Registry.FLUID.getKey(fluid.getFluid()).toString():"";}
+        public String itemId(){return hasItem()?net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item.getItem()).toString():"";}
+        public String fluidId(){return hasFluid()?net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()).toString():"";}
         public String text(){return name+": "+number(value)+(capacity>0?" / "+number(capacity):"")+(unit.isEmpty()?"":" "+unit);}
         public static String number(double d){return DisplayElements.number(d,false);}
         public CompoundTag save(){CompoundTag t=new CompoundTag();t.putString("key",key);t.putString("name",name);t.putDouble("value",value);t.putDouble("capacity",capacity);t.putString("unit",unit);if(!previewItem.isEmpty())t.put("item",previewItem.copy());if(!previewFluid.isEmpty())t.put("fluid",previewFluid.copy());return t;}

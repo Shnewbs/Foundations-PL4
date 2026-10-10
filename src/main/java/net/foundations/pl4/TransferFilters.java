@@ -29,13 +29,13 @@ public final class TransferFilters {
     }
     public static boolean items(ItemStack stack,Part p,boolean input){
         if(p.kind==Kind.TRANSFER_NODE&&!p.items)return false;
-        Rule rule=rule(p,input);boolean match=rule.ids().contains(Registry.ITEM.getKey(stack.getItem()).toString());
+        Rule rule=rule(p,input);boolean match=rule.ids().contains(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
         if(!match)for(var tag:rule.items())if(stack.is(tag)){match=true;break;}
         return allowed(p,input,rule,match);
     }
     public static boolean fluids(FluidStack stack,Part p,boolean input){
         if(p.kind==Kind.TRANSFER_NODE&&!p.fluids)return false;
-        Rule rule=rule(p,input);boolean match=rule.ids().contains(Registry.FLUID.getKey(stack.getFluid()).toString());
+        Rule rule=rule(p,input);boolean match=rule.ids().contains(net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
         if(!match)for(var tag:rule.fluids())if(stack.getFluid().is(tag)){match=true;break;}
         return allowed(p,input,rule,match);
     }

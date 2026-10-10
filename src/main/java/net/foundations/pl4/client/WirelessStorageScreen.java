@@ -34,7 +34,7 @@ public final class WirelessStorageScreen extends net.foundations.pl4.compat.Port
         button("Deposit offhand",left+136,top+214,108,()->send("deposit",0,0));
         button("Done",left+w-62,top+214,50,this::onClose).active=true;
     }
-    private Button button(String label,int x,int y,int width,Runnable action){Button b=Button.builder(Component.literal(label),unused->action.run()).bounds(x,y,width,20).build();b.active=!closed;addRenderableWidget(b);return b;}
+    private Button button(String label,int x,int y,int width,Runnable action){Button b=Button.pl4Builder(Component.literal(label),unused->action.run()).bounds(x,y,width,20).build();b.active=!closed;addRenderableWidget(b);return b;}
     private void send(String action,int index,int amount){if(closed||busy)return;busy=true;PacketDistributor.sendToServer(new PLPackets.StorageRequest(token,action,index,amount,search.getValue(),sort));}
     @Override public boolean isPauseScreen(){return false;}
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){

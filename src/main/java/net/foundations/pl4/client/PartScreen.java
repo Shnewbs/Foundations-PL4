@@ -79,7 +79,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
             field("filter","Filter IDs / tags",part.filter,x,y,fw);y+=28;
             fields.get("filter").setTooltip(Tooltip.create(Component.literal("Comma-separated IDs or #tags, e.g. minecraft:stone,#c:ingots. Applies to item/fluid lists; STORAGE shows the full target.")));
             if(part.kind==Kind.INVENTORY_READER||part.kind==Kind.TRANSFER_NODE){
-                button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.Registry.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
+                button("Held item filter",left+12,y,132,b->{if(minecraft.player!=null&&!minecraft.player.getMainHandItem().isEmpty())fields.get("filter").setValue(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(minecraft.player.getMainHandItem().getItem()).toString());});
                 button("Clear filter",left+150,y,104,b->fields.get("filter").setValue(""));y+=28;
             }
             if(part.kind==Kind.NODE||part.kind==Kind.TRANSFER_NODE){
@@ -161,7 +161,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
     }
     private int contentHeight(){return contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20-(top+52);}
     private int settingsViewport(){return Math.max(1,h-90);}
-    private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=net.foundations.pl4.compat.PortMath.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.y=y-contentScroll;widget.visible=widget.y>=top+52&&widget.y+20<=top+h-35;});}
+    private void layoutContent(){int bottom=contentWidgets.values().stream().mapToInt(Integer::intValue).max().orElse(top+52)+20;contentScroll=net.foundations.pl4.compat.PortMath.clamp(contentScroll,0,Math.max(0,bottom-(top+h-38)));contentWidgets.forEach((widget,y)->{widget.setY(y-contentScroll);widget.visible=widget.getY()>=top+52&&widget.getY()+20<=top+h-35;});}
     private static String next(String[] values,String current){for(int i=0;i<values.length;i++)if(values[i].equals(current))return values[(i+1)%values.length];return values[0];}
     private void toggle(String key,String label,boolean initial,int x,int y){button(label+": "+(initial?"On":"Off"),x,y,72,new Button.OnPress(){boolean value=initial;public void onPress(Button b){value=!value;send(key,Boolean.toString(value));b.setMessage(Component.literal(label+": "+(value?"On":"Off")));}});}
     private static Tooltip transferTooltip(int mode){return Tooltip.create(Component.literal(switch(mode){
@@ -171,7 +171,7 @@ public final class PartScreen extends net.foundations.pl4.compat.PortScreen {
         default->"PASSIVE observes the network but does not move resources";
     }));}
     private void field(String key,String label,String value,int x,int y,int width){EditBox box=new EditBox(font,x,y,width,20,Component.literal(label));box.setMaxLength(256);box.setValue(value);box.setEditable(editable);box.setTooltip(Tooltip.create(Component.literal(label)));fields.put(key,box);addRenderableWidget(box);contentWidgets.put(box,y);}
-    private Button button(String title,int x,int y,int width,Button.OnPress action){Button b=Button.builder(Component.literal(title),action).bounds(x,y,width,20).build();if(tab==1&&!Set.of("Data","Settings","Layout","Edit screen","Done").contains(title))b.active=editable;addRenderableWidget(b);if(y>=top+52&&y!=top+h-27)contentWidgets.put(b,y);return b;}
+    private Button button(String title,int x,int y,int width,Button.OnPress action){Button b=Button.pl4Builder(Component.literal(title),action).bounds(x,y,width,20).build();if(tab==1&&!Set.of("Data","Settings","Layout","Edit screen","Done").contains(title))b.active=editable;addRenderableWidget(b);if(y>=top+52&&y!=top+h-27)contentWidgets.put(b,y);return b;}
     private void send(String field,String value){if(editable)PacketDistributor.sendToServer(new PLPackets.Edit(pos,clickedSlot,clickedIdentity,field,value));}
     @Override public void tick(){
         if(minecraft.level==null||!(minecraft.level.getBlockEntity(pos) instanceof HostEntity host))return;

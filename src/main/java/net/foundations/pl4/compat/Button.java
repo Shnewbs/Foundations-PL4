@@ -6,9 +6,9 @@ public class Button extends net.minecraft.client.gui.components.Button {
  public interface OnPress {void onPress(Button button);}
  public static final Object DEFAULT_NARRATION=new Object();
  private Tooltip tooltip;
- public Button(int x,int y,int width,int height,Component message,OnPress press,Object narration){super(x,y,width,height,message,b->press.onPress((Button)b));}
- public static Builder builder(Component message,OnPress press){return new Builder(message,press);}
- public int getX(){return x;} public int getY(){return y;} public void setX(int value){x=value;} public void setY(int value){y=value;}
+ public Button(int x,int y,int width,int height,Component message,OnPress press,Object narration){super(x,y,width,height,message,b->press.onPress((Button)b),net.minecraft.client.gui.components.Button.DEFAULT_NARRATION);}
+ public static Builder pl4Builder(Component message,OnPress press){return new Builder(message,press);}
+
  public void setTooltip(Tooltip value){tooltip=value;}
  @Override public void renderButton(PoseStack pose,int x,int y,float partial){renderWidget(new GuiGraphics(pose),x,y,partial);if(tooltip!=null&&isMouseOver(x,y))new GuiGraphics(pose).renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);}
  protected void renderWidget(GuiGraphics graphics,int x,int y,float partial){super.renderButton(graphics.pose(),x,y,partial);}

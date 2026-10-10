@@ -56,14 +56,14 @@ public final class WirelessStorage {
             if(scanned>=MAX_SLOTS){limited=true;break outer;}scanned++;
             ItemStack stack=target.inventory().getStackInSlot(slot);
             if(stack.isEmpty()||!TransferFilters.items(stack,target.node(),false))continue;
-            String id=Registry.ITEM.getKey(stack.getItem()).toString();
+            String id=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
             if(!query.isEmpty()&&!id.contains(query)&&!stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(query))continue;
             List<Entry> variants=byItem.computeIfAbsent(stack.getItem(),unused->new ArrayList<>());Entry row=null;
             for(Entry existing:variants)if(ItemStack.isSameItemSameTags(existing.item,stack)){row=existing;break;}
             if(row==null){row=new Entry(stack);variants.add(row);}row.count+=stack.getCount();row.sources.add(new Slot(target.node().identity,slot));
         }
         List<Entry> rows=new ArrayList<>();byItem.values().forEach(rows::addAll);
-        Comparator<Entry> names=Comparator.comparing((Entry e)->e.item.getHoverName().getString(),String.CASE_INSENSITIVE_ORDER).thenComparing(e->Registry.ITEM.getKey(e.item.getItem()).toString());
+        Comparator<Entry> names=Comparator.comparing((Entry e)->e.item.getHoverName().getString(),String.CASE_INSENSITIVE_ORDER).thenComparing(e->net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(e.item.getItem()).toString());
         rows.sort(sort.equals("COUNT")?Comparator.<Entry>comparingLong(e->e.count).reversed().thenComparing(names):names);
         return new View(rows,targets.size(),scanned,limited);
     }

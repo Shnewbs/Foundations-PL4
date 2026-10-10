@@ -38,13 +38,13 @@ public final class DataSampler {
     }
     public static boolean matches(ItemStack stack,Part part){
         if(part.filter.isBlank())return true;
-        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.ITEM.getKey(stack.getItem()).toString());
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
         if(!match)for(var tag:filter.itemTags())if(stack.is(tag)){match=true;break;}
         return match==part.whitelist;
     }
     public static boolean matches(FluidStack stack,Part part){
         if(part.filter.isBlank())return true;
-        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(Registry.FLUID.getKey(stack.getFluid()).toString());
+        ParsedFilter filter=filter(part);boolean match=filter.ids().contains(net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
         if(!match)for(var tag:filter.fluidTags())if(stack.getFluid().is(tag)){match=true;break;}
         return match==part.whitelist;
     }

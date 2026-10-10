@@ -21,19 +21,19 @@ final class DisplayLayersScreen extends net.foundations.pl4.compat.PortScreen {
         for(int i=0;i<rows&&offset+i<layers.size();i++){
             var element=layers.get(offset+i);String detail=element.text().isBlank()?(element.asset().isBlank()?element.key():element.asset()):element.text();
             String label=(parent.layerSelected(element.id())?"[x] ":"[ ] ")+"#"+(offset+i+1)+" "+element.type()+" "+(element.options().locked()?"[locked] ":"")+(element.options().hidden()?"[hidden] ":"")+(element.options().group().isEmpty()?"":"[group] ")+detail;
-            var button=addRenderableWidget(Button.builder(Component.literal(font.plainSubstrByWidth(label,w-32)),b->{parent.selectLayer(element.id(),hasShiftDown());rebuildWidgets();}).bounds(left+10,top+55+i*22,w-20,20).build());button.active=!pending;
+            var button=addRenderableWidget(Button.pl4Builder(Component.literal(font.plainSubstrByWidth(label,w-32)),b->{parent.selectLayer(element.id(),hasShiftDown());rebuildWidgets();}).bounds(left+10,top+55+i*22,w-20,20).build());button.active=!pending;
         }
-        var previous=addRenderableWidget(Button.builder(Component.literal("Previous"),b->{offset=Math.max(0,offset-rows);rebuildWidgets();}).bounds(left+10,top+h-147,(w-28)/2,20).build());previous.active=offset>0;
-        var next=addRenderableWidget(Button.builder(Component.literal("Next"),b->{offset+=rows;rebuildWidgets();}).bounds(left+18+(w-28)/2,top+h-147,(w-28)/2,20).build());next.active=offset+rows<layers.size();
+        var previous=addRenderableWidget(Button.pl4Builder(Component.literal("Previous"),b->{offset=Math.max(0,offset-rows);rebuildWidgets();}).bounds(left+10,top+h-147,(w-28)/2,20).build());previous.active=offset>0;
+        var next=addRenderableWidget(Button.pl4Builder(Component.literal("Next"),b->{offset+=rows;rebuildWidgets();}).bounds(left+18+(w-28)/2,top+h-147,(w-28)/2,20).build());next.active=offset+rows<layers.size();
         String[] labels={"Bring forward","Send backward","Bring to front","Send to back"};String[] actions={"layer_forward","layer_backward","layer_front","layer_back"};
         for(int i=0;i<actions.length;i++){
-            final String action=actions[i];var button=addRenderableWidget(Button.builder(Component.literal(labels[i]),b->{parent.layer(action);rebuildWidgets();}).bounds(left+10+(i%2)*((w-28)/2+8),top+h-123+(i/2)*22,(w-28)/2,20).build());button.active=parent.editable&&!pending&&parent.selectionCount()>0;
+            final String action=actions[i];var button=addRenderableWidget(Button.pl4Builder(Component.literal(labels[i]),b->{parent.layer(action);rebuildWidgets();}).bounds(left+10+(i%2)*((w-28)/2+8),top+h-123+(i/2)*22,(w-28)/2,20).build());button.active=parent.editable&&!pending&&parent.selectionCount()>0;
         }
         String[] organization={"group","ungroup","lock","unlock","hide","show"};
         for(int i=0;i<organization.length;i++){
-            String action=organization[i];var button=addRenderableWidget(Button.builder(Component.literal(Character.toUpperCase(action.charAt(0))+action.substring(1)),b->{parent.organize(action);rebuildWidgets();}).bounds(left+10+(i%3)*((w-36)/3+8),top+h-79+(i/3)*22,(w-36)/3,20).build());button.active=parent.editable&&!pending&&parent.selectionCount()>0;
+            String action=organization[i];var button=addRenderableWidget(Button.pl4Builder(Component.literal(Character.toUpperCase(action.charAt(0))+action.substring(1)),b->{parent.organize(action);rebuildWidgets();}).bounds(left+10+(i%3)*((w-36)/3+8),top+h-79+(i/3)*22,(w-36)/3,20).build());button.active=parent.editable&&!pending&&parent.selectionCount()>0;
         }
-        addRenderableWidget(Button.builder(Component.literal("Back to editor"),b->onClose()).bounds(left+10,top+h-31,w-20,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Back to editor"),b->onClose()).bounds(left+10,top+h-31,w-20,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xF0182228);

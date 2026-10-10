@@ -2,7 +2,6 @@ package net.foundations.pl4.client;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -19,8 +18,8 @@ public final class HammerRenderer implements BlockEntityRenderer<HammerEntity> {
     @Override public void render(HammerEntity hammer,float partial,PoseStack pose,MultiBufferSource buffer,int light,int overlay){
         pose.pushPose();
         pose.translate(.5,1.5,.5);
-        pose.mulPose(Vector3f.YP.rotationDegrees(-hammer.getBlockState().getValue(HammerBlock.FACING).toYRot()));
-        pose.mulPose(Vector3f.XP.rotationDegrees(180));
+        pose.mulPose(net.foundations.pl4.compat.AxisRotation.yp(-hammer.getBlockState().getValue(HammerBlock.FACING).toYRot()));
+        pose.mulPose(net.foundations.pl4.compat.AxisRotation.xp(180));
         model.render(pose,buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)),light,overlay,
             hammer.animationFraction(partial),hammer.structureReady());
         pose.popPose();

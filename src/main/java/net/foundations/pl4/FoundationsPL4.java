@@ -27,10 +27,6 @@ public final class FoundationsPL4 {
     public static final DeferredRegister<BlockEntityType<?>> ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE,ID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU,ID);
     public static final RegistryObject<MenuType<HammerMenu>> HAMMER_MENU = MENUS.register("hammer", () -> new MenuType<>(HammerMenu::new));
-    public static final CreativeModeTab TAB=new CreativeModeTab("foundations_pl4"){
-        @Override public ItemStack makeIcon(){return new ItemStack(item("sapphire"));}
-        @Override public void fillItemList(net.minecraft.core.NonNullList<ItemStack> items){ITEMS.getEntries().forEach(entry->items.add(new ItemStack(entry.get())));}
-    };
     public static final EnumMap<Kind, RegistryObject<PartModelBlock>> MODELS = new EnumMap<>(Kind.class);
     public static final EnumMap<Kind, RegistryObject<PartItem>> PART_ITEMS = new EnumMap<>(Kind.class);
     public static final Map<String,RegistryObject<CableModelBlock>> CABLE_MODELS = new LinkedHashMap<>();
@@ -72,6 +68,13 @@ public final class FoundationsPL4 {
         IEventBus bus=net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus();
         var container=net.minecraftforge.fml.ModLoadingContext.get();
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); MENUS.register(bus);
+        bus.addListener((net.minecraftforge.event.CreativeModeTabEvent.Register event) ->
+            event.registerCreativeModeTab(id("items"), builder -> builder
+                .title(Component.literal("Foundations PL4"))
+                .icon(() -> new ItemStack(item("sapphire")))
+                .displayItems(output ->
+                    ITEMS.getEntries().forEach(entry -> output.accept(entry.get())))));
+
         net.foundations.pl4.core.CoreRecipes.register(bus);
         container.registerConfig(ModConfig.Type.SERVER,PLConfig.SPEC);
         container.registerConfig(ModConfig.Type.CLIENT,PLClientConfig.SPEC);
@@ -86,5 +89,5 @@ public final class FoundationsPL4 {
         MinecraftForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }
     public static ResourceLocation id(String path) { return new ResourceLocation(ID,path); }
-    public static Item item(String id) { return net.minecraft.core.Registry.ITEM.get(id(id)); }
+    public static Item item(String id) { return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(id(id)); }
 }

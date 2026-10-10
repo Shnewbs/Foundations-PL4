@@ -2,7 +2,6 @@ package net.foundations.pl4.client;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -65,7 +64,7 @@ final class DisplayCanvas {
             double modelDepthBlocks=blockPreview ? BLOCK_MODEL_DEPTH_BLOCKS : FLAT_ITEM_DEPTH_BLOCKS;
             pose.scale(size,-size,(float)(modelDepthBlocks/scale));
             if(blockPreview&&sample.item().getItem() instanceof BlockItem bi){
-                pose.scale(.62F,.62F,.62F);pose.mulPose(Vector3f.XP.rotationDegrees(30));pose.mulPose(Vector3f.YP.rotationDegrees(45));pose.translate(-.5,-.5,-.5);
+                pose.scale(.62F,.62F,.62F);pose.mulPose(net.foundations.pl4.compat.AxisRotation.xp(30));pose.mulPose(net.foundations.pl4.compat.AxisRotation.yp(45));pose.translate(-.5,-.5,-.5);
                 mc.getBlockRenderer().renderSingleBlock(bi.getBlock().defaultBlockState(),pose,buffers,LightTexture.FULL_BRIGHT,OverlayTexture.NO_OVERLAY);
             }else mc.getItemRenderer().renderStatic(sample.item(),TransformType.GUI,LightTexture.FULL_BRIGHT,OverlayTexture.NO_OVERLAY,pose,buffers,0);
         }catch(RuntimeException error){warn(sample.itemId(),error);}finally{pose.popPose();}

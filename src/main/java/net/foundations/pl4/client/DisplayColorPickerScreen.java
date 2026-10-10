@@ -13,9 +13,9 @@ final class DisplayColorPickerScreen extends net.foundations.pl4.compat.PortScre
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         w=Math.min(392,width-16);h=Math.min(268,height-16);left=(width-w)/2;top=(height-h)/2;
-        addRenderableWidget(Button.builder(Component.literal("PL4 default"),b->selected=EditorPalette.DEFAULT).bounds(left+10,top+h-26,86,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+w-138,top+h-26,56,20).build());
-        addRenderableWidget(Button.builder(Component.literal("Use colour"),b->{parent.color(selected);minecraft.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("PL4 default"),b->selected=EditorPalette.DEFAULT).bounds(left+10,top+h-26,86,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Back"),b->onClose()).bounds(left+w-138,top+h-26,56,20).build());
+        addRenderableWidget(Button.pl4Builder(Component.literal("Use colour"),b->{parent.color(selected);minecraft.setScreen(parent);}).bounds(left+w-78,top+h-26,68,20).build());
     }
     private int columns(){return 6;}private int cell(){return 34;}private int gap(){return 5;}
     private int gridX(){return left+14;}private int gridY(){return top+56;}

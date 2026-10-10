@@ -38,10 +38,10 @@ final class DisplayTemplatesScreen extends net.foundations.pl4.compat.PortScreen
         button("Discard preview",2,127,cw,()->{preview=null;status="Preview discarded";});
         validPreview=false;
         if(preview!=null)try{previewElements=preview.prepare(parent.spaceW(),parent.spaceH(),fit,clearReaders);previewWidth=parent.spaceW();previewHeight=parent.spaceH();validPreview=true;}catch(IllegalArgumentException e){previewElements=preview.elements();previewWidth=preview.width();previewHeight=preview.height();status=e.getMessage();}
-        var apply=addRenderableWidget(Button.builder(Component.literal("Apply all pages"),b->action(()->{if(preview==null)throw new IllegalArgumentException("Load a preview first");parent.importLayout(preview,fit,clearReaders,previewRevision);if(parent.layoutPending())onClose();else status=parent.message;})).bounds(left+10,top+h-28,(w-28)/2,20).build());apply.active=parent.editable&&!parent.layoutPending()&&validPreview;
-        addRenderableWidget(Button.builder(Component.literal("Back"),b->onClose()).bounds(left+18+(w-28)/2,top+h-28,(w-28)/2,20).build());
+        var apply=addRenderableWidget(Button.pl4Builder(Component.literal("Apply all pages"),b->action(()->{if(preview==null)throw new IllegalArgumentException("Load a preview first");parent.importLayout(preview,fit,clearReaders,previewRevision);if(parent.layoutPending())onClose();else status=parent.message;})).bounds(left+10,top+h-28,(w-28)/2,20).build());apply.active=parent.editable&&!parent.layoutPending()&&validPreview;
+        addRenderableWidget(Button.pl4Builder(Component.literal("Back"),b->onClose()).bounds(left+18+(w-28)/2,top+h-28,(w-28)/2,20).build());
     }
-    private void button(String text,int column,int y,int cw,Action action){addRenderableWidget(Button.builder(Component.literal(text),b->{action(action);rebuildWidgets();}).bounds(left+10+column*(cw+4),top+y,cw,20).build());}
+    private void button(String text,int column,int y,int cw,Action action){addRenderableWidget(Button.pl4Builder(Component.literal(text),b->{action(action);rebuildWidgets();}).bounds(left+10+column*(cw+4),top+y,cw,20).build());}
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){
         super.renderBackground(g,mx,my,partial);g.fill(left,top,left+w,top+h,0xFA182229);g.drawString(font,title,left+10,top+10,0xFFE3F2F4,false);
         int px=left+10,py=top+152,pw=w-20,ph=Math.max(10,h-208);g.fill(px,py,px+pw,py+ph,0xFF0B1014);

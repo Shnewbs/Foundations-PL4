@@ -29,7 +29,7 @@ public final class VisualSamples {
         for(int index=Math.max(0,offset);index<sorted.size();index++){Sum sum=sorted.get(index);if(rows.size()>=limit)break;
             ItemStack item=sum.item.copy();FluidStack fluid=sum.fluid.copy();String id,name,unit;CompoundTag it=new CompoundTag(),ft=new CompoundTag();
             if(!item.isEmpty()){
-                id=Registry.ITEM.getKey(item.getItem()).toString();name=item.getHoverName().getString();unit="items";
+                id=net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item.getItem()).toString();name=item.getHoverName().getString();unit="items";
                 // Rendering is allowed to retain custom models, dyes, enchantment glint and other bounded visual components.
                 net.foundations.pl4.compat.PortData.remove(item,DataComponents.CONTAINER);net.foundations.pl4.compat.PortData.remove(item,DataComponents.BLOCK_ENTITY_DATA);
                 it=(CompoundTag)net.foundations.pl4.compat.PortData.save(item,registry);byte[] encoded=bounded(it,4096);
@@ -39,7 +39,7 @@ public final class VisualSamples {
                 budget=Math.max(0,budget-(encoded==null?0:encoded.length));
                 if(!variant.isEmpty())id+="~"+variant;else if(!net.foundations.pl4.compat.PortData.components(sum.item).isEmpty()&&!it.isEmpty())id+="~"+fingerprint(it);
             }else{
-                id=Registry.FLUID.getKey(fluid.getFluid()).toString();name=fluid.getDisplayName().getString();unit="mB";
+                id=net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid.getFluid()).toString();name=fluid.getDisplayName().getString();unit="mB";
                 ft=(CompoundTag)net.foundations.pl4.compat.PortData.save(fluid,registry);byte[] encoded=bounded(ft,4096);
                 String variant=encoded!=null&&!net.foundations.pl4.compat.PortData.components(sum.fluid).isEmpty()?fingerprint(ft):"";
                 if(encoded==null||encoded.length>budget){fluid=new FluidStack(fluid.getFluid(),1);ft=(CompoundTag)net.foundations.pl4.compat.PortData.save(fluid,registry);encoded=bounded(ft,Math.min(4096,budget));}
