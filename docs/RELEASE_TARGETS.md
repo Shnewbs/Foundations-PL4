@@ -22,6 +22,10 @@ Do not mark a 26.3 JAR as compatible with 26.1.2. Client APIs differ, including 
 
 ## Additional functional-port scope
 
-The [functional ports and fallback plan](MULTIVERSION_PORT_PLAN.md) adds 1.20.1, 1.19.2, 1.18.2, 1.16.5 and 1.12.2, with **1.6.4 experimental**. These additional ports are not yet published or claimed working. **1.7.10 is excluded.** 26.4 is a forward target when a usable toolchain is verified. The existing 26.1 and 26.2 refs remain audit-only, not certified builds. No Fabric support is implied.
+**Status reconciliation (October 10, 2026):** This document's three-target matrix is the original **NeoForge current-track release policy**, not the entire subsequent Minecraft catalog. The [master roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md) lists **17 tagged/submitted targets** as recorded in [the CurseForge publication report](CURSEFORGE_MULTIVERSION_STATUS.md), including additional independently versioned Forge and legacy releases. The earlier [functional-port scope plan](MULTIVERSION_PORT_PLAN.md) remains the feature/fallback contract, not proof every published port has full PL2 parity.
+
+Minecraft **1.13.2** still has a blocked source/native port. Minecraft **1.16.4** has a released Java-8-compatible binary but depends on a documented special Forge-35 launcher profile; ordinary client compatibility is unverified. Minecraft **1.6.4** remains experimental, **1.7.10** remains excluded, and **26.4** remains a forward target pending its exact toolchain. `mc/26.1` and `mc/26.2` remain audit-only without independent validation. No Fabric support is implied.
+
+CurseForge API receipt is not moderation approval or an installed-game certification. Each exact target needs its own runtime/source/checksums and native, real-client, multiplayer, optional-provider and fallback acceptance evidence.
 
 **Further API testing is still required.** Installed optional mods, real-client rendering and multiplayer acceptance remain separate from native test results. See [API_TESTING.md](API_TESTING.md). No compatibility claim is made for other Minecraft versions until tested. Essential tasks require a tested version-appropriate alternative or PL4-owned fallback rather than silent loss of functionality.
