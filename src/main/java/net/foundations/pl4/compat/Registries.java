@@ -1,12 +1,14 @@
 package net.foundations.pl4.compat;
+import net.minecraft.util.registry.Registry;
+/** Native global registries for this target, not post-1.16 registry keys. */
 public final class Registries {
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.block.Block>> BLOCK=net.minecraft.util.registry.Registry.BLOCK_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.tileentity.TileEntityType<?>>> BLOCK_ENTITY_TYPE=net.minecraft.util.registry.Registry.BLOCK_ENTITY_TYPE_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.world.World>> DIMENSION=net.minecraft.util.registry.Registry.DIMENSION_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.fluid.Fluid>> FLUID=net.minecraft.util.registry.Registry.FLUID_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.item.Item>> ITEM=net.minecraft.util.registry.Registry.ITEM_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.inventory.container.ContainerType<?>>> MENU=net.minecraft.util.registry.Registry.MENU_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.item.crafting.IRecipeSerializer<?>>> RECIPE_SERIALIZER=net.minecraft.util.registry.Registry.RECIPE_SERIALIZER_REGISTRY;
- public static final net.minecraft.util.RegistryKey<net.minecraft.util.registry.Registry<net.minecraft.item.crafting.IRecipeType<?>>> RECIPE_TYPE=net.minecraft.util.registry.Registry.RECIPE_TYPE_REGISTRY;
+ public static final Registry<net.minecraft.block.Block> BLOCK=Registry.BLOCK;
+ public static final Registry<net.minecraft.tileentity.TileEntityType<?>> BLOCK_ENTITY_TYPE=Registry.BLOCK_ENTITY_TYPE;
+ public static final Registry<net.minecraft.world.dimension.DimensionType> DIMENSION=Registry.DIMENSION_TYPE;
+ public static final Registry<net.minecraft.fluid.Fluid> FLUID=Registry.FLUID;
+ public static final Registry<net.minecraft.item.Item> ITEM=Registry.ITEM;
+ public static final Registry<net.minecraft.inventory.container.ContainerType<?>> MENU=Registry.MENU;
+ public static final Registry<net.minecraft.item.crafting.IRecipeSerializer<?>> RECIPE_SERIALIZER=Registry.RECIPE_SERIALIZER;
+ public static final Registry<net.minecraft.item.crafting.IRecipeType<?>> RECIPE_TYPE=Registry.RECIPE_TYPE;
  private Registries(){}
 }
