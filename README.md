@@ -22,11 +22,17 @@ Each release contains the runtime JAR, source JAR, full source archive and check
 
 The current three-track alpha artifact rollout is complete. **This does not mean all future ports, optional integrations or functional fallbacks are complete.** Installed optional-mod APIs, live multiplayer, client visual acceptance, sustained-load acceptance and full PL2 parity remain separate work.
 
-## Additional functional ports and alternatives
+## Multi-version status and current roadmap (October 10, 2026)
 
-The next multi-version milestone targets 1.20.1, 1.19.2, 1.18.2, 1.16.5 and 1.12.2, with **1.6.4 experimental** and **1.7.10 excluded**. 26.4 is a forward target when a usable toolchain is verified. These additional ports are not yet claimed working. See [the approved plan](docs/MULTIVERSION_PORT_PLAN.md).
+**[Master PL4 roadmap and live acceptance backlog](FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md)** — use this for current target coverage and incomplete features. The original [multi-version implementation plan](docs/MULTIVERSION_PORT_PLAN.md) is retained as a scope contract, not a current publication ledger.
 
-Essential PL4 tasks must have a tested compatible optional adapter, an alternative, or a PL4-owned fallback. Recipe lookup, inspection, configuration, native storage and diagnostics must not silently disappear because an optional API is unavailable. Missing foreign energy/mechanical systems are not emulated with guessed units or conversions. Third-party mods remain optional, and not every planned fallback is implemented yet.
+The [cross-version CurseForge upload report](docs/CURSEFORGE_MULTIVERSION_STATUS.md) records **17 latest tagged Minecraft targets**: fourteen additional API-accepted uploads, plus three previously submitted NeoForge releases. These include the original 1.21.1/26.1.2/26.3 tracks, Forge 1.14.4–1.20.1 target releases for specific versions, and 1.12.2 / experimental 1.6.4 legacy-preview releases. **Upload acceptance is not moderator approval or proof of a working client, full PL2 parity, optional integration or large-modpack performance.** Every exact Minecraft target has its own JAR and acceptance status.
+
+1.16.4 is its own released tag, **not** equivalent to 1.16.5, but requires a special Forge-35/ModLauncher library-precedence profile; standard client-launcher acceptance remains open. 1.13.2 remains **blocked** pending Forge-25 native API/validation work. 1.8.9, 1.11.2, additional final patch gaps and future 26.4 still need independent toolchain/port work. **1.7.10 is excluded**; 1.6.4 remains experimental.
+
+Essential PL4 tasks require target-appropriate compatible optional adapters, alternatives or included PL4-owned fallbacks. Recipe lookup, inspection, configuration, native storage and diagnostics must not silently disappear because an optional API is absent. Unavailable foreign energy/mechanical networks must not be simulated using guessed units/conversions. Stability mods are optional; not every planned fallback is already implemented or tested.
+
+See [version-gap policy](docs/VERSION_COVERAGE.md), [dated coverage audit](docs/VERSION_COVERAGE_CHECKPOINT.md), [newer Forge/legacy release history](docs/PORT_IMPLEMENTATION_STATUS.md), and [exact installed API acceptance](docs/API_TESTING.md).
 
 ## Installation and validation
 
