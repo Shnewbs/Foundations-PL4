@@ -1,11 +1,7 @@
 package net.foundations.pl4.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
@@ -19,7 +15,7 @@ public final class HostRenderer extends TileEntityRenderer<HostEntity> {
     private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
     private final net.minecraft.block.BlockState[][][] largeStates=new net.minecraft.block.BlockState[2][6][16];
     private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
-    public HostRenderer(TileEntityRendererDispatcher c){super(c);
+    public HostRenderer(){super();
         String[] materials={"data","redstone_off","redstone_on"},connectors={"centre","cable","internal","half"};
         var leadStates=new java.util.HashMap<String,net.minecraft.block.BlockState[]>();
         for(int m=0;m<3;m++)for(int type=0;type<4;type++)for(Direction face:FACES)
@@ -45,38 +41,43 @@ public final class HostRenderer extends TileEntityRenderer<HostEntity> {
         }
         for(int side=0;side<2;side++)for(Direction face:FACES)for(int mask=0;mask<16;mask++)largeStates[side][face.ordinal()][mask]=FoundationsPL4.LARGE_MODEL.get().defaultBlockState().setValue(LargeDisplayModelBlock.FACING,face).setValue(LargeDisplayModelBlock.CONNECTIONS,mask).setValue(LargeDisplayModelBlock.FRONT_OUTWARD,side==1);
     }
-    @Override public void render(HostEntity host,float partial,MatrixStack pose,IRenderTypeBuffer buffer,int light,int overlay){
+    @Override public void render(HostEntity host,double rx,double ry,double rz,float partial,int destroyStage){
+        var pose=new net.foundations.pl4.compat.LegacyWorldPose();
+        pose.pushPose();
+        try{
+        pose.translate(rx,ry,rz);
         Minecraft mc=Minecraft.getInstance();
         for(Part part:host.parts.values()){
             if(part.kind.cable()) {
                 int material=part.kind==Kind.DATA_CABLE?0:(part.signal>0?2:1);
-                mc.getBlockRenderer().renderSingleBlock(cableStates[material][0][0],pose,buffer,light,overlay);
+                mc.getBlockRenderer().renderSingleBlock(cableStates[material][0][0],1.0F);
                 for(Direction d:FACES) {
                     int type=host.connection(d);if(type==0)continue;
-                    mc.getBlockRenderer().renderSingleBlock(cableStates[material][type][d.ordinal()],pose,buffer,light,overlay);
+                    mc.getBlockRenderer().renderSingleBlock(cableStates[material][type][d.ordinal()],1.0F);
                 }
             } else if(part.kind==Kind.LARGE_DISPLAY){
                 var model=largeStates[part.displayOutward?1:0][part.face.ordinal()][part.canvasMask];
-                mc.getBlockRenderer().renderSingleBlock(model,pose,buffer,light,overlay);
+                mc.getBlockRenderer().renderSingleBlock(model,1.0F);
             } else {
                 pose.pushPose();
                 if(part.hologram()){
                     int yaw=net.foundations.pl4.core.HologramProjection.baseYaw(part.face.ordinal(),part.hologramView);
-                    pose.translate(.5,.5,.5);pose.mulPose(Vector3f.YP.rotationDegrees(yaw));pose.translate(-.5,-.5,-.5);
+                    pose.translate(.5,.5,.5);pose.rotateY(yaw);pose.translate(-.5,-.5,-.5);
                 }
                 var model=partStates.get(part.kind)[part.kind.reader()?(host.readerHasDisplay(part)?1:0):(part.displayOutward?1:0)][part.face.ordinal()];
                 if(part.kind==Kind.ENERGY_READER){if(part.energySystem.equals("CREATE"))model=kineticStates[host.readerHasDisplay(part)?1:0][part.face.ordinal()];else if(part.energySystem.equals("AE2"))model=ae2States[host.readerHasDisplay(part)?1:0][part.face.ordinal()];}
-                mc.getBlockRenderer().renderSingleBlock(model,pose,buffer,light,overlay);
+                mc.getBlockRenderer().renderSingleBlock(model,1.0F);
                 pose.popPose();
             }
             if(host.externalLead(part)){
                 int material=part.kind.redstone()?(part.signal>0?2:1):0;
-                mc.getBlockRenderer().renderSingleBlock(leadModels.get(part.kind)[material][part.face.ordinal()],pose,buffer,light,overlay);
+                mc.getBlockRenderer().renderSingleBlock(leadModels.get(part.kind)[material][part.face.ordinal()],1.0F);
             }
-            if(part.kind.display()&&(part.kind!=Kind.LARGE_DISPLAY||(part.canvasColumn==0&&part.canvasRow==0)))display(host,part,pose,buffer,mc.font);
+            if(part.kind.display()&&(part.kind!=Kind.LARGE_DISPLAY||(part.canvasColumn==0&&part.canvasRow==0)))display(host,part,pose,mc.font);
         }
+        }finally{pose.popPose();}
     }
-    private void display(HostEntity host,Part p,MatrixStack pose,IRenderTypeBuffer buffer,FontRenderer font){
+    private void display(HostEntity host,Part p,net.foundations.pl4.compat.LegacyWorldPose pose,FontRenderer font){
         var eye=Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         net.foundations.pl4.core.DisplayFacing.Frame frame;
         double ox,oy,oz;
@@ -91,8 +92,8 @@ public final class HostRenderer extends TileEntityRenderer<HostEntity> {
             if((eye.x-host.getBlockPos().getX()-ox)*frame.normal().x()+(eye.y-host.getBlockPos().getY()-oy)*frame.normal().y()+(eye.z-host.getBlockPos().getZ()-oz)*frame.normal().z()<=0)return;
         }
         pose.pushPose();pose.translate(ox,oy,oz);
-        if(frame.rotationX()!=0)pose.mulPose(Vector3f.XP.rotationDegrees(frame.rotationX()));
-        if(frame.rotationY()!=0)pose.mulPose(Vector3f.YP.rotationDegrees(frame.rotationY()));
+        if(frame.rotationX()!=0)pose.rotateX(frame.rotationX());
+        if(frame.rotationY()!=0)pose.rotateY(frame.rotationY());
         float scale=p.kind==Kind.MINI_DISPLAY?.0018F:.0035F;
         int logicalW=net.foundations.pl4.core.DisplayElements.WIDTH,logicalH=net.foundations.pl4.core.DisplayElements.HEIGHT;
         if(p.kind==Kind.LARGE_DISPLAY){
@@ -101,16 +102,16 @@ public final class HostRenderer extends TileEntityRenderer<HostEntity> {
             pose.translate(-logicalW*scale/2.0,logicalH*scale/2.0,0);
         }else pose.translate(-124*scale,60*scale,0);
         pose.scale(scale,-scale,scale);
-        var canvas=new DisplayCanvas(pose,buffer,scale);
+        var canvas=new DisplayCanvas(pose,scale);
         var active=DisplayEditorScreen.active();
         var editor=active!=null&&active.matches(host,p)?active:null;
         displayPainter.paint(p,editor==null?p.elements:editor.preview(p),canvas,
             p.kind==Kind.MINI_DISPLAY?new net.foundations.pl4.core.MonitorPresentation.Region(0,-64,248,248):
             p.kind==Kind.LARGE_DISPLAY?new net.foundations.pl4.core.MonitorPresentation.Region(0,0,logicalW,logicalH):new net.foundations.pl4.core.MonitorPresentation.Region(0,0,248,120),editor!=null);
-        if(editor!=null){editor.capture(pose.last().pose());editor.drawOnMonitor(canvas,p);}
+        if(editor!=null){editor.capture();editor.drawOnMonitor(canvas,p);}
         pose.popPose();
     }
-    private void text(FontRenderer font,String text,int x,int y,int color,MatrixStack pose,IRenderTypeBuffer buffer){if(x<0||x>=248||y<0||y>111)return;font.drawInBatch(font.substrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color,false,pose.last().pose(),buffer,false,0,15728880);}
+    private void text(FontRenderer font,String text,int x,int y,int color){if(x<0||x>=248||y<0||y>111)return;font.draw(font.substrByWidth(text,Math.max(0,248-x)),x,y,0xFF000000|color);}
     public static net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox(HostEntity host){
         var bounds=new net.minecraft.util.math.AxisAlignedBB(host.getBlockPos());
         for(Part p:host.parts.values())if(p.kind==Kind.LARGE_DISPLAY&&p.canvasColumn==0&&p.canvasRow==0){

@@ -45,7 +45,7 @@ public final class GuiGraphics {
     private void applyClip(){
         if(clips.isEmpty()){GL11.glDisable(GL11.GL_SCISSOR_TEST);return;}
         int[] rect=clips.peek();
-        var vp=BufferUtils.createIntBuffer(16);GL11.glGetInteger(GL11.GL_VIEWPORT,vp);
+        var vp=BufferUtils.createIntBuffer(16);GL11.glGetIntegerv(GL11.GL_VIEWPORT,vp);
         int vx=vp.get(0),vy=vp.get(1),vw=vp.get(2),vh=vp.get(3);
         int sw=mc.screen==null?Math.max(1,vw):Math.max(1,mc.screen.width);
         int sh=mc.screen==null?Math.max(1,vh):Math.max(1,mc.screen.height);
