@@ -27,13 +27,14 @@ jobs:
           python3 tools/prepare_1193.py
           python3 tools/backport_1193_api.py
           git diff --check
-          git add src/main/resources/META-INF/mods.toml src/main/resources/pack.mcmeta src/main/resources/assets/foundations_pl4/guide/en_us.json tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md
+          git add src/main/java src/main/resources/META-INF/mods.toml src/main/resources/pack.mcmeta src/main/resources/assets/foundations_pl4/guide/en_us.json tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git commit -m 'Prepare exact Minecraft 1.19.3 / Forge44 source'
             git push origin HEAD:mc/1.19.3
           fi
+          git diff --exit-code
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
