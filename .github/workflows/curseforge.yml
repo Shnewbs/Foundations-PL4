@@ -1,12 +1,25 @@
-name: Publish existing release to CurseForge
+name: Mirror verified Minecraft releases to CurseForge
 
+# Releases published with GitHub Actions' GITHUB_TOKEN do not trigger
+# downstream workflows. An hourly reconciliation covers those releases.
 on:
+  release:
+    types: [published]
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/curseforge.yml'
+      - 'tools/upload_curseforge.py'
+      - 'tools/curseforge_sync.py'
+      - 'tools/test_curseforge_publish.py'
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing GitHub release tag
-        required: true
-        default: v0.0.2a.R1
+        description: 'Existing release tag (blank = newest per Minecraft version)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -16,39 +29,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  upload:
+  publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
-      - name: Download the already validated GitHub artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag }}
-        run: |
-          python - <<'PY'
-          import os, re, subprocess, json, hashlib
-          from pathlib import Path
-          tag = os.environ['RELEASE_TAG']
-          if not re.fullmatch(r'v[A-Za-z0-9._-]+', tag):
-              raise SystemExit('Invalid release tag')
-          version = tag[1:]
-          jar = f'FoundationsPL4-1.21.1-{version}.jar'
-          repo = os.environ['GITHUB_REPOSITORY']
-          subprocess.run(['gh', 'release', 'download', tag, '--repo', repo, '--pattern', jar, '--pattern', 'SHA256SUMS.txt', '--dir', 'build/libs'], check=True)
-          digest = hashlib.sha256(Path('build/libs', jar).read_bytes()).hexdigest()
-          entries = Path('build/libs/SHA256SUMS.txt').read_text().splitlines()
-          if f'{digest}  {jar}' not in entries:
-              raise SystemExit('GitHub release checksum does not match runtime JAR')
-          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', repo, '--json', 'body'], text=True))
-          notes = Path(f'docs/releases/{version}.md')
-          notes.parent.mkdir(parents=True, exist_ok=True)
-          notes.write_text(release['body'], encoding='utf-8')
-          with open(os.environ['GITHUB_ENV'], 'a') as env:
-              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\n')
-          PY
-      - name: Upload release to CurseForge
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate target identities, release maturity and checksum rules
+        run: python3 tools/test_curseforge_publish.py
+      - name: Upload exact validated versions and record receipts
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
-        run: python tools/upload_curseforge.py
+          RELEASE_EVENT_TAG: ${{ github.event.release.tag_name }}
+          SELECTED_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == 'release' && -n "$RELEASE_EVENT_TAG" ]]; then
+            python3 tools/curseforge_sync.py --tag "$RELEASE_EVENT_TAG"
+          elif [[ "$GITHUB_EVENT_NAME" == 'workflow_dispatch' && -n "$SELECTED_TAG" ]]; then
+            python3 tools/curseforge_sync.py --tag "$SELECTED_TAG"
+          else
+            # Last published GitHub release per Minecraft target; no
+            # relabeling or unverified adjacent-version artifacts.
+            python3 tools/curseforge_sync.py --backfill
+          fi
+      - name: Archive upload IDs and per-version blockers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: curseforge-sync-${{ github.run_id }}-${{ github.run_attempt }}
+          path: curseforge-sync-report.json
+          retention-days: 30
+          if-no-files-found: warn
