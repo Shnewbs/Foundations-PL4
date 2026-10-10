@@ -1,5 +1,19 @@
 // Compile modern source, then convert language features/API calls BEFORE Forge reobfuscation.
-// Never replace Forge's scanner or ask users to install a runtime Java agent.
+// The official 1.16.1 mapped Widget contains a duplicate getHeight declaration.
+// Fix ONLY a temporary build-tool hierarchy, never the installed Forge/Minecraft classes.
+def remapClasspath = { collection ->
+    files(collection.files.collect { entry ->
+        entry.name.endsWith('mapped_official_1.16.1.jar') ? file('build/java8/native-hierarchy.jar') : entry
+    })
+}
+tasks.register('prepareRemapHierarchy', Exec) {
+    dependsOn 'classes'
+    doFirst {
+        def out=file('build/java8/original-hierarchy-classpath.txt');out.parentFile.mkdirs()
+        out.text=sourceSets.main.compileClasspath.files.collect { it.absolutePath }.join(File.pathSeparator)
+    }
+    commandLine 'python3','tools/java8/remap_hierarchy.py'
+}
 tasks.register('java8InputJar', Jar) {
     dependsOn 'classes'
     archiveClassifier = 'java8-input'
@@ -12,9 +26,10 @@ tasks.register('java8TestInputJar', Jar) {
     from sourceSets.portTest.output
 }
 tasks.register('java8Classpath') {
+    dependsOn 'prepareRemapHierarchy'
     doLast {
         def out = file('build/java8/classpath.txt'); out.parentFile.mkdirs()
-        out.text = sourceSets.portTest.compileClasspath.files.collect { it.absolutePath }.join(File.pathSeparator)
+        out.text = remapClasspath(sourceSets.portTest.compileClasspath).files.collect { it.absolutePath }.join(File.pathSeparator)
     }
 }
 tasks.register('convertJava8', Exec) {
@@ -34,12 +49,14 @@ tasks.register('java8ScenarioJar', Jar) {
     from { zipTree(file('build/java8/tests-shaded.jar')) }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-// ForgeGradle replaces the raw Minecraft dependency after evaluation. Its reobf classpath
-// setter eagerly enumerates FileCollections, so defer that setter until replacement is complete.
 afterEvaluate {
     reobf {
-        java8RuntimeJar { classpath = sourceSets.main.compileClasspath }
-        java8ScenarioJar { classpath = sourceSets.portTest.compileClasspath }
+        jar { classpath = remapClasspath(sourceSets.main.compileClasspath) }
+        java8RuntimeJar { classpath = remapClasspath(sourceSets.main.compileClasspath) }
+        java8ScenarioJar { classpath = remapClasspath(sourceSets.portTest.compileClasspath) }
+    }
+    tasks.matching { it.name in ['reobfJar','reobfJava8RuntimeJar','reobfJava8ScenarioJar'] }.configureEach {
+        dependsOn 'prepareRemapHierarchy'
     }
 }
 tasks.named('java8RuntimeJar') { finalizedBy 'reobfJava8RuntimeJar' }
