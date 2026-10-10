@@ -46,8 +46,8 @@ jobs:
       - name: GitHub release only if native tests succeed
         shell: bash
         env:
-          GH_${{ github.token }}: TOKEN
-          GH_${{ github.repository }}: REPO
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           target=1.19.1
