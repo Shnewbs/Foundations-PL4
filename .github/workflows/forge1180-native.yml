@@ -1,0 +1,80 @@
+name: Forge Minecraft 1.18 native port acceptance
+on:
+  push:
+    branches: [mc/1.18]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: forge1180-native
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare independently targeted Forge38 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/prepare_1180.py
+          git diff --check
+          git add src/main/resources/META-INF/mods.toml src/main/resources/pack.mcmeta src/main/resources/assets/foundations_pl4/guide/en_us.json tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/FIELD_GUIDE.md docs/releases/0.2a-port.1.md
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Prepare exact Minecraft 1.18 / Forge38 native sources'
+            git push origin HEAD:mc/1.18
+          fi
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
+          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
+      - name: Compile native version, reobfuscate and execute 193 GameTests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+          grep -F 'All 193 required tests passed' verification-logs/native.log
+      - name: Publish only an independently tested exact-version runtime
+        shell: bash
+        env:
+          GH_${{ github.token }}: TOKEN
+          GH_${{ github.repository }}: REPO
+        run: |
+          set -euo pipefail
+          target=1.18
+          version=$(python3 -c 'import json;print(json.load(open("BUILD_STATUS.json"))["version"])')
+          name="FoundationsPL4-$target-$version";tag="mc$target-v$version"
+          test "$(git ls-remote origin "refs/heads/mc/$target" | cut -f1)" = "$(git rev-parse HEAD)"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            git diff --exit-code "$tag" HEAD -- src/main build.gradle settings.gradle gradle.properties
+            gh release view "$tag"
+            exit 0
+          fi
+          mkdir -p release-files
+          cp "build/libs/$name.jar" "build/libs/$name-sources.jar" release-files/
+          git archive --format=zip --output="release-files/$name-source.zip" HEAD
+          cp verification-logs/native.log "release-files/$name-native-tests.log"
+          cp verification-logs/SOURCE_COMMIT.txt release-files/
+          (cd release-files && sha256sum * > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          git tag "$tag";git push origin "$tag"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $target $version — Forge38 alpha" --notes-file "docs/releases/$version.md"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: forge1180-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release-files/
+            verification-logs/
+            run/logs/
+            build/reports/
+          retention-days: 14
+          if-no-files-found: warn
