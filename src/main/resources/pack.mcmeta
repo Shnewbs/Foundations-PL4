@@ -1,1 +1,6 @@
-{"pack": {"pack_format": 5, "description": "Foundations PL4 Forge 1.15.2 resources"}}
+{
+  "pack": {
+    "pack_format": 4,
+    "description": "Foundations PL4 Forge 1.14.4 resources"
+  }
+}

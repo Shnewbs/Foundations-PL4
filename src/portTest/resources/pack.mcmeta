@@ -1,1 +1,6 @@
-{"pack":{"pack_format":5,"description":"PL4 isolated native scenarios - not for production"}}
+{
+  "pack": {
+    "pack_format": 4,
+    "description": "PL4 isolated native scenarios - not for production"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "minecraft": "1.14.4",
+  "loader": "Forge",
+  "loader_version": "28.2.26",
+  "java": 8,
+  "release_allowed": false
+}

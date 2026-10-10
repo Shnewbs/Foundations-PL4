@@ -1,6 +1,6 @@
 # Foundations PL4 Field Guide
 
-Minecraft 1.15.2 / Forge / Foundations PL4 0.2a-port.1
+Minecraft 1.14.4 / Forge / Foundations PL4 0.2a-port.1
 
 ## Welcome to Foundations PL4
 
