@@ -15,7 +15,7 @@ public final class PortWorldgenGameTests {
   PortAssertions.check(!hasOre(registry.getOrThrow(Biomes.NETHER_WASTES)),"Nether must not get overworld sapphire placement");
   PortAssertions.check(!hasOre(registry.getOrThrow(Biomes.THE_END)),"End must not get overworld sapphire placement");h.succeed();
  }
- private static boolean hasOre(Biome biome){return biome.getGenerationSettings().features().stream().flatMap(set->set.stream()).anyMatch(holder->holder.is(FoundationsPL4.id("sapphire_ore")));}
+ private static boolean hasOre(Biome biome){return biome.getGenerationSettings().features().stream().flatMap(set->set.stream()).anyMatch(holder->holder.get()==PortWorldgen.sapphire());}
  @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
  public static void sapphireOreConfigurationIsNative(GameTestHelper h){
   var registry=h.getLevel().registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
