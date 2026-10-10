@@ -155,7 +155,7 @@ public final class PLGameTests {
     public static void internalRecipeCodecPreservesCountsAndComponents(GameTestHelper h){
         ItemStack output=new ItemStack(Items.EMERALD,4);net.foundations.pl4.compat.PortData.set(output,net.foundations.pl4.compat.DataComponents.CUSTOM_NAME,net.minecraft.network.chat.Component.literal("Recipe codec fixture"));
         var recipe=new net.foundations.pl4.core.ForgingRecipe(net.minecraft.world.item.crafting.Ingredient.of(Items.DIAMOND),3,output,11,7);
-        var codec=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get().codec().codec();
+        var codec=net.foundations.pl4.core.CoreRecipes.HAMMER_SERIALIZER.get().codec();
         var ops=net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE,h.getLevel().registryAccess());
         var encoded=codec.encodeStart(ops,recipe).getOrThrow(false,message->{throw new IllegalArgumentException(message);});var decoded=codec.parse(ops,encoded).getOrThrow(false,message->{throw new IllegalArgumentException(message);});
         h.assertTrue(!decoded.matches(new net.foundations.pl4.compat.SingleRecipeInput(new ItemStack(Items.DIAMOND,2)),h.getLevel()),"Insufficient input count must not match");
