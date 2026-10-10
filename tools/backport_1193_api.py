@@ -66,11 +66,11 @@ new='super(x,y,width,height,message,b->press.onPress((Button)b),net.minecraft.cl
 if old not in s:raise SystemExit('Unexpected Forge43 button ctor')
 s=s.replace(old,new).replace('public static Builder builder(Component message,OnPress press)', 'public static Builder pl4Builder(Component message,OnPress press)')
 s=s.replace('public int getX(){return x;} public int getY(){return y;} public void setX(int value){x=value;} public void setY(int value){y=value;}','')
-button.write_text(s,encoding='utf-8')
+button.write_text('\n'.join(line.rstrip() for line in s.splitlines())+'\n',encoding='utf-8')
 edit=J/'compat/EditBox.java';s=edit.read_text(encoding='utf-8')
 old='public int getX(){return x;}public int getY(){return y;}public void setX(int value){x=value;}public void setY(int value){y=value;}'
 if old not in s:raise SystemExit('Unexpected Forge43 EditBox accessors')
-edit.write_text(s.replace(old,''),encoding='utf-8')
+edit.write_text('\n'.join(line.rstrip() for line in s.replace(old,'').splitlines())+'\n',encoding='utf-8')
 
 editor=J/'client/DisplayEditorScreen.java';s=editor.read_text(encoding='utf-8')
 s=s.replace('import com.mojang.math.Matrix4f;','import org.joml.Matrix4f;')
