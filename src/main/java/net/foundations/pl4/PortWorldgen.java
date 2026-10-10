@@ -17,7 +17,7 @@ public final class PortWorldgen {
  private static PlacedFeature sapphire;
  public static void register(){
   var configured=FeatureUtils.register(FoundationsPL4.id("sapphire_ore").toString(),new ConfiguredFeature<>(Feature.ORE,new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES),FoundationsPL4.ORE.get().defaultBlockState(),6)));
-  sapphire=PlacementUtils.register(FoundationsPL4.id("sapphire_ore").toString(),configured,List.of(CountPlacement.of(15),InSquarePlacement.spread(),HeightRangePlacement.uniform(VerticalAnchor.absolute(1),VerticalAnchor.absolute(29)),BiomeFilter.biome()));
+  sapphire=PlacementUtils.register(FoundationsPL4.id("sapphire_ore").toString(),new PlacedFeature(()->configured,List.of(CountPlacement.of(15),InSquarePlacement.spread(),HeightRangePlacement.uniform(VerticalAnchor.absolute(1),VerticalAnchor.absolute(29)),BiomeFilter.biome())));
  }
  public static void biome(BiomeLoadingEvent event){
   if(sapphire!=null&&event.getCategory()!=Biome.BiomeCategory.NETHER&&event.getCategory()!=Biome.BiomeCategory.THEEND)
