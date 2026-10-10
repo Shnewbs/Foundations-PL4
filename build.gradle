@@ -16,7 +16,13 @@ minecraft {
             mods { foundations_pl4 { source sourceSets.main } }
         }
         client { }
-        server { args '--nogui' }
+        server {
+            workingDirectory project.file('run-1180-native')
+            args '--nogui'
+            property 'forge.enableGameTest', 'true'
+            property 'forge.enabledGameTestNamespaces', 'foundations_pl4'
+            property 'foundations_pl4.isolatedGameTestConfig', 'true'
+        }
         gameTestServer { property 'forge.enabledGameTestNamespaces', 'foundations_pl4'; property 'foundations_pl4.isolatedGameTestConfig','true' }
     }
 }
@@ -54,3 +60,7 @@ tasks.register('verifyPortJar') {
     }
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
+
+// Native 1.18 Forge38 predates the automatic gameTestServer main class.
+// Relay console commands to the real 1.18 dedicated server instead.
+tasks.named('runServer', JavaExec) { standardInput = System.in }

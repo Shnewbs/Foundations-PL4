@@ -38,11 +38,16 @@ jobs:
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/checked-source.zip HEAD
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
-      - name: Compile native version, reobfuscate and execute 193 GameTests
+      - name: Compile and reobfuscate native Forge38 production source
         shell: bash
         run: |
           set -euo pipefail
-          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+          bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
+      - name: Run exact Forge38 dedicated-server GameTests through native command
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/run_1180_native_tests.py
           grep -F 'All 193 required tests passed' verification-logs/native.log
       - name: Publish only an independently tested exact-version runtime
         shell: bash
