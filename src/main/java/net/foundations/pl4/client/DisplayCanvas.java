@@ -1,5 +1,5 @@
 package net.foundations.pl4.client;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.world.item.ItemDisplayContext;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
@@ -46,7 +46,7 @@ final class DisplayCanvas {
             for(var line:lines){
                 if(lineY+font.lineHeight>maxY)break;
                 int lineWidth=font.width(line);int tx=switch(alignment){case LEFT->0;case CENTER->(scaledWidth-lineWidth)/2;case RIGHT->scaledWidth-lineWidth;};
-                font.drawInBatch(line,tx,lineY,0xFF000000|color,false,pose.last().pose(),buffers,false,0,LightTexture.FULL_BRIGHT);
+                font.drawInBatch(line,tx,lineY,0xFF000000|color,false,pose.last().pose(),buffers,Font.DisplayMode.NORMAL,0,LightTexture.FULL_BRIGHT);
                 lineY+=font.lineHeight;
             }
         }finally{pose.popPose();}
@@ -66,7 +66,7 @@ final class DisplayCanvas {
             if(blockPreview&&sample.item().getItem() instanceof BlockItem bi){
                 pose.scale(.62F,.62F,.62F);pose.mulPose(net.foundations.pl4.compat.AxisRotation.xp(30));pose.mulPose(net.foundations.pl4.compat.AxisRotation.yp(45));pose.translate(-.5,-.5,-.5);
                 mc.getBlockRenderer().renderSingleBlock(bi.getBlock().defaultBlockState(),pose,buffers,LightTexture.FULL_BRIGHT,OverlayTexture.NO_OVERLAY);
-            }else mc.getItemRenderer().renderStatic(sample.item(),TransformType.GUI,LightTexture.FULL_BRIGHT,OverlayTexture.NO_OVERLAY,pose,buffers,0);
+            }else mc.getItemRenderer().renderStatic(sample.item(),ItemDisplayContext.GUI,LightTexture.FULL_BRIGHT,OverlayTexture.NO_OVERLAY,pose,buffers,mc.level,0);
         }catch(RuntimeException error){warn(sample.itemId(),error);}finally{pose.popPose();}
     }
     void fluid(Part.Row sample,DisplayElements.Rect r,double fraction){

@@ -1,11 +1,17 @@
 package net.foundations.pl4.compat;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 public class EditBox extends net.minecraft.client.gui.components.EditBox {
- private Tooltip tooltip;public void setTooltip(Tooltip tip){tooltip=tip;}
+ private Tooltip tooltip;
  public EditBox(Font font,int x,int y,int width,int height,Component message){super(font,x,y,width,height,message);}
-
- @Override public void renderButton(PoseStack pose,int x,int y,float partial){renderWidget(new GuiGraphics(pose),x,y,partial);if(tooltip!=null&&isMouseOver(x,y))new GuiGraphics(pose).renderTooltip(net.minecraft.client.Minecraft.getInstance().font,tooltip.text(),x,y);}
- public void renderWidget(GuiGraphics g,int x,int y,float partial){super.renderButton(g.pose(),x,y,partial);}
+ public void setTooltip(Tooltip tip){tooltip=tip;}
+ @Override protected void renderWidget(net.minecraft.client.gui.GuiGraphics graphics,int x,int y,float partial){
+  super.renderWidget(graphics,x,y,partial);
+  if(tooltip!=null&&isMouseOver(x,y))graphics.renderTooltip(Minecraft.getInstance().font,tooltip.text(),x,y);
+ }
+ public void renderWidget(GuiGraphics g,int x,int y,float partial){
+  g.renderOutline(getX(),getY(),getWidth(),getHeight(),0xFF99A7AE);
+  g.drawString(Minecraft.getInstance().font,getValue(),getX()+4,getY()+5,0xFFFFFFFF,false);
+ }
 }

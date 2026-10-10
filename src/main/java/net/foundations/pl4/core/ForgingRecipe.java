@@ -20,8 +20,8 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
   result=result.copy();
  }
  @Override public ItemStack result(){return result.copy();}
- @Override public ItemStack assemble(SingleRecipeInput input){return result.copy();}
- @Override public ItemStack getResultItem(){return result.copy();}
+ public ItemStack assemble(SingleRecipeInput input){return result.copy();}
+ public ItemStack getResultItem(){return result.copy();}
  public ForgingRecipe value(){return this;}
  @Override public ResourceLocation getId(){return id;}
  @Override public boolean matches(SingleRecipeInput input,Level level){return input.item().getCount()>=inputCount&&ingredient.test(input.item());}
@@ -34,7 +34,7 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
  @Override public RecipeSerializer<?> getSerializer(){return CoreRecipes.HAMMER_SERIALIZER.get();}
  @Override public RecipeType<?> getType(){return CoreRecipes.HAMMER.get();}
  public static final class Serializer implements RecipeSerializer<ForgingRecipe> {
-  private static final Codec<Ingredient> INGREDIENT=Codec.PASSTHROUGH.comapFlatMap(dynamic->{try{return DataResult.success(Ingredient.fromJson(dynamic.convert(JsonOps.INSTANCE).getValue()));}catch(RuntimeException bad){return DataResult.error(bad.getMessage());}},ingredient->new Dynamic<>(JsonOps.INSTANCE,ingredient.toJson()));
+  private static final Codec<Ingredient> INGREDIENT=Codec.PASSTHROUGH.comapFlatMap(dynamic->{try{return DataResult.success(Ingredient.fromJson(dynamic.convert(JsonOps.INSTANCE).getValue()));}catch(RuntimeException bad){return DataResult.error(bad::getMessage);}},ingredient->new Dynamic<>(JsonOps.INSTANCE,ingredient.toJson()));
   private static final MapCodec<ForgingRecipe> CODEC=RecordCodecBuilder.mapCodec(instance->instance.group(
    INGREDIENT.fieldOf("ingredient").forGetter(ForgingRecipe::ingredient),
    optional(Codec.intRange(1,64),"input_count",1).forGetter(ForgingRecipe::inputCount),
@@ -43,7 +43,7 @@ public record ForgingRecipe(Ingredient ingredient,int inputCount,ItemStack resul
    optional(Codec.intRange(0,72000),"cooldown_ticks",200).forGetter(ForgingRecipe::cooldownTicks)
   ).apply(instance,ForgingRecipe::new));
   private static <A> MapCodec<A> optional(Codec<A> codec,String name,A fallback){return new MapCodec<>(){
-   @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);if(value==null)return DataResult.success(fallback);DataResult<A> decoded=codec.parse(ops,value);if(decoded.error().isPresent())return DataResult.error(decoded.error().get().message());return decoded;}
+   @Override public <T> DataResult<A> decode(DynamicOps<T> ops,MapLike<T> input){T value=input.get(name);if(value==null)return DataResult.success(fallback);DataResult<A> decoded=codec.parse(ops,value);if(decoded.error().isPresent())return DataResult.error(()->decoded.error().get().message());return decoded;}
    @Override public <T> RecordBuilder<T> encode(A value,DynamicOps<T> ops,RecordBuilder<T> prefix){return prefix.add(name,codec.encodeStart(ops,value));}
    @Override public <T> java.util.stream.Stream<T> keys(DynamicOps<T> ops){return java.util.stream.Stream.of(ops.createString(name));}
   };}

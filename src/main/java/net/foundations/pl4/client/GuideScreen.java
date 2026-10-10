@@ -38,7 +38,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         if(book==null){
-            book=GuideResources.load(minecraft.getResourceManager(),minecraft.getLanguageManager().getSelected().getCode());preferences=GuideResources.preferences();
+            book=GuideResources.load(minecraft.getResourceManager(),minecraft.getLanguageManager().getSelected());preferences=GuideResources.preferences();
             chapter=book.chapters().stream().filter(c->c.id().equals(preferences.chapter)).findFirst().orElse(book.chapters().get(0));category=chapter.category();
             preferences.saved.removeIf(id->book.chapters().stream().noneMatch(c->c.id().equals(id)));
         }

@@ -1,5 +1,5 @@
 package net.foundations.pl4.client;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.world.item.ItemDisplayContext;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.*;
@@ -27,7 +27,7 @@ public final class HammerRenderer implements BlockEntityRenderer<HammerEntity> {
         if(stack.isEmpty())stack=hammer.inventory.getStackInSlot(1);
         if(!stack.isEmpty()){
             pose.pushPose();pose.translate(.5,.89,.5);pose.scale(.5F,.5F,.5F);
-            items.renderStatic(stack,TransformType.GROUND,light,overlay,pose,buffer,hammer.getBlockPos().hashCode());
+            items.renderStatic(stack,ItemDisplayContext.GROUND,light,overlay,pose,buffer,hammer.getLevel(),hammer.getBlockPos().hashCode());
             pose.popPose();
         }
     }

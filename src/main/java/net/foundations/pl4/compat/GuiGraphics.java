@@ -23,7 +23,7 @@ public final class GuiGraphics {
  public void renderTooltip(Font font,Component text,int x,int y){if(mc.screen!=null)mc.screen.renderTooltip(pose,text,x,y);}
  public void renderItem(ItemStack stack,int x,int y){
   var model=RenderSystem.getModelViewStack();model.pushPose();model.mulPoseMatrix(pose.last().pose());RenderSystem.applyModelViewMatrix();
-  try{mc.getItemRenderer().renderAndDecorateFakeItem(stack,x,y);}finally{model.popPose();RenderSystem.applyModelViewMatrix();}
+  try{mc.getItemRenderer().renderAndDecorateFakeItem(pose,stack,x,y);}finally{model.popPose();RenderSystem.applyModelViewMatrix();}
  }
  public void enableScissor(int x,int y,int right,int bottom){if(!clips.isEmpty()){int[] p=clips.peek();x=Math.max(x,p[0]);y=Math.max(y,p[1]);right=Math.min(right,p[2]);bottom=Math.min(bottom,p[3]);}clips.push(new int[]{x,y,Math.max(x,right),Math.max(y,bottom)});applyClip();}
  public void disableScissor(){if(!clips.isEmpty())clips.pop();applyClip();}
