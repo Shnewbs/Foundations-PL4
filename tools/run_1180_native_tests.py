@@ -47,6 +47,12 @@ with subprocess.Popen(cmd,cwd=R,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                 if line is None:break
                 lines.append(line);log.write(line);log.flush()
                 print(line.rstrip(),flush=True)
+                if 'Unknown or incomplete command' in line or 'test runall<--[HERE]' in line:
+                    print('Forge38 native /test runner unavailable: refusing false 193-test certification',flush=True)
+                    if process.stdin:
+                        process.stdin.write('stop\n')
+                        process.stdin.flush()
+                    break
                 if ('Done (' in line and 'For help' in line) and not started:
                     started=True
                     process.stdin.write('test runall\n')
