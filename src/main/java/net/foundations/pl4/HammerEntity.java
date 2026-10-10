@@ -51,7 +51,7 @@ public final class HammerEntity extends BlockEntity implements MenuProvider {
     public boolean validIngredient(ItemStack stack){
         return level!=null&&!stack.isEmpty()&&level.getRecipeManager().getAllRecipesFor(CoreRecipes.HAMMER.get()).stream().anyMatch(r->r.value().ingredient().test(stack));
     }
-    public Optional<ForgingRecipe> recipe(){return level==null?Optional.empty():recipeCache.getRecipeFor(new net.foundations.pl4.compat.SingleRecipeInput(inventory.getStackInSlot(0)),level);}
+    public Optional<RecipeHolder<ForgingRecipe>> recipe(){return level==null?Optional.empty():recipeCache.getRecipeFor(new net.foundations.pl4.compat.SingleRecipeInput(inventory.getStackInSlot(0)),level);}
     public boolean structureReady(){return structureReady;}
     public double animationFraction(float partial){
         double elapsed=level==null?0:Math.max(0,level.getGameTime()-animationTime)+partial;
