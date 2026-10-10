@@ -1,11 +1,11 @@
 package net.foundations.pl4;
 
 import net.foundations.pl4.core.*;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 /** Server-resolved page links. Sneak-use always opens the editor instead. */
 final class DisplayActions {
-    static boolean activate(ServerPlayerEntity player,HostEntity anchor,Part clicked){
+    static boolean activate(EntityPlayerMP player,HostEntity anchor,Part clicked){
         if(!player.getLevel().mayInteract(player,anchor.getBlockPos())||player.isSneaking()||player.isSpectator()||!clicked.kind.display()||!anchor.canEdit(player)||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(anchor.getBlockPos()))>64)return false;
         var controller=DisplayNetworks.controller(anchor,clicked);var host=controller.host();var p=controller.part();
         if(p.displayMode!=DisplayElements.Mode.CUSTOM||p.layoutRevision==Long.MAX_VALUE||!DisplayNetworks.canEditCanvas(player,anchor,clicked))return false;

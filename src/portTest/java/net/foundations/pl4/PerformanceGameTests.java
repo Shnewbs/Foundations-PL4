@@ -2,14 +2,14 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.block.Blocks;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.init.Items;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.init.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
@@ -17,13 +17,13 @@ import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class PerformanceGameTests {
     private static final UUID OWNER=UUID.fromString("aaaa0000-0000-0000-0000-000000000018");
-    private static HostEntity host(GameTestHelper h,BlockPos pos,Kind kind,Direction face){
+    private static HostEntity host(GameTestHelper h,BlockPos pos,Kind kind,EnumFacing face){
         h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);
         Part part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return host;
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void idleCableAvoidsSerializationAndInvalidatesOnEdits(GameTestHelper h){
-        var host=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var host=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
         host.syncIfChanged();long initial=host.syncTagBuildCount();
         for(int i=0;i<1000;i++)host.syncIfChanged();
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial,"1000 unchanged cable checks must allocate zero sync snapshots");
@@ -35,13 +35,13 @@ public final class PerformanceGameTests {
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+3,"External lead geometry must invalidate immediately");
         var saved=host.getUpdateTag(null);host.loadAdditional(saved,null);host.syncIfChanged();
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+4,"Reload must invalidate even when serialized content matches");
-        Part reader=new Part(Kind.NETWORK_READER,Direction.NORTH,OWNER);host.parts.put(reader.slot(),reader);host.changed();
+        Part reader=new Part(Kind.NETWORK_READER,EnumFacing.NORTH,OWNER);host.parts.put(reader.slot(),reader);host.changed();
         host.syncIfChanged();reader.status="Live reader";host.syncIfChanged();
         net.foundations.pl4.compat.PortAssertions.check(host.syncTagBuildCount()==initial+6,"Multipart hosts must retain full live synchronization");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void redstoneCableStillSynchronizesSignalAndRows(GameTestHelper h){
-        var host=host(h,new BlockPos(2,2,2),Kind.REDSTONE_CABLE,Direction.DOWN);Part cable=host.parts.get(6);
+        var host=host(h,new BlockPos(2,2,2),Kind.REDSTONE_CABLE,EnumFacing.DOWN);Part cable=host.parts.get(6);
         cable.status="Connected";cable.rows.add(new Part.Row("signal","Redstone",0,15,""));host.syncIfChanged();
         long initial=host.syncTagBuildCount();
         for(int i=0;i<1000;i++){cable.rows.clear();cable.rows.add(new Part.Row("signal","Redstone",0,15,""));host.syncIfChanged();}
@@ -56,14 +56,14 @@ public final class PerformanceGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void preparedTransferPlanConservesItemsAndReadsLiveModes(GameTestHelper h){
         h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);
-        var from=(ChestTileEntity)h.getBlockEntity(new BlockPos(1,1,1));var to=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,1));
+        var from=(TileEntityChest)h.getBlockEntity(new BlockPos(1,1,1));var to=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,1));
         from.setItem(0,new ItemStack(Items.DIAMOND,17));
-        var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
-        var sink=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);Part driver=source.parts.get(Direction.WEST.ordinal());driver.transferMode=2;
-        var sourceRef=new NetworkEngine.Ref(source,driver);var sinkRef=new NetworkEngine.Ref(sink,sink.parts.get(Direction.EAST.ordinal()));
+        var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,EnumFacing.WEST);
+        var sink=host(h,new BlockPos(4,1,1),Kind.NODE,EnumFacing.EAST);Part driver=source.parts.get(EnumFacing.WEST.ordinal());driver.transferMode=2;
+        var sourceRef=new NetworkEngine.Ref(source,driver);var sinkRef=new NetworkEngine.Ref(sink,sink.parts.get(EnumFacing.EAST.ordinal()));
         List<NetworkEngine.Ref> network=new ArrayList<>();network.add(sourceRef);network.add(sinkRef);
         // A cable-heavy membership input exercises exclusion without needing a giant test structure.
-        for(int i=0;i<4096;i++)network.add(new NetworkEngine.Ref(source,new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER)));
+        for(int i=0;i<4096;i++)network.add(new NetworkEngine.Ref(source,new Part(Kind.DATA_CABLE,EnumFacing.DOWN,OWNER)));
         var plan=TransferEngine.prepare(network);
         net.foundations.pl4.compat.PortAssertions.check(plan.endpoints().size()==2&&plan.drivers().size()==1,"4096 cable refs must be absent from repeated transfer work");
         TransferEngine.run(h.getLevel().getServer(),plan);
@@ -74,7 +74,7 @@ public final class PerformanceGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void repeatedFiltersCompileOnceAndHonorEdits(GameTestHelper h){
-        Part p=new Part(Kind.TRANSFER_NODE,Direction.DOWN,OWNER);p.filter=" minecraft:diamond , #minecraft:planks , #invalid tag ";
+        Part p=new Part(Kind.TRANSFER_NODE,EnumFacing.DOWN,OWNER);p.filter=" minecraft:diamond , #minecraft:planks , #invalid tag ";
         var diamond=new ItemStack(Items.DIAMOND);var plank=new ItemStack(Items.OAK_PLANKS);long before=DataSampler.filterCompileCount();
         for(int i=0;i<1000;i++)net.foundations.pl4.compat.PortAssertions.check(DataSampler.matches(diamond,p)&&DataSampler.matches(plank,p),"Both ID and tag matching must remain live");
         net.foundations.pl4.compat.PortAssertions.check(DataSampler.filterCompileCount()==before+1,"2000 matches should parse the filter once");
@@ -87,45 +87,45 @@ public final class PerformanceGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void localGeometryRepairsStaleArmSnapshotsWithoutGraphRebuild(GameTestHelper h){
-        var a=host(h,new BlockPos(1,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        var b=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        var c=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        var d=host(h,new BlockPos(4,2,2),Kind.DATA_CABLE,Direction.DOWN);
+        var a=host(h,new BlockPos(1,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        var b=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        var c=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        var d=host(h,new BlockPos(4,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
         NetworkEngine.rebuild(h.getLevel().getServer());long builds=NetworkEngine.topologyBuildCount();
         // Reproduce a received snapshot with valid parts but old/disconnected geometry.
         var stale=b.getUpdateTag(null);stale.putIntArray("cableConnections",new int[6]);
         b.loadAdditional(stale,null);
         a.setConnections(new int[6]);CableGeometry.refresh(b);
-        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1&&b.connection(Direction.EAST)==1&&c.connection(Direction.WEST)==1,"Both ends must connect from parts in the same local refresh");
-        net.foundations.pl4.compat.PortAssertions.check(c.connection(Direction.EAST)==1&&d.connection(Direction.WEST)==1,"Updating a neighbour must preserve its farther connection");
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(EnumFacing.EAST)==1&&b.connection(EnumFacing.WEST)==1&&b.connection(EnumFacing.EAST)==1&&c.connection(EnumFacing.WEST)==1,"Both ends must connect from parts in the same local refresh");
+        net.foundations.pl4.compat.PortAssertions.check(c.connection(EnumFacing.EAST)==1&&d.connection(EnumFacing.WEST)==1,"Updating a neighbour must preserve its farther connection");
         stale=a.getUpdateTag(null);stale.putIntArray("cableConnections",new int[6]);
         a.loadAdditional(stale,null);CableGeometry.refresh(a);
-        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"A later stale arm snapshot must not reopen the gap");
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(EnumFacing.EAST)==1&&b.connection(EnumFacing.WEST)==1,"A later stale arm snapshot must not reopen the gap");
         net.foundations.pl4.compat.PortAssertions.check(NetworkEngine.topologyBuildCount()==builds,"Local geometry must not rebuild the global network");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void localGeometryHonorsBlockedPortsAndCableFamilies(GameTestHelper h){
-        var a=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        var b=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        b.parts.get(6).blockedFaces=1<<Direction.WEST.ordinal();CableGeometry.refresh(b);
-        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Disabled neighbour port must block both arms");
+        var a=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        var b=host(h,new BlockPos(3,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        b.parts.get(6).blockedFaces=1<<EnumFacing.WEST.ordinal();CableGeometry.refresh(b);
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(EnumFacing.EAST)==0&&b.connection(EnumFacing.WEST)==0,"Disabled neighbour port must block both arms");
         b.parts.get(6).blockedFaces=0;CableGeometry.refresh(b);
-        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==1&&b.connection(Direction.WEST)==1,"Enabling port must restore both arms immediately");
-        b.parts.put(6,new Part(Kind.REDSTONE_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(b);
-        net.foundations.pl4.compat.PortAssertions.check(a.connection(Direction.EAST)==0&&b.connection(Direction.WEST)==0,"Different cable families must never visually connect");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(EnumFacing.EAST)==1&&b.connection(EnumFacing.WEST)==1,"Enabling port must restore both arms immediately");
+        b.parts.put(6,new Part(Kind.REDSTONE_CABLE,EnumFacing.DOWN,OWNER));CableGeometry.refresh(b);
+        net.foundations.pl4.compat.PortAssertions.check(a.connection(EnumFacing.EAST)==0&&b.connection(EnumFacing.WEST)==0,"Different cable families must never visually connect");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void localGeometryReconcilesMultipartLeadsAndRemoval(GameTestHelper h){
-        var cable=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,Direction.DOWN);
-        var device=host(h,new BlockPos(3,2,2),Kind.NODE,Direction.EAST);
-        Part node=device.parts.get(Direction.EAST.ordinal());CableGeometry.refresh(device);
-        net.foundations.pl4.compat.PortAssertions.check(cable.connection(Direction.EAST)==0&&!device.externalLead(node),"Endpoint without a placed centre cable must not extend its neighbor");
+        var cable=host(h,new BlockPos(2,2,2),Kind.DATA_CABLE,EnumFacing.DOWN);
+        var device=host(h,new BlockPos(3,2,2),Kind.NODE,EnumFacing.EAST);
+        Part node=device.parts.get(EnumFacing.EAST.ordinal());CableGeometry.refresh(device);
+        net.foundations.pl4.compat.PortAssertions.check(cable.connection(EnumFacing.EAST)==0&&!device.externalLead(node),"Endpoint without a placed centre cable must not extend its neighbor");
         device.parts.clear();CableGeometry.refresh(device);
-        net.foundations.pl4.compat.PortAssertions.check(cable.connection(Direction.EAST)==0&&!device.externalLead(node),"Removed part must clear both arm and lead immediately");
-        device.parts.put(6,new Part(Kind.DATA_CABLE,Direction.DOWN,OWNER));CableGeometry.refresh(device);
-        net.foundations.pl4.compat.PortAssertions.check(cable.connection(Direction.EAST)==1,"New cable must join without waiting for sampling");
+        net.foundations.pl4.compat.PortAssertions.check(cable.connection(EnumFacing.EAST)==0&&!device.externalLead(node),"Removed part must clear both arm and lead immediately");
+        device.parts.put(6,new Part(Kind.DATA_CABLE,EnumFacing.DOWN,OWNER));CableGeometry.refresh(device);
+        net.foundations.pl4.compat.PortAssertions.check(cable.connection(EnumFacing.EAST)==1,"New cable must join without waiting for sampling");
         device.setRemoved();CableGeometry.refresh(device);
-        net.foundations.pl4.compat.PortAssertions.check(cable.connection(Direction.EAST)==0,"Removed/unloaded host must be excluded even before its world slot disappears");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(cable.connection(EnumFacing.EAST)==0,"Removed/unloaded host must be excluded even before its world slot disappears");h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -133,10 +133,10 @@ public final class PerformanceGameTests {
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(5);
             h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(1,1,4),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);
-            var a=(ChestTileEntity)h.getBlockEntity(new BlockPos(1,1,1));var b=(ChestTileEntity)h.getBlockEntity(new BlockPos(1,1,4));var to=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,1));a.setItem(0,new ItemStack(Items.DIAMOND,16));b.setItem(0,new ItemStack(Items.DIAMOND,16));
-            var ah=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var bh=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,Direction.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);
-            var ar=new NetworkEngine.Ref(ah,ah.parts.get(Direction.WEST.ordinal()));var br=new NetworkEngine.Ref(bh,bh.parts.get(Direction.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;
-            var plan=TransferEngine.prepare(List.of(ar,br,new NetworkEngine.Ref(sink,sink.parts.get(Direction.EAST.ordinal()))));
+            var a=(TileEntityChest)h.getBlockEntity(new BlockPos(1,1,1));var b=(TileEntityChest)h.getBlockEntity(new BlockPos(1,1,4));var to=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,1));a.setItem(0,new ItemStack(Items.DIAMOND,16));b.setItem(0,new ItemStack(Items.DIAMOND,16));
+            var ah=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,EnumFacing.WEST);var bh=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,EnumFacing.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,EnumFacing.EAST);
+            var ar=new NetworkEngine.Ref(ah,ah.parts.get(EnumFacing.WEST.ordinal()));var br=new NetworkEngine.Ref(bh,bh.parts.get(EnumFacing.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;
+            var plan=TransferEngine.prepare(List.of(ar,br,new NetworkEngine.Ref(sink,sink.parts.get(EnumFacing.EAST.ordinal()))));
             TransferEngine.run(h.getLevel().getServer(),plan);net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==5&&a.getItem(0).getCount()+b.getItem(0).getCount()==27,"Multiple drivers share one five-item delivery cap");
             TransferEngine.run(h.getLevel().getServer(),plan);net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==10&&a.getItem(0).getCount()+b.getItem(0).getCount()==22,"Next cycle renews cap without duplicating or losing items");
             h.succeed();
@@ -147,11 +147,11 @@ public final class PerformanceGameTests {
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(3);
             h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,4),Blocks.CHEST);
-            var toA=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,1));var toB=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,4));
-            var a=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var b=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,Direction.WEST);var sinkA=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);var sinkB=host(h,new BlockPos(4,1,4),Kind.NODE,Direction.EAST);
-            var ar=new NetworkEngine.Ref(a,a.parts.get(Direction.WEST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(Direction.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;ar.part().pendingItem=new ItemStack(Items.DIAMOND,12);br.part().pendingItem=new ItemStack(Items.DIAMOND,12);
-            TransferEngine.run(h.getLevel().getServer(),List.of(ar,new NetworkEngine.Ref(sinkA,sinkA.parts.get(Direction.EAST.ordinal()))));
-            TransferEngine.run(h.getLevel().getServer(),List.of(br,new NetworkEngine.Ref(sinkB,sinkB.parts.get(Direction.EAST.ordinal()))));
+            var toA=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,1));var toB=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,4));
+            var a=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,EnumFacing.WEST);var b=host(h,new BlockPos(2,1,4),Kind.TRANSFER_NODE,EnumFacing.WEST);var sinkA=host(h,new BlockPos(4,1,1),Kind.NODE,EnumFacing.EAST);var sinkB=host(h,new BlockPos(4,1,4),Kind.NODE,EnumFacing.EAST);
+            var ar=new NetworkEngine.Ref(a,a.parts.get(EnumFacing.WEST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(EnumFacing.WEST.ordinal()));ar.part().transferMode=2;br.part().transferMode=2;ar.part().pendingItem=new ItemStack(Items.DIAMOND,12);br.part().pendingItem=new ItemStack(Items.DIAMOND,12);
+            TransferEngine.run(h.getLevel().getServer(),List.of(ar,new NetworkEngine.Ref(sinkA,sinkA.parts.get(EnumFacing.EAST.ordinal()))));
+            TransferEngine.run(h.getLevel().getServer(),List.of(br,new NetworkEngine.Ref(sinkB,sinkB.parts.get(EnumFacing.EAST.ordinal()))));
             net.foundations.pl4.compat.PortAssertions.check(toA.getItem(0).getCount()==3&&toB.getItem(0).getCount()==3&&ar.part().pendingItem.getCount()==9&&br.part().pendingItem.getCount()==9,"Escrow cannot bypass cap; separate networks each receive a full budget");h.succeed();
         }finally{PLConfig.NETWORK_ITEM_RATE.set(old);}
     }
@@ -159,9 +159,9 @@ public final class PerformanceGameTests {
     public static void nodeItemLimitStillAppliesUnderHigherSharedCap(GameTestHelper h){
         int oldCap=PLConfig.NETWORK_ITEM_RATE.get(),oldNode=PLConfig.ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(9);PLConfig.ITEM_RATE.set(2);
-            h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);var from=(ChestTileEntity)h.getBlockEntity(new BlockPos(1,1,1));var to=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,10));
-            var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);var driver=new NetworkEngine.Ref(source,source.parts.get(Direction.WEST.ordinal()));driver.part().transferMode=2;
-            TransferEngine.run(h.getLevel().getServer(),List.of(driver,new NetworkEngine.Ref(sink,sink.parts.get(Direction.EAST.ordinal()))));
+            h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);var from=(TileEntityChest)h.getBlockEntity(new BlockPos(1,1,1));var to=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,10));
+            var source=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,EnumFacing.WEST);var sink=host(h,new BlockPos(4,1,1),Kind.NODE,EnumFacing.EAST);var driver=new NetworkEngine.Ref(source,source.parts.get(EnumFacing.WEST.ordinal()));driver.part().transferMode=2;
+            TransferEngine.run(h.getLevel().getServer(),List.of(driver,new NetworkEngine.Ref(sink,sink.parts.get(EnumFacing.EAST.ordinal()))));
             net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==2&&from.getItem(0).getCount()==8,"Per-node extraction limit remains stricter when below shared cap");h.succeed();
         }finally{PLConfig.NETWORK_ITEM_RATE.set(oldCap);PLConfig.ITEM_RATE.set(oldNode);}
     }
@@ -170,10 +170,10 @@ public final class PerformanceGameTests {
     public static void networkItemCapAlsoBoundsAddImportsAndIncomingEscrow(GameTestHelper h){
         int old=PLConfig.NETWORK_ITEM_RATE.get();try{
             PLConfig.NETWORK_ITEM_RATE.set(3);h.setBlock(new BlockPos(1,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,1),Blocks.CHEST);h.setBlock(new BlockPos(5,1,4),Blocks.CHEST);
-            var from=(ChestTileEntity)h.getBlockEntity(new BlockPos(1,1,1));var toA=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,1));var toB=(ChestTileEntity)h.getBlockEntity(new BlockPos(5,1,4));from.setItem(0,new ItemStack(Items.DIAMOND,20));
-            var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);var a=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);var b=host(h,new BlockPos(4,1,4),Kind.TRANSFER_NODE,Direction.EAST);
-            var ar=new NetworkEngine.Ref(a,a.parts.get(Direction.EAST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(Direction.EAST.ordinal()));ar.part().transferMode=1;br.part().transferMode=1;
-            var plan=TransferEngine.prepare(List.of(new NetworkEngine.Ref(source,source.parts.get(Direction.WEST.ordinal())),ar,br));TransferEngine.run(h.getLevel().getServer(),plan);
+            var from=(TileEntityChest)h.getBlockEntity(new BlockPos(1,1,1));var toA=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,1));var toB=(TileEntityChest)h.getBlockEntity(new BlockPos(5,1,4));from.setItem(0,new ItemStack(Items.DIAMOND,20));
+            var source=host(h,new BlockPos(2,1,1),Kind.NODE,EnumFacing.WEST);var a=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,EnumFacing.EAST);var b=host(h,new BlockPos(4,1,4),Kind.TRANSFER_NODE,EnumFacing.EAST);
+            var ar=new NetworkEngine.Ref(a,a.parts.get(EnumFacing.EAST.ordinal()));var br=new NetworkEngine.Ref(b,b.parts.get(EnumFacing.EAST.ordinal()));ar.part().transferMode=1;br.part().transferMode=1;
+            var plan=TransferEngine.prepare(List.of(new NetworkEngine.Ref(source,source.parts.get(EnumFacing.WEST.ordinal())),ar,br));TransferEngine.run(h.getLevel().getServer(),plan);
             net.foundations.pl4.compat.PortAssertions.check(toA.getItem(0).getCount()+toB.getItem(0).getCount()==3&&from.getItem(0).getCount()==17,"ADD imports across multiple drivers share delivery cap");
             ar.part().pendingItem=new ItemStack(Items.DIAMOND,10);int before=toA.getItem(0).getCount()+toB.getItem(0).getCount();TransferEngine.run(h.getLevel().getServer(),plan);
             net.foundations.pl4.compat.PortAssertions.check(toA.getItem(0).getCount()+toB.getItem(0).getCount()==before+3&&ar.part().pendingItem.getCount()==7&&from.getItem(0).getCount()==17,"Incoming ADD escrow must consume the same shared budget before new extraction");h.succeed();

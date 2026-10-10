@@ -1,7 +1,7 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -11,12 +11,12 @@ public final class MultipartShapes {
     private static final VoxelShape[] READER_WITH_DISPLAY=new VoxelShape[6];
     private static final EnumMap<Kind,VoxelShape[]> LEADS=new EnumMap<>(Kind.class);
     static {
-        for(Direction face:Direction.values())READER_WITH_DISPLAY[face.ordinal()]=VoxelShapes.or(
+        for(EnumFacing face:EnumFacing.values())READER_WITH_DISPLAY[face.ordinal()]=VoxelShapes.or(
             PartShapes.rotate(new double[]{5.5,1,5.5,10.5,6,10.5},face),
             PartShapes.rotate(new double[]{5,1,5,11,5,11},face)).optimize();
         for(Kind kind:Kind.values())if(!kind.cable()){
             VoxelShape[] values=new VoxelShape[6];
-            for(Direction face:Direction.values())values[face.ordinal()]=PartShapes.rotate(
+            for(EnumFacing face:EnumFacing.values())values[face.ordinal()]=PartShapes.rotate(
                 new double[]{7,leadStart(kind),7,9,16,9},face);
             LEADS.put(kind,values);
         }

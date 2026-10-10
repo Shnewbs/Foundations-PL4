@@ -6,9 +6,9 @@ import net.foundations.pl4.compat.GuiGraphics;
 import net.foundations.pl4.compat.Button;
 import net.foundations.pl4.compat.EditBox;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.text.ITextComponent;
 import net.foundations.pl4.compat.PacketDistributor;
 
@@ -17,16 +17,16 @@ public final class WirelessStorageScreen extends net.foundations.pl4.compat.Port
     private record Row(int slot,String name,long count){}
     private final List<Row> rows=new ArrayList<>();
     private UUID token;private int page,slots,endpoints,left,top,w;private boolean limited;private String query="",sort="NAME";private EditBox search;private String status="";private boolean closed,busy;
-    public WirelessStorageScreen(CompoundNBT tag){super(new net.minecraft.util.text.StringTextComponent("Wireless Storage"));read(tag);}
-    private void read(CompoundNBT tag){
+    public WirelessStorageScreen(NBTTagCompound tag){super(new net.minecraft.util.text.TextComponentString("Wireless Storage"));read(tag);}
+    private void read(NBTTagCompound tag){
         status=tag.getString("status");closed=tag.getBoolean("closed");busy=false;rows.clear();if(closed)return;
         token=UUID.fromString(tag.getString("token"));page=tag.getInt("page");slots=tag.getInt("slots");endpoints=tag.getInt("endpoints");limited=tag.getBoolean("limited");query=tag.getString("query");sort=tag.getString("sort");
-        ListNBT list=tag.getList("storageRows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(WirelessStorage.PAGE_SIZE,list.size());i++){CompoundNBT row=list.getCompound(i);rows.add(new Row(row.getInt("slot"),row.getString("name"),row.getLong("count")));}
+        NBTTagList list=tag.getList("storageRows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(WirelessStorage.PAGE_SIZE,list.size());i++){NBTTagCompound row=list.getCompound(i);rows.add(new Row(row.getInt("slot"),row.getString("name"),row.getLong("count")));}
     }
-    public void update(CompoundNBT tag){read(tag);rebuildWidgets();}
+    public void update(NBTTagCompound tag){read(tag);rebuildWidgets();}
     @Override protected void init(){
         w=Math.min(420,width-12);left=(width-w)/2;top=(height-254)/2;
-        search=new EditBox(font,left+10,top+43,w-174,20,new net.minecraft.util.text.StringTextComponent("Search items"));search.setMaxLength(64);search.setValue(query);addRenderableWidget(search);
+        search=new EditBox(font,left+10,top+43,w-174,20,new net.minecraft.util.text.TextComponentString("Search items"));search.setMaxLength(64);search.setValue(query);addRenderableWidget(search);
         button("Search",left+w-158,top+43,62,()->send("search",0,0));
         button(sort.equals("COUNT")?"By count":"By name",left+w-90,top+43,80,()->{sort=sort.equals("NAME")?"COUNT":"NAME";send("search",0,0);});
         for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+73+i*23;button("1",left+w-88,y,32,()->send("withdraw",row.slot(),1)).active=!closed&&row.count()>0;button("64",left+w-52,y,40,()->send("withdraw",row.slot(),64)).active=!closed&&row.count()>0;}
@@ -36,7 +36,7 @@ public final class WirelessStorageScreen extends net.foundations.pl4.compat.Port
         button("Deposit offhand",left+136,top+214,108,()->send("deposit",0,0));
         button("Done",left+w-62,top+214,50,this::onClose).active=true;
     }
-    private Button button(String label,int x,int y,int width,Runnable action){Button b=Button.builder(new net.minecraft.util.text.StringTextComponent(label),unused->action.run()).bounds(x,y,width,20).build();b.active=!closed;addRenderableWidget(b);return b;}
+    private Button button(String label,int x,int y,int width,Runnable action){Button b=Button.builder(new net.minecraft.util.text.TextComponentString(label),unused->action.run()).bounds(x,y,width,20).build();b.active=!closed;addRenderableWidget(b);return b;}
     private void send(String action,int index,int amount){if(closed||busy)return;busy=true;PacketDistributor.sendToServer(new PLPackets.StorageRequest(token,action,index,amount,search.getValue(),sort));}
     @Override public boolean isPauseScreen(){return false;}
     @Override public void renderBackground(GuiGraphics g,int mx,int my,float partial){

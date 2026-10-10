@@ -2,24 +2,24 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.WorldServer;
 import net.foundations.pl4.core.DisplayLayout;
 
 /** Display joining never joins electrical/data cable networks. Only an explicit connected reader is sampled.
  * The active layout is mirrored to each member at rebuild/edit, so growth, root removal and reload are stable.
  */
 public final class DisplayNetworks {
-    private record Plane(ServerWorld level,UUID owner,Direction face,int depth,boolean outward) {}
+    private record Plane(WorldServer level,UUID owner,EnumFacing face,int depth,boolean outward) {}
     private record Canvas(NetworkEngine.Ref root,List<NetworkEngine.Ref> tiles,List<NetworkEngine.Ref> readers) {}
     private static final Map<Part,NetworkEngine.Ref> ROOTS=new IdentityHashMap<>();
     private static List<Canvas> canvases=List.of();
     public static void clear(){ROOTS.clear();canvases=List.of();}
-    public static Direction right(Direction face){return switch(face){case SOUTH->Direction.WEST;case WEST->Direction.NORTH;case EAST->Direction.SOUTH;default->Direction.EAST;};}
-    public static Direction up(Direction face){return switch(face){case DOWN->Direction.NORTH;case UP->Direction.SOUTH;default->Direction.UP;};}
-    public static Direction right(Part part){return Direction.from3DDataValue(net.foundations.pl4.core.DisplayFacing.direction(net.foundations.pl4.core.DisplayFacing.frame(part.face.ordinal(),part.displayOutward).right()));}
-    public static Direction up(Part part){return Direction.from3DDataValue(net.foundations.pl4.core.DisplayFacing.direction(net.foundations.pl4.core.DisplayFacing.frame(part.face.ordinal(),part.displayOutward).up()));}
-    private static int dot(BlockPos p,Direction d){return p.getX()*d.getStepX()+p.getY()*d.getStepY()+p.getZ()*d.getStepZ();}
+    public static EnumFacing right(EnumFacing face){return switch(face){case SOUTH->EnumFacing.WEST;case WEST->EnumFacing.NORTH;case EAST->EnumFacing.SOUTH;default->EnumFacing.EAST;};}
+    public static EnumFacing up(EnumFacing face){return switch(face){case DOWN->EnumFacing.NORTH;case UP->EnumFacing.SOUTH;default->EnumFacing.UP;};}
+    public static EnumFacing right(Part part){return EnumFacing.from3DDataValue(net.foundations.pl4.core.DisplayFacing.direction(net.foundations.pl4.core.DisplayFacing.frame(part.face.ordinal(),part.displayOutward).right()));}
+    public static EnumFacing up(Part part){return EnumFacing.from3DDataValue(net.foundations.pl4.core.DisplayFacing.direction(net.foundations.pl4.core.DisplayFacing.frame(part.face.ordinal(),part.displayOutward).up()));}
+    private static int dot(BlockPos p,EnumFacing d){return p.getX()*d.getStepX()+p.getY()*d.getStepY()+p.getZ()*d.getStepZ();}
     public static void rebuild(List<NetworkEngine.Ref> refs,Map<Part,List<NetworkEngine.Ref>> visible){
         Set<Part> previousControllers=Collections.newSetFromMap(new IdentityHashMap<>());
         for(var canvas:canvases)previousControllers.add(canvas.root.part());
@@ -78,13 +78,13 @@ public final class DisplayNetworks {
     }
     private static Comparator<NetworkEngine.Ref> readerOrder(){return Comparator.comparingInt((NetworkEngine.Ref r)->r.part().priority).reversed().thenComparing(r->r.level().dimension.getType().getRegistryName().toString()).thenComparingLong(r->r.host().getBlockPos().asLong()).thenComparingInt(r->r.part().slot());}
     /** Bounded preflight of the proposed connected plane; never requests an unloaded chunk. */
-    public static boolean canExtendAt(net.minecraft.world.World level,BlockPos position,Part template,net.minecraft.entity.player.PlayerEntity player){
+    public static boolean canExtendAt(net.minecraft.world.World level,BlockPos position,Part template,net.minecraft.entity.player.EntityPlayer player){
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();queue.add(position);seen.add(position);
-        List<DisplayLayout.Cell> cells=new ArrayList<>();Direction right=right(template),up=up(template);
+        List<DisplayLayout.Cell> cells=new ArrayList<>();EnumFacing right=right(template),up=up(template);
         while(!queue.isEmpty()){
             BlockPos pos=queue.removeFirst();cells.add(new DisplayLayout.Cell(dot(pos,right),-dot(pos,up)));
             if(!net.foundations.pl4.core.DisplayPlacement.withinLimits(cells))return false;
-            for(Direction side:List.of(right,right.getOpposite(),up,up.getOpposite())){
+            for(EnumFacing side:List.of(right,right.getOpposite(),up,up.getOpposite())){
                 BlockPos next=pos.relative(side);if(seen.contains(next)||!level.hasChunkAt(next))continue;
                 if(level.getBlockEntity(next) instanceof HostEntity host){
                     Part part=host.parts.get(template.slot());
@@ -97,7 +97,7 @@ public final class DisplayNetworks {
         }
         return true;
     }
-    public static boolean canEditCanvas(net.minecraft.entity.player.ServerPlayerEntity player,HostEntity host,Part part){
+    public static boolean canEditCanvas(net.minecraft.entity.player.EntityPlayerMP player,HostEntity host,Part part){
         if(!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos()))return false;
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part))
             for(var tile:canvas.tiles)if(!tile.host().canEdit(player)||!tile.level().mayInteract(player,tile.host().getBlockPos()))return false;
@@ -117,18 +117,18 @@ public final class DisplayNetworks {
     }
     public static void layoutEdited(HostEntity host,Part part){applyLayout(host,part,part.displaySettings(),nextLayoutRevision(part));}
     public static NetworkEngine.Ref controller(HostEntity host,Part part){
-        if(host.getLevel() instanceof ServerWorld level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof WorldServer level)NetworkEngine.ensureCurrent(level.getServer());
         return ROOTS.getOrDefault(part,new NetworkEngine.Ref(host,part));
     }
     /** Preflight the possible merged front before any settings are mirrored into neighboring tiles. */
-    private static boolean canFlipInto(net.minecraft.entity.player.ServerPlayerEntity player,List<NetworkEngine.Ref> tiles,boolean outward){
+    private static boolean canFlipInto(net.minecraft.entity.player.EntityPlayerMP player,List<NetworkEngine.Ref> tiles,boolean outward){
         if(tiles.get(0).part().kind!=Kind.LARGE_DISPLAY)return true;
         Set<BlockPos> seen=new HashSet<>();ArrayDeque<BlockPos> queue=new ArrayDeque<>();
         for(var tile:tiles){seen.add(tile.host().getBlockPos());queue.add(tile.host().getBlockPos());}
-        Part template=tiles.get(0).part();var level=tiles.get(0).level();Direction right=right(template),up=up(template);
+        Part template=tiles.get(0).part();var level=tiles.get(0).level();EnumFacing right=right(template),up=up(template);
         while(!queue.isEmpty()){
             BlockPos pos=queue.removeFirst();
-            for(Direction side:List.of(right,right.getOpposite(),up,up.getOpposite())){
+            for(EnumFacing side:List.of(right,right.getOpposite(),up,up.getOpposite())){
                 BlockPos next=pos.relative(side);if(seen.contains(next)||!level.hasChunkAt(next))continue;
                 if(level.getBlockEntity(next) instanceof HostEntity host){
                     Part part=host.parts.get(template.slot());
@@ -144,7 +144,7 @@ public final class DisplayNetworks {
         return true;
     }
     /** Explicit whole-canvas flip retains a snapshot of the active settings, even if a new donor appears. */
-    public static boolean flip(net.minecraft.entity.player.ServerPlayerEntity player,HostEntity anchor,Part part,boolean outward){
+    public static boolean flip(net.minecraft.entity.player.EntityPlayerMP player,HostEntity anchor,Part part,boolean outward){
         NetworkEngine.ensureCurrent(player.getServer());
         var root=controller(anchor,part);
         List<NetworkEngine.Ref> tiles=List.of(new NetworkEngine.Ref(anchor,part));
@@ -165,7 +165,7 @@ public final class DisplayNetworks {
         var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.get(0):null;
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
-        if(host.getLevel() instanceof ServerWorld level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof WorldServer level)NetworkEngine.ensureCurrent(level.getServer());
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){
             var ref=reader(canvas.readers,selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
         }return List.of();

@@ -3,19 +3,19 @@ package net.foundations.pl4;
 import java.util.Optional;
 import net.minecraft.util.math.BlockPos;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.IIntArray;
 import net.minecraft.item.ItemStack;
 
 import net.minecraft.world.World;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.foundations.pl4.compat.Capabilities;
 import net.foundations.pl4.compat.BlockCapability;
 import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
@@ -49,7 +49,7 @@ public final class HammerEntity extends TileEntity implements INamedContainerPro
         @Override public int getCount(){return 5;}
     };
     public HammerEntity(){super(FoundationsPL4.HAMMER_ENTITY.get());}
-    public HammerEntity(BlockPos p,BlockState s){this();setPosition(p);}
+    public HammerEntity(BlockPos p,IBlockState s){this();setPosition(p);}
     public static void capabilities(RegisterCapabilitiesEvent e){e.registerBlockEntity(Capabilities.ItemHandler.BLOCK,FoundationsPL4.HAMMER_ENTITY.get(),(be,side)->be.automation);}
     public void inventoryChanged(){setChanged();visualDirty=true;}
     public boolean validIngredient(ItemStack stack){
@@ -62,8 +62,8 @@ public final class HammerEntity extends TileEntity implements INamedContainerPro
         return HammerMotion.fraction(progress,processingTicks,cooldown,cooldownTotal,elapsed,working);
     }
     @Override public ITextComponent getDisplayName(){return new net.minecraft.util.text.TranslationTextComponent("block.foundations_pl4.hammer");}
-    @Override public Container createMenu(int id,PlayerInventory inv,PlayerEntity player){return new HammerMenu(id,inv,this,menuData);}
-    public static void tick(World l,BlockPos p,BlockState state,HammerEntity h){
+    @Override public Container createMenu(int id,PlayerInventory inv,EntityPlayer player){return new HammerMenu(id,inv,this,menuData);}
+    public static void tick(World l,BlockPos p,IBlockState state,HammerEntity h){
         if(l.isClientSide)return;
         int oldStatus=h.status;boolean oldWorking=h.working,oldStructure=h.structureReady;
         h.structureReady=HammerStructure.complete(l,p);
@@ -102,25 +102,25 @@ public final class HammerEntity extends TileEntity implements INamedContainerPro
             l.sendBlockUpdated(p,state,state,2);
         }
     }
-    private void write(CompoundNBT tag,Object r){
+    private void write(NBTTagCompound tag,Object r){
         tag.put("inventory",inventory.serializeNBT());tag.putInt("progress",progress);tag.putInt("cooldown",cooldown);tag.putString("activeRecipe",activeRecipe);
         tag.putInt("processingTicks",processingTicks);tag.putInt("cooldownTotal",cooldownTotal);tag.putInt("status",status);
         tag.putBoolean("structureReady",structureReady);tag.putBoolean("working",working);tag.putLong("animationTime",animationTime);
     }
-    protected void saveAdditional(CompoundNBT tag,Object r){super.save(tag);write(tag,r);}
-    protected void loadAdditional(CompoundNBT tag,Object r){
+    protected void saveAdditional(NBTTagCompound tag,Object r){super.save(tag);write(tag,r);}
+    protected void loadAdditional(NBTTagCompound tag,Object r){
         inventory.deserializeNBT(tag.getCompound("inventory"));
         progress=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("progress"),0,72000);cooldown=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("cooldown"),0,72000);activeRecipe=tag.getString("activeRecipe");
         processingTicks=tag.contains("processingTicks")?net.foundations.pl4.compat.PortMath.clamp(tag.getInt("processingTicks"),1,72000):100;
         cooldownTotal=tag.contains("cooldownTotal")?net.foundations.pl4.compat.PortMath.clamp(tag.getInt("cooldownTotal"),0,72000):Math.max(200,cooldown);
         status=net.foundations.pl4.compat.PortMath.clamp(tag.getInt("status"),0,5);structureReady=tag.getBoolean("structureReady");working=tag.getBoolean("working");animationTime=tag.getLong("animationTime");visualDirty=true;
     }
-    public CompoundNBT getUpdateTag(Object r){CompoundNBT tag=new CompoundNBT();write(tag,r);return tag;}
+    public NBTTagCompound getUpdateTag(Object r){NBTTagCompound tag=new NBTTagCompound();write(tag,r);return tag;}
     @Override public SUpdateTileEntityPacket getUpdatePacket(){return new SUpdateTileEntityPacket(getBlockPos(),0,getUpdateTag());}
 
-    @Override public CompoundNBT save(CompoundNBT tag){saveAdditional(tag,null);return tag;}
-    @Override public void load(CompoundNBT tag){super.load(tag);loadAdditional(tag,null);}
-    @Override public CompoundNBT getUpdateTag(){CompoundNBT t=super.getUpdateTag();t.merge(getUpdateTag(null));return t;}
+    @Override public NBTTagCompound save(NBTTagCompound tag){saveAdditional(tag,null);return tag;}
+    @Override public void load(NBTTagCompound tag){super.load(tag);loadAdditional(tag,null);}
+    @Override public NBTTagCompound getUpdateTag(){NBTTagCompound t=super.getUpdateTag();t.merge(getUpdateTag(null));return t;}
     @Override public void onDataPacket(net.minecraft.network.NetworkManager manager,SUpdateTileEntityPacket packet){load(packet.getTag());}
     @Override public void tick(){if(level!=null)tick(level,worldPosition,getBlockState(),this);}
 }

@@ -1,7 +1,7 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
@@ -22,7 +22,7 @@ public final class R11GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void logicalSpacePersists(GameTestHelper h){
-        Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.layoutWidth=720;p.layoutHeight=240;p.displayMode=DisplayElements.Mode.CUSTOM;p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,0,720,240)));
+        Part p=new Part(Kind.LARGE_DISPLAY,EnumFacing.NORTH,UUID.randomUUID());p.layoutWidth=720;p.layoutHeight=240;p.displayMode=DisplayElements.Mode.CUSTOM;p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,0,720,240)));
         Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.layoutWidth==720&&restored.layoutHeight==240,"Dynamic logical dimensions survive save/load");h.succeed();
     }

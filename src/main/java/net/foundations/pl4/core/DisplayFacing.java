@@ -1,7 +1,7 @@
 package net.foundations.pl4.core;
 
 /** One front-facing coordinate convention shared by screen layout and the renderer.
- * Direction indices are Minecraft's DOWN, UP, NORTH, SOUTH, WEST, EAST.
+ * EnumFacing indices are Minecraft's DOWN, UP, NORTH, SOUTH, WEST, EAST.
  * The slot remains fixed; changing the front never moves the attachment or cable port.
  */
 public final class DisplayFacing {

@@ -2,7 +2,7 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.foundations.pl4.core.MechanicalEnergyAccess;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.server.MinecraftServer;
 
 /** Loaded-target-only telemetry; multiple AE2 nodes on the same grid are counted once. */
@@ -15,7 +15,7 @@ final class OptionalPowerTelemetry {
     private static void resolve(){
         if(resolved)return;resolved=true;
         try{create=new MechanicalEnergyAccess.Create(Class.forName("com.simibubi.create.content.kinetics.base.KineticBlockEntity",false,OptionalPowerTelemetry.class.getClassLoader()));}catch(ClassNotFoundException absent){}catch(ReflectiveOperationException|RuntimeException|LinkageError e){warn("Create",e);}
-        try{ae2=new MechanicalEnergyAccess.AE2(Class.forName("appeng.api.networking.IInWorldGridNodeHost",false,OptionalPowerTelemetry.class.getClassLoader()),Direction.class);}catch(ClassNotFoundException absent){}catch(ReflectiveOperationException|RuntimeException|LinkageError e){warn("AE2",e);}
+        try{ae2=new MechanicalEnergyAccess.AE2(Class.forName("appeng.api.networking.IInWorldGridNodeHost",false,OptionalPowerTelemetry.class.getClassLoader()),EnumFacing.class);}catch(ClassNotFoundException absent){}catch(ReflectiveOperationException|RuntimeException|LinkageError e){warn("AE2",e);}
     }
     static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> links){
         resolve();boolean kinetic=ref.part().energySystem.equals("CREATE");String provider=kinetic?"Create":"AE2";

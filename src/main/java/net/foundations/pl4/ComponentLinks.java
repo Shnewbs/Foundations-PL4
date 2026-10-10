@@ -1,9 +1,9 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.util.Direction;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumHand;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -11,7 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 public final class ComponentLinks {
     private ComponentLinks(){}
     public static boolean supported(Part part){return part.kind.receiver()||part.kind==Kind.ARRAY||part.kind==Kind.ENTITY_NODE;}
-    private static List<Part.Link> candidates(ServerPlayerEntity player,HostEntity host,Part part){
+    private static List<Part.Link> candidates(EntityPlayerMP player,HostEntity host,Part part){
         List<Part.Link> links=new ArrayList<>();
         if(part.kind.receiver()){
             if(!PLConfig.WIRELESS.get())return links;
@@ -23,34 +23,34 @@ public final class ComponentLinks {
         }else if(part.kind==Kind.ENTITY_NODE){
             double radius=Math.min(32,PLConfig.ENTITY_RANGE.get());
             for(var entity:player.getLevel().getEntitiesOfClass(LivingEntity.class,new AxisAlignedBB(host.getBlockPos()).inflate(radius),e->e.isAlive()&&!e.isSpectator()))
-                if(player.getLevel().mayInteract(player,entity.getCommandSenderBlockPosition()))links.add(new Part.Link(player.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),Direction.UP,entity.getUUID(),null));
+                if(player.getLevel().mayInteract(player,entity.getCommandSenderBlockPosition()))links.add(new Part.Link(player.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),EnumFacing.UP,entity.getUUID(),null));
         }
         links.sort(Comparator.comparing(ComponentLinks::choiceId));return links;
     }
-    public static void refresh(ServerPlayerEntity player,HostEntity host,Part part){
+    public static void refresh(EntityPlayerMP player,HostEntity host,Part part){
         if(!supported(part))return;part.targetChoices.clear();
         List<Part.Link> choices=candidates(player,host,part).stream().filter(l->label(player,l).toLowerCase(Locale.ROOT).contains(part.targetQuery.toLowerCase(Locale.ROOT))).toList();
         part.targetCount=choices.size();part.targetPage=net.foundations.pl4.compat.PortMath.clamp(part.targetPage,0,Math.max(0,(choices.size()-1)/16));
         for(var link:choices.stream().skip(part.targetPage*16L).limit(16).toList())part.targetChoices.add(new Part.ReaderChoice(choiceId(link),label(player,link),"link"));
     }
     private static String choiceId(Part.Link link){return link.entity()==null?ReaderChannels.id(link):link.entity().toString();}
-    private static String label(ServerPlayerEntity player,Part.Link link){
+    private static String label(EntityPlayerMP player,Part.Link link){
         var level=NetworkEngine.level(player.getLevel().getServer(),link);String name="Emitter";
         if(link.entity()!=null){var entity=level==null?null:level.getEntity(link.entity());name=entity==null?"Missing entity":entity.getName().getString();}
         else if(level!=null&&level.hasChunkAt(link.pos())&&level.getBlockEntity(link.pos()) instanceof HostEntity h){for(var p:h.parts.values())if(p.identity.equals(link.part())&&!p.label.isBlank())name=p.label;}
         return ReaderChannels.clean(name+" · "+link.pos().toString()+" · "+link.dimension());
     }
-    public static boolean addChoice(ServerPlayerEntity player,HostEntity host,Part part,String id){
+    public static boolean addChoice(EntityPlayerMP player,HostEntity host,Part part,String id){
         for(var link:candidates(player,host,part))if(choiceId(link).equals(id))return add(player,host,part,link);return false;
     }
-    public static boolean addHeld(ServerPlayerEntity player,HostEntity host,Part part){
-        for(Hand hand:Hand.values()){
+    public static boolean addHeld(EntityPlayerMP player,HostEntity host,Part part){
+        for(EnumHand hand:EnumHand.values()){
             var stack=player.getItemInHand(hand);
             if(!(stack.getItem()==FoundationsPL4.item(part.kind==Kind.ENTITY_NODE?"entitytransceiver":"transceiver")))continue;
             if(add(player,host,part,ToolItem.link(stack)))return true;
         }return false;
     }
-    static boolean add(ServerPlayerEntity player,HostEntity host,Part part,Part.Link link){
+    static boolean add(EntityPlayerMP player,HostEntity host,Part part,Part.Link link){
         if(!supported(part)||link==null||!host.canEdit(player)||!host.getLevel().mayInteract(player,host.getBlockPos())||part.links.size()>=(part.kind.receiver()?64:8))return false;
         if(!PLConfig.CROSS_DIMENSION.get()&&!host.getLevel().dimension.getType().getRegistryName().toString().equals(link.dimension()))return false;
         var world=NetworkEngine.level(player.getLevel().getServer(),link);if(world==null)return false;

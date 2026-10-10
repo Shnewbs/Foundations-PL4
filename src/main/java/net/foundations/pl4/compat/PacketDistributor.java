@@ -1,7 +1,7 @@
 package net.foundations.pl4.compat;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.EntityPlayerMP;
 public final class PacketDistributor {
- public static void sendToPlayer(ServerPlayerEntity player,CustomPacketPayload packet){
+ public static void sendToPlayer(EntityPlayerMP player,CustomPacketPayload packet){
   if(player.connection==null)return;
   RegisterPayloadHandlersEvent.channel.send(net.minecraftforge.fml.network.PacketDistributor.PLAYER.with(()->player),packet);
  }

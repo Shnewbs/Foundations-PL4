@@ -2,17 +2,17 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.WorldServer;
+import net.minecraft.init.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.state.properties.ChestType;
 
 /** Per-sample identities only; never retain world handlers across ticks. */
 final class SampleSources {
-    private record PlayerInventory(ServerWorld level,BlockPos pos) {}
+    private record PlayerInventory(WorldServer level,BlockPos pos) {}
     private final Set<Object> handlers=Collections.newSetFromMap(new IdentityHashMap<>());
     private final Set<PlayerInventory> inventories=new HashSet<>();
-    boolean inventory(ServerWorld level,Part.Link link,Object handler,int slots){
+    boolean inventory(WorldServer level,Part.Link link,Object handler,int slots){
         if(!handlers.add(handler))return false;
         var state=level.getBlockState(link.pos());BlockPos canonical=link.pos();
         if((state.getBlock()==Blocks.CHEST)||(state.getBlock()==Blocks.TRAPPED_CHEST)){

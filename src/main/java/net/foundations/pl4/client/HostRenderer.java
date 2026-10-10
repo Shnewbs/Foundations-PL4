@@ -4,42 +4,42 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.*;
 
 public final class HostRenderer extends TileEntityRenderer<HostEntity> {
-    private static final Direction[] FACES=Direction.values();
+    private static final EnumFacing[] FACES=EnumFacing.values();
     private final DisplayPainter displayPainter=new DisplayPainter();
-    private final net.minecraft.block.BlockState[][][] cableStates=new net.minecraft.block.BlockState[3][4][6];
-    private final net.minecraft.block.BlockState[][] kineticStates=new net.minecraft.block.BlockState[2][6],ae2States=new net.minecraft.block.BlockState[2][6];
-    private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
-    private final net.minecraft.block.BlockState[][][] largeStates=new net.minecraft.block.BlockState[2][6][16];
-    private final java.util.EnumMap<Kind,net.minecraft.block.BlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
+    private final net.minecraft.block.state.IBlockState[][][] cableStates=new net.minecraft.block.state.IBlockState[3][4][6];
+    private final net.minecraft.block.state.IBlockState[][] kineticStates=new net.minecraft.block.state.IBlockState[2][6],ae2States=new net.minecraft.block.state.IBlockState[2][6];
+    private final java.util.EnumMap<Kind,net.minecraft.block.state.IBlockState[][]> partStates=new java.util.EnumMap<>(Kind.class);
+    private final net.minecraft.block.state.IBlockState[][][] largeStates=new net.minecraft.block.state.IBlockState[2][6][16];
+    private final java.util.EnumMap<Kind,net.minecraft.block.state.IBlockState[][]> leadModels=new java.util.EnumMap<>(Kind.class);
     public HostRenderer(){super();
         String[] materials={"data","redstone_off","redstone_on"},connectors={"centre","cable","internal","half"};
-        var leadStates=new java.util.HashMap<String,net.minecraft.block.BlockState[]>();
-        for(int m=0;m<3;m++)for(int type=0;type<4;type++)for(Direction face:FACES)
+        var leadStates=new java.util.HashMap<String,net.minecraft.block.state.IBlockState[]>();
+        for(int m=0;m<3;m++)for(int type=0;type<4;type++)for(EnumFacing face:FACES)
             cableStates[m][type][face.ordinal()]=FoundationsPL4.CABLE_MODELS.get(materials[m]+"_"+connectors[type]).get().defaultBlockState().setValue(CableModelBlock.FACING,face);
         for(Kind kind:Kind.values()){
-            var states=new net.minecraft.block.BlockState[2][6];
-            for(int side=0;side<2;side++)for(Direction face:FACES)states[side][face.ordinal()]=FoundationsPL4.MODELS.get(kind).get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.FRONT_OUTWARD,side==1).setValue(PartModelBlock.HAS_DISPLAY,kind.reader()&&side==1);
+            var states=new net.minecraft.block.state.IBlockState[2][6];
+            for(int side=0;side<2;side++)for(EnumFacing face:FACES)states[side][face.ordinal()]=FoundationsPL4.MODELS.get(kind).get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.FRONT_OUTWARD,side==1).setValue(PartModelBlock.HAS_DISPLAY,kind.reader()&&side==1);
             partStates.put(kind,states);
         }
-        for(int covered=0;covered<2;covered++)for(Direction face:FACES){
+        for(int covered=0;covered<2;covered++)for(EnumFacing face:FACES){
             kineticStates[covered][face.ordinal()]=FoundationsPL4.KINETIC_READER_MODEL.get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.HAS_DISPLAY,covered==1);
             ae2States[covered][face.ordinal()]=FoundationsPL4.AE2_READER_MODEL.get().defaultBlockState().setValue(PartModelBlock.FACING,face).setValue(PartModelBlock.HAS_DISPLAY,covered==1);
         }
         for(String material:materials)for(String depth:new String[]{"1","15","2","3","4","6"}){
-            String key=material+"_lead_"+depth;var states=new net.minecraft.block.BlockState[6];
-            for(Direction face:FACES)states[face.ordinal()]=FoundationsPL4.CABLE_MODELS.get(key).get().defaultBlockState().setValue(CableModelBlock.FACING,face);
+            String key=material+"_lead_"+depth;var states=new net.minecraft.block.state.IBlockState[6];
+            for(EnumFacing face:FACES)states[face.ordinal()]=FoundationsPL4.CABLE_MODELS.get(key).get().defaultBlockState().setValue(CableModelBlock.FACING,face);
             leadStates.put(key,states);
         }
         for(Kind kind:Kind.values()){
-            var states=new net.minecraft.block.BlockState[3][];
+            var states=new net.minecraft.block.state.IBlockState[3][];
             for(int material=0;material<3;material++)states[material]=leadStates.get(materials[material]+"_lead_"+MultipartShapes.leadKey(kind));
             leadModels.put(kind,states);
         }
-        for(int side=0;side<2;side++)for(Direction face:FACES)for(int mask=0;mask<16;mask++)largeStates[side][face.ordinal()][mask]=FoundationsPL4.LARGE_MODEL.get().defaultBlockState().setValue(LargeDisplayModelBlock.FACING,face).setValue(LargeDisplayModelBlock.CONNECTIONS,mask).setValue(LargeDisplayModelBlock.FRONT_OUTWARD,side==1);
+        for(int side=0;side<2;side++)for(EnumFacing face:FACES)for(int mask=0;mask<16;mask++)largeStates[side][face.ordinal()][mask]=FoundationsPL4.LARGE_MODEL.get().defaultBlockState().setValue(LargeDisplayModelBlock.FACING,face).setValue(LargeDisplayModelBlock.CONNECTIONS,mask).setValue(LargeDisplayModelBlock.FRONT_OUTWARD,side==1);
     }
     @Override public void render(HostEntity host,double rx,double ry,double rz,float partial,int destroyStage){
         var pose=new net.foundations.pl4.compat.LegacyWorldPose();
@@ -51,7 +51,7 @@ public final class HostRenderer extends TileEntityRenderer<HostEntity> {
             if(part.kind.cable()) {
                 int material=part.kind==Kind.DATA_CABLE?0:(part.signal>0?2:1);
                 mc.getBlockRenderer().renderSingleBlock(cableStates[material][0][0],1.0F);
-                for(Direction d:FACES) {
+                for(EnumFacing d:FACES) {
                     int type=host.connection(d);if(type==0)continue;
                     mc.getBlockRenderer().renderSingleBlock(cableStates[material][type][d.ordinal()],1.0F);
                 }

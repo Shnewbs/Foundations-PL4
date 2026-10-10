@@ -30,6 +30,6 @@ public final class HammerScreen extends net.foundations.pl4.compat.PortContainer
         renderBackground(g);super.render(g,mouseX,mouseY,partial);
         renderTooltip(g,mouseX,mouseY);
         if(mouseX>=leftPos+76&&mouseX<leftPos+100&&mouseY>=topPos+24&&mouseY<topPos+40)
-            g.renderTooltip(font,new net.minecraft.util.text.StringTextComponent(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);
+            g.renderTooltip(font,new net.minecraft.util.text.TextComponentString(menu.cooldown()>0?"Cooldown: "+menu.cooldown()+" ticks":menu.progress()+" / "+menu.duration()+" ticks"),mouseX,mouseY);
     }
 }

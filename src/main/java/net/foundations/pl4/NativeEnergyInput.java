@@ -5,7 +5,7 @@ import net.foundations.pl4.compat.Capabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.foundations.pl4.core.EnergyConversion;
 import net.foundations.pl4.core.TransferRules;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.BlockCapability;
 import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
 
@@ -26,8 +26,8 @@ final class NativeEnergyInput {
                 public boolean canReceive(){return eligible(host,part,side,"FE");}
             };
         });
-        for(var capability:BlockCapability.getAll())if(capability.name().toString().equals("gtceu:energy_container")&&capability.contextClass()==Direction.class){
-            var cap=(BlockCapability<Object,Direction>)capability;
+        for(var capability:BlockCapability.getAll())if(capability.name().toString().equals("gtceu:energy_container")&&capability.contextClass()==EnumFacing.class){
+            var cap=(BlockCapability<Object,EnumFacing>)capability;
             event.registerBlockEntity(cap,FoundationsPL4.HOST_ENTITY.get(),(host,side)->{
                 if(side==null)return null;
                 Part part=host.parts.get(side.ordinal());
@@ -39,7 +39,7 @@ final class NativeEnergyInput {
                     case "getInputAmperage" -> eligible(host,part,side)?(long)PLConfig.ENERGY_RATE.get():0L;
                     case "getEnergyStored" -> 0L;
                     case "getEnergyCapacity","getEnergyCanBeInserted" -> eligible(host,part,side)?(long)PLConfig.ENERGY_RATE.get():0L;
-                    case "acceptEnergyFromNetwork" -> accept(host,part,side,(Direction)args[0],(long)args[1],(long)args[2]);
+                    case "acceptEnergyFromNetwork" -> accept(host,part,side,(EnumFacing)args[0],(long)args[1],(long)args[2]);
                     case "changeEnergy","addEnergy","removeEnergy","getOutputVoltage","getOutputAmperage","getInputPerSec","getOutputPerSec" -> 0L;
                     case "supportsBigIntEnergyValues","isOneProbeHidden" -> false;
                     case "toString" -> "PL4 EU input";
@@ -50,15 +50,15 @@ final class NativeEnergyInput {
             });
         }
     }
-    private static boolean eligible(HostEntity host,Part p,Direction side){return eligible(host,p,side,"EU");}
-    private static boolean eligible(HostEntity host,Part p,Direction side,String input){
+    private static boolean eligible(HostEntity host,Part p,EnumFacing side){return eligible(host,p,side,"EU");}
+    private static boolean eligible(HostEntity host,Part p,EnumFacing side,String input){
         if(host.getLevel()==null||host.getLevel().isClientSide||host.isRemoved()||host.parts.get(side.ordinal())!=p)return false;
         if(!p.energy||!TransferRules.drivesRemove(p.transferMode)||!p.energyInput.equals(input)||!EnergyPorts.enabled(input)||!EnergyPorts.enabled(p.energyOutput))return false;
         if(!p.energyOutput.equals(input)&&(!p.energyConvert||!PLConfig.ENERGY_CONVERSION.get()))return false;
         var rates=EnergyPorts.rates();
         return p.energyCredits()==0||p.pendingEnergyUnit.equals(p.energyOutput)&&p.pendingEnergyJRate==rates.fePer1000J()&&p.pendingEnergyEURate==rates.fePerEU()&&p.pendingEnergyEDRate==rates.fePerElectrodynamicsJ();
     }
-    static int acceptFE(HostEntity host,Part p,Direction side,int amount,boolean simulate){
+    static int acceptFE(HostEntity host,Part p,EnumFacing side,int amount,boolean simulate){
         if(amount<=0||!eligible(host,p,side,"FE"))return 0;
         var rates=EnergyPorts.rates();
         long packet=EnergyConversion.credits(1,EnergyConversion.FE,rates.efficiency("FE",p.energyOutput));
@@ -70,7 +70,7 @@ final class NativeEnergyInput {
         }
         return accepted;
     }
-    static long accept(HostEntity host,Part p,Direction attached,Direction side,long voltage,long amps){
+    static long accept(HostEntity host,Part p,EnumFacing attached,EnumFacing side,long voltage,long amps){
         if(side!=attached||voltage<1||voltage>p.energyVoltage||amps<1||!eligible(host,p,attached))return 0;
         var rates=EnergyPorts.rates();long cost=rates.cost("EU");
         // Bound raw incoming EU before conversion loss, and never bypass the per-node buffer cap.

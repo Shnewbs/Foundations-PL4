@@ -16,12 +16,12 @@ final class DisplayPickerScreen extends net.foundations.pl4.compat.PortScreen {
     final DisplayPropertiesScreen parent;private final boolean readers;private EditBox search;private int left,top,w,h,scroll;private String query="";
     private record Choice(String key,String label,Part.Row row){}
     private List<Choice> choices=List.of();
-    DisplayPickerScreen(DisplayPropertiesScreen parent,boolean readers){super(new net.minecraft.util.text.StringTextComponent(readers?"Choose reader":"Choose data row"));this.parent=parent;this.readers=readers;}
+    DisplayPickerScreen(DisplayPropertiesScreen parent,boolean readers){super(new net.minecraft.util.text.TextComponentString(readers?"Choose reader":"Choose data row"));this.parent=parent;this.readers=readers;}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){w=Math.min(470,width-16);h=Math.min(330,height-16);left=(width-w)/2;top=(height-h)/2;
-        search=new EditBox(font,left+10,top+30,w-20,20,new net.minecraft.util.text.StringTextComponent("Search"));search.setMaxLength(96);search.setValue(query);search.setResponder(v->{query=v;scroll=0;});addRenderableWidget(search);
-        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Automatic / default"),b->choose("")).bounds(left+10,top+h-26,140,20).build());
-        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Back"),b->onClose()).bounds(left+w-66,top+h-26,56,20).build());refresh();}
+        search=new EditBox(font,left+10,top+30,w-20,20,new net.minecraft.util.text.TextComponentString("Search"));search.setMaxLength(96);search.setValue(query);search.setResponder(v->{query=v;scroll=0;});addRenderableWidget(search);
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Automatic / default"),b->choose("")).bounds(left+10,top+h-26,140,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Back"),b->onClose()).bounds(left+w-66,top+h-26,56,20).build());refresh();}
     private void refresh(){List<Choice> all=new ArrayList<>();if(readers)for(var c:parent.parent.part.readerChoices)all.add(new Choice(c.id(),c.name()+" / "+c.kind(),null));else for(var r:parent.parent.source(parent.reader()))all.add(new Choice(r.key(),r.name()+" : "+Part.Row.number(r.value())+" "+r.unit(),r));
         String filter=query.toLowerCase(Locale.ROOT);choices=all.stream().filter(c->(c.label+" "+c.key).toLowerCase(Locale.ROOT).contains(filter)).toList();scroll=net.foundations.pl4.compat.PortMath.clamp(scroll,0,Math.max(0,choices.size()-Math.max(1,(h-94)/22)));}
     private void choose(String value){if(readers)parent.reader(value);else parent.key(value);}

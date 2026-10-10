@@ -1,7 +1,7 @@
 package net.foundations.pl4;
 
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -28,13 +28,13 @@ public final class HammerMenu extends Container {
     }
     public int progress(){return data.get(0);} public int duration(){return Math.max(1,data.get(1));}
     public int cooldown(){return data.get(2);} public int status(){return data.get(4);}
-    @Override public boolean stillValid(PlayerEntity player){
+    @Override public boolean stillValid(EntityPlayer player){
         return hammer==null||(!hammer.isRemoved()&&hammer.getLevel()==player.level
             &&player.level.getBlockEntity(hammer.getBlockPos())==hammer
             &&(player.level.getBlockState(hammer.getBlockPos()).getBlock()==FoundationsPL4.HAMMER.get())
             &&player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(hammer.getBlockPos()))<=64);
     }
-    @Override public ItemStack quickMoveStack(PlayerEntity player,int index){
+    @Override public ItemStack quickMoveStack(EntityPlayer player,int index){
         if(index<0||index>=slots.size()||!stillValid(player))return ItemStack.EMPTY;
         Slot slot=slots.get(index);if(!slot.hasItem()||!slot.mayPickup(player))return ItemStack.EMPTY;
         ItemStack source=slot.getItem(),original=source.copy();

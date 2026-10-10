@@ -3,7 +3,7 @@ package net.foundations.pl4;
 import java.util.*;
 import net.foundations.pl4.core.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
 import net.foundations.pl4.compat.DataComponents;
@@ -24,12 +24,12 @@ public final class EnergyIntegrationGameTests {
     private record Fixture(NetworkEngine.Ref source,NetworkEngine.Ref sink,TransferEngine.Plan plan,Battery from,Battery to) {
         void run(GameTestHelper h){NativeEnergyTransfers.run(h.getLevel().getServer(),plan,(ref,unit)->ref==source?from:to);}
     }
-    private static NetworkEngine.Ref host(GameTestHelper h,BlockPos pos,Kind kind,Direction face){
+    private static NetworkEngine.Ref host(GameTestHelper h,BlockPos pos,Kind kind,EnumFacing face){
         h.setBlock(pos,FoundationsPL4.HOST.get());var host=(HostEntity)h.getBlockEntity(pos);var part=new Part(kind,face,OWNER);host.parts.put(part.slot(),part);host.changed();return new NetworkEngine.Ref(host,part);
     }
     private static Fixture fixture(GameTestHelper h,String input,String wire,String output,long amount,long capacity,boolean add){
-        var source=host(h,new BlockPos(2,2,2),add?Kind.NODE:Kind.TRANSFER_NODE,Direction.WEST);
-        var sink=host(h,new BlockPos(5,2,2),add||!output.equals("FE")||!wire.equals("FE")?Kind.TRANSFER_NODE:Kind.NODE,Direction.EAST);
+        var source=host(h,new BlockPos(2,2,2),add?Kind.NODE:Kind.TRANSFER_NODE,EnumFacing.WEST);
+        var sink=host(h,new BlockPos(5,2,2),add||!output.equals("FE")||!wire.equals("FE")?Kind.TRANSFER_NODE:Kind.NODE,EnumFacing.EAST);
         source.part().energyInput=input;source.part().energyOutput=wire;source.part().energyConvert=!input.equals(wire);source.part().transferMode=add?0:2;
         sink.part().energyInput=wire;sink.part().energyOutput=output;sink.part().energyConvert=!wire.equals(output);sink.part().transferMode=1;
         return new Fixture(source,sink,TransferEngine.prepare(List.of(source,sink)),new Battery(amount,amount),new Battery(0,capacity));
@@ -50,7 +50,7 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void optionalReaderSystemsPersistAndModelsKeepMultipartGeometry(GameTestHelper h){
         for(String system:List.of("CREATE","AE2")){
-            Part p=new Part(Kind.ENERGY_READER,Direction.WEST,OWNER);p.energySystem=system;
+            Part p=new Part(Kind.ENERGY_READER,EnumFacing.WEST,OWNER);p.energySystem=system;
             Part restored=Part.load(p.save(null,false),null);
             net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.energySystem.equals(system),"Optional reader selection survives save/load");
         }
@@ -58,8 +58,8 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void pushedForgeEnergyIsSidedSimulatedBoundedAndRevoked(GameTestHelper h){
-        var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,Direction.WEST);Part p=ref.part();p.transferMode=2;
-        var cap=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),Direction.WEST);
+        var ref=host(h,new BlockPos(2,2,2),Kind.TRANSFER_NODE,EnumFacing.WEST);Part p=ref.part();p.transferMode=2;
+        var cap=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.EnergyStorage.BLOCK,ref.host().getBlockPos(),EnumFacing.WEST);
         net.foundations.pl4.compat.PortAssertions.check(cap!=null&&cap.canReceive()&&!cap.canExtract(),"Pushing generators discover a receive-only FE input");
         net.foundations.pl4.compat.PortAssertions.check(cap.receiveEnergy(100,true)==100&&p.energyCredits()==0,"Simulation must not alter escrow");
         net.foundations.pl4.compat.PortAssertions.check(cap.receiveEnergy(100,false)==100&&p.energyCredits()==100*EnergyConversion.FE,"Accepted FE is conserved in persistent escrow");
@@ -118,7 +118,7 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fractionalEscrowAndRouteSurviveDropsAndRestart(GameTestHelper h){
-        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,OWNER);p.energyInput="ED_J";p.energyOutput="EU";p.energyConvert=true;p.energyVoltage=128;p.transferMode=2;p.energyCredits(1);p.pendingEnergyUnit="EU";p.pendingEnergyJRate=400;p.pendingEnergyEURate=4;p.pendingEnergyEDRate=1;
+        Part p=new Part(Kind.TRANSFER_NODE,EnumFacing.WEST,OWNER);p.energyInput="ED_J";p.energyOutput="EU";p.energyConvert=true;p.energyVoltage=128;p.transferMode=2;p.energyCredits(1);p.pendingEnergyUnit="EU";p.pendingEnergyJRate=400;p.pendingEnergyEURate=4;p.pendingEnergyEDRate=1;
         var data=net.foundations.pl4.compat.PortData.get(PartItem.stack(p,null),DataComponents.CUSTOM_DATA);
         net.foundations.pl4.compat.PortAssertions.check(data!=null,"Sub-FE escrow must never be lost in a normal node drop");
         Part restored=Part.load(data.copyTag().getCompound("pl_part"),null);
@@ -134,37 +134,37 @@ public final class EnergyIntegrationGameTests {
         var rates=EnergyPorts.rates();net.foundations.pl4.compat.PortAssertions.check(rates.cost("ED_J")==1&&rates.cost("J")==400000,"Electrodynamics and Mekanism units must use distinct adapters and pack ratios");h.succeed();
     }
     public interface EUFixture {
-        long acceptEnergyFromNetwork(Direction side,long voltage,long amperage);long removeEnergy(long n);
-        long getEnergyStored();long getEnergyCapacity();boolean inputsEnergy(Direction side);boolean outputsEnergy(Direction side);
+        long acceptEnergyFromNetwork(EnumFacing side,long voltage,long amperage);long removeEnergy(long n);
+        long getEnergyStored();long getEnergyCapacity();boolean inputsEnergy(EnumFacing side);boolean outputsEnergy(EnumFacing side);
         long getInputVoltage();long getInputAmperage();long getOutputVoltage();long getOutputAmperage();
     }
     public static final class EUBattery implements EUFixture {
         long stored;int actualCalls;
-        public long acceptEnergyFromNetwork(Direction side,long voltage,long amperage){if(voltage>32)throw new AssertionError("Unsafe overvoltage");stored+=voltage*amperage;actualCalls++;return amperage;}
+        public long acceptEnergyFromNetwork(EnumFacing side,long voltage,long amperage){if(voltage>32)throw new AssertionError("Unsafe overvoltage");stored+=voltage*amperage;actualCalls++;return amperage;}
         public long removeEnergy(long n){long result=Math.min(n,stored);stored-=result;return result;}
         public long getEnergyStored(){return stored;}public long getEnergyCapacity(){return 4096;}
-        public boolean inputsEnergy(Direction side){return side==Direction.WEST;}public boolean outputsEnergy(Direction side){return side==Direction.EAST;}
+        public boolean inputsEnergy(EnumFacing side){return side==EnumFacing.WEST;}public boolean outputsEnergy(EnumFacing side){return side==EnumFacing.EAST;}
         public long getInputVoltage(){return 32;}public long getInputAmperage(){return 2;}public long getOutputVoltage(){return 32;}public long getOutputAmperage(){return 2;}
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void feToEUUsesWholeSafePacketsAndSharedCap(GameTestHelper h)throws Exception {
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{
-            var f=fixture(h,"FE","FE","EU",500,1000,true);var eu=new EUBattery();var adapter=ReflectiveEnergyTransfer.gregtech(EUFixture.class,Direction.class);
+            var f=fixture(h,"FE","FE","EU",500,1000,true);var eu=new EUBattery();var adapter=ReflectiveEnergyTransfer.gregtech(EUFixture.class,EnumFacing.class);
             PLConfig.NETWORK_ENERGY_RATE.set(100);
-            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,Direction.WEST,f.sink.part().energyVoltage,1024));
+            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,EnumFacing.WEST,f.sink.part().energyVoltage,1024));
             net.foundations.pl4.compat.PortAssertions.check(eu.stored==0&&f.from.stored==500&&eu.actualCalls==0,"Cap below one 32 V packet (128 FE) must not withdraw or call the receiver");
             PLConfig.NETWORK_ENERGY_RATE.set(128);
-            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,Direction.WEST,f.sink.part().energyVoltage,1024));
+            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,EnumFacing.WEST,f.sink.part().energyVoltage,1024));
             net.foundations.pl4.compat.PortAssertions.check(eu.stored==32&&f.from.stored==372&&eu.actualCalls==1,"One 32 EU packet costs exactly 128 FE and one amp");
             f.sink.part().energyVoltage=128;
-            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,Direction.WEST,f.sink.part().energyVoltage,1024));
+            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:adapter.bind(eu,EnumFacing.WEST,f.sink.part().energyVoltage,1024));
             net.foundations.pl4.compat.PortAssertions.check(eu.stored==32&&f.from.stored==372&&eu.actualCalls==1,"Node voltage above machine rating must fail closed before extraction");h.succeed();
         }finally{PLConfig.NETWORK_ENERGY_RATE.set(old);}
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void multipleNativeDriversShareOneNetworkBudget(GameTestHelper h){
         int old=PLConfig.NETWORK_ENERGY_RATE.get();try{PLConfig.NETWORK_ENERGY_RATE.set(5);
-            var f=fixture(h,"J","FE","FE",25,100,false);var second=host(h,new BlockPos(3,3,3),Kind.TRANSFER_NODE,Direction.WEST);second.part().transferMode=2;second.part().energyInput="J";second.part().energyOutput="FE";second.part().energyConvert=true;var extra=new Battery(25,25);
+            var f=fixture(h,"J","FE","FE",25,100,false);var second=host(h,new BlockPos(3,3,3),Kind.TRANSFER_NODE,EnumFacing.WEST);second.part().transferMode=2;second.part().energyInput="J";second.part().energyOutput="FE";second.part().energyConvert=true;var extra=new Battery(25,25);
             var plan=TransferEngine.prepare(List.of(f.source,second,f.sink));
             NativeEnergyTransfers.run(h.getLevel().getServer(),plan,(ref,unit)->ref==f.source?f.from:ref==second?extra:f.to);
             net.foundations.pl4.compat.PortAssertions.check(f.to.stored==5&&f.from.stored+extra.stored==37,"Two J exporters share five delivered FE, not five each");
@@ -182,9 +182,9 @@ public final class EnergyIntegrationGameTests {
         int oldRate=PLConfig.ENERGY_RATE.get(),oldCap=PLConfig.NETWORK_ENERGY_RATE.get();
         try{PLConfig.ENERGY_RATE.set(256);PLConfig.NETWORK_ENERGY_RATE.set(128);
             var f=fixture(h,"EU","FE","FE",0,1000,false);Part p=f.source.part();
-            long accepted=NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,10);
+            long accepted=NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,32,10);
             net.foundations.pl4.compat.PortAssertions.check(accepted==2&&p.energyCredits()==256*EnergyConversion.FE,"Push-only source fills bounded converted escrow without extraction");
-            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Full buffer rejects packets");
+            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,32,1)==0,"Full buffer rejects packets");
             f.run(h);net.foundations.pl4.compat.PortAssertions.check(f.to.stored==128&&p.energyCredits()==128*EnergyConversion.FE,"Shared network cap applies to pushed EU delivery");
             f.run(h);net.foundations.pl4.compat.PortAssertions.check(f.to.stored==256&&p.energyCredits()==0&&f.from.withdrawals==0,"Pushed packets drain exactly once without pulling source storage");h.succeed();
         }finally{PLConfig.ENERGY_RATE.set(oldRate);PLConfig.NETWORK_ENERGY_RATE.set(oldCap);}
@@ -193,11 +193,11 @@ public final class EnergyIntegrationGameTests {
     public static void pushedEURespectsSideVoltageAndPolicy(GameTestHelper h){
         boolean conversion=PLConfig.ENERGY_CONVERSION.get();
         try{var f=fixture(h,"EU","FE","FE",0,1000,false);Part p=f.source.part();
-            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.EAST,32,1)==0,"Wrong side rejects input");
-            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,128,1)==0,"Overvoltage rejected without accepting packet");
-            PLConfig.ENERGY_CONVERSION.set(false);net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Server conversion policy enforced on push");
-            PLConfig.ENERGY_CONVERSION.set(true);net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==1,"Configured input accepts safe packet");
-            p.pendingEnergyEURate++;net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,Direction.WEST,Direction.WEST,32,1)==0,"Ratio mismatch prevents mixing escrow profiles");
+            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.EAST,32,1)==0,"Wrong side rejects input");
+            net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,128,1)==0,"Overvoltage rejected without accepting packet");
+            PLConfig.ENERGY_CONVERSION.set(false);net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,32,1)==0,"Server conversion policy enforced on push");
+            PLConfig.ENERGY_CONVERSION.set(true);net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,32,1)==1,"Configured input accepts safe packet");
+            p.pendingEnergyEURate++;net.foundations.pl4.compat.PortAssertions.check(NativeEnergyInput.accept(f.source.host(),p,EnumFacing.WEST,EnumFacing.WEST,32,1)==0,"Ratio mismatch prevents mixing escrow profiles");
             net.foundations.pl4.compat.PortAssertions.check(p.energyCredits()==128*EnergyConversion.FE,"Rejected packets never change escrow");h.succeed();
         }finally{PLConfig.ENERGY_CONVERSION.set(conversion);}
     }
@@ -205,13 +205,13 @@ public final class EnergyIntegrationGameTests {
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readerChannelsStayPinnedAcrossOrderAndSave(GameTestHelper h){
-        Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);reader.mode="SLOT";reader.index=4;
-        var a=new Part.Link("minecraft:overworld",new BlockPos(1,2,3),Direction.NORTH,null,null);
-        var b=new Part.Link("minecraft:overworld",new BlockPos(4,5,6),Direction.SOUTH,null,null);
+        Part reader=new Part(Kind.INVENTORY_READER,EnumFacing.UP,OWNER);reader.mode="SLOT";reader.index=4;
+        var a=new Part.Link("minecraft:overworld",new BlockPos(1,2,3),EnumFacing.NORTH,null,null);
+        var b=new Part.Link("minecraft:overworld",new BlockPos(4,5,6),EnumFacing.SOUTH,null,null);
         reader.targetChannel=ReaderChannels.id(b);
         net.foundations.pl4.compat.PortAssertions.check(ReaderChannels.select(reader,List.of(a,b)).equals(List.of(b))&&ReaderChannels.select(reader,List.of(b,a)).equals(List.of(b)),"Pinned target survives ordering changes");
         net.foundations.pl4.compat.PortAssertions.check(ReaderChannels.select(reader,List.of(a)).isEmpty(),"Missing pinned target never falls back to another inventory");
-        net.foundations.pl4.compat.PortAssertions.check(!ReaderChannels.id(a).equals(ReaderChannels.id(new Part.Link(a.dimension(),a.pos(),Direction.SOUTH,null,null))),"Sided endpoints remain distinct");
+        net.foundations.pl4.compat.PortAssertions.check(!ReaderChannels.id(a).equals(ReaderChannels.id(new Part.Link(a.dimension(),a.pos(),EnumFacing.SOUTH,null,null))),"Sided endpoints remain distinct");
         reader.targetChoices.add(new Part.ReaderChoice(ReaderChannels.id(b),"Machine B","block"));
         Part disk=Part.load(reader.save(null,false),null);
         Part sync=Part.load(reader.save(null,true),null);
@@ -222,7 +222,7 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoProvidersBoundIsolateAndUnregister(GameTestHelper h){
-        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),EnumFacing.UP,null,null);
         try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_failing",(context,out)->{if(!context.target().equals(target))return;out.add("partial","Partial",1,1,"");throw new IllegalStateException("Expected provider isolation fixture");});
             var good=net.foundations.pl4.api.InfoProviders.register("pl4_test:b_good",(context,out)->{if(!context.target().equals(target))return;out.add("bad","Bad",Double.NaN,0,"");out.add("bad_capacity","Bad",1,-1,"");out.add("health","Machine health",7,10,"");out.add("health","Duplicate",999,0,"");for(int i=0;i<100;i++)out.add("value"+i,"Value",i,100,"");})){
             var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
@@ -237,23 +237,23 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoReaderUsesProvidersAndTrimsMetricKeys(GameTestHelper h){
-        var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,Direction.UP);
-        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
+        var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,EnumFacing.UP);
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),EnumFacing.UP,null,null);
         reader.part().metric=" x, pl4_test:sample/progress ";
         try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:sample",(context,out)->{if(context.target().equals(target))out.add("progress","Progress",25,100,"%");})){
             var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(target),1);
             net.foundations.pl4.compat.PortAssertions.check(rows.size()==2&&rows.stream().anyMatch(r->r.key().equals("pl4_test:sample/progress")&&r.value()==25),"Production Info Reader samples extensions and trims key filters");
             reader.part().mode="STORAGE";
             net.foundations.pl4.compat.PortAssertions.check(DataSampler.sample(h.getLevel().getServer(),reader,List.of(target),1).equals(rows),"Storage mode must not replace Info Reader telemetry with an item counter");
-            var absent=new Part.Link("minecraft:overworld",target.pos(),Direction.UP,UUID.randomUUID(),null);
+            var absent=new Part.Link("minecraft:overworld",target.pos(),EnumFacing.UP,UUID.randomUUID(),null);
             net.foundations.pl4.compat.PortAssertions.check(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),absent).isEmpty(),"Unavailable entities never invoke providers");
         }h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readerPagesSearchAndPinsBeyondSixtyFour(GameTestHelper h){
-        Part reader=new Part(Kind.INVENTORY_READER,Direction.UP,OWNER);List<Part.Link> links=new ArrayList<>();
-        for(int i=0;i<130;i++)links.add(new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(i,2,1)),Direction.NORTH,null,null));
+        Part reader=new Part(Kind.INVENTORY_READER,EnumFacing.UP,OWNER);List<Part.Link> links=new ArrayList<>();
+        for(int i=0;i<130;i++)links.add(new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(i,2,1)),EnumFacing.NORTH,null,null));
         reader.targetChannel=ReaderChannels.id(links.get(129));
         ReaderChannels.refresh(h.getLevel().getServer(),reader,links);
         net.foundations.pl4.compat.PortAssertions.check(reader.targetChoices.size()==64&&reader.targetCount==130&&!ReaderChannels.label(reader).contains("disconnected"),"Pinned endpoint beyond first page remains identifiable");
@@ -270,7 +270,7 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void oldProviderHandleCannotRemoveReplacement(GameTestHelper h){
-        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),EnumFacing.UP,null,null);
         net.foundations.pl4.api.InfoProviders.Provider callback=(c,out)->{if(c.target().equals(target))out.add("value","Value",42,100,"");};
         var old=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback);old.close();
         try(var current=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback)){
@@ -280,30 +280,30 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void inventorySamplingDeduplicatesVanillaDoubleChest(GameTestHelper h){
-        var reader=host(h,new BlockPos(5,2,2),Kind.INVENTORY_READER,Direction.UP);
+        var reader=host(h,new BlockPos(5,2,2),Kind.INVENTORY_READER,EnumFacing.UP);
         var left=h.absolutePos(new BlockPos(2,1,2));var right=left.east();
-        var state=net.minecraft.block.Blocks.CHEST.defaultBlockState().setValue(net.minecraft.block.ChestBlock.FACING,Direction.NORTH);
+        var state=net.minecraft.init.Blocks.CHEST.defaultBlockState().setValue(net.minecraft.block.ChestBlock.FACING,EnumFacing.NORTH);
         h.getLevel().setBlock(left,state.setValue(net.minecraft.block.ChestBlock.TYPE,net.minecraft.state.properties.ChestType.LEFT),2);
         h.getLevel().setBlock(right,state.setValue(net.minecraft.block.ChestBlock.TYPE,net.minecraft.state.properties.ChestType.RIGHT),2);
-        ((net.minecraft.tileentity.ChestTileEntity)h.getLevel().getBlockEntity(left)).setItem(0,new net.minecraft.item.ItemStack(net.minecraft.item.Items.DIAMOND,17));
-        ((net.minecraft.tileentity.ChestTileEntity)h.getLevel().getBlockEntity(right)).setItem(0,new net.minecraft.item.ItemStack(net.minecraft.item.Items.DIAMOND,3));
-        var a=new Part.Link("minecraft:overworld",left,Direction.UP,null,null);var b=new Part.Link("minecraft:overworld",right,Direction.NORTH,null,null);
+        ((net.minecraft.tileentity.TileEntityChest)h.getLevel().getBlockEntity(left)).setItem(0,new net.minecraft.item.ItemStack(net.minecraft.init.Items.DIAMOND,17));
+        ((net.minecraft.tileentity.TileEntityChest)h.getLevel().getBlockEntity(right)).setItem(0,new net.minecraft.item.ItemStack(net.minecraft.init.Items.DIAMOND,3));
+        var a=new Part.Link("minecraft:overworld",left,EnumFacing.UP,null,null);var b=new Part.Link("minecraft:overworld",right,EnumFacing.NORTH,null,null);
         var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b,a),1);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==1&&rows.get(0).value()==20,"Both halves and repeated links count one combined inventory");
         reader.part().mode="STORAGE";var storage=DataSampler.sample(h.getLevel().getServer(),reader,List.of(a,b),1).get(0);
-        var nativeHandler=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.ItemHandler.BLOCK,left,Direction.UP);
+        var nativeHandler=net.foundations.pl4.compat.PortCapabilities.get(h.getLevel(),net.foundations.pl4.compat.Capabilities.ItemHandler.BLOCK,left,EnumFacing.UP);
         net.foundations.pl4.compat.PortAssertions.check(nativeHandler!=null&&nativeHandler.getSlots()==54,"Fixture exposes the whole double chest");
         long expectedCapacity=0;for(int i=0;i<54;i++)expectedCapacity+=nativeHandler.getSlotLimit(i);
         net.foundations.pl4.compat.PortAssertions.check(storage.value()==20&&storage.capacity()==expectedCapacity&&expectedCapacity>0,"Storage reports the native general capacity once, not a guessed stack size: "+storage.capacity()+" / "+expectedCapacity);h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=80)
     public static void liveFurnaceReportsCookingAndFuel(GameTestHelper h){
-        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,net.minecraft.block.Blocks.FURNACE);
+        BlockPos pos=new BlockPos(2,1,2);h.setBlock(pos,net.minecraft.init.Blocks.FURNACE);
         var furnace=(net.minecraft.tileentity.AbstractFurnaceTileEntity)h.getLevel().getBlockEntity(h.absolutePos(pos));
-        furnace.setItem(0,new net.minecraft.item.ItemStack(net.minecraft.item.Items.IRON_ORE));
-        furnace.setItem(1,new net.minecraft.item.ItemStack(net.minecraft.item.Items.COAL));
+        furnace.setItem(0,new net.minecraft.item.ItemStack(net.minecraft.init.Items.IRON_ORE));
+        furnace.setItem(1,new net.minecraft.item.ItemStack(net.minecraft.init.Items.COAL));
         h.runAtTickTime(20,()->{
-            var target=new Part.Link("minecraft:overworld",h.absolutePos(pos),Direction.UP,null,null);
+            var target=new Part.Link("minecraft:overworld",h.absolutePos(pos),EnumFacing.UP,null,null);
             var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
             net.foundations.pl4.compat.PortAssertions.check(rows.stream().anyMatch(r->r.key().equals("cook_time")&&r.value()>0&&r.capacity()>r.value()),"Actual furnace progress must be live and bounded");
             net.foundations.pl4.compat.PortAssertions.check(rows.stream().anyMatch(r->r.key().equals("burn_time")&&r.value()>0),"Actual remaining fuel time must be reported");h.succeed();
@@ -311,16 +311,16 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void networkDiagnosticsSeparateUnavailableEndpoints(GameTestHelper h){
-        var reader=host(h,new BlockPos(2,2,2),Kind.NETWORK_READER,Direction.UP);
-        var block=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
-        var entity=new Part.Link("minecraft:overworld",block.pos(),Direction.UP,UUID.randomUUID(),null);
+        var reader=host(h,new BlockPos(2,2,2),Kind.NETWORK_READER,EnumFacing.UP);
+        var block=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),EnumFacing.UP,null,null);
+        var entity=new Part.Link("minecraft:overworld",block.pos(),EnumFacing.UP,UUID.randomUUID(),null);
         var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(block,block,entity),1);
         net.foundations.pl4.compat.PortAssertions.check(rows.stream().anyMatch(r->r.key().equals("targets")&&r.value()==2)&&rows.stream().anyMatch(r->r.key().equals("available")&&r.value()==1)&&rows.stream().anyMatch(r->r.key().equals("unavailable")&&r.value()==1),"Diagnostics deduplicate exact links and distinguish missing entities");h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readerEditsRejectForeignOwnersStaleIdsAndForgedTargets(GameTestHelper h){
-        var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,Direction.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
+        var ref=host(h,new BlockPos(2,2,2),Kind.INVENTORY_READER,EnumFacing.UP);var pos=ref.host().getBlockPos();Part part=ref.part();
         var stranger=net.minecraftforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.fromString("bbbb1111-0000-0000-0000-000000000001"),"PL4-foreign"));
         stranger.setPos(pos.getX()+.5,pos.getY(),pos.getZ()+.5);
         net.foundations.pl4.compat.PortAssertions.check(!ref.host().canEdit(stranger),"Fixture uses a foreign non-operator");
@@ -345,19 +345,19 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void addItemEscrowSurvivesDestinationException(GameTestHelper h){
         BlockPos fromPos=new BlockPos(1,1,1),toPos=new BlockPos(5,1,1);
-        h.setBlock(fromPos,net.minecraft.block.Blocks.CHEST);
-        h.setBlock(toPos,net.minecraft.block.Blocks.CHEST);
-        var from=(net.minecraft.tileentity.ChestTileEntity)h.getLevel().getBlockEntity(h.absolutePos(fromPos));
-        from.setItem(0,new net.minecraft.item.ItemStack(net.minecraft.item.Items.DIAMOND,17));
+        h.setBlock(fromPos,net.minecraft.init.Blocks.CHEST);
+        h.setBlock(toPos,net.minecraft.init.Blocks.CHEST);
+        var from=(net.minecraft.tileentity.TileEntityChest)h.getLevel().getBlockEntity(h.absolutePos(fromPos));
+        from.setItem(0,new net.minecraft.item.ItemStack(net.minecraft.init.Items.DIAMOND,17));
         boolean[] fail={true};BlockPos absolute=h.absolutePos(toPos);
-        var to=new net.minecraft.tileentity.ChestTileEntity(){
+        var to=new net.minecraft.tileentity.TileEntityChest(){
             @Override public void setItem(int slot,net.minecraft.item.ItemStack stack){
                 if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
             }
         };
         to.setLevel(h.getLevel());to.setPosition(absolute);h.getLevel().setBlockEntity(absolute,to);net.foundations.pl4.compat.PortCapabilities.invalidate(to);
-        var source=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
-        var sink=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);sink.part().transferMode=1;
+        var source=host(h,new BlockPos(2,1,1),Kind.NODE,EnumFacing.WEST);
+        var sink=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,EnumFacing.EAST);sink.part().transferMode=1;
         boolean thrown=false;try{TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));}catch(IllegalStateException expected){
             if(!"PL4 expected destination failure".equals(expected.getMessage()))throw expected;thrown=true;
         }
@@ -371,8 +371,8 @@ public final class EnergyIntegrationGameTests {
     public static void previewFallbackRespectsTotalBudgetAndStableKeys(GameTestHelper h){
         var samples=new VisualSamples();var last=net.minecraft.item.ItemStack.EMPTY;
         for(int i=0;i<256;i++){
-            var item=new net.minecraft.item.ItemStack(net.minecraft.item.Items.STONE);
-            net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent(i+":"+"x".repeat(1500)));
+            var item=new net.minecraft.item.ItemStack(net.minecraft.init.Items.STONE);
+            net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString(i+":"+"x".repeat(1500)));
             samples.item(item);last=item;
         }
         var rows=samples.rows(null,true,256,0);int bytes=0;boolean omitted=false;

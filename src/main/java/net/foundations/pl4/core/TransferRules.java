@@ -1,7 +1,7 @@
 package net.foundations.pl4.core;
 
 /**
- * Direction rules for the bounded PL4 transfer pool.
+ * EnumFacing rules for the bounded PL4 transfer pool.
  *
  * <p>Normal Nodes are passive network endpoints. A unidirectional Transfer Node is the
  * driver: REMOVE exports its attached capability into explicit ADD peers first and then

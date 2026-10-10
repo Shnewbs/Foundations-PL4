@@ -1,7 +1,7 @@
 package net.foundations.pl4.core;
 
 /** The same six-face rules feed the server graph, cable rendering and hit boxes.
- * Direction indices are Minecraft's DOWN, UP, NORTH, SOUTH, WEST, EAST (opposite = face ^ 1).
+ * EnumFacing indices are Minecraft's DOWN, UP, NORTH, SOUTH, WEST, EAST (opposite = face ^ 1).
  * These primitives serve MultipartTopology; endpoints are not unrestricted cable relays.
  */
 public final class ConnectionRules {

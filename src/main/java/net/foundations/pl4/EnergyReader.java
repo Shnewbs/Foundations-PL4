@@ -4,9 +4,9 @@ import java.util.*;
 import net.foundations.pl4.core.EnergyValues;
 import net.foundations.pl4.core.ReflectiveEnergyAccess;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
 import net.foundations.pl4.compat.Capabilities;
 import net.foundations.pl4.compat.BlockCapability;
 import net.foundations.pl4.compat.RegisterCapabilitiesEvent;
@@ -17,7 +17,7 @@ import org.apache.logging.log4j.LogManager;
  */
 public final class EnergyReader {
     private record Target(String dimension,BlockPos pos){}
-    private record Probe(String id,String unit,BlockCapability<Object,Direction> capability,ReflectiveEnergyAccess access){}
+    private record Probe(String id,String unit,BlockCapability<Object,EnumFacing> capability,ReflectiveEnergyAccess access){}
     private record Sample(Target target,String name,EnergyValues.Reading reading){}
     private static List<Probe> probes;
     private static final Set<String> warned=new HashSet<>(); // At most one entry per built-in provider, not per block.
@@ -30,24 +30,24 @@ public final class EnergyReader {
         List<Probe> found=new ArrayList<>();
         // Prefer GT's non-transfer telemetry interface, including BigInteger storage, before its energy container.
         for(String id:List.of("gtceu:energy_info_provider","gtceu:energy_container","mekanism:strict_energy_handler")){
-            var cap=known.get(id);if(cap==null||cap.contextClass()!=Direction.class)continue;
+            var cap=known.get(id);if(cap==null||cap.contextClass()!=EnumFacing.class)continue;
             try{
                 var access=switch(id){case "gtceu:energy_info_provider"->ReflectiveEnergyAccess.gregtechInfo(cap.typeClass());case "gtceu:energy_container"->ReflectiveEnergyAccess.gregtech(cap.typeClass());default->ReflectiveEnergyAccess.mekanism(cap.typeClass());};
-                found.add(new Probe(id,id.startsWith("mekanism:")?"J":"EU",(BlockCapability<Object,Direction>)cap,access));
+                found.add(new Probe(id,id.startsWith("mekanism:")?"J":"EU",(BlockCapability<Object,EnumFacing>)cap,access));
             }catch(ReflectiveOperationException|RuntimeException failure){warn(id,failure);}
         }
         probes=List.copyOf(found);return probes;
     }
-    private static EnergyValues.Reading read(ServerWorld level,BlockPos pos,List<Direction> sides,Part reader,int[] failures){
+    private static EnergyValues.Reading read(WorldServer level,BlockPos pos,List<EnumFacing> sides,Part reader,int[] failures){
         for(Probe probe:probes()){
             if(!EnergyValues.accepts(reader.energySystem,probe.unit))continue;
             if(probe.unit.equals("J")&&!PLConfig.MEKANISM_READS.get()||probe.unit.equals("EU")&&!PLConfig.GREGTECH_READS.get())continue;
-            for(Direction side:sides)try{
+            for(EnumFacing side:sides)try{
                 Object handler=net.foundations.pl4.compat.PortCapabilities.get(level,probe.capability,pos,side);
                 var result=probe.access.read(handler,PLConfig.MAX_ENERGY_CONTAINERS.get());if(result!=null)return result;
             }catch(ReflectiveOperationException|RuntimeException failure){failures[0]++;warn(probe.id,failure);}
         }
-        if(EnergyValues.accepts(reader.energySystem,"FE"))for(Direction side:sides)try{
+        if(EnergyValues.accepts(reader.energySystem,"FE"))for(EnumFacing side:sides)try{
             var handler=net.foundations.pl4.compat.PortCapabilities.get(level,Capabilities.EnergyStorage.BLOCK,pos,side);
             if(handler!=null)return new EnergyValues.Reading("neoforge","FE",handler.getEnergyStored(),handler.getMaxEnergyStored());
         }catch(RuntimeException failure){failures[0]++;warn("neoforge:energy",failure);}
@@ -55,11 +55,11 @@ public final class EnergyReader {
     }
     public static List<Part.Row> sample(MinecraftServer server,NetworkEngine.Ref ref,List<Part.Link> links){
         if(ref.part().energySystem.equals("CREATE")||ref.part().energySystem.equals("AE2"))return OptionalPowerTelemetry.sample(server,ref,links);
-        Part reader=ref.part();Map<Target,List<Direction>> targets=new LinkedHashMap<>();
+        Part reader=ref.part();Map<Target,List<EnumFacing>> targets=new LinkedHashMap<>();
         for(Part.Link link:links)if(link.entity()==null){var key=new Target(link.dimension(),link.pos());var sides=targets.computeIfAbsent(key,k->new ArrayList<>());if(!sides.contains(link.side()))sides.add(link.side());}
         List<Sample> samples=new ArrayList<>();int unloaded=0,unsupported=0;int[] failures={0};
         for(var entry:targets.entrySet()){
-            var key=entry.getKey();var level=NetworkEngine.level(server,new Part.Link(key.dimension,key.pos,Direction.DOWN,null,null));
+            var key=entry.getKey();var level=NetworkEngine.level(server,new Part.Link(key.dimension,key.pos,EnumFacing.DOWN,null,null));
             if(level==null||!level.hasChunkAt(key.pos)){unloaded++;continue;}
             var value=read(level,key.pos,entry.getValue(),reader,failures);
             if(value==null){unsupported++;continue;}

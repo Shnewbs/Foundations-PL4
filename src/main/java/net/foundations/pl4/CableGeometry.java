@@ -2,7 +2,7 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.foundations.pl4.core.MultipartTopology;
 
@@ -10,15 +10,15 @@ import net.foundations.pl4.core.MultipartTopology;
  * Reconcile both cable ends from available parts, rather than separately arriving arm snapshots.
  * Only existing loaded hosts are inspected; no client placement or chunk loading is predicted. */
 public final class CableGeometry {
-    private static final Direction[] FACES=Direction.values();
+    private static final EnumFacing[] FACES=EnumFacing.values();
     public static void refresh(HostEntity anchor){
         World level=anchor.getLevel();if(level==null)return;
         Map<BlockPos,HostEntity> centres=new LinkedHashMap<>();
         add(level,anchor.getBlockPos(),centres);
-        for(Direction face:FACES)add(level,anchor.getBlockPos().relative(face),centres);
+        for(EnumFacing face:FACES)add(level,anchor.getBlockPos().relative(face),centres);
         // Every centre needs all six neighbours. The two-cell footprint is bounded to 25 cells.
         Map<BlockPos,HostEntity> footprint=new LinkedHashMap<>(centres);
-        for(HostEntity centre:centres.values())for(Direction face:FACES)add(level,centre.getBlockPos().relative(face),footprint);
+        for(HostEntity centre:centres.values())for(EnumFacing face:FACES)add(level,centre.getBlockPos().relative(face),footprint);
         List<MultipartTopology.Node> nodes=new ArrayList<>();Map<Part,Integer> ids=new IdentityHashMap<>();
         String dimension=level.dimension.getType().getRegistryName().toString();
         for(HostEntity host:footprint.values())for(Part part:host.parts.values()){

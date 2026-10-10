@@ -1,16 +1,16 @@
 package net.foundations.pl4;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.state.IBlockState;
 
 /** Three-block ownership. No block above a hammer is ever replaced unless it is air or its own placeholder. */
 public final class HammerStructure {
     private HammerStructure() {}
-    public static boolean ownSpace(BlockState state,int offset) {
+    public static boolean ownSpace(IBlockState state,int offset) {
         return (state.getBlock()==FoundationsPL4.HAMMER_SPACE.get())&&state.getValue(HammerSpaceBlock.OFFSET)==offset;
     }
     public static boolean canPlace(World level,BlockPos base) {
@@ -29,7 +29,7 @@ public final class HammerStructure {
         for(int i=1;i<=2;i++) {
             BlockPos p=base.above(i);
             if(level.isOutsideBuildHeight(p)||!level.hasChunkAt(p)||!level.getWorldBorder().isWithinBounds(p))return false;
-            BlockState s=level.getBlockState(p);
+            IBlockState s=level.getBlockState(p);
             if(!ownSpace(s,i)&&!s.isAir())return false;
         }
         for(int i=1;i<=2;i++) {
@@ -44,10 +44,10 @@ public final class HammerStructure {
         if(level.isClientSide)return;
         for(int i=1;i<=2;i++)if(ownSpace(level.getBlockState(base.above(i)),i))level.removeBlock(base.above(i),false);
     }
-    public static boolean open(World level,BlockPos base,PlayerEntity player) {
+    public static boolean open(World level,BlockPos base,EntityPlayer player) {
         if(!level.hasChunkAt(base)||!level.mayInteract(player,base)||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(base))>64)return false;
         if(!(level.getBlockEntity(base) instanceof HammerEntity hammer))return false;
-        if(player instanceof ServerPlayerEntity sp)sp.openMenu(hammer);
+        if(player instanceof EntityPlayerMP sp)sp.openMenu(hammer);
         return true;
     }
 }

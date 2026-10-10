@@ -3,12 +3,12 @@ package net.foundations.pl4.compat.scenarios;
 import java.lang.reflect.*;
 import java.nio.file.*;
 import java.util.*;
-import net.minecraft.block.Blocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,7 +23,7 @@ public final class PortScenarioMod {
     private final List<Method> tests=new ArrayList<>();
     private final List<String> failures=new ArrayList<>();
     private MinecraftServer server;
-    private ServerWorld world;
+    private WorldServer world;
     private GameTestHelper current;
     private Method method;
     private int index,passed;
@@ -71,7 +71,7 @@ public final class PortScenarioMod {
     private void fail(Throwable error){failures.add(name()+": "+error);LOG.error("PL4 SCENARIO FAIL "+name(),error);current=null;}
     private void cleanFixtureRegion(){
         for(BlockPos p:BlockPos.betweenClosed(-3,76,-3,38,96,38))if(!world.isEmptyBlock(p))world.setBlock(p,Blocks.AIR.defaultBlockState(),3);
-        for(var entity:new ArrayList<>(world.getEntities((net.minecraft.entity.Entity)null,new AxisAlignedBB(-8,72,-8,45,104,45))))if(!(entity instanceof PlayerEntity))entity.remove();
+        for(var entity:new ArrayList<>(world.getEntities((net.minecraft.entity.Entity)null,new AxisAlignedBB(-8,72,-8,45,104,45))))if(!(entity instanceof EntityPlayer))entity.remove();
     }
     private void finish(){
         finished=true;cleanFixtureRegion();

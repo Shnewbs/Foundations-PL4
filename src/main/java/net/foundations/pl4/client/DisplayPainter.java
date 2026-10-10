@@ -3,7 +3,7 @@ package net.foundations.pl4.client;
 import java.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -61,11 +61,11 @@ final class DisplayPainter {
         if(!spec.asset().isBlank()){
             var id=ResourceLocation.tryParse(spec.asset());if(id==null)return List.of();
             if(spec.type()==DisplayElements.Type.FLUID||spec.type()==DisplayElements.Type.FLUID_GRID){
-                var value=Registry.FLUID.get(id);if(value==net.minecraft.fluid.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
-                return List.of(new Part.Row(spec.asset(),fluid.getDisplayName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new CompoundNBT(),new CompoundNBT()));
+                var value=Registry.FLUID.get(id);if(value==net.minecraft.init.Fluids.EMPTY)return List.of();FluidStack fluid=new FluidStack(value,1);
+                return List.of(new Part.Row(spec.asset(),fluid.getDisplayName().getString(),1,1,"mB",ItemStack.EMPTY,fluid,new NBTTagCompound(),new NBTTagCompound()));
             }
             ItemStack item=new ItemStack(Registry.ITEM.get(id));if(item.isEmpty())return List.of();
-            return List.of(new Part.Row(spec.asset(),item.getHoverName().getString(),1,0,"items",item,FluidStack.EMPTY,new CompoundNBT(),new CompoundNBT()));
+            return List.of(new Part.Row(spec.asset(),item.getHoverName().getString(),1,0,"items",item,FluidStack.EMPTY,new NBTTagCompound(),new NBTTagCompound()));
         }
         return spec.reader().isBlank()?List.copyOf(part.rows):part.sourceRows.getOrDefault(spec.reader(),List.of());
     }

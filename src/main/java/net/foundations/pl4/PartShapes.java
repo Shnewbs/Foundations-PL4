@@ -1,7 +1,7 @@
 package net.foundations.pl4;
 
 import java.util.EnumMap;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -36,13 +36,13 @@ public final class PartShapes {
         add(Kind.DATA_RECEIVER, new double[][]{{6,0.5,6,10,1,10},{5.5,1,5.5,10.5,2.5,10.5},{6,2.5,6,10,3,10},{7.5,3,6.5,8.5,4,7},{7.5,3,9,8.5,4,9.5},{6.5,3,7.5,7,4,8.5},{9,3,7.5,9.5,4,8.5}});
         add(Kind.REDSTONE_EMITTER, new double[][]{{6,0.5,6,10,1,10},{5.5,1,5.5,10.5,2.5,10.5},{6,2.5,6,10,3,10},{7.5,3,6.5,8.5,4,7},{7.5,3,9,8.5,4,9.5},{6.5,3,7.5,7,4,8.5},{9,3,7.5,9.5,4,8.5}});
         add(Kind.REDSTONE_RECEIVER, new double[][]{{6,0.5,6,10,1,10},{5.5,1,5.5,10.5,2.5,10.5},{6,2.5,6,10,3,10},{7.5,3,6.5,8.5,4,7},{7.5,3,9,8.5,4,9.5},{6.5,3,7.5,7,4,8.5},{9,3,7.5,9.5,4,8.5}});
-        for (int type=1; type<=3; type++) for (Direction face:Direction.values())
+        for (int type=1; type<=3; type++) for (EnumFacing face:EnumFacing.values())
                 ARMS[type][face.ordinal()]=rotate(new double[]{7,ConnectionRules.armStart(type),7,9,6,9},face);
         }
         private PartShapes() {}
         private static void add(Kind kind,double[][] boxes) {
             VoxelShape[] directions=new VoxelShape[6];
-            for(Direction face:Direction.values()) {
+            for(EnumFacing face:EnumFacing.values()) {
                 VoxelShape shape=VoxelShapes.empty();
                 for(double[] box:boxes) shape=VoxelShapes.or(shape,rotate(box,face));
                 directions[face.ordinal()]=shape.optimize();
@@ -50,8 +50,8 @@ public final class PartShapes {
             SHAPES.put(kind,directions);
         }
         public static VoxelShape part(Part part) { return SHAPES.get(part.kind)[part.face.ordinal()]; }
-        public static VoxelShape arm(int type,Direction face) { return type<1||type>3?VoxelShapes.empty():ARMS[type][face.ordinal()]; }
-        static VoxelShape rotate(double[] b,Direction face) {
+        public static VoxelShape arm(int type,EnumFacing face) { return type<1||type>3?VoxelShapes.empty():ARMS[type][face.ordinal()]; }
+        static VoxelShape rotate(double[] b,EnumFacing face) {
             double[] lo={16,16,16},hi={0,0,0};
             for(int a=0;a<8;a++) {
                 double x=b[(a&1)==0?0:3],y=b[(a&2)==0?1:4],z=b[(a&4)==0?2:5];

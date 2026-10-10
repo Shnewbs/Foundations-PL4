@@ -6,7 +6,7 @@ import net.foundations.pl4.compat.Registries;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
@@ -24,7 +24,7 @@ public final class NetworkEngine {
     private static int cachedMaxNetwork;
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
     public record Ref(HostEntity host,Part part) {
-        public ServerWorld level(){return (ServerWorld)host.getLevel();}
+        public WorldServer level(){return (WorldServer)host.getLevel();}
         public Part.Link adjacent(){return new Part.Link(level().dimension.getType().getRegistryName().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
     }
     public static void add(HostEntity h){if(LOADED.add(h))dirty=true;}
@@ -34,12 +34,12 @@ public final class NetworkEngine {
     public static void stopped(FMLServerStoppedEvent e){
         EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
-    public static ServerWorld level(MinecraftServer server,Part.Link link){
+    public static WorldServer level(MinecraftServer server,Part.Link link){
         ResourceLocation id=ResourceLocation.tryParse(link.dimension());if(id==null)return null;var type=net.minecraft.world.dimension.DimensionType.getByName(id);return type==null?null:server.getLevel(type);
     }
-    public static boolean loaded(MinecraftServer server,Part.Link link){ServerWorld l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
+    public static boolean loaded(MinecraftServer server,Part.Link link){WorldServer l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
     private static boolean loadedHost(HostEntity h,MinecraftServer s){
-        return !h.isRemoved()&&h.getLevel() instanceof ServerWorld l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
+        return !h.isRemoved()&&h.getLevel() instanceof WorldServer l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
     }
     public static List<Ref> all(MinecraftServer s){
         List<Ref> result=new ArrayList<>();
@@ -129,7 +129,7 @@ public final class NetworkEngine {
     }
     /** Publish exact local cable geometry now; defer the expensive global graph rebuild by one tick. */
     public static void refreshCableGeometry(HostEntity anchor){
-        if(!(anchor.getLevel() instanceof ServerWorld))return;
+        if(!(anchor.getLevel() instanceof WorldServer))return;
         CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }

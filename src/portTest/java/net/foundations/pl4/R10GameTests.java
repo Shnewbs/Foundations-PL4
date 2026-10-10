@@ -1,11 +1,11 @@
 package net.foundations.pl4;
 
 import java.util.*;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.init.Items;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 import net.foundations.pl4.core.*;
 
@@ -21,7 +21,7 @@ public final class R10GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void revealedCustomPageSurvivesSave(GameTestHelper h){
-        Part p=new Part(Kind.DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=5;
+        Part p=new Part(Kind.DISPLAY,EnumFacing.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=5;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.ITEM,5)));
         Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.displayPage==5&&restored.displayMode==DisplayElements.Mode.CUSTOM&&restored.elements.get(0).spec().page()==5,"Native save keeps the revealed custom page");h.succeed();
@@ -36,7 +36,7 @@ public final class R10GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void restingAutoModeDoesNotDiscardTypedElements(GameTestHelper h){
-        Part p=new Part(Kind.LARGE_DISPLAY,Direction.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.AUTO_LIST;
+        Part p=new Part(Kind.LARGE_DISPLAY,EnumFacing.NORTH,UUID.randomUUID());p.displayMode=DisplayElements.Mode.AUTO_LIST;
         p.elements.add(new Part.Element(DisplayElements.create(DisplayElements.Type.BLOCK,2)));
         Part restored=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.elements.size()==1&&restored.elements.get(0).spec().type()==DisplayElements.Type.BLOCK,"Switching view retains layout");

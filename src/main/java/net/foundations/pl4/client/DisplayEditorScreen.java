@@ -25,7 +25,7 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
     private static final String[] TOOLS={"+","E","X","C","^","v","#","?"};
     private static final String[] HELP={"Add element","Edit selected element","Delete selected element","Duplicate selected element","Bring forward","Send backward","Toggle 4-pixel snap","Data / settings"};
     int spaceW(){return Math.max(8,part.layoutWidth);}int spaceH(){return Math.max(9,part.layoutHeight);}
-    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(new net.minecraft.util.text.StringTextComponent("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
+    public DisplayEditorScreen(BlockPos pos,Part part,boolean editable){super(new net.minecraft.util.text.TextComponentString("PL4 Display Editor"));this.pos=pos;this.part=part;this.editable=editable;clickedIdentity=part.identity;clickedSlot=part.slot();}
     public UUID identity(){return clickedIdentity;}
     static DisplayEditorScreen active(){Screen s=Minecraft.getInstance().screen;if(s instanceof DisplayEditorScreen e)return e;if(s instanceof DisplayPagesScreen p)return p.parent;if(s instanceof DisplayLayersScreen p)return p.parent;if(s instanceof DisplayArrangementScreen p)return p.parent;if(s instanceof DisplayPropertiesScreen p)return p.parent;if(s instanceof DisplayPickerScreen p)return p.parent.parent;return null;}
     public void receive(PLPackets.Open packet,Part p){
@@ -39,11 +39,11 @@ public final class DisplayEditorScreen extends net.foundations.pl4.compat.PortSc
     }
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
-        var arrange=addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
+        var arrange=addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Arrange [A]"),b->arrangementScreen()).bounds(8,46,104,20).build());
         arrange.active=editable;
-        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
-        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
-        addRenderableWidget(Button.builder(new net.minecraft.util.text.StringTextComponent("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Pages [P]"),b->pagesScreen()).bounds(8,94,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Layouts"),b->templatesScreen()).bounds(8,118,104,20).build());
+        addRenderableWidget(Button.builder(new net.minecraft.util.text.TextComponentString("Layers [L]"),b->layersScreen()).bounds(8,70,104,20).build());
     }
     @Override public void renderBackground(GuiGraphics g,int x,int y,float partial){} // World, not a blurred menu.
     public boolean matches(HostEntity host,Part p){

@@ -3,11 +3,11 @@ package net.foundations.pl4;
 import java.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumHand;
 import net.minecraft.item.ItemStack;
 import net.foundations.pl4.compat.Capabilities;
 import net.minecraftforge.items.IItemHandler;
@@ -23,11 +23,11 @@ public final class WirelessStorage {
         Entry(ItemStack item){this.item=net.foundations.pl4.compat.PortData.copyWithCount(item,1);}
     }
     private record View(List<Entry> entries,int endpoints,int slots,boolean limited){}
-    private record Session(UUID token,Hand hand,ItemStack tool,Part.Link binding,int page,List<Entry> shown,String query,String sort,int opened){}
+    private record Session(UUID token,EnumHand hand,ItemStack tool,Part.Link binding,int page,List<Entry> shown,String query,String sort,int opened){}
     private record Rate(int tick,int count){}
-    private static final Map<ServerPlayerEntity,Session> SESSIONS=new WeakHashMap<>();
-    private static final Map<ServerPlayerEntity,Rate> RATES=new WeakHashMap<>();
-    private static HostEntity anchor(ServerPlayerEntity player,Part.Link binding){
+    private static final Map<EntityPlayerMP,Session> SESSIONS=new WeakHashMap<>();
+    private static final Map<EntityPlayerMP,Rate> RATES=new WeakHashMap<>();
+    private static HostEntity anchor(EntityPlayerMP player,Part.Link binding){
         if(player.isSpectator()||binding==null||binding.part()==null||binding.entity()!=null||!PLConfig.WIRELESS.get()||!PLConfig.TRANSFERS.get())return null;
         if(!PLConfig.CROSS_DIMENSION.get()&&!player.level.dimension.getType().getRegistryName().toString().equals(binding.dimension()))return null;
         var server=player.getLevel().getServer();if(!NetworkEngine.loaded(server,binding))return null;
@@ -35,7 +35,7 @@ public final class WirelessStorage {
         if(!(world.getBlockEntity(binding.pos()) instanceof HostEntity host)||!host.canEdit(player)||!world.mayInteract(player,binding.pos()))return null;
         return host.parts.values().stream().anyMatch(p->p.identity.equals(binding.part())&&(p.kind==Kind.NODE||p.kind==Kind.TRANSFER_NODE))?host:null;
     }
-    private static List<Target> resolve(ServerPlayerEntity player,Part.Link binding){
+    private static List<Target> resolve(EntityPlayerMP player,Part.Link binding){
         HostEntity host=anchor(player,binding);if(host==null)return null;
         Part node=host.parts.values().stream().filter(p->p.identity.equals(binding.part())).findFirst().orElseThrow();
         List<Target> result=new ArrayList<>();SampleSources seen=new SampleSources();int slots=0;
@@ -68,14 +68,14 @@ public final class WirelessStorage {
         rows.sort(sort.equals("COUNT")?Comparator.<Entry>comparingLong(e->e.count).reversed().thenComparing(names):names);
         return new View(rows,targets.size(),scanned,limited);
     }
-    public static UUID open(ServerPlayerEntity player,Hand hand){
+    public static UUID open(EntityPlayerMP player,EnumHand hand){
         ItemStack tool=player.getItemInHand(hand);Part.Link binding=ToolItem.link(tool);
         if(!(tool.getItem()==FoundationsPL4.item("wirelessstorage"))){SESSIONS.remove(player);return null;}
         List<Target> targets=resolve(player,binding);
-        if(targets==null){SESSIONS.remove(player);player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Bind Wireless Storage to your loaded network Node. Wireless and transfers must be enabled."),true);return null;}
+        if(targets==null){SESSIONS.remove(player);player.displayClientMessage(new net.minecraft.util.text.TextComponentString("Bind Wireless Storage to your loaded network Node. Wireless and transfers must be enabled."),true);return null;}
         return send(player,hand,tool,binding,targets,0,"","NAME",false,"");
     }
-    static void request(ServerPlayerEntity player,PLPackets.StorageRequest packet){
+    static void request(EntityPlayerMP player,PLPackets.StorageRequest packet){
         Session session=SESSIONS.get(player);
         if(session==null||!session.token().equals(packet.token())||player.tickCount-session.opened()>1200)return;
         Rate rate=RATES.get(player);if(rate!=null&&rate.tick()==player.tickCount&&rate.count()>=4)return;
@@ -104,7 +104,7 @@ public final class WirelessStorage {
             }
             player.inventory.setChanged();player.inventoryMenu.broadcastChanges();status=moved==0?"Nothing moved: contents, access, filters or available space changed.":"Withdrew "+moved+" item(s).";
         }else if(packet.action().equals("deposit")){
-            if(session.hand()!=Hand.MAIN_HAND)status="Hold the tool in your main hand; deposit from your offhand.";
+            if(session.hand()!=EnumHand.MAIN_HAND)status="Hold the tool in your main hand; deposit from your offhand.";
             else{
                 ItemStack offhand=player.getOffhandItem();int moved=0,scanned=0;
                 outer:for(Target target:targets){
@@ -121,16 +121,16 @@ public final class WirelessStorage {
         }else if(!packet.action().equals("refresh")){sendClosed(player,"Unknown storage action.");return;}
         send(player,session.hand(),held,session.binding(),targets,page,query,sort,true,status);
     }
-    private static int room(ServerPlayerEntity player,ItemStack stack){int room=0;for(int i=0;i<36;i++){ItemStack existing=player.inventory.getItem(i);if(existing.isEmpty())room+=stack.getMaxStackSize();else if(net.foundations.pl4.compat.PortData.sameItem(existing,stack))room+=Math.max(0,Math.min(existing.getMaxStackSize(),stack.getMaxStackSize())-existing.getCount());if(room>=64)return 64;}return room;}
-    private static UUID send(ServerPlayerEntity player,Hand hand,ItemStack tool,Part.Link binding,List<Target> targets,int page,String query,String sort,boolean reply,String status){
+    private static int room(EntityPlayerMP player,ItemStack stack){int room=0;for(int i=0;i<36;i++){ItemStack existing=player.inventory.getItem(i);if(existing.isEmpty())room+=stack.getMaxStackSize();else if(net.foundations.pl4.compat.PortData.sameItem(existing,stack))room+=Math.max(0,Math.min(existing.getMaxStackSize(),stack.getMaxStackSize())-existing.getCount());if(room>=64)return 64;}return room;}
+    private static UUID send(EntityPlayerMP player,EnumHand hand,ItemStack tool,Part.Link binding,List<Target> targets,int page,String query,String sort,boolean reply,String status){
         View view=view(targets,query,sort);int count=view.entries().size();page=net.foundations.pl4.compat.PortMath.clamp(page,0,Math.max(0,(count-1)/PAGE_SIZE));
-        UUID token=UUID.randomUUID();List<Entry> shown=List.copyOf(view.entries().subList(page*PAGE_SIZE,Math.min(count,(page+1)*PAGE_SIZE)));ListNBT rows=new ListNBT();
-        for(int i=0;i<shown.size();i++){Entry e=shown.get(i);CompoundNBT row=new CompoundNBT();row.putInt("slot",page*PAGE_SIZE+i);row.putString("name",e.item.getHoverName().getString());row.putLong("count",e.count);rows.add(row);}
+        UUID token=UUID.randomUUID();List<Entry> shown=List.copyOf(view.entries().subList(page*PAGE_SIZE,Math.min(count,(page+1)*PAGE_SIZE)));NBTTagList rows=new NBTTagList();
+        for(int i=0;i<shown.size();i++){Entry e=shown.get(i);NBTTagCompound row=new NBTTagCompound();row.putInt("slot",page*PAGE_SIZE+i);row.putString("name",e.item.getHoverName().getString());row.putLong("count",e.count);rows.add(row);}
         SESSIONS.put(player,new Session(token,hand,tool,binding,page,shown,query,sort,player.tickCount));
-        CompoundNBT tag=new CompoundNBT();tag.putBoolean("wirelessStorage",true);tag.putBoolean("reply",reply);tag.putString("token",token.toString());tag.putInt("page",page);tag.putInt("slots",count);tag.putInt("endpoints",view.endpoints());tag.putInt("scanned",view.slots());tag.putBoolean("limited",view.limited());tag.putString("query",query);tag.putString("sort",sort);tag.put("storageRows",rows);tag.putString("status",status);
+        NBTTagCompound tag=new NBTTagCompound();tag.putBoolean("wirelessStorage",true);tag.putBoolean("reply",reply);tag.putString("token",token.toString());tag.putInt("page",page);tag.putInt("slots",count);tag.putInt("endpoints",view.endpoints());tag.putInt("scanned",view.slots());tag.putBoolean("limited",view.limited());tag.putString("query",query);tag.putString("sort",sort);tag.put("storageRows",rows);tag.putString("status",status);
         PacketDistributor.sendToPlayer(player,new PLPackets.Open(BlockPos.ZERO,-1,tag));return token;
     }
-    static List<Long> visibleCounts(ServerPlayerEntity player){Session s=SESSIONS.get(player);return s==null?List.of():s.shown().stream().map(e->e.count).toList();}
-    private static void sendClosed(ServerPlayerEntity player,String status){CompoundNBT tag=new CompoundNBT();tag.putBoolean("wirelessStorage",true);tag.putBoolean("reply",true);tag.putBoolean("closed",true);tag.putString("status",status);PacketDistributor.sendToPlayer(player,new PLPackets.Open(BlockPos.ZERO,-1,tag));}
+    static List<Long> visibleCounts(EntityPlayerMP player){Session s=SESSIONS.get(player);return s==null?List.of():s.shown().stream().map(e->e.count).toList();}
+    private static void sendClosed(EntityPlayerMP player,String status){NBTTagCompound tag=new NBTTagCompound();tag.putBoolean("wirelessStorage",true);tag.putBoolean("reply",true);tag.putBoolean("closed",true);tag.putString("status",status);PacketDistributor.sendToPlayer(player,new PLPackets.Open(BlockPos.ZERO,-1,tag));}
     private WirelessStorage(){}
 }

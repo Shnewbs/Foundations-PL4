@@ -34,7 +34,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
     private final Map<String,ItemStack> icons=new HashMap<>();
     private int bookmarkWidth,footerJumpX;
     private static final String[] SPECIMEN={"node","datacable","inventoryreader","displayscreen"};
-    public GuideScreen(){super(new net.minecraft.util.text.StringTextComponent("Foundations PL4 Field Guide"));}
+    public GuideScreen(){super(new net.minecraft.util.text.TextComponentString("Foundations PL4 Field Guide"));}
     @Override public boolean isPauseScreen(){return false;}
     @Override protected void init(){
         if(book==null){
@@ -76,7 +76,7 @@ public final class GuideScreen extends net.foundations.pl4.compat.PortScreen {
             int sx=layout.compact()?list.x()+4:list.x();
             search=new GuideSearchBox(font,sx,sy,Math.max(30,list.width()-bookmarkWidth-7),17);
             search.setBordered(true);search.setMaxLength(96);search.setTextColor(0xFFEAF3F2);search.setTextColorUneditable(0xFF91A9AD);search.setValue(query);
-            search.setTooltip(Tooltip.create(new net.minecraft.util.text.StringTextComponent("Search all chapters; clear to return to this section")));
+            search.setTooltip(Tooltip.create(new net.minecraft.util.text.TextComponentString("Search all chapters; clear to return to this section")));
             search.setResponder(value->{query=value;listScroll=0;refreshList();});addRenderableWidget(search);
             GuideButton saved=button(list.right()-bookmarkWidth,sy,bookmarkWidth,19,"Saved","Show only bookmarked chapters",false,ItemStack.EMPTY,v->{savedOnly=!savedOnly;listScroll=0;refreshList();((GuideButton)v).selected=savedOnly;});saved.selected=savedOnly;
             refreshList();

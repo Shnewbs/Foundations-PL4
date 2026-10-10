@@ -3,17 +3,17 @@ package net.foundations.pl4;
 import java.util.*;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.DataComponents;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.init.Items;
 import net.foundations.pl4.compat.ItemContainerContents;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.init.Fluids;
 import net.foundations.pl4.core.*;
 import net.minecraftforge.common.util.*;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,7 +25,7 @@ public final class R9GameTests {
     private static UUID owner(GameTestHelper h){return UUID.nameUUIDFromBytes(("PL4-R9-"+h.absolutePos(BlockPos.ZERO)).getBytes(java.nio.charset.StandardCharsets.UTF_8));}
     private static HostEntity display(GameTestHelper h,int x,Kind kind){
         BlockPos position=new BlockPos(x,2,2);h.setBlock(position,FoundationsPL4.HOST.get());HostEntity host=(HostEntity)h.getBlockEntity(position);
-        Part part=new Part(kind,Direction.SOUTH,owner(h));part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
+        Part part=new Part(kind,EnumFacing.SOUTH,owner(h));part.displayOutward=true;host.parts.put(part.slot(),part);host.changed();return host;
     }
     private static Part part(HostEntity host){return host.parts.values().stream().filter(p->p.kind.display()).findFirst().orElseThrow();}
     private static FakePlayer player(GameTestHelper h,HostEntity at,boolean allowed){
@@ -39,21 +39,21 @@ public final class R9GameTests {
     private static DisplayElements.Spec spec(DisplayElements.Type type){return DisplayElements.create(type,0);}
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void allTypedElementsPersist(GameTestHelper h){
-        Part p=new Part(Kind.DISPLAY,Direction.NORTH,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=3;
+        Part p=new Part(Kind.DISPLAY,EnumFacing.NORTH,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;p.displayPage=3;
         for(var type:DisplayElements.Type.values())p.elements.add(new Part.Element(spec(type).onPage(3)));
         Part copy=Part.load(p.save(null,false),null);
         net.foundations.pl4.compat.PortAssertions.check(copy.displayMode==p.displayMode&&copy.displayPage==3&&copy.elements.equals(p.elements),"All seven types and stable element IDs/page must survive NBT");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void oldTextAndBarMigrateWithoutInventoryFallback(GameTestHelper h){
-        Part p=new Part(Kind.DISPLAY,Direction.UP,owner(h));CompoundNBT saved=p.save(null,false);saved.remove("displayMode");
-        ListNBT elements=new ListNBT();for(boolean bar:new boolean[]{false,true}){CompoundNBT e=new CompoundNBT();e.putString("text","Legacy");e.putString("key","storage");e.putInt("x",10);e.putInt("y",bar?30:10);e.putInt("color",0xAAFFEE);e.putBoolean("bar",bar);elements.add(e);}saved.put("elements",elements);
+        Part p=new Part(Kind.DISPLAY,EnumFacing.UP,owner(h));NBTTagCompound saved=p.save(null,false);saved.remove("displayMode");
+        NBTTagList elements=new NBTTagList();for(boolean bar:new boolean[]{false,true}){NBTTagCompound e=new NBTTagCompound();e.putString("text","Legacy");e.putString("key","storage");e.putInt("x",10);e.putInt("y",bar?30:10);e.putInt("color",0xAAFFEE);e.putBoolean("bar",bar);elements.add(e);}saved.put("elements",elements);
         Part copy=Part.load(saved,null);
         net.foundations.pl4.compat.PortAssertions.check(copy.displayMode==DisplayElements.Mode.CUSTOM&&copy.elements.get(0).spec().type()==DisplayElements.Type.TEXT&&copy.elements.get(1).spec().type()==DisplayElements.Type.BAR,"Legacy elements become typed custom layout");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void emptyCustomLayoutDoesNotResurrectList(GameTestHelper h){
-        Part p=new Part(Kind.DISPLAY,Direction.WEST,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;
+        Part p=new Part(Kind.DISPLAY,EnumFacing.WEST,owner(h));p.displayMode=DisplayElements.Mode.CUSTOM;
         Part copy=Part.load(p.save(null,false),null);net.foundations.pl4.compat.PortAssertions.check(copy.elements.isEmpty()&&copy.displayMode==DisplayElements.Mode.CUSTOM,"Saved blank custom canvas is not automatic list");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -63,13 +63,13 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void boundedVisualComponentVariantsStaySeparate(GameTestHelper h){
-        var a=new ItemStack(Items.STONE,5);net.foundations.pl4.compat.PortData.set(a,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Alpha"));var b=new ItemStack(Items.STONE,7);net.foundations.pl4.compat.PortData.set(b,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Beta"));
+        var a=new ItemStack(Items.STONE,5);net.foundations.pl4.compat.PortData.set(a,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString("Alpha"));var b=new ItemStack(Items.STONE,7);net.foundations.pl4.compat.PortData.set(b,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString("Beta"));
         VisualSamples samples=new VisualSamples();samples.item(a);samples.item(b);var rows=samples.rows(null,true,128,0);
         net.foundations.pl4.compat.PortAssertions.check(rows.size()==2&&!rows.get(0).key().equals(rows.get(1).key())&&rows.get(0).value()==7,"Named visual variants have separate counts and keys");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void visualRowsRoundTripNativeItemComponents(GameTestHelper h){
-        var item=new ItemStack(Items.DIAMOND_SWORD,2);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Model fixture"));VisualSamples samples=new VisualSamples();samples.item(item);
+        var item=new ItemStack(Items.DIAMOND_SWORD,2);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString("Model fixture"));VisualSamples samples=new VisualSamples();samples.item(item);
         Part.Row row=samples.rows(null,true,128,0).get(0);var copy=Part.Row.load(row.save(),null);
         net.foundations.pl4.compat.PortAssertions.check(copy.hasItem()&&!copy.hasBlock()&&copy.value()==2&&copy.item().getHoverName().getString().equals("Model fixture")&&copy.key().equals(row.key()),"Synced visual picture retains bounded native components");h.succeed();
     }
@@ -81,7 +81,7 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void hugeVisualComponentFallsBackWithinCap(GameTestHelper h){
-        ItemStack item=new ItemStack(Items.STONE,12);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("x".repeat(8192)));VisualSamples samples=new VisualSamples();samples.item(item);
+        ItemStack item=new ItemStack(Items.STONE,12);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString("x".repeat(8192)));VisualSamples samples=new VisualSamples();samples.item(item);
         Part.Row row=samples.rows(null,true,128,0).get(0);
         net.foundations.pl4.compat.PortAssertions.check(row.value()==12&&(row.item().getItem()==Items.STONE)&&!net.foundations.pl4.compat.PortData.has(row.item(),DataComponents.CUSTOM_NAME)&&VisualSamples.bounded(row.previewItem(),4096)!=null,"Oversized pictures preserve total and fall back to base item");h.succeed();
     }
@@ -182,8 +182,8 @@ public final class R9GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void componentVariantKeyIsStableAcrossSave(GameTestHelper h){
-        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.StringTextComponent("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(null,true,128,0).get(0);
-        var restored=net.foundations.pl4.compat.PortData.parseItem(null,(CompoundNBT)net.foundations.pl4.compat.PortData.save(item,null));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(null,true,128,0).get(0);
+        var item=new ItemStack(Items.LEATHER_CHESTPLATE,4);net.foundations.pl4.compat.PortData.set(item,DataComponents.CUSTOM_NAME,new net.minecraft.util.text.TextComponentString("Stable picture"));VisualSamples first=new VisualSamples();first.item(item);var r=first.rows(null,true,128,0).get(0);
+        var restored=net.foundations.pl4.compat.PortData.parseItem(null,(NBTTagCompound)net.foundations.pl4.compat.PortData.save(item,null));VisualSamples second=new VisualSamples();second.item(restored);var r2=second.rows(null,true,128,0).get(0);
         net.foundations.pl4.compat.PortAssertions.check(r.key().equals(r2.key())&&r.value()==r2.value(),"Variant bindings must not drift simply because an item was saved");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)

@@ -1,6 +1,6 @@
 package net.foundations.pl4.compat;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.network.*;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.foundations.pl4.FoundationsPL4;
@@ -15,7 +15,7 @@ public final class RegisterPayloadHandlersEvent {
   return new Registrar();
  }
  public record Context(NetworkEvent.Context nativeContext){
-  public net.minecraft.entity.player.PlayerEntity player(){return nativeContext.getSender();}
+  public net.minecraft.entity.player.EntityPlayer player(){return nativeContext.getSender();}
   public void enqueueWork(Runnable action){nativeContext.enqueueWork(action);}
  }
  public static final class Registrar {

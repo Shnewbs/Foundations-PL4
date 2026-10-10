@@ -1,13 +1,13 @@
 package net.foundations.pl4;
 
 import java.util.UUID;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.foundations.pl4.compat.DataComponents;
 import net.foundations.pl4.compat.scenarios.GameTest;
 import net.foundations.pl4.compat.scenarios.GameTestHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.init.Items;
+import net.minecraft.init.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 
@@ -16,7 +16,7 @@ import net.foundations.pl4.compat.scenarios.PrefixGameTestTemplate;
 public final class R13GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void ordinaryBrokenPartsStackWithoutRuntimeNbt(GameTestHelper h){
-        Part a=new Part(Kind.DATA_CABLE,Direction.NORTH,UUID.randomUUID()),b=new Part(Kind.DATA_CABLE,Direction.SOUTH,UUID.randomUUID());
+        Part a=new Part(Kind.DATA_CABLE,EnumFacing.NORTH,UUID.randomUUID()),b=new Part(Kind.DATA_CABLE,EnumFacing.SOUTH,UUID.randomUUID());
         a.signal=15;a.ticks=812;a.layoutRevision=99;b.signal=3;b.ticks=2;b.layoutRevision=7;
         ItemStack sa=PartItem.stack(a,null),sb=PartItem.stack(b,null);
         net.foundations.pl4.compat.PortAssertions.check(net.foundations.pl4.compat.PortData.get(sa,DataComponents.CUSTOM_DATA)==null&&net.foundations.pl4.compat.PortData.get(sb,DataComponents.CUSTOM_DATA)==null,"Ordinary broken parts must not carry unique runtime CustomData");
@@ -24,7 +24,7 @@ public final class R13GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void operatorSavedPartsStripRuntimeIdentityButKeepConfig(GameTestHelper h){
-        Part a=new Part(Kind.INVENTORY_READER,Direction.NORTH,UUID.randomUUID()),b=new Part(Kind.INVENTORY_READER,Direction.SOUTH,UUID.randomUUID());
+        Part a=new Part(Kind.INVENTORY_READER,EnumFacing.NORTH,UUID.randomUUID()),b=new Part(Kind.INVENTORY_READER,EnumFacing.SOUTH,UUID.randomUUID());
         a.label=b.label="warehouse";a.filter=b.filter="minecraft:iron_ingot";a.identity=UUID.randomUUID();b.identity=UUID.randomUUID();a.signal=15;b.signal=2;a.ticks=99;b.ticks=1000;a.layoutRevision=10;b.layoutRevision=44;
         ItemStack sa=PartItem.savedStack(a,null),sb=PartItem.savedStack(b,null);
         var data=net.foundations.pl4.compat.PortData.get(sa,DataComponents.CUSTOM_DATA);net.foundations.pl4.compat.PortAssertions.check(data!=null&&data.contains("pl_part"),"Operator removal retains a saved configuration");var tag=data.copyTag().getCompound("pl_part");
@@ -33,7 +33,7 @@ public final class R13GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void ordinaryTransferDropStillRetainsEscrow(GameTestHelper h){
-        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
+        Part p=new Part(Kind.TRANSFER_NODE,EnumFacing.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
         ItemStack stack=PartItem.stack(p,null);var data=net.foundations.pl4.compat.PortData.get(stack,DataComponents.CUSTOM_DATA);net.foundations.pl4.compat.PortAssertions.check(data!=null&&data.contains("pl_part"),"Escrow-bearing normal drop must retain a payload");
         Part restored=Part.load(data.copyTag().getCompound("pl_part"),null);net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Escrow must survive canonical item payload");h.succeed();
     }

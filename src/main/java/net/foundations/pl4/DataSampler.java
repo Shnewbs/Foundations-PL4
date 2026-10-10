@@ -7,7 +7,7 @@ import net.foundations.pl4.compat.Registries;
 import net.minecraft.util.ResourceLocation;
 import net.foundations.pl4.compat.TagKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +59,7 @@ public final class DataSampler {
                 new Part.Row("block_targets","Block endpoints",unique.size()-entities,0,""),new Part.Row("entity_targets","Entity endpoints",entities,0,"")).stream().limit(PLConfig.MAX_ROWS.get()).toList();
         }
         for(Part.Link link:new LinkedHashSet<>(targets)){
-            ServerWorld l=NetworkEngine.level(server,link);if(l==null)continue;
+            WorldServer l=NetworkEngine.level(server,link);if(l==null)continue;
             if(link.entity()!=null){Entity entity=l.getEntity(link.entity());if(entity!=null&&p.kind==Kind.INFO_READER){for(var row:net.foundations.pl4.api.InfoProviders.sample(l,link))rows.put(row.key(),row);break;}continue;}
             if(!l.hasChunkAt(link.pos()))continue;
             if(p.kind==Kind.INVENTORY_READER){

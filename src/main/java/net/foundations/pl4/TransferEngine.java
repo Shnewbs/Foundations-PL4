@@ -2,7 +2,7 @@ package net.foundations.pl4;
 
 import java.util.*;
 import net.foundations.pl4.core.TransferRules;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.item.ItemStack;
 import net.foundations.pl4.compat.Capabilities;

@@ -3,12 +3,12 @@ package net.foundations.pl4;
 import java.util.*;
 import net.foundations.pl4.core.DisplayElements;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.registry.Registry;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 /** A face attachment or centre cable. Only the server mutates persistent state. */
 public final class Part {
     public final Kind kind;
-    public final Direction face;
+    public final EnumFacing face;
     public UUID owner;
     public UUID identity = UUID.randomUUID();
     public String label = "", filter = "", selected = "", metric = "", mode = "LIST", comparison = ">=";
@@ -69,7 +69,7 @@ public final class Part {
     public final List<Element> elements = new ArrayList<>();
     public String status = "Waiting for network";
 
-    public Part(Kind kind, Direction face, UUID owner) { this.kind = kind; this.face = face; this.owner = owner; }
+    public Part(Kind kind, EnumFacing face, UUID owner) { this.kind = kind; this.face = face; this.owner = owner; }
     public boolean hologram(){return kind==Kind.HOLOGRAM||kind==Kind.ADVANCED_HOLOGRAM;}
     public record DisplaySettings(String label,String selected,String metric,int color,List<Element> elements,DisplayElements.Mode displayMode,int displayPage,int layoutWidth,int layoutHeight,List<String> pageNames) {
         public DisplaySettings { pageNames=normalizePageNames(pageNames);elements=List.copyOf(elements);layoutWidth=net.foundations.pl4.compat.PortMath.clamp(layoutWidth,8,DisplayElements.MAX_CANVAS);layoutHeight=net.foundations.pl4.compat.PortMath.clamp(layoutHeight,9,DisplayElements.MAX_CANVAS); }
@@ -84,33 +84,33 @@ public final class Part {
         label=settings.label();selected=settings.selected();metric=settings.metric();color=settings.color();
         pageNames.clear();pageNames.addAll(settings.pageNames());elements.clear();elements.addAll(settings.elements());displayMode=settings.displayMode();displayPage=settings.displayPage();layoutWidth=settings.layoutWidth();layoutHeight=settings.layoutHeight();layoutRevision=revision;return true;
     }
-    public Direction displayFront(){return Direction.from3DDataValue(net.foundations.pl4.core.DisplayFacing.front(face.ordinal(),displayOutward));}
+    public EnumFacing displayFront(){return EnumFacing.from3DDataValue(net.foundations.pl4.core.DisplayFacing.front(face.ordinal(),displayOutward));}
     public int slot() { return net.foundations.pl4.core.MultipartTopology.slot(kind,face.ordinal()); }
     public boolean canExtract() { return transferMode == 2 || transferMode == 3; }
     public boolean canInsert() { return transferMode == 1 || transferMode == 3; }
     public String title() { return label.isBlank() ? kind.id : label; }
 
-    public record Link(String dimension, BlockPos pos, Direction side, UUID entity, UUID part) {
-        public CompoundNBT save() {
-            CompoundNBT t = new CompoundNBT(); t.putString("dimension", dimension); t.putLong("pos", pos.asLong()); t.putInt("side", side.ordinal());
+    public record Link(String dimension, BlockPos pos, EnumFacing side, UUID entity, UUID part) {
+        public NBTTagCompound save() {
+            NBTTagCompound t = new NBTTagCompound(); t.putString("dimension", dimension); t.putLong("pos", pos.asLong()); t.putInt("side", side.ordinal());
             if (entity != null) t.putUUID("entity", entity); if (part != null) t.putUUID("part", part); return t;
         }
-        public static Link load(CompoundNBT t) {
-            return new Link(t.getString("dimension"), BlockPos.of(t.getLong("pos")), Direction.from3DDataValue(t.getInt("side")), t.hasUUID("entity") ? t.getUUID("entity") : null, t.hasUUID("part") ? t.getUUID("part") : null);
+        public static Link load(NBTTagCompound t) {
+            return new Link(t.getString("dimension"), BlockPos.of(t.getLong("pos")), EnumFacing.from3DDataValue(t.getInt("side")), t.hasUUID("entity") ? t.getUUID("entity") : null, t.hasUUID("part") ? t.getUUID("part") : null);
         }
     }
     public record ReaderChoice(String id,String name,String kind) {}
     /** Preview stacks are normalized to one and bounded by VisualSamples; quantities remain numeric. */
-    public record Row(String key,String name,double value,double capacity,String unit,ItemStack item,FluidStack fluid,CompoundNBT previewItem,CompoundNBT previewFluid) implements DisplayElements.Sample {
-        public Row(String key,String name,double value,double capacity,String unit){this(key,name,value,capacity,unit,ItemStack.EMPTY,FluidStack.EMPTY,new CompoundNBT(),new CompoundNBT());}
+    public record Row(String key,String name,double value,double capacity,String unit,ItemStack item,FluidStack fluid,NBTTagCompound previewItem,NBTTagCompound previewFluid) implements DisplayElements.Sample {
+        public Row(String key,String name,double value,double capacity,String unit){this(key,name,value,capacity,unit,ItemStack.EMPTY,FluidStack.EMPTY,new NBTTagCompound(),new NBTTagCompound());}
         public boolean hasItem(){return !item.isEmpty();}public boolean hasBlock(){return hasItem()&&item.getItem() instanceof net.minecraft.item.BlockItem;}public boolean hasFluid(){return !fluid.isEmpty();}
         public String itemId(){return hasItem()?net.minecraft.util.registry.Registry.ITEM.getKey(item.getItem()).toString():"";}
         public String fluidId(){return hasFluid()?net.minecraft.util.registry.Registry.FLUID.getKey(fluid.getFluid()).toString():"";}
         public String text(){return name+": "+number(value)+(capacity>0?" / "+number(capacity):"")+(unit.isEmpty()?"":" "+unit);}
         public static String number(double d){return DisplayElements.number(d,false);}
-        public CompoundNBT save(){CompoundNBT t=new CompoundNBT();t.putString("key",key);t.putString("name",name);t.putDouble("value",value);t.putDouble("capacity",capacity);t.putString("unit",unit);if(!previewItem.isEmpty())t.put("item",previewItem.copy());if(!previewFluid.isEmpty())t.put("fluid",previewFluid.copy());return t;}
-        public static Row load(CompoundNBT t){return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"));}
-        public static Row load(CompoundNBT t,Object registry){
+        public NBTTagCompound save(){NBTTagCompound t=new NBTTagCompound();t.putString("key",key);t.putString("name",name);t.putDouble("value",value);t.putDouble("capacity",capacity);t.putString("unit",unit);if(!previewItem.isEmpty())t.put("item",previewItem.copy());if(!previewFluid.isEmpty())t.put("fluid",previewFluid.copy());return t;}
+        public static Row load(NBTTagCompound t){return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"));}
+        public static Row load(NBTTagCompound t,Object registry){
             ItemStack item=net.foundations.pl4.compat.PortData.parseItem(registry,t.getCompound("item"));FluidStack fluid=net.foundations.pl4.compat.PortData.parseFluid(registry,t.getCompound("fluid"));
             return new Row(t.getString("key"),t.getString("name"),t.getDouble("value"),t.getDouble("capacity"),t.getString("unit"),item,fluid,t.getCompound("item"),t.getCompound("fluid"));
         }
@@ -119,13 +119,13 @@ public final class Part {
         public Element(String text,String reader,String key,int x,int y,int color,boolean bar){this(new DisplayElements.Spec(UUID.randomUUID(),bar?DisplayElements.Type.BAR:DisplayElements.Type.TEXT,text,reader,key,"",new DisplayElements.Rect(x,y,Math.max(8,248-x),bar?18:12),color,true,false,8,0,0,false,false));}
         public UUID id(){return spec.id();} public String text(){return spec.text();}public String reader(){return spec.reader();}public String key(){return spec.key();}
         public int x(){return spec.bounds().x();}public int y(){return spec.bounds().y();}public int color(){return spec.color();}public boolean bar(){return spec.type()==DisplayElements.Type.BAR;}
-        public CompoundNBT save(){
-            CompoundNBT t=new CompoundNBT();t.putUUID("id",id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
+        public NBTTagCompound save(){
+            NBTTagCompound t=new NBTTagCompound();t.putUUID("id",id());t.putString("type",spec.type().name());t.putString("text",text());t.putString("reader",reader());t.putString("key",key());t.putString("asset",spec.asset());
             t.putInt("x",x());t.putInt("y",y());t.putInt("w",spec.bounds().width());t.putInt("h",spec.bounds().height());t.putInt("color",color());t.putBoolean("bar",bar());
             t.putBoolean("count",spec.count());t.putBoolean("names",spec.names());t.putInt("columns",spec.columns());t.putInt("offset",spec.offset());t.putInt("page",spec.page());t.putBoolean("vertical",spec.vertical());t.putBoolean("compact",spec.compact());
             t.putString("textAlign",spec.textAlign().name());t.putBoolean("wrap",spec.wrap());t.putFloat("textScale",spec.textScale());t.putString("group",spec.options().group());t.putBoolean("locked",spec.options().locked());t.putBoolean("hidden",spec.options().hidden());t.putInt("background",spec.options().background());t.putInt("border",spec.options().border());t.putInt("actionPage",spec.options().actionPage());return t;
         }
-        public static Element load(CompoundNBT t){
+        public static Element load(NBTTagCompound t){
             boolean legacy=!t.contains("type");DisplayElements.Type type=legacy?(t.getBoolean("bar")?DisplayElements.Type.BAR:DisplayElements.Type.TEXT):DisplayElements.Type.parse(t.getString("type"));
             UUID id=t.hasUUID("id")?t.getUUID("id"):UUID.nameUUIDFromBytes(t.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return new Element(new DisplayElements.Spec(id,type,t.getString("text"),t.getString("reader"),t.getString("key"),t.getString("asset"),
@@ -134,18 +134,18 @@ public final class Part {
                 DisplayElements.TextAlign.parse(t.getString("textAlign")),t.getBoolean("wrap"),t.contains("textScale")?t.getFloat("textScale"):1F,new DisplayElements.Options(t.getString("group"),t.getBoolean("locked"),t.getBoolean("hidden"),t.contains("background")?t.getInt("background"):-1,t.contains("border")?t.getInt("border"):-1,t.contains("actionPage")?t.getInt("actionPage"):-1)));
         }
     }
-    public CompoundNBT save(Object registry, boolean sync) {
-        CompoundNBT t = new CompoundNBT(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putInt("clockPulse",clockPulse);t.putInt("clockPhase",clockPhase);t.putBoolean("clockPaused",clockPaused);t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
+    public NBTTagCompound save(Object registry, boolean sync) {
+        NBTTagCompound t = new NBTTagCompound(); t.putString("kind",kind.id);for(int page=0;page<DisplayElements.MAX_PAGES;page++)if(!pageNames.get(page).isEmpty())t.putString("pageName"+page,pageNames.get(page));t.putInt("clockPulse",clockPulse);t.putInt("clockPhase",clockPhase);t.putBoolean("clockPaused",clockPaused);t.putString("inputChannel",inputChannel);t.putString("outputChannel",outputChannel); t.putInt("face",face.ordinal()); t.putUUID("identity",identity);
         if (owner != null) t.putUUID("owner",owner);
         t.putString("displayMode",displayMode.name());t.putInt("displayPage",displayPage);t.putInt("layoutWidth",layoutWidth);t.putInt("layoutHeight",layoutHeight);
         t.putInt("hologramView",hologramView);t.putLong("layoutRevision",layoutRevision);
         t.putBoolean("displayOutward",displayOutward);t.putString("energySystem",energySystem);
         t.putString("targetChannel",targetChannel);t.putString("targetQuery",targetQuery);t.putInt("targetPage",targetPage);
-        ListNBT aliases=new ListNBT();for(var entry:channelNames.entrySet()){CompoundNBT c=new CompoundNBT();c.putString("id",entry.getKey());c.putString("name",entry.getValue());aliases.add(c);}t.put("channelNames",aliases);
+        NBTTagList aliases=new NBTTagList();for(var entry:channelNames.entrySet()){NBTTagCompound c=new NBTTagCompound();c.putString("id",entry.getKey());c.putString("name",entry.getValue());aliases.add(c);}t.put("channelNames",aliases);
         t.putString("inputFilter",inputFilter);t.putString("outputFilter",outputFilter);t.putString("inputFilterMode",inputFilterMode);t.putString("outputFilterMode",outputFilterMode);
         t.putBoolean("resourceEscrow",!pendingItem.isEmpty()||!pendingFluid.isEmpty()||energyCredits()>0);
         t.putBoolean("statementsAll",statementsAll);t.putInt("signalStrength",signalStrength);
-        ListNBT statementTags=new ListNBT();for(var statement:statements){CompoundNBT s=new CompoundNBT();s.putString("id",statement.id().toString());s.putString("reader",statement.reader());s.putString("key",statement.key());s.putString("operator",statement.operator());s.putDouble("threshold",statement.threshold());statementTags.add(s);}t.put("statements",statementTags);
+        NBTTagList statementTags=new NBTTagList();for(var statement:statements){NBTTagCompound s=new NBTTagCompound();s.putString("id",statement.id().toString());s.putString("reader",statement.reader());s.putString("key",statement.key());s.putString("operator",statement.operator());s.putDouble("threshold",statement.threshold());statementTags.add(s);}t.put("statements",statementTags);
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
         t.putString("comparison",comparison); t.putDouble("threshold",threshold); t.putInt("index",index); t.putInt("priority",priority); t.putInt("signal",signal);
         t.putInt("color",color); t.putInt("transferMode",transferMode); t.putBoolean("items",items); t.putBoolean("fluids",fluids); t.putBoolean("energy",energy);
@@ -159,21 +159,21 @@ public final class Part {
             t.putInt("pendingEnergy",pendingEnergy);t.putLong("pendingEnergyCredits",energyCredits());
             t.putString("pendingEnergyUnit",pendingEnergyUnit);t.putInt("pendingEnergyJRate",pendingEnergyJRate);t.putInt("pendingEnergyEURate",pendingEnergyEURate);t.putInt("pendingEnergyEDRate",pendingEnergyEDRate);
         }
-        ListNBT l = new ListNBT(); links.forEach(a -> l.add(a.save())); t.put("links",l);
-        ListNBT e = new ListNBT(); elements.forEach(a -> e.add(a.save())); t.put("elements",e);
+        NBTTagList l = new NBTTagList(); links.forEach(a -> l.add(a.save())); t.put("links",l);
+        NBTTagList e = new NBTTagList(); elements.forEach(a -> e.add(a.save())); t.put("elements",e);
         if (sync) {
             t.putInt("canvasWidth",canvasWidth);t.putInt("canvasHeight",canvasHeight);t.putInt("canvasColumn",canvasColumn);t.putInt("canvasRow",canvasRow);t.putInt("canvasMask",canvasMask);
-            ListNBT r = new ListNBT(); rows.forEach(a -> r.add(a.save())); t.put("rows",r); t.putString("status",status);
-            ListNBT choices=new ListNBT();for(var choice:readerChoices){CompoundNBT c=new CompoundNBT();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());choices.add(c);}t.put("readerChoices",choices);
+            NBTTagList r = new NBTTagList(); rows.forEach(a -> r.add(a.save())); t.put("rows",r); t.putString("status",status);
+            NBTTagList choices=new NBTTagList();for(var choice:readerChoices){NBTTagCompound c=new NBTTagCompound();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());choices.add(c);}t.put("readerChoices",choices);
             t.putString("targetLabel",targetLabel);t.putInt("targetCount",targetCount);
-            ListNBT channels=new ListNBT();for(var choice:targetChoices){CompoundNBT c=new CompoundNBT();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());channels.add(c);}t.put("targetChoices",channels);
-            ListNBT sources=new ListNBT();for(var entry:sourceRows.entrySet()){CompoundNBT c=new CompoundNBT();c.putString("id",entry.getKey());ListNBT data=new ListNBT();entry.getValue().forEach(row->data.add(row.save()));c.put("data",data);sources.add(c);}t.put("sources",sources);
+            NBTTagList channels=new NBTTagList();for(var choice:targetChoices){NBTTagCompound c=new NBTTagCompound();c.putString("id",choice.id());c.putString("name",choice.name());c.putString("kind",choice.kind());channels.add(c);}t.put("targetChoices",channels);
+            NBTTagList sources=new NBTTagList();for(var entry:sourceRows.entrySet()){NBTTagCompound c=new NBTTagCompound();c.putString("id",entry.getKey());NBTTagList data=new NBTTagList();entry.getValue().forEach(row->data.add(row.save()));c.put("data",data);sources.add(c);}t.put("sources",sources);
         }
         return t;
     }
-    public static Part load(CompoundNBT t, Object registry) {
+    public static Part load(NBTTagCompound t, Object registry) {
         Kind k = Kind.byId(t.getString("kind")); if (k == null) return null;
-        Part p = new Part(k, Direction.from3DDataValue(t.getInt("face")), t.hasUUID("owner") ? t.getUUID("owner") : null);
+        Part p = new Part(k, EnumFacing.from3DDataValue(t.getInt("face")), t.hasUUID("owner") ? t.getUUID("owner") : null);
         if (t.hasUUID("identity")) p.identity = t.getUUID("identity");
         p.hologramView=net.foundations.pl4.core.HologramProjection.view(p.face.ordinal(),t.contains("hologramView")?t.getInt("hologramView"):3);
         p.layoutRevision=Math.max(0,t.getLong("layoutRevision"));
@@ -181,12 +181,12 @@ public final class Part {
         p.targetChannel=ReaderChannels.sanitize(t.getString("targetChannel"));
         p.targetQuery=ReaderChannels.clean(t.getString("targetQuery"));p.targetLabel=t.getString("targetLabel");
         p.targetPage=net.foundations.pl4.compat.PortMath.clamp(t.getInt("targetPage"),0,65535);p.targetCount=Math.max(0,t.getInt("targetCount"));
-        ListNBT aliases=t.getList("channelNames",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,aliases.size());i++){CompoundNBT c=aliases.getCompound(i);String id=ReaderChannels.sanitize(c.getString("id"));String label=ReaderChannels.clean(c.getString("name"));if(!id.isEmpty()&&!label.isBlank())p.channelNames.put(id,label);}
+        NBTTagList aliases=t.getList("channelNames",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,aliases.size());i++){NBTTagCompound c=aliases.getCompound(i);String id=ReaderChannels.sanitize(c.getString("id"));String label=ReaderChannels.clean(c.getString("name"));if(!id.isEmpty()&&!label.isBlank())p.channelNames.put(id,label);}
         p.inputFilter=DisplayElements.clean(t.getString("inputFilter"),256);p.outputFilter=DisplayElements.clean(t.getString("outputFilter"),256);
         p.inputFilterMode=TransferFilters.mode(t.getString("inputFilterMode"));p.outputFilterMode=TransferFilters.mode(t.getString("outputFilterMode"));
         p.resourceEscrow=!t.contains("pendingEnergy")&&t.getBoolean("resourceEscrow");
         p.statementsAll=!t.contains("statementsAll")||t.getBoolean("statementsAll");p.signalStrength=t.contains("signalStrength")?net.foundations.pl4.compat.PortMath.clamp(t.getInt("signalStrength"),0,15):15;
-        ListNBT statementTags=t.getList("statements",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(statementTags.size(),net.foundations.pl4.core.SignalRules.MAX_STATEMENTS);i++){CompoundNBT s=statementTags.getCompound(i);try{var statement=new net.foundations.pl4.core.SignalRules.Statement(UUID.fromString(s.getString("id")),s.getString("reader"),s.getString("key"),s.getString("operator"),s.getDouble("threshold"));if(p.statements.stream().noneMatch(old->old.id().equals(statement.id())))p.statements.add(statement);}catch(IllegalArgumentException ignored){}}
+        NBTTagList statementTags=t.getList("statements",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(statementTags.size(),net.foundations.pl4.core.SignalRules.MAX_STATEMENTS);i++){NBTTagCompound s=statementTags.getCompound(i);try{var statement=new net.foundations.pl4.core.SignalRules.Statement(UUID.fromString(s.getString("id")),s.getString("reader"),s.getString("key"),s.getString("operator"),s.getDouble("threshold"));if(p.statements.stream().noneMatch(old->old.id().equals(statement.id())))p.statements.add(statement);}catch(IllegalArgumentException ignored){}}
         p.label=t.getString("label"); p.filter=t.getString("filter"); p.selected=t.getString("selected"); p.metric=t.getString("metric"); p.mode=t.getString("mode");
         p.comparison=t.getString("comparison"); p.threshold=t.getDouble("threshold"); p.index=t.getInt("index"); p.priority=t.getInt("priority"); p.signal=t.getInt("signal");
         p.color=t.getInt("color"); p.transferMode=t.getInt("transferMode"); p.items=t.getBoolean("items"); p.fluids=t.getBoolean("fluids"); p.energy=t.getBoolean("energy");
@@ -200,13 +200,13 @@ public final class Part {
         p.inputChannel=DisplayElements.clean(t.getString("inputChannel"),48);p.outputChannel=DisplayElements.clean(t.getString("outputChannel"),48);
         p.blockedFaces=t.getInt("blockedFaces") & 63; p.descending=t.getBoolean("descending"); p.whitelist=t.getBoolean("whitelist"); p.ticks=t.getLong("ticks");
         p.pendingItem=net.foundations.pl4.compat.PortData.parseItem(registry,t.getCompound("pendingItem")); p.pendingFluid=net.foundations.pl4.compat.PortData.parseFluid(registry,t.getCompound("pendingFluid")); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
-        ListNBT links=t.getList("links",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));
-        ListNBT elements=t.getList("elements",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(elements.size(),32);i++){Element e=Element.load(elements.getCompound(i));UUID original=e.id();if(p.elements.stream().anyMatch(old->old.id().equals(original)))e=new Element(e.spec().identity(UUID.randomUUID()));p.elements.add(e);}
+        NBTTagList links=t.getList("links",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));
+        NBTTagList elements=t.getList("elements",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(elements.size(),32);i++){Element e=Element.load(elements.getCompound(i));UUID original=e.id();if(p.elements.stream().anyMatch(old->old.id().equals(original)))e=new Element(e.spec().identity(UUID.randomUUID()));p.elements.add(e);}
         p.displayMode=t.contains("displayMode")?DisplayElements.Mode.parse(t.getString("displayMode")):(p.elements.isEmpty()?DisplayElements.Mode.AUTO_LIST:DisplayElements.Mode.CUSTOM);p.displayPage=net.foundations.pl4.compat.PortMath.clamp(t.getInt("displayPage"),0,7);p.layoutWidth=t.contains("layoutWidth")?net.foundations.pl4.compat.PortMath.clamp(t.getInt("layoutWidth"),8,DisplayElements.MAX_CANVAS):DisplayElements.WIDTH;p.layoutHeight=t.contains("layoutHeight")?net.foundations.pl4.compat.PortMath.clamp(t.getInt("layoutHeight"),9,DisplayElements.MAX_CANVAS):DisplayElements.HEIGHT;
-        ListNBT rows=t.getList("rows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(rows.size(),256);i++) p.rows.add(Row.load(rows.getCompound(i),registry));
-        ListNBT choices=t.getList("readerChoices",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,choices.size());i++){CompoundNBT c=choices.getCompound(i);p.readerChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
-        ListNBT sources=t.getList("sources",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);int budget=256;for(int i=0;i<Math.min(8,sources.size());i++){CompoundNBT c=sources.getCompound(i);ListNBT data=c.getList("data",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);List<Row> list=new ArrayList<>();for(int n=0;n<Math.min(64,data.size())&&budget>0;n++,budget--)list.add(Row.load(data.getCompound(n),registry));p.sourceRows.put(c.getString("id"),List.copyOf(list));}
-        ListNBT channels=t.getList("targetChoices",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,channels.size());i++){CompoundNBT c=channels.getCompound(i);p.targetChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
+        NBTTagList rows=t.getList("rows",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(rows.size(),256);i++) p.rows.add(Row.load(rows.getCompound(i),registry));
+        NBTTagList choices=t.getList("readerChoices",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,choices.size());i++){NBTTagCompound c=choices.getCompound(i);p.readerChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
+        NBTTagList sources=t.getList("sources",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);int budget=256;for(int i=0;i<Math.min(8,sources.size());i++){NBTTagCompound c=sources.getCompound(i);NBTTagList data=c.getList("data",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);List<Row> list=new ArrayList<>();for(int n=0;n<Math.min(64,data.size())&&budget>0;n++,budget--)list.add(Row.load(data.getCompound(n),registry));p.sourceRows.put(c.getString("id"),List.copyOf(list));}
+        NBTTagList channels=t.getList("targetChoices",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);for(int i=0;i<Math.min(64,channels.size());i++){NBTTagCompound c=channels.getCompound(i);p.targetChoices.add(new ReaderChoice(c.getString("id"),c.getString("name"),c.getString("kind")));}
         p.status=t.getString("status");
         p.canvasWidth=net.foundations.pl4.compat.PortMath.clamp(t.getInt("canvasWidth"),1,16);p.canvasHeight=net.foundations.pl4.compat.PortMath.clamp(t.getInt("canvasHeight"),1,16);
         p.canvasColumn=net.foundations.pl4.compat.PortMath.clamp(t.getInt("canvasColumn"),0,p.canvasWidth-1);p.canvasRow=net.foundations.pl4.compat.PortMath.clamp(t.getInt("canvasRow"),0,p.canvasHeight-1);p.canvasMask=t.getInt("canvasMask")&15;

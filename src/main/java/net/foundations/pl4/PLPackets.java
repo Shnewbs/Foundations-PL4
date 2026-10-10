@@ -3,17 +3,17 @@ package net.foundations.pl4;
 import java.util.*;
 import java.util.function.Consumer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.foundations.pl4.compat.StreamCodec;
 import net.foundations.pl4.compat.CustomPacketPayload;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.foundations.pl4.compat.PacketDistributor;
 import net.foundations.pl4.compat.RegisterPayloadHandlersEvent;
 
 public final class PLPackets {
     public static Consumer<Open> clientOpen=packet->{};
-    public record Open(BlockPos pos,int slot,CompoundNBT tag) implements CustomPacketPayload {
+    public record Open(BlockPos pos,int slot,NBTTagCompound tag) implements CustomPacketPayload {
         public static final Type<Open> TYPE=new Type<>(FoundationsPL4.id("open"));
         public static final StreamCodec<PacketBuffer,Open> CODEC=StreamCodec.of((b,p)->{b.writeBlockPos(p.pos);b.writeVarInt(p.slot);b.writeNbt(p.tag);},b->new Open(b.readBlockPos(),b.readVarInt(),Objects.requireNonNull(b.readNbt())));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
@@ -35,8 +35,8 @@ public final class PLPackets {
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private record Rate(long tick,int count){}
-    private static final Map<ServerPlayerEntity,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
-    static void editLayout(ServerPlayerEntity player,LayoutEdit packet){
+    private static final Map<EntityPlayerMP,Rate> EDIT_RATE=new WeakHashMap<>(); // Keys expire on disconnect; main server thread only.
+    static void editLayout(EntityPlayerMP player,LayoutEdit packet){
         long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=8)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
         if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
         if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity anchor))return;
@@ -85,33 +85,33 @@ public final class PLPackets {
             DisplayNetworks.applyLayout(host,part,settings,nextRevision);host.changed();reply(player,anchor,clicked);
         }catch(RuntimeException ex){openWithError(player,anchor,clicked,"Display edit failed; refresh the layout before retrying.");}
     }
-    private static void openWithError(ServerPlayerEntity player,HostEntity host,Part part,String error){sendOpen(player,host,part,error,true);}
+    private static void openWithError(EntityPlayerMP player,HostEntity host,Part part,String error){sendOpen(player,host,part,error,true);}
     public static void register(RegisterPayloadHandlersEvent event){
         var r=event.registrar("5");
-        r.playToServer(StorageRequest.TYPE,StorageRequest.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayerEntity player)WirelessStorage.request(player,packet);}));
-        r.playToServer(LayoutEdit.TYPE,LayoutEdit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayerEntity player)editLayout(player,packet);}));
+        r.playToServer(StorageRequest.TYPE,StorageRequest.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof EntityPlayerMP player)WirelessStorage.request(player,packet);}));
+        r.playToServer(LayoutEdit.TYPE,LayoutEdit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof EntityPlayerMP player)editLayout(player,packet);}));
         r.playToClient(Open.TYPE,Open.CODEC,(packet,context)->context.enqueueWork(()->clientOpen.accept(packet)));
-        r.playToServer(Edit.TYPE,Edit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof ServerPlayerEntity player)edit(player,packet);}));
+        r.playToServer(Edit.TYPE,Edit.CODEC,(packet,context)->context.enqueueWork(()->{if(context.player() instanceof EntityPlayerMP player)edit(player,packet);}));
     }
-    public static void open(ServerPlayerEntity player,HostEntity host,Part p){sendOpen(player,host,p,"",false);}
-    private static void reply(ServerPlayerEntity player,HostEntity host,Part p){sendOpen(player,host,p,"",true);}
-    private static void sendOpen(ServerPlayerEntity player,HostEntity host,Part p,String error,boolean reply){
+    public static void open(EntityPlayerMP player,HostEntity host,Part p){sendOpen(player,host,p,"",false);}
+    private static void reply(EntityPlayerMP player,HostEntity host,Part p){sendOpen(player,host,p,"",true);}
+    private static void sendOpen(EntityPlayerMP player,HostEntity host,Part p,String error,boolean reply){
         if(ComponentLinks.supported(p))ComponentLinks.refresh(player,host,p);
         var target=DisplayNetworks.controller(host,p);
-        CompoundNBT t=target.part().save(null,true);
+        NBTTagCompound t=target.part().save(null,true);
         // The packet remains anchored to the clicked tile. Distance/identity checks never trust a remote root.
         t.putUUID("identity",p.identity);t.putBoolean("reply",reply);t.putString("layoutError",error);t.putBoolean("editable",host.canEdit(player)&&target.host().canEdit(player)&&player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(host.getBlockPos()))<=64);
         PacketDistributor.sendToPlayer(player,new Open(host.getBlockPos(),p.slot(),t));
     }
-    static void edit(ServerPlayerEntity player,Edit packet){
+    static void edit(EntityPlayerMP player,Edit packet){
         if(player.isSpectator()||packet.slot<0||packet.slot>=net.foundations.pl4.core.MultipartTopology.SLOT_COUNT||player.distanceToSqr(net.foundations.pl4.compat.PortVectors.atCenterOf(packet.pos))>64||!player.getLevel().hasChunkAt(packet.pos)||!player.getLevel().mayInteract(player,packet.pos))return;
         if(!(player.getLevel().getBlockEntity(packet.pos) instanceof HostEntity h))return;
         Part p=h.parts.get(packet.slot);if(p==null||!p.identity.equals(packet.identity))return;
         if(packet.field.equals("preview_reader")){
             long tick=player.getLevel().getGameTime();Rate rate=EDIT_RATE.get(player);if(rate!=null&&rate.tick==tick&&rate.count>=4)return;EDIT_RATE.put(player,new Rate(tick,rate!=null&&rate.tick==tick?rate.count+1:1));
             if(!p.kind.display()||packet.value.length()>64)return;var target=DisplayNetworks.controller(h,p);
-            CompoundNBT tag=target.part().save(null,true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
-            var rows=new net.minecraft.nbt.ListNBT();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;
+            NBTTagCompound tag=target.part().save(null,true);tag.putUUID("identity",p.identity);tag.putBoolean("editable",h.canEdit(player)&&target.host().canEdit(player));tag.putString("previewReader",packet.value);tag.putBoolean("reply",true);
+            var rows=new net.minecraft.nbt.NBTTagList();DisplayNetworks.preview(h,p,packet.value).forEach(row->rows.add(row.save()));tag.put("previewRows",rows);PacketDistributor.sendToPlayer(player,new Open(h.getBlockPos(),p.slot(),tag));return;
         }
         if(packet.field.equals("refresh")){reply(player,h,p);return;}
         if(!h.canEdit(player))return;
@@ -126,7 +126,7 @@ public final class PLPackets {
         try{
             switch(packet.field){
                 case "hologram_view" -> {
-                    if(!p.hologram()||p.face.getAxis()!=net.minecraft.util.Direction.Axis.Y)return;
+                    if(!p.hologram()||p.face.getAxis()!=net.minecraft.util.EnumFacing.Axis.Y)return;
                     int n=Integer.parseInt(v);if(n<2||n>5)return;
                     int previous=p.hologramView;p.hologramView=n;
                     var shape=MultipartShapes.part(h.parts.values(),p);

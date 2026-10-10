@@ -4,7 +4,7 @@ import java.util.*;
 import net.foundations.pl4.core.EnergyConversion;
 import net.foundations.pl4.core.ReflectiveEnergyTransfer;
 import net.foundations.pl4.core.ReflectiveElectrodynamicTransfer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.server.MinecraftServer;
 import net.foundations.pl4.compat.Capabilities;
 import net.foundations.pl4.compat.BlockCapability;
@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 
 /** Sided optional adapters; no external mod classes are linked or world handlers retained. */
 public final class EnergyPorts {
-    private record Adapter(BlockCapability<Object,Direction> capability,ReflectiveEnergyTransfer access,ReflectiveElectrodynamicTransfer electro){}
+    private record Adapter(BlockCapability<Object,EnumFacing> capability,ReflectiveEnergyTransfer access,ReflectiveElectrodynamicTransfer electro){}
     private static Map<String,Adapter> adapters;
     private static final Set<String> warned=new HashSet<>();
     private static void warn(String unit,Exception failure){if(warned.add(unit))LogManager.getLogger("FoundationsPL4").warn("Native {} transfer adapter unavailable; unsupported API versions fail closed.",unit,failure);}
@@ -25,8 +25,8 @@ public final class EnergyPorts {
         Map<String,Adapter> found=new HashMap<>();
         for(var cap:BlockCapability.getAll()){
             String id=cap.name().toString();String unit=id.equals("mekanism:strict_energy_handler")?"J":id.equals("gtceu:energy_container")?"EU":id.equals("voltaic:electrodynamicblock")?"ED_J":null;
-            if(unit==null||cap.contextClass()!=Direction.class)continue;
-            try{if(unit.equals("ED_J")){found.put(unit,new Adapter((BlockCapability<Object,Direction>)cap,null,ReflectiveElectrodynamicTransfer.resolve(cap.typeClass())));continue;}var access=unit.equals("J")?ReflectiveEnergyTransfer.mekanism(cap.typeClass()):ReflectiveEnergyTransfer.gregtech(cap.typeClass(),Direction.class);found.put(unit,new Adapter((BlockCapability<Object,Direction>)cap,access,null));}
+            if(unit==null||cap.contextClass()!=EnumFacing.class)continue;
+            try{if(unit.equals("ED_J")){found.put(unit,new Adapter((BlockCapability<Object,EnumFacing>)cap,null,ReflectiveElectrodynamicTransfer.resolve(cap.typeClass())));continue;}var access=unit.equals("J")?ReflectiveEnergyTransfer.mekanism(cap.typeClass()):ReflectiveEnergyTransfer.gregtech(cap.typeClass(),EnumFacing.class);found.put(unit,new Adapter((BlockCapability<Object,EnumFacing>)cap,access,null));}
             catch(ReflectiveOperationException|RuntimeException failure){warn(unit,failure);}
         }
         adapters=Map.copyOf(found);return adapters;
