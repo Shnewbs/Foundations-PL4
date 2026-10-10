@@ -12,7 +12,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.IntegerProperty;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -32,7 +32,7 @@ public final class HammerSpaceBlock extends Block {
     public ActionResultType useWithoutItem(BlockState s,World l,BlockPos pos,PlayerEntity p,BlockRayTraceResult hit){
         return HammerStructure.open(l,pos.below(s.getValue(OFFSET)),p)?net.foundations.pl4.compat.PortInteractions.sidedSuccess(l.isClientSide):ActionResultType.PASS;
     }
-    @Override public boolean removedByPlayer(BlockState s,World l,BlockPos p,PlayerEntity player,boolean willHarvest,FluidState fluid){
+    @Override public boolean removedByPlayer(BlockState s,World l,BlockPos p,PlayerEntity player,boolean willHarvest,IFluidState fluid){
         BlockPos base=p.below(s.getValue(OFFSET));
         if(!l.isClientSide&&(l.getBlockState(base).getBlock()==FoundationsPL4.HAMMER.get())) {
             if(player!=null&&!l.mayInteract(player,base))return false;

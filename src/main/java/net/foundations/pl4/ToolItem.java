@@ -18,6 +18,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.foundations.pl4.compat.PacketDistributor;
 
 public final class ToolItem extends Item {
@@ -75,9 +76,14 @@ public final class ToolItem extends Item {
         }
         return use(level,player,c.getHand()).getResult();
     }
-    @Override public ActionResultType interactLivingEntity(ItemStack stack,PlayerEntity player,LivingEntity entity,Hand hand){
-        if(mode!=Mode.ENTITY_LINK)return ActionResultType.PASS;
-        if(!player.level.isClientSide){save(stack,new Part.Link(entity.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),Direction.UP,entity.getUUID(),null));player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+entity.getName().getString()),true);}return net.foundations.pl4.compat.PortInteractions.sidedSuccess(player.level.isClientSide);
+    /** Native 1.15 Item/ItemStack entity-use hook returns whether the action was handled. */
+    @Override public boolean interactEnemy(ItemStack stack,PlayerEntity player,LivingEntity entity,Hand hand){
+        if(mode!=Mode.ENTITY_LINK)return false;
+        if(!player.level.isClientSide){
+            save(stack,new Part.Link(entity.level.dimension.getType().getRegistryName().toString(),entity.getCommandSenderBlockPosition(),Direction.UP,entity.getUUID(),null));
+            player.displayClientMessage(new net.minecraft.util.text.StringTextComponent("Linked "+entity.getName().getString()),true);
+        }
+        return true;
     }
     @Override public ActionResult<ItemStack> use(World l,PlayerEntity player,Hand hand){
         ItemStack stack=player.getItemInHand(hand);
