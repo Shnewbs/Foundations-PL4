@@ -27,5 +27,6 @@ public final class GuiGraphics {
  }
  public void enableScissor(int x,int y,int right,int bottom){if(!clips.isEmpty()){int[] p=clips.peek();x=Math.max(x,p[0]);y=Math.max(y,p[1]);right=Math.min(right,p[2]);bottom=Math.min(bottom,p[3]);}clips.push(new int[]{x,y,Math.max(x,right),Math.max(y,bottom)});applyClip();}
  public void disableScissor(){if(!clips.isEmpty())clips.pop();applyClip();}
- private void applyClip(){if(clips.isEmpty()){RenderSystem.disableScissor();return;}int[] r=clips.peek();double s=mc.getWindow().getGuiScale();RenderSystem.enableScissor((int)(r[0]*s),(int)(mc.getWindow().getHeight()-r[3]*s),(int)((r[2]-r[0])*s),(int)((r[3]-r[1])*s));}
+ // Called only from GUI rendering. These versions lack RenderSystem's later scissor helpers.
+ private void applyClip(){if(clips.isEmpty()){org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_SCISSOR_TEST);return;}int[] r=clips.peek();double s=mc.getWindow().getGuiScale();org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_SCISSOR_TEST);org.lwjgl.opengl.GL11.glScissor((int)(r[0]*s),(int)(mc.getWindow().getHeight()-r[3]*s),(int)((r[2]-r[0])*s),(int)((r[3]-r[1])*s));}
 }
