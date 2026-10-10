@@ -17,7 +17,9 @@ configurations {
     portTestRuntimeOnly.extendsFrom runtimeOnly
 }
 minecraft {
-    mappings channel: 'official', version: '1.13.2'
+    // No Mojang/ProGuard official mappings exist for Minecraft 1.13.2.
+    // Use the archived native MCP snapshot rather than borrowing 1.14.4 mappings.
+    mappings channel: 'snapshot', version: '20180921-1.13'
     copyIdeResources = true
     runs {
         configureEach {
