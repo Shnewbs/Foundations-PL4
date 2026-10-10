@@ -10,7 +10,7 @@ public final class PLClientConfig {
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> COMMUNITY_LINKS_SEEN;
     static {
         var builder=new ForgeConfigSpec.Builder();
-        COMMUNITY_LINKS_SEEN=builder.comment("Minecraft account UUIDs that have already received the one-time Discord/Ko-fi chat links. Local client history; keep this file across updates.").defineListAllowEmpty(List.of("communityLinksShownTo"),List.<String>of(),entry->{
+        COMMUNITY_LINKS_SEEN=builder.comment("Minecraft account UUIDs that have already received the one-time Discord/Ko-fi chat links. Local client history; keep this file across updates.").defineListAllowEmpty(List.of("communityLinksShownTo"),()->List.<String>of(),entry->{
             if(!(entry instanceof String value))return false;
             try{return UUID.fromString(value).toString().equals(value);}catch(IllegalArgumentException failure){return false;}
         });
