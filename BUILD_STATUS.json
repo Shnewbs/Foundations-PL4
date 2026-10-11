@@ -14,9 +14,9 @@
   "build_java": 17,
   "payload_protocol": "forge-1.16.1-5",
   "source_baseline": "26403a7f5efac28a737ac027d17c7621fd28a086",
-  "port_status": "NATIVE_ACCEPTANCE_PENDING",
+  "port_status": "NATIVE_SCENARIOS_AND_PRODUCTION_SMOKE_PASSED_WITH_PINNED_LAUNCHER",
   "expected_native_scenarios": 193,
-  "installed_runtime_acceptance": "PENDING",
+  "installed_runtime_acceptance": "PASS_WITH_PINNED_MODLAUNCHER_8.1.3",
   "installed_optional_provider_acceptance": "PENDING",
   "client_visual_acceptance": "PENDING",
   "live_multiplayer_acceptance": "PENDING",
@@ -30,5 +30,10 @@
     "production-only server boot",
     "exact source and checksums"
   ],
-  "native_api_backport": "1.16.1-v1"
+  "native_api_backport": "1.16.1-v1",
+  "native_compilation": "PASS",
+  "native_scenarios": "193/193 PASS on Forge 32.0.108 / Java 8 with pinned ModLauncher 8.1.3, 2026-10-11",
+  "production_smoke": "PASS on Forge 32.0.108 / Java 8 with pinned ModLauncher 8.1.3, production JAR only, 2026-10-11",
+  "verified_runtime_sha256": "d617c48b04205215f00dc8de31b5e4e0850d86a70e5c6a6c6b4aa20b3698a4ca",
+  "release_published": false
 }
