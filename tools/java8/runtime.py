@@ -105,9 +105,9 @@ def verify():
 def native():
     status,target,version,name=metadata()
     work=ROOT/'run-java8'
-    if work.exists():
+    if work.exists() and any(p.name != 'mods' or any(p.iterdir()) for p in work.iterdir()):
         raise ValueError('Native acceptance requires a fresh disposable run-java8 directory')
-    work.mkdir();(work/'mods').mkdir()
+    work.mkdir(exist_ok=True);(work/'mods').mkdir(exist_ok=True)
     java=Path(os.environ['JAVA_HOME_8_X64'])/'bin/java'
     forge=target+'-'+status['loader_version']
     installer=fetch('https://maven.minecraftforge.net/net/minecraftforge/forge/'+forge+'/forge-'+forge+'-installer.jar',ROOT/'.java8-toolchain'/('forge-'+forge+'-installer.jar'))
