@@ -22,10 +22,13 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "38.0.17",
-  "port_status": "FORGE38_GAME_TEST_API_BACKPORT",
+  "port_status": "NATIVE_GAME_TESTS_AND_PRODUCTION_SMOKE_PASSED",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING",
+  "installed_runtime_acceptance": "PASS",
   "build_java": 17,
   "native_test_registration": "forge38-193-v1",
-  "native_compilation": "PENDING"
+  "native_compilation": "PASS",
+  "native_game_tests": "193/193 PASS on installed Forge 38.0.17 (2026-10-11)",
+  "production_smoke": "PASS; standalone runtime only",
+  "verified_runtime_sha256": "4c50714530bd3fc12ac85c8bcd2bc0298ca92a7c0a17c2ba1da6afbe3b01a58a"
 }

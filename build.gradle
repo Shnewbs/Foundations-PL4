@@ -6,6 +6,13 @@ version = '0.2a-port.1'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.18' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
+sourceSets {
+    portTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+configurations { portTestImplementation.extendsFrom implementation; portTestRuntimeOnly.extendsFrom runtimeOnly }
 minecraft {
     mappings channel: 'official', version: '1.18'
     copyIdeResources = true
@@ -36,8 +43,38 @@ processResources {
 }
 jar {
     from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE')
+    exclude '**/*GameTests*.class', '**/PortAssertions*.class', '**/PLPortTestMod*.class'
     manifest { attributes('Implementation-Version':project.version) }
     finalizedBy 'reobfJar'
+}
+tasks.register('scenarioMetadata') {
+    dependsOn 'processResources'
+    outputs.dir layout.buildDirectory.dir('scenario-metadata')
+    doLast {
+        def out=file('build/scenario-metadata/META-INF/mods.toml'); out.parentFile.mkdirs()
+        out.text=file('build/resources/main/META-INF/mods.toml').text + '''
+[[mods]]
+modId="foundations_pl4_porttests"
+version="1"
+displayName="PL4 isolated Forge38 GameTests (not for production)"
+'''
+    }
+}
+tasks.register('scenarioRuntimeJar', Jar) {
+    dependsOn 'classes','portTestClasses','scenarioMetadata'
+    archiveClassifier='native-scenarios'
+    from(sourceSets.main.output) {
+        exclude 'META-INF/mods.toml', '**/*GameTests*.class', '**/PortAssertions*.class', '**/PLPortTestMod*.class'
+    }
+    from(sourceSets.portTest.output) { exclude 'META-INF/mods.toml'; exclude 'pack.mcmeta' }
+    from('build/scenario-metadata')
+    from('LICENSE'); from('LICENSE-SonarCore'); from('NOTICE')
+    manifest { attributes('Implementation-Version':project.version) }
+    duplicatesStrategy=DuplicatesStrategy.EXCLUDE
+    finalizedBy 'reobfScenarioRuntimeJar'
+}
+afterEvaluate {
+    reobf { scenarioRuntimeJar { classpath=sourceSets.portTest.compileClasspath } }
 }
 tasks.register('verifyPortRules',Exec) { commandLine 'python3','tools/run_port_checks.py' }
 tasks.named('check') { dependsOn 'verifyPortRules' }
@@ -49,6 +86,7 @@ tasks.register('verifyPortJar') {
             def metadata=zip.getInputStream(zip.getEntry('META-INF/mods.toml')).getText('UTF-8')
             if (!metadata.contains('version="'+project.version+'"') || !metadata.contains('versionRange="[1.18,1.18.1)"')) throw new GradleException('Incorrect Forge target metadata')
             zip.entries().each { entry ->
+                if (entry.name.contains('GameTests') || entry.name.contains('PortAssertions') || entry.name.contains('PLPortTestMod')) throw new GradleException('Leaked native test class: '+entry.name)
                 if (entry.name.endsWith('.jar')) throw new GradleException('Unexpected bundled mod: '+entry.name)
                 if (entry.name.endsWith('.class')) {
                     def content=new String(zip.getInputStream(entry).bytes,java.nio.charset.StandardCharsets.ISO_8859_1)
@@ -60,6 +98,7 @@ tasks.register('verifyPortJar') {
     }
 }
 tasks.named('build') { dependsOn 'verifyPortJar' }
+tasks.named('build') { dependsOn 'reobfScenarioRuntimeJar' }
 
 // Native 1.18 Forge38 predates the automatic gameTestServer main class.
 // Relay console commands to the real 1.18 dedicated server instead.
