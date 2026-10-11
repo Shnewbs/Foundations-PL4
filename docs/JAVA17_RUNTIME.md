@@ -1,6 +1,6 @@
 # 1.16.4 runtime compatibility checkpoint
 
-Verified October 9, 2026. **This source port is not yet a published or playable build.**
+Historical October 9, 2026 checkpoint. On October 11, a locally rebuilt Java 8 runtime passed 193/193 installed Forge 35.1.37 scenarios and a separate production-only boot with the pinned ModLauncher 8.1.3 profile; see `BUILD_STATUS.json` and `docs/releases/0.2a-port.1.md`. Client acceptance and publication remain pending.
 
 The modern-feature source compiles and reobfuscates against actual Minecraft 1.16.4 / Forge 35.1.37. Exact Minecraft metadata, a separate payload identity, the Forge-35 account-history configuration implementation, and two extra native regression fixtures are present. All 191 original server scenarios are retained; the required total is 193.
 
