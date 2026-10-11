@@ -39,8 +39,10 @@ def main():
     if 'PL4 SCENARIOS SUCCESS: All 193 required native scenarios passed' not in text:raise ValueError('Missing scenario completion marker')
     if not re.search(r'Starting minecraft server version 1\.17\.1\b',text,re.I):raise ValueError('Native target mismatch')
     shutil.copyfile(work/'port-scenarios.json',logs/'port-scenarios.json')
-    # Only the disposable test module is removed. Production is independently booted without tests.
-    combined.unlink();installed=work/'mods'/prod.name;shutil.copyfile(prod,installed)
+    # Recreate the mods directory to enforce a production-only launch.
+    shutil.rmtree(work/'mods');(work/'mods').mkdir()
+    installed=work/'mods'/prod.name;shutil.copyfile(prod,installed)
+    if list((work/'mods').iterdir())!=[installed]:raise ValueError('Production server contains extra mods')
     smoke=logs/'production-boot.log'
     with smoke.open('w') as out:
         process=subprocess.Popen([str(java),'-Xms512M','-Xmx3G','@'+str(argsfile),'nogui'],cwd=work,stdin=subprocess.PIPE,stdout=out,stderr=subprocess.STDOUT,text=True)
