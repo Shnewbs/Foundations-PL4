@@ -29,7 +29,11 @@ minecraft {
     }
 }
 repositories { mavenCentral() }
-dependencies { minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2864' }
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2864'
+    compileOnly 'org.apache.logging.log4j:log4j-api:2.8.1'
+    compileOnly 'com.google.guava:guava:21.0'
+}
 tasks.withType(JavaCompile).all { options.encoding='UTF-8' }
 processResources {
     inputs.property 'version',project.version
