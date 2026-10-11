@@ -17,10 +17,16 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "31.2.62",
-  "port_status": "NATIVE_API_VALIDATION_PENDING",
+  "port_status": "NATIVE_SCENARIOS_AND_PRODUCTION_SMOKE_PASSED",
   "expected_native_scenarios": 194,
   "test_harness": "PL4 isolated dedicated-server scenarios; not modern GameTests",
   "build_java": 17,
-  "installed_runtime_acceptance": "PENDING",
-  "forge31_api_pass": true
+  "installed_runtime_acceptance": "PASS",
+  "forge31_api_pass": true,
+  "native_compilation": "PASS",
+  "native_scenarios": "194/194 PASS",
+  "local_native_verification": "194/194 PASS on Forge 31.2.62 / Java 8, 2026-10-11",
+  "production_smoke": "PASS on stock Forge 31.2.62 / Java 8, production JAR only, 2026-10-11",
+  "verified_runtime_sha256": "3d0fdbaeea9caf460d1f2bb1ef88eda3af075b4be1a409fa146a375921aed77b",
+  "release_published": false
 }
