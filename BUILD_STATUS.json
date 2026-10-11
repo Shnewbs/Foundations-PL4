@@ -22,7 +22,11 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "39.1.2",
-  "port_status": "NATIVE_ACCEPTANCE_PENDING",
+  "port_status": "NATIVE_GAME_TESTS_AND_PRODUCTION_SMOKE_PASSED",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING"
+  "installed_runtime_acceptance": "PASS",
+  "native_compilation": "PASS",
+  "native_game_tests": "193/193 PASS on installed Forge 39.1.2 (2026-10-11)",
+  "production_smoke": "PASS; standalone runtime only",
+  "verified_runtime_sha256": "8855e29c3dcd8ca490530886e1d87b60b5088802e70eff327e3a3f926dde5b82"
 }
