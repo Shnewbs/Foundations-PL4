@@ -32,7 +32,8 @@ public final class PartItem extends Item {
             var point=c.getClickLocation().subtract(net.minecraft.world.phys.Vec3.atLowerCornerOf(pos));
             var direction=net.foundations.pl4.core.DisplayPlacement.extension(clicked.face.ordinal(),clicked.displayOutward,c.getClickedFace().ordinal(),point.x,point.y,point.z);
             if(direction.isEmpty()){
-                if(!l.isClientSide)player.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
+                if(!l.isClientSide&&player instanceof net.minecraft.server.level.ServerPlayer recipient&&recipient.connection!=null)
+                    recipient.displayClientMessage(net.minecraft.network.chat.Component.literal("Aim at a large display edge to extend it. Sneak-place for an independent panel."),true);
                 return InteractionResult.FAIL;
             }
             if(!l.isClientSide){

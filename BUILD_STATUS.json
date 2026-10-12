@@ -22,10 +22,14 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "48.1.0",
-  "port_status": "NATIVE_SOURCE_PORT_PENDING",
+  "port_status": "NATIVE_GAME_TESTS_AND_PRODUCTION_SMOKE_PASSED",
   "build_java": 17,
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING",
+  "installed_runtime_acceptance": "PASS: 191/191 native GameTests and standalone production boot on Forge 48.1.0 (2026-10-11)",
   "native_compat_backport": "forge-modern-channel-gametest-v1",
-  "native_compilation": "PENDING"
+  "native_compilation": "PASS: local Forge 48.1.0 build on Java 17 (2026-10-11)",
+  "production_jar_test_isolation": "PASS: zero GameTest and test-mod classes in production JAR",
+  "verified_runtime_sha256": "200482bef069939501ed94673f4a19a507c9a712aca49f48b1b868088a3541a4",
+  "native_game_tests": "191/191 PASS",
+  "production_smoke": "PASS: standalone installed Forge 48.1.0 server boot and shutdown"
 }
