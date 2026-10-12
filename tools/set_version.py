@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = re.compile(r"\d+\.\d+(?:\.\d+)?[ab](?:\.R\d+(?:\.\d+)*)?")
+VERSION = re.compile(r"(?:\d+\.\d+(?:\.\d+)?[ab](?:\.R\d+(?:\.\d+)*)?|\d+\.\d+\.\d+\.rev\d+-beta)")
 
 
 def plan(root: Path, version: str) -> dict[Path, str]:
@@ -64,15 +64,18 @@ def plan(root: Path, version: str) -> dict[Path, str]:
     protocol = re.findall(r'event\.registrar\("(\d+)"\)', packet)
     if len(protocol) != 1:
         raise ValueError('Expected exactly one literal payload protocol')
-    registered = re.findall(r'e\.register\((\w+)\.class\)', (source / 'PLGameTests.java').read_text(encoding='utf-8'))
+    fixture = root / 'src/portTest/java/net/foundations/pl4'
+    if not (fixture / 'PLGameTests.java').is_file():
+        fixture = source
+    registered = re.findall(r'e\.register\((\w+)\.class\)', (fixture / 'PLGameTests.java').read_text(encoding='utf-8'))
     if not registered or len(set(registered)) != len(registered):
         raise ValueError('Missing or duplicate native test registrations')
-    count = sum((source / (name + '.java')).read_text(encoding='utf-8').count('@GameTest(') for name in registered)
+    count = sum((fixture / (name + '.java')).read_text(encoding='utf-8').count('@GameTest(') for name in registered)
     if count <= 0:
         raise ValueError('No registered native tests found')
     status_path = root / 'BUILD_STATUS.json'
     status = json.loads(status_path.read_text(encoding='utf-8'))
-    status.update(version=version, release_channel='beta' if re.search(r'\db(?:\.|$)', version) else 'alpha',
+    status.update(version=version, release_channel='beta' if version.endswith('-beta') or re.search(r'\db(?:\.|$)', version) else 'alpha',
                   payload_protocol=protocol[0], expected_native_tests=count,
                   further_api_testing_required=True, client_visual_acceptance='PENDING',
                   release_notes='docs/releases/' + version + '.md')

@@ -22,10 +22,11 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "45.4.5",
-  "port_status": "NATIVE_ACCEPTANCE_PENDING",
+  "port_status": "NATIVE_BUILD_PASSED_INSTALLED_ACCEPTANCE_PENDING",
   "build_java": 17,
   "release_published": false,
   "installed_runtime_acceptance": "PENDING",
   "native_api_backport": "forge45-source-baseline",
-  "native_compilation": "PENDING"
+  "native_compilation": "PASS: local Forge 45.4.5 build on Java 17 (2026-10-11)",
+  "verified_runtime_sha256": "672aac4b489542ef6b65afdb8440b6b5d36194f169708130bf0cd86825bbd8fb"
 }

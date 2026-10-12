@@ -42,6 +42,19 @@ class VersionTests(unittest.TestCase):
             path.write_text(text, encoding='utf-8')
         self.assertTrue(all(path.read_text(encoding='utf-8') == text for path, text in plan(self.root, '0.2a').items()))
 
+    def test_requested_revision_beta_reads_isolated_fixture_source(self):
+        target = '0.97.0.rev1-beta'
+        (self.root / 'docs/releases' / (target + '.md')).write_text('# Revision beta\n')
+        old = self.root / 'src/main/java/net/foundations/pl4/PLGameTests.java'
+        isolated = self.root / 'src/portTest/java/net/foundations/pl4/PLGameTests.java'
+        isolated.parent.mkdir(parents=True)
+        isolated.write_text(old.read_text())
+        old.unlink()
+        result = plan(self.root, target)
+        status = json.loads(result[self.root / 'BUILD_STATUS.json'])
+        self.assertEqual((status['version'], status['release_channel'], status['expected_native_tests']),
+                         (target, 'beta', 1))
+
     def test_unsafe_version_rejected(self):
         for version in ['../0.2a', '0.2a;echo bad', '0.2a\n', 'v0.2a']:
             with self.subTest(version=version), self.assertRaises(ValueError):

@@ -10,7 +10,7 @@ book=json.loads((R/'src/main/resources/assets/foundations_pl4/guide/en_us.json')
 transfer=next(c for c in book['chapters'] if c['id']=='transfer')
 body=' '.join(s['body'] for s in transfer['sections'])
 checks={
- 'current version metadata is parameterized':'version="${version}"' in read('src/main/resources/META-INF/neoforge.mods.toml') and re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M) is not None,
+ 'current version metadata is parameterized':'version="${version}"' in read('src/main/resources/META-INF/mods.toml') and re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M) is not None,
  'normal node endpoints':'Kind.NODE||r.part().kind==Kind.TRANSFER_NODE' in engine,
  'route rules used':'TransferRules.canRoute' in engine,
  'remove phase':'TransferRules.drivesRemove' in engine,
@@ -24,9 +24,9 @@ checks={
  'normal node guide':'normal Node' in body and 'passive endpoint' in body,
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
- 'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
- 'twenty-nine transfer, automation and network storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==29,
- 'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
+ 'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/portTest/java/net/foundations/pl4/PLGameTests.java'),
+ 'twenty-nine transfer, automation and network storage native tests':read('src/portTest/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==29,
+ 'R16 verifier wired':"R16RegressionTests" in read('tools/run_offline_checks.py'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }
 failed=[k for k,v in checks.items() if not v]
