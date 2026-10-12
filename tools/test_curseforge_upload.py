@@ -31,7 +31,8 @@ class UploadTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             os.chdir(directory)
             try:
-                jar = Path('build/libs/FoundationsPL4-1.21.1-0.0.2a.R1.jar')
+                Path('BUILD_STATUS.json').write_text(json.dumps({'minecraft': '1.20.4', 'version': '0.2a-port.1'}))
+                jar = Path('build/libs/FoundationsPL4-1.20.4-0.2a-port.1.jar')
                 jar.parent.mkdir(parents=True)
                 jar.write_bytes(b'validated artifact')
                 digest = hashlib.sha256(jar.read_bytes()).hexdigest()
@@ -40,13 +41,46 @@ class UploadTests(unittest.TestCase):
                         return json.dumps({'assets': [{'name': upload.MARKER}]})
                     Path(args[args.index('--dir') + 1], upload.MARKER).write_text(json.dumps({'project_id': '123', 'sha256': digest, 'file_id': 456}))
                     return ''
-                env = {'CURSEFORGE_PROJECT_ID': '123', 'CURSEFORGE_API_TOKEN': 'test-only', 'VERSION': '0.0.2a.R1', 'RELEASE_TAG': 'v0.0.2a.R1', 'GITHUB_REPOSITORY': 'example/repo'}
+                env = {'CURSEFORGE_PROJECT_ID': '123', 'CURSEFORGE_API_TOKEN': 'test-only', 'VERSION': '0.2a-port.1', 'RELEASE_TAG': 'mc1.20.4-v0.2a-port.1', 'MINECRAFT_VERSION': '1.20.4', 'GITHUB_REPOSITORY': 'example/repo'}
                 with patch.dict(os.environ, env, clear=True), patch.object(upload, 'gh', side_effect=gh), patch.object(upload, 'request_json') as api:
                     upload.main()
                     jar.write_bytes(b'changed artifact')
                     with self.assertRaises(RuntimeError):
                         upload.main()
                     api.assert_not_called()
+            finally:
+                os.chdir(previous)
+
+    def test_target_mismatch_stops_before_external_requests(self):
+        previous = Path.cwd()
+        with tempfile.TemporaryDirectory() as directory:
+            os.chdir(directory)
+            try:
+                Path('BUILD_STATUS.json').write_text(json.dumps({'minecraft': '1.20.4', 'version': '0.2a-port.1'}))
+                env = {'CURSEFORGE_PROJECT_ID': '123', 'CURSEFORGE_API_TOKEN': 'test-only', 'VERSION': '0.2a-port.1', 'RELEASE_TAG': 'mc1.20.2-v0.2a-port.1', 'MINECRAFT_VERSION': '1.20.2', 'GITHUB_REPOSITORY': 'example/repo'}
+                with patch.dict(os.environ, env, clear=True), patch.object(upload, 'gh') as gh, patch.object(upload, 'request_json') as api:
+                    with self.assertRaises(RuntimeError):
+                        upload.main()
+                    gh.assert_not_called()
+                    api.assert_not_called()
+            finally:
+                os.chdir(previous)
+
+    def test_upload_uses_forge_artifact_and_metadata(self):
+        previous = Path.cwd()
+        with tempfile.TemporaryDirectory() as directory:
+            os.chdir(directory)
+            try:
+                Path('BUILD_STATUS.json').write_text(json.dumps({'minecraft': '1.20.4', 'version': '0.2a-port.1'}))
+                jar = Path('build/libs/FoundationsPL4-1.20.4-0.2a-port.1.jar')
+                jar.parent.mkdir(parents=True)
+                jar.write_bytes(b'validated Forge artifact')
+                env = {'CURSEFORGE_PROJECT_ID': '123', 'CURSEFORGE_API_TOKEN': 'test-only', 'VERSION': '0.2a-port.1', 'RELEASE_TAG': 'mc1.20.4-v0.2a-port.1', 'MINECRAFT_VERSION': '1.20.4', 'GITHUB_REPOSITORY': 'example/repo'}
+                with patch.dict(os.environ, env, clear=True), patch.object(upload, 'gh', side_effect=['{"assets": []}', '']) as gh, patch.object(upload, 'request_json', return_value={'id': 789}) as api:
+                    upload.main()
+                    self.assertIn('"gameVersionNames": ["1.20.4", "Forge", "Client", "Server"]', api.call_args.args[2].decode())
+                    self.assertIn(jar.name, api.call_args.args[2].decode())
+                    self.assertEqual(gh.call_count, 2)
             finally:
                 os.chdir(previous)
 
