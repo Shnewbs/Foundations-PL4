@@ -22,9 +22,11 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "42.0.9",
-  "port_status": "NATIVE_BUILD_PASSED_INSTALLED_ACCEPTANCE_PENDING",
+  "port_status": "NATIVE_GAME_TESTS_AND_PRODUCTION_SMOKE_PASSED",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING",
+  "installed_runtime_acceptance": "PASS: 191/191 native GameTests and standalone production boot on Forge 42.0.9 (2026-10-11)",
   "native_compilation": "PASS: local Forge 42.0.9 build on Java 17 (2026-10-11)",
+  "native_game_tests": "191/191 PASS",
+  "production_smoke": "PASS: standalone installed Forge 42.0.9 server boot and shutdown",
   "verified_runtime_sha256": "444524124af651b3e6fb391fa7b809cafa10d4fbf8e38c1c312ee68ad196ea5b"
 }
