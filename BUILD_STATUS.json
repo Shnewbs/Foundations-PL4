@@ -22,8 +22,11 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "41.1.0",
-  "port_status": "NATIVE_API_PORT_PENDING",
+  "port_status": "NATIVE_GAME_TESTS_AND_PRODUCTION_SMOKE_PASSED",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING",
-  "native_compilation": "PENDING"
+  "installed_runtime_acceptance": "PASS: 191/191 native GameTests and standalone production boot on Forge 41.1.0 (2026-10-11)",
+  "native_compilation": "PASS",
+  "native_game_tests": "191/191 PASS",
+  "production_smoke": "PASS: standalone installed Forge 41.1.0 server boot and shutdown",
+  "verified_runtime_sha256": "9c1be24c7d1cd4dba73ed9a0ff0b89d7c07ce1e4258d043bd9e3c3c74aad6848"
 }
