@@ -7,7 +7,10 @@ group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-26.3' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
 neoForge {
-    version = providers.gradleProperty('neoForgeVersion').getOrElse('26.3.0.23-beta')
+    enable {
+        version = providers.gradleProperty('neoForgeVersion').getOrElse('26.3.0.23-beta')
+        disableRecompilation = true
+    }
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
