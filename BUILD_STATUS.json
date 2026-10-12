@@ -22,7 +22,9 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "42.0.9",
-  "port_status": "INDEPENDENT_NATIVE_ACCEPTANCE_PENDING",
+  "port_status": "NATIVE_BUILD_PASSED_INSTALLED_ACCEPTANCE_PENDING",
   "release_published": false,
-  "installed_runtime_acceptance": "PENDING"
+  "installed_runtime_acceptance": "PENDING",
+  "native_compilation": "PASS: local Forge 42.0.9 build on Java 17 (2026-10-11)",
+  "verified_runtime_sha256": "444524124af651b3e6fb391fa7b809cafa10d4fbf8e38c1c312ee68ad196ea5b"
 }
