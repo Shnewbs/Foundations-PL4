@@ -3,6 +3,8 @@ import net.minecraft.server.level.ServerPlayer;
 /** Targeted messages use Forge's native PacketTarget and reversed send order. */
 public final class PacketDistributor {
  public static void sendToPlayer(ServerPlayer player,CustomPacketPayload packet){
+  // Simulated server players have no network recipient.
+  if(player.connection==null)return;
   RegisterPayloadHandlersEvent.channel.send(packet,
       net.minecraftforge.network.PacketDistributor.PLAYER.with(player));
  }

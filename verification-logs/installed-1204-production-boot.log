@@ -1,0 +1,242 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=browser-proxy -Dhttp.proxyPort=8889 -Dhttps.proxyHost=browser-proxy -Dhttps.proxyPort=8889 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+[32m[19:13:25] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forge_server, nogui]
+[m[32m[19:13:25] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 17.0.20.1+1
+[m[32m[19:13:25] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.1.2 starting: java version 17.0.20.1 by Eclipse Adoptium; OS Linux arch amd64 version 6.18.44
+[m[33m[19:13:25] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204-production/config/fml.toml is not correct. Correcting
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [detectNonForgeModsToml] was corrected from null to true
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[m[32m[19:13:25] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forge_server
+[m[32m[19:13:25] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=jar:file:///workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204/libraries/org/spongepowered/mixin/0.8.5/mixin-0.8.5.jar!/ Service=ModLauncher Env=SERVER
+[m[32m[19:13:26] [main/INFO] [ne.mi.fm.lo.mo.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[m[32m[19:13:32] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_server' with arguments [nogui]
+[m[33m[19:13:33] [main/WARN] [os.ut.FileUtil/]: Configuration conflict: there is more than one oshi.properties file on the classpath: [jar:file:///workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.properties, jar:file:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204-production/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.properties, jar:file:///workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.properties, jar:file:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204-production/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.properties]
+[m[33m[19:13:33] [main/WARN] [os.ut.FileUtil/]: Configuration conflict: there is more than one oshi.architecture.properties file on the classpath: [jar:file:///workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.architecture.properties, jar:file:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204-production/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.architecture.properties, jar:file:///workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.architecture.properties, jar:file:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.4-next/run-installed-1204-production/libraries/com/github/oshi/oshi-core/6.4.5/oshi-core-6.4.5.jar!/oshi.architecture.properties]
+[m[32m[19:13:57] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Forge mod loading, version 49.2.8, for MC 1.20.4 with MCP 20231207.112700
+[m[32m[19:13:57] [modloading-worker-0/INFO] [ne.mi.co.MinecraftForge/FORGE]: MinecraftForge v49.2.8 Initialized
+[m[32m[19:13:57] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[m[32m[19:13:59] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[m[32m[19:14:01] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Found status: AHEAD Current: 49.2.8 Target: null
+[m[32m[19:14:02] [main/INFO] [mojang/YggdrasilAuthenticationService]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[m[1;31m[19:14:02] [Yggdrasil Key Fetcher/ERROR] [mojang/YggdrasilServicesKeyInfo]: Failed to request yggdrasil public key
+com.mojang.authlib.exceptions.MinecraftClientException: Failed to read from https://api.minecraftservices.com/publickeys due to api.minecraftservices.com
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:108) ~[authlib-6.0.52.jar!/:?] {}
+	at com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:57) ~[authlib-6.0.52.jar!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.fetch(YggdrasilServicesKeyInfo.java:114) ~[authlib-6.0.52.jar!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo$1.run(YggdrasilServicesKeyInfo.java:89) ~[authlib-6.0.52.jar!/:?] {}
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539) ~[?:?] {}
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[?:?] {}
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[?:?] {}
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[?:?] {}
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[?:?] {}
+	at java.lang.Thread.run(Thread.java:840) ~[?:?] {}
+Caused by: java.net.UnknownHostException: api.minecraftservices.com
+	at sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:572) ~[?:?] {}
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?] {}
+	at java.net.Socket.connect(Socket.java:633) ~[?:?] {}
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?] {}
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?] {}
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:541) ~[?:?] {}
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:646) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:267) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:381) ~[?:?] {}
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:196) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1310) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1151) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1080) ~[?:?] {}
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:181) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1719) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1644) ~[?:?] {}
+	at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:529) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:308) ~[?:?] {}
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:84) ~[authlib-6.0.52.jar!/:?] {}
+	... 9 more
+[m[32m[19:14:05] [main/INFO] [minecraft/Main]: No existing world data, creating new world
+[m[32m[19:14:08] [main/INFO] [minecraft/RecipeManager]: Loaded 8 recipes
+[m[32m[19:14:10] [main/INFO] [minecraft/AdvancementTree]: Loaded 1271 advancements
+[m[32m[19:14:11] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.20.4
+[m[32m[19:14:11] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[m[32m[19:14:11] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[m[32m[19:14:11] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[m[32m[19:14:12] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25565
+[m>   [32m[19:14:12] [Server thread/INFO] [minecraft/ServerConnectionListener]: Using epoll channel type
+[m>   [33m[19:14:12] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[m>   [33m[19:14:12] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[m>   [33m[19:14:12] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[m>   [33m[19:14:12] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file ./pl4-production-world/serverconfig/foundations_pl4-server.toml is not correct. Correcting
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.updateTicks was corrected from null to its default, 20. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.maximumHosts was corrected from null to its default, 4096. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.maximumRows was corrected from null to its default, 128. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.wirelessEnabled was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.crossDimensionWireless was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.entityScanRadius was corrected from null to its default, 8. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.enabled was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.itemsPerCycle was corrected from null to its default, 64. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.millibucketsPerCycle was corrected from null to its default, 1000. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.fePerCycle was corrected from null to its default, 10000. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.itemsPerCycle was corrected from null to its default, 0. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.millibucketsPerCycle was corrected from null to its default, 0. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.fePerCycle was corrected from null to its default, 0. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.mekanismJoules was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.gregtechEU was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.electrodynamicsJoules was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePerElectrodynamicsJ was corrected from null to its default, 1. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.conversionEnabled was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePer1000J was corrected from null to its default, 400. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePerEU was corrected from null to its default, 4. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.conversionEfficiencyPermille was corrected from null to its default, 1000. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.mekanismJoules was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.gregtechEU was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.createKinetics was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.ae2GridEnergy was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.maximumContainersPerHandler was corrected from null to its default, 1024. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file ./pl4-production-world/serverconfig/forge-server.toml is not correct. Correcting
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringBlockEntities was corrected from null to its default, false. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringEntities was corrected from null to its default, false. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.fullBoundingBoxLadders was corrected from null to its default, false. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBaseSummonChance was corrected from null to its default, 0.1. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBabyChance was corrected from null to its default, 0.05. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.permissionHandler was corrected from null to its default, forge:default_handler. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.advertiseDedicatedServerToLan was corrected from null to its default, true. 
+[m>   [33m[19:14:12] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.useItemWithDurationZero was corrected from null to its default, false. 
+[m>   [32m[19:14:13] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "pl4-production-world"
+[m>   [32m[19:14:31] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for dimension minecraft:overworld
+[m>   [32m[19:14:34] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:34] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:35] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:35] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:36] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:36] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:37] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[m>   [32m[19:14:37] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 1%
+[m>   [32m[19:14:38] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 1%
+[m>   [32m[19:14:38] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 1%
+[m>   [32m[19:14:39] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 1%
+[m>   [32m[19:14:39] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[m>   [32m[19:14:40] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[m>   [32m[19:14:40] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 3%
+[m>   [32m[19:14:41] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 3%
+[m>   [32m[19:14:41] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 3%
+[m>   [32m[19:14:42] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 4%
+[m>   [32m[19:14:42] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 5%
+[m>   [32m[19:14:43] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 6%
+[m>   [32m[19:14:43] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 6%
+[m>   [32m[19:14:44] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 6%
+[m>   [32m[19:14:44] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 7%
+[m>   [32m[19:14:45] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 7%
+[m>   [32m[19:14:45] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 9%
+[m>   [32m[19:14:46] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 10%
+[m>   [32m[19:14:46] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 11%
+[m>   [32m[19:14:47] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 11%
+[m>   [32m[19:14:47] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 12%
+[m>   [32m[19:14:48] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 14%
+[m>   [32m[19:14:48] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 15%
+[m>   [32m[19:14:49] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 15%
+[m>   [32m[19:14:49] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 15%
+[m>   [32m[19:14:50] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 17%
+[m>   [32m[19:14:50] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 17%
+[m>   [32m[19:14:51] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 19%
+[m>   [32m[19:14:51] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 21%
+[m>   [32m[19:14:52] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 21%
+[m>   [32m[19:14:52] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 22%
+[m>   [32m[19:14:53] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 23%
+[m>   [32m[19:14:53] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 24%
+[m>   [32m[19:14:54] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 25%
+[m>   [32m[19:14:54] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 26%
+[m>   [32m[19:14:55] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 28%
+[m>   [32m[19:14:55] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 30%
+[m>   [32m[19:14:56] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 31%
+[m>   [32m[19:14:56] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 32%
+[m>   [32m[19:14:57] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 32%
+[m>   [32m[19:14:57] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 33%
+[m>   [32m[19:14:58] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 34%
+[m>   [32m[19:14:58] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 35%
+[m>   [32m[19:14:59] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 36%
+[m>   [32m[19:14:59] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 37%
+[m>   [32m[19:15:00] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 40%
+[m>   [32m[19:15:00] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 42%
+[m>   [32m[19:15:01] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 42%
+[m>   [32m[19:15:01] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 42%
+[m>   [32m[19:15:02] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 43%
+[m>   [32m[19:15:03] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 43%
+[m>   [32m[19:15:03] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 43%
+[m>   [32m[19:15:03] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 43%
+[m>   [32m[19:15:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 44%
+[m>   [32m[19:15:04] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 44%
+[m>   [32m[19:15:05] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 45%
+[m>   [32m[19:15:05] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 47%
+[m>   [32m[19:15:06] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 49%
+[m>   [32m[19:15:06] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 50%
+[m>   [32m[19:15:07] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 52%
+[m>   [32m[19:15:07] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 54%
+[m>   [32m[19:15:08] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 55%
+[m>   [32m[19:15:08] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 55%
+[m>   [32m[19:15:09] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 56%
+[m>   [32m[19:15:09] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 57%
+[m>   [32m[19:15:10] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 58%
+[m>   [32m[19:15:10] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 60%
+[m>   [32m[19:15:11] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 61%
+[m>   [32m[19:15:11] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 62%
+[m>   [32m[19:15:12] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 63%
+[m>   [32m[19:15:12] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:13] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:14] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:14] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:14] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:15] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 64%
+[m>   [32m[19:15:15] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 66%
+[m>   [32m[19:15:16] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 67%
+[m>   [32m[19:15:16] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 68%
+[m>   [32m[19:15:17] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 68%
+[m>   [32m[19:15:17] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 69%
+[m>   [32m[19:15:18] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 69%
+[m>   [32m[19:15:18] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 70%
+[m>   [32m[19:15:19] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 72%
+[m>   [32m[19:15:19] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 74%
+[m>   [32m[19:15:20] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 76%
+[m>   [32m[19:15:20] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 77%
+[m>   [32m[19:15:21] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 78%
+[m>   [32m[19:15:21] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 80%
+[m>   [32m[19:15:22] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 82%
+[m>   [32m[19:15:22] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 83%
+[m>   [32m[19:15:23] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 84%
+[m>   [32m[19:15:23] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 84%
+[m>   [32m[19:15:24] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 86%
+[m>   [32m[19:15:24] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 87%
+[m>   [32m[19:15:25] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 89%
+[m>   [32m[19:15:25] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 90%
+[m>   [32m[19:15:26] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 91%
+[m>   [32m[19:15:26] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 92%
+[m>   [32m[19:15:27] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 94%
+[m>   [32m[19:15:27] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 95%
+[m>   [32m[19:15:28] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 96%
+[m>   [32m[19:15:28] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 98%
+[m>   [32m[19:15:29] [Server thread/INFO] [minecraft/LoggerChunkProgressListener]: Time elapsed: 57331 ms
+[m>   [32m[19:15:29] [Server thread/INFO] [minecraft/DedicatedServer]: Done (76.232s)! For help, type "help"
+[m>   [32m[19:15:29] [Server thread/INFO] [ne.mi.se.pe.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[m> >   [32m[19:15:30] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping the server
+[m>   [32m[19:15:30] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[m>   [32m[19:15:30] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[m>   [32m[19:15:30] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[m>   [32m[19:15:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-production-world]'/minecraft:overworld
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-production-world]'/minecraft:the_nether
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-production-world]'/minecraft:the_end
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (pl4-production-world): All chunks are saved
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[m>   [32m[19:15:44] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[m> 

@@ -1,0 +1,14 @@
+{
+  "minecraft": "1.20.4",
+  "forge": "49.2.8",
+  "version": "0.2a-port.1",
+  "native_total": 191,
+  "native_passed": 191,
+  "native_failed": 0,
+  "production_runtime_sha256": "8e616a3a521202e3bca7bc64462c779eb6db24c08cfafb99d67664a1902e3898",
+  "scenario_artifact_sha256": "2c2a11dce3aff0ecadc008d8740e236b3f3c6482aca080c325e9f650bf52d69e",
+  "production_entries_compared": 870,
+  "mode": "Installed Forge 49 with isolated combined GameTest JAR",
+  "production_release_clearance": true,
+  "production_only_boot_and_shutdown": "PASS"
+}
