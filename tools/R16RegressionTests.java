@@ -16,6 +16,11 @@ public final class R16RegressionTests {
         check(TransferRules.canRoute(true,TransferRules.ADD_REMOVE,true,TransferRules.ADD),"ADD/REMOVE peer -> ADD");
         check(!TransferRules.canRoute(true,TransferRules.ADD_REMOVE,true,TransferRules.ADD_REMOVE),"Two bidirectional peers must not ping-pong");
         check(!TransferRules.canRoute(true,TransferRules.ADD,true,TransferRules.REMOVE),"Reverse direction is invalid");
+        check(TransferRules.canRouteOnChannels(true,TransferRules.REMOVE,"",false,0,""),"Legacy default channels can route");
+        check(TransferRules.canRouteOnChannels(true,TransferRules.REMOVE,"ore",true,TransferRules.ADD,"ore"),"Matching named channels can route");
+        check(!TransferRules.canRouteOnChannels(true,TransferRules.REMOVE,"ore",true,TransferRules.ADD,"fluid"),"Endpoint status and movement exclude mismatched channels");
+        check(!TransferRules.canRouteOnChannels(true,TransferRules.REMOVE,"",true,TransferRules.ADD,"ore"),"Named channels do not leak into the default pool");
+        check(!TransferRules.canRouteOnChannels(true,TransferRules.ADD,"ore",true,TransferRules.REMOVE,"ore"),"Matching channels cannot bypass direction rules");
         for(int source=0;source<4;source++)for(int sink=0;sink<4;sink++){
             boolean expected=TransferRules.canSource(source)&&TransferRules.canSink(sink)&&!(source==3&&sink==3);
             check(TransferRules.canRoute(true,source,true,sink)==expected,"Transfer peer matrix "+source+" -> "+sink);
