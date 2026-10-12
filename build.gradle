@@ -12,24 +12,28 @@ sourceSets {
         resources.exclude 'data/foundations_pl4/structure/empty.nbt'
     }
     portTest {
+        resources.exclude 'META-INF/neoforge.mods.toml'
         compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
         runtimeClasspath += output + compileClasspath + sourceSets.main.runtimeClasspath
     }
 }
 neoForge {
-    version = '21.1.250'
+    enable {
+        version = '21.1.250'
+        disableRecompilation = true
+    }
     addModdingDependenciesTo sourceSets.portTest
     mods {
-        foundations_pl4 { sourceSet sourceSets.main }
-        foundations_pl4_native_tests { sourceSet sourceSets.portTest }
+        foundations_pl4 { sourceSet sourceSets.main; sourceSet sourceSets.portTest }
     }
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
         gameTestServer {
             type = 'gameTestServer'
-            loadedMods = [mods.foundations_pl4, mods.foundations_pl4_native_tests]
-            systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4_native_tests'
+            loadedMods = [mods.foundations_pl4]
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4'
+            systemProperty 'foundations_pl4.native_tests', 'true'
         }
         configureEach { logLevel = org.slf4j.event.Level.INFO }
     }
@@ -44,10 +48,6 @@ jar {
     manifest { attributes('Implementation-Version': project.version) }
 }
 processResources {
-    inputs.property 'version', project.version
-    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
-}
-tasks.named('processPortTestResources') {
     inputs.property 'version', project.version
     filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
 }
@@ -69,10 +69,10 @@ tasks.register('verifyNativeIsolation') {
             if (zip.getEntry('net/foundations/pl4/PLPortTestMod.class') == null ||
                 zip.getEntry('net/foundations/pl4/PLGameTests.class') == null ||
                 zip.getEntry('data/foundations_pl4/structure/empty.nbt') == null ||
-                zip.getEntry('META-INF/neoforge.mods.toml') == null)
+                zip.getEntry('META-INF/neoforge.mods.toml') != null)
                 throw new GradleException('Native scenario JAR is incomplete')
         }
-        logger.lifecycle('PASS: production JAR excludes all native fixtures; separate scenario mod is complete.')
+        logger.lifecycle('PASS: production JAR excludes native fixtures; development scenario classes and template are complete.')
     }
 }
 

@@ -9,7 +9,7 @@ description='''Installed server test fixtures for Foundations PL4. Never install
 [[dependencies.foundations_pl4_native_tests]]
 modId="foundations_pl4"
 type="required"
-versionRange="[${version},${version}]"
+versionRange="[${version}]"
 ordering="AFTER"
 side="SERVER"
 [[dependencies.foundations_pl4_native_tests]]

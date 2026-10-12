@@ -74,6 +74,17 @@ public final class FoundationsPL4 {
         bus.addListener(PLPackets::register);
         bus.addListener(HammerEntity::capabilities);
         bus.addListener(NativeEnergyInput::register);
+        if (Boolean.getBoolean("foundations_pl4.native_tests")) {
+            bus.addListener((net.neoforged.neoforge.event.RegisterGameTestsEvent event) -> {
+                try {
+                    Class.forName("net.foundations.pl4.PLPortTestMod")
+                        .getMethod("register", net.neoforged.neoforge.event.RegisterGameTestsEvent.class)
+                        .invoke(null, event);
+                } catch (ReflectiveOperationException error) {
+                    throw new IllegalStateException("Native scenario registration failed", error);
+                }
+            });
+        }
         NeoForge.EVENT_BUS.addListener(NetworkEngine::tick);
         NeoForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }
