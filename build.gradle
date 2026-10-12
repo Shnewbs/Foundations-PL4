@@ -50,7 +50,7 @@ tasks.register('verifyStandalone') {
         logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
+tasks.named('build') { dependsOn tasks.named('verifyStandalone'), 'verifyBuildStatus' }
 tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
 apply from: 'gradle/verify-client-assets.gradle'
 
@@ -87,3 +87,17 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 apply from: 'gradle/verify-energy-conversion.gradle'
+
+// Keep release metadata tied to the actual registered native fixtures.
+tasks.register('verifyBuildStatus') {
+    inputs.file('BUILD_STATUS.json')
+    inputs.files(fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' })
+    doLast {
+        def status = new groovy.json.JsonSlurper().parse(file('BUILD_STATUS.json'))
+        def fixtures = fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' }.files
+        def count = fixtures.sum { file -> file.getText('UTF-8').findAll(/@PortGameTest\(/).size() } ?: 0
+        if (status.minecraft != '26.3' || status.version != project.version || status.expected_native_tests != count)
+            throw new GradleException("BUILD_STATUS.json does not match 26.3 ${project.version} and ${count} native fixtures")
+        logger.lifecycle("PASS: BUILD_STATUS.json matches ${count} native fixtures")
+    }
+}
