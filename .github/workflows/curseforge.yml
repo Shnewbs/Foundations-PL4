@@ -6,7 +6,7 @@ on:
       tag:
         description: Existing GitHub release tag
         required: true
-        default: v0.0.2a.R1
+        default: mc1.20.1-v0.2a-port.1
 
 permissions:
   contents: write
@@ -29,10 +29,14 @@ jobs:
           import os, re, subprocess, json, hashlib
           from pathlib import Path
           tag = os.environ['RELEASE_TAG']
-          if not re.fullmatch(r'v[A-Za-z0-9._-]+', tag):
+          status = json.loads(Path('BUILD_STATUS.json').read_text(encoding='utf-8'))
+          minecraft = status['minecraft']
+          if minecraft not in ('1.20.1', '1.20.2', '1.20.4') or not tag.startswith(f'mc{minecraft}-v'):
               raise SystemExit('Invalid release tag')
-          version = tag[1:]
-          jar = f'FoundationsPL4-1.21.1-{version}.jar'
+          version = tag[len(f'mc{minecraft}-v'):]
+          if not re.fullmatch(r'[A-Za-z0-9._-]+', version) or version != status['version']:
+              raise SystemExit('Release version does not match this branch')
+          jar = f'FoundationsPL4-{minecraft}-{version}.jar'
           repo = os.environ['GITHUB_REPOSITORY']
           subprocess.run(['gh', 'release', 'download', tag, '--repo', repo, '--pattern', jar, '--pattern', 'SHA256SUMS.txt', '--dir', 'build/libs'], check=True)
           digest = hashlib.sha256(Path('build/libs', jar).read_bytes()).hexdigest()
@@ -44,7 +48,7 @@ jobs:
           notes.parent.mkdir(parents=True, exist_ok=True)
           notes.write_text(release['body'], encoding='utf-8')
           with open(os.environ['GITHUB_ENV'], 'a') as env:
-              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\n')
+              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\nMINECRAFT_VERSION={minecraft}\n')
           PY
       - name: Upload release to CurseForge
         env:

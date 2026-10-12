@@ -77,9 +77,15 @@ def main():
     if not project.isdecimal() or int(project) <= 0 or not token:
         raise RuntimeError("Set a numeric CURSEFORGE_PROJECT_ID repository variable and CURSEFORGE_API_TOKEN secret.")
     version, tag, repo = (os.environ[k] for k in ("VERSION", "RELEASE_TAG", "GITHUB_REPOSITORY"))
-    if not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != "v" + version:
+    status = json.loads(Path('BUILD_STATUS.json').read_text(encoding='utf-8'))
+    minecraft = status.get('minecraft')
+    if minecraft not in ('1.20.1', '1.20.2', '1.20.4') or status.get('version') != version:
+        raise RuntimeError('Release version does not match this Forge branch.')
+    if os.environ.get('MINECRAFT_VERSION', minecraft) != minecraft:
+        raise RuntimeError('Minecraft version does not match this Forge branch.')
+    if not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != f"mc{minecraft}-v{version}":
         raise RuntimeError("Invalid release version/tag.")
-    jar = Path(f"build/libs/FoundationsPL4-1.21.1-{version}.jar")
+    jar = Path(f"build/libs/FoundationsPL4-{minecraft}-{version}.jar")
     if not jar.is_file():
         raise RuntimeError("The tested runtime JAR is missing.")
     digest = hashlib.sha256(jar.read_bytes()).hexdigest()
@@ -96,14 +102,14 @@ def main():
         # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
+        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {minecraft} {version}", "gameVersionNames": [minecraft, "Forge", "Client", "Server"], "releaseType": release_type(version)}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")
         if not isinstance(file_id, int) or isinstance(file_id, bool) or file_id <= 0:
             raise RuntimeError("CurseForge did not return a file ID; check the project before retrying.")
         print(f"CurseForge accepted file {file_id}; publication remains subject to CurseForge approval.")
-        marker.write_text(json.dumps({"project_id": project, "file_id": file_id, "version": version, "sha256": digest}, indent=2) + "\n")
+        marker.write_text(json.dumps({"project_id": project, "file_id": file_id, "minecraft": minecraft, "version": version, "sha256": digest}, indent=2) + "\n")
         try:
             gh("release", "upload", tag, str(marker), "--repo", repo)
         except subprocess.CalledProcessError:
