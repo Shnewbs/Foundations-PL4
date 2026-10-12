@@ -6,24 +6,74 @@ version = '0.2a'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.21.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+sourceSets {
+    main {
+        java.exclude '**/*GameTests.java'
+        resources.exclude 'data/foundations_pl4/structure/empty.nbt'
+    }
+    portTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath + sourceSets.main.runtimeClasspath
+    }
+}
 neoForge {
     version = '21.1.250'
+    addModdingDependenciesTo sourceSets.portTest
+    mods {
+        foundations_pl4 { sourceSet sourceSets.main }
+        foundations_pl4_native_tests { sourceSet sourceSets.portTest }
+    }
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
-        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
+        gameTestServer {
+            type = 'gameTestServer'
+            loadedMods = [mods.foundations_pl4, mods.foundations_pl4_native_tests]
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4_native_tests'
+        }
         configureEach { logLevel = org.slf4j.event.Level.INFO }
     }
-    mods { foundations_pl4 { sourceSet sourceSets.main } }
 }
 repositories { mavenCentral() }
 dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
 test { useJUnitPlatform() }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+jar {
+    from('LICENSE')
+    exclude '**/*GameTests*.class', '**/PLPortTestMod*.class', 'data/foundations_pl4/structure/empty.nbt'
+    manifest { attributes('Implementation-Version': project.version) }
+}
 processResources {
     inputs.property 'version', project.version
     filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
+}
+tasks.named('processPortTestResources') {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
+}
+tasks.register('nativeScenarioJar', Jar) {
+    dependsOn tasks.named('portTestClasses')
+    archiveClassifier = 'native-scenarios'
+    from sourceSets.portTest.output
+}
+tasks.register('verifyNativeIsolation') {
+    dependsOn tasks.named('jar'), tasks.named('nativeScenarioJar')
+    doLast {
+        def runtime = tasks.named('jar').get().archiveFile.get().asFile
+        def scenarios = tasks.named('nativeScenarioJar').get().archiveFile.get().asFile
+        new java.util.zip.ZipFile(runtime).withCloseable { zip ->
+            def leaked = zip.entries().findAll { it.name.contains('GameTests') || it.name.contains('PLPortTestMod') || it.name.contains('PortAssertions') }.collect { it.name }
+            if (!leaked.empty) throw new GradleException('Native fixture leaked into production JAR: ' + leaked.join(', '))
+        }
+        new java.util.zip.ZipFile(scenarios).withCloseable { zip ->
+            if (zip.getEntry('net/foundations/pl4/PLPortTestMod.class') == null ||
+                zip.getEntry('net/foundations/pl4/PLGameTests.class') == null ||
+                zip.getEntry('data/foundations_pl4/structure/empty.nbt') == null ||
+                zip.getEntry('META-INF/neoforge.mods.toml') == null)
+                throw new GradleException('Native scenario JAR is incomplete')
+        }
+        logger.lifecycle('PASS: production JAR excludes all native fixtures; separate scenario mod is complete.')
+    }
 }
 
 // A release cannot silently regain the old external core/multipart runtime dependencies.
@@ -50,7 +100,7 @@ tasks.register('verifyStandalone') {
         logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
+tasks.named('build') { dependsOn tasks.named('verifyStandalone'), tasks.named('verifyNativeIsolation') }
 tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
 apply from: 'gradle/verify-client-assets.gradle'
 

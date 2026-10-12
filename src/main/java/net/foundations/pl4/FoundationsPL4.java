@@ -74,7 +74,6 @@ public final class FoundationsPL4 {
         bus.addListener(PLPackets::register);
         bus.addListener(HammerEntity::capabilities);
         bus.addListener(NativeEnergyInput::register);
-        bus.addListener(PLGameTests::register);
         NeoForge.EVENT_BUS.addListener(NetworkEngine::tick);
         NeoForge.EVENT_BUS.addListener(NetworkEngine::stopped);
     }

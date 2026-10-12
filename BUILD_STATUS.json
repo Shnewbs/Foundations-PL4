@@ -19,5 +19,7 @@
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.2a.md",
-  "historical_evidence": "docs/releases/"
+  "historical_evidence": "docs/releases/",
+  "production_test_isolation": "PASS: clean NeoForge 21.1.250 build; 191 fixtures in separate native scenario mod JAR",
+  "isolated_native_retest": "PENDING: shared build disk filled before gameTestServer could launch"
 }
