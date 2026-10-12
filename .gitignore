@@ -14,3 +14,9 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+
+# Installed server verification (disposable)
+run-installed-*/
+tools/__pycache__/
+verification-logs/installed-*-installer.log
+verification-logs/native.log

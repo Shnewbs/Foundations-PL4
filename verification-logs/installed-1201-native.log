@@ -1,0 +1,193 @@
+Picked up JAVA_TOOL_OPTIONS: -Dhttp.proxyHost=browser-proxy -Dhttp.proxyPort=8889 -Dhttps.proxyHost=browser-proxy -Dhttps.proxyPort=8889 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+2026-10-11 19:32:59,999 main WARN Advanced terminal features are not available in this environment
+[19:33:01] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeserver, --fml.forgeVersion, 47.4.26, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, nogui]
+[19:33:01] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.20.1 by Eclipse Adoptium; OS Linux arch amd64 version 6.18.44
+[19:33:02] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/config/fml.toml is not correct. Correcting
+[19:33:02] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[19:33:02] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[19:33:02] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[19:33:02] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[19:33:02] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgeserver
+[19:33:03] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/org/spongepowered/mixin/0.8.5/mixin-0.8.5.jar%2365!/ Service=ModLauncher Env=SERVER
+[19:33:04] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraftforge/fmlcore/1.20.1-47.4.26/fmlcore-1.20.1-47.4.26.jar is missing mods.toml file
+[19:33:04] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraftforge/javafmllanguage/1.20.1-47.4.26/javafmllanguage-1.20.1-47.4.26.jar is missing mods.toml file
+[19:33:04] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraftforge/lowcodelanguage/1.20.1-47.4.26/lowcodelanguage-1.20.1-47.4.26.jar is missing mods.toml file
+[19:33:04] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraftforge/mclanguage/1.20.1-47.4.26/mclanguage-1.20.1-47.4.26.jar is missing mods.toml file
+[19:33:04] [main/INFO] [ne.mi.fm.lo.mo.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[19:33:11] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeserver' with arguments [nogui]
+[19:33:40] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.26, for MC 1.20.1 with MCP 20230612.114412
+[19:33:40] [modloading-worker-0/INFO] [ne.mi.co.MinecraftForge/FORGE]: MinecraftForge v47.4.26 Initialized
+[19:33:43] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[19:33:44] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Found status: AHEAD Current: 47.4.26 Target: null
+[19:33:46] [main/INFO] [mojang/YggdrasilAuthenticationService]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[19:33:46] [Yggdrasil Key Fetcher/ERROR] [mojang/YggdrasilServicesKeyInfo]: Failed to request yggdrasil public key
+com.mojang.authlib.exceptions.AuthenticationUnavailableException: Cannot contact authentication server
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:119) ~[authlib-4.0.43.jar%2375!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:91) ~[authlib-4.0.43.jar%2375!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.fetch(YggdrasilServicesKeyInfo.java:94) ~[authlib-4.0.43.jar%2375!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo.lambda$get$1(YggdrasilServicesKeyInfo.java:81) ~[authlib-4.0.43.jar%2375!/:?] {}
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539) ~[?:?] {}
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305) ~[?:?] {}
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305) ~[?:?] {}
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[?:?] {}
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[?:?] {}
+	at java.lang.Thread.run(Thread.java:840) ~[?:?] {}
+Caused by: java.net.UnknownHostException: api.minecraftservices.com
+	at sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:572) ~[?:?] {}
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?] {}
+	at java.net.Socket.connect(Socket.java:633) ~[?:?] {}
+	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[?:?] {}
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:178) ~[?:?] {}
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:541) ~[?:?] {}
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:646) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:267) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:381) ~[?:?] {}
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:196) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1310) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1151) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1080) ~[?:?] {}
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:181) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1719) ~[?:?] {}
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1644) ~[?:?] {}
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:224) ~[?:?] {}
+	at com.mojang.authlib.HttpAuthenticationService.performGetRequest(HttpAuthenticationService.java:140) ~[authlib-4.0.43.jar%2375!/:?] {}
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:96) ~[authlib-4.0.43.jar%2375!/:?] {}
+	... 9 more
+[19:33:46] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraft/server/1.20.1-20230612.114412/server-1.20.1-20230612.114412-srg.jar%23103!/assets/.mcassetsroot' uses unexpected schema
+[19:33:46] [main/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/workspace/scratch/d11f2d2a1eaf/pl4-1.20.1-next/run-installed-1201/libraries/net/minecraft/server/1.20.1-20230612.114412/server-1.20.1-20230612.114412-srg.jar%23103!/data/.mcassetsroot' uses unexpected schema
+[19:33:49] [main/ERROR] [minecraft/DedicatedServerProperties]: No key layers in MapLike[{}]
+[19:33:50] [main/INFO] [FoundationsPL4/]: Forge47 native GameTest registry contains 191 tests
+[19:33:52] [main/INFO] [minecraft/RecipeManager]: Loaded 8 recipes
+[19:33:53] [main/INFO] [minecraft/AdvancementList]: Loaded 1271 advancements
+[19:33:54] [Server thread/INFO] [minecraft/DedicatedServer]: Starting minecraft server version 1.20.1
+[19:33:54] [Server thread/INFO] [minecraft/DedicatedServer]: Loading properties
+[19:33:54] [Server thread/INFO] [minecraft/DedicatedServer]: Default game type: SURVIVAL
+[19:33:54] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[19:33:54] [Server thread/INFO] [minecraft/DedicatedServer]: Starting Minecraft server on 127.0.0.1:25565
+[19:33:55] [Server thread/INFO] [minecraft/ServerConnectionListener]: Using epoll channel type
+[19:33:56] [Server thread/WARN] [minecraft/DedicatedServer]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[19:33:56] [Server thread/WARN] [minecraft/DedicatedServer]: The server will make no attempt to authenticate usernames. Beware.
+[19:33:56] [Server thread/WARN] [minecraft/DedicatedServer]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[19:33:56] [Server thread/WARN] [minecraft/DedicatedServer]: To change this, set "online-mode" to "true" in the server.properties file.
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file ./pl4-gametest-world/serverconfig/foundations_pl4-server.toml is not correct. Correcting
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.updateTicks was corrected from null to its default, 20. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.maximumHosts was corrected from null to its default, 4096. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.maximumRows was corrected from null to its default, 128. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.wirelessEnabled was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.crossDimensionWireless was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key network.entityScanRadius was corrected from null to its default, 8. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.enabled was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.itemsPerCycle was corrected from null to its default, 64. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.millibucketsPerCycle was corrected from null to its default, 1000. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.fePerCycle was corrected from null to its default, 10000. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.itemsPerCycle was corrected from null to its default, 0. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.millibucketsPerCycle was corrected from null to its default, 0. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key transfer.networkCaps.fePerCycle was corrected from null to its default, 0. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.mekanismJoules was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.gregtechEU was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.electrodynamicsJoules was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePerElectrodynamicsJ was corrected from null to its default, 1. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.conversionEnabled was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePer1000J was corrected from null to its default, 400. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.fePerEU was corrected from null to its default, 4. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyTransfer.conversionEfficiencyPermille was corrected from null to its default, 1000. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.mekanismJoules was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.gregtechEU was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.createKinetics was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.ae2GridEnergy was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key energyReader.maximumContainersPerHandler was corrected from null to its default, 1024. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file ./pl4-gametest-world/serverconfig/forge-server.toml is not correct. Correcting
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringBlockEntities was corrected from null to its default, false. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringEntities was corrected from null to its default, false. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.fullBoundingBoxLadders was corrected from null to its default, false. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBaseSummonChance was corrected from null to its default, 0.1. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBabyChance was corrected from null to its default, 0.05. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.permissionHandler was corrected from null to its default, forge:default_handler. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.advertiseDedicatedServerToLan was corrected from null to its default, true. 
+[19:33:56] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.useItemWithDurationZero was corrected from null to its default, false. 
+[19:33:56] [Server thread/INFO] [minecraft/DedicatedServer]: Preparing level "pl4-gametest-world"
+[19:34:00] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for dimension minecraft:overworld
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:04] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[19:34:05] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[19:34:07] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[19:34:07] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[19:34:07] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[19:34:07] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 2%
+[19:34:07] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 4%
+[19:34:08] [Worker-Main-3/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 10%
+[19:34:08] [Worker-Main-1/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 16%
+[19:34:09] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 31%
+[19:34:09] [Worker-Main-2/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 38%
+[19:34:10] [Worker-Main-7/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 45%
+[19:34:10] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 55%
+[19:34:11] [Worker-Main-5/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 62%
+[19:34:11] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 72%
+[19:34:12] [Worker-Main-4/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 82%
+[19:34:12] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 92%
+[19:34:13] [Worker-Main-6/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 95%
+[19:34:13] [Server thread/INFO] [minecraft/LoggerChunkProgressListener]: Time elapsed: 12578 ms
+[19:34:13] [Server thread/INFO] [minecraft/DedicatedServer]: Done (16.933s)! For help, type "help"
+[19:34:13] [Server thread/INFO] [minecraft/DedicatedServer]: Starting remote control listener
+[19:34:13] [Server thread/INFO] [minecraft/GenericThread]: Thread RCON Listener started
+[19:34:13] [Server thread/INFO] [minecraft/RconThread]: RCON running on 127.0.0.1:25578
+[19:34:13] [Server thread/INFO] [ne.mi.se.pe.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[19:34:13] [RCON Listener #1/INFO] [minecraft/GenericThread]: Thread RCON Client /127.0.0.1 started
+[19:34:15] [Server thread/INFO] [minecraft/GameTestBatchRunner]: Running test batch 'defaultBatch:1' (100 tests)...
+[19:34:17] [Server thread/INFO] [FoundationsPL4/]: PL4 NATIVE START: 191 installed Forge47 GameTests
+[19:34:17] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 3835ms or 76 ticks behind
+[19:34:17] [RCON Client /127.0.0.1 #2/INFO] [minecraft/RconClient]: Thread RCON Client /127.0.0.1 shutting down
+[19:34:19] [Server thread/WARN] [FoundationsPL4/]: Info provider pl4_test:a_failing failed; its partial sample was discarded
+java.lang.IllegalStateException: Expected provider isolation fixture
+	at net.foundations.pl4.EnergyIntegrationGameTests.lambda$infoProvidersBoundIsolateAndUnregister$4(EnergyIntegrationGameTests.java:224) ~[FoundationsPL4-1.20.1-0.2a-port.1-native-scenarios.jar%23101!/:0.2a-port.1] {re:classloading}
+	at net.foundations.pl4.api.InfoProviders.collect(InfoProviders.java:54) ~[FoundationsPL4-1.20.1-0.2a-port.1-native-scenarios.jar%23101!/:0.2a-port.1] {re:classloading}
+	at net.foundations.pl4.api.InfoProviders.sample(InfoProviders.java:45) ~[FoundationsPL4-1.20.1-0.2a-port.1-native-scenarios.jar%23101!/:0.2a-port.1] {re:classloading}
+	at net.foundations.pl4.EnergyIntegrationGameTests.infoProvidersBoundIsolateAndUnregister(EnergyIntegrationGameTests.java:226) ~[FoundationsPL4-1.20.1-0.2a-port.1-native-scenarios.jar%23101!/:0.2a-port.1] {re:classloading}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?] {}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?] {}
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?] {}
+	at net.minecraft.gametest.framework.GameTestRegistry.lambda$turnMethodIntoConsumer$3(GameTestRegistry.java:146) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at net.minecraft.gametest.framework.TestFunction.m_128076_(TestFunction.java:45) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at net.minecraft.gametest.framework.GameTestInfo.m_127649_(GameTestInfo.java:126) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at net.minecraft.gametest.framework.GameTestInfo.m_177470_(GameTestInfo.java:90) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at net.minecraft.gametest.framework.GameTestInfo.m_127628_(GameTestInfo.java:73) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at java.util.concurrent.CopyOnWriteArrayList.forEach(CopyOnWriteArrayList.java:807) ~[?:?] {}
+	at net.minecraft.gametest.framework.GameTestTicker.m_127790_(GameTestTicker.java:20) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading}
+	at net.foundations.pl4.PLPortTestMod.lambda$new$0(PLPortTestMod.java:35) ~[FoundationsPL4-1.20.1-0.2a-port.1-native-scenarios.jar%23101!/:0.2a-port.1] {re:classloading}
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:267) ~[eventbus-6.2.33.jar%2352!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$4(EventBus.java:258) ~[eventbus-6.2.33.jar%2352!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:312) ~[eventbus-6.2.33.jar%2352!/:?] {}
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:298) ~[eventbus-6.2.33.jar%2352!/:?] {}
+	at net.minecraftforge.event.ForgeEventFactory.onPostServerTick(ForgeEventFactory.java:975) ~[forge-1.20.1-47.4.26-universal.jar%23108!/:?] {re:classloading}
+	at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:835) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[server-1.20.1-20230612.114412-srg.jar%23103!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:840) ~[?:?] {}
+[19:34:25] [Server thread/INFO] [minecraft/GameTestBatchRunner]: Running test batch 'defaultBatch:2' (91 tests)...
+[19:34:30] [Server thread/INFO] [FoundationsPL4/]: PL4 NATIVE SUCCESS: All 191 required tests passed
+[19:34:30] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping the server
+[19:34:30] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[19:34:30] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[19:34:30] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[19:34:32] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-gametest-world]'/minecraft:overworld
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-gametest-world]'/minecraft:the_nether
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[pl4-gametest-world]'/minecraft:the_end
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (pl4-gametest-world): All chunks are saved
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[19:34:41] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[19:34:41] [Server thread/INFO] [minecraft/GenericThread]: Thread RCON Listener stopped

@@ -9,7 +9,8 @@
   "release_gate": [
     "offline regressions",
     "native build",
-    "native GameTests"
+    "191/191 installed Forge GameTests",
+    "production-only installed server boot and shutdown"
   ],
   "expected_native_tests": 191,
   "further_api_testing_required": true,
@@ -22,5 +23,9 @@
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "47.4.26",
-  "port_status": "ALPHA_NATIVE_RELEASE_GATED"
+  "port_status": "ALPHA_NATIVE_RELEASE_GATED",
+  "native_test_evidence": "verification-logs/installed-1201-summary.json",
+  "native_test_result": "PASS: 191/191 on installed Forge 47.4.26",
+  "production_artifact_result": "PASS: 869 entries byte-matched against isolated scenario JAR; no test classes in production JAR",
+  "production_boot_result": "PASS: standalone production JAR on installed Forge 47.4.26"
 }
