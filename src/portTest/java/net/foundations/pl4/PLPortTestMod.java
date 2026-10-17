@@ -28,12 +28,16 @@ public final class PLPortTestMod {
             throw new IllegalStateException("PL4 GameTests require the isolated test-server launch property");
         // Forge's development-only event is disabled on installed production
         // servers. Register the same annotated methods in this test-only mod.
-        Set<Method> fixtures = new HashSet<>();
-        PLGameTests.register(new RegisterGameTestsEvent(fixtures));
-        for (Method fixture : fixtures) GameTestRegistry.register(fixture, Set.of(FoundationsPL4.ID));
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
-            if (event.phase == TickEvent.Phase.END) GameTestTicker.SINGLETON.tick();
-        });
+        if (!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig")) {
+            Set<Method> fixtures = new HashSet<>();
+            PLGameTests.register(new RegisterGameTestsEvent(fixtures));
+            for (Method fixture : fixtures) GameTestRegistry.register(fixture, Set.of(FoundationsPL4.ID));
+        }
+        if (!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig")) {
+            MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
+                if (event.phase == TickEvent.Phase.END) GameTestTicker.SINGLETON.tick();
+            });
+        }
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
             event.getDispatcher().register(Commands.literal("pl4native")
                 .requires(source -> source.hasPermission(4))
