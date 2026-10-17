@@ -1,9 +1,13 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Roadmap reconciliation:** October 16, 2026 (America/Los_Angeles); coverage baseline below dates to October 10.
-**Current primary-track released baseline:** `0.2a.1` for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
+**Current primary-track released baseline:** performance-only `0.2b.0` beta for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## October 17 performance-only beta publication
+
+`0.2b.0` passed exact-target native gates and was published as a GitHub prerelease for [1.21.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2b.0), [26.1.2](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2b.0) and [26.3](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2b.0). The CurseForge upload API accepted files **9233710**, **9233734** and **9233735**, respectively, with beta maturity. The 1.21.1 release passed 192 native GameTests; 26.1.2 ran 192 fixtures and 26.3 ran 192 fixtures on each of its two validated NeoForge beta profiles. Upload receipts do not prove moderation or public listing. Real-client, installed optional-provider, live multiplayer and measured large-network performance acceptance remain open. The previous `0.2a.1` alpha tags remain immutable. Independent Forge/legacy versions have not been promoted by this beta.
 
 ## Next release: performance-only beta
 
