@@ -1,0 +1,48 @@
+name: Reconcile Forge performance beta releases
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-forge-performance-beta.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: ['1.20.1', '1.20.2', '1.20.4']
+    runs-on: ubuntu-latest
+    concurrency:
+      group: forge-performance-beta-${{ matrix.minecraft }}
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+      CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+      VERSION: 0.2b-port.1
+      MINECRAFT_VERSION: ${{ matrix.minecraft }}
+      MOD_LOADER: Forge
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact published runtime and prepare notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="mc${MINECRAFT_VERSION}-v${VERSION}"
+          echo "RELEASE_TAG=$tag" >> "$GITHUB_ENV"
+          jar="FoundationsPL4-${MINECRAFT_VERSION}-${VERSION}.jar"
+          mkdir -p build/libs "docs/releases"
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$jar" --pattern SHA256SUMS.txt --dir build/libs
+          python3 - <<'PY'
+          import hashlib, os, pathlib
+          jar=pathlib.Path('build/libs') / f"FoundationsPL4-{os.environ['MINECRAFT_VERSION']}-{os.environ['VERSION']}.jar"
+          entries=(pathlib.Path('build/libs')/'SHA256SUMS.txt').read_text().splitlines()
+          digest=hashlib.sha256(jar.read_bytes()).hexdigest()
+          assert f'{digest}  {jar.name}' in entries, 'Published checksum does not match exact runtime JAR'
+          PY
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json body --jq .body > "docs/releases/${VERSION}.md"
+          test -s "docs/releases/${VERSION}.md"
+          gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --title "Foundations PL4 ${MINECRAFT_VERSION} ${VERSION} (Forge beta)"
+      - name: Submit beta JAR to CurseForge and attach receipt
+        run: python3 tools/upload_curseforge.py
