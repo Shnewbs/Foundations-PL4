@@ -2,6 +2,18 @@
 
 Verified on October 9, 2026 (US Pacific); GitHub Actions timestamps may be October 10 UTC.
 
+## October 17 Forge 1.20.x beta follow-up (US Pacific)
+
+Three additional exact-target Forge `0.2b-port.1` JARs passed 191 native GameTests each and were published as GitHub prereleases. The checksum-verified CurseForge workflow accepted these files with **beta** metadata:
+
+| Minecraft | GitHub release | CurseForge file ID |
+|---|---|---:|
+| 1.20.1 | [mc1.20.1-v0.2b-port.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.20.1-v0.2b-port.1) | 9234054 |
+| 1.20.2 | [mc1.20.2-v0.2b-port.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.20.2-v0.2b-port.1) | 9234049 |
+| 1.20.4 | [mc1.20.4-v0.2b-port.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.20.4-v0.2b-port.1) | 9234048 |
+
+These supersede the earlier 1.20.x alpha receipts for those three exact patches. The remaining 18 targets from the earlier 24-target inventory still have their prior releases; no beta parity or performance result transfers to them. CurseForge moderator approval and public listing are not established by API acceptance.
+
 ## October 17 performance beta (US Pacific)
 
 The exact `0.2b.0` NeoForge runtime JARs passed native gates, were published as GitHub prereleases, and were accepted by the CurseForge upload API with **beta** maturity. These receipts supersede the 0.2a.1 alpha receipts for the three current tracks; moderator approval and public listing remain unverified.
