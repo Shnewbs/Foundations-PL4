@@ -37,7 +37,7 @@ class UploadTests(unittest.TestCase):
                 digest = hashlib.sha256(jar.read_bytes()).hexdigest()
                 def gh(*args):
                     if args[1] == 'view':
-                        return json.dumps({'assets': [{'name': upload.MARKER}]})
+                        return json.dumps({'assets': [{'name': jar.name}, {'name': upload.MARKER}]})
                     Path(args[args.index('--dir') + 1], upload.MARKER).write_text(json.dumps({'project_id': '123', 'sha256': digest, 'file_id': 456}))
                     return ''
                 env = {'CURSEFORGE_PROJECT_ID': '123', 'CURSEFORGE_API_TOKEN': 'test-only', 'VERSION': '0.0.2a.R1', 'RELEASE_TAG': 'v0.0.2a.R1', 'GITHUB_REPOSITORY': 'example/repo'}
