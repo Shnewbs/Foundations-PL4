@@ -2,6 +2,18 @@
 
 Verified on October 9, 2026 (US Pacific); GitHub Actions timestamps may be October 10 UTC.
 
+## October 17 performance beta (US Pacific)
+
+The exact `0.2b.0` NeoForge runtime JARs passed native gates, were published as GitHub prereleases, and were accepted by the CurseForge upload API with **beta** maturity. These receipts supersede the 0.2a.1 alpha receipts for the three current tracks; moderator approval and public listing remain unverified.
+
+| Minecraft | GitHub release | CurseForge file ID | Native gate |
+|---|---|---:|---|
+| 1.21.1 | [v0.2b.0](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2b.0) | 9233710 | 192 GameTests |
+| 26.1.2 | [mc26.1.2-v0.2b.0](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2b.0) | 9233734 | 192 fixtures |
+| 26.3 | [mc26.3-v0.2b.0](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2b.0) | 9233735 | 192 fixtures on each validated NeoForge beta |
+
+The change reuses endpoint target keys in transfer routing and status checks; gameplay rates and routing semantics are unchanged. No large-network TPS/MSPT improvement is claimed without measured benchmarks. Installed optional providers, real client visuals, live multiplayer, migration and public CurseForge availability remain separate acceptance gates. Independently versioned Forge and legacy ports remain on their prior revisions.
+
 ## October 16 update (US Pacific; October 17 UTC)
 
 The [new reconciliation run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39005816914) recorded **24 latest Minecraft target receipts, zero failures**. New performance revisions passed their exact Forge native gates, were published to GitHub and accepted by the CurseForge upload API:
