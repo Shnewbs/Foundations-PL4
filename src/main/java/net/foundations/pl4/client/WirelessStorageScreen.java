@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 public final class WirelessStorageScreen extends Screen {
     private record Row(int slot,String name,long count){}
     private final List<Row> rows=new ArrayList<>();
-    private UUID token;private int page,slots,endpoints,left,top,w;private boolean limited;private String query="",sort="NAME";private EditBox search;private String status="";private boolean closed,busy;
+    private UUID token;private int page,slots,endpoints,left,top,w,panelHeight,rowPitch;private boolean limited;private String query="",sort="NAME";private EditBox search;private String status="";private boolean closed,busy;
     public WirelessStorageScreen(CompoundTag tag){super(Component.literal("Wireless Storage"));read(tag);}
     private void read(CompoundTag tag){
         status=tag.getString("status").orElse("");closed=tag.getBoolean("closed").orElse(false);busy=false;rows.clear();if(closed)return;
@@ -23,25 +23,26 @@ public final class WirelessStorageScreen extends Screen {
     }
     public void update(CompoundTag tag){read(tag);rebuildWidgets();}
     @Override protected void init(){
-        w=Math.min(420,width-12);left=(width-w)/2;top=(height-254)/2;
+        w=Math.min(420,width-12);left=(width-w)/2;panelHeight=Math.min(254,height-12);top=(height-panelHeight)/2;
+        rowPitch=Math.min(23,Math.max(18,(panelHeight-114)/WirelessStorage.PAGE_SIZE));
         search=new EditBox(font,left+10,top+43,w-174,20,Component.literal("Search items"));search.setMaxLength(64);search.setValue(query);addRenderableWidget(search);
         button("Search",left+w-158,top+43,62,()->send("search",0,0));
         button(sort.equals("COUNT")?"By count":"By name",left+w-90,top+43,80,()->{sort=sort.equals("NAME")?"COUNT":"NAME";send("search",0,0);});
-        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+73+i*23;button("1",left+w-88,y,32,()->send("withdraw",row.slot(),1)).active=!closed&&row.count()>0;button("64",left+w-52,y,40,()->send("withdraw",row.slot(),64)).active=!closed&&row.count()>0;}
-        button("<",left+10,top+214,24,()->send("page",page-1,0)).active=!closed&&page>0;
-        button(">",left+38,top+214,24,()->send("page",page+1,0)).active=!closed&&(page+1)*WirelessStorage.PAGE_SIZE<slots;
-        button("Refresh",left+68,top+214,62,()->send("refresh",0,0));
-        button("Deposit offhand",left+136,top+214,108,()->send("deposit",0,0));
-        button("Done",left+w-62,top+214,50,this::onClose).active=true;
+        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+73+i*rowPitch;button("1",left+w-88,y,32,()->send("withdraw",row.slot(),1)).active=!closed&&row.count()>0;button("64",left+w-52,y,40,()->send("withdraw",row.slot(),64)).active=!closed&&row.count()>0;}
+        button("<",left+10,top+panelHeight-40,24,()->send("page",page-1,0)).active=!closed&&page>0;
+        button(">",left+38,top+panelHeight-40,24,()->send("page",page+1,0)).active=!closed&&(page+1)*WirelessStorage.PAGE_SIZE<slots;
+        button("Refresh",left+68,top+panelHeight-40,62,()->send("refresh",0,0));
+        button("Deposit offhand",left+136,top+panelHeight-40,108,()->send("deposit",0,0));
+        button("Done",left+w-62,top+panelHeight-40,50,this::onClose).active=true;
     }
     private Button button(String label,int x,int y,int width,Runnable action){Button b=Button.builder(Component.literal(label),unused->action.run()).bounds(x,y,width,20).build();b.active=!closed;addRenderableWidget(b);return b;}
     private void send(String action,int index,int amount){if(closed||busy)return;busy=true;ClientPacketDistributor.sendToServer(new PLPackets.StorageRequest(token,action,index,amount,search.getValue(),sort));}
     @Override public boolean isPauseScreen(){return false;}
     @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float partial){
-        super.extractBackground(g,mx,my,partial);g.fill(left,top,left+w,top+254,0xF21B2533);g.fill(left,top,left+w,top+25,0xFF293D56);
+        super.extractBackground(g,mx,my,partial);g.fill(left,top,left+w,top+panelHeight,0xF21B2533);g.fill(left,top,left+w,top+25,0xFF293D56);
         g.text(font,title,left+10,top+8,0xFFE4F3FF,false);
         g.text(font,"Page "+(page+1)+" / "+Math.max(1,(slots+WirelessStorage.PAGE_SIZE-1)/WirelessStorage.PAGE_SIZE)+" · "+slots+" variants · "+endpoints+" inventories",left+10,top+29,0xFF8CAEC5,false);
-        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+79+i*23;g.text(font,font.plainSubstrByWidth((row.slot()+1)+". "+row.name()+" × "+row.count(),w-108),left+10,y,0xFFDBEFFF,false);}
-        g.text(font,font.plainSubstrByWidth(status.isEmpty()?(limited?"Scan limit reached · narrow the network":"Main hand: tool · offhand: stack to deposit"):status,w-20),left+10,top+240,0xFF8CAEC5,false);
+        for(int i=0;i<rows.size();i++){Row row=rows.get(i);int y=top+79+i*rowPitch;g.text(font,font.plainSubstrByWidth((row.slot()+1)+". "+row.name()+" × "+row.count(),w-108),left+10,y,0xFFDBEFFF,false);}
+        g.text(font,font.plainSubstrByWidth(status.isEmpty()?(limited?"Scan limit reached · narrow the network":"Main hand: tool · offhand: stack to deposit"):status,w-20),left+10,top+panelHeight-14,0xFF8CAEC5,false);
     }
 }
