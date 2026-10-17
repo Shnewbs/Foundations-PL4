@@ -18,6 +18,10 @@ The new inventory also includes previously accepted 1.19, 1.19.1, 1.19.3, 1.19.4
 
 The [0.2a.1 release](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2a.1) passed 192 native GameTests and its release workflow submitted the exact 1.21.1 NeoForge JAR to CurseForge: **file 9219192**. The earlier 0.2a file ID in the historical table below remains a historical receipt. The compact Wireless Storage panel has not yet passed real-client visual acceptance; the two fake-player server scenario does not certify live multiplayer.
 
+### 26.x follow-up
+
+The exact `0.2a.1` [26.1.2 release](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2a.1) and [26.3 release](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2a.1) passed their respective Java 25 native gates and were accepted by CurseForge's upload API as **9219212** and **9219214**. The 26.3 validation ran 192 fixtures on each pinned 26.3.0.23-beta and 26.3.0.39-beta profile; the release workflow publishes its pinned exact-version runtime. Both client visual acceptance and installed optional-provider testing remain open.
+
 ## Publication outcome
 
 The [successful cross-version synchronization run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38023210688) checked **17 latest tagged Minecraft targets** and ended with **zero failed submissions**. Fourteen runtime JARs were newly accepted by CurseForge's upload API; three previously submitted NeoForge releases were correctly skipped using their matching GitHub receipts.

@@ -1,7 +1,7 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
 **Roadmap reconciliation:** October 16, 2026 (America/Los_Angeles); coverage baseline below dates to October 10.
-**Current primary-track released baseline:** `0.2a.1` for Minecraft `1.21.1`; `0.2a` for `26.1.2` and `26.3`. Independently versioned Forge ports and legacy previews are listed below.
+**Current primary-track released baseline:** `0.2a.1` for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
 
@@ -20,8 +20,8 @@ The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are h
 | Minecraft | Branch | Tagged revision | Release/publication status | Outstanding acceptance |
 |---|---|---|---|---|
 | 1.21.1 | `main` / `mc/1.21.1` | `v0.2a.1` | Published NeoForge; 192 native GameTests; compact storage UI and two fake-player session scenario; CurseForge API file 9219192 | Installed APIs, actual client UI, live multiplayer, performance, PL2 parity |
-| 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a` | Published NeoForge; 192 PL4 native fixtures recorded | Same; keep its actual 26.1.2 loader/API |
-| 26.3 | `mc/26.3` | `mc26.3-v0.2a` | Published NeoForge; 192 PL4 fixtures on each pinned 26.3.0.23/0.39 beta build | Same; published JAR built against 26.3.0.23-beta |
+| 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a.1` | Published NeoForge 26.1.2.114; 192 native fixtures executed; CurseForge API file 9219212 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity |
+| 26.3 | `mc/26.3` | `mc26.3-v0.2a.1` | Published NeoForge; 192 native fixtures on 26.3.0.23-beta and 26.3.0.39-beta; CurseForge API file 9219214 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity; published JAR uses pinned 26.3.0.23-beta |
 | 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.3` | Published Forge; 191 native GameTests; CurseForge API file 9219142 | Client/installed API/fallback/performance |
 | 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.2` | Published Forge; 191 native GameTests; CurseForge API file 9219143 | Client/installed API/fallback/performance |
 | 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed lookup; CurseForge API file 9219144 | Client/installed API/fallback/large-network benchmarks |
