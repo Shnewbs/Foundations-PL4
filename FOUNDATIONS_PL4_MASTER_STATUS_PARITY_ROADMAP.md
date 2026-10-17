@@ -22,8 +22,8 @@ The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are h
 | 1.21.1 | `main` / `mc/1.21.1` | `v0.2a` | Published NeoForge; 191 native fixtures recorded | Installed APIs, UI, multiplayer, performance, PL2 parity |
 | 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a` | Published NeoForge; 192 PL4 native fixtures recorded | Same; keep its actual 26.1.2 loader/API |
 | 26.3 | `mc/26.3` | `mc26.3-v0.2a` | Published NeoForge; 192 PL4 fixtures on each pinned 26.3.0.23/0.39 beta build | Same; published JAR built against 26.3.0.23-beta |
-| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.2` | Published Forge; 191 native GameTests on this exact revision; CurseForge receipt pending | Client/installed API/fallback/performance |
-| 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.1` | Published Forge; 191 native GameTests; CurseForge receipt pending | Client/installed API/fallback/performance |
+| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.3` | Published Forge; 191 native GameTests on this exact revision; CurseForge receipt pending | Client/installed API/fallback/performance |
+| 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.2` | Published Forge; 191 native GameTests; CurseForge receipt pending | Client/installed API/fallback/performance |
 | 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed network lookup revision; CurseForge receipt pending | Client/installed API/fallback/large-network benchmarks |
 | 1.19.2 | `mc/1.19.2` | `mc1.19.2-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
 | 1.18.2 | `mc/1.18.2` | `mc1.18.2-v0.2a-port.2` | Published Forge; 193 native GameTests recorded | Client/installed API/fallback/performance |

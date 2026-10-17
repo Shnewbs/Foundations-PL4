@@ -4,7 +4,7 @@ Verified on October 9, 2026 (US Pacific); GitHub Actions timestamps may be Octob
 
 ## October 16 update (US Pacific)
 
-New GitHub releases are available for Minecraft 1.20.1 `0.2a-port.2`, 1.20.2 `0.2a-port.1` and 1.20.4 `0.2a-port.2`; their exact native gates passed. These revisions do **not** have a CurseForge receipt in their release assets at the last check. The table below preserves historical accepted file IDs, including the superseded 1.20.1 port.1, and must not be interpreted as acceptance of the newer revisions. The hourly synchronizer considers the latest published release per target and records its receipt separately.
+New GitHub releases are available for Minecraft 1.20.1 `0.2a-port.3`, 1.20.2 `0.2a-port.2` and 1.20.4 `0.2a-port.2`; their exact native gates passed. These revisions do **not** have a CurseForge receipt in their release assets at the last check. The table below preserves historical accepted file IDs, including the superseded 1.20.1 port.1, and must not be interpreted as acceptance of the newer revisions. The hourly synchronizer considers the latest published release per target and records its receipt separately.
 
 ## Publication outcome
 

@@ -51,7 +51,8 @@ def validate_checksum(jar, checksums):
 
 
 def latest_tags(repo):
-    rows = json.loads(gh("release", "list", "--repo", repo, "--limit", "100",
+    # Keep historical tags from hiding a supported target after many revisions.
+    rows = json.loads(gh("release", "list", "--repo", repo, "--limit", "1000",
                          "--json", "tagName,isDraft,publishedAt"))
     return latest_per_target(rows)
 
