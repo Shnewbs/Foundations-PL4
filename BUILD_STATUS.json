@@ -1,9 +1,9 @@
 {
   "project": "Foundations PL4",
-  "version": "0.2a-port.3",
+  "version": "0.2b-port.1",
   "minecraft": "1.20.1",
   "java": 17,
-  "release_channel": "alpha",
+  "release_channel": "beta",
   "host_save_schema": 2,
   "payload_protocol": "forge-1.20.1-5",
   "release_gate": [
@@ -19,7 +19,7 @@
   "live_multiplayer_acceptance": "PENDING",
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
-  "release_notes": "docs/releases/0.2a-port.3.md",
+  "release_notes": "docs/releases/0.2b-port.1.md",
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "47.4.26",
