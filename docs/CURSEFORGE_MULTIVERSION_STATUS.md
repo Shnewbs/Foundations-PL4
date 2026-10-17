@@ -14,6 +14,10 @@ The [new reconciliation run](https://github.com/Shnewbs/Foundations-PL4/actions/
 
 The new inventory also includes previously accepted 1.19, 1.19.1, 1.19.3, 1.19.4 and 1.20 point releases. The table below is an **October 9 historical snapshot**; its 1.20.1 port.1 receipt has been superseded. Approval, public listing and installed-client acceptance are separate gates.
 
+### 1.21.1 follow-up
+
+The [0.2a.1 release](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2a.1) passed 192 native GameTests and its release workflow submitted the exact 1.21.1 NeoForge JAR to CurseForge: **file 9219192**. The earlier 0.2a file ID in the historical table below remains a historical receipt. The compact Wireless Storage panel has not yet passed real-client visual acceptance; the two fake-player server scenario does not certify live multiplayer.
+
 ## Publication outcome
 
 The [successful cross-version synchronization run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/38023210688) checked **17 latest tagged Minecraft targets** and ended with **zero failed submissions**. Fourteen runtime JARs were newly accepted by CurseForge's upload API; three previously submitted NeoForge releases were correctly skipped using their matching GitHub receipts.
