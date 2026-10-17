@@ -9,9 +9,9 @@
 
 ### 1. Release evidence is not functional completion
 
-The [cross-version CurseForge synchronization report](docs/CURSEFORGE_MULTIVERSION_STATUS.md) records **17 latest tagged Minecraft targets** on October 9 (US Pacific; October 10 UTC): 14 new upload-API acceptances and three earlier NeoForge upload receipts without duplicates. This confirms submission/receipt, **not CurseForge moderator approval, public listing, installed client acceptance, end-user Java/launcher compatibility, or feature parity**. A GitHub tag, branch or successful compilation cannot substitute for exact-target gameplay evidence. Do not mutate existing release tags.
+The [cross-version CurseForge synchronization report](docs/CURSEFORGE_MULTIVERSION_STATUS.md) records **17 latest tagged Minecraft targets** on October 9 (US Pacific; October 10 UTC): 14 new upload-API acceptances and three earlier NeoForge upload receipts without duplicates. The [October 17 reconciliation run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39005816914) recorded **24 latest target receipts with zero failures**, including three newly accepted performance revisions; this newer inventory supersedes the 17-target count. This confirms submission/receipt, **not CurseForge moderator approval, public listing, installed client acceptance, end-user Java/launcher compatibility, or feature parity**. A GitHub tag, branch or successful compilation cannot substitute for exact-target gameplay evidence. Do not mutate existing release tags.
 
-A previous [version-coverage audit](docs/VERSION_COVERAGE_CHECKPOINT.md) counted **85** eligible final versions, **nine** tagged PL4 targets and **69** unbuilt gaps as of its earlier October 9 snapshot. The subsequent 17-target publication report supersedes its *publication count*; **do not reuse the 69-gap count as a live figure** until the version/release inventory is rerun. It also does not prove that all newly tagged binaries passed all user-facing acceptance gates.
+A previous [version-coverage audit](docs/VERSION_COVERAGE_CHECKPOINT.md) counted **85** eligible final versions, **nine** tagged PL4 targets and **69** unbuilt gaps as of its earlier October 9 snapshot. The subsequent 24-target reconciliation supersedes its *publication count*; **do not reuse the 69-gap count as a live figure** until the version/release inventory is rerun. It also does not prove that all newly tagged binaries passed all user-facing acceptance gates.
 
 The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are historical compared with the current `0.2a` line. Develop from the appropriate maintained exact-Minecraft branch/tag, never replace the newer source with an older local ZIP or port by changing a filename.
 
@@ -22,9 +22,11 @@ The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are h
 | 1.21.1 | `main` / `mc/1.21.1` | `v0.2a` | Published NeoForge; 191 native fixtures recorded | Installed APIs, UI, multiplayer, performance, PL2 parity |
 | 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a` | Published NeoForge; 192 PL4 native fixtures recorded | Same; keep its actual 26.1.2 loader/API |
 | 26.3 | `mc/26.3` | `mc26.3-v0.2a` | Published NeoForge; 192 PL4 fixtures on each pinned 26.3.0.23/0.39 beta build | Same; published JAR built against 26.3.0.23-beta |
-| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.3` | Published Forge; 191 native GameTests on this exact revision; CurseForge receipt pending | Client/installed API/fallback/performance |
-| 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.2` | Published Forge; 191 native GameTests; CurseForge receipt pending | Client/installed API/fallback/performance |
-| 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed network lookup revision; CurseForge receipt pending | Client/installed API/fallback/large-network benchmarks |
+| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.3` | Published Forge; 191 native GameTests; CurseForge API file 9219142 | Client/installed API/fallback/performance |
+| 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.2` | Published Forge; 191 native GameTests; CurseForge API file 9219143 | Client/installed API/fallback/performance |
+| 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed lookup; CurseForge API file 9219144 | Client/installed API/fallback/large-network benchmarks |
+| 1.20 | `mc/1.20` | `mc1.20-v0.2a-port.1` | Tagged Forge; CurseForge receipt recorded in October 17 sync | Independent installed/client/API and performance acceptance |
+| 1.19 / 1.19.1 / 1.19.3 / 1.19.4 | exact-version branches | `0.2a-port.1` per target | Tagged Forge; four distinct CurseForge receipts recorded in October 17 sync | Reconcile native fixture and installed acceptance for each exact patch |
 | 1.19.2 | `mc/1.19.2` | `mc1.19.2-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
 | 1.18.2 | `mc/1.18.2` | `mc1.18.2-v0.2a-port.2` | Published Forge; 193 native GameTests recorded | Client/installed API/fallback/performance |
 | 1.18.1 | `mc/1.18.1` | `mc1.18.1-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Preserve exact-target native evidence; installed/client QA pending |
@@ -49,8 +51,8 @@ Read [current-track rollout evidence](docs/releases/0.2a-port-rollout.md), [newe
 |---|---|---|
 | **1.13.2** / `mc/1.13.2` | **BLOCKED / SOURCE PORT**; Forge 25 native MCP/API backport and 194-scenario gate incomplete; no approved release | Restore exact API compilation, native Forge scenarios, packaged startup, then client verification |
 | **1.8.9, 1.11.2** | **NOT IMPLEMENTED** in published target set | Toolchain/license feasibility, version-exact loader, own source branch and functional scenarios |
-| **1.19, 1.19.1, 1.19.3, 1.19.4** | Branches exist for some patches; **not equivalent to validated releases** | Complete independent compatibility matrix and target-native tests |
-| **1.20, 1.20.3, remaining 1.20.x** | 1.20.1, 1.20.2 and 1.20.4 have independent Forge releases; other patches remain unverified | Exact point-version loader/adapters, compile/runtime and independent acceptance |
+| **1.19 patch acceptance** | 1.19, 1.19.1, 1.19.3 and 1.19.4 have tagged CurseForge receipts, but user-facing acceptance is not inherited | Preserve independent native and installed compatibility evidence per target |
+| **1.20.3, remaining 1.20.x** | 1.20, 1.20.1, 1.20.2 and 1.20.4 have independent Forge releases; other patches remain unverified | Exact point-version loader/adapters, compile/runtime and independent acceptance |
 | **1.21.x** (other than 1.21.1) | Coverage research pending | Validate real supported loader, transport/UI differences, separate release identity |
 | **26.1 / 26.2** | Existing refs **audit-only**; no cross-version binary equivalence | Exact toolchain, native and client verification before tagging |
 | **26.4** | **FUTURE**; usable exact-version toolchain must be verified | Create branch only once feasible; port and test independently |
