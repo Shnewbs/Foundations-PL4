@@ -31,9 +31,11 @@ public final class PLPortTestMod {
         Set<Method> fixtures = new HashSet<>();
         PLGameTests.register(new RegisterGameTestsEvent(fixtures));
         for (Method fixture : fixtures) GameTestRegistry.register(fixture, Set.of(FoundationsPL4.ID));
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
-            if (event.phase == TickEvent.Phase.END) GameTestTicker.SINGLETON.tick();
-        });
+        if (!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig")) {
+            MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
+                if (event.phase == TickEvent.Phase.END) GameTestTicker.SINGLETON.tick();
+            });
+        }
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
             event.getDispatcher().register(Commands.literal("pl4native")
                 .requires(source -> source.hasPermission(4))
