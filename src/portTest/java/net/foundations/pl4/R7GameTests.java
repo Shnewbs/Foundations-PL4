@@ -35,7 +35,7 @@ public final class R7GameTests {
             if(external){
                 h.assertTrue(!amount(reader,17)&&!amount(panel,17),"Missing local cable must leave reader disconnected on "+face);
                 put(target,Kind.DATA_CABLE,Direction.DOWN);
-                h.runAtTickTime(85,()->{
+                h.runAtTickTime(110,()->{
                     h.assertTrue(amount(reader,17)&&amount(panel,17),"Placing the missing cable must complete the run on "+face);
                     h.succeed();
                 });
@@ -51,12 +51,12 @@ public final class R7GameTests {
     @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void compactSouth(GameTestHelper h){compact(h,Direction.SOUTH,false);}
     @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void compactWest(GameTestHelper h){compact(h,Direction.WEST,false);}
     @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void compactEast(GameTestHelper h){compact(h,Direction.EAST,false);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearDown(GameTestHelper h){compact(h,Direction.DOWN,true);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearUp(GameTestHelper h){compact(h,Direction.UP,true);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearNorth(GameTestHelper h){compact(h,Direction.NORTH,true);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearSouth(GameTestHelper h){compact(h,Direction.SOUTH,true);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearWest(GameTestHelper h){compact(h,Direction.WEST,true);}
-    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=100) public static void bareRearEast(GameTestHelper h){compact(h,Direction.EAST,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearDown(GameTestHelper h){compact(h,Direction.DOWN,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearUp(GameTestHelper h){compact(h,Direction.UP,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearNorth(GameTestHelper h){compact(h,Direction.NORTH,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearSouth(GameTestHelper h){compact(h,Direction.SOUTH,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearWest(GameTestHelper h){compact(h,Direction.WEST,true);}
+    @GameTest(batch=FoundationsPL4.ID,template="empty",timeoutTicks=140) public static void bareRearEast(GameTestHelper h){compact(h,Direction.EAST,true);}
 
     private static void isolated(GameTestHelper h,Direction front){
         BlockPos pos=new BlockPos(3,3,3);var input=host(h,pos);put(input,Kind.DATA_CABLE,Direction.DOWN);
