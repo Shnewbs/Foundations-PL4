@@ -9,11 +9,11 @@
 
 `0.2b.0` passed exact-target native gates and was published as a GitHub prerelease for [1.21.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2b.0), [26.1.2](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2b.0) and [26.3](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2b.0). The CurseForge upload API accepted files **9233710**, **9233734** and **9233735**, respectively, with beta maturity. The 1.21.1 release passed 192 native GameTests; 26.1.2 ran 192 fixtures and 26.3 ran 192 fixtures on each of its two validated NeoForge beta profiles. Upload receipts do not prove moderation or public listing. Real-client, installed optional-provider, live multiplayer and measured large-network performance acceptance remain open. The previous `0.2a.1` alpha tags remain immutable. Independent Forge/legacy versions have not been promoted by this beta.
 
-## Next release: performance-only beta
+## Performance beta scope and remaining acceptance
 
-The next major revision is a **beta candidate focused entirely on performance**. Preserve gameplay mechanics, transfer rates, routing order, filtering, ownership, save format and packet behavior. The first change on `main` reuses endpoint identity keys during each transfer cycle to avoid repeated construction in route and status checks. This is an implementation change, **not a measured TPS/MSPT claim**.
+The `0.2b.0` revision is a **beta focused entirely on performance**. Preserve gameplay mechanics, transfer rates, routing order, filtering, ownership, save format and packet behavior. The beta change reuses endpoint identity keys during each transfer cycle to avoid repeated construction in route and status checks. This is an implementation change, **not a measured TPS/MSPT claim**.
 
-Before tagging or submitting a beta for each exact target: pass its native build and conservation tests; capture repeatable baseline/updated dedicated-server profiles for large cable and wireless networks (tick time, allocations and network traffic); check installed-client scaling, live two-player conservation, save/reload and optional-provider combinations; port and independently validate the performance changes on each maintained target. Publish exact-target GitHub/CurseForge beta artifacts only for targets meeting their gates, with limitations stated in each release note. Existing `0.2a.1` tags remain immutable.
+For subsequent performance revisions and broader acceptance: pass its native build and conservation tests; capture repeatable baseline/updated dedicated-server profiles for large cable and wireless networks (tick time, allocations and network traffic); check installed-client scaling, live two-player conservation, save/reload and optional-provider combinations; port and independently validate the performance changes on each maintained target. Publish exact-target GitHub/CurseForge beta artifacts only for targets meeting their gates, with limitations stated in each release note. Existing `0.2a.1` tags remain immutable.
 
 ## October 2026 — current release, parity and port reconciliation
 
@@ -29,9 +29,9 @@ The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are h
 
 | Minecraft | Branch | Tagged revision | Release/publication status | Outstanding acceptance |
 |---|---|---|---|---|
-| 1.21.1 | `main` / `mc/1.21.1` | `v0.2a.1` | Published NeoForge; 192 native GameTests; compact storage UI and two fake-player session scenario; CurseForge API file 9219192 | Installed APIs, actual client UI, live multiplayer, performance, PL2 parity |
-| 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a.1` | Published NeoForge 26.1.2.114; 192 native fixtures executed; CurseForge API file 9219212 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity |
-| 26.3 | `mc/26.3` | `mc26.3-v0.2a.1` | Published NeoForge; 192 native fixtures on 26.3.0.23-beta and 26.3.0.39-beta; CurseForge API file 9219214 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity; published JAR uses pinned 26.3.0.23-beta |
+| 1.21.1 | `main` / `mc/1.21.1` | `v0.2b.0` | Published performance beta; 192 native GameTests; CurseForge API file 9233710 | Installed APIs, actual client UI, live multiplayer, measured performance, PL2 parity |
+| 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2b.0` | Published performance beta; 192 native fixtures; CurseForge API file 9233734 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity |
+| 26.3 | `mc/26.3` | `mc26.3-v0.2b.0` | Published performance beta; 192 native fixtures on both validated NeoForge betas; CurseForge API file 9233735 | Installed APIs, actual client UI, live multiplayer, measured performance and PL2 parity; runtime uses pinned 26.3.0.23-beta |
 | 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.3` | Published Forge; 191 native GameTests; CurseForge API file 9219142 | Client/installed API/fallback/performance |
 | 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.2` | Published Forge; 191 native GameTests; CurseForge API file 9219143 | Client/installed API/fallback/performance |
 | 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed lookup; CurseForge API file 9219144 | Client/installed API/fallback/large-network benchmarks |
