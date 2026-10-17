@@ -1,6 +1,6 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Roadmap reconciliation:** October 10, 2026 (America/Los_Angeles).
+**Roadmap reconciliation:** October 16, 2026 (America/Los_Angeles); coverage baseline below dates to October 10.
 **Current primary-track released baseline:** `0.2a` for Minecraft `1.21.1`, `26.1.2` and `26.3`. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
@@ -22,7 +22,9 @@ The standalone `0.0.1a.R16/R17` source packages and R17 freeze description are h
 | 1.21.1 | `main` / `mc/1.21.1` | `v0.2a` | Published NeoForge; 191 native fixtures recorded | Installed APIs, UI, multiplayer, performance, PL2 parity |
 | 26.1.2 | `mc/26.1.2` | `mc26.1.2-v0.2a` | Published NeoForge; 192 PL4 native fixtures recorded | Same; keep its actual 26.1.2 loader/API |
 | 26.3 | `mc/26.3` | `mc26.3-v0.2a` | Published NeoForge; 192 PL4 fixtures on each pinned 26.3.0.23/0.39 beta build | Same; published JAR built against 26.3.0.23-beta |
-| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
+| 1.20.1 | `mc/1.20.1` | `mc1.20.1-v0.2a-port.2` | Published Forge; 191 native GameTests on this exact revision; CurseForge receipt pending | Client/installed API/fallback/performance |
+| 1.20.2 | `mc/1.20.2` | `mc1.20.2-v0.2a-port.1` | Published Forge; 191 native GameTests; CurseForge receipt pending | Client/installed API/fallback/performance |
+| 1.20.4 | `mc/1.20.4` | `mc1.20.4-v0.2a-port.2` | Published Forge; 191 native GameTests; indexed network lookup revision; CurseForge receipt pending | Client/installed API/fallback/large-network benchmarks |
 | 1.19.2 | `mc/1.19.2` | `mc1.19.2-v0.2a-port.1` | Published Forge; 191 native GameTests recorded | Client/installed API/fallback/performance |
 | 1.18.2 | `mc/1.18.2` | `mc1.18.2-v0.2a-port.2` | Published Forge; 193 native GameTests recorded | Client/installed API/fallback/performance |
 | 1.18.1 | `mc/1.18.1` | `mc1.18.1-v0.2a-port.1` | Tagged; CurseForge upload API accepted | Preserve exact-target native evidence; installed/client QA pending |
@@ -48,7 +50,7 @@ Read [current-track rollout evidence](docs/releases/0.2a-port-rollout.md), [newe
 | **1.13.2** / `mc/1.13.2` | **BLOCKED / SOURCE PORT**; Forge 25 native MCP/API backport and 194-scenario gate incomplete; no approved release | Restore exact API compilation, native Forge scenarios, packaged startup, then client verification |
 | **1.8.9, 1.11.2** | **NOT IMPLEMENTED** in published target set | Toolchain/license feasibility, version-exact loader, own source branch and functional scenarios |
 | **1.19, 1.19.1, 1.19.3, 1.19.4** | Branches exist for some patches; **not equivalent to validated releases** | Complete independent compatibility matrix and target-native tests |
-| **1.20, 1.20.2, 1.20.4, remaining 1.20.x** | Some source branches exist; **no blanket compatibility claim** | Exact point-version loader/adapters, compile/runtime and independent acceptance |
+| **1.20, 1.20.3, remaining 1.20.x** | 1.20.1, 1.20.2 and 1.20.4 have independent Forge releases; other patches remain unverified | Exact point-version loader/adapters, compile/runtime and independent acceptance |
 | **1.21.x** (other than 1.21.1) | Coverage research pending | Validate real supported loader, transport/UI differences, separate release identity |
 | **26.1 / 26.2** | Existing refs **audit-only**; no cross-version binary equivalence | Exact toolchain, native and client verification before tagging |
 | **26.4** | **FUTURE**; usable exact-version toolchain must be verified | Create branch only once feasible; port and test independently |
