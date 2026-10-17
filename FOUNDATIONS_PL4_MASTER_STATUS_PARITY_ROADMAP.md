@@ -5,6 +5,12 @@
 **Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
 
+## Next release: performance-only beta
+
+The next major revision is a **beta candidate focused entirely on performance**. Preserve gameplay mechanics, transfer rates, routing order, filtering, ownership, save format and packet behavior. The first change on `main` reuses endpoint identity keys during each transfer cycle to avoid repeated construction in route and status checks. This is an implementation change, **not a measured TPS/MSPT claim**.
+
+Before tagging or submitting a beta for each exact target: pass its native build and conservation tests; capture repeatable baseline/updated dedicated-server profiles for large cable and wireless networks (tick time, allocations and network traffic); check installed-client scaling, live two-player conservation, save/reload and optional-provider combinations; port and independently validate the performance changes on each maintained target. Publish exact-target GitHub/CurseForge beta artifacts only for targets meeting their gates, with limitations stated in each release note. Existing `0.2a.1` tags remain immutable.
+
 ## October 2026 — current release, parity and port reconciliation
 
 ### 1. Release evidence is not functional completion
