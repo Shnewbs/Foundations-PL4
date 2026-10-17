@@ -97,7 +97,7 @@ public final class TransferEngine {
         }
 
         if(nativeEnergy){var energyPlan=new Plan(endpoints,transfer);energyPlan.cycle=plan.cycle;NativeEnergyTransfers.run(server,energyPlan);}
-        for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
+        for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints,targets);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
     }
 
     private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0;}
@@ -144,7 +144,7 @@ public final class TransferEngine {
     }
     private static PairKey pair(NetworkEngine.Ref source,NetworkEngine.Ref sink){return new PairKey(source.part().identity,sink.part().identity);}
     private static TargetKey target(NetworkEngine.Ref ref){Part.Link l=ref.adjacent();return new TargetKey(l.dimension(),l.pos().asLong(),l.side().ordinal());}
-    private static boolean sameTarget(NetworkEngine.Ref a,NetworkEngine.Ref b){return target(a).equals(target(b));}
+    private static boolean sameTarget(NetworkEngine.Ref a,NetworkEngine.Ref b,Map<NetworkEngine.Ref,TargetKey> targets){return targets.get(a).equals(targets.get(b));}
     private static boolean itemAllowed(ItemStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.items(stack,ref.part(),input);}
     private static boolean fluidAllowed(FluidStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.fluids(stack,ref.part(),input);}
     private static boolean energyAllowed(NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().energy;}
@@ -251,11 +251,11 @@ public final class TransferEngine {
         }
     }
 
-    private static void updateStatus(NetworkEngine.Ref ref,List<NetworkEngine.Ref> endpoints){
+    private static void updateStatus(NetworkEngine.Ref ref,List<NetworkEngine.Ref> endpoints,Map<NetworkEngine.Ref,TargetKey> targets){
         Part p=ref.part();String mode=switch(p.transferMode){case 1->"ADD";case 2->"REMOVE";case 3->"ADD / REMOVE";default->"PASSIVE";};
         if(p.transferMode==TransferRules.PASSIVE){p.status="Transfer PASSIVE";return;}
-        if(p.transferMode==TransferRules.ADD_REMOVE){long peers=endpoints.stream().filter(other->other!=ref&&other.part().kind==Kind.TRANSFER_NODE&&!sameTarget(ref,other)&&(TransferRules.canRoute(true,p.transferMode,true,other.part().transferMode)||TransferRules.canRoute(true,other.part().transferMode,true,p.transferMode))).count();p.status=peers>0?"Transfer ADD / REMOVE: "+peers+" explicit peer(s)":"Transfer ADD / REMOVE: needs ADD or REMOVE peer";return;}
-        long count=p.transferMode==TransferRules.ADD?endpoints.stream().filter(source->source!=ref&&!sameTarget(source,ref)&&TransferRules.canRoute(source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,true,p.transferMode)).count():endpoints.stream().filter(sink->sink!=ref&&!sameTarget(ref,sink)&&TransferRules.canRoute(true,p.transferMode,sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode)).count();
+        if(p.transferMode==TransferRules.ADD_REMOVE){long peers=endpoints.stream().filter(other->other!=ref&&other.part().kind==Kind.TRANSFER_NODE&&!sameTarget(ref,other,targets)&&(TransferRules.canRoute(true,p.transferMode,true,other.part().transferMode)||TransferRules.canRoute(true,other.part().transferMode,true,p.transferMode))).count();p.status=peers>0?"Transfer ADD / REMOVE: "+peers+" explicit peer(s)":"Transfer ADD / REMOVE: needs ADD or REMOVE peer";return;}
+        long count=p.transferMode==TransferRules.ADD?endpoints.stream().filter(source->source!=ref&&!sameTarget(source,ref,targets)&&TransferRules.canRoute(source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,true,p.transferMode)).count():endpoints.stream().filter(sink->sink!=ref&&!sameTarget(ref,sink,targets)&&TransferRules.canRoute(true,p.transferMode,sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode)).count();
         p.status="Transfer "+mode+": "+count+" network endpoint(s)";
     }
 
