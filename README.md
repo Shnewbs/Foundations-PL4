@@ -1,20 +1,24 @@
-# Foundations PL4 0.2a
+# Foundations PL4 0.2a.1
 
 Standalone NeoForge Practical Logistics 4: Foundations. **Alpha — further API testing is still required.**
 
-## New in 0.2a
+## New in 0.2a.1
+
+The 1.21.1 revision indexes network membership and storage-node lookups, adjusts the Wireless Storage screen for a 320×240 scaled window, and adds a two-session conservation scenario. The server scenario uses fake players; live multiplayer and client visuals still require installed testing.
+
+## Included from 0.2a
 
 Wireless Storage combines accessible item inventories on a physical data network, with search, quantity/name sorting, component-aware item variants, withdrawals across sources, and offhand deposits. Receivers and Entity Nodes gain searchable, server-validated component selection; supported components accept held transceiver links.
 
 Storage actions recheck ownership, topology, loaded targets, binding, configuration, and directional filters. Visual-only reader links do not grant inventory access. The field guide documents the network workflow.
 
-See [0.2a release notes](docs/releases/0.2a.md), [completed port rollout evidence](docs/releases/0.2a-port-rollout.md), [the field guide](docs/FIELD_GUIDE.md), and [API/fallback testing](docs/API_TESTING.md). The original release notes describe the state when the 1.21.1 release was published; the rollout evidence records the subsequently completed 26.x builds.
+See [0.2a.1 release notes](docs/releases/0.2a.1.md), [0.2a release notes](docs/releases/0.2a.md), [completed port rollout evidence](docs/releases/0.2a-port-rollout.md), [the field guide](docs/FIELD_GUIDE.md), and [API/fallback testing](docs/API_TESTING.md). The original release notes describe the state when the 1.21.1 release was published; the rollout evidence records the subsequently completed 26.x builds.
 
 ## Published current-track builds
 
 | Minecraft | Runtime JAR | Java | Release |
 |---|---|---|---|
-| 1.21.1 | `FoundationsPL4-1.21.1-0.2a.jar` | 21 | [v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2a) |
+| 1.21.1 | `FoundationsPL4-1.21.1-0.2a.1.jar` | 21 | [v0.2a.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2a.1) |
 | 26.1.2 | `FoundationsPL4-26.1.2-0.2a.jar` | 25 | [mc26.1.2-v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2a) |
 | 26.3 | `FoundationsPL4-26.3-0.2a.jar` | 25 | [mc26.3-v0.2a](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2a) |
 

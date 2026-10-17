@@ -15,7 +15,7 @@
 | AE2 | Synthetic read-only grid-energy contracts and grid deduplication | Powered/unpowered grids, security changes and real service lifecycle; no AE2 inventory/crafting access claim |
 | Other native-energy mods | Standard target API path where implemented | Each installed mod and exposed side; no blanket compatibility certification |
 | Jade / JEI / EMI / KubeJS and version-appropriate alternatives | Existing source only where present | Complete missing features and verify exact ecosystem versions before claiming parity |
-| Wireless Storage 0.2a | Network aggregation, component variants, filters, topology/access revalidation and replay scenarios in the 0.2a native fixtures | Real storage wrappers, large networks, simultaneous users, reconnects and real-client UI acceptance |
+| Wireless Storage 0.2a | Network aggregation, component variants, filters, topology/access revalidation, replay and two simultaneous fake-player sessions in the 0.2a.1 native fixtures | Real storage wrappers, large networks, simultaneous users, reconnects and real-client UI acceptance |
 
 ## Required alternatives when an optional API is unavailable
 

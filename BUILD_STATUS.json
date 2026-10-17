@@ -1,6 +1,6 @@
 {
   "project": "Foundations PL4",
-  "version": "0.2a",
+  "version": "0.2a.1",
   "minecraft": "1.21.1",
   "java": 21,
   "release_channel": "alpha",
@@ -11,13 +11,13 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 191,
+  "expected_native_tests": 192,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING",
   "client_visual_acceptance": "PENDING",
   "live_multiplayer_acceptance": "PENDING",
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
-  "release_notes": "docs/releases/0.2a.md",
+  "release_notes": "docs/releases/0.2a.1.md",
   "historical_evidence": "docs/releases/"
 }

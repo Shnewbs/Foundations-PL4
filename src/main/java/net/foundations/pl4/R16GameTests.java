@@ -220,6 +220,22 @@ public final class R16GameTests {
         h.assertTrue(f.chest().getItem(0).getCount()==16&&count==1,"Single-use token withdraws exactly once");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageConcurrentSessionsConserveItems(GameTestHelper h){
+        var first=storageFixture(h,"PL4-Storage-Concurrent-A");first.chest().setItem(0,new ItemStack(Items.DIAMOND,10));
+        var second=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(OWNER,"PL4-Storage-Concurrent-B"));
+        second.getInventory().clearContent();second.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,first.tool().copy());
+        h.assertTrue(first.player()!=second,"Concurrent sessions need distinct server players");
+        UUID a=WirelessStorage.open(first.player(),net.minecraft.world.InteractionHand.MAIN_HAND);
+        UUID b=WirelessStorage.open(second,net.minecraft.world.InteractionHand.MAIN_HAND);
+        h.assertTrue(a!=null&&b!=null,"Both owners can open an independent server session");
+        WirelessStorage.request(first.player(),new PLPackets.StorageRequest(a,"withdraw",0,8));
+        WirelessStorage.request(second,new PLPackets.StorageRequest(b,"withdraw",0,8));
+        int owned=0;for(var player:List.of(first.player(),second))for(int slot=0;slot<36;slot++){
+            ItemStack stack=player.getInventory().getItem(slot);if(stack.is(Items.DIAMOND))owned+=stack.getCount();
+        }
+        h.assertTrue(owned==10&&first.chest().getItem(0).isEmpty(),"Two stale snapshots withdraw only available items without loss or duplication");h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void wirelessStorageRechecksSlotsFiltersAndHeldTool(GameTestHelper h){
         var f=storageFixture(h,"PL4-Storage-B");f.chest().setItem(0,new ItemStack(Items.DIAMOND,17));
         UUID token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.chest().setItem(0,new ItemStack(Items.EMERALD,9));
