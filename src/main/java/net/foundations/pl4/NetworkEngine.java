@@ -125,8 +125,8 @@ public final class NetworkEngine {
         Map<Part,Group> membership=new IdentityHashMap<>();
         Map<Part,List<Ref>> storageNodes=new IdentityHashMap<>();
         for(Group group:complete){
-            List<Ref> nodes=group.parts.stream().filter(r->r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE).toList();
-            for(Ref r:group.parts){membership.put(r.part,group);storageNodes.put(r.part,nodes);}
+            List<Ref> storageRefs=group.parts.stream().filter(r->r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE).toList();
+            for(Ref r:group.parts){membership.put(r.part,group);storageNodes.put(r.part,storageRefs);}
         }
         cachedRefs=List.copyOf(refs);cachedHosts=List.copyOf(arms.keySet());cachedGroups=List.copyOf(complete);
         cachedMembership=membership;cachedStorageNodes=storageNodes;
