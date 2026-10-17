@@ -1,6 +1,6 @@
 {
   "project": "Foundations PL4",
-  "version": "0.2a-port.2",
+  "version": "0.2a-port.3",
   "minecraft": "1.20.1",
   "java": 17,
   "release_channel": "alpha",
@@ -19,7 +19,7 @@
   "live_multiplayer_acceptance": "PENDING",
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
-  "release_notes": "docs/releases/0.2a-port.2.md",
+  "release_notes": "docs/releases/0.2a-port.3.md",
   "historical_evidence": "docs/releases/",
   "loader": "Forge",
   "loader_version": "47.4.26",
@@ -27,5 +27,12 @@
   "native_test_evidence": "191/191 isolated Forge 47.4.26 GameTests; release workflow logs are exact-revision evidence",
   "native_test_result": "PASS: 191/191 on Forge 47.4.26 development GameTest server",
   "production_artifact_result": "PASS: production JAR identity and test-class exclusion checks",
-  "production_boot_result": "PENDING for port.2; port.1 standalone installed server boot was separately recorded"
+  "production_boot_result": "PENDING for port.2; port.1 standalone installed server boot was separately recorded",
+  "release_published": false,
+  "installed_runtime_acceptance": "PENDING for this revision; previous native revision passed 191/191 GameTests",
+  "native_compilation": "PENDING for this revision",
+  "native_game_tests": "PENDING for this revision",
+  "production_smoke": "PENDING for this revision",
+  "production_jar_test_isolation": "PENDING for this revision",
+  "verified_runtime_sha256": null
 }
