@@ -1,6 +1,10 @@
 # Foundations PL4 — Multi-version CurseForge publication
 
-Verified on October 9, 2026 (US Pacific); GitHub Actions timestamps may be October 10 UTC.
+Latest upload reconciliation: October 18, 2026. Historical sections retain their original snapshot dates.
+
+## October 18 scheduled reconciliation
+
+The [latest successful cross-version run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39134007983) rechecked the newest published release for **24 exact Minecraft targets**. Every target had a matching CurseForge upload receipt; **zero failed submissions**. This is upload-API evidence, not public availability, functional parity, or proof that every port has the performance beta.
 
 ## October 17 Forge 1.20.x beta follow-up (US Pacific)
 
@@ -12,7 +16,7 @@ Three additional exact-target Forge `0.2b-port.1` JARs passed 191 native GameTes
 | 1.20.2 | [mc1.20.2-v0.2b-port.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.20.2-v0.2b-port.1) | 9234049 |
 | 1.20.4 | [mc1.20.4-v0.2b-port.1](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc1.20.4-v0.2b-port.1) | 9234048 |
 
-These supersede the earlier 1.20.x alpha receipts for those three exact patches. The remaining 18 targets from the earlier 24-target inventory still have their prior releases; no beta parity or performance result transfers to them. CurseForge moderator approval and public listing are not established by API acceptance.
+These supersede the earlier 1.20.x alpha receipts for those three exact patches. The remaining 18 targets from the 24-target inventory still have their prior releases; no beta parity or performance result transfers to them. CurseForge moderator approval and public listing are not established by API acceptance.
 
 ## October 17 performance beta (US Pacific)
 
@@ -24,7 +28,7 @@ The exact `0.2b.0` NeoForge runtime JARs passed native gates, were published as 
 | 26.1.2 | [mc26.1.2-v0.2b.0](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.1.2-v0.2b.0) | 9233734 | 192 fixtures |
 | 26.3 | [mc26.3-v0.2b.0](https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2b.0) | 9233735 | 192 fixtures on each validated NeoForge beta |
 
-The change reuses endpoint target keys in transfer routing and status checks; gameplay rates and routing semantics are unchanged. No large-network TPS/MSPT improvement is claimed without measured benchmarks. Installed optional providers, real client visuals, live multiplayer, migration and public CurseForge availability remain separate acceptance gates. Independently versioned Forge and legacy ports remain on their prior revisions.
+The change reuses endpoint target keys in transfer routing and status checks; gameplay rates and routing semantics are unchanged. No large-network TPS/MSPT improvement is claimed without measured benchmarks. Installed optional providers, real client visuals, live multiplayer, migration and public CurseForge availability remain separate acceptance gates. The other independently versioned Forge and legacy ports remain on their prior revisions.
 
 ## October 16 update (US Pacific; October 17 UTC)
 
