@@ -1,9 +1,13 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Roadmap reconciliation:** October 16, 2026 (America/Los_Angeles); coverage baseline below dates to October 10.
+**Roadmap reconciliation:** October 18, 2026 (America/Los_Angeles); historical coverage baseline below dates to October 10.
 **Current primary-track released baseline:** performance-only `0.2b.0` beta for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## October 18 code and publication reconciliation
+
+The [scheduled CurseForge synchronization](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39134007983) verified **24 current target receipts and zero failures**, including all six performance betas. `main` build metadata now identifies `0.2b.0` beta and its 192 native fixtures, and the build gate verifies metadata, release notes and native test count. The 1.6.4 branch metadata now reflects its already published preview.3 item/fluid/internal-energy subset, 89 native scenarios and schema 3. These metadata fixes do not turn the remaining 18 published targets into performance betas or close their installed-client and gameplay acceptance. Exact-version source cleanup and native validation remain necessary before further port releases.
 
 ## Forge 1.20.x performance beta follow-up
 
