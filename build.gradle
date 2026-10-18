@@ -50,7 +50,23 @@ tasks.register('verifyStandalone') {
         logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
     }
 }
-tasks.named('build') { dependsOn tasks.named('verifyStandalone') }
+// Keep the published status file aligned with the exact compiled revision and native gate.
+tasks.register('verifyBuildStatus') {
+    inputs.file('BUILD_STATUS.json')
+    inputs.files(fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' })
+    doLast {
+        def status = new groovy.json.JsonSlurper().parse(file('BUILD_STATUS.json'))
+        def fixtures = fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' }.files
+        def count = fixtures.sum { file -> file.getText('UTF-8').findAll(/@GameTest\(/).size() } ?: 0
+        def notes = file("docs/releases/${project.version}.md")
+        if (status.minecraft != '1.21.1' || status.version != project.version ||
+                status.expected_native_tests != count || status.release_notes != "docs/releases/${project.version}.md" ||
+                !notes.isFile())
+            throw new GradleException("BUILD_STATUS.json or release notes do not match 1.21.1 ${project.version} and ${count} native fixtures")
+        logger.lifecycle("PASS: BUILD_STATUS.json matches ${count} native fixtures and release notes")
+    }
+}
+tasks.named('build') { dependsOn tasks.named('verifyStandalone'), tasks.named('verifyBuildStatus') }
 tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
 apply from: 'gradle/verify-client-assets.gradle'
 
