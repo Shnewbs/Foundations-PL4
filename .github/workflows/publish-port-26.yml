@@ -40,6 +40,7 @@ jobs:
           cd release
           sha256sum *.jar > SHA256SUMS.txt
       - name: Publish 26.3 prerelease
+        if: env.PL4_ALLOW_PUBLICATION == 'true'
         run: |
           set -euo pipefail
           cat > notes.md <<'EOF'
