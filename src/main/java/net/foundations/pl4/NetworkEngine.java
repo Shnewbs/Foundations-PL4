@@ -19,6 +19,8 @@ public final class NetworkEngine {
     private static List<Ref> cachedRefs=List.of();
     private static List<HostEntity> cachedHosts=List.of();
     private static List<Group> cachedGroups=List.of();
+    private static Map<Part,Group> cachedMembership=Map.of();
+    private static Map<Part,List<Ref>> cachedStorageNodes=Map.of();
     private static long topologyBuilds;
     private static int cachedMaxNetwork;
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
@@ -31,7 +33,7 @@ public final class NetworkEngine {
     public static void invalidate(Level l){if(!l.isClientSide)dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
     public static void stopped(FMLServerStoppedEvent e){
-        EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
+        EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedMembership=Map.of();cachedStorageNodes=Map.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
     public static ServerLevel level(MinecraftServer server,Part.Link link){
         ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));
@@ -120,7 +122,14 @@ public final class NetworkEngine {
         });
         DisplayNetworks.rebuild(refs,visible);
         arms.forEach((host,values)->{host.setConnections(values);host.setExternalLeads(leads.getOrDefault(host,0));});
+        Map<Part,Group> membership=new IdentityHashMap<>();
+        Map<Part,List<Ref>> storageNodes=new IdentityHashMap<>();
+        for(Group group:complete){
+            List<Ref> storageRefs=group.parts.stream().filter(r->r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE).toList();
+            for(Ref r:group.parts){membership.put(r.part,group);storageNodes.put(r.part,storageRefs);}
+        }
         cachedRefs=List.copyOf(refs);cachedHosts=List.copyOf(arms.keySet());cachedGroups=List.copyOf(complete);
+        cachedMembership=membership;cachedStorageNodes=storageNodes;
         cachedServer=server;cachedWireless=PLConfig.WIRELESS.get();cachedCrossDimension=PLConfig.CROSS_DIMENSION.get();cachedMaxNetwork=PLConfig.MAX_NETWORK.get();dirty=false;topologyBuilds++;
         deferDirtyRebuild=false;
         // Send geometry now, not after the next (potentially very slow) sampling interval.
@@ -135,15 +144,15 @@ public final class NetworkEngine {
     /** Current server-owned endpoints; UI edits never supply arbitrary positions. */
     public static List<Part.Link> targetsFor(MinecraftServer server,Part reader){
         ensureCurrent(server);
-        for(Group group:cachedGroups)if(!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&group.readers.stream().anyMatch(r->r.part==reader))return group.targets;
-        return List.of();
+        Group group=cachedMembership.get(reader);
+        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&reader.kind.reader()?group.targets:List.of();
     }
     /** Physical data network only: visual reader exports never grant inventory access. */
     public static List<Ref> storageNodes(MinecraftServer server,Part anchor){
         ensureCurrent(server);
-        for(Group group:cachedGroups)if(!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&group.parts.stream().anyMatch(r->r.part==anchor))
-            return group.parts.stream().filter(r->r.part.kind==Kind.NODE||r.part.kind==Kind.TRANSFER_NODE).toList();
-        return List.of();
+        Group group=cachedMembership.get(anchor);
+        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()
+            ?cachedStorageNodes.get(anchor):List.of();
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent e){
