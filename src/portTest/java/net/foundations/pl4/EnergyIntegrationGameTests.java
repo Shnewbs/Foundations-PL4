@@ -352,7 +352,7 @@ public final class EnergyIntegrationGameTests {
         boolean[] fail={true};BlockPos absolute=h.absolutePos(toPos);
         var to=new net.minecraft.tileentity.ChestTileEntity(){
             @Override public void setItem(int slot,net.minecraft.item.ItemStack stack){
-                if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);
+                super.setItem(slot,stack);if(fail[0])throw new IllegalStateException("PL4 expected destination failure");
             }
         };
         to.setLevelAndPosition(h.getLevel(),absolute);h.getLevel().setBlockEntity(absolute,to);net.foundations.pl4.compat.PortCapabilities.invalidate(to);
@@ -361,11 +361,11 @@ public final class EnergyIntegrationGameTests {
         boolean thrown=false;try{TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));}catch(IllegalStateException expected){
             if(!"PL4 expected destination failure".equals(expected.getMessage()))throw expected;thrown=true;
         }
-        net.foundations.pl4.compat.PortAssertions.check(thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17,"Extracted items remain owned by ADD escrow after a pre-mutation destination failure");
+        net.foundations.pl4.compat.PortAssertions.check(thrown&&from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part()),"A post-mutation destination failure leaves an uncertain, quarantined transaction");
         Part restored=Part.load(sink.part().save(null,false),null);
-        net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.pendingItem.getCount()==17,"Exception escrow survives persistence");
+        net.foundations.pl4.compat.PortAssertions.check(restored!=null&&restored.pendingItem.getCount()==17&&ItemTransferSafety.blocked(restored)&&!restored.routeEditable(),"Exception escrow survives persistence");
         fail[0]=false;TransferEngine.run(h.getLevel().getServer(),List.of(source,sink));
-        net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())&&from.getItem(0).isEmpty(),"Quarantined escrow cannot be replayed after an uncertain mutation");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void previewFallbackRespectsTotalBudgetAndStableKeys(GameTestHelper h){
