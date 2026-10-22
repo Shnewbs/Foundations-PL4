@@ -61,6 +61,6 @@
   "compact_storage_ui_source_parity": "PASS",
   "compact_ui_compilation": "PASS",
   "native_baseline_artifact": 12395934911,
-  "non_ui_runtime_byte_parity": "PASS",
-  "ui_parity_workflow_run": "39710988135"
+  "non_ui_runtime_byte_parity": "PASS_EXCEPT_VERIFIED_GUIDE_EDITION",
+  "ui_parity_workflow_run": "39711411144"
 }
