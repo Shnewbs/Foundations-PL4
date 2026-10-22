@@ -163,11 +163,19 @@ def fixtures(source):
 
 def exception_fixture(source):
     if 'Quarantined escrow cannot be replayed after an uncertain mutation' in source:return source
-    source=once(source,'if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);', 'super.setItem(slot,stack);if(fail[0])throw new IllegalStateException("PL4 expected destination failure");')
-    source=once(source,'thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17', 'thrown&&from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())')
+    transactional='if(fail[0]&&from.getItem(0).isEmpty()&&!stack.isEmpty())throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack,insideTransaction);'
+    is_transactional=transactional in source
+    if is_transactional:
+        source=once(source,transactional,'super.setItem(slot,stack,insideTransaction);if(fail[0]&&from.getItem(0).isEmpty()&&!stack.isEmpty())throw new IllegalStateException("PL4 expected destination failure");')
+        # The 26.x vanilla adapter rolls tentative writes back when its transaction aborts.
+        destination='to.getItem(0).isEmpty()'
+    else:
+        source=once(source,'if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);', 'super.setItem(slot,stack);if(fail[0])throw new IllegalStateException("PL4 expected destination failure");')
+        destination='to.getItem(0).getCount()==17'
+    source=once(source,'thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17', 'thrown&&from.getItem(0).isEmpty()&&'+destination+'&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())')
     source=once(source,'Extracted items remain owned by ADD escrow after a pre-mutation destination failure', 'A post-mutation destination failure leaves an uncertain, quarantined transaction')
     source=once(source,'restored!=null&&restored.pendingItem.getCount()==17', 'restored!=null&&restored.pendingItem.getCount()==17&&ItemTransferSafety.blocked(restored)&&!restored.routeEditable()')
-    source=once(source,'to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once"', 'to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())&&from.getItem(0).isEmpty(),"Quarantined escrow cannot be replayed after an uncertain mutation"')
+    source=once(source,'to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once"', destination+'&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())&&from.getItem(0).isEmpty(),"Quarantined escrow cannot be replayed after an uncertain mutation"')
     return source
 
 
