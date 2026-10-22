@@ -36,6 +36,12 @@ public final class TransferRules {
     /** Empty channels preserve old worlds; named channels never leak into the default pool. */
     public static boolean channelsMatch(String output,String input){return java.util.Objects.equals(output,input);}
 
+    /** The same direction and channel decision is used for transfers and endpoint status. */
+    public static boolean canRouteOnChannels(boolean sourceTransfer,int sourceMode,String output,
+                                              boolean sinkTransfer,int sinkMode,String input){
+        return channelsMatch(output,input)&&canRoute(sourceTransfer,sourceMode,sinkTransfer,sinkMode);
+    }
+
     /** Explicit Transfer Nodes win equal-priority ties over passive Nodes. */
     public static int endpointClass(boolean transfer){return transfer?1:0;}
 
