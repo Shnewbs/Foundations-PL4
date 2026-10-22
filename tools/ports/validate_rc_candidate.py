@@ -32,6 +32,10 @@ def main():
         text = path.read_text(errors="replace")
         print(text[-16000:], flush=True)
         if result.returncode:
+            for server_log in logs.glob("installed-*-native.log"):
+                if server_log != path:
+                    print("SERVER DIAGNOSTICS", server_log.name, flush=True)
+                    print(server_log.read_text(errors="replace")[-18000:], flush=True)
             raise ValueError(f"{name}: process exited {result.returncode}")
         return text
 

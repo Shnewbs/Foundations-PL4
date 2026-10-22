@@ -29,6 +29,17 @@ def main():
     edits[java / "TransferEngine.java"] = channel_engine(edits[java / "TransferEngine.java"])
     edits[java / "core/TransferRules.java"] = channel_rules((java / "core/TransferRules.java").read_text())
     edits[root / "tools/R16RegressionTests.java"] = channel_regressions((root / "tools/R16RegressionTests.java").read_text())
+    owned_fixtures = []
+    if args.minecraft in {"1.20.1", "1.20.2", "1.20.4"}:
+        bootstrap = root / "src/portTest/java/net/foundations/pl4/PLPortTestMod.java"
+        text = bootstrap.read_text()
+        condition = 'if (!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig")) {'
+        if condition not in text and "if (net.minecraftforge.fml.loading.FMLEnvironment.production) {" not in text:
+            raise ValueError("Unreviewed isolated native test bootstrap")
+        # Memory-backed config is independent of whether Forge's installed
+        # environment needs explicit fixture registration and ticker dispatch.
+        edits[bootstrap] = text.replace(condition, "if (net.minecraftforge.fml.loading.FMLEnvironment.production) {")
+        owned_fixtures.append(bootstrap)
     build_path = root / "build.gradle"
     build, count = re.subn(r"^version\s*=\s*'[^']+'", "version = '" + VERSION + "'", build_path.read_text(), count=1, flags=re.M)
     if count != 1:
@@ -80,7 +91,7 @@ def main():
     # Older retained controllers stage Java/status paths explicitly. Keep the
     # versioned resources they compile in their exact-source archive as well.
     if (root / ".git").exists():
-        subprocess.run(["git", "add", "--"] + [str(p.resolve()) for p in guides], cwd=root, check=True)
+        subprocess.run(["git", "add", "--"] + [str(p.resolve()) for p in [*guides, *owned_fixtures]], cwd=root, check=True)
     print(f"Prepared {args.minecraft} {VERSION}; publication remains blocked on RC acceptance")
 
 
