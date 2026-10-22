@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "foundations_pl4:block/legacy_display"
+    "all": "minecraft:blocks/iron_block"
   }
 }
