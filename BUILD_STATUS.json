@@ -49,10 +49,10 @@
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE",
-  "candidate_native_validation": "PENDING_FOR_RECONCILIATION",
-  "candidate_workflow_run": "39710988137",
+  "candidate_native_validation": "PASS",
+  "candidate_workflow_run": "39713811633",
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
-  "native_test_isolation": "PENDING_FOR_RECONCILIATION"
+  "native_test_isolation": "PASS",
+  "native_compilation": "PASS_FOR_THIS_CANDIDATE"
 }
