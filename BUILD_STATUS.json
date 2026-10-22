@@ -70,5 +70,10 @@
   "native_compilation": "PASS_FOR_THIS_CANDIDATE",
   "candidate_native_validation": "PASS",
   "candidate_workflow_run": "39709584171",
-  "rc_publication_cleared": false
+  "rc_publication_cleared": false,
+  "compact_storage_ui_source_parity": "PASS",
+  "compact_ui_compilation": "PASS",
+  "native_baseline_artifact": 12397500393,
+  "non_ui_runtime_byte_parity": "PASS",
+  "ui_parity_workflow_run": "39710988135"
 }
