@@ -13,7 +13,7 @@ import subprocess
 import sys
 import tempfile
 
-from upload_curseforge import MARKER, gh, main as upload, parse_tag
+from upload_curseforge import MARKER, gh, main as upload, parse_tag, release_type
 
 
 def latest_per_target(releases):
@@ -25,7 +25,8 @@ def latest_per_target(releases):
     for release in ordered:
         tag = release.get("tagName", "")
         try:
-            minecraft, _, _ = parse_tag(tag)
+            minecraft, version, _ = parse_tag(tag)
+            release_type(version)
         except ValueError:
             continue
         selected.setdefault(minecraft, tag)
@@ -59,6 +60,7 @@ def latest_tags(repo):
 
 def stage_release(tag, repo, folder):
     minecraft, version, loader = parse_tag(tag)
+    release_type(version)
     jar_name = f"FoundationsPL4-{minecraft}-{version}.jar"
     lib = folder / "build/libs"
     lib.mkdir(parents=True)

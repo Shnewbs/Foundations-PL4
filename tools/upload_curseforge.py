@@ -62,6 +62,8 @@ def request_json(path, token, data=None, content_type=None):
 def release_type(version):
     """Never label an alpha port or preview as a stable CurseForge release."""
     text = version.lower()
+    if re.search(r"(?:^|[.\-])(?:dev|snapshot|nightly)(?:[.\-]|$)", text):
+        raise ValueError("Development snapshots are not qualified CurseForge releases")
     if re.search(r"beta|(?:^|[.\-])rc\d*(?:[.\-]|$)|\db(?:[.\-]|$)", text):
         return "beta"
     if re.search(r"alpha|preview|experimental|(?:^|[.\-])port(?:[.\-]|$)|\da(?:[.\-]|$)", text):
@@ -93,6 +95,7 @@ def main():
         raise RuntimeError("Set a numeric CURSEFORGE_PROJECT_ID repository variable and CURSEFORGE_API_TOKEN secret.")
     tag, repo = (os.environ[k] for k in ("RELEASE_TAG", "GITHUB_REPOSITORY"))
     minecraft, version, loader = parse_tag(tag)
+    release_type(version)  # Reject development builds before staging or authenticated API calls.
     if (os.environ.get("VERSION", version) != version
             or os.environ.get("MINECRAFT_VERSION", minecraft) != minecraft
             or os.environ.get("MOD_LOADER", loader) != loader):

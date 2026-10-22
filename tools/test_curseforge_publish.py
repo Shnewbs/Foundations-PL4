@@ -3,9 +3,10 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from upload_curseforge import parse_tag, release_type
-from curseforge_sync import latest_per_target, validate_checksum
+from curseforge_sync import latest_per_target, validate_checksum, stage_release
 
 
 class CurseForgePublishTests(unittest.TestCase):
@@ -37,6 +38,24 @@ class CurseForgePublishTests(unittest.TestCase):
         for v in ("0.1b", "0.1b-beta", "1.0.0-rc1"):
             self.assertEqual(release_type(v), "beta")
         self.assertEqual(release_type("1.0.0"), "release")
+
+    def test_development_snapshots_never_get_release_maturity(self):
+        for version in ("0.2.0-rc.1-dev", "1.0.0-SNAPSHOT", "1.0.0-nightly.4", "dev"):
+            with self.subTest(version=version), self.assertRaises(ValueError):
+                release_type(version)
+
+    def test_backfill_retains_last_qualified_release(self):
+        releases = [
+            {"tagName": "mc1.12.2-v0.2a-legacy-preview.3", "publishedAt": "2026-10-11", "isDraft": False},
+            {"tagName": "mc1.12.2-v0.2.0-rc.1-dev", "publishedAt": "2026-10-22", "isDraft": False},
+        ]
+        self.assertEqual(latest_per_target(releases), [("1.12.2", "mc1.12.2-v0.2a-legacy-preview.3")])
+
+    def test_explicit_development_tag_is_rejected_before_download(self):
+        with tempfile.TemporaryDirectory() as directory, patch("curseforge_sync.subprocess.run") as download:
+            with self.assertRaises(ValueError):
+                stage_release("mc1.12.2-v0.2.0-rc.1-dev", "Shnewbs/Foundations-PL4", Path(directory))
+            download.assert_not_called()
 
     def test_latest_released_target_only(self):
         versions = [
