@@ -71,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$TARGET" = '1.12.2' ]; then
-            python3 tools/production_smoke_1202.py
+            python3 tools/production_smoke_1122.py
           else
             python3 tools/production_smoke_164.py
           fi
