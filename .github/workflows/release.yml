@@ -2,6 +2,7 @@ name: Build and release
 
 on:
   push:
+    paths-ignore: ['.github/workflows/**']
     branches:
       - main
     tags:
@@ -25,6 +26,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Read publication maturity from exact checked-out source
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          status = json.loads(Path('BUILD_STATUS.json').read_text())
+          allowed = status.get('release_channel') != 'development' and not status['version'].endswith('-dev')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
+          PY
       - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
@@ -93,7 +105,7 @@ jobs:
           $hashes | Set-Content -Encoding ascii SHA256SUMS.txt
 
       - name: Publish validated GitHub Release
-        if: steps.version.outputs.publish == 'true'
+        if: env.PL4_ALLOW_PUBLICATION == 'true' && (steps.version.outputs.publish == 'true')
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -137,7 +149,7 @@ jobs:
           }
 
       - name: Upload tested runtime JAR to CurseForge when configured
-        if: steps.version.outputs.publish == 'true'
+        if: env.PL4_ALLOW_PUBLICATION == 'true' && (steps.version.outputs.publish == 'true')
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
