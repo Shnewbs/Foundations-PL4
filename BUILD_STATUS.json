@@ -31,7 +31,7 @@
     "release_published": false
   },
   "expected_native_scenarios": 112,
-  "candidate_native_validation": "PENDING",
+  "candidate_native_validation": "PASS",
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_AND_BASIC_READERS_DISPLAYS",
@@ -40,5 +40,9 @@
   "live_multiplayer_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "further_api_testing_required": true
+  "further_api_testing_required": true,
+  "candidate_workflow_run": "39776355160",
+  "candidate_source_commit": "0b079fcda30f3f396f489f27e3c4670e3e8413a4",
+  "candidate_runtime_sha256": "f2bb57cacb18e3c38488b7b5bffc5ff3f2645059ea8c54aae8cda06e373b7fcc",
+  "production_smoke": "PASS_FOR_THIS_CANDIDATE"
 }
