@@ -91,6 +91,7 @@ def main():
     (logs / "rc-development-gate.json").write_text(json.dumps(report, indent=2) + "\n")
     status.update(port_status="RC_DEVELOPMENT_NATIVE_GATE_PASSED", native_compilation="PASS_FOR_THIS_CANDIDATE",
                   candidate_native_validation="PASS", candidate_workflow_run=os.environ.get("GITHUB_RUN_ID"),
+                  candidate_item_safety_validation="PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
                   rc_publication_cleared=False)
     if mc == "1.21.1" and (root / "src/portTest").is_dir():
         status["native_test_isolation"] = "PASS"

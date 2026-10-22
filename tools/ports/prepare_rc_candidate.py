@@ -7,6 +7,7 @@ import subprocess
 from align_performance import network, transfers
 from align_storage_screen import screen, guide_edits
 from align_channel_status import engine as channel_engine, rules as channel_rules, regressions as channel_regressions
+from align_item_safety import edits as item_safety_edits, engine as safe_item_engine
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -29,7 +30,10 @@ def main():
     edits[java / "TransferEngine.java"] = channel_engine(edits[java / "TransferEngine.java"])
     edits[java / "core/TransferRules.java"] = channel_rules((java / "core/TransferRules.java").read_text())
     edits[root / "tools/R16RegressionTests.java"] = channel_regressions((root / "tools/R16RegressionTests.java").read_text())
-    owned_fixtures = []
+    safety = item_safety_edits(root)
+    safety[java / "TransferEngine.java"] = safe_item_engine(edits[java / "TransferEngine.java"])
+    edits.update(safety)
+    owned_fixtures = [path for path in safety if path.name != "TransferEngine.java"]
     if args.minecraft in {"1.20.1", "1.20.2", "1.20.4"}:
         bootstrap = root / "src/portTest/java/net/foundations/pl4/PLPortTestMod.java"
         text = bootstrap.read_text()
@@ -66,6 +70,8 @@ def main():
                   measured_performance_acceptance="PENDING_FOR_THIS_CANDIDATE",
                   migration_acceptance="PENDING_FOR_THIS_CANDIDATE",
                   further_api_testing_required=True,
+                  item_provider_uncertainty="PERSISTENT_QUARANTINE_AND_SAVED_PART_PAYLOAD",
+                  candidate_item_safety_validation="PENDING",
                   release_notes=f"docs/releases/{VERSION}.md",
                   performance_baseline="indexed-network-membership-and-cycle-endpoint-keys")
     status["candidate_native_validation"] = "PENDING"
@@ -78,7 +84,9 @@ def main():
         "Includes topology-owned network membership/storage indexes and per-cycle endpoint identity reuse. "
         "The compact Wireless Storage layout fix is carried forward. "
         "Transfer status uses the same channel/direction decision as actual routing. "
-        "Target-specific loader APIs are retained. Gameplay routing, rates, filters, ownership and saved data are unchanged.\n\n"
+        "Foreign item mutations now persist uncertainty before executing; interrupted or invalid results remain quarantined across reloads and part removal. "
+        "Saved item escrow preserves full integer counts and unresolved payloads. Existing healthy saves keep their values. "
+        "Target-specific loader APIs, routing, rates, filters and ownership are retained. These additive safety fields require forward migration acceptance; do not downgrade a world with unresolved transactions.\n\n"
         "Native build/scenario evidence must identify this exact source and artifact. Installed optional providers, actual client UI, "
         "live multiplayer, world migration and repeatable large-network performance acceptance remain open. "
         "No measured TPS/MSPT or memory improvement is claimed. Legacy subset ports do not inherit these changes or their results.\n")
