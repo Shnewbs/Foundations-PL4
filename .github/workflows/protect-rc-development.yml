@@ -1,0 +1,44 @@
+name: Protect unpublished RC development builds
+on:
+  workflow_run:
+    workflows: ['Align and validate all RC development ports']
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  protect:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        branch: ['main', 'mc/1.14.4', 'mc/1.15.2', 'mc/1.16.1', 'mc/1.16.2', 'mc/1.16.3', 'mc/1.16.4', 'mc/1.16.5', 'mc/1.17.1', 'mc/1.18.1', 'mc/1.18.2', 'mc/1.19', 'mc/1.19.1', 'mc/1.19.2', 'mc/1.19.3', 'mc/1.19.4', 'mc/1.20', 'mc/1.20.1', 'mc/1.20.2', 'mc/1.20.4', 'mc/26.1.2', 'mc/26.3']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+          path: port
+      - name: Preserve development classification in automatic publishers
+        env:
+          TARGET_BRANCH: ${{ matrix.branch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! python3 -c 'import json,sys; sys.exit(json.load(open("port/BUILD_STATUS.json")).get("release_channel") != "development")'; then
+            exit 0
+          fi
+          python3 control/tools/ports/guard_development_publication.py port
+          cd port
+          parent=$(git rev-parse HEAD)
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Keep RC development snapshots out of automatic release publication'
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
