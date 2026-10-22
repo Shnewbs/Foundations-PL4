@@ -7,6 +7,8 @@
 | API / integration | Existing automated coverage | Further installed testing required |
 |---|---|---|
 | Target-native item/fluid/energy access | Native vanilla inventory routes, bounds, persistent escrow and transfer rules; 26.x has its own transfer adapters | Sided modded wrappers, capability replacement, full destinations, inaccurate simulation, unload/reload and repeated delivery |
+| Item-provider mutation failures | Native post-insertion exception case, retained quarantine, actual variant/remainder checks and full-count save/reload; legacy sealed-receipt removal checks | Exact installed wrappers, save/restart during faults and manual reconciliation; uncertain transactions do not retry automatically |
+| Legacy readers and four-line displays | 120 scenarios per 1.12.2/1.6.4 candidate; loaded/owned/sided read-only sampling, bounded scans, private projection and generated preview.3 world upgrades | Actual client rendering, real installed providers, live users and large-network profiles; modern editor/multipart/wireless-storage parity remains incomplete |
 | InfoProviders v1 | Registration limits/lifecycle, bad callbacks, bounded sinks, wrong-dimension rejection, immutable registry diagnostics | Real add-ons, common-setup lifecycle, dedicated server class loading, server-thread use and reload behavior |
 | Mekanism Joules | Synthetic reflected telemetry/transfer and conversion fixtures | Exact installed API version, sided source/sink, simulation agreement and saved escrow |
 | GTCEu EU | Synthetic extraction/insertion, pushed input, voltage and conversion fixtures | Installed voltage/amperage tiers, overvoltage policy, multiblocks and loss/duplication checks |
@@ -16,6 +18,8 @@
 | Other native-energy mods | Standard target API path where implemented | Each installed mod and exposed side; no blanket compatibility certification |
 | Jade / JEI / EMI / KubeJS and version-appropriate alternatives | Existing source only where present | Complete missing features and verify exact ecosystem versions before claiming parity |
 | Wireless Storage 0.2a | Network aggregation, component variants, filters, topology/access revalidation, replay and two simultaneous fake-player sessions in the 0.2a.1 native fixtures | Real storage wrappers, large networks, simultaneous users, reconnects and real-client UI acceptance |
+
+Development item transport persists an uncertainty marker before a foreign extraction or insertion. A normal refusal with a valid remainder remains retryable; an exception or invalid actual result requires inspection. Quarantine survives save/reload and part removal, and cannot be cleared by ordinary route edits. Legacy removal produces a sealed diagnostic receipt; modern removal retains the fault and escrow in the saved part payload. Do not restore uncertain quantities until the provider transaction has been reconciled.
 
 ## Required alternatives when an optional API is unavailable
 

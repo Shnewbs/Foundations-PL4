@@ -1,6 +1,12 @@
 # Foundations PL4 — Multi-version CurseForge publication
 
-Latest recorded upload reconciliation: October 18, 2026. RC source/build preparation was updated October 21; historical sections retain their original snapshot dates.
+Latest recorded upload reconciliation: October 22, 2026. RC source/build preparation was updated October 22; historical sections retain their original snapshot dates.
+
+## October 22 development hardening
+
+No stable RC has been submitted. Both legacy development candidates gained basic readers/displays, persistent item transaction quarantine and 120 passing native scenarios, production-only boots and generated preview.3 world upgrades. All 22 modern targets passed their independent native gates with matching item-fault protection (20 in the common run, two 26.x targets in the repair run). See [current engineering evidence](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md).
+
+The old 1.12.2 branch workflow briefly exposed `mc1.12.2-v0.2.0-rc.1-dev` as a GitHub prerelease; it was returned to a private draft and was not sent to CurseForge. Legacy publishing rejects development maturity, and the CurseForge publisher now excludes development/snapshot/nightly versions from both backfill and explicit submissions. The [October 22 reconciliation](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39776495422) retained **24 existing receipt records, zero failures**. The draft development snapshot is not an additional published RC or a new CurseForge file.
 
 ## October 21 RC preparation
 

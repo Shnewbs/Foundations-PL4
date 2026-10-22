@@ -1,9 +1,23 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Roadmap reconciliation:** October 21, 2026 (America/Los_Angeles); historical sections retain their original snapshot dates.
+**Roadmap reconciliation:** October 22, 2026 (America/Los_Angeles); historical sections retain their original snapshot dates.
 **Current primary-track released baseline:** performance-only `0.2b.0` beta for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** performance betas and alpha/experimental legacy previews. Full Practical Logistics 2 parity remains incomplete. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## October 22 RC hardening and legacy monitoring
+
+The 24 currently published Minecraft target tracks now have `0.2.0-rc.1-dev` source: 22 modern ports and two legacy subsets. The legacy runtimes now include item, fluid, energy and network readers, plus an owner-controlled four-line physical display. Their readers use loaded targets and configured bounds, perform no extraction/insertion, and retain native units (FE on 1.12.2; PL4 internal units on 1.6.4). Displays default to private; publishing the four text lines requires an owner/operator command. This closes the initial monitoring gap but does **not** provide modern graphical editing, multipart or wireless-storage parity.
+
+Both legacy candidates passed **120/120 native scenarios**, separate production-only boots and full process upgrades of generated worlds saved using the checksum-verified immutable `preview.3` JARs. The [legacy gate](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39778867001) checks saved ownership/facing, vanilla inventory, item/fluid/energy escrows, stored quantities and new monitoring on the existing inventory. These results cover the generated baseline worlds; copied user worlds and installed optional mods remain pending.
+
+The transport review found an item duplication risk: a provider could insert items, then throw before PL4 updated escrow, allowing a later automatic retry. Legacy item transport now persists uncertainty before foreign mutations, blocks replay, preserves missing/malformed item records and full uncertain counts, and drops one sealed diagnostic receipt when an affected host is broken. The modern implementation retains quarantine and unresolved data in the saved part payload, fences route edits and validates actual variants/remainders. Healthy refusals remain retryable. The existing destination-failure fixture now mutates first, throws, and requires **no duplicate replay**; fixture counts are unchanged while its assertions are stronger.
+
+All **22 modern exact targets passed** the updated native gate: 20 in [the common run](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528), plus 26.1.2/26.3 in [the targeted repair](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087). The repair preserves 26.x transaction rollback semantics; 26.3 passed 192 fixtures on each validated NeoForge profile. The [24-target metadata audit](docs/RC_DEVELOPMENT_STATUS.json) records each target’s required fixture count and actual passing run. The [1.21.1 source/native gate](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194462) independently passed all 192 fixtures and production/test isolation. Per-port `BUILD_STATUS.json` and retained logs/hashes identify the checked source; one target's result never certifies another port.
+
+An obsolete legacy workflow briefly published the 1.12.2 development snapshot as a GitHub prerelease. It was moved to a **private draft**, with its tag/history retained. Both legacy publishers now reject development versions/channels, and CurseForge selection/staging/upload paths reject development, snapshot and nightly maturity. Eight publication-policy tests and four upload tests passed. The [subsequent CurseForge reconciliation](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39776495422) recorded the existing 24 receipts with zero failures; the development snapshot was not submitted. **No stable RC has been published.**
+
+Remaining work before an all-version stable RC: advanced legacy feature parity; actual client/UI-scale and installed-provider acceptance; real multiplayer; copied user-world migration; repeatable large-network performance measurements; and the documented 1.16.1–1.16.4 launcher-profile acceptance. Unpublished/version-gap targets retain their separate blockers. Build success alone does not close these requirements.
 
 ## October 21 RC development preparation
 
