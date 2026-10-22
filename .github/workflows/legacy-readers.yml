@@ -10,6 +10,25 @@ concurrency:
   group: legacy-reader-development
   cancel-in-progress: false
 jobs:
+  protect_development:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Keep legacy development snapshots as private drafts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json,os,subprocess
+          repo=os.environ['GH_REPO']
+          releases=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases?per_page=100'],text=True))
+          for release in releases:
+              tag=release['tag_name']
+              if tag in {'mc1.12.2-v0.2.0-rc.1-dev','mc1.6.4-v0.2.0-rc.1-dev'} and not release['draft']:
+                  subprocess.run(['gh','api','--method','PATCH',f"repos/{repo}/releases/{release['id']}",'-F','draft=true'],check=True,stdout=subprocess.DEVNULL)
+                  print('Moved unqualified development snapshot to draft:',tag)
+          PY
   native:
     runs-on: ubuntu-latest
     timeout-minutes: 45
