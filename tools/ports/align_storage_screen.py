@@ -1,6 +1,8 @@
 """Port the released compact Wireless Storage layout while retaining native APIs."""
 from pathlib import Path
 import argparse
+import json
+import re
 from align_performance import replace_once
 
 
@@ -36,6 +38,25 @@ def main():
         print("UPDATED", path)
     else:
         print("ALREADY ALIGNED", path)
+    for guide_path, text in guide_edits(args.root).items():
+        if guide_path.read_text() != text:
+            guide_path.write_text(text)
+            print("ALIGNED EDITION", guide_path)
+
+
+def guide_edits(root):
+    status = json.loads((root / "BUILD_STATUS.json").read_text())
+    mc, version = status["minecraft"], status["version"]
+    loader = status.get("loader", "NeoForge" if mc.startswith("26.") or mc == "1.21.1" else "Forge")
+    edition = f"Minecraft {mc} / {loader} / Foundations PL4 {version}"
+    book_path = root / "src/main/resources/assets/foundations_pl4/guide/en_us.json"
+    book = json.loads(book_path.read_text())
+    book["edition"] = edition
+    field_path = root / "docs/FIELD_GUIDE.md"
+    field, count = re.subn(r"^Minecraft[^\n]* / Foundations PL4 [^\n]+$", edition, field_path.read_text(), count=1, flags=re.M)
+    if count != 1:
+        raise ValueError("Missing or ambiguous Markdown field-guide edition")
+    return {book_path: json.dumps(book, indent=2, ensure_ascii=False) + "\n", field_path: field}
 
 
 if __name__ == "__main__":

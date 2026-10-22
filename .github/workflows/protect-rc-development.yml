@@ -56,7 +56,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 control/tools/ports/align_storage_screen.py port
-          if git -C port diff --quiet -- src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java; then
+          if git -C port diff --quiet -- src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -88,9 +88,9 @@ jobs:
           python3 - <<'PYTHON'
           from pathlib import Path
           path=Path('docs/releases/0.2.0-rc.1-dev.md')
-          path.write_text(path.read_text()+'\nCompact Wireless Storage layout aligned with the current NeoForge baseline. It compiled on this target; all other runtime entries were compared byte for byte with the passed native candidate. Installed client visuals still need acceptance.\n')
+          path.write_text(path.read_text()+'\nCompact Wireless Storage layout aligned with the current NeoForge baseline. It compiled on this target; runtime code outside the UI was compared byte for byte with the passed native candidate, and guide edition metadata was checked separately. Installed client visuals still need acceptance.\n')
           PYTHON
-          git add src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java BUILD_STATUS.json docs/releases/0.2.0-rc.1-dev.md
+          git add src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md BUILD_STATUS.json docs/releases/0.2.0-rc.1-dev.md
           git commit -m 'Carry compact storage UI fix forward with native runtime byte parity'
           git push origin "HEAD:$TARGET_BRANCH"
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt

@@ -6,7 +6,7 @@ import re
 import subprocess
 import sys
 from align_performance import network, transfers
-from align_storage_screen import screen
+from align_storage_screen import screen, guide_edits
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -68,6 +68,8 @@ def main():
         "No measured TPS/MSPT or memory improvement is claimed. Legacy subset ports do not inherit these changes or their results.\n")
     for path, content in edits.items():
         path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+    for path, content in guide_edits(root).items():
         path.write_text(content)
     subprocess.run([sys.executable, str(Path(__file__).with_name("guard_development_publication.py")), str(root)], check=True)
     print(f"Prepared {args.minecraft} {VERSION}; publication remains blocked on RC acceptance")

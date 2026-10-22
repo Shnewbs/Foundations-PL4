@@ -1,8 +1,5 @@
 name: Align and validate all RC development ports
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/rc-development.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -119,7 +116,7 @@ jobs:
           test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/main/java/net/foundations/pl4/NetworkEngine.java src/main/java/net/foundations/pl4/TransferEngine.java build.gradle BUILD_STATUS.json release-version.txt docs/releases/0.2.0-rc.1-dev.md
+          git add src/main/java/net/foundations/pl4/NetworkEngine.java src/main/java/net/foundations/pl4/TransferEngine.java src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md build.gradle BUILD_STATUS.json release-version.txt docs/releases/0.2.0-rc.1-dev.md .github/workflows/
           if ! git diff --cached --quiet; then
             git commit -m 'Align validated RC development performance baseline; acceptance still pending'
             git push origin "HEAD:$TARGET_BRANCH"

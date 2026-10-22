@@ -48,7 +48,7 @@ def main():
     if result.returncode:
         raise ValueError("Compact UI build failed")
     current = root / "build/libs" / name
-    changes, compared = [], 0
+    changes, metadata, compared = [], [], 0
     with zipfile.ZipFile(old[0]) as before, zipfile.ZipFile(current) as after:
         names = set(before.namelist()) | set(after.namelist())
         for entry in sorted(names):
@@ -59,23 +59,32 @@ def main():
             if a == b:
                 compared += 1
                 continue
+            if entry == "assets/foundations_pl4/guide/en_us.json" and a is not None and b is not None:
+                old_book, new_book = json.loads(a), json.loads(b)
+                old_book.pop("edition")
+                edition = new_book.pop("edition")
+                if old_book != new_book or not edition.endswith("Foundations PL4 " + version):
+                    raise ValueError("Guide changes exceed the candidate edition metadata")
+                metadata.append(entry)
+                continue
             if not (entry.startswith("net/foundations/pl4/client/WirelessStorageScreen") and entry.endswith(".class")):
                 raise ValueError("A non-UI runtime entry changed; full native revalidation required: " + entry)
             changes.append(entry)
     if not changes or compared < 100:
         raise ValueError("Invalid UI-only comparison or missing production runtime")
     report = {"minecraft": mc, "version": version, "compact_ui_compilation": "PASS",
-              "non_ui_runtime_entries_byte_identical_to_native_baseline": compared,
+              "unchanged_runtime_entries_byte_identical_to_native_baseline": compared,
+              "guide_edition_metadata_changes": metadata,
               "changed_client_classes": changes, "native_baseline_run": run_id,
               "native_baseline_artifact": artifact["id"], "native_baseline_sha256": digest,
               "updated_runtime_sha256": hashlib.sha256(current.read_bytes()).hexdigest(),
               "actual_client_visual_acceptance": "PENDING", "rc_publication_cleared": False}
     (logs / "compact-ui-parity.json").write_text(json.dumps(report, indent=2) + "\n")
     status.update(compact_storage_ui_source_parity="PASS", compact_ui_compilation="PASS",
-                  native_baseline_artifact=artifact["id"], non_ui_runtime_byte_parity="PASS",
+                  native_baseline_artifact=artifact["id"], non_ui_runtime_byte_parity="PASS_EXCEPT_VERIFIED_GUIDE_EDITION",
                   ui_parity_workflow_run=os.environ.get("GITHUB_RUN_ID"))
     (root / "BUILD_STATUS.json").write_text(json.dumps(status, indent=2) + "\n")
-    print("PASS compact UI compilation; all non-UI runtime entries match the native-tested baseline")
+    print("PASS compact UI compilation; other runtime code matches the native baseline and only guide edition metadata changes")
 
 
 if __name__ == "__main__":
