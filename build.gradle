@@ -10,6 +10,7 @@ archivesBaseName='FoundationsPL4-1.12.2'
 sourceCompatibility=targetCompatibility='1.8'
 sourceSets {
     main { java.srcDirs=['src/legacy/java']; resources.srcDirs=['src/legacy/resources'] }
+    migrationTest { java.srcDirs=['src/migrationTest/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyRules { java.srcDirs=['tools']; java.include 'CoreChecks.java','FluidChecks.java','EnergyChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
 }
@@ -56,3 +57,8 @@ check.dependsOn legacyRules
 build.dependsOn sourcesJar
 if(project.hasProperty('legacyScenarios')) tasks.matching { it.name=='runServer' }.all { dependsOn legacyTestClasses }
 tasks.withType(AbstractArchiveTask).all { preserveFileTimestamps=false; reproducibleFileOrder=true }
+
+task migrationTestJar(type:Jar) { dependsOn migrationTestClasses; from sourceSets.migrationTest.output; classifier='migration-scenarios' }
+reobf { migrationTestJar { classpath=sourceSets.migrationTest.compileClasspath } }
+migrationTestJar.finalizedBy reobfMigrationTestJar
+build.dependsOn migrationTestJar
