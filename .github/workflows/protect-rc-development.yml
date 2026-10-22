@@ -1,5 +1,8 @@
 name: Protect unpublished RC development builds
 on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/protect-rc-development.yml']
   workflow_run:
     workflows: ['Align and validate all RC development ports', 'Repair failed RC development port gates']
     types: [completed]
@@ -21,6 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           path: control
       - uses: actions/checkout@v4
         with:
@@ -38,17 +42,7 @@ jobs:
             exit 0
           fi
           echo "development=true" >> "$GITHUB_OUTPUT"
-          python3 control/tools/ports/guard_development_publication.py port
-          cd port
-          parent=$(git rev-parse HEAD)
-          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .github/workflows/
-          if ! git diff --cached --quiet; then
-            git commit -m 'Keep RC development snapshots out of automatic release publication'
-            git push origin "HEAD:$TARGET_BRANCH"
-          fi
+          echo 'Development runtime publication is controlled by the repository workflow maturity gates.'
       - name: Carry forward the released compact storage layout
         id: layout
         if: steps.maturity.outputs.development == 'true'

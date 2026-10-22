@@ -47,7 +47,12 @@ def guarded(text):
             lines.insert(end, READ)
             group = "".join(lines)
         out.append(group)
-    return "".join(out)
+    result = "".join(out)
+    # Workflow maintenance does not change the runtime and should not rerun
+    # every native suite. Runtime/source pushes still take the normal gates.
+    if "  push:\n" in result and "    paths:" not in result and "    paths-ignore:" not in result:
+        result = result.replace("  push:\n", "  push:\n    paths-ignore: ['.github/workflows/**']\n", 1)
+    return result
 
 
 def main():

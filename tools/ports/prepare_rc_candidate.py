@@ -4,7 +4,6 @@ import argparse
 import json
 import re
 import subprocess
-import sys
 from align_performance import network, transfers
 from align_storage_screen import screen, guide_edits
 
@@ -69,9 +68,13 @@ def main():
     for path, content in edits.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
-    for path, content in guide_edits(root).items():
+    guides = guide_edits(root)
+    for path, content in guides.items():
         path.write_text(content)
-    subprocess.run([sys.executable, str(Path(__file__).with_name("guard_development_publication.py")), str(root)], check=True)
+    # Older retained controllers stage Java/status paths explicitly. Keep the
+    # versioned resources they compile in their exact-source archive as well.
+    if (root / ".git").exists():
+        subprocess.run(["git", "add", "--"] + [str(p.resolve()) for p in guides], cwd=root, check=True)
     print(f"Prepared {args.minecraft} {VERSION}; publication remains blocked on RC acceptance")
 
 
