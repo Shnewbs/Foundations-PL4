@@ -1,6 +1,7 @@
 name: Forge 1.14.4 native port investigation
 on:
   push:
+    paths-ignore: ['.github/workflows/**']
     branches: [mc/1.14.4]
   workflow_dispatch:
 permissions:
@@ -16,6 +17,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Read publication maturity from exact checked-out source
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          status = json.loads(Path('BUILD_STATUS.json').read_text())
+          allowed = status.get('release_channel') != 'development' and not status['version'].endswith('-dev')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
+          PY
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -69,6 +81,7 @@ jobs:
           set -euo pipefail
           python3 tools/production_smoke_1144.py 2>&1 | tee verification-logs/production-smoke-step.log
       - name: Publish only when independent Forge28 runtime checks both pass
+        if: env.PL4_ALLOW_PUBLICATION == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
