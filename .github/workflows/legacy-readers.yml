@@ -75,6 +75,10 @@ jobs:
           else
             python3 tools/production_smoke_164.py
           fi
+      - name: Verify saved preview.3 world upgrade with exact packaged JARs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/verify_legacy_upgrade.py
       - name: Record only passing exact-source native evidence
         env:
           TARGET_BRANCH: mc/${{ matrix.minecraft }}
@@ -92,6 +96,10 @@ jobs:
           assert native['total']==native['passed']==status['expected_native_scenarios']==112
           assert native['failed']==0 and native['runtime_sha256']==smoke['runtime_sha256']
           assert smoke['production_only_startup']==smoke['clean_stop']=='PASS'
+          migration=json.loads(Path('verification-logs/legacy-migration-summary.json').read_text())
+          assert migration['generated_preview3_world_upgrade']=='PASS'
+          assert migration['candidate_runtime_sha256']==native['runtime_sha256']
+          status.update(generated_world_migration_acceptance='PASS_PREVIEW3_TO_CANDIDATE',migration_workflow_run=os.environ['GITHUB_RUN_ID'])
           status.update(candidate_native_validation='PASS',candidate_workflow_run=os.environ['GITHUB_RUN_ID'],
               candidate_source_commit=smoke['source_commit'],candidate_runtime_sha256=smoke['runtime_sha256'],
               production_smoke='PASS_FOR_THIS_CANDIDATE',rc_publication_cleared=False)
