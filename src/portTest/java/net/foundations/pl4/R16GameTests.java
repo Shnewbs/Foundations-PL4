@@ -29,7 +29,7 @@ public final class R16GameTests {
         ChestTileEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
-        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -98,7 +98,10 @@ public final class R16GameTests {
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).getCount()==17&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),"Different channels cannot extract or deliver");
         sink.inputChannel="ore";TransferEngine.run(h.getLevel().getServer(),plan);
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Matching live channel works without rebuilding plan");
+
+        source.itemTransferFault="Interrupted item insertion";source.pendingItem=new ItemStack(Items.DIAMOND,4096);
         var restored=Part.load(source.save(null,false),null);
+        if(!ItemTransferSafety.blocked(restored)||restored.pendingItem.getCount()!=4096||restored.routeEditable())throw new IllegalStateException("Item quarantine/count must survive native save reload");
         net.foundations.pl4.compat.PortAssertions.check(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
     }
 
@@ -319,4 +322,24 @@ public final class R16GameTests {
         emitter.owner=OWNER;net.foundations.pl4.compat.PortAssertions.check(ComponentLinks.add(f.player(),f.host(),receiver,link),"Owned matching emitter can be selected");h.succeed();
     }
 
+
+    private static void itemQuarantineChecks(NetworkEngine.Ref owner){
+        Part p=owner.part();p.pendingItem=new ItemStack(Items.DIAMOND,8);int[] calls={0};
+        boolean failed=false;
+        try{ItemTransferSafety.insert(owner,p.pendingItem.copy(),()->{calls[0]++;throw new IllegalStateException("provider after mutation");});}catch(IllegalStateException expected){failed=true;}
+        if(!failed||!ItemTransferSafety.blocked(p)||calls[0]!=1)throw new IllegalStateException("Uncertain insertion must persist quarantine");
+        try{ItemTransferSafety.insert(owner,p.pendingItem.copy(),()->{calls[0]++;return ItemStack.EMPTY;});throw new AssertionError("Quarantine was replayed");}catch(IllegalStateException expected){}
+        if(calls[0]!=1)throw new IllegalStateException("Quarantined provider must not be called again");
+        p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;
+        try{ItemTransferSafety.extract(owner,new ItemStack(Items.DIAMOND,8),8,()->new ItemStack(Items.EMERALD,8));throw new AssertionError("Wrong variant accepted");}catch(IllegalStateException expected){}
+        if(!ItemTransferSafety.blocked(p)||p.pendingItem.getItem()!=Items.EMERALD||p.pendingItem.getCount()!=8)throw new IllegalStateException("Unexpected extraction retained without forwarding");
+        p.itemTransferFault="";p.pendingItem=new ItemStack(Items.DIAMOND,8);
+        try{ItemTransferSafety.insert(owner,p.pendingItem.copy(),()->new ItemStack(Items.EMERALD,1));throw new AssertionError("Malformed remainder accepted");}catch(IllegalStateException expected){}
+        if(!ItemTransferSafety.blocked(p))throw new IllegalStateException("Invalid actual remainder must stay quarantined");
+        p.itemTransferFault="";
+        ItemStack refused=ItemTransferSafety.insert(owner,p.pendingItem.copy(),()->p.pendingItem.copy());
+        if(refused.getCount()!=8)throw new IllegalStateException("Healthy refusal loses escrow");ItemTransferSafety.completed(owner);
+        if(ItemTransferSafety.blocked(p)||p.pendingItem.getCount()!=8)throw new IllegalStateException("Healthy refusal must allow a later retry");
+        p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
+    }
 }
