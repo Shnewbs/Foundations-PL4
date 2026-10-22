@@ -64,10 +64,11 @@ def plan(root: Path, version: str) -> dict[Path, str]:
     protocol = re.findall(r'event\.registrar\("(\d+)"\)', packet)
     if len(protocol) != 1:
         raise ValueError('Expected exactly one literal payload protocol')
-    registered = re.findall(r'e\.register\((\w+)\.class\)', (source / 'PLGameTests.java').read_text(encoding='utf-8'))
+    native_source = root / 'src/portTest/java/net/foundations/pl4'
+    registered = re.findall(r'e\.register\((\w+)\.class\)', (native_source / 'PLGameTests.java').read_text(encoding='utf-8'))
     if not registered or len(set(registered)) != len(registered):
         raise ValueError('Missing or duplicate native test registrations')
-    count = sum((source / (name + '.java')).read_text(encoding='utf-8').count('@GameTest(') for name in registered)
+    count = sum((native_source / (name + '.java')).read_text(encoding='utf-8').count('@GameTest(') for name in registered)
     if count <= 0:
         raise ValueError('No registered native tests found')
     status_path = root / 'BUILD_STATUS.json'

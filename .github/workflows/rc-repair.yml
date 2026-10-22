@@ -86,7 +86,7 @@ jobs:
           test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/main/java/net/foundations/pl4/NetworkEngine.java src/main/java/net/foundations/pl4/TransferEngine.java src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md build.gradle BUILD_STATUS.json release-version.txt docs/releases/0.2.0-rc.1-dev.md .github/workflows/
+          git add src/main/java/net/foundations/pl4/core/TransferRules.java tools/R16RegressionTests.java src/main/java/net/foundations/pl4/NetworkEngine.java src/main/java/net/foundations/pl4/TransferEngine.java src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md build.gradle BUILD_STATUS.json release-version.txt docs/releases/0.2.0-rc.1-dev.md .github/workflows/
           git commit -m 'Validate RC development baseline with the correct isolated native harness'
           git push origin "HEAD:$TARGET_BRANCH"
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt

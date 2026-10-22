@@ -88,6 +88,8 @@ def main():
     status.update(port_status="RC_DEVELOPMENT_NATIVE_GATE_PASSED", native_compilation="PASS_FOR_THIS_CANDIDATE",
                   candidate_native_validation="PASS", candidate_workflow_run=os.environ.get("GITHUB_RUN_ID"),
                   rc_publication_cleared=False)
+    if mc == "1.21.1" and (root / "src/portTest").is_dir():
+        status["native_test_isolation"] = "PASS"
     status_path.write_text(json.dumps(status, indent=2) + "\n")
     print("PASS native candidate gate; RC publication acceptance remains open", flush=True)
 

@@ -3,6 +3,7 @@ import re
 import json
 R=Path(__file__).resolve().parents[1]
 def read(p):return (R/p).read_text()
+def native(name):return read('src/portTest/java/net/foundations/pl4/'+name)
 engine=read('src/main/java/net/foundations/pl4/TransferEngine.java')
 rules=read('src/main/java/net/foundations/pl4/core/TransferRules.java')
 partscreen=read('src/main/java/net/foundations/pl4/client/PartScreen.java')
@@ -24,8 +25,8 @@ checks={
  'normal node guide':'normal Node' in body and 'passive endpoint' in body,
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
- 'R16 native tests registered':'e.register(R16GameTests.class)' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
- 'thirty transfer, automation and network storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@GameTest(')==30,
+ 'R16 native tests registered':'e.register(R16GameTests.class)' in native('PLGameTests.java'),
+ 'thirty transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==30,
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }

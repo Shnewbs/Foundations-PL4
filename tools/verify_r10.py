@@ -56,7 +56,7 @@ def check_guide(root):
 
 def check_wiring(root):
     j=root/'src/main/java/net/foundations/pl4'
-    source=lambda p:(j/p).read_text()
+    source=lambda p:((root/'src/portTest/java/net/foundations/pl4'/p) if p.endswith('GameTests.java') else (j/p)).read_text()
     guide=source('client/GuideScreen.java');renderer=source('client/HostRenderer.java');painter=source('client/DisplayPainter.java');editor=source('client/DisplayEditorScreen.java')
     assert 'GuideNavigation.section(book,category,chapter)' in guide
     assert 'category=chapter.category()' in guide and 'savedOnly=false' in guide

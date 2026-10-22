@@ -6,24 +6,74 @@ version = '0.2.0-rc.1-dev'
 group = 'net.foundations.pl4'
 base { archivesName = 'FoundationsPL4-1.21.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+sourceSets {
+    main {
+        java.exclude '**/*GameTests.java'
+        resources.exclude 'data/foundations_pl4/structure/empty.nbt'
+    }
+    portTest {
+        resources.exclude 'META-INF/neoforge.mods.toml'
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath + sourceSets.main.runtimeClasspath
+    }
+}
 neoForge {
-    version = '21.1.250'
+    enable {
+        version = '21.1.250'
+        disableRecompilation = true
+    }
+    addModdingDependenciesTo sourceSets.portTest
+    mods {
+        foundations_pl4 { sourceSet sourceSets.main; sourceSet sourceSets.portTest }
+    }
     runs {
         client { client() }
         server { server(); programArgument '--nogui' }
-        gameTestServer { type = 'gameTestServer'; systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4' }
+        gameTestServer {
+            type = 'gameTestServer'
+            loadedMods = [mods.foundations_pl4]
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'foundations_pl4'
+            systemProperty 'foundations_pl4.native_tests', 'true'
+        }
         configureEach { logLevel = org.slf4j.event.Level.INFO }
     }
-    mods { foundations_pl4 { sourceSet sourceSets.main } }
 }
 repositories { mavenCentral() }
 dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'; testRuntimeOnly 'org.junit.platform:junit-platform-launcher' }
 test { useJUnitPlatform() }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-jar { from('LICENSE'); manifest { attributes('Implementation-Version': project.version) } }
+jar {
+    from('LICENSE')
+    exclude '**/*GameTests*.class', '**/PLPortTestMod*.class', 'data/foundations_pl4/structure/empty.nbt'
+    manifest { attributes('Implementation-Version': project.version) }
+}
 processResources {
     inputs.property 'version', project.version
     filesMatching('META-INF/neoforge.mods.toml') { expand 'version': project.version }
+}
+tasks.register('nativeScenarioJar', Jar) {
+    dependsOn tasks.named('portTestClasses')
+    archiveClassifier = 'native-scenarios'
+    from sourceSets.portTest.output
+}
+tasks.register('verifyNativeIsolation') {
+    dependsOn tasks.named('jar'), tasks.named('nativeScenarioJar')
+    doLast {
+        def runtime = tasks.named('jar').get().archiveFile.get().asFile
+        def scenarios = tasks.named('nativeScenarioJar').get().archiveFile.get().asFile
+        new java.util.zip.ZipFile(runtime).withCloseable { zip ->
+            def leaked = zip.entries().findAll { it.name.contains('GameTests') || it.name.contains('PLPortTestMod') || it.name.contains('PortAssertions') }.collect { it.name }
+            if (!leaked.empty) throw new GradleException('Native fixture leaked into production JAR: ' + leaked.join(', '))
+        }
+        new java.util.zip.ZipFile(scenarios).withCloseable { zip ->
+            if (zip.getEntry('net/foundations/pl4/PLPortTestMod.class') == null ||
+                zip.getEntry('net/foundations/pl4/PLGameTests.class') == null ||
+                zip.getEntry('data/foundations_pl4/structure/empty.nbt') == null ||
+                zip.getEntry('META-INF/neoforge.mods.toml') != null)
+                throw new GradleException('Native scenario JAR is incomplete')
+        }
+        logger.lifecycle('PASS: production JAR excludes native fixtures; development scenario classes and template are complete.')
+    }
 }
 
 // A release cannot silently regain the old external core/multipart runtime dependencies.
@@ -50,23 +100,7 @@ tasks.register('verifyStandalone') {
         logger.lifecycle('PASS: Foundations PL4 is one JAR with no Sonar Core or MCMultiPart bytecode dependencies.')
     }
 }
-// Keep the published status file aligned with the exact compiled revision and native gate.
-tasks.register('verifyBuildStatus') {
-    inputs.file('BUILD_STATUS.json')
-    inputs.files(fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' })
-    doLast {
-        def status = new groovy.json.JsonSlurper().parse(file('BUILD_STATUS.json'))
-        def fixtures = fileTree('src/main/java/net/foundations/pl4') { include '*GameTests.java' }.files
-        def count = fixtures.sum { file -> file.getText('UTF-8').findAll(/@GameTest\(/).size() } ?: 0
-        def notes = file("docs/releases/${project.version}.md")
-        if (status.minecraft != '1.21.1' || status.version != project.version ||
-                status.expected_native_tests != count || status.release_notes != "docs/releases/${project.version}.md" ||
-                !notes.isFile())
-            throw new GradleException("BUILD_STATUS.json or release notes do not match 1.21.1 ${project.version} and ${count} native fixtures")
-        logger.lifecycle("PASS: BUILD_STATUS.json matches ${count} native fixtures and release notes")
-    }
-}
-tasks.named('build') { dependsOn tasks.named('verifyStandalone'), tasks.named('verifyBuildStatus') }
+tasks.named('build') { dependsOn tasks.named('verifyStandalone'), tasks.named('verifyNativeIsolation') }
 tasks.named('jar') { from('LICENSE-SonarCore'); from('NOTICE') }
 apply from: 'gradle/verify-client-assets.gradle'
 
@@ -103,3 +137,20 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 apply from: 'gradle/verify-energy-conversion.gradle'
+
+// Status counts the isolated fixtures compiled by the native source set.
+tasks.register('verifyBuildStatus') {
+    inputs.file('BUILD_STATUS.json')
+    inputs.files(fileTree('src/portTest/java/net/foundations/pl4') { include '*GameTests.java' })
+    doLast {
+        def status = new groovy.json.JsonSlurper().parse(file('BUILD_STATUS.json'))
+        def fixtures = fileTree('src/portTest/java/net/foundations/pl4') { include '*GameTests.java' }.files
+        def count = fixtures.sum { file -> file.getText('UTF-8').findAll(/@GameTest\(/).size() } ?: 0
+        def notes = file("docs/releases/${project.version}.md")
+        if (status.minecraft != '1.21.1' || status.version != project.version || status.expected_native_tests != count ||
+                status.release_notes != "docs/releases/${project.version}.md" || !notes.isFile())
+            throw new GradleException("BUILD_STATUS.json or notes do not match 1.21.1 ${project.version} and ${count} isolated native fixtures")
+        logger.lifecycle("PASS: BUILD_STATUS.json matches ${count} isolated native fixtures")
+    }
+}
+tasks.named('build') { dependsOn tasks.named('verifyBuildStatus') }

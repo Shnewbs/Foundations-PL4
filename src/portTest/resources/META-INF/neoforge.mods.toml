@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="foundations_pl4_native_tests"
+version="${version}"
+displayName="Foundations PL4 Native Scenarios"
+description='''Installed server test fixtures for Foundations PL4. Never install with a production release.'''
+[[dependencies.foundations_pl4_native_tests]]
+modId="foundations_pl4"
+type="required"
+versionRange="[${version}]"
+ordering="AFTER"
+side="SERVER"
+[[dependencies.foundations_pl4_native_tests]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.250,21.2)"
+ordering="NONE"
+side="SERVER"

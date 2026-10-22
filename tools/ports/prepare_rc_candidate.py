@@ -6,6 +6,7 @@ import re
 import subprocess
 from align_performance import network, transfers
 from align_storage_screen import screen, guide_edits
+from align_channel_status import engine as channel_engine, rules as channel_rules, regressions as channel_regressions
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -25,6 +26,9 @@ def main():
              [("NetworkEngine.java", network), ("TransferEngine.java", transfers)]}
     ui_path = java / "client/WirelessStorageScreen.java"
     edits[ui_path] = screen(ui_path.read_text())
+    edits[java / "TransferEngine.java"] = channel_engine(edits[java / "TransferEngine.java"])
+    edits[java / "core/TransferRules.java"] = channel_rules((java / "core/TransferRules.java").read_text())
+    edits[root / "tools/R16RegressionTests.java"] = channel_regressions((root / "tools/R16RegressionTests.java").read_text())
     build_path = root / "build.gradle"
     build, count = re.subn(r"^version\s*=\s*'[^']+'", "version = '" + VERSION + "'", build_path.read_text(), count=1, flags=re.M)
     if count != 1:
@@ -53,6 +57,7 @@ def main():
                   further_api_testing_required=True,
                   release_notes=f"docs/releases/{VERSION}.md",
                   performance_baseline="indexed-network-membership-and-cycle-endpoint-keys")
+    status["candidate_native_validation"] = "PENDING"
     edits[status_path] = json.dumps(status, indent=2) + "\n"
     edits[root / "release-version.txt"] = VERSION + "\n"
     notes = root / "docs/releases" / (VERSION + ".md")
@@ -61,6 +66,7 @@ def main():
         "Unpublished development build preparing a common performance baseline. This is not a stable release or a cleared release candidate.\n\n"
         "Includes topology-owned network membership/storage indexes and per-cycle endpoint identity reuse. "
         "The compact Wireless Storage layout fix is carried forward. "
+        "Transfer status uses the same channel/direction decision as actual routing. "
         "Target-specific loader APIs are retained. Gameplay routing, rates, filters, ownership and saved data are unchanged.\n\n"
         "Native build/scenario evidence must identify this exact source and artifact. Installed optional providers, actual client UI, "
         "live multiplayer, world migration and repeatable large-network performance acceptance remain open. "

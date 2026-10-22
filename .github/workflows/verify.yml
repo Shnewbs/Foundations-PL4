@@ -35,7 +35,9 @@ jobs:
           python3 tools/run_offline_checks.py 2>&1 | tee verification-logs/offline.log
       - name: Compile and run native GameTests
         shell: bash
-        run: bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+        run: |
+          bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
+          python3 tools/verify_native_run_log.py verification-logs/native.log
       - name: Preserve verification results
         if: always()
         uses: actions/upload-artifact@v4

@@ -17,7 +17,7 @@ class VersionTests(unittest.TestCase):
             'docs/FIELD_GUIDE.md': '# Guide\n' + edition + '\nUnchanged content\n',
             'src/main/resources/assets/foundations_pl4/guide/en_us.json': json.dumps({'edition': edition, 'chapters': ['unchanged']}),
             'src/main/java/net/foundations/pl4/PLPackets.java': 'event.registrar("5");',
-            'src/main/java/net/foundations/pl4/PLGameTests.java': 'e.register(PLGameTests.class); @GameTest(',
+            'src/portTest/java/net/foundations/pl4/PLGameTests.java': 'e.register(PLGameTests.class); @GameTest(',
             'BUILD_STATUS.json': json.dumps({'version': '0.1b', 'further_api_testing_required': False}),
             'README.md': '# PL4 0.1b\n',
         }
