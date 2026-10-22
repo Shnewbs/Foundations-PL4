@@ -16,6 +16,10 @@ public final class LegacyBlock extends BlockContainer {
     @Override public boolean onBlockActivated(World world,int x,int y,int z,EntityPlayer player,int side,float hitX,float hitY,float hitZ){
         if(world.isRemote)return true;TileEntity raw=world.getBlockTileEntity(x,y,z);if(!(raw instanceof LegacyTile))return false;LegacyTile tile=(LegacyTile)raw;
         if(!tile.canEdit(player)){player.addChatMessage("PL4: This host belongs to another player.");return true;}
+        if(role==LegacyReadings.DISPLAY){
+            if(player.isSneaking())tile.displayFacing=LegacyReadings.horizontal(side);else tile.readerIndex=(tile.readerIndex+1)%4096;
+            tile.displayChanged();player.addChatMessage(tile.describe()+" | /pl4legacy display x y z show|hide; ordinary click selects next reader.");return true;
+        }
         if(LegacyEnergyPlatform.interact(tile,player,player.getCurrentEquippedItem())){player.addChatMessage(tile.describe()+" | Sneak-click empty-handed to crank; 10-tick cooldown.");return true;}
         if(LegacyFluidPlatform.interact(tile,player,player.getCurrentEquippedItem())){player.addChatMessage(tile.describe());return true;}
         if(player.isSneaking()&&role!=0&&role!=5&&role!=8&&side>=0&&side<6){tile.side=side;tile.onInventoryChanged();}player.addChatMessage(tile.describe());player.addChatMessage("Sneak-click a node face to select adjacent inventory; /pl4legacy recipes lists registered recipes.");return true;

@@ -1,1 +1,12 @@
-[{"modid":"foundations_pl4","name":"Foundations PL4 - Experimental Legacy Preview","version":"${version}","mcversion":"1.6.4","description":"Initial item transport subset, not full modern parity. Further API testing is still required.","authorList":["Foundations"]}]
+[
+  {
+    "modid": "foundations_pl4",
+    "name": "Foundations PL4 - Legacy Development",
+    "version": "${version}",
+    "mcversion": "1.6.4",
+    "description": "Native item/fluid/energy transport, bounded read-only readers and owner-controlled four-line displays. Advanced editing, multipart and wireless-storage parity remain in development.",
+    "authorList": [
+      "Foundations"
+    ]
+  }
+]

@@ -14,12 +14,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 /** Experimental native 1.6.4 transport subset. No modern source is loaded. */
 @Mod(modid=LegacyPL4.ID,name="Foundations PL4 Legacy Preview",version=LegacyPL4.VERSION,acceptedMinecraftVersions="[1.6.4]")
-@cpw.mods.fml.common.network.NetworkMod(clientSideRequired=true,serverSideRequired=true,versionBounds="[0.2a-legacy-preview.3]")
+@cpw.mods.fml.common.network.NetworkMod(clientSideRequired=true,serverSideRequired=true,versionBounds="[0.2.0-rc.1-dev]")
 public final class LegacyPL4 {
-    public static final String ID="foundations_pl4",VERSION="0.2a-legacy-preview.3";
+    public static final String ID="foundations_pl4",VERSION="0.2.0-rc.1-dev";
     public static LegacyBlock CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK;
     public static Item FLUID_CELL,ENERGY_CELL;
     public static LegacyBlock ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER;
+    public static LegacyBlock ITEM_READER,FLUID_READER,ENERGY_READER,NETWORK_READER,DISPLAY;
+    @cpw.mods.fml.common.SidedProxy(clientSide="net.foundations.pl4.legacy.LegacyClientProxy",serverSide="net.foundations.pl4.legacy.LegacyProxy")
+    public static LegacyProxy proxy;
     public static int interval=10,itemRate=8,nodeLimit=256,slotLimit=256;
     public static boolean enabled=true,fluidsEnabled=true;
     public static int fluidRate=250;
@@ -30,13 +33,18 @@ public final class LegacyPL4 {
         int cable=config.getBlock("legacyCable",3500).getInt(),export=config.getBlock("legacyExport",3501).getInt(),sink=config.getBlock("legacyImport",3502).getInt();
         int fluidExport=config.getBlock("legacyFluidExport",3503).getInt(),fluidImport=config.getBlock("legacyFluidImport",3504).getInt(),tank=config.getBlock("legacyTank",3505).getInt();
         int energyExport=config.getBlock("legacyEnergyExport",3506).getInt(),energyImport=config.getBlock("legacyEnergyImport",3507).getInt(),energyBuffer=config.getBlock("legacyEnergyBuffer",3508).getInt();
+        int item_reader=config.getBlock("item_reader",3509).getInt();
+        int fluid_reader=config.getBlock("fluid_reader",3510).getInt();
+        int energy_reader=config.getBlock("energy_reader",3511).getInt();
+        int network_reader=config.getBlock("network_reader",3512).getInt();
+        int display=config.getBlock("display",3513).getInt();
         java.util.Set<Integer> ids=new java.util.HashSet<Integer>();
-        for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer})if(!ids.add(id))throw new IllegalStateException("PL4 legacy block IDs must be distinct");
+        for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer,item_reader,fluid_reader,energy_reader,network_reader,display})if(!ids.add(id))throw new IllegalStateException("PL4 legacy block IDs must be distinct");
         int cell=config.getItem("legacyFluidRecoveryCell",12500).getInt();
         int energyCell=config.getItem("legacyEnergyRecoveryCell",12501).getInt();
         if(energyCell<256||energyCell>Item.itemsList.length-257||energyCell==cell||Item.itemsList[energyCell+256]!=null||ids.contains(energyCell+256)||ids.contains(cell+256))throw new IllegalStateException("PL4 energy/fluid recovery item IDs must be free and distinct from block IDs");
         if(cell<256||cell+256>=Item.itemsList.length||Item.itemsList[cell+256]!=null)throw new IllegalStateException("PL4 recovery item ID unavailable; choose a free legacyFluidRecoveryCell ID");
-        for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer})if(id<256||id>=Block.blocksList.length||Block.blocksList[id]!=null)throw new IllegalStateException("PL4 block ID unavailable: "+id+"; choose free IDs in the config");
+        for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer,item_reader,fluid_reader,energy_reader,network_reader,display})if(id<256||id>=Block.blocksList.length||Block.blocksList[id]!=null)throw new IllegalStateException("PL4 block ID unavailable: "+id+"; choose free IDs in the config");
         enabled=config.get("network","transfersEnabled",true).getBoolean(true);
         interval=bound(config.get("network","intervalTicks",10).getInt(),1,200);
         itemRate=bound(config.get("network","itemsPerOperation",8).getInt(),1,64);
@@ -56,10 +64,22 @@ public final class LegacyPL4 {
         LanguageRegistry.addName(ENERGY_EXPORT,"PL4 Legacy Energy Export Node");LanguageRegistry.addName(ENERGY_IMPORT,"PL4 Legacy Energy Import Node");LanguageRegistry.addName(ENERGY_BUFFER,"PL4 Legacy Energy Buffer");LanguageRegistry.addName(ENERGY_CELL,"PL4 Sealed Energy Recovery Cell");
         GameRegistry.registerBlock(FLUID_EXPORT,"legacy_fluid_export");GameRegistry.registerBlock(FLUID_IMPORT,"legacy_fluid_import");GameRegistry.registerBlock(TANK,"legacy_tank");GameRegistry.registerItem(FLUID_CELL,"legacy_fluid_cell");
         LanguageRegistry.addName(FLUID_EXPORT,"PL4 Legacy Fluid Export Node");LanguageRegistry.addName(FLUID_IMPORT,"PL4 Legacy Fluid Import Node");LanguageRegistry.addName(TANK,"PL4 Legacy Tank (16 buckets)");LanguageRegistry.addName(FLUID_CELL,"PL4 Sealed Fluid Recovery Cell");
+        ITEM_READER=new LegacyBlock(item_reader,"legacy_item_reader",9);GameRegistry.registerBlock(ITEM_READER,"legacy_item_reader");LanguageRegistry.addName(ITEM_READER,"PL4 Legacy Item Reader");
+        FLUID_READER=new LegacyBlock(fluid_reader,"legacy_fluid_reader",10);GameRegistry.registerBlock(FLUID_READER,"legacy_fluid_reader");LanguageRegistry.addName(FLUID_READER,"PL4 Legacy Fluid Reader");
+        ENERGY_READER=new LegacyBlock(energy_reader,"legacy_energy_reader",11);GameRegistry.registerBlock(ENERGY_READER,"legacy_energy_reader");LanguageRegistry.addName(ENERGY_READER,"PL4 Legacy Energy Reader");
+        NETWORK_READER=new LegacyBlock(network_reader,"legacy_network_reader",12);GameRegistry.registerBlock(NETWORK_READER,"legacy_network_reader");LanguageRegistry.addName(NETWORK_READER,"PL4 Legacy Network Reader");
+        DISPLAY=new LegacyBlock(display,"legacy_display",13);GameRegistry.registerBlock(DISPLAY,"legacy_display");LanguageRegistry.addName(DISPLAY,"PL4 Legacy Display");
         GameRegistry.registerTileEntity(LegacyTile.class,"foundations_pl4.legacy_host");MinecraftForge.EVENT_BUS.register(this);
         LanguageRegistry.addName(CABLE,"PL4 Legacy Data Cable");LanguageRegistry.addName(EXPORT,"PL4 Legacy Export Node");LanguageRegistry.addName(IMPORT,"PL4 Legacy Import Node");
     }
     @Mod.EventHandler public void init(FMLInitializationEvent event){
+        proxy.init();
+        GameRegistry.addShapelessRecipe(new ItemStack(ITEM_READER),CABLE,Block.glass,Item.ingotIron);
+        GameRegistry.addShapelessRecipe(new ItemStack(FLUID_READER),CABLE,Block.glass,Item.bucketEmpty);
+        GameRegistry.addShapelessRecipe(new ItemStack(ENERGY_READER),CABLE,Block.glass,Item.ingotGold);
+        GameRegistry.addShapelessRecipe(new ItemStack(NETWORK_READER),CABLE,Block.glass,Item.compass);
+        GameRegistry.addShapelessRecipe(new ItemStack(DISPLAY),CABLE,Block.glass,Item.paper);
+
         GameRegistry.addRecipe(new ItemStack(CABLE,8),"IRI",'I',Item.ingotIron,'R',Item.redstone);
         GameRegistry.addRecipe(new ItemStack(EXPORT),"HCH",'H',Block.hopperBlock,'C',CABLE);
         GameRegistry.addShapelessRecipe(new ItemStack(IMPORT),EXPORT);GameRegistry.addShapelessRecipe(new ItemStack(EXPORT),IMPORT);

@@ -1,12 +1,18 @@
 """Fail closed on runtime/fixture contamination and omitted energy resources."""
 from pathlib import Path
 import json,zipfile,sys,hashlib,re
-target=sys.argv[1];root=Path.cwd();version='0.2a-legacy-preview.3'
+target=sys.argv[1];root=Path.cwd();version='0.2.0-rc.1-dev'
 jar=root/'build/libs'/('FoundationsPL4-'+target+'-'+version+('-srg.jar' if target=='1.6.4' else '.jar'))
 with zipfile.ZipFile(jar) as z:
     names=set(z.namelist())
-    for cls in ['ConservingEnergy','LegacyEnergy','LegacyEnergyPlatform','LegacyEnergyAccess']:
+    for cls in ['ConservingEnergy','LegacyEnergy','LegacyEnergyPlatform','LegacyEnergyAccess','LegacyReadings','LegacyReaderPlatform','LegacyDisplayRenderer']:
         assert 'net/foundations/pl4/legacy/'+cls+'.class' in names,cls
+    for name in ['legacy_item_reader','legacy_fluid_reader','legacy_energy_reader','legacy_network_reader','legacy_display']:
+        if target=='1.12.2':
+            for directory in ['blockstates','models/block','models/item']:assert 'assets/foundations_pl4/'+directory+'/'+name+'.json' in names
+            assert 'assets/foundations_pl4/textures/block/'+name+'.png' in names
+        else:
+            assert 'assets/foundations_pl4/textures/blocks/'+name+'.png' in names
     assert not any(n.startswith(('net/minecraft/','net/minecraftforge/','cofh/','ic2/')) or '/tests/' in n for n in names)
     if target=='1.12.2':
         for name in ['legacy_energy_export','legacy_energy_import','legacy_energy_buffer']:

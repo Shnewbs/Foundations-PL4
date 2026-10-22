@@ -1,3 +1,5 @@
+> Current development source: `0.2.0-rc.1-dev`. Basic legacy readers/displays are being independently validated; stable RC publication remains blocked by the remaining acceptance and feature work. See [candidate notes](docs/releases/0.2.0-rc.1-dev.md).
+
 # Foundations PL4 1.6.4 - 0.2a-legacy-preview.3
 
 Legacy item, fluid and energy transport preview. **Further API testing is still required.**
