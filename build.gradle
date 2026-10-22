@@ -9,6 +9,7 @@ base.archivesName='FoundationsPL4-1.6.4'
 java { toolchain.languageVersion=JavaLanguageVersion.of(8); withSourcesJar() }
 sourceSets {
     main { java.setSrcDirs(['src/legacy/java']); resources.setSrcDirs(['src/legacy/resources']) }
+    migrationTest { java.srcDirs=['src/migrationTest/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyRules { java.setSrcDirs(['tools']); java.include 'CoreChecks.java','FluidChecks.java','EnergyChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
 }
@@ -46,3 +47,11 @@ tasks.register('legacyRules',JavaExec) { dependsOn 'legacyRulesClasses';classpat
 tasks.named('check') { dependsOn 'legacyRules' }
 tasks.named('build') { dependsOn runtimeJar,testJar }
 tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps=false;reproducibleFileOrder=true }
+
+def migrationFixtures=tasks.register('migrationTestJar',Jar) { dependsOn 'migrationTestClasses';from sourceSets.migrationTest.output;archiveClassifier='migration-scenarios' }
+def migrationRuntime=renamer.classes(migrationFixtures) {
+    map.from minecraft.dependency.toSrgFile
+    libraries.setFrom(sourceSets.migrationTest.compileClasspath)
+    archiveClassifier='migration-scenarios-srg'
+}
+tasks.named('build') { dependsOn migrationRuntime }
