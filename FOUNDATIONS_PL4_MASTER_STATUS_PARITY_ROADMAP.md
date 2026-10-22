@@ -1,9 +1,25 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Roadmap reconciliation:** October 18, 2026 (America/Los_Angeles); historical coverage baseline below dates to October 10.
+**Roadmap reconciliation:** October 21, 2026 (America/Los_Angeles); historical sections retain their original snapshot dates.
 **Current primary-track released baseline:** performance-only `0.2b.0` beta for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
-**Project acceptance:** alpha and experimental legacy previews, **not full Practical Logistics 2 parity**. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
+**Project acceptance:** performance betas and alpha/experimental legacy previews. Full Practical Logistics 2 parity remains incomplete. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## October 21 RC development preparation
+
+The shared update is applied to **22 modern exact-Minecraft ports** as `0.2.0-rc.1-dev`. It combines topology membership/storage indexes, per-cycle endpoint identity reuse, transfer status that uses the same channel/direction predicate as routing, compact Wireless Storage layout and correctly versioned guide resources. Each port retains its native loader/API adapters and its own fixture count. [The common native gate](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39713811633) and [the installed Forge repair gate](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39716131269) provide exact-source/artifact evidence. This is development source and build alignment; **zero stable RC releases have been published**.
+
+The divergent `mc/1.21.1` work was reconciled into `main` with both histories preserved. Its 192 native fixtures are compiled in a separate development source set and excluded from the production JAR. The added two-session conservation fixture remains present. The 1.21.1 source mirror is maintained from the validated main history. Generated Python bytecode is removed from source control and generated validation/build outputs are ignored.
+
+The installed Forge 1.20.1/1.20.2/1.20.4 checks exposed a test-bootstrap defect: memory-backed config isolation suppressed fixture registration or ticker dispatch on an installed server. Those controls now use Forge's production-environment flag independently of config isolation. The gate requires **191 executed tests**, compares production entries against the combined scenario artifact, and boots the standalone production JAR separately. No fixture assertions were relaxed to accept an empty registry.
+
+### Remaining gates before an all-version stable RC
+
+- **Legacy feature alignment:** 1.12.2 and 1.6.4 retain their separately validated preview.3 transport subsets (89 scenarios each). They do not yet provide the modern display/editor, multipart and wireless-storage baseline. Their reference `src/main` trees are excluded from the actual legacy runtime and cannot be treated as completed ports.
+- **Installed-client and gameplay acceptance:** client startup/UI scaling, real multiplayer with distinct players, save/world migration and installed optional-provider combinations still need exact-candidate evidence. Fake-player/server fixtures do not close these gates.
+- **Performance acceptance:** repeatable baseline/updated large-network profiles are still required. No measured TPS/MSPT, allocation or memory improvement is claimed from the source changes alone.
+- **Version-specific requirements:** 1.16.1–1.16.4 retain their documented pinned ModLauncher profiles; ordinary launcher/client acceptance remains open. The unpublished 1.13.2 port and audit-only/future targets retain their separate blockers.
+- **Publication:** after acceptance, publish a new immutable RC tag, runtime/source/checksums and matching CurseForge submission for each qualifying exact target. Current development builds remain unpublished. Existing 24 latest release receipts remain valid historical publication evidence; they do not represent 24 RCs or moderation approval.
 
 ## October 18 code and publication reconciliation
 

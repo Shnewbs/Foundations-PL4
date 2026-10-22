@@ -1,6 +1,10 @@
 # Foundations PL4 — Multi-version CurseForge publication
 
-Latest upload reconciliation: October 18, 2026. Historical sections retain their original snapshot dates.
+Latest recorded upload reconciliation: October 18, 2026. RC source/build preparation was updated October 21; historical sections retain their original snapshot dates.
+
+## October 21 RC preparation
+
+The `0.2.0-rc.1-dev` work is an unpublished development snapshot across the 22 modern ports. Native verification and source cleanup do not promote these builds to a stable RC. The two legacy previews retain their smaller transport feature sets, and client/API/multiplayer/migration/performance acceptance remains open. **No new stable RC was submitted in this preparation pass.** The 24 receipt inventory below still describes previously published revisions (six performance betas and eighteen earlier revisions). See [the current RC roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md).
 
 ## October 18 scheduled reconciliation
 

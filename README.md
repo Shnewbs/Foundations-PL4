@@ -1,6 +1,12 @@
-# Foundations PL4 0.2b.0
+# Foundations PL4
 
 Standalone NeoForge Practical Logistics 4: Foundations. **Performance beta — further API testing is still required.**
+
+## RC development source
+
+The maintained modern ports are being aligned on **`0.2.0-rc.1-dev`**, an unpublished development snapshot. The common update includes indexed network lookups, reused transfer endpoint keys, channel-aware transfer status, the compact Wireless Storage layout and matching guide editions. [Native build evidence](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39713811633) and [installed Forge follow-up](https://github.com/Shnewbs/Foundations-PL4/actions/runs/39716131269) cover exact targets; the 1.21.1 runtime also excludes its 192 native fixtures from the production JAR.
+
+**A stable RC has not been released.** The 1.12.2 and 1.6.4 legacy previews still implement a smaller transport subset. Actual client UI, installed optional providers, live multiplayer, migration and measured performance acceptance remain open. See the [current RC roadmap](FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md). The tables below describe published builds, which remain separate from development snapshots.
 
 ## New in 0.2b.0
 
