@@ -70,7 +70,7 @@ def main():
             if not (entry.startswith("net/foundations/pl4/client/WirelessStorageScreen") and entry.endswith(".class")):
                 raise ValueError("A non-UI runtime entry changed; full native revalidation required: " + entry)
             changes.append(entry)
-    if not changes or compared < 100:
+    if not (changes or metadata) or compared < 100:
         raise ValueError("Invalid UI-only comparison or missing production runtime")
     report = {"minecraft": mc, "version": version, "compact_ui_compilation": "PASS",
               "unchanged_runtime_entries_byte_identical_to_native_baseline": compared,
