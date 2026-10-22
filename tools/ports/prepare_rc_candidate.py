@@ -3,7 +3,10 @@ from pathlib import Path
 import argparse
 import json
 import re
+import subprocess
+import sys
 from align_performance import network, transfers
+from align_storage_screen import screen
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -21,6 +24,8 @@ def main():
     java = root / "src/main/java/net/foundations/pl4"
     edits = {java / name: transform((java / name).read_text()) for name, transform in
              [("NetworkEngine.java", network), ("TransferEngine.java", transfers)]}
+    ui_path = java / "client/WirelessStorageScreen.java"
+    edits[ui_path] = screen(ui_path.read_text())
     build_path = root / "build.gradle"
     build, count = re.subn(r"^version\s*=\s*'[^']+'", "version = '" + VERSION + "'", build_path.read_text(), count=1, flags=re.M)
     if count != 1:
@@ -56,6 +61,7 @@ def main():
         f"# Foundations PL4 {args.minecraft} — RC development snapshot\n\n"
         "Unpublished development build preparing a common performance baseline. This is not a stable release or a cleared release candidate.\n\n"
         "Includes topology-owned network membership/storage indexes and per-cycle endpoint identity reuse. "
+        "The compact Wireless Storage layout fix is carried forward. "
         "Target-specific loader APIs are retained. Gameplay routing, rates, filters, ownership and saved data are unchanged.\n\n"
         "Native build/scenario evidence must identify this exact source and artifact. Installed optional providers, actual client UI, "
         "live multiplayer, world migration and repeatable large-network performance acceptance remain open. "
@@ -63,6 +69,7 @@ def main():
     for path, content in edits.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
+    subprocess.run([sys.executable, str(Path(__file__).with_name("guard_development_publication.py")), str(root)], check=True)
     print(f"Prepared {args.minecraft} {VERSION}; publication remains blocked on RC acceptance")
 
 

@@ -1,11 +1,15 @@
 name: Protect unpublished RC development builds
 on:
   workflow_run:
-    workflows: ['Align and validate all RC development ports']
+    workflows: ['Align and validate all RC development ports', 'Repair failed RC development port gates']
     types: [completed]
   workflow_dispatch:
 permissions:
   contents: write
+  actions: read
+concurrency:
+  group: rc-development-ui-and-publication
+  cancel-in-progress: false
 jobs:
   protect:
     runs-on: ubuntu-latest
@@ -23,14 +27,17 @@ jobs:
           ref: ${{ matrix.branch }}
           path: port
       - name: Preserve development classification in automatic publishers
+        id: maturity
         env:
           TARGET_BRANCH: ${{ matrix.branch }}
         shell: bash
         run: |
           set -euo pipefail
           if ! python3 -c 'import json,sys; sys.exit(json.load(open("port/BUILD_STATUS.json")).get("release_channel") != "development")'; then
+            echo "development=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          echo "development=true" >> "$GITHUB_OUTPUT"
           python3 control/tools/ports/guard_development_publication.py port
           cd port
           parent=$(git rev-parse HEAD)
@@ -42,3 +49,61 @@ jobs:
             git commit -m 'Keep RC development snapshots out of automatic release publication'
             git push origin "HEAD:$TARGET_BRANCH"
           fi
+      - name: Carry forward the released compact storage layout
+        id: layout
+        if: steps.maturity.outputs.development == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/tools/ports/align_storage_screen.py port
+          if git -C port diff --quiet -- src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-java@v4
+        if: steps.layout.outputs.changed == 'true'
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            17
+          cache: gradle
+          cache-dependency-path: port/**/*.gradle*
+      - name: Compile UI and compare all non-UI runtime bytes with passed native baseline
+        if: steps.layout.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 control/tools/ports/validate_ui_alignment.py port
+      - name: Save verified compact UI parity
+        if: steps.layout.outputs.changed == 'true'
+        working-directory: port
+        env:
+          TARGET_BRANCH: ${{ matrix.branch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent=$(git rev-parse HEAD)
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          path=Path('docs/releases/0.2.0-rc.1-dev.md')
+          path.write_text(path.read_text()+'\nCompact Wireless Storage layout aligned with the current NeoForge baseline. It compiled on this target; all other runtime entries were compared byte for byte with the passed native candidate. Installed client visuals still need acceptance.\n')
+          PYTHON
+          git add src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java BUILD_STATUS.json docs/releases/0.2.0-rc.1-dev.md
+          git commit -m 'Carry compact storage UI fix forward with native runtime byte parity'
+          git push origin "HEAD:$TARGET_BRANCH"
+          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
+          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
+          (cd verification-logs && sha256sum checked-source.zip > source-SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.layout.outputs.changed == 'true'
+        with:
+          name: UNRELEASED-UI-parity-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            port/verification-logs/
+            port/build/libs/*.jar
+            port/build/reports/
+            port/build/test-results/
+          retention-days: 14
+          if-no-files-found: warn

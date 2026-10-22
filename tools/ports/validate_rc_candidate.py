@@ -39,6 +39,8 @@ def main():
     if mc in {"1.21.1", "26.1.2", "26.3"}:
         run([sys.executable, "tools/run_offline_checks.py"], "offline.log")
     profiles = [None] if mc != "26.3" else ["26.3.0.23-beta", "26.3.0.39-beta"]
+    installed_runners = {"1.19": "1190", "1.19.1": "1191", "1.19.3": "1193", "1.19.4": "1194",
+                         "1.20.1": "1201", "1.20.2": "1202", "1.20.4": "1204"}
     for profile in profiles:
         suffix = ("-" + profile) if profile else ""
         command = gradle + (["-PneoForgeVersion=" + profile] if profile else [])
@@ -53,6 +55,10 @@ def main():
             run([sys.executable, "tools/verify_installed117.py"], "native-installed.log")
         elif mc == "1.18.1":
             run([sys.executable, "tools/run_1181_native_tests.py"], "native-installed.log")
+        elif mc in installed_runners:
+            # These ports isolate their native fixtures from the production mod.
+            # Their stock development GameTest task can complete with zero tests.
+            run([sys.executable, "tools/run_" + installed_runners[mc] + "_native_tests.py"], "native-installed.log")
         else:
             log_name = "native" + suffix + ".log"
             text = run(command + ["runGameTestServer"], log_name)
