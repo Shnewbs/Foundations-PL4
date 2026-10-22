@@ -22,11 +22,16 @@ public final class LegacyBlock extends BlockContainer {
     @Override public EnumBlockRenderType getRenderType(IBlockState state){return EnumBlockRenderType.MODEL;}
     @Override public void onBlockPlacedBy(World world,BlockPos pos,IBlockState state,EntityLivingBase entity,ItemStack stack){
         if(world.isRemote||!(world.getTileEntity(pos) instanceof LegacyTile))return;
-        LegacyTile tile=(LegacyTile)world.getTileEntity(pos);tile.owner=entity.getUniqueID().toString();tile.side=entity.getHorizontalFacing().getOpposite().getIndex();tile.markDirty();
+        LegacyTile tile=(LegacyTile)world.getTileEntity(pos);tile.owner=entity.getUniqueID().toString();tile.side=entity.getHorizontalFacing().getOpposite().getIndex();tile.displayFacing=tile.side;tile.markDirty();
     }
     @Override public boolean onBlockActivated(World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing face,float x,float y,float z){
         if(world.isRemote)return true;TileEntity raw=world.getTileEntity(pos);if(!(raw instanceof LegacyTile))return false;LegacyTile tile=(LegacyTile)raw;
         if(!tile.canEdit(player)){player.sendMessage(new TextComponentString("PL4: This host belongs to another player."));return true;}
+        if(role==LegacyReadings.DISPLAY){
+            if(hand!=EnumHand.MAIN_HAND)return true;
+            if(player.isSneaking())tile.displayFacing=LegacyReadings.horizontal(face.getIndex());else tile.readerIndex=(tile.readerIndex+1)%4096;
+            tile.displayChanged();player.sendMessage(new TextComponentString(tile.describe()+" | /pl4legacy display x y z show|hide; ordinary click selects next reader."));return true;
+        }
         if(hand==EnumHand.MAIN_HAND&&LegacyEnergyPlatform.interact(tile,player,player.getHeldItem(hand))){player.sendMessage(new TextComponentString(tile.describe()+" | Sneak-click empty-handed to crank; 10-tick cooldown."));return true;}
         if(LegacyFluidPlatform.interact(tile,player,player.getHeldItem(hand))){player.sendMessage(new TextComponentString(tile.describe()));return true;}
         if(player.isSneaking()&&role!=0&&role!=5&&role!=8){tile.side=face.getIndex();tile.markDirty();}

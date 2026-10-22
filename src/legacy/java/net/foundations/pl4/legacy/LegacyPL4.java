@@ -15,16 +15,18 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 /** Initial native transport subset. Advanced 0.2a display/multipart parity is separate work. */
-@Mod(modid=LegacyPL4.ID,name="Foundations PL4",version=LegacyPL4.VERSION,acceptedMinecraftVersions="[1.12.2]",acceptableRemoteVersions="0.2a-legacy-preview.3")
+@Mod(modid=LegacyPL4.ID,name="Foundations PL4",version=LegacyPL4.VERSION,acceptedMinecraftVersions="[1.12.2]",acceptableRemoteVersions="0.2.0-rc.1-dev")
 @Mod.EventBusSubscriber(modid=LegacyPL4.ID)
 public final class LegacyPL4 {
-    public static final String ID="foundations_pl4",VERSION="0.2a-legacy-preview.3";
+    public static final String ID="foundations_pl4",VERSION="0.2.0-rc.1-dev";
     public static final LegacyBlock CABLE=new LegacyBlock("legacy_cable",0),EXPORT=new LegacyBlock("legacy_export",1),IMPORT=new LegacyBlock("legacy_import",2);
     public static final LegacyBlock FLUID_EXPORT=new LegacyBlock("legacy_fluid_export",3),FLUID_IMPORT=new LegacyBlock("legacy_fluid_import",4),TANK=new LegacyBlock("legacy_tank",5);
     public static final Item FLUID_CELL=new Item().setRegistryName(ID,"legacy_fluid_cell").setUnlocalizedName(ID+".legacy_fluid_cell").setMaxStackSize(1);
     public static final LegacyBlock ENERGY_EXPORT=new LegacyBlock("legacy_energy_export",6),ENERGY_IMPORT=new LegacyBlock("legacy_energy_import",7),ENERGY_BUFFER=new LegacyBlock("legacy_energy_buffer",8);
     public static final Item ENERGY_CELL=new Item().setRegistryName(ID,"legacy_energy_cell").setUnlocalizedName(ID+".legacy_energy_cell").setMaxStackSize(1);
-    public static final LegacyBlock[] BLOCKS={CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK,ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER};
+
+    public static final LegacyBlock ITEM_READER=new LegacyBlock("legacy_item_reader",9),FLUID_READER=new LegacyBlock("legacy_fluid_reader",10),ENERGY_READER=new LegacyBlock("legacy_energy_reader",11),NETWORK_READER=new LegacyBlock("legacy_network_reader",12),DISPLAY=new LegacyBlock("legacy_display",13);
+    public static final LegacyBlock[] BLOCKS={CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK,ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER,ITEM_READER,FLUID_READER,ENERGY_READER,NETWORK_READER,DISPLAY};
     public static int interval=10,itemRate=8,nodeLimit=256,slotLimit=256;
     public static boolean enabled=true,fluidsEnabled=true;
     public static int fluidRate=250;
@@ -63,5 +65,11 @@ public final class LegacyPL4 {
         event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(ENERGY_EXPORT),EXPORT,Items.REDSTONE).setRegistryName(ID,"legacy_energy_export"));
         event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(ENERGY_IMPORT),ENERGY_EXPORT).setRegistryName(ID,"legacy_energy_import"));
         event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(ENERGY_EXPORT),ENERGY_IMPORT).setRegistryName(ID,"legacy_energy_export_return"));
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(ITEM_READER),CABLE,Blocks.GLASS,Items.IRON_INGOT).setRegistryName(ID,"legacy_item_reader"));
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(FLUID_READER),CABLE,Blocks.GLASS,Items.BUCKET).setRegistryName(ID,"legacy_fluid_reader"));
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(ENERGY_READER),CABLE,Blocks.GLASS,Items.GOLD_INGOT).setRegistryName(ID,"legacy_energy_reader"));
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(NETWORK_READER),CABLE,Blocks.GLASS,Items.COMPASS).setRegistryName(ID,"legacy_network_reader"));
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(DISPLAY),CABLE,Blocks.GLASS,Items.PAPER).setRegistryName(ID,"legacy_display"));
+
     }
 }

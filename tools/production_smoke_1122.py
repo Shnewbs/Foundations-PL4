@@ -14,7 +14,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 
 def smoke():
-    version = '0.2a-legacy-preview.3'
+    version = '0.2.0-rc.1-dev'
     target = '1.12.2'
     forge_version = '14.23.5.2864'
     name = 'FoundationsPL4-' + target + '-' + version

@@ -19,6 +19,10 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyFluids.State fluid=new LegacyFluids.State(this);
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
+    public boolean publishReadings=false;
+    public int readerIndex=0,displayFacing=2;
+    public String[] displayLines=LegacyReadings.privateLines();
+    private long lastDisplay=Long.MIN_VALUE;
     private long lastRun=Long.MIN_VALUE,lastError=Long.MIN_VALUE;
     public int role(){return world!=null&&world.getBlockState(pos).getBlock() instanceof LegacyBlock?((LegacyBlock)world.getBlockState(pos).getBlock()).role:0;}
     public boolean canEdit(EntityPlayer player){return player!=null&&(owner.equals(player.getUniqueID().toString())||player.canUseCommand(2,"pl4legacy"));}
@@ -36,7 +40,20 @@ public final class LegacyTile extends TileEntity implements ITickable {
             TileEntity tile=world.getTileEntity(at);return tile instanceof LegacyTile&&((LegacyTile)tile).role()!=5&&((LegacyTile)tile).role()!=8&&owner.equals(((LegacyTile)tile).owner);
         }},new BoundedNetwork.Point(pos.getX(),pos.getY(),pos.getZ()),LegacyPL4.nodeLimit);
     }
+    public void refreshDisplay(){
+        if(!fluidServer()||role()!=LegacyReadings.DISPLAY)return;
+        String[] next=publishReadings?LegacyReadings.sample(this):LegacyReadings.privateLines();
+        if(!java.util.Arrays.equals(next,displayLines)){displayLines=next;world.notifyBlockUpdate(pos,world.getBlockState(pos),world.getBlockState(pos),2);}
+    }
+    public void displayChanged(){
+        if(!fluidServer())return;
+        markDirty();refreshDisplay();world.notifyBlockUpdate(pos,world.getBlockState(pos),world.getBlockState(pos),2);
+    }
     @Override public void update(){
+        if(fluidServer()&&role()==LegacyReadings.DISPLAY){
+            long now=world.getTotalWorldTime();long phase=now+pos.toLong();
+            if(now!=lastDisplay&&((phase%20)+20)%20==0){lastDisplay=now;refreshDisplay();}return;
+        }
         if(world==null||world.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty())return;long tick=world.getTotalWorldTime();
         if(tick==lastRun||Math.floorMod(tick+pos.toLong(),LegacyPL4.interval)!=0)return;lastRun=tick;
         if(world.isBlockPowered(pos)){status="Paused by redstone";return;}
@@ -62,14 +79,15 @@ public final class LegacyTile extends TileEntity implements ITickable {
         status=moved>0?"Moved "+moved+" items":pending.isEmpty()?"Waiting for items or receiving space":"Waiting with "+pending.getCount()+" items in escrow";return moved;
     }
     public String describe(){
+        if(role()>=LegacyReadings.ITEMS)return java.util.Arrays.toString(LegacyReadings.sample(this));
         if(role()>=6)return LegacyEnergy.describe(this);
         if(role()>=3)return LegacyFluids.describe(this);
         BoundedNetwork.Plan plan=network();IItemHandler inventory=inventory();long count=0;int slots=0;
         if(inventory!=null){slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.getSlots()));for(int i=0;i<slots;i++){ItemStack stack=inventory.getStackInSlot(i);if(!stack.isEmpty())count+=Math.max(0,stack.getCount());}}
         return "PL4 "+(role()==0?"Cable":role()==1?"Export":"Import")+" | Side "+EnumFacing.getFront(side).getName()+" | Hosts "+(plan.overflow?"LIMIT":plan.nodes.size())+" | Slots "+slots+" | Items "+count+" | Escrow "+pending.getCount()+" | "+status;
     }
-    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");return tag;}
-    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow",10)?new ItemStack(tag.getCompoundTag("Escrow")):ItemStack.EMPTY;}
+    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");return tag;}
+    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow",10)?new ItemStack(tag.getCompoundTag("Escrow")):ItemStack.EMPTY;}
     public static final ConservingItems.Stacks<ItemStack> STACKS=new ConservingItems.Stacks<ItemStack>(){
         public boolean empty(ItemStack value){return value==null||value.isEmpty();}public int count(ItemStack value){return empty(value)?0:value.getCount();}
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}
@@ -90,4 +108,9 @@ public final class LegacyTile extends TileEntity implements ITickable {
     private net.minecraftforge.energy.IEnergyStorage nativeEnergy;
     @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,EnumFacing face){return role()==8&&cap==net.minecraftforge.energy.CapabilityEnergy.ENERGY||role()==5&&cap==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY||super.hasCapability(cap,face);}
     @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,EnumFacing face){if(role()==8&&cap==net.minecraftforge.energy.CapabilityEnergy.ENERGY){if(nativeEnergy==null)nativeEnergy=LegacyEnergyPlatform.nativeBuffer(this);return net.minecraftforge.energy.CapabilityEnergy.ENERGY.cast(nativeEnergy);}if(role()==5&&cap==net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){if(nativeFluids==null)nativeFluids=LegacyFluidPlatform.nativeTank(this);return net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(nativeFluids);}return super.getCapability(cap,face);}
+
+    @Override public NBTTagCompound getUpdateTag(){NBTTagCompound tag=LegacyReadings.clientTag(this);tag.setString("id","foundations_pl4:legacy_host");tag.setInteger("x",pos.getX());tag.setInteger("y",pos.getY());tag.setInteger("z",pos.getZ());return tag;}
+    @Override public void handleUpdateTag(NBTTagCompound tag){LegacyReadings.readClientTag(this,tag);}
+    @Override public net.minecraft.network.play.server.SPacketUpdateTileEntity getUpdatePacket(){return new net.minecraft.network.play.server.SPacketUpdateTileEntity(pos,0,getUpdateTag());}
+    @Override public void onDataPacket(net.minecraft.network.NetworkManager net,net.minecraft.network.play.server.SPacketUpdateTileEntity packet){handleUpdateTag(packet.getNbtCompound());}
 }

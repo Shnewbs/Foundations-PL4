@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 /** Built-in inspection and actual recipe lookup, without mandatory viewer/tooltip mods. */
 public final class LegacyCommands extends CommandBase {
     @Override public String getName(){return "pl4legacy";}
-    @Override public String getUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | status";}
+    @Override public String getUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | status";}
     @Override public int getRequiredPermissionLevel(){return 0;}
     @Override public void execute(MinecraftServer server,ICommandSender sender,String[] args)throws CommandException{
         if(args.length==0||"status".equals(args[0])){send(sender,"Foundations PL4 1.12.2 native legacy preview: item/fluid/energy transport, persisted escrow, owner-partitioned cables and recipe/inspection fallbacks. Advanced displays, wireless storage and third-party power parity remain pending. Further API testing is still required.");return;}
@@ -31,6 +31,14 @@ public final class LegacyCommands extends CommandBase {
                 for(Ingredient ingredient:recipe.getIngredients()){ItemStack[] choices=ingredient.getMatchingStacks();if(choices.length==0)continue;text.append(choices[0].getDisplayName());if(choices.length>1)text.append(" (+").append(choices.length-1).append(" alternatives)");text.append("; ");}
                 send(sender,text.toString());
             }return;
+        }
+        if("display".equals(args[0])&&args.length==5){
+            BlockPos pos=parseBlockPos(sender,args,1,false);
+            if(!(sender instanceof EntityPlayer)||sender.getPosition().distanceSq(pos)>64||!sender.getEntityWorld().isBlockLoaded(pos,false))throw new CommandException("Stand within 8 blocks of a loaded display.");
+            TileEntity raw=sender.getEntityWorld().getTileEntity(pos);
+            if(!(raw instanceof LegacyTile)||((LegacyTile)raw).role()!=LegacyReadings.DISPLAY||!((LegacyTile)raw).canEdit((EntityPlayer)sender))throw new CommandException("No accessible PL4 display.");
+            if(!"show".equals(args[4])&&!"hide".equals(args[4]))throw new CommandException("Choose show or hide.");
+            LegacyTile tile=(LegacyTile)raw;tile.publishReadings="show".equals(args[4]);tile.displayChanged();send(sender,tile.publishReadings?"Display readings are visible to nearby players.":"Display readings are private.");return;
         }
         if("inspect".equals(args[0])&&args.length==4){
             BlockPos pos=parseBlockPos(sender,args,1,false);
