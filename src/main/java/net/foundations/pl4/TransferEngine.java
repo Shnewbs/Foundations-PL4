@@ -62,6 +62,8 @@ public final class TransferEngine {
         List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.nextDrivers();
         if(transfer.isEmpty())return;
         boolean nativeEnergy=NativeEnergyTransfers.needed(plan);
+        Map<NetworkEngine.Ref,TargetKey> targets=new IdentityHashMap<>();
+        for(NetworkEngine.Ref endpoint:endpoints)targets.put(endpoint,target(endpoint));
 
         Budgets budgets=new Budgets();
         Set<PairKey> itemPairs=new HashSet<>(),fluidPairs=new HashSet<>(),energyPairs=new HashSet<>();
@@ -70,7 +72,7 @@ public final class TransferEngine {
         // Preserve R15 source-side escrow from ADD/REMOVE nodes even though R16 no longer lets
         // bidirectional nodes autonomously drive the passive endpoint pool.
         for(NetworkEngine.Ref ref:transfer)if(ref.part().transferMode==TransferRules.ADD_REMOVE&&hasPending(ref.part())){
-            List<NetworkEngine.Ref> sinks=sinks(endpoints,ref,plan.routingCursor());
+            List<NetworkEngine.Ref> sinks=sinks(endpoints,ref,plan.routingCursor(),targets);
             if(ref.part().items&&!ref.part().pendingItem.isEmpty())flushItem(server,ref,sinks,budgets,itemPairs,itemReceived);
             if(ref.part().fluids&&!ref.part().pendingFluid.isEmpty())flushFluid(server,ref,sinks,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&ref.part().energy&&ref.part().pendingEnergy>0)flushEnergy(server,ref,sinks,budgets,energyPairs,energyReceived);
@@ -79,7 +81,7 @@ public final class TransferEngine {
         // REMOVE drives exports. This phase keeps the old REMOVE -> ADD behavior and also
         // allows REMOVE -> ordinary Node endpoints.
         for(NetworkEngine.Ref source:transfer)if(TransferRules.drivesRemove(source.part().transferMode)){
-            List<NetworkEngine.Ref> sinks=sinks(endpoints,source,plan.routingCursor());
+            List<NetworkEngine.Ref> sinks=sinks(endpoints,source,plan.routingCursor(),targets);
             if(source.part().items)pushItems(server,source,sinks,budgets,itemPairs,itemReceived);
             if(source.part().fluids)pushFluids(server,source,sinks,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&source.part().energy)pushEnergy(server,source,sinks,budgets,energyPairs,energyReceived);
@@ -88,14 +90,14 @@ public final class TransferEngine {
         // ADD drives imports. Explicit REMOVE peers already handled above are skipped by the
         // pair ledger; passive Nodes now work as PL2-style network sources.
         for(NetworkEngine.Ref sink:transfer)if(TransferRules.drivesAdd(sink.part().transferMode)){
-            List<NetworkEngine.Ref> sources=sources(endpoints,sink,plan.routingCursor());
+            List<NetworkEngine.Ref> sources=sources(endpoints,sink,plan.routingCursor(),targets);
             if(sink.part().items)pullItems(server,sink,sources,budgets,itemPairs,itemReceived);
             if(sink.part().fluids)pullFluids(server,sink,sources,budgets,fluidPairs,fluidReceived);
             if(!nativeEnergy&&sink.part().energy)pullEnergy(server,sink,sources,budgets,energyPairs,energyReceived);
         }
 
         if(nativeEnergy){var energyPlan=new Plan(endpoints,transfer);energyPlan.cycle=plan.cycle;NativeEnergyTransfers.run(server,energyPlan);}
-        for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
+        for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints,targets);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
     }
 
     private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0;}
@@ -127,14 +129,22 @@ public final class TransferEngine {
         return out;
     }
     static List<NetworkEngine.Ref> sinks(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref source,long cursor){
-        return rotateTies(endpoints.stream().filter(s->s!=source&&!sameTarget(source,s)&&TransferRules.channelsMatch(source.part().outputChannel,s.part().inputChannel)&&TransferRules.canRoute(true,source.part().transferMode,s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode)).toList(),cursor);
+        return sinks(endpoints,source,cursor,new IdentityHashMap<>());
+    }
+    private static List<NetworkEngine.Ref> sinks(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref source,long cursor,Map<NetworkEngine.Ref,TargetKey> targets){
+        TargetKey origin=targets.computeIfAbsent(source,TransferEngine::target);
+        return rotateTies(endpoints.stream().filter(s->s!=source&&!origin.equals(targets.computeIfAbsent(s,TransferEngine::target))&&TransferRules.channelsMatch(source.part().outputChannel,s.part().inputChannel)&&TransferRules.canRoute(true,source.part().transferMode,s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode)).toList(),cursor);
     }
     static List<NetworkEngine.Ref> sources(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref sink,long cursor){
-        return rotateTies(endpoints.stream().filter(s->s!=sink&&!sameTarget(s,sink)&&TransferRules.channelsMatch(s.part().outputChannel,sink.part().inputChannel)&&TransferRules.canRoute(s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode,true,sink.part().transferMode)).toList(),cursor);
+        return sources(endpoints,sink,cursor,new IdentityHashMap<>());
+    }
+    private static List<NetworkEngine.Ref> sources(List<NetworkEngine.Ref> endpoints,NetworkEngine.Ref sink,long cursor,Map<NetworkEngine.Ref,TargetKey> targets){
+        TargetKey destination=targets.computeIfAbsent(sink,TransferEngine::target);
+        return rotateTies(endpoints.stream().filter(s->s!=sink&&!destination.equals(targets.computeIfAbsent(s,TransferEngine::target))&&TransferRules.channelsMatch(s.part().outputChannel,sink.part().inputChannel)&&TransferRules.canRoute(s.part().kind==Kind.TRANSFER_NODE,s.part().transferMode,true,sink.part().transferMode)).toList(),cursor);
     }
     private static PairKey pair(NetworkEngine.Ref source,NetworkEngine.Ref sink){return new PairKey(source.part().identity,sink.part().identity);}
     private static TargetKey target(NetworkEngine.Ref ref){Part.Link l=ref.adjacent();return new TargetKey(l.dimension(),l.pos().asLong(),l.side().ordinal());}
-    private static boolean sameTarget(NetworkEngine.Ref a,NetworkEngine.Ref b){return target(a).equals(target(b));}
+    private static boolean sameTarget(NetworkEngine.Ref a,NetworkEngine.Ref b,Map<NetworkEngine.Ref,TargetKey> targets){return targets.get(a).equals(targets.get(b));}
     private static boolean itemAllowed(ItemStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.items(stack,ref.part(),input);}
     private static boolean fluidAllowed(FluidStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.fluids(stack,ref.part(),input);}
     private static boolean energyAllowed(NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().energy;}
@@ -241,11 +251,11 @@ public final class TransferEngine {
         }
     }
 
-    private static void updateStatus(NetworkEngine.Ref ref,List<NetworkEngine.Ref> endpoints){
+    private static void updateStatus(NetworkEngine.Ref ref,List<NetworkEngine.Ref> endpoints,Map<NetworkEngine.Ref,TargetKey> targets){
         Part p=ref.part();String mode=switch(p.transferMode){case 1->"ADD";case 2->"REMOVE";case 3->"ADD / REMOVE";default->"PASSIVE";};
         if(p.transferMode==TransferRules.PASSIVE){p.status="Transfer PASSIVE";return;}
-        if(p.transferMode==TransferRules.ADD_REMOVE){long peers=endpoints.stream().filter(other->other!=ref&&other.part().kind==Kind.TRANSFER_NODE&&!sameTarget(ref,other)&&(TransferRules.canRoute(true,p.transferMode,true,other.part().transferMode)||TransferRules.canRoute(true,other.part().transferMode,true,p.transferMode))).count();p.status=peers>0?"Transfer ADD / REMOVE: "+peers+" explicit peer(s)":"Transfer ADD / REMOVE: needs ADD or REMOVE peer";return;}
-        long count=p.transferMode==TransferRules.ADD?endpoints.stream().filter(source->source!=ref&&!sameTarget(source,ref)&&TransferRules.canRoute(source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,true,p.transferMode)).count():endpoints.stream().filter(sink->sink!=ref&&!sameTarget(ref,sink)&&TransferRules.canRoute(true,p.transferMode,sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode)).count();
+        if(p.transferMode==TransferRules.ADD_REMOVE){long peers=endpoints.stream().filter(other->other!=ref&&other.part().kind==Kind.TRANSFER_NODE&&!sameTarget(ref,other,targets)&&(TransferRules.canRoute(true,p.transferMode,true,other.part().transferMode)||TransferRules.canRoute(true,other.part().transferMode,true,p.transferMode))).count();p.status=peers>0?"Transfer ADD / REMOVE: "+peers+" explicit peer(s)":"Transfer ADD / REMOVE: needs ADD or REMOVE peer";return;}
+        long count=p.transferMode==TransferRules.ADD?endpoints.stream().filter(source->source!=ref&&!sameTarget(source,ref,targets)&&TransferRules.canRoute(source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,true,p.transferMode)).count():endpoints.stream().filter(sink->sink!=ref&&!sameTarget(ref,sink,targets)&&TransferRules.canRoute(true,p.transferMode,sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode)).count();
         p.status="Transfer "+mode+": "+count+" network endpoint(s)";
     }
 
