@@ -9,7 +9,7 @@ permissions:
   contents: write
 concurrency:
   group: rc-development-alignment
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   modern:
     runs-on: ubuntu-latest

@@ -161,6 +161,16 @@ def fixtures(source):
     return source.rsplit('}',1)[0]+checks+'}\n'
 
 
+def exception_fixture(source):
+    if 'Quarantined escrow cannot be replayed after an uncertain mutation' in source:return source
+    source=once(source,'if(fail[0])throw new IllegalStateException("PL4 expected destination failure");super.setItem(slot,stack);', 'super.setItem(slot,stack);if(fail[0])throw new IllegalStateException("PL4 expected destination failure");')
+    source=once(source,'thrown&&from.getItem(0).isEmpty()&&to.getItem(0).isEmpty()&&sink.part().pendingItem.getCount()==17', 'thrown&&from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())')
+    source=once(source,'Extracted items remain owned by ADD escrow after a pre-mutation destination failure', 'A post-mutation destination failure leaves an uncertain, quarantined transaction')
+    source=once(source,'restored!=null&&restored.pendingItem.getCount()==17', 'restored!=null&&restored.pendingItem.getCount()==17&&ItemTransferSafety.blocked(restored)&&!restored.routeEditable()')
+    source=once(source,'to.getItem(0).getCount()==17&&sink.part().pendingItem.isEmpty()&&from.getItem(0).isEmpty(),"Retry delivers escrow exactly once"', 'to.getItem(0).getCount()==17&&sink.part().pendingItem.getCount()==17&&ItemTransferSafety.blocked(sink.part())&&from.getItem(0).isEmpty(),"Quarantined escrow cannot be replayed after an uncertain mutation"')
+    return source
+
+
 def edits(root):
     if (root/'src/legacy').exists():raise ValueError('Modern item migration cannot edit a legacy runtime')
     java=root/'src/main/java/net/foundations/pl4'
@@ -173,6 +183,8 @@ def edits(root):
     path=next((p for p in choices if p.exists()),None)
     if path is None:raise ValueError('Missing native R16 fixtures')
     result[path]=fixtures(path.read_text())
+    exception_path=path.with_name('EnergyIntegrationGameTests.java')
+    result[exception_path]=exception_fixture(exception_path.read_text())
     return result
 
 
