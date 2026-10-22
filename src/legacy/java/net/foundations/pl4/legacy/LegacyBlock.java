@@ -39,7 +39,7 @@ public final class LegacyBlock extends BlockContainer {
         player.sendMessage(new TextComponentString("Sneak-click a node face to choose its adjacent inventory. /pl4legacy recipes lists registered recipes."));return true;
     }
     @Override public void breakBlock(World world,BlockPos pos,IBlockState state){
-        if(!world.isRemote&&world.getTileEntity(pos) instanceof LegacyTile){LegacyTile tile=(LegacyTile)world.getTileEntity(pos);LegacyEnergyPlatform.drop(tile);LegacyFluidPlatform.drop(tile);if(!tile.pending.isEmpty()){ItemStack held=tile.pending;tile.pending=ItemStack.EMPTY;tile.markDirty();world.spawnEntity(new EntityItem(world,pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,held));}}
+        if(!world.isRemote&&world.getTileEntity(pos) instanceof LegacyTile){LegacyTile tile=(LegacyTile)world.getTileEntity(pos);LegacyEnergyPlatform.drop(tile);LegacyFluidPlatform.drop(tile);LegacyItemSafety.drop(tile);if(!tile.pending.isEmpty()){ItemStack held=tile.pending;tile.pending=ItemStack.EMPTY;tile.markDirty();world.spawnEntity(new EntityItem(world,pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5,held));}}
         super.breakBlock(world,pos,state);
     }
     @Override public net.minecraft.block.material.EnumPushReaction getMobilityFlag(IBlockState state){return net.minecraft.block.material.EnumPushReaction.BLOCK;}

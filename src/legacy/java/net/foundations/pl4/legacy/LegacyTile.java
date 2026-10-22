@@ -19,6 +19,9 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyFluids.State fluid=new LegacyFluids.State(this);
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
+    public String itemFault="";
+    public NBTTagCompound itemOpaque;
+    public int itemOpaqueCount;
     public boolean publishReadings=false;
     public int readerIndex=0,displayFacing=2;
     public String[] displayLines=LegacyReadings.privateLines();
@@ -62,6 +65,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public int transferOnce(){
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
+        if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(world==null||world.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||world.isBlockPowered(pos))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network exceeds configured host limit";return 0;}
         IItemHandler source=inventory();if(source==null&&pending.isEmpty()){status="No loaded source inventory";return 0;}
@@ -70,7 +74,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
             TileEntity raw=world.getTileEntity(new BlockPos(p.x,p.y,p.z));if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
             if(sink.role()!=2||!owner.equals(sink.owner)||!seenTargets.add(sink.target())||world.isBlockPowered(sink.pos))continue;
             IItemHandler destination=sink.inventory();if(destination==null||destination==source)continue;
-            ConservingItems.Escrow<ItemStack> escrow=new ConservingItems.Escrow<ItemStack>(){public ItemStack get(){return pending;}public void set(ItemStack value){pending=value==null?ItemStack.EMPTY:value;markDirty();}};
+            ConservingItems.Escrow<ItemStack> escrow=LegacyItemSafety.escrow(this);
             int budget=LegacyPL4.itemRate-moved;
             if(!pending.isEmpty())moved+=ConservingItems.flush(STACKS,escrow,adapt(destination),budget,LegacyPL4.slotLimit,work);
             else if(source!=null)moved+=ConservingItems.move(STACKS,escrow,adapt(source),adapt(destination),budget,LegacyPL4.slotLimit,work);
@@ -79,6 +83,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
         status=moved>0?"Moved "+moved+" items":pending.isEmpty()?"Waiting for items or receiving space":"Waiting with "+pending.getCount()+" items in escrow";return moved;
     }
     public String describe(){
+        if(LegacyItemSafety.blocked(this))return "PL4 Item escrow QUARANTINED: "+itemFault+" | Manual inspection required; no automatic replay.";
         if(role()>=LegacyReadings.ITEMS)return java.util.Arrays.toString(LegacyReadings.sample(this));
         if(role()>=6)return LegacyEnergy.describe(this);
         if(role()>=3)return LegacyFluids.describe(this);
@@ -86,8 +91,8 @@ public final class LegacyTile extends TileEntity implements ITickable {
         if(inventory!=null){slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.getSlots()));for(int i=0;i<slots;i++){ItemStack stack=inventory.getStackInSlot(i);if(!stack.isEmpty())count+=Math.max(0,stack.getCount());}}
         return "PL4 "+(role()==0?"Cable":role()==1?"Export":"Import")+" | Side "+EnumFacing.getFront(side).getName()+" | Hosts "+(plan.overflow?"LIMIT":plan.nodes.size())+" | Slots "+slots+" | Items "+count+" | Escrow "+pending.getCount()+" | "+status;
     }
-    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");return tag;}
-    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow",10)?new ItemStack(tag.getCompoundTag("Escrow")):ItemStack.EMPTY;}
+    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");LegacyItemSafety.write(this,tag);return tag;}
+    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow",10)?new ItemStack(tag.getCompoundTag("Escrow")):ItemStack.EMPTY;LegacyItemSafety.read(this,tag);}
     public static final ConservingItems.Stacks<ItemStack> STACKS=new ConservingItems.Stacks<ItemStack>(){
         public boolean empty(ItemStack value){return value==null||value.isEmpty();}public int count(ItemStack value){return empty(value)?0:value.getCount();}
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}

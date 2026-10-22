@@ -23,6 +23,7 @@ public final class LegacyPL4 {
     public static final LegacyBlock FLUID_EXPORT=new LegacyBlock("legacy_fluid_export",3),FLUID_IMPORT=new LegacyBlock("legacy_fluid_import",4),TANK=new LegacyBlock("legacy_tank",5);
     public static final Item FLUID_CELL=new Item().setRegistryName(ID,"legacy_fluid_cell").setUnlocalizedName(ID+".legacy_fluid_cell").setMaxStackSize(1);
     public static final LegacyBlock ENERGY_EXPORT=new LegacyBlock("legacy_energy_export",6),ENERGY_IMPORT=new LegacyBlock("legacy_energy_import",7),ENERGY_BUFFER=new LegacyBlock("legacy_energy_buffer",8);
+    public static final Item ITEM_CELL=new Item().setRegistryName(ID,"legacy_item_cell").setUnlocalizedName(ID+".legacy_item_cell").setMaxStackSize(1);
     public static final Item ENERGY_CELL=new Item().setRegistryName(ID,"legacy_energy_cell").setUnlocalizedName(ID+".legacy_energy_cell").setMaxStackSize(1);
 
     public static final LegacyBlock ITEM_READER=new LegacyBlock("legacy_item_reader",9),FLUID_READER=new LegacyBlock("legacy_fluid_reader",10),ENERGY_READER=new LegacyBlock("legacy_energy_reader",11),NETWORK_READER=new LegacyBlock("legacy_network_reader",12),DISPLAY=new LegacyBlock("legacy_display",13);
@@ -45,7 +46,7 @@ public final class LegacyPL4 {
         GameRegistry.registerTileEntity(LegacyTile.class,new ResourceLocation(ID,"legacy_host"));
     }
     @SubscribeEvent public static void blocks(RegistryEvent.Register<Block> event){event.getRegistry().registerAll(BLOCKS);}
-    @SubscribeEvent public static void items(RegistryEvent.Register<Item> event){event.getRegistry().register(ENERGY_CELL);event.getRegistry().register(FLUID_CELL);for(LegacyBlock block:BLOCKS)event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));}
+    @SubscribeEvent public static void items(RegistryEvent.Register<Item> event){event.getRegistry().register(ITEM_CELL);event.getRegistry().register(ENERGY_CELL);event.getRegistry().register(FLUID_CELL);for(LegacyBlock block:BLOCKS)event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));}
     @SubscribeEvent public static void protection(BlockEvent.BreakEvent event){
         if(event.getWorld().getTileEntity(event.getPos()) instanceof LegacyTile){LegacyTile tile=(LegacyTile)event.getWorld().getTileEntity(event.getPos());if(!tile.canEdit(event.getPlayer()))event.setCanceled(true);}
     }

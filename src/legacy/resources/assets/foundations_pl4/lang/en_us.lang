@@ -16,3 +16,5 @@ tile.foundations_pl4.legacy_fluid_reader.name=PL4 Legacy Fluid Reader
 tile.foundations_pl4.legacy_energy_reader.name=PL4 Legacy Energy Reader
 tile.foundations_pl4.legacy_network_reader.name=PL4 Legacy Network Reader
 tile.foundations_pl4.legacy_display.name=PL4 Legacy Display
+tile.foundations_pl4.legacy_item_cell.name=PL4 Quarantined Item Recovery Receipt
+item.foundations_pl4.legacy_item_cell.name=PL4 Quarantined Item Recovery Receipt

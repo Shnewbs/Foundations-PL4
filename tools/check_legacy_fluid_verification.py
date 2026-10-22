@@ -40,4 +40,4 @@ summary={
     'scope':'Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance'
 }
 (root/'verification-logs/clean-native-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
-print('PASS 112 native scenarios, cleanup/save guard, exact installed runtime hash and rebuilt archive contents')
+print('PASS 120 native scenarios, cleanup/save guard, exact installed runtime hash and rebuilt archive contents')
