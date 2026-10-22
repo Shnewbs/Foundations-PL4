@@ -18,12 +18,17 @@ public final class LegacyItemSafety {
         if(tile.itemOpaque!=null)tag.setTag("Escrow",tile.itemOpaque.copy());
         tag.setInteger("ItemEscrowCount",tile.itemOpaque!=null?tile.itemOpaqueCount:count(tile.pending));
     }
+    private static ItemStack parse(NBTTagCompound raw){
+        try{ItemStack result=ItemStack.loadItemStackFromNBT(raw);return result!=null&&result.getItem()!=null?result:null;}
+        catch(RuntimeException invalid){return null;}
+    }
+    public static ItemStack loadSaved(NBTTagCompound tag){return tag.hasKey("Escrow")?parse(tag.getCompoundTag("Escrow")):null;}
     public static void read(LegacyTile tile,NBTTagCompound tag){
         tile.itemOpaque=null;tile.itemFault=tag.getString("ItemTransferFault");
         if(tile.itemFault.length()>512)tile.itemFault=tile.itemFault.substring(0,512);
         int count=tag.getInteger("ItemEscrowCount");tile.itemOpaqueCount=Math.max(0,count);
         if(tag.hasKey("Escrow")&&LegacyTile.STACKS.empty(tile.pending)&&count>0&&!tile.itemFault.isEmpty()){
-            NBTTagCompound probe=(NBTTagCompound)tag.getCompoundTag("Escrow").copy();probe.setByte("Count",(byte)1);tile.pending=ItemStack.loadItemStackFromNBT(probe);
+            NBTTagCompound probe=(NBTTagCompound)tag.getCompoundTag("Escrow").copy();probe.setByte("Count",(byte)1);tile.pending=parse(probe);
         }
         if(tag.hasKey("Escrow")&&LegacyTile.STACKS.empty(tile.pending)){
             tile.itemOpaque=(NBTTagCompound)tag.getCompoundTag("Escrow").copy();tile.itemFault="Unresolved saved item escrow; manual inspection required";
