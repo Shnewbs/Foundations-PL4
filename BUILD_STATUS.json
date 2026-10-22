@@ -33,7 +33,6 @@
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
   "expected_native_scenarios": 112,
-  "candidate_native_validation": "PASS",
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_AND_BASIC_READERS_DISPLAYS",
@@ -47,8 +46,14 @@
   "build_java": 21,
   "compiler_java": 8,
   "ownership": "NORMALIZED_LEGACY_PLAYER_NAME",
-  "candidate_workflow_run": "39776355160",
-  "candidate_source_commit": "d607922b79f7650a2da66241ddeaa56904b3fe4b",
-  "candidate_runtime_sha256": "1c03abc442ed8cb2c63aee536d4974ddbbab6937f5f1d269813d9f94ef78ffb1",
-  "production_smoke": "PASS_FOR_THIS_CANDIDATE"
+  "previous_candidate_native_evidence": {
+    "candidate_native_validation": "PASS",
+    "candidate_workflow_run": "39776355160",
+    "candidate_source_commit": "d607922b79f7650a2da66241ddeaa56904b3fe4b",
+    "candidate_runtime_sha256": "1c03abc442ed8cb2c63aee536d4974ddbbab6937f5f1d269813d9f94ef78ffb1",
+    "production_smoke": "PASS_FOR_THIS_CANDIDATE"
+  },
+  "candidate_native_validation": "PENDING_FOR_RENDERER_CORRECTION",
+  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE"
 }

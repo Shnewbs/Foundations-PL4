@@ -68,7 +68,7 @@ public final class LegacyPL4 {
         FLUID_READER=new LegacyBlock(fluid_reader,"legacy_fluid_reader",10);GameRegistry.registerBlock(FLUID_READER,"legacy_fluid_reader");LanguageRegistry.addName(FLUID_READER,"PL4 Legacy Fluid Reader");
         ENERGY_READER=new LegacyBlock(energy_reader,"legacy_energy_reader",11);GameRegistry.registerBlock(ENERGY_READER,"legacy_energy_reader");LanguageRegistry.addName(ENERGY_READER,"PL4 Legacy Energy Reader");
         NETWORK_READER=new LegacyBlock(network_reader,"legacy_network_reader",12);GameRegistry.registerBlock(NETWORK_READER,"legacy_network_reader");LanguageRegistry.addName(NETWORK_READER,"PL4 Legacy Network Reader");
-        DISPLAY=new LegacyBlock(display,"legacy_display",13);GameRegistry.registerBlock(DISPLAY,"legacy_display");LanguageRegistry.addName(DISPLAY,"PL4 Legacy Display");
+        DISPLAY=new LegacyBlock(display,"legacy_display",13);DISPLAY.setTextureName("iron_block");GameRegistry.registerBlock(DISPLAY,"legacy_display");LanguageRegistry.addName(DISPLAY,"PL4 Legacy Display");
         GameRegistry.registerTileEntity(LegacyTile.class,"foundations_pl4.legacy_host");MinecraftForge.EVENT_BUS.register(this);
         LanguageRegistry.addName(CABLE,"PL4 Legacy Data Cable");LanguageRegistry.addName(EXPORT,"PL4 Legacy Export Node");LanguageRegistry.addName(IMPORT,"PL4 Legacy Import Node");
     }
