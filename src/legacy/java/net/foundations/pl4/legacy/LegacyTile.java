@@ -14,6 +14,9 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public final LegacyFluids.State fluid=new LegacyFluids.State(this);
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending;public String status="Idle";
+    public String itemFault="";
+    public NBTTagCompound itemOpaque;
+    public int itemOpaqueCount;
     public boolean publishReadings=false;
     public int readerIndex=0,displayFacing=2;
     public String[] displayLines=LegacyReadings.privateLines();
@@ -47,6 +50,7 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public int transferOnce(){
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
+        if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||worldObj.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}NativeInventory source=inventory();if(source==null&&pending==null)return 0;
         ConservingItems.Work work=new ConservingItems.Work(1024);Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();seen.add(target());int moved=0;
@@ -54,18 +58,19 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
             TileEntity raw=worldObj.getBlockTileEntity(p.x,p.y,p.z);if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
             if(sink.role()!=2||!owner.equals(sink.owner)||worldObj.isBlockIndirectlyGettingPowered(p.x,p.y,p.z)||!seen.add(sink.target()))continue;
             NativeInventory dest=sink.inventory();if(dest==null||(source!=null&&source.inventory==dest.inventory))continue;
-            ConservingItems.Escrow<ItemStack> e=new ConservingItems.Escrow<ItemStack>(){public ItemStack get(){return pending;}public void set(ItemStack s){pending=s;onInventoryChanged();}};
+            ConservingItems.Escrow<ItemStack> e=LegacyItemSafety.escrow(this);
             int budget=LegacyPL4.itemRate-moved;if(pending!=null)moved+=ConservingItems.flush(STACKS,e,dest,budget,LegacyPL4.slotLimit,work);else if(source!=null)moved+=ConservingItems.move(STACKS,e,source,dest,budget,LegacyPL4.slotLimit,work);
             if(moved>=LegacyPL4.itemRate||!work.available())break;
         }
         status=moved>0?"Moved "+moved+" items":pending==null?"Waiting for items or space":"Waiting with "+pending.stackSize+" items in escrow";return moved;
     }
     public String describe(){
+        if(LegacyItemSafety.blocked(this))return "PL4 Item escrow QUARANTINED: "+itemFault+" | Manual inspection required; no automatic replay.";
         if(role()>=LegacyReadings.ITEMS)return java.util.Arrays.toString(LegacyReadings.sample(this));
         if(role()>=6)return LegacyEnergy.describe(this);
         if(role()>=3)return LegacyFluids.describe(this);BoundedNetwork.Plan plan=network();NativeInventory inventory=inventory();int slots=inventory==null?0:inventory.slots();long count=0;for(int i=0;i<slots;i++){ItemStack s=inventory.inventory.getStackInSlot(inventory.indices[i]);if(s!=null)count+=Math.max(0,s.stackSize);}return "PL4 "+(role()==0?"Cable":role()==1?"Export":"Import")+" | Side "+side+" | Hosts "+(plan.overflow?"LIMIT":plan.nodes.size())+" | Items "+count+" | Escrow "+(pending==null?0:pending.stackSize)+" | "+status;}
-    @Override public void writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("OwnerName",owner);tag.setInteger("Side",side);if(pending!=null)tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");}
-    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("OwnerName").toLowerCase(Locale.ROOT);side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow")?ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Escrow")):null;}
+    @Override public void writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("OwnerName",owner);tag.setInteger("Side",side);if(pending!=null)tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");LegacyItemSafety.write(this,tag);}
+    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("OwnerName").toLowerCase(Locale.ROOT);side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=tag.hasKey("Escrow")?ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Escrow")):null;LegacyItemSafety.read(this,tag);}
     public static final ConservingItems.Stacks<ItemStack> STACKS=new ConservingItems.Stacks<ItemStack>(){
         public boolean empty(ItemStack s){return s==null||s.stackSize<=0;}public int count(ItemStack s){return empty(s)?0:s.stackSize;}
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}

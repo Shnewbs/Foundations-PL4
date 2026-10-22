@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 public final class LegacyPL4 {
     public static final String ID="foundations_pl4",VERSION="0.2.0-rc.1-dev";
     public static LegacyBlock CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK;
-    public static Item FLUID_CELL,ENERGY_CELL;
+    public static Item FLUID_CELL,ENERGY_CELL,ITEM_CELL;
     public static LegacyBlock ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER;
     public static LegacyBlock ITEM_READER,FLUID_READER,ENERGY_READER,NETWORK_READER,DISPLAY;
     @cpw.mods.fml.common.SidedProxy(clientSide="net.foundations.pl4.legacy.LegacyClientProxy",serverSide="net.foundations.pl4.legacy.LegacyProxy")
@@ -41,8 +41,10 @@ public final class LegacyPL4 {
         java.util.Set<Integer> ids=new java.util.HashSet<Integer>();
         for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer,item_reader,fluid_reader,energy_reader,network_reader,display})if(!ids.add(id))throw new IllegalStateException("PL4 legacy block IDs must be distinct");
         int cell=config.getItem("legacyFluidRecoveryCell",12500).getInt();
+        int itemCell=config.getItem("legacyItemRecoveryReceipt",12502).getInt();
+        if(itemCell<256||itemCell>Item.itemsList.length-257||itemCell==cell||Item.itemsList[itemCell+256]!=null||ids.contains(itemCell+256))throw new IllegalStateException("PL4 item recovery receipt ID must be free and distinct");
         int energyCell=config.getItem("legacyEnergyRecoveryCell",12501).getInt();
-        if(energyCell<256||energyCell>Item.itemsList.length-257||energyCell==cell||Item.itemsList[energyCell+256]!=null||ids.contains(energyCell+256)||ids.contains(cell+256))throw new IllegalStateException("PL4 energy/fluid recovery item IDs must be free and distinct from block IDs");
+        if(energyCell==itemCell||energyCell<256||energyCell>Item.itemsList.length-257||energyCell==cell||Item.itemsList[energyCell+256]!=null||ids.contains(energyCell+256)||ids.contains(cell+256))throw new IllegalStateException("PL4 energy/fluid recovery item IDs must be free and distinct from block IDs");
         if(cell<256||cell+256>=Item.itemsList.length||Item.itemsList[cell+256]!=null)throw new IllegalStateException("PL4 recovery item ID unavailable; choose a free legacyFluidRecoveryCell ID");
         for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer,item_reader,fluid_reader,energy_reader,network_reader,display})if(id<256||id>=Block.blocksList.length||Block.blocksList[id]!=null)throw new IllegalStateException("PL4 block ID unavailable: "+id+"; choose free IDs in the config");
         enabled=config.get("network","transfersEnabled",true).getBoolean(true);
@@ -60,6 +62,7 @@ public final class LegacyPL4 {
         ENERGY_IMPORT=new LegacyBlock(energyImport,"legacy_energy_import",7);ENERGY_IMPORT.setTextureName("redstone_block");
         ENERGY_BUFFER=new LegacyBlock(energyBuffer,"legacy_energy_buffer",8);ENERGY_BUFFER.setTextureName("iron_block");
         ENERGY_CELL=new LegacyEnergyCell(energyCell);
+        ITEM_CELL=new LegacyItemRecoveryCell(itemCell);GameRegistry.registerItem(ITEM_CELL,"legacy_item_cell");LanguageRegistry.addName(ITEM_CELL,"PL4 Quarantined Item Recovery Receipt");
         GameRegistry.registerBlock(ENERGY_EXPORT,"legacy_energy_export");GameRegistry.registerBlock(ENERGY_IMPORT,"legacy_energy_import");GameRegistry.registerBlock(ENERGY_BUFFER,"legacy_energy_buffer");GameRegistry.registerItem(ENERGY_CELL,"legacy_energy_cell");
         LanguageRegistry.addName(ENERGY_EXPORT,"PL4 Legacy Energy Export Node");LanguageRegistry.addName(ENERGY_IMPORT,"PL4 Legacy Energy Import Node");LanguageRegistry.addName(ENERGY_BUFFER,"PL4 Legacy Energy Buffer");LanguageRegistry.addName(ENERGY_CELL,"PL4 Sealed Energy Recovery Cell");
         GameRegistry.registerBlock(FLUID_EXPORT,"legacy_fluid_export");GameRegistry.registerBlock(FLUID_IMPORT,"legacy_fluid_import");GameRegistry.registerBlock(TANK,"legacy_tank");GameRegistry.registerItem(FLUID_CELL,"legacy_fluid_cell");

@@ -17,7 +17,7 @@ public final class CoreChecks {
         public Stack insert(int slot,Stack offered,boolean simulate){calls++;if(!simulate&&throwActual)throw new IllegalStateException("provider fault");if(wrongSimulation)return new Stack(2,1);if(!simulate&&refuseActual)return offered;if(stack!=null&&stack.kind!=offered.kind)return offered;int accepted=Math.min(offered.n,Math.max(0,capacity-(stack==null?0:stack.n)));if(!simulate&&accepted>0)stack=new Stack(offered.kind,(stack==null?0:stack.n)+accepted);return offered.n==accepted?null:new Stack(offered.kind,offered.n-accepted);}
         int count(){return stack==null?0:stack.n;}
     }
-    static final class Buffer implements ConservingItems.Escrow<Stack>{Stack held;public Stack get(){return held;}public void set(Stack s){held=s;}int count(){return held==null?0:held.n;}}
+    static final class Buffer implements ConservingItems.Escrow<Stack>{Stack held;boolean fault;public boolean blocked(){return fault;}public void block(String reason){fault=true;}public void clearBlock(){fault=false;}public Stack get(){return held;}public void set(Stack s){held=s;}int count(){return held==null?0:held.n;}}
     public static void main(String[] args){
         FluidChecks.main(args); EnergyChecks.main(args);
         for(int source=0;source<=64;source++)for(int occupied=0;occupied<=64;occupied++)for(int rate:new int[]{1,8,64}){
@@ -28,7 +28,17 @@ public final class CoreChecks {
         check(ConservingItems.move(STACKS,e,a,b,8,1)==0&&a.count()==12&&e.count()==8,"actual refusal retained");b.refuseActual=false;
         check(ConservingItems.flush(STACKS,e,b,8,1)==8&&e.count()==0,"buffer drains");
         a=new Store(20,64);b=new Store(0,64);e=new Buffer();b.throwActual=true;boolean thrown=false;try{ConservingItems.move(STACKS,e,a,b,8,1);}catch(IllegalStateException ex){thrown=true;}
-        check(thrown&&e.count()==8&&a.count()==12,"exception retains items");
+        check(thrown&&e.count()==8&&a.count()==12&&e.blocked(),"exception retains and quarantines items");
+        b.throwActual=false;int calls=b.calls;check(ConservingItems.flush(STACKS,e,b,8,1)==0&&b.calls==calls&&b.count()==0,"uncertain insertion never replays");
+        Store uncertain=new Store(0,64){public Stack insert(int slot,Stack value,boolean simulate){Stack result=super.insert(slot,value,simulate);if(!simulate)throw new IllegalStateException("after mutation");return result;}};
+        a=new Store(20,64);e=new Buffer();thrown=false;try{ConservingItems.move(STACKS,e,a,uncertain,8,1);}catch(IllegalStateException ex){thrown=true;}
+        check(thrown&&uncertain.count()==8&&e.blocked(),"post-mutation insertion quarantined");calls=uncertain.calls;check(ConservingItems.flush(STACKS,e,uncertain,8,1)==0&&uncertain.calls==calls&&uncertain.count()==8,"no duplicated replay");
+        Store malformed=new Store(0,64){public Stack insert(int slot,Stack value,boolean simulate){Stack result=super.insert(slot,value,simulate);return simulate?result:new Stack(2,1);}};
+        a=new Store(20,64);e=new Buffer();thrown=false;try{ConservingItems.move(STACKS,e,a,malformed,8,1);}catch(IllegalStateException ex){thrown=true;}
+        check(thrown&&e.blocked()&&malformed.count()==8,"malformed actual remainder remains quarantined");
+        Store extraction=new Store(20,64){public Stack extract(int slot,int count,boolean simulate){Stack result=super.extract(slot,count,simulate);if(!simulate)throw new IllegalStateException("after extraction");return result;}};
+        b=new Store(0,64);e=new Buffer();thrown=false;try{ConservingItems.move(STACKS,e,extraction,b,8,1);}catch(IllegalStateException ex){thrown=true;}
+        check(thrown&&e.blocked()&&extraction.count()==12,"uncertain extraction quarantined");calls=extraction.calls;check(ConservingItems.move(STACKS,e,extraction,b,8,1)==0&&extraction.calls==calls,"no repeated uncertain extraction");
         a=new Store(20,64);b=new Store(0,64);e=new Buffer();b.wrongSimulation=true;thrown=false;try{ConservingItems.move(STACKS,e,a,b,8,1);}catch(IllegalStateException ex){thrown=true;}
         check(thrown&&a.count()==20&&e.count()==0,"malformed simulation never extracts");
         a=new Store(20,64);e=new Buffer();check(ConservingItems.move(STACKS,e,a,a,8,1)==0&&a.count()==20,"self transfer");

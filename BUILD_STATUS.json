@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 112,
+  "expected_native_scenarios": 120,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_AND_BASIC_READERS_DISPLAYS",
@@ -53,7 +53,8 @@
     "candidate_runtime_sha256": "1c03abc442ed8cb2c63aee536d4974ddbbab6937f5f1d269813d9f94ef78ffb1",
     "production_smoke": "PASS_FOR_THIS_CANDIDATE"
   },
-  "candidate_native_validation": "PENDING_FOR_RENDERER_CORRECTION",
+  "candidate_native_validation": "PENDING_FOR_ITEM_QUARANTINE",
   "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE"
+  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT"
 }
