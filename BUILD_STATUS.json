@@ -47,8 +47,12 @@
     "candidate_runtime_sha256": "f2bb57cacb18e3c38488b7b5bffc5ff3f2645059ea8c54aae8cda06e373b7fcc",
     "production_smoke": "PASS_FOR_THIS_CANDIDATE"
   },
-  "candidate_native_validation": "PENDING_FOR_ITEM_QUARANTINE",
-  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT"
+  "candidate_native_validation": "PASS",
+  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
+  "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
+  "migration_workflow_run": "39778867001",
+  "candidate_workflow_run": "39778867001",
+  "candidate_source_commit": "14b82a1d90132a0023f764681c6682f02ba4b263",
+  "candidate_runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604"
 }
