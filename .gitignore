@@ -14,3 +14,17 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated Python and port-validation outputs
+__pycache__/
+*.py[cod]
+/.java8-toolchain/
+/run-*/
+/verification-logs/
+/release-files/
+/published-runtime/
+/source-snapshot.zip
+/source-commit.txt
+/forge-installer.jar
+/installer.sha1
+/FoundationsPL4-*-source.zip
