@@ -67,13 +67,13 @@
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE",
   "candidate_native_validation": "PASS",
-  "candidate_workflow_run": "39709584171",
+  "candidate_workflow_run": "39716131269",
   "rc_publication_cleared": false,
   "compact_storage_ui_source_parity": "PASS",
   "compact_ui_compilation": "PASS",
   "native_baseline_artifact": 12397500393,
   "non_ui_runtime_byte_parity": "PASS_EXCEPT_VERIFIED_GUIDE_EDITION",
-  "ui_parity_workflow_run": "39711411144"
+  "ui_parity_workflow_run": "39711411144",
+  "native_compilation": "PASS_FOR_THIS_CANDIDATE"
 }

@@ -31,7 +31,7 @@ public final class PLPortTestMod {
         Set<Method> fixtures = new HashSet<>();
         PLGameTests.register(new RegisterGameTestsEvent(fixtures));
         for (Method fixture : fixtures) GameTestRegistry.register(fixture, Set.of(FoundationsPL4.ID));
-        if (!Boolean.getBoolean("foundations_pl4.isolatedGameTestConfig")) {
+        if (net.minecraftforge.fml.loading.FMLEnvironment.production) {
             MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
                 if (event.phase == TickEvent.Phase.END) GameTestTicker.SINGLETON.tick();
             });
