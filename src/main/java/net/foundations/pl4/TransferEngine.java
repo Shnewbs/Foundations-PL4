@@ -154,16 +154,16 @@ public final class TransferEngine {
 
     // ------------------------------------------------------------ items
     private static void pushItems(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();boolean hadPending=!p.pendingItem.isEmpty();
+        Part p=source.part();if(ItemTransferSafety.blocked(p))return;boolean hadPending=!p.pendingItem.isEmpty();
         if(hadPending){flushItem(server,source,sinks,budgets,pairs,received);return;}
         if(received.contains(target(source)))return;
         IItemHandler from=itemHandler(server,source);if(from==null||from.getSlots()<=0)return;
         int sourceBudget=budgets.remaining(budgets.items,source,PLConfig.ITEM_RATE.get());if(sourceBudget<=0)return;
         for(int n=0;n<Math.min(from.getSlots(),65536);n++){
             int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());
-            ItemStack trial=from.extractItem(slot,sourceBudget,true);if(trial.isEmpty()||!itemAllowed(trial,source,false))continue;
+            ItemStack trial=from.extractItem(slot,sourceBudget,true);if(!ItemTransferSafety.trial(trial,sourceBudget)||!itemAllowed(trial,source,false))continue;
             int space=itemSpace(server,trial,sinks,source,budgets,pairs);if(space<=0)continue;
-            ItemStack extracted=from.extractItem(slot,Math.min(space,trial.getCount()),false);if(extracted.isEmpty())continue;
+            int request=Math.min(space,trial.getCount());ItemStack extracted=ItemTransferSafety.extract(source,trial,request,()->from.extractItem(slot,request,false));if(extracted.isEmpty())continue;
             p.pendingItem=extracted;source.host().setChanged();budgets.use(budgets.items,source,extracted.getCount());p.ticks=slot+1L;
             flushItem(server,source,sinks,budgets,pairs,received);break;
         }
@@ -174,38 +174,39 @@ public final class TransferEngine {
             if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!itemAllowed(stack,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
-            int offered=Math.min(remaining,budget);ItemStack send=net.foundations.pl4.compat.PortData.copyWithCount(stack,offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,true);remaining-=offered-rest.getCount();
+            int offered=Math.min(remaining,budget);ItemStack send=net.foundations.pl4.compat.PortData.copyWithCount(stack,offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,true);remaining-=offered-ItemTransferSafety.remainder(send,rest);
         }
         return stack.getCount()-remaining;
     }
     private static void flushItem(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();
+        Part p=source.part();if(ItemTransferSafety.blocked(p))return;
         for(NetworkEngine.Ref sink:sinks){
             if(p.pendingItem.isEmpty())break;if(pairs.contains(pair(source,sink))||!itemAllowed(p.pendingItem,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
-            int offered=Math.min(p.pendingItem.getCount(),budget);ItemStack send=net.foundations.pl4.compat.PortData.copyWithCount(p.pendingItem,offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,false);int accepted=offered-rest.getCount();
+            int offered=Math.min(p.pendingItem.getCount(),budget);ItemStack send=net.foundations.pl4.compat.PortData.copyWithCount(p.pendingItem,offered);ItemStack rest=ItemTransferSafety.insert(source,send,()->ItemHandlerHelper.insertItemStacked(to,send,false));int accepted=offered-rest.getCount();
             if(accepted>0){p.pendingItem.shrink(accepted);budgets.use(budgets.items,sink,accepted);budgets.delivered(budgets.items,accepted);pairs.add(pair(source,sink));received.add(target(sink));source.host().setChanged();sink.host().setChanged();}
+            ItemTransferSafety.completed(source);
         }
     }
     private static void pullItems(MinecraftServer server,NetworkEngine.Ref sink,List<NetworkEngine.Ref> sources,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=sink.part();IItemHandler to=itemHandler(server,sink);if(to==null)return;
+        Part p=sink.part();if(ItemTransferSafety.blocked(p))return;IItemHandler to=itemHandler(server,sink);if(to==null)return;
         boolean hadPending=!p.pendingItem.isEmpty();
         if(hadPending){
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());int offered=Math.min(p.pendingItem.getCount(),budget);
-            if(offered>0){ItemStack rest=ItemHandlerHelper.insertItemStacked(to,net.foundations.pl4.compat.PortData.copyWithCount(p.pendingItem,offered),false);int accepted=offered-rest.getCount();if(accepted>0){p.pendingItem.shrink(accepted);budgets.use(budgets.items,sink,accepted);budgets.delivered(budgets.items,accepted);received.add(target(sink));sink.host().setChanged();}}
+            if(offered>0){ItemStack send=net.foundations.pl4.compat.PortData.copyWithCount(p.pendingItem,offered);ItemStack rest=ItemTransferSafety.insert(sink,send,()->ItemHandlerHelper.insertItemStacked(to,send,false));int accepted=offered-rest.getCount();if(accepted>0){p.pendingItem.shrink(accepted);budgets.use(budgets.items,sink,accepted);budgets.delivered(budgets.items,accepted);received.add(target(sink));sink.host().setChanged();}ItemTransferSafety.completed(sink);}
             return;
         }
         for(NetworkEngine.Ref source:sources){
-            if(budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get())<=0)break;if(received.contains(target(source))||pairs.contains(pair(source,sink)))continue;
+            if(budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get())<=0)break;if(ItemTransferSafety.blocked(source.part())||received.contains(target(source))||pairs.contains(pair(source,sink)))continue;
             int sourceBudget=budgets.remaining(budgets.items,source,PLConfig.ITEM_RATE.get());int sinkBudget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());int limit=Math.min(sourceBudget,sinkBudget);if(limit<=0)continue;
             IItemHandler from=itemHandler(server,source);if(from==null||from.getSlots()<=0)continue;
             for(int n=0;n<Math.min(from.getSlots(),65536)&&limit>0;n++){
-                int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());ItemStack trial=from.extractItem(slot,limit,true);if(trial.isEmpty()||!itemAllowed(trial,source,false)||!itemAllowed(trial,sink,true))continue;
-                ItemStack rest=ItemHandlerHelper.insertItemStacked(to,trial.copy(),true);int accepted=trial.getCount()-rest.getCount();if(accepted<=0)continue;
-                ItemStack extracted=from.extractItem(slot,accepted,false);if(extracted.isEmpty())continue;
+                int slot=Math.floorMod((int)(p.ticks+n),from.getSlots());ItemStack trial=from.extractItem(slot,limit,true);if(!ItemTransferSafety.trial(trial,limit)||!itemAllowed(trial,source,false)||!itemAllowed(trial,sink,true))continue;
+                ItemStack rest=ItemHandlerHelper.insertItemStacked(to,trial.copy(),true);int accepted=trial.getCount()-ItemTransferSafety.remainder(trial,rest);if(accepted<=0)continue;
+                ItemStack extracted=ItemTransferSafety.extract(sink,trial,accepted,()->from.extractItem(slot,accepted,false));if(extracted.isEmpty())continue;
                 p.pendingItem=extracted.copy();sink.host().setChanged();source.host().setChanged();
-                ItemStack offered=net.foundations.pl4.compat.PortData.copyWithCount(extracted,Math.min(extracted.getCount(),budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get())));ItemStack restActual=ItemHandlerHelper.insertItemStacked(to,offered,false);int inserted=offered.getCount()-restActual.getCount();p.pendingItem.shrink(inserted);
+                ItemStack offered=net.foundations.pl4.compat.PortData.copyWithCount(extracted,Math.min(extracted.getCount(),budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get())));ItemStack restActual=ItemTransferSafety.insert(sink,offered,()->ItemHandlerHelper.insertItemStacked(to,offered,false));int inserted=offered.getCount()-restActual.getCount();p.pendingItem.shrink(inserted);ItemTransferSafety.completed(sink);
                 budgets.use(budgets.items,source,extracted.getCount());budgets.use(budgets.items,sink,extracted.getCount());pairs.add(pair(source,sink));if(inserted>0){budgets.delivered(budgets.items,inserted);received.add(target(sink));}p.ticks=slot+1L;
                 sink.host().setChanged();source.host().setChanged();break;
             }
@@ -255,7 +256,7 @@ public final class TransferEngine {
     }
 
     private static void updateStatus(NetworkEngine.Ref ref,List<NetworkEngine.Ref> endpoints,Map<NetworkEngine.Ref,TargetKey> targets){
-        Part p=ref.part();String mode=switch(p.transferMode){case 1->"ADD";case 2->"REMOVE";case 3->"ADD / REMOVE";default->"PASSIVE";};
+        Part p=ref.part();if(ItemTransferSafety.blocked(p)){p.status="Item transfer quarantined; manual inspection required";return;}String mode=switch(p.transferMode){case 1->"ADD";case 2->"REMOVE";case 3->"ADD / REMOVE";default->"PASSIVE";};
         if(p.transferMode==TransferRules.PASSIVE){p.status="Transfer PASSIVE";return;}
         if(p.transferMode==TransferRules.ADD_REMOVE){long peers=endpoints.stream().filter(other->other.part().kind==Kind.TRANSFER_NODE&&(routable(ref,other,targets)||routable(other,ref,targets))).count();p.status=peers>0?"Transfer ADD / REMOVE: "+peers+" explicit peer(s)":"Transfer ADD / REMOVE: needs matching ADD or REMOVE peer";return;}
         long count=p.transferMode==TransferRules.ADD?endpoints.stream().filter(source->routable(source,ref,targets)).count():endpoints.stream().filter(sink->routable(ref,sink,targets)).count();
