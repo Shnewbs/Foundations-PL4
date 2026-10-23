@@ -47,9 +47,14 @@
     "candidate_runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604",
     "production_smoke": "PASS_FOR_THIS_CANDIDATE"
   },
-  "candidate_native_validation": "PENDING",
-  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "candidate_native_validation": "PASS",
+  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
-  "wireless_storage": "NATIVE_GUI_DEVELOPMENT"
+  "wireless_storage": "NATIVE_GUI_DEVELOPMENT",
+  "migration_workflow_run": "39961294790",
+  "candidate_workflow_run": "39961294790",
+  "candidate_source_commit": "f3de2abb508e37d71a4ef9055ed4bacfc569c992",
+  "candidate_runtime_sha256": "626328066cc765f21f2cbf649d40df84ee165d0cc817758c634f61a09d703c59",
+  "candidate_wireless_validation": "PASS_32_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
 }
