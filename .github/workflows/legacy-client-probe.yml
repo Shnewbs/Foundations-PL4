@@ -34,6 +34,10 @@ jobs:
           git -C candidate rev-parse HEAD > results/SOURCE_COMMIT.txt
           cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/legacy/java/net/foundations/pl4/legacy/
           cat >> candidate/build.gradle <<'GRADLE'
+          configurations.runtimeClasspath {
+              exclude group: 'net.minecraftforge', module: 'mergetool'
+              exclude group: 'org.ow2.asm'
+          }
           minecraft.runs.client {
               args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'
           }
