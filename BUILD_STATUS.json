@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 152,
+  "expected_native_scenarios": 156,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -48,19 +48,14 @@
   "ownership": "NORMALIZED_LEGACY_PLAYER_NAME",
   "previous_candidate_native_evidence": {
     "candidate_native_validation": "PASS",
-    "candidate_workflow_run": "39778867001",
-    "candidate_source_commit": "230b6e58094a64ef6652d8bc15357ec59f4a457c",
-    "candidate_runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1",
-    "production_smoke": "PASS_FOR_THIS_CANDIDATE"
+    "production_smoke": "PASS_FOR_THIS_CANDIDATE",
+    "candidate_workflow_run": "39961294790",
+    "candidate_source_commit": "37bd7c4582dea0e8d7e1c7364c2f468bf4e9758c",
+    "candidate_runtime_sha256": "23342533e01ee311482a93aedbac052be6ee7603bb397eb6ece53a5e16909dd1"
   },
-  "candidate_native_validation": "PASS",
-  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
+  "candidate_native_validation": "PENDING",
+  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
-  "wireless_storage": "NATIVE_GUI_DEVELOPMENT",
-  "migration_workflow_run": "39961294790",
-  "candidate_workflow_run": "39961294790",
-  "candidate_source_commit": "37bd7c4582dea0e8d7e1c7364c2f468bf4e9758c",
-  "candidate_runtime_sha256": "23342533e01ee311482a93aedbac052be6ee7603bb397eb6ece53a5e16909dd1",
-  "candidate_wireless_validation": "PASS_32_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
+  "wireless_storage": "NATIVE_GUI_DEVELOPMENT"
 }

@@ -7,7 +7,12 @@ public final class LegacyWirelessScreen extends GuiContainer {
     private static final ResourceLocation TEXTURE=new ResourceLocation("textures/gui/container/generic_54.png");
     public LegacyWirelessScreen(LegacyWirelessContainer container){super(container);xSize=176;ySize=204;}
     @Override public void initGui(){super.initGui();buttonList.add(new GuiButton(0,guiLeft+119,guiTop+3,24,13,"<"));buttonList.add(new GuiButton(1,guiLeft+145,guiTop+3,24,13,">"));}
-    @Override protected void actionPerformed(GuiButton button){mc.playerController.sendEnchantPacket(inventorySlots.windowId,button.id);}
+    @Override protected void actionPerformed(GuiButton button){mc.playerController.sendEnchantPacket(inventorySlots.windowId,(((LegacyWirelessContainer)inventorySlots).revision<<1)|button.id);}
+    @Override protected void handleMouseClick(net.minecraft.inventory.Slot slot,int slotId,int button,int type){
+        if((button!=0&&button!=1)||!(type==0||type==1))return;
+        int revision=((LegacyWirelessContainer)inventorySlots).revision;if(revision<0)return;
+        mc.playerController.windowClick(inventorySlots.windowId,slotId,(revision<<1)|button,type,mc.thePlayer);
+    }
     @Override protected void drawGuiContainerForegroundLayer(int mouseX,int mouseY){fontRenderer.drawString("Wireless Storage",8,6,0x404040);fontRenderer.drawString("Click to withdraw; right: 1",8,110,0x404040);}
     @Override protected void drawGuiContainerBackgroundLayer(float partial,int mouseX,int mouseY){
         org.lwjgl.opengl.GL11.glColor4f(1,1,1,1);mc.getTextureManager().bindTexture(TEXTURE);
