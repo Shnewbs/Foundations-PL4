@@ -29,7 +29,16 @@ public final class R16GameTests {
         ChestTileEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
-        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));resourceQuarantineChecks(ref(add,Direction.EAST));h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));resourceQuarantineChecks(ref(add,Direction.EAST));
+        from.setItem(0,new ItemStack(Items.DIAMOND,5));part(add,Direction.EAST).resourceTransferFault="Interrupted provider mutation";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined driver");
+        part(add,Direction.EAST).resourceTransferFault="";part(node,Direction.WEST).resourceTransferFault="Unresolved passive endpoint";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined passive endpoint");
+        part(node,Direction.WEST).resourceTransferFault="";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(!from.getItem(0).isEmpty()||to.getItem(0).getCount()!=22)throw new IllegalStateException("Healthy endpoint resumes without rebuilding the plan");h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
