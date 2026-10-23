@@ -38,12 +38,18 @@ public final class LegacyWirelessStorage {
             if(seen.add(node.fluidTarget()))result.add(node);
         }return result;
     }
-    private static ConservingItems.Inventory<ItemStack> inventory(LegacyTile node){net.minecraftforge.items.IItemHandler handler=node.inventory();return handler==null?null:LegacyTile.adapt(handler);}
-    private static ItemStack peek(LegacyTile node,int slot){net.minecraftforge.items.IItemHandler handler=node.inventory();return handler==null?ItemStack.EMPTY:handler.getStackInSlot(slot);}
+    private static final class StorageInventory implements ConservingItems.Inventory<ItemStack>{
+        final net.minecraftforge.items.IItemHandler nativeInventory;StorageInventory(net.minecraftforge.items.IItemHandler inventory){nativeInventory=inventory;}
+        public int slots(){return nativeInventory.getSlots();}
+        public ItemStack extract(int slot,int amount,boolean simulate){return nativeInventory.extractItem(slot,amount,simulate);}
+        public ItemStack insert(int slot,ItemStack value,boolean simulate){return nativeInventory.insertItem(slot,value,simulate);}
+        ItemStack peek(int slot){return nativeInventory.getStackInSlot(slot);}
+    }
+    private static StorageInventory inventory(LegacyTile node){net.minecraftforge.items.IItemHandler handler=node.inventory();return handler==null?null:new StorageInventory(handler);}
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;
-        try{for(LegacyTile node:endpoints(root)){ConservingItems.Inventory<ItemStack> inventory=inventory(node);if(inventory==null)continue;
-            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=peek(node,i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
+        try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
+            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
         }}catch(RuntimeException provider){result.clear();}return result;
     }
     private static ConservingItems.Inventory<ItemStack> playerInventory(final EntityPlayer player,final int only){return new ConservingItems.Inventory<ItemStack>(){
@@ -59,8 +65,8 @@ public final class LegacyWirelessStorage {
     };}
     public static int withdraw(EntityPlayer player,ItemStack tool,Entry selected,int amount){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64)return 0;
-        if(!endpoints(root).contains(selected.node))return 0;final ConservingItems.Inventory<ItemStack> source=inventory(selected.node);if(source==null||selected.slot<0||selected.slot>=Math.min(source.slots(),LegacyPL4.slotLimit))return 0;
-        final Entry entry=selected;ItemStack current=peek(entry.node,entry.slot);if(!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
+        if(!endpoints(root).contains(selected.node))return 0;final StorageInventory source=inventory(selected.node);if(source==null||selected.slot<0||selected.slot>=Math.min(source.slots(),LegacyPL4.slotLimit))return 0;
+        final Entry entry=selected;ItemStack current=source.peek(entry.slot);if(!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
         try{return ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(entry.node),one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),new ConservingItems.Work(WORK_LIMIT));}
         finally{retain(entry.node);player.inventory.markDirty();}
