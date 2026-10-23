@@ -32,8 +32,13 @@ public final class R13GameTests {
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void ordinaryTransferDropStillRetainsEscrow(GameTestHelper h){
-        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
+        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;p.resourceTransferFault="Interrupted resource mutation";
         ItemStack stack=PartItem.stack(p,h.getLevel().registryAccess());var data=stack.get(DataComponents.CUSTOM_DATA);h.assertTrue(data!=null&&data.contains("pl_part"),"Escrow-bearing normal drop must retain a payload");
-        Part restored=Part.load(data.copyTag().getCompound("pl_part").orElseGet(CompoundTag::new),h.getLevel().registryAccess());h.assertTrue(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Escrow must survive canonical item payload");h.succeed();
+        Part restored=Part.load(data.copyTag().getCompound("pl_part").orElseGet(CompoundTag::new),h.getLevel().registryAccess());h.assertTrue(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Escrow must survive canonical item payload");h.assertTrue(ResourceTransferSafety.blocked(restored)&&!restored.routeEditable(),"Resource quarantine survives canonical item payload");
+        p.pendingItem=ItemStack.EMPTY;p.pendingFluid=FluidStack.EMPTY;p.energyCredits(0);
+        ItemStack faultStack=PartItem.stack(p,h.getLevel().registryAccess());var faultData=faultStack.get(DataComponents.CUSTOM_DATA);
+        h.assertTrue(faultData!=null,"Fault-only drop must retain a payload");
+        Part faultRestored=Part.load(faultData.copyTag().getCompound("pl_part").orElseGet(CompoundTag::new),h.getLevel().registryAccess());
+        h.assertTrue(ResourceTransferSafety.blocked(faultRestored)&&!faultRestored.routeEditable(),"Empty escrow does not discard an uncertain mutation fence");h.succeed();
     }
 }
