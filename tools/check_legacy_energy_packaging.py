@@ -5,7 +5,7 @@ target=sys.argv[1];root=Path.cwd();version='0.2.0-rc.1-dev'
 jar=root/'build/libs'/('FoundationsPL4-'+target+'-'+version+('-srg.jar' if target=='1.6.4' else '.jar'))
 with zipfile.ZipFile(jar) as z:
     names=set(z.namelist())
-    for cls in ['ConservingEnergy','LegacyEnergy','LegacyEnergyPlatform','LegacyEnergyAccess','LegacyReadings','LegacyReaderPlatform','LegacyDisplayRenderer','LegacyItemSafety']:
+    for cls in ['ConservingEnergy','LegacyEnergy','LegacyEnergyPlatform','LegacyEnergyAccess','LegacyReadings','LegacyReaderPlatform','LegacyDisplayRenderer','LegacyItemSafety','LegacyWirelessStorage','LegacyWirelessContainer','LegacyWirelessGuiHandler','LegacyWirelessItem','LegacyWirelessScreen']:
         assert 'net/foundations/pl4/legacy/'+cls+'.class' in names,cls
     for name in ['legacy_item_reader','legacy_fluid_reader','legacy_energy_reader','legacy_network_reader','legacy_display']:
         if target=='1.12.2':

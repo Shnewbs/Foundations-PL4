@@ -5,7 +5,7 @@
   "java": 7,
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "port_status": "LEGACY_READER_DISPLAY_DEVELOPMENT",
+  "port_status": "LEGACY_WIRELESS_STORAGE_DEVELOPMENT",
   "native_source": "src/legacy",
   "excluded_reference_source": "src/main",
   "legacy_save_schema": 3,
@@ -32,10 +32,10 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 120,
+  "expected_native_scenarios": 152,
   "release_published": false,
   "rc_publication_cleared": false,
-  "parity": "ITEM_FLUID_ENERGY_TRANSPORT_AND_BASIC_READERS_DISPLAYS",
+  "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
   "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "live_multiplayer_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -48,17 +48,14 @@
   "ownership": "NORMALIZED_LEGACY_PLAYER_NAME",
   "previous_candidate_native_evidence": {
     "candidate_native_validation": "PASS",
-    "candidate_workflow_run": "39776355160",
-    "candidate_source_commit": "d607922b79f7650a2da66241ddeaa56904b3fe4b",
-    "candidate_runtime_sha256": "1c03abc442ed8cb2c63aee536d4974ddbbab6937f5f1d269813d9f94ef78ffb1",
+    "candidate_workflow_run": "39778867001",
+    "candidate_source_commit": "230b6e58094a64ef6652d8bc15357ec59f4a457c",
+    "candidate_runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1",
     "production_smoke": "PASS_FOR_THIS_CANDIDATE"
   },
-  "candidate_native_validation": "PASS",
-  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
+  "candidate_native_validation": "PENDING",
+  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
-  "migration_workflow_run": "39778867001",
-  "candidate_workflow_run": "39778867001",
-  "candidate_source_commit": "230b6e58094a64ef6652d8bc15357ec59f4a457c",
-  "candidate_runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1"
+  "wireless_storage": "NATIVE_GUI_DEVELOPMENT"
 }

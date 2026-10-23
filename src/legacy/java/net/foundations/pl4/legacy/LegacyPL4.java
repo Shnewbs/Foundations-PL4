@@ -16,9 +16,10 @@ import net.minecraft.item.ItemStack;
 @Mod(modid=LegacyPL4.ID,name="Foundations PL4 Legacy Preview",version=LegacyPL4.VERSION,acceptedMinecraftVersions="[1.6.4]")
 @cpw.mods.fml.common.network.NetworkMod(clientSideRequired=true,serverSideRequired=true,versionBounds="[0.2.0-rc.1-dev]")
 public final class LegacyPL4 {
+    @cpw.mods.fml.common.Mod.Instance("foundations_pl4") public static LegacyPL4 instance;
     public static final String ID="foundations_pl4",VERSION="0.2.0-rc.1-dev";
     public static LegacyBlock CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK;
-    public static Item FLUID_CELL,ENERGY_CELL,ITEM_CELL;
+    public static Item FLUID_CELL,ENERGY_CELL,ITEM_CELL,WIRELESS_STORAGE;
     public static LegacyBlock ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER;
     public static LegacyBlock ITEM_READER,FLUID_READER,ENERGY_READER,NETWORK_READER,DISPLAY;
     @cpw.mods.fml.common.SidedProxy(clientSide="net.foundations.pl4.legacy.LegacyClientProxy",serverSide="net.foundations.pl4.legacy.LegacyProxy")
@@ -29,6 +30,7 @@ public final class LegacyPL4 {
     public static boolean energyEnabled=true; public static int energyRate=400,manualEnergy=40;
     public static java.util.logging.Logger logger;
     @Mod.EventHandler public void preInit(FMLPreInitializationEvent event){
+        cpw.mods.fml.common.network.NetworkRegistry.instance().registerGuiHandler(this,new LegacyWirelessGuiHandler());
         logger=event.getModLog();Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
         int cable=config.getBlock("legacyCable",3500).getInt(),export=config.getBlock("legacyExport",3501).getInt(),sink=config.getBlock("legacyImport",3502).getInt();
         int fluidExport=config.getBlock("legacyFluidExport",3503).getInt(),fluidImport=config.getBlock("legacyFluidImport",3504).getInt(),tank=config.getBlock("legacyTank",3505).getInt();
@@ -41,6 +43,7 @@ public final class LegacyPL4 {
         java.util.Set<Integer> ids=new java.util.HashSet<Integer>();
         for(int id:new int[]{cable,export,sink,fluidExport,fluidImport,tank,energyExport,energyImport,energyBuffer,item_reader,fluid_reader,energy_reader,network_reader,display})if(!ids.add(id))throw new IllegalStateException("PL4 legacy block IDs must be distinct");
         int cell=config.getItem("legacyFluidRecoveryCell",12500).getInt();
+        int wirelessItem=config.getItem("legacyWirelessStorage",12503).getInt();
         int itemCell=config.getItem("legacyItemRecoveryReceipt",12502).getInt();
         if(itemCell<256||itemCell>Item.itemsList.length-257||itemCell==cell||Item.itemsList[itemCell+256]!=null||ids.contains(itemCell+256))throw new IllegalStateException("PL4 item recovery receipt ID must be free and distinct");
         int energyCell=config.getItem("legacyEnergyRecoveryCell",12501).getInt();
@@ -52,6 +55,8 @@ public final class LegacyPL4 {
         itemRate=bound(config.get("network","itemsPerOperation",8).getInt(),1,64);
         nodeLimit=bound(config.get("network","maxNetworkHosts",256).getInt(),1,4096);
         slotLimit=bound(config.get("network","maxInventorySlots",256).getInt(),1,4096);fluidsEnabled=config.get("network","fluidsEnabled",true).getBoolean(true);fluidRate=bound(config.get("network","fluidMilliBucketsPerOperation",250).getInt(),1,16000);energyEnabled=config.get("network","energyEnabled",true).getBoolean(true);energyRate=bound(config.get("network","energyPerOperation",400).getInt(),1,100000);manualEnergy=bound(config.get("network","manualEnergyPerCrank",40).getInt(),0,400);config.save();
+        if(wirelessItem<256||wirelessItem>Item.itemsList.length-257||wirelessItem==cell||wirelessItem==itemCell||wirelessItem==energyCell||Item.itemsList[wirelessItem+256]!=null||ids.contains(wirelessItem+256))throw new IllegalStateException("PL4 Wireless Storage item ID must be free and distinct");
+        WIRELESS_STORAGE=new LegacyWirelessItem(wirelessItem);GameRegistry.registerItem(WIRELESS_STORAGE,"legacy_wireless_storage");LanguageRegistry.addName(WIRELESS_STORAGE,"PL4 Legacy Wireless Storage");
         CABLE=new LegacyBlock(cable,"legacy_cable",0);EXPORT=new LegacyBlock(export,"legacy_export",1);IMPORT=new LegacyBlock(sink,"legacy_import",2);
         GameRegistry.registerBlock(CABLE,"legacy_cable");GameRegistry.registerBlock(EXPORT,"legacy_export");GameRegistry.registerBlock(IMPORT,"legacy_import");
         FLUID_EXPORT=new LegacyBlock(fluidExport,"legacy_fluid_export",3);FLUID_EXPORT.setTextureName("lapis_block");
@@ -76,7 +81,7 @@ public final class LegacyPL4 {
         LanguageRegistry.addName(CABLE,"PL4 Legacy Data Cable");LanguageRegistry.addName(EXPORT,"PL4 Legacy Export Node");LanguageRegistry.addName(IMPORT,"PL4 Legacy Import Node");
     }
     @Mod.EventHandler public void init(FMLInitializationEvent event){
-        proxy.init();
+        proxy.init();GameRegistry.addShapelessRecipe(new ItemStack(WIRELESS_STORAGE),CABLE,Item.compass,Item.enderPearl);
         GameRegistry.addShapelessRecipe(new ItemStack(ITEM_READER),CABLE,Block.glass,Item.ingotIron);
         GameRegistry.addShapelessRecipe(new ItemStack(FLUID_READER),CABLE,Block.glass,Item.bucketEmpty);
         GameRegistry.addShapelessRecipe(new ItemStack(ENERGY_READER),CABLE,Block.glass,Item.ingotGold);

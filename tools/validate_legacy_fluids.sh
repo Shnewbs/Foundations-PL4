@@ -41,10 +41,10 @@ python3 - <<'PY'
 import json
 from pathlib import Path
 report=json.loads(Path('run-legacy/legacy-scenarios.json').read_text())
-assert report['minecraft']=='1.6.4' and report['total']==120 and report['passed']==120 and report['failed']==0,report
+assert report['minecraft']=='1.6.4' and report['total']==152 and report['passed']==152 and report['failed']==0,report
 report.update(build_api_forge='9.11.1.960',runtime_forge='9.11.1.1345',runtime_java=7)
 Path('run-legacy/legacy-scenarios.json').write_text(json.dumps(report,indent=2)+'\n')
-print('PASS all 120 isolated native 1.6.4 transport scenarios on Forge 1345')
+print('PASS all 152 isolated native 1.6.4 transport scenarios on Forge 1345')
 PY
 
 
