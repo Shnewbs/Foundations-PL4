@@ -31,6 +31,9 @@ jobs:
       - name: Inject isolated development probe
         run: |
           mkdir -p results candidate/run
+          # The old generated development JAR can retain injected MergeTool enum classes.
+          # Recreate this exact cached profile after applying the compatibility pin.
+          rm -rf "$HOME/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.12.2-14.23.5.2864_mapped_snapshot_20171003-1.12"
           git -C candidate rev-parse HEAD > results/SOURCE_COMMIT.txt
           cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/legacy/java/net/foundations/pl4/legacy/
           cat >> candidate/build.gradle <<'GRADLE'
@@ -40,6 +43,7 @@ jobs:
           configurations.all { resolutionStrategy.force 'net.minecraftforge:mergetool:0.2.3.3' }
           dependencies { runtimeOnly 'org.ow2.asm:asm-debug-all:5.2' }
           minecraft.runs.client {
+              jvmArgs '-verbose:class'
               args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'
           }
           GRADLE
