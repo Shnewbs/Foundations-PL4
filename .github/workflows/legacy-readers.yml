@@ -53,7 +53,7 @@ jobs:
             8
             21
           cache: gradle
-      - name: Build and execute 152 installed native scenarios
+      - name: Build and execute 156 installed native scenarios
         env:
           TARGET: ${{ matrix.minecraft }}
         shell: bash
@@ -93,7 +93,7 @@ jobs:
           status=json.loads(Path('BUILD_STATUS.json').read_text())
           native=json.loads(Path('verification-logs/clean-native-summary.json').read_text())
           smoke=json.loads(Path('verification-logs/production-smoke.json').read_text())
-          assert native['total']==native['passed']==status['expected_native_scenarios']==152
+          assert native['total']==native['passed']==status['expected_native_scenarios']==156
           assert native['failed']==0 and native['runtime_sha256']==smoke['runtime_sha256']
           assert smoke['production_only_startup']==smoke['clean_stop']=='PASS'
           migration=json.loads(Path('verification-logs/legacy-migration-summary.json').read_text())
@@ -102,7 +102,7 @@ jobs:
           status.update(generated_world_migration_acceptance='PASS_PREVIEW3_TO_CANDIDATE',migration_workflow_run=os.environ['GITHUB_RUN_ID'])
           status.update(candidate_native_validation='PASS',candidate_workflow_run=os.environ['GITHUB_RUN_ID'],
               candidate_source_commit=smoke['source_commit'],candidate_runtime_sha256=smoke['runtime_sha256'],
-              production_smoke='PASS_FOR_THIS_CANDIDATE',candidate_wireless_validation='PASS_32_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS',rc_publication_cleared=False)
+              production_smoke='PASS_FOR_THIS_CANDIDATE',candidate_wireless_validation='PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS',rc_publication_cleared=False)
           Path('BUILD_STATUS.json').write_text(json.dumps(status,indent=2)+'\n')
           PY
           git config user.name 'github-actions[bot]'
