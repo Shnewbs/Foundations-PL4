@@ -29,7 +29,7 @@ final class NativeEnergyTransfers {
     private static Target target(NetworkEngine.Ref r){var l=r.adjacent();return new Target(l.dimension(),l.pos().asLong(),l.side().ordinal());}
     private static Pair pair(NetworkEngine.Ref a,NetworkEngine.Ref b){return new Pair(a.part().identity,b.part().identity);}
     private boolean enabled(NetworkEngine.Ref r){
-        Part p=r.part();return (!driver(r)||p.energy)&&EnergyPorts.enabled(input(r))&&EnergyPorts.enabled(output(r))&&(input(r).equals(output(r))||p.energyConvert&&PLConfig.ENERGY_CONVERSION.get());
+        Part p=r.part();return !ResourceTransferSafety.blocked(p)&&(!driver(r)||p.energy)&&EnergyPorts.enabled(input(r))&&EnergyPorts.enabled(output(r))&&(input(r).equals(output(r))||p.energyConvert&&PLConfig.ENERGY_CONVERSION.get());
     }
     private int remaining(NetworkEngine.Ref r){return Math.min(shared.remaining(),driver(r)?Math.max(0,PLConfig.ENERGY_RATE.get()-used.getOrDefault(r.part().identity,0)):Integer.MAX_VALUE);}
     private long extractionLimit(NetworkEngine.Ref r){return (long)(driver(r)?Math.max(0,PLConfig.ENERGY_RATE.get()-used.getOrDefault(r.part().identity,0)):Integer.MAX_VALUE)*EnergyConversion.FE;}
@@ -45,6 +45,7 @@ final class NativeEnergyTransfers {
         for(var ref:plan.drivers()){
             Part p=ref.part();
             if(!p.energy)continue;
+            if(ResourceTransferSafety.blocked(p)){p.energyTransferStatus="Energy transfer quarantined; manual inspection required";continue;}
             if(!enabled(ref)){p.energyTransferStatus="Energy route disabled by server";continue;}
             try{
                 if(p.transferMode==TransferRules.ADD_REMOVE&&p.energyCredits()>0)flush(ref,TransferEngine.sinks(plan.endpoints(),ref,plan.routingCursor()));
@@ -74,19 +75,22 @@ final class NativeEnergyTransfers {
         return true;
     }
     private void save(NetworkEngine.Ref holder,long credits,String wireUnit){
-        Part p=holder.part();p.energyCredits(credits);p.pendingEnergyUnit=wireUnit;p.pendingEnergyJRate=rates.fePer1000J();p.pendingEnergyEURate=rates.fePerEU();p.pendingEnergyEDRate=rates.fePerElectrodynamicsJ();holder.host().setChanged();
+        Part p=holder.part();p.energyCredits(credits);p.pendingEnergyUnit=wireUnit;p.pendingEnergyJRate=rates.fePer1000J();p.pendingEnergyEURate=rates.fePerEU();p.pendingEnergyEDRate=rates.fePerElectrodynamicsJ();ResourceTransferSafety.completed(holder);holder.host().setChanged();
     }
-    private long extract(NetworkEngine.Ref source,long room,boolean simulate){
+    private long extract(NetworkEngine.Ref source,NetworkEngine.Ref holder,long room,boolean simulate){
         var from=port(source,input(source));if(from==null)return 0;
         long units=EnergyConversion.sourceUnits(room,rates.cost(input(source)),efficiency(source));
         units=Math.min(units,EnergyConversion.extractable(extractionLimit(source),rates.cost(input(source))));if(units<=0)return 0;
-        long actual=from.extract(units,simulate);if(actual<0||actual>units)throw new IllegalStateException("Native energy extraction exceeded request");
+        final long requested=units;long actual=simulate?from.extract(requested,true):ResourceTransferSafety.mutate(holder,"Native energy extraction",requested,()->from.extract(requested,false));
+        if(!simulate&&actual==0)ResourceTransferSafety.completed(holder);if(actual<0||actual>units)throw new IllegalStateException("Native energy extraction exceeded request");
         if(!simulate)use(source,actual*rates.cost(input(source)));
         return EnergyConversion.credits(actual,rates.cost(input(source)),efficiency(source));
     }
-    private long deliver(NetworkEngine.Ref sink,long available,boolean simulate){
+    private long deliver(NetworkEngine.Ref sink,NetworkEngine.Ref holder,long available,boolean simulate){
         var to=port(sink,output(sink));if(to==null)return 0;
-        return EnergyConversion.deliver(to,Math.min(available,limit(sink)),rates.cost(output(sink)),efficiency(sink),simulate);
+        long maximum=Math.min(available,limit(sink));
+        long accepted=simulate?EnergyConversion.deliver(to,maximum,rates.cost(output(sink)),efficiency(sink),true):ResourceTransferSafety.mutate(holder,"Native energy insertion",maximum,()->EnergyConversion.deliver(to,maximum,rates.cost(output(sink)),efficiency(sink),false));
+        if(!simulate&&accepted==0)ResourceTransferSafety.completed(holder);return accepted;
     }
     private void record(NetworkEngine.Ref source,NetworkEngine.Ref sink,long credits){
         if(credits<=0)return;use(sink,credits);shared.delivered(EnergyConversion.charge(credits));pairs.add(pair(source,sink));received.add(target(sink));sink.host().setChanged();
@@ -95,20 +99,20 @@ final class NativeEnergyTransfers {
         Part p=source.part();
         if(p.energyCredits()>0){flush(source,sinks);if(!profile(source)||!p.pendingEnergyUnit.equals(output(source)))return;}
         if(received.contains(target(source))||shared.remaining()==0)return;
-        long trial=extract(source,extractionLimit(source),true);if(trial==0){
+        long trial=extract(source,source,extractionLimit(source),true);if(trial==0){
             p.energyTransferStatus=port(source,input(source))==null?"No supported "+EnergyPorts.label(input(source))+" capability on attached side":"Source empty, output side blocked, or awaiting pushed energy";return;
         }
         long existing=p.energyCredits(),total=Math.min(Math.min(existing,(long)Integer.MAX_VALUE*EnergyConversion.FE)+trial,(long)shared.remaining()*EnergyConversion.FE),remaining=total;
-        for(var sink:sinks)if(remaining>0&&route(source,sink,output(source)))remaining-=deliver(sink,remaining,true);
+        for(var sink:sinks)if(remaining>0&&route(source,sink,output(source)))remaining-=deliver(sink,source,remaining,true);
         long room=total-remaining-existing;if(room<=0){p.energyTransferStatus=sinks.stream().noneMatch(sink->route(source,sink,output(source)))?"No compatible destination: check mode and network Input":"Destination blocked/full or cap below minimum packet";return;}
-        long extracted=extract(source,room,false);if(extracted<=0)return;
+        long extracted=extract(source,source,room,false);if(extracted<=0)return;
         save(source,Math.addExact(existing,extracted),output(source));p.ticks++;flush(source,sinks);
     }
     private void flush(NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks){
         if(!profile(source))return;Part p=source.part();
         for(var sink:sinks){
             if(p.energyCredits()==0)break;if(!route(source,sink,p.pendingEnergyUnit))continue;
-            long accepted=deliver(sink,p.energyCredits(),false);if(accepted==0)continue;
+            long accepted=deliver(sink,source,p.energyCredits(),false);if(accepted==0)continue;
             save(source,p.energyCredits()-accepted,p.pendingEnergyUnit);record(source,sink,accepted);
         }
     }
@@ -116,20 +120,20 @@ final class NativeEnergyTransfers {
         Part p=sink.part();
         if(p.energyCredits()>0){
             if(!profile(sink)||!p.pendingEnergyUnit.equals(input(sink)))return;
-            long accepted=deliver(sink,p.energyCredits(),false);
+            long accepted=deliver(sink,sink,p.energyCredits(),false);
             if(accepted>0){save(sink,p.energyCredits()-accepted,p.pendingEnergyUnit);use(sink,accepted);shared.delivered(EnergyConversion.charge(accepted));received.add(target(sink));}
         }
         for(var source:sources){
             if(limit(sink)==0)break;if(source.part().energyCredits()>0||received.contains(target(source))||!route(source,sink,output(source)))continue;
             if(p.energyCredits()>0&&!p.pendingEnergyUnit.equals(output(source)))continue;
-            long trial=extract(source,extractionLimit(source),true);if(trial==0)continue;
+            long trial=extract(source,source,extractionLimit(source),true);if(trial==0)continue;
             long existing=p.energyCredits();long combined=Math.min(existing,(long)Integer.MAX_VALUE*EnergyConversion.FE)+trial;
-            long room=deliver(sink,combined,true)-existing;if(room<=0)continue;
-            long extracted=extract(source,room,false);if(extracted==0)continue;
+            long room=deliver(sink,sink,combined,true)-existing;if(room<=0)continue;
+            long extracted=extract(source,sink,room,false);if(extracted==0)continue;
             // Native quantum excess and fractional leftovers can be topped up after retries,
             // but only when simulation proves that combining them can deliver more energy.
             save(sink,Math.addExact(existing,extracted),output(source));p.ticks++;
-            long accepted=deliver(sink,p.energyCredits(),false);
+            long accepted=deliver(sink,sink,p.energyCredits(),false);
             if(accepted>0){save(sink,p.energyCredits()-accepted,p.pendingEnergyUnit);record(source,sink,accepted);}
             else pairs.add(pair(source,sink));
             source.host().setChanged();if(p.energyCredits()>0)break;

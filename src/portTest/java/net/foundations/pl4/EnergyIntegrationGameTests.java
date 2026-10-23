@@ -69,7 +69,7 @@ public final class EnergyIntegrationGameTests {
     public static void nativeJoulesRemainJoulesWhenConversionDisabled(GameTestHelper h){
         boolean old=PLConfig.ENERGY_CONVERSION.get();try{PLConfig.ENERGY_CONVERSION.set(false);
             var f=fixture(h,"J","J","J",25,100,false);f.run(h);
-            h.assertTrue(f.from.stored==0&&f.to.stored==25&&f.source.part().energyCredits()==0,"Native J must transfer without FE conversion or rounding");h.succeed();
+            h.assertTrue(f.from.stored==0&&f.to.stored==25&&f.source.part().energyCredits()==0,"Native J must transfer without FE conversion or rounding");nativeMutationQuarantine(h);h.succeed();
         }finally{PLConfig.ENERGY_CONVERSION.set(old);}
     }
     @GameTest(batch=FoundationsPL4.ID,template="empty")
@@ -390,5 +390,26 @@ public final class EnergyIntegrationGameTests {
         elements.add(DisplayElements.create(DisplayElements.Type.TEXT,0,100,100));boolean rejected=false;
         try{ElementJson.decodeList(ElementJson.encodeList(elements));}catch(IllegalArgumentException expected){rejected=true;}
         h.assertTrue(rejected,"Oversized element arrays are rejected before individual decoding");h.succeed();
+    }
+
+    private static void nativeMutationQuarantine(GameTestHelper h){
+        for(boolean add:new boolean[]{false,true}){
+            var f=fixture(h,"FE","FE","FE",10,100,add);var holder=add?f.sink:f.source;
+            EnergyConversion.Port broken=new EnergyConversion.Port(){
+                public long extract(long amount,boolean simulate){return 0;}
+                public long insert(long amount,boolean simulate){long inserted=f.to.insert(amount,simulate);if(!simulate)throw new IllegalStateException("PL4 expected native post-mutation failure");return inserted;}
+            };
+            NativeEnergyTransfers.run(h.getLevel().getServer(),f.plan,(ref,unit)->ref==f.source?f.from:broken);
+            h.assertTrue(f.from.stored==0&&f.to.stored==10&&holder.part().energyCredits()==10*EnergyConversion.FE&&ResourceTransferSafety.blocked(holder.part()),"Native post-mutation insertion retains an uncertainty fence on the driving holder");
+            f.run(h);h.assertTrue(f.to.stored==10&&holder.part().energyCredits()==10*EnergyConversion.FE,"Native uncertain insertion cannot replay");
+            var g=fixture(h,"FE","FE","FE",10,100,add);var extractionHolder=add?g.sink:g.source;
+            EnergyConversion.Port brokenSource=new EnergyConversion.Port(){
+                public long extract(long amount,boolean simulate){long extracted=g.from.extract(amount,simulate);if(!simulate)throw new IllegalStateException("PL4 expected native extraction failure");return extracted;}
+                public long insert(long amount,boolean simulate){return 0;}
+            };
+            NativeEnergyTransfers.run(h.getLevel().getServer(),g.plan,(ref,unit)->ref==g.source?brokenSource:g.to);
+            h.assertTrue(g.from.stored==0&&g.to.stored==0&&ResourceTransferSafety.blocked(extractionHolder.part())&&!extractionHolder.part().routeEditable(),"Interrupted native withdrawal fences even an empty escrow");
+            g.run(h);h.assertTrue(g.from.withdrawals==1&&g.to.stored==0,"Native uncertain extraction cannot be retried");
+        }
     }
 }
