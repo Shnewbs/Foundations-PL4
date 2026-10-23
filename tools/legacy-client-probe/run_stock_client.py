@@ -13,7 +13,8 @@ def download(url,path,sha1=None):
     if path.exists() and (sha1 is None or hashlib.sha1(path.read_bytes()).hexdigest()==sha1):return path
     for attempt in range(5):
         try:
-            data=urllib.request.urlopen(url,timeout=90).read()
+            subprocess.run(['curl','--fail','--location','--silent','--show-error','--retry','2','--max-time','90',url,'--output',str(path)],check=True)
+            data=path.read_bytes()
             if sha1 and hashlib.sha1(data).hexdigest()!=sha1:raise RuntimeError('Checksum mismatch: '+path.name)
             path.write_bytes(data);return path
         except Exception:
@@ -35,7 +36,7 @@ probe=root/'build/libs'/('FoundationsPL4-1.12.2-'+status['version']+'-client-pro
 with zipfile.ZipFile(runtime) as archive:assert not any('LegacyWirelessClientProbe' in n or '/tests/' in n for n in archive.namelist())
 
 base='https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2864/forge-1.12.2-14.23.5.2864-installer.jar'
-expected=urllib.request.urlopen(base+'.sha1',timeout=60).read().decode().strip().split()[0]
+expected=subprocess.check_output(['curl','--fail','--location','--silent','--show-error','--retry','3',base+'.sha1'],text=True).strip().split()[0]
 installer=download(base,root/'stock-forge-installer.jar',expected)
 with (out/'forge-install.log').open('w') as log:subprocess.run(['java','-jar',str(installer),'--installServer',str(game)],check=True,stdout=log,stderr=subprocess.STDOUT)
 

@@ -1,4 +1,4 @@
-name: Exercise legacy 1.12.2 Wireless Storage in a real client
+name: Exercise packaged legacy 1.12.2 storage in a stock client
 on:
   push:
     branches: [main]
