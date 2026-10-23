@@ -1,0 +1,70 @@
+name: Capture actual client UI at four GUI scales
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/client-visual-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  client_visual_probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: candidate/**/*.gradle*
+      - name: Install virtual display and software OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+      - name: Inject development-only capture harness
+        run: |
+          cp control/tools/client-probe/ClientVisualProbe.java candidate/src/main/java/net/foundations/pl4/client/ClientVisualProbe.java
+          mkdir -p candidate/run results
+          printf 'onboardAccessibility:false\n' > candidate/run/options.txt
+          cat >> candidate/build.gradle <<'GRADLE'
+          neoForge.runs.client {
+              programArguments.addAll('--width', '1280', '--height', '960')
+          }
+          GRADLE
+      - name: Run real client and capture rendered screens
+        env:
+          PL4_CLIENT_OUTPUT: ${{ github.workspace }}/results
+          PL4_CLIENT_SOURCE: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+        working-directory: candidate
+        run: timeout 1500 xvfb-run -a -s '-screen 0 1280x960x24' bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
+      - name: Require all twelve native screenshots
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('results');report=json.loads((root/'client-visual-probe.json').read_text())
+          assert len(report['captures'])==12
+          for capture in report['captures']:
+              assert (root/capture['image']).stat().st_size>1000
+              assert capture['actual_gui_scale']==capture['requested_gui_scale']
+          print('PASS: 12 real client captures; human visual review and gameplay acceptance remain separate.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-client-ui-captures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            candidate/run/logs/
+            candidate/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: error
