@@ -56,7 +56,7 @@ final class NativeEnergyInput {
         if(!p.energy||!TransferRules.drivesRemove(p.transferMode)||!p.energyInput.equals(input)||!EnergyPorts.enabled(input)||!EnergyPorts.enabled(p.energyOutput))return false;
         if(!p.energyOutput.equals(input)&&(!p.energyConvert||!PLConfig.ENERGY_CONVERSION.get()))return false;
         var rates=EnergyPorts.rates();
-        return p.energyCredits()==0||p.pendingEnergyUnit.equals(p.energyOutput)&&p.pendingEnergyJRate==rates.fePer1000J()&&p.pendingEnergyEURate==rates.fePerEU()&&p.pendingEnergyEDRate==rates.fePerElectrodynamicsJ();
+        return !ResourceTransferSafety.blocked(p)&&(p.energyCredits()==0||p.pendingEnergyUnit.equals(p.energyOutput)&&p.pendingEnergyJRate==rates.fePer1000J()&&p.pendingEnergyEURate==rates.fePerEU()&&p.pendingEnergyEDRate==rates.fePerElectrodynamicsJ());
     }
     static int acceptFE(HostEntity host,Part p,Direction side,int amount,boolean simulate){
         if(amount<=0||!eligible(host,p,side,"FE"))return 0;

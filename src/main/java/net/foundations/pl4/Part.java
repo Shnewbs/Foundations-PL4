@@ -21,7 +21,7 @@ public final class Part {
     public String label = "", filter = "", selected = "", metric = "", mode = "LIST", comparison = ">=";
     public String inputFilter="",outputFilter="",inputFilterMode="INHERIT",outputFilterMode="INHERIT";
     public boolean resourceEscrow; // Sync-only summary; item/fluid contents stay server-side.
-    public boolean routeEditable(){return !ItemTransferSafety.blocked(this)&&pendingItem.isEmpty()&&pendingFluid.isEmpty()&&energyRouteEditable()&&!resourceEscrow;}
+    public boolean routeEditable(){return !ResourceTransferSafety.blocked(this)&&!ItemTransferSafety.blocked(this)&&pendingItem.isEmpty()&&pendingFluid.isEmpty()&&energyRouteEditable()&&!resourceEscrow;}
     public final List<net.foundations.pl4.core.SignalRules.Statement> statements=new ArrayList<>();
     public boolean statementsAll=true;
     public int signalStrength=15;
@@ -42,7 +42,7 @@ public final class Part {
     public long energyCredits(){return pendingEnergyCredits>0?pendingEnergyCredits:(long)pendingEnergy*net.foundations.pl4.core.EnergyConversion.FE;}
     public void energyCredits(long value){pendingEnergyCredits=Math.max(0,value);pendingEnergy=(int)Math.min(Integer.MAX_VALUE,pendingEnergyCredits/net.foundations.pl4.core.EnergyConversion.FE);energyEscrow=pendingEnergyCredits>0;}
     public boolean energyEscrow;
-    public boolean energyRouteEditable(){return energyCredits()==0&&!energyEscrow;}
+    public boolean energyRouteEditable(){return !ResourceTransferSafety.blocked(this)&&energyCredits()==0&&!energyEscrow;}
 
     public DisplayElements.Mode displayMode=DisplayElements.Mode.AUTO_LIST;
     public int displayPage;
@@ -60,6 +60,8 @@ public final class Part {
     public long ticks;
     public int blockedFaces; // Six cable ports; zero preserves old saves.
     public int canvasWidth=1,canvasHeight=1,canvasColumn,canvasRow,canvasMask; // Derived, sync-only; no layout destruction on split. // Six cable ports; zero preserves old saves.
+    public String resourceTransferFault="";
+    public CompoundNBT opaqueFluidEscrow;
     public String itemTransferFault="";
     public CompoundNBT opaqueItemEscrow;
     public int itemEscrowCount;
@@ -145,8 +147,9 @@ public final class Part {
         t.putString("targetChannel",targetChannel);t.putString("targetQuery",targetQuery);t.putInt("targetPage",targetPage);
         ListNBT aliases=new ListNBT();for(var entry:channelNames.entrySet()){CompoundNBT c=new CompoundNBT();c.putString("id",entry.getKey());c.putString("name",entry.getValue());aliases.add(c);}t.put("channelNames",aliases);
         t.putString("inputFilter",inputFilter);t.putString("outputFilter",outputFilter);t.putString("inputFilterMode",inputFilterMode);t.putString("outputFilterMode",outputFilterMode);
+        t.putString("resourceTransferFault",resourceTransferFault);
         t.putString("itemTransferFault",itemTransferFault);
-        t.putBoolean("resourceEscrow",ItemTransferSafety.blocked(this)||!pendingItem.isEmpty()||!pendingFluid.isEmpty()||energyCredits()>0);
+        t.putBoolean("resourceEscrow",ResourceTransferSafety.blocked(this)||ItemTransferSafety.blocked(this)||!pendingItem.isEmpty()||!pendingFluid.isEmpty()||energyCredits()>0);
         t.putBoolean("statementsAll",statementsAll);t.putInt("signalStrength",signalStrength);
         ListNBT statementTags=new ListNBT();for(var statement:statements){CompoundNBT s=new CompoundNBT();s.putString("id",statement.id().toString());s.putString("reader",statement.reader());s.putString("key",statement.key());s.putString("operator",statement.operator());s.putDouble("threshold",statement.threshold());statementTags.add(s);}t.put("statements",statementTags);
         t.putString("label",label); t.putString("filter",filter); t.putString("selected",selected); t.putString("metric",metric); t.putString("mode",mode);
@@ -160,7 +163,8 @@ public final class Part {
             if(opaqueItemEscrow!=null)t.put("pendingItem",opaqueItemEscrow.copy());
             else if(!pendingItem.isEmpty()){ItemStack itemForSave=pendingItem.copy();itemForSave.setCount(Math.min(pendingItem.getCount(),64));t.put("pendingItem",net.foundations.pl4.compat.PortData.save(itemForSave,registry));}
             t.putInt("itemEscrowCount",pendingItem.isEmpty()?itemEscrowCount:pendingItem.getCount());
-            if (!pendingFluid.isEmpty()) t.put("pendingFluid",net.foundations.pl4.compat.PortData.save(pendingFluid,registry));
+            if(opaqueFluidEscrow!=null)t.put("pendingFluid",opaqueFluidEscrow.copy());
+            else if (!pendingFluid.isEmpty()) t.put("pendingFluid",net.foundations.pl4.compat.PortData.save(pendingFluid,registry));
             t.putInt("pendingEnergy",pendingEnergy);t.putLong("pendingEnergyCredits",energyCredits());
             t.putString("pendingEnergyUnit",pendingEnergyUnit);t.putInt("pendingEnergyJRate",pendingEnergyJRate);t.putInt("pendingEnergyEURate",pendingEnergyEURate);t.putInt("pendingEnergyEDRate",pendingEnergyEDRate);
         }
@@ -204,6 +208,8 @@ public final class Part {
         p.clockPulse=net.foundations.pl4.compat.PortMath.clamp(t.getInt("clockPulse"),0,24000);p.clockPhase=net.foundations.pl4.compat.PortMath.clamp(t.getInt("clockPhase"),0,23999);p.clockPaused=t.getBoolean("clockPaused");
         p.inputChannel=DisplayElements.clean(t.getString("inputChannel"),48);p.outputChannel=DisplayElements.clean(t.getString("outputChannel"),48);
         p.blockedFaces=t.getInt("blockedFaces") & 63; p.descending=t.getBoolean("descending"); p.whitelist=t.getBoolean("whitelist"); p.ticks=t.getLong("ticks");
+        p.resourceTransferFault=t.getString("resourceTransferFault");
+        if(p.resourceTransferFault.length()>512)p.resourceTransferFault=p.resourceTransferFault.substring(0,512);
         p.itemTransferFault=t.getString("itemTransferFault");
         if(p.itemTransferFault.length()>512)p.itemTransferFault=p.itemTransferFault.substring(0,512);
         p.itemEscrowCount=Math.max(0,t.getInt("itemEscrowCount"));
@@ -211,7 +217,10 @@ public final class Part {
         try{p.pendingItem=net.foundations.pl4.compat.PortData.parseItem(registry,itemPayload);}catch(RuntimeException invalid){p.pendingItem=ItemStack.EMPTY;}
         if(t.contains("pendingItem")&&p.pendingItem.isEmpty()){p.opaqueItemEscrow=itemPayload.copy();p.itemTransferFault="Unresolved saved item escrow; manual inspection required";}
         else if(!p.pendingItem.isEmpty()&&p.itemEscrowCount>0)p.pendingItem.setCount(p.itemEscrowCount);
-        p.pendingFluid=net.foundations.pl4.compat.PortData.parseFluid(registry,t.getCompound("pendingFluid")); p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
+        CompoundNBT fluidPayload=t.getCompound("pendingFluid");
+        try{p.pendingFluid=net.foundations.pl4.compat.PortData.parseFluid(registry,fluidPayload);}catch(RuntimeException invalid){p.pendingFluid=FluidStack.EMPTY;}
+        if(t.contains("pendingFluid")&&p.pendingFluid.isEmpty()){p.opaqueFluidEscrow=fluidPayload.copy();p.resourceTransferFault="Unresolved saved fluid escrow; manual inspection required";}
+        p.pendingEnergy=Math.max(0,t.getInt("pendingEnergy"));
         ListNBT links=t.getList("links",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(links.size(),64);i++) p.links.add(Link.load(links.getCompound(i)));
         ListNBT elements=t.getList("elements",net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND); for(int i=0;i<Math.min(elements.size(),32);i++){Element e=Element.load(elements.getCompound(i));UUID original=e.id();if(p.elements.stream().anyMatch(old->old.id().equals(original)))e=new Element(e.spec().identity(UUID.randomUUID()));p.elements.add(e);}
         p.displayMode=t.contains("displayMode")?DisplayElements.Mode.parse(t.getString("displayMode")):(p.elements.isEmpty()?DisplayElements.Mode.AUTO_LIST:DisplayElements.Mode.CUSTOM);p.displayPage=net.foundations.pl4.compat.PortMath.clamp(t.getInt("displayPage"),0,7);p.layoutWidth=t.contains("layoutWidth")?net.foundations.pl4.compat.PortMath.clamp(t.getInt("layoutWidth"),8,DisplayElements.MAX_CANVAS):DisplayElements.WIDTH;p.layoutHeight=t.contains("layoutHeight")?net.foundations.pl4.compat.PortMath.clamp(t.getInt("layoutHeight"),9,DisplayElements.MAX_CANVAS):DisplayElements.HEIGHT;
