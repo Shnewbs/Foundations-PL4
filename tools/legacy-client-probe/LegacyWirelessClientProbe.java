@@ -83,11 +83,17 @@ public final class LegacyWirelessClientProbe {
             if(phase==0){if(!(mc.currentScreen instanceof GuiMainMenu))return;phase=1;mc.launchIntegratedServer("pl4-wireless-client-probe","PL4 Wireless Probe",new WorldSettings(0L,GameType.CREATIVE,false,false,WorldType.FLAT));waitUntilNext();return;}
             if(phase==1){if(mc.player==null||mc.world==null||mc.getIntegratedServer()==null)return;schedule(new Runnable(){public void run(){setup();}});phase=2;waitUntilNext();return;}
             if(phase==2){if(!(mc.currentScreen instanceof LegacyWirelessScreen)||!"PASS".equals(result))return;
-                mc.gameSettings.guiScale=scale;mc.resize(mc.displayWidth,mc.displayHeight);phase=3;waitUntilNext();return;}
+                mc.gameSettings.guiScale=scale;mc.resize(mc.displayWidth,mc.displayHeight);new java.awt.Robot().mouseMove(8,mc.displayHeight-8);phase=3;waitUntilNext();return;}
             if(phase==3){
                 ScaledResolution resolution=new ScaledResolution(mc);check(resolution.getScaleFactor()==scale,"wrong actual GUI scale");
                 String name="legacy-wireless-storage-scale-"+scale+".png";ImageIO.write(ScreenShotHelper.createScreenshot(mc.displayWidth,mc.displayHeight,mc.getFramebuffer()),"png",new File(output(),name));captures.add(name);
                 if(++scale<=4){phase=2;return;}
+                ScaledResolution hover=new ScaledResolution(mc);int factor=hover.getScaleFactor();
+                new java.awt.Robot().mouseMove(((hover.getScaledWidth()-176)/2+16)*factor,((hover.getScaledHeight()-204)/2+26)*factor);
+                phase=13;waitUntilNext();return;
+            }
+            if(phase==13){
+                ImageIO.write(ScreenShotHelper.createScreenshot(mc.displayWidth,mc.displayHeight,mc.getFramebuffer()),"png",new File(output(),"legacy-wireless-storage-tooltip.png"));
                 schedule(new Runnable(){public void run(){LegacyPL4.enabled=true;LegacyWirelessContainer c=(LegacyWirelessContainer)serverPlayer().openContainer;c.revision=70;c.detectAndSendChanges();}});phase=4;waitUntilNext();return;
             }
             if(phase==4){if(clientContainer().revision!=70)return;packetRoundTrip();oldRevision=clientContainer().revision;
@@ -101,7 +107,7 @@ public final class LegacyWirelessClientProbe {
             if(phase==11){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).page==1,"native page request failed");}});phase=12;waitUntilNext();return;}
             if(phase==12){check("PASS".equals(result),"page check missing");
                 com.google.gson.JsonObject report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.12.2");report.addProperty("source_commit",System.getenv("PL4_CLIENT_SOURCE"));report.addProperty("result","PASS");
-                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);
+                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");
                 com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(name);report.add("captures",images);report.addProperty("scope","Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance.");
                 try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=13;mc.shutdown();
             }

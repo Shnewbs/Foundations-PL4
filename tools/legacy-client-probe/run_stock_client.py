@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib,json,os,shutil,subprocess,time,urllib.request,uuid,zipfile
 
 root=Path.cwd();out=Path(os.environ['PL4_CLIENT_OUTPUT']);game=root/'stock-client';game.mkdir(exist_ok=True);(game/'mods').mkdir(exist_ok=True)
+(game/'options.txt').write_text('tutorialStep:none\n')
 
 def download(url,path,sha1=None):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
