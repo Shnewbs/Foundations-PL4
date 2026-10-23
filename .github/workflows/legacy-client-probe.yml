@@ -27,7 +27,7 @@ jobs:
           cache: gradle
           cache-dependency-path: candidate/**/*.gradle*
       - name: Install software display
-        run: sudo apt-get update && sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+        run: sudo apt-get update && sudo apt-get install -y xserver-xorg-core xserver-xorg-video-dummy x11-xserver-utils libgl1-mesa-dri
       - name: Inject isolated development probe
         run: |
           mkdir -p results candidate/run
@@ -44,7 +44,38 @@ jobs:
           PL4_CLIENT_OUTPUT: ${{ github.workspace }}/results
         run: |
           export PL4_CLIENT_SOURCE=$(cat ../results/SOURCE_COMMIT.txt)
-          timeout 1500 xvfb-run -a -s '-screen 0 1280x960x24' bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
+          cat > ../results/xorg.conf <<'XORG'
+          Section "Device"
+            Identifier "Dummy"
+            Driver "dummy"
+            VideoRam 256000
+          EndSection
+          Section "Monitor"
+            Identifier "Monitor"
+            HorizSync 5.0-1000.0
+            VertRefresh 5.0-200.0
+            Modeline "1280x960" 108.00 1280 1376 1488 1800 960 961 964 1000 +HSync +VSync
+          EndSection
+          Section "Screen"
+            Identifier "Screen"
+            Device "Dummy"
+            Monitor "Monitor"
+            DefaultDepth 24
+            SubSection "Display"
+              Depth 24
+              Modes "1280x960"
+            EndSubSection
+          EndSection
+          XORG
+          export DISPLAY=:99
+          Xorg :99 -config "$GITHUB_WORKSPACE/results/xorg.conf" -noreset -nolisten tcp -logfile "$GITHUB_WORKSPACE/results/Xorg.log" > ../results/xorg-output.log 2>&1 &
+          display_pid=$!
+          trap 'kill "$display_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if xrandr --current > ../results/display-modes.txt 2>&1; then break; fi
+            sleep 1
+          done
+          timeout 1500 bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
       - name: Require actual native actions and four captures
         run: |
           python3 - <<'PY'
