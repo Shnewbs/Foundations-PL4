@@ -95,8 +95,8 @@ public final class PartItem extends Item {
      * Transfer escrow is never discarded: an escrow-only payload is retained when needed. */
     public static ItemStack stack(Part part,HolderLookup.Provider registry) {
         ItemStack stack=new ItemStack(FoundationsPL4.PART_ITEMS.get(part.kind).get());
-        if(PartItemDataRules.needsEscrowPayload(ItemTransferSafety.blocked(part)||!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
-            Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.itemTransferFault=part.itemTransferFault;escrow.itemEscrowCount=part.itemEscrowCount;escrow.opaqueItemEscrow=part.opaqueItemEscrow==null?null:part.opaqueItemEscrow.copy();escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
+        if(PartItemDataRules.needsEscrowPayload(ResourceTransferSafety.blocked(part)||ItemTransferSafety.blocked(part)||!part.pendingItem.isEmpty(),!part.pendingFluid.isEmpty(),part.energyCredits()>0?1:0)){
+            Part escrow=new Part(part.kind,Direction.DOWN,null);escrow.resourceTransferFault=part.resourceTransferFault;escrow.opaqueFluidEscrow=part.opaqueFluidEscrow==null?null:part.opaqueFluidEscrow.copy();escrow.itemTransferFault=part.itemTransferFault;escrow.itemEscrowCount=part.itemEscrowCount;escrow.opaqueItemEscrow=part.opaqueItemEscrow==null?null:part.opaqueItemEscrow.copy();escrow.pendingItem=part.pendingItem.copy();escrow.pendingFluid=part.pendingFluid.copy();escrow.pendingEnergy=Math.max(0,part.pendingEnergy);
             if(part.energyCredits()>0){
                 escrow.energyCredits(part.energyCredits());escrow.pendingEnergyUnit=part.pendingEnergyUnit;
                 escrow.pendingEnergyJRate=part.pendingEnergyJRate;escrow.pendingEnergyEURate=part.pendingEnergyEURate;escrow.pendingEnergyEDRate=part.pendingEnergyEDRate;
