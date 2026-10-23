@@ -54,6 +54,23 @@ public final class LegacyWirelessClientProbe {
         check(LegacyWirelessStorage.bind(player,player.inventory.getCurrentItem(),(LegacyTile)world.getTileEntity(new BlockPos(0,200,0))),"binding failed");
         player.openGui(LegacyPL4.instance,0,world,0,0,0);
     }
+    private void mouseClick(int logicalX,int logicalY,boolean right)throws Exception{
+        Minecraft mc=Minecraft.getMinecraft();ScaledResolution resolution=new ScaledResolution(mc);int factor=resolution.getScaleFactor();
+        int left=(resolution.getScaledWidth()-176)/2,top=(resolution.getScaledHeight()-204)/2;
+        java.awt.Robot robot=new java.awt.Robot();robot.mouseMove((left+logicalX)*factor,(top+logicalY)*factor);
+        int button=right?java.awt.event.InputEvent.BUTTON3_DOWN_MASK:java.awt.event.InputEvent.BUTTON1_DOWN_MASK;
+        robot.mousePress(button);robot.mouseRelease(button);
+    }
+    private void packetRoundTrip()throws Exception{
+        net.minecraft.network.PacketBuffer buffer=new net.minecraft.network.PacketBuffer(io.netty.buffer.Unpooled.buffer());
+        try{
+            net.minecraft.network.play.client.CPacketClickWindow sent=new net.minecraft.network.play.client.CPacketClickWindow(1,0,141,ClickType.PICKUP,ItemStack.EMPTY,(short)7);
+            sent.writePacketData(buffer);net.minecraft.network.play.client.CPacketClickWindow received=new net.minecraft.network.play.client.CPacketClickWindow();received.readPacketData(buffer);
+            check((received.getUsedButton()&255)==141&&((received.getUsedButton()&255)>>>1)==70,"window packet revision round-trip failed");
+            buffer.clear();net.minecraft.network.play.client.CPacketEnchantItem page=new net.minecraft.network.play.client.CPacketEnchantItem(1,141);page.writePacketData(buffer);
+            net.minecraft.network.play.client.CPacketEnchantItem decoded=new net.minecraft.network.play.client.CPacketEnchantItem();decoded.readPacketData(buffer);check((decoded.getButton()&255)==141,"page packet revision round-trip failed");
+        }finally{buffer.release();}
+    }
     private LegacyWirelessContainer clientContainer(){return (LegacyWirelessContainer)Minecraft.getMinecraft().player.openContainer;}
     private void waitUntilNext(){due=System.nanoTime()+2_000_000_000L;}
     @SubscribeEvent public void tick(TickEvent.ClientTickEvent event){
@@ -73,19 +90,19 @@ public final class LegacyWirelessClientProbe {
                 if(++scale<=4){phase=2;return;}
                 schedule(new Runnable(){public void run(){LegacyPL4.enabled=true;LegacyWirelessContainer c=(LegacyWirelessContainer)serverPlayer().openContainer;c.revision=70;c.detectAndSendChanges();}});phase=4;waitUntilNext();return;
             }
-            if(phase==4){if(clientContainer().revision!=70)return;oldRevision=clientContainer().revision;
-                ((LegacyWirelessScreen)mc.currentScreen).handleMouseClick(clientContainer().getSlot(0),0,1,ClickType.PICKUP);phase=5;waitUntilNext();return;}
+            if(phase==4){if(clientContainer().revision!=70)return;packetRoundTrip();oldRevision=clientContainer().revision;
+                mouseClick(16,26,true);phase=5;waitUntilNext();return;}
             if(phase==5){schedule(new Runnable(){public void run(){check(diamonds()==1&&source().getStackInSlot(0).getCount()==63,"native signed-byte withdrawal failed");}});phase=6;waitUntilNext();return;}
             if(phase==6){check("PASS".equals(result),"withdrawal check missing");mc.playerController.windowClick(clientContainer().windowId,0,(oldRevision<<1)|1,ClickType.PICKUP,mc.player);phase=7;waitUntilNext();return;}
             if(phase==7){schedule(new Runnable(){public void run(){check(diamonds()==1&&source().getStackInSlot(0).getCount()==63,"stale replay mutated storage");}});phase=8;waitUntilNext();return;}
-            if(phase==8){check("PASS".equals(result),"replay check missing");((LegacyWirelessScreen)mc.currentScreen).handleMouseClick(clientContainer().getSlot(45),45,1,ClickType.PICKUP);phase=9;waitUntilNext();return;}
+            if(phase==8){check("PASS".equals(result),"replay check missing");mouseClick(16,130,true);phase=9;waitUntilNext();return;}
             if(phase==9){schedule(new Runnable(){public void run(){check(serverPlayer().inventory.getStackInSlot(9).getCount()==31&&source().getStackInSlot(1).getCount()==33,"native deposit failed");}});phase=10;waitUntilNext();return;}
-            if(phase==10){check("PASS".equals(result),"deposit check missing");mc.playerController.sendEnchantPacket(clientContainer().windowId,(clientContainer().revision<<1)|1);phase=11;waitUntilNext();return;}
+            if(phase==10){check("PASS".equals(result),"deposit check missing");mouseClick(157,9,false);phase=11;waitUntilNext();return;}
             if(phase==11){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).page==1,"native page request failed");}});phase=12;waitUntilNext();return;}
             if(phase==12){check("PASS".equals(result),"page check missing");
                 com.google.gson.JsonObject report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.12.2");report.addProperty("source_commit",System.getenv("PL4_CLIENT_SOURCE"));report.addProperty("result","PASS");
-                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);
-                com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(name);report.add("captures",images);report.addProperty("scope","Actual development client with private generated integrated world, four GUI scales and native window packets; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance.");
+                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);
+                com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(name);report.add("captures",images);report.addProperty("scope","Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance.");
                 try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=13;mc.shutdown();
             }
         }catch(Exception error){throw new IllegalStateException("Legacy wireless client probe failed",error);}
