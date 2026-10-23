@@ -31,8 +31,13 @@ public final class R13GameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void ordinaryTransferDropStillRetainsEscrow(GameTestHelper h){
-        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;
+        Part p=new Part(Kind.TRANSFER_NODE,Direction.WEST,UUID.randomUUID());p.pendingItem=new ItemStack(Items.DIAMOND,17);p.pendingFluid=new FluidStack(Fluids.WATER,500);p.pendingEnergy=1200;p.resourceTransferFault="Interrupted resource mutation";
         ItemStack stack=PartItem.stack(p,h.getLevel().registryAccess());var data=net.foundations.pl4.compat.PortData.get(stack,DataComponents.CUSTOM_DATA);net.foundations.pl4.compat.PortAssertions.check(data!=null&&data.contains("pl_part"),"Escrow-bearing normal drop must retain a payload");
-        Part restored=Part.load(data.copyTag().getCompound("pl_part"),h.getLevel().registryAccess());net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Escrow must survive canonical item payload");h.succeed();
+        Part restored=Part.load(data.copyTag().getCompound("pl_part"),h.getLevel().registryAccess());net.foundations.pl4.compat.PortAssertions.check(restored.pendingItem.getCount()==17&&restored.pendingFluid.getAmount()==500&&restored.pendingEnergy==1200,"Escrow must survive canonical item payload");net.foundations.pl4.compat.PortAssertions.check(ResourceTransferSafety.blocked(restored)&&!restored.routeEditable(),"Resource quarantine survives canonical item payload");
+        p.pendingItem=ItemStack.EMPTY;p.pendingFluid=FluidStack.EMPTY;p.energyCredits(0);
+        ItemStack faultStack=PartItem.stack(p,h.getLevel().registryAccess());var faultData=net.foundations.pl4.compat.PortData.get(faultStack,DataComponents.CUSTOM_DATA);
+        net.foundations.pl4.compat.PortAssertions.check(faultData!=null,"Fault-only drop must retain a payload");
+        Part faultRestored=Part.load(faultData.copyTag().getCompound("pl_part"),h.getLevel().registryAccess());
+        net.foundations.pl4.compat.PortAssertions.check(ResourceTransferSafety.blocked(faultRestored)&&!faultRestored.routeEditable(),"Empty escrow does not discard an uncertain mutation fence");h.succeed();
     }
 }

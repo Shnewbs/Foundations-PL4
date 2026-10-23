@@ -61,9 +61,11 @@
   "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
   "candidate_native_validation": "PASS",
-  "candidate_workflow_run": "39781194528",
+  "candidate_workflow_run": "39881717480",
   "rc_publication_cleared": false,
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SAVED_PART_PAYLOAD",
   "candidate_item_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
+  "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
+  "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "native_compilation": "PASS_FOR_THIS_CANDIDATE"
 }
