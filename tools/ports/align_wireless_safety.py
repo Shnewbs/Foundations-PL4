@@ -36,8 +36,8 @@ final class WirelessItemTransfers {
 '''.replace('IMPORT_ITEM',imported)
 
 
-def storage(source):
-    if 'WirelessItemTransfers.deposit' in source:return source
+def storage(source,logger):
+    if 'WirelessItemTransfers.deposit' in source:return source.replace('org.slf4j.LoggerFactory.getLogger("FoundationsPL4").error("Wireless Storage',logger+'.getLogger("FoundationsPL4").error("Wireless Storage')
     source=once(source,'private record Target(Part node,IItemHandler inventory,Part.Link link){}','private record Target(Part node,IItemHandler inventory,Part.Link link,NetworkEngine.Ref ref){}')
     source=once(source,'if(ref.host().isRemoved()||','if(!WirelessItemTransfers.available(ref.part())||ref.host().isRemoved()||')
     source=once(source,'new Target(ref.part(),inventory,link)','new Target(ref.part(),inventory,link,ref)')
@@ -59,7 +59,7 @@ def storage(source):
             org.slf4j.LoggerFactory.getLogger("FoundationsPL4").error("Wireless Storage provider failed; inspect node escrow before recovery",failure);
             sendClosed(player,"Storage provider failed; inspect node escrow before recovery.");
         }finally{INVENTORY.setChanged();player.inventoryMenu.broadcastChanges();}'''.replace('INVENTORY',inventory))
-    return source
+    return source.replace('org.slf4j.LoggerFactory.getLogger("FoundationsPL4").error("Wireless Storage',logger+'.getLogger("FoundationsPL4").error("Wireless Storage')
 
 
 def network(source):
@@ -98,4 +98,6 @@ def edits(root,prepared=None):
     if (root/'src/legacy').exists():raise ValueError('Excluded legacy runtime')
     java=root/'src/main/java/net/foundations/pl4'
     path=next(p for p in [root/'src/portTest/java/net/foundations/pl4/R16GameTests.java',java/'R16GameTests.java'] if p.exists())
-    return {java/'WirelessItemTransfers.java':helper((java/'ItemTransferSafety.java').read_text()),java/'WirelessStorage.java':storage((java/'WirelessStorage.java').read_text()),java/'NetworkEngine.java':network((java/'NetworkEngine.java').read_text()),path:fixtures((prepared or {}).get(path,path.read_text()))}
+    network_source=(java/'NetworkEngine.java').read_text()
+    logger=re.search(r'^import ([\w.]+(?:LoggerFactory|LogManager));',network_source,re.M).group(1)
+    return {java/'WirelessItemTransfers.java':helper((java/'ItemTransferSafety.java').read_text()),java/'WirelessStorage.java':storage((java/'WirelessStorage.java').read_text(),logger),java/'NetworkEngine.java':network(network_source),path:fixtures((prepared or {}).get(path,path.read_text()))}
