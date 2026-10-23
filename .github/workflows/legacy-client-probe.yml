@@ -1,0 +1,70 @@
+name: Exercise legacy 1.12.2 Wireless Storage in a real client
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/legacy-client-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: mc/1.12.2
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: gradle
+          cache-dependency-path: candidate/**/*.gradle*
+      - name: Install software display
+        run: sudo apt-get update && sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+      - name: Inject isolated development probe
+        run: |
+          mkdir -p results candidate/run
+          git -C candidate rev-parse HEAD > results/SOURCE_COMMIT.txt
+          cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/legacy/java/net/foundations/pl4/legacy/
+          cat >> candidate/build.gradle <<'GRADLE'
+          minecraft.runs.client {
+              args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'
+          }
+          GRADLE
+      - name: Run client, integrated world and native window actions
+        working-directory: candidate
+        env:
+          PL4_CLIENT_OUTPUT: ${{ github.workspace }}/results
+        run: |
+          export PL4_CLIENT_SOURCE=$(cat ../results/SOURCE_COMMIT.txt)
+          timeout 1500 xvfb-run -a -s '-screen 0 1280x960x24' bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
+      - name: Require actual native actions and four captures
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('results');r=json.loads((root/'legacy-wireless-client.json').read_text())
+          assert r['result']=='PASS' and r['signed_byte_revision']==70
+          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging']:assert r[key]
+          assert len(r['captures'])==4
+          for name in r['captures']:assert (root/name).stat().st_size>1000
+          assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()
+          print('PASS real 1.12.2 client/native window actions and four GUI scales')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: legacy-wireless-real-client-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            candidate/run/logs/
+            candidate/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: error
