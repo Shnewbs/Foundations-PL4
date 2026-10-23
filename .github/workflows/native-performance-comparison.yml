@@ -1,4 +1,5 @@
 name: Measure loaded-network performance against released baseline
+# Extended warm-up checks the mixed first-pass wireless timings.
 on:
   push:
     branches: [main]

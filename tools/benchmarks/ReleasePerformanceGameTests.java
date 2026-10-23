@@ -59,8 +59,8 @@ public final class ReleasePerformanceGameTests {
                 List<Map<String,Object>> measurements=new ArrayList<>();
                 measurements.add(measure("storage_membership_lookup",2000,11,10000,()->consumed=NetworkEngine.storageNodes(server,anchor).size()));
                 measurements.add(measure("reader_targets_lookup",2000,11,10000,()->consumed=NetworkEngine.targetsFor(server,reader).size()));
-                measurements.add(measure("idle_transfer_cycle_128_endpoints_8_drivers",100,11,100,()->TransferEngine.run(server,plan)));
-                measurements.add(measure("topology_rebuild_4096_hosts",3,9,1,()->NetworkEngine.rebuild(server)));
+                measurements.add(measure("idle_transfer_cycle_128_endpoints_8_drivers",5000,15,1000,()->TransferEngine.run(server,plan)));
+                measurements.add(measure("topology_rebuild_4096_hosts",50,21,1,()->NetworkEngine.rebuild(server)));
                 Map<String,Object> workload=new LinkedHashMap<>();workload.put("network",wireless?"two_2048_host_cubes_with_wireless_bridge":"4096_host_wired_cube");workload.put("host_count",hosts.size());workload.put("endpoint_count",endpoints.size());workload.put("measurements",measurements);workloads.add(workload);
             }finally{
                 for(HostEntity host:hosts){NetworkEngine.remove(host);h.getLevel().setBlock(host.getBlockPos(),Blocks.AIR.defaultBlockState(),2);}
