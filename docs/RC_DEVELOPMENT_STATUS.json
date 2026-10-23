@@ -1,15 +1,15 @@
 {
-  "recorded_date": "2026-10-22",
+  "recorded_date": "2026-10-23",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "qualified_native_targets": 22,
+  "qualified_native_targets": 24,
   "feature_parity": "INCOMPLETE",
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
   "remaining_acceptance": [
-    "advanced legacy editor/multipart/wireless-storage parity",
+    "advanced legacy editor/multipart and modern storage search/sort/grouping parity; initial native handheld browsing/transfer passed",
     "installed optional providers and compatible alternatives",
     "world displays, editor gestures and wider real-client/resolution coverage; 1.21.1 three-view snapshots at four GUI scales passed",
     "broader multiplayer, online profiles, dimensions and other exact targets; 1.21.1 two real loopback clients/reconnect passed",
@@ -465,33 +465,55 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 152,
-      "native_gate": "PENDING_NEW_HANDHELD_STORAGE_SOURCE",
+      "expected_native_fixtures": 156,
+      "native_gate": "PASS",
       "rc_publication_cleared": false,
-      "scope": "transport and basic readers/displays",
+      "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
         "native_gate": "PASS",
         "workflow_run": "39778867001",
         "source_commit": "08349126dc1e8129a8bdd13049bdd7a37bc2872a",
         "runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604"
-      }
+      },
+      "workflow_run": "39961937700",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39961937700",
+      "source_commit": "ceb7fdf9944b8547f61ff8cff49245a1aadc0379",
+      "runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a",
+      "production_only_boot": "PASS",
+      "generated_preview3_world_upgrade": "PASS",
+      "wireless_storage_native_scenarios": 36,
+      "wireless_storage_native_validation": "PASS",
+      "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
+      "candidate_source_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
+      "build_status_blob_sha": "10e326481779f5be56dbfe05997c439bc113f3dc"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 152,
-      "native_gate": "PENDING_NEW_HANDHELD_STORAGE_SOURCE",
+      "expected_native_fixtures": 156,
+      "native_gate": "PASS",
       "rc_publication_cleared": false,
-      "scope": "transport and basic readers/displays",
+      "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
         "native_gate": "PASS",
         "workflow_run": "39778867001",
         "source_commit": "87c238bc94c3bfd5cafd253f32eb4e0d71a5962e",
         "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1"
-      }
+      },
+      "workflow_run": "39961937700",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39961937700",
+      "source_commit": "11410b091df23f8b855ba032cc37409f0d4c19c8",
+      "runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+      "production_only_boot": "PASS",
+      "generated_preview3_world_upgrade": "PASS",
+      "wireless_storage_native_scenarios": 36,
+      "wireless_storage_native_validation": "PASS",
+      "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
+      "candidate_source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
+      "build_status_blob_sha": "91d55057ffb6f4a3cfddd4442d8a2ad38a9f967a"
     }
   ],
-  "latest_work": "Legacy 1.12.2 and 1.6.4 handheld storage implemented with native container GUI; 32 additional safety scenarios per target await exact native validation. Modern 22 gates unchanged.",
+  "latest_work": "Legacy 1.12.2 and 1.6.4 native handheld storage GUI, conserving player handoffs and stale view revisions passed 156 scenarios each, packaged-only startup and generated preview.3 world upgrades. All 24 exact native development targets pass; RC clearance remains false.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",

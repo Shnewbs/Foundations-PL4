@@ -1,0 +1,149 @@
+{
+  "workflow_run": 39961937700,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39961937700",
+  "result": "PASS",
+  "targets": [
+    {
+      "minecraft": "1.12.2",
+      "source_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
+      "artifact_id": 12504449158,
+      "artifact_sha256": "f24950fbf0c4dbed9025da1aa178b8dceb6f4c5dda74f80a2bc2b7860cfb2474",
+      "native": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 156,
+        "passed": 156,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "production_only": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "generated_preview3_upgrade": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a",
+        "migration_fixture_sha256": "b548a35ad79d21ad2a72c8aaee2f57b021cc76b239420a94aa2e8079591163d9",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "portable_assertions": {
+        "energy": 78948,
+        "items": 38654,
+        "fluids": 50727
+      }
+    },
+    {
+      "minecraft": "1.6.4",
+      "source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
+      "artifact_id": 12504469169,
+      "artifact_sha256": "1b269650cd3bff384bd2fa6622f30c37200ce489234b36fa18a0537c2fd02e8c",
+      "native": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "total": 156,
+        "passed": 156,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "build_api_forge": "9.11.1.960",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "production_only": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "generated_preview3_upgrade": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+        "migration_fixture_sha256": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "portable_assertions": {
+        "energy": 78948,
+        "items": 38654,
+        "fluids": 50727
+      }
+    }
+  ],
+  "scope": "Native handheld storage, conserving transfers, owner/range/load checks, window revision checks, packaged server startup and generated old-world migration. Real-client and installed-mod acceptance are separate.",
+  "rc_publication_cleared": false
+}
