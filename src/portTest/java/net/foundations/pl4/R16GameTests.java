@@ -29,7 +29,7 @@ public final class R16GameTests {
         ChestTileEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
-        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));h.succeed();
+        net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));resourceQuarantineChecks(ref(add,Direction.EAST));h.succeed();
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
@@ -99,9 +99,11 @@ public final class R16GameTests {
         sink.inputChannel="ore";TransferEngine.run(h.getLevel().getServer(),plan);
         net.foundations.pl4.compat.PortAssertions.check(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Matching live channel works without rebuilding plan");
 
+        source.resourceTransferFault="Interrupted fluid insertion";source.pendingFluid=new net.minecraftforge.fluids.FluidStack(net.minecraft.fluid.Fluids.WATER,725);
         source.itemTransferFault="Interrupted item insertion";source.pendingItem=new ItemStack(Items.DIAMOND,4096);
         var restored=Part.load(source.save(null,false),null);
         if(!ItemTransferSafety.blocked(restored)||restored.pendingItem.getCount()!=4096||restored.routeEditable())throw new IllegalStateException("Item quarantine/count must survive native save reload");
+        if(!ResourceTransferSafety.blocked(restored)||restored.pendingFluid.getAmount()!=725||restored.energyRouteEditable())throw new IllegalStateException("Resource quarantine survives native reload");
         net.foundations.pl4.compat.PortAssertions.check(restored.outputChannel.equals("ore")&&restored.inputChannel.isEmpty(),"Directional channels persist");h.succeed();
     }
 
@@ -341,5 +343,30 @@ public final class R16GameTests {
         if(refused.getCount()!=8)throw new IllegalStateException("Healthy refusal loses escrow");ItemTransferSafety.completed(owner);
         if(ItemTransferSafety.blocked(p)||p.pendingItem.getCount()!=8)throw new IllegalStateException("Healthy refusal must allow a later retry");
         p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
+    }
+
+    private static void resourceQuarantineChecks(NetworkEngine.Ref owner){
+        Part p=owner.part();p.pendingFluid=new net.minecraftforge.fluids.FluidStack(net.minecraft.fluid.Fluids.WATER,8);int[] calls={0};
+        try{ResourceTransferSafety.insertFluid(owner,p.pendingFluid.copy(),()->{calls[0]++;throw new IllegalStateException("fluid provider mutated");});throw new AssertionError("Missing fluid failure");}catch(IllegalStateException expected){}
+        if(!ResourceTransferSafety.blocked(p)||p.routeEditable())throw new IllegalStateException("Uncertain fluid insertion must remain fenced");
+        try{ResourceTransferSafety.insertFluid(owner,p.pendingFluid.copy(),()->{calls[0]++;return 8;});throw new AssertionError("Replayed fluid");}catch(IllegalStateException expected){}
+        if(calls[0]!=1)throw new IllegalStateException("Quarantined fluid callback replayed");
+        p.resourceTransferFault="";int refused=ResourceTransferSafety.insertFluid(owner,p.pendingFluid.copy(),()->0);ResourceTransferSafety.completed(owner);
+        if(refused!=0||ResourceTransferSafety.blocked(p)||p.pendingFluid.getAmount()!=8)throw new IllegalStateException("Healthy fluid refusal must be retryable");
+        try{ResourceTransferSafety.extractFluid(owner,p.pendingFluid.copy(),()->new net.minecraftforge.fluids.FluidStack(net.minecraft.fluid.Fluids.LAVA,8));throw new AssertionError("Wrong fluid accepted");}catch(IllegalStateException expected){}
+        if(!ResourceTransferSafety.blocked(p)||p.pendingFluid.getFluid()!=net.minecraft.fluid.Fluids.LAVA)throw new IllegalStateException("Unexpected fluid variant must be retained but not forwarded");
+        p.resourceTransferFault="";
+        try{ResourceTransferSafety.insertFluid(owner,p.pendingFluid.copy(),()->9);throw new AssertionError("Over-reported fluid insertion accepted");}catch(IllegalStateException expected){}
+        if(!ResourceTransferSafety.blocked(p))throw new IllegalStateException("Invalid fluid insertion stays quarantined");
+        p.resourceTransferFault="";p.pendingFluid=net.minecraftforge.fluids.FluidStack.EMPTY;p.pendingEnergy=8;
+        try{ResourceTransferSafety.insertEnergy(owner,8,()->{calls[0]++;throw new IllegalStateException("FE provider mutated");});throw new AssertionError("Missing FE failure");}catch(IllegalStateException expected){}
+        try{ResourceTransferSafety.insertEnergy(owner,8,()->{calls[0]++;return 8;});throw new AssertionError("Replayed FE");}catch(IllegalStateException expected){}
+        if(calls[0]!=2||!ResourceTransferSafety.blocked(p))throw new IllegalStateException("Uncertain FE must not replay");
+        p.resourceTransferFault="";
+        try{ResourceTransferSafety.extractEnergy(owner,8,()->9);throw new AssertionError("Over-extraction accepted");}catch(IllegalStateException expected){}
+        if(!ResourceTransferSafety.blocked(p)||p.pendingEnergy!=9)throw new IllegalStateException("Over-extracted FE remains quarantined");
+        p.resourceTransferFault="";p.pendingEnergy=0;
+        if(ResourceTransferSafety.insertEnergy(owner,8,()->0)!=0)throw new IllegalStateException("Refusal changed amount");ResourceTransferSafety.completed(owner);
+        if(ResourceTransferSafety.blocked(p))throw new IllegalStateException("Healthy FE refusal must be retryable");
     }
 }
