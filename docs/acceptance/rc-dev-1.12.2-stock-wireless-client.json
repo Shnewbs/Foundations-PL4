@@ -1,0 +1,106 @@
+{
+  "minecraft": "1.12.2",
+  "result": "PASS_WITH_SCOPED_ACCEPTANCE",
+  "workflow_run": 39971219774,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39971219774",
+  "workflow_source_commit": "2c8d39e43df30e8044ece71a2c04175debe75437",
+  "candidate_source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+  "runtime_payload_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
+  "native_gate_workflow": 39970232872,
+  "artifact_id": 12509586214,
+  "artifact_sha256": "07f9dee3de07fda4fc31b0f5c28b34e8ce9ff3178c42e7f878f0e15e7df0e19e",
+  "runtime": {
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2864",
+    "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
+    "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+    "probe_sha256": "3c3363f1b3bf92e5fad07c2e5ead6561d6c9f402a280d5115427720026f3a52f",
+    "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+    "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+    "production_jar_matches_native_gate": true,
+    "development_game_classpath": false,
+    "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+  },
+  "client": {
+    "minecraft": "1.12.2",
+    "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+    "result": "PASS",
+    "native_wireless_withdrawal": true,
+    "stale_replay_rejected": true,
+    "native_wireless_deposit": true,
+    "native_paging": true,
+    "signed_byte_revision": 70,
+    "native_packet_codec_round_trip": true,
+    "actual_mouse_withdraw_deposit_page": true,
+    "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+    "captures": [
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
+      "legacy-wireless-storage-scale-4.png"
+    ],
+    "scope": "Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+  },
+  "images": [
+    {
+      "name": "results/legacy-wireless-storage-scale-1.png",
+      "sha256": "8c1172439ceef5cafd965ce2d96ef201fa43d7902856b88275ba06e10564532c",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-2.png",
+      "sha256": "489908603fee72472f143830346a616b63c2a0086f90e0fcf34d7822933b1358",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-3.png",
+      "sha256": "7191d0d432b28690275208364ce7192501f443ec5434e23630fd7686287829bb",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-4.png",
+      "sha256": "363f7ce783ab497ace5267da7df424f07cabcdbb69945ebc4fadaca88e9993e5",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-tooltip.png",
+      "sha256": "c8294cfe17450348ef27de2015490f6a00397ca685165bf27cbe0490daf9ddf1",
+      "width": 1280,
+      "height": 960
+    }
+  ],
+  "conservation_checks": {
+    "withdrawal": {
+      "source_before": 64,
+      "source_after": 63,
+      "player_received": 1
+    },
+    "deposit": {
+      "player_before": 32,
+      "player_after": 31,
+      "source_slot_before": 32,
+      "source_slot_after": 33
+    },
+    "stale_old_revision_after_withdrawal": "REJECTED_WITHOUT_SECOND_WITHDRAWAL"
+  },
+  "visual_review": {
+    "reviewed": [
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-4.png",
+      "legacy-wireless-storage-tooltip.png"
+    ],
+    "result": "PASS_REVIEWED_LAYOUT_EXTREMES_AND_DIAMOND_TOOLTIP",
+    "automated_captures": "FOUR_ACTUAL_GUI_SCALES_1280x960",
+    "notes": "Header, paging controls, deposit label and inventory fit in reviewed captures. Vanilla tutorial disabled only in the isolated probe."
+  },
+  "limitations": [
+    "Private offline integrated world and native packet codec round-trip; no dedicated multiplayer or online authentication acceptance",
+    "Handheld screen only; physical displays, editor gestures and other resolutions remain separate",
+    "No installed optional providers, sustained performance or 1.6.4 client acceptance"
+  ],
+  "rc_publication_cleared": false
+}

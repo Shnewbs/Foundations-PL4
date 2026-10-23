@@ -34,7 +34,7 @@
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
-  "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_AND_TOOLTIP",
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "live_multiplayer_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -57,5 +57,11 @@
   "candidate_workflow_run": "39970232872",
   "candidate_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
   "candidate_runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
-  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
+  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS",
+  "acceptance_evidence": {
+    "legacy_wireless_native": "docs/acceptance/rc-dev-legacy-wireless-native.json",
+    "stock_wireless_client": "docs/acceptance/rc-dev-1.12.2-stock-wireless-client.json"
+  },
+  "integrated_wireless_acceptance": "PASS_REAL_MOUSE_NATIVE_HANDLERS_AND_PACKET_CODECS",
+  "client_acceptance_workflow_run": "39971219774"
 }
