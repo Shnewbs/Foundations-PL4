@@ -200,7 +200,8 @@ public final class NetworkEngine {
         String connectionStatus="Connected: "+hosts+" hosts / "+refs.size()+" parts";
         for(Ref r:refs){
             Part p=r.part;
-            if(p.kind.cable()||p.kind==Kind.NODE||p.kind==Kind.ARRAY)p.status=connectionStatus;
+            if(p.kind.cable()||p.kind==Kind.ARRAY)p.status=connectionStatus;
+            if(p.kind==Kind.NODE)p.status=WirelessItemTransfers.available(p)?connectionStatus:"Item storage paused; inspect node escrow";
             if(p.kind==Kind.ENTITY_NODE&&p.links.isEmpty()){
                 int count=r.level().getEntities(null,new net.minecraft.world.phys.AABB(r.host.getBlockPos()).inflate(PLConfig.ENTITY_RANGE.get())).size();
                 p.rows.clear();p.rows.add(new Part.Row("entities","Nearby entities",count,0,""));
