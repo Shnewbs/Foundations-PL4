@@ -23,7 +23,7 @@ public final class MultiplayerClientProbe {
         }
         if(!ready&&frames>40){mc.player.connection.sendCommand("pl4probe ready");ready=true;}
         if(token!=null&&!sent){
-            var request=new PLPackets.StorageRequest(token,"withdraw",0,17);PacketDistributor.sendToServer(request);PacketDistributor.sendToServer(request);sent=true;sentFrame=frames;
+            if(!"restore".equals(System.getenv("PL4_PROBE_PHASE"))){var request=new PLPackets.StorageRequest(token,"withdraw",0,17);PacketDistributor.sendToServer(request);PacketDistributor.sendToServer(request);}sent=true;sentFrame=frames;
         }
         if(sent&&!captured&&frames-sentFrame>40){
             int count=0;for(int i=0;i<36;i++)if(mc.player.getInventory().getItem(i).is(Items.DIAMOND))count+=mc.player.getInventory().getItem(i).getCount();
@@ -31,7 +31,7 @@ public final class MultiplayerClientProbe {
             try{
                 String name=mc.player.getGameProfile().getName();Path out=Path.of(System.getenv("PL4_PROBE_OUTPUT"));Files.createDirectories(out);
                 try(var image=Screenshot.takeScreenshot(mc.getMainRenderTarget())){image.writeToFile(out.resolve(name+"-storage.png"));}
-                Map<String,Object> proof=new LinkedHashMap<>();proof.put("source_commit",System.getenv("PL4_PROBE_SOURCE"));proof.put("name",name);proof.put("uuid",mc.player.getUUID().toString());proof.put("client_player_class",mc.player.getClass().getName());proof.put("items_received",count);proof.put("identical_packets_sent",2);
+                Map<String,Object> proof=new LinkedHashMap<>();proof.put("source_commit",System.getenv("PL4_PROBE_SOURCE"));proof.put("phase",System.getenv("PL4_PROBE_PHASE"));proof.put("name",name);proof.put("uuid",mc.player.getUUID().toString());proof.put("client_player_class",mc.player.getClass().getName());proof.put("items_received",count);proof.put("identical_packets_sent","restore".equals(System.getenv("PL4_PROBE_PHASE"))?0:2);
                 Files.writeString(out.resolve(name+"-client-proof.json"),new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(proof));mc.player.connection.sendCommand("pl4probe sent");captured=true;
             }catch(java.io.IOException failure){throw new IllegalStateException(failure);}
         }

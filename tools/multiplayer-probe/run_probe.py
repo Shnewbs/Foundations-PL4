@@ -12,13 +12,14 @@ import time
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('source',type=Path);parser.add_argument('output',type=Path);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('source',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--phase',choices=['seed','restore'],default='seed');parser.add_argument('--restore-world',type=Path);args=parser.parse_args()
+    if (args.phase=='restore')!=(args.restore_world is not None):raise ValueError('Restore requires an explicit saved probe run directory')
     source=args.source.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=True);fixture=Path(__file__).resolve().parent
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=source,text=True).strip();archive=subprocess.check_output(['git','archive','HEAD'],cwd=source)
-    env=dict(os.environ,PL4_PROBE_SOURCE=commit,PL4_PROBE_OUTPUT=str(out));processes=[];logs=[]
+    env=dict(os.environ,PL4_PROBE_SOURCE=commit,PL4_PROBE_OUTPUT=str(out),PL4_PROBE_PHASE=args.phase);processes=[];logs=[]
     roots={}
     for name in ['server','PL4ProbeA','PL4ProbeB']:
-        root=source.parent/('multiplayer-'+name);root.mkdir()
+        root=source.parent/('multiplayer-'+args.phase+'-'+name);root.mkdir()
         with tarfile.open(fileobj=io.BytesIO(archive)) as tar:tar.extractall(root,filter='data')
         java=root/'src/main/java/net/foundations/pl4'
         shutil.copy2(fixture/'MultiplayerServerProbe.java',java/'MultiplayerServerProbe.java');shutil.copy2(fixture/'MultiplayerClientProbe.java',java/'client/MultiplayerClientProbe.java')
@@ -26,6 +27,10 @@ def main():
         run=root/'run';run.mkdir(exist_ok=True)
         (run/'options.txt').write_text('onboardAccessibility:false\npauseOnLostFocus:false\nmaxFps:30\nguiScale:2\n')
         if name=='server':
+            if args.restore_world:
+                previous=args.restore_world.resolve()
+                shutil.copytree(previous/'world',run/'world')
+                shutil.copy2(previous/'probe-node-identity.txt',run/'probe-node-identity.txt')
             (run/'eula.txt').write_text('eula=true\n');(run/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=25576\nonline-mode=false\nmax-players=2\nspawn-protection=0\nlevel-type=minecraft:flat\nview-distance=3\nsimulation-distance=3\nenforce-secure-profile=false\n')
             extra="neoForge.runs.server { jvmArguments.addAll('-Xms256m','-Xmx768m') }\n"
         else:
@@ -50,10 +55,10 @@ def main():
             if time.monotonic()>deadline:raise TimeoutError('Real client probe timed out')
             time.sleep(2)
         for name in ['PL4ProbeA','PL4ProbeB']:
-            proof=json.loads((out/(name+'-client-proof.json')).read_text());assert proof['items_received']==17 and proof['identical_packets_sent']==2 and proof['source_commit']==commit
+            proof=json.loads((out/(name+'-client-proof.json')).read_text());assert proof['items_received']==17 and proof['identical_packets_sent']==(0 if args.phase=='restore' else 2) and proof['source_commit']==commit and proof['phase']==args.phase
             assert (out/(name+'-storage.png')).stat().st_size>1000
         proof=json.loads((out/'server-multiplayer-proof.json').read_text());assert proof['source_commit']==commit and proof['remaining_items']==94 and proof['items_per_player']==[17,17] and len(set(proof['real_client_uuids']))==2
-        print('PASS: two actual client processes, distinct UUIDs, foreign-owner rejection and network replay conservation.',flush=True)
+        print('PASS: two actual clients, distinct UUIDs, owner checks and '+('saved-world inventory/session restore.' if args.phase=='restore' else 'network replay conservation.'),flush=True)
     finally:
         for p in processes:
             if p.poll() is None:

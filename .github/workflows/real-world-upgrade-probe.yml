@@ -1,0 +1,61 @@
+name: Upgrade released-beta world with two real clients
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/real-world-upgrade-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  released_world_upgrade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.2b.0
+          path: baseline
+      - uses: actions/checkout@v4
+        with:
+          ref: 1cb1ee0eec9813a1e167c78258f361edf8278921
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: '**/*.gradle*'
+      - name: Install virtual display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+      - name: Save actual released-beta world with both player inventories
+        run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py baseline results/seed --phase seed
+      - name: Open copied saved world with candidate server and clients
+        run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py candidate results/restore --phase restore --restore-world multiplayer-seed-server/run
+      - name: Compare persistent identities and exact totals across process upgrade
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('results');a=json.loads((root/'seed/server-multiplayer-proof.json').read_text());b=json.loads((root/'restore/server-multiplayer-proof.json').read_text())
+          assert a['source_commit']!=b['source_commit'] and b['saved_world_restore']
+          assert a['node_identity']==b['node_identity'] and a['real_client_uuids']==b['real_client_uuids']
+          assert a['remaining_items']==b['remaining_items']==94 and a['items_per_player']==b['items_per_player']==[17,17]
+          print('PASS: released-beta saved world reopened with unchanged node identity, owner checks, vanilla storage and both actual player inventories.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-client-beta-world-upgrade-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            multiplayer-*/run/logs/
+            multiplayer-*/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: error
