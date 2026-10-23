@@ -1,4 +1,4 @@
-name: Inspect retained legacy client failure
+name: Inspect passing stock-client evidence
 on:
   push:
     branches: [main]
@@ -17,13 +17,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          gh api "repos/$GH_REPO/actions/artifacts/12507621816/zip" > /tmp/legacy-probe.zip
+          gh api "repos/$GH_REPO/actions/artifacts/12508540877/zip" > /tmp/legacy-probe.zip
           python3 - <<'PY'
-          import zipfile
-          with zipfile.ZipFile('/tmp/legacy-probe.zip') as z:
+          import base64,hashlib,zipfile
+          from pathlib import Path
+          p=Path('/tmp/legacy-probe.zip')
+          print('ARTIFACT_SHA256',hashlib.sha256(p.read_bytes()).hexdigest())
+          with zipfile.ZipFile(p) as z:
               print('FILES:',z.namelist())
-              for name in ['results/client.log','results/forge-install.log','results/build.log']:
-                  if name in z.namelist():
-                      print('FILE:',name)
-                      print('\n'.join(z.read(name).decode(errors='replace').splitlines()[-100:]))
-          PY
+              for name in ['results/legacy-wireless-client.json','results/stock-client-runtime.json']:
+                  print('REPORT_START',name)
+                  print(z.read(name).decode())
+                  print('REPORT_END')
+              for name in ['results/legacy-wireless-storage-scale-1.png','results/legacy-wireless-storage-scale-4.png']:
+                  print('IMAGE_START',name)
+                  print(base64.b64encode(z.read(name)).decode())
+                  print('IMAGE_END')
