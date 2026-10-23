@@ -4,7 +4,7 @@
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "qualified_native_targets": 24,
+  "qualified_native_targets": 22,
   "feature_parity": "INCOMPLETE",
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
@@ -465,35 +465,33 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 120,
-      "native_gate": "PASS",
-      "workflow_run": "39778867001",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39778867001",
+      "expected_native_fixtures": 152,
+      "native_gate": "PENDING_NEW_HANDHELD_STORAGE_SOURCE",
       "rc_publication_cleared": false,
       "scope": "transport and basic readers/displays",
-      "production_only_boot": "PASS",
-      "generated_preview3_world_upgrade": "PASS",
-      "runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604",
-      "source_commit": "08349126dc1e8129a8bdd13049bdd7a37bc2872a",
-      "build_status_blob_sha": "83fc1087189645b56cf9e02775064462b26e89ef"
+      "previous_native_gate": {
+        "native_gate": "PASS",
+        "workflow_run": "39778867001",
+        "source_commit": "08349126dc1e8129a8bdd13049bdd7a37bc2872a",
+        "runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604"
+      }
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 120,
-      "native_gate": "PASS",
-      "workflow_run": "39778867001",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39778867001",
+      "expected_native_fixtures": 152,
+      "native_gate": "PENDING_NEW_HANDHELD_STORAGE_SOURCE",
       "rc_publication_cleared": false,
       "scope": "transport and basic readers/displays",
-      "production_only_boot": "PASS",
-      "generated_preview3_world_upgrade": "PASS",
-      "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1",
-      "source_commit": "87c238bc94c3bfd5cafd253f32eb4e0d71a5962e",
-      "build_status_blob_sha": "28da1e975c93bcb0b4c55657f1a50c063781de32"
+      "previous_native_gate": {
+        "native_gate": "PASS",
+        "workflow_run": "39778867001",
+        "source_commit": "87c238bc94c3bfd5cafd253f32eb4e0d71a5962e",
+        "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1"
+      }
     }
   ],
-  "latest_work": "All 24 native development gates passed; modern resource/wireless quarantine and cycle filtering validated independently. Narrow 1.21.1 real-client, generated-world and measured-operation evidence recorded.",
+  "latest_work": "Legacy 1.12.2 and 1.6.4 handheld storage implemented with native container GUI; 32 additional safety scenarios per target await exact native validation. Modern 22 gates unchanged.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
