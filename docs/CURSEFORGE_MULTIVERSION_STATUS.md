@@ -2,6 +2,10 @@
 
 Latest recorded upload reconciliation: October 22, 2026. RC source/build preparation was updated October 22; historical sections retain their original snapshot dates.
 
+## Additional RC qualification evidence — no publication
+
+All 24 maintained development targets have independently passing native gates. Modern development source now also fences fluid/FE/native-energy and Wireless Storage handoff uncertainty. The exact-target native gates remain separate from publication clearance. The 1.21.1 development candidate has actual client snapshots, two real loopback-client storage sessions, a generated released-tag-source world upgrade and native operation measurements; scope and remaining gaps are recorded in the [RC ledger](RC_DEVELOPMENT_STATUS.json) and [engineering roadmap](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md). No new stable RC has been submitted to CurseForge, and the prior published receipt inventory is unchanged.
+
 ## October 22 development hardening
 
 No stable RC has been submitted. Both legacy development candidates gained basic readers/displays, persistent item transaction quarantine and 120 passing native scenarios, production-only boots and generated preview.3 world upgrades. All 22 modern targets passed their independent native gates with matching item-fault protection (20 in the common run, two 26.x targets in the repair run). See [current engineering evidence](../FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md).

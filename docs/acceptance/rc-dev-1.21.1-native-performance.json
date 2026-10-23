@@ -1,0 +1,1378 @@
+{
+  "recorded_date": "2026-10-22",
+  "timezone": "America/Los_Angeles",
+  "latest_run": "39884343327",
+  "latest_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343327",
+  "scope": "Measured 1.21.1 native operations with 4096 loaded physical hosts and 128 endpoints; no overall TPS/MSPT, client FPS, active-provider or other-target result. All recorded stages are retained; shared CI measurements are noisy.",
+  "reports": [
+    {
+      "target": "1.21.1",
+      "sources": {
+        "baseline": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+        "candidate": "83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54"
+      },
+      "trials_per_revision": 3,
+      "fixture_sha256": "c7eaf5f494132015f509dd4c2451fcb9146d938038d06394f7d5d8fe441c7585",
+      "scope": "Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.",
+      "measurements": [
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 50.7452,
+          "baseline_elapsed_ns_trial_medians": [
+            49.9032,
+            67.684,
+            50.7452
+          ],
+          "baseline_cpu_ns_per_operation": 51.8899,
+          "baseline_cpu_ns_trial_medians": [
+            51.8899,
+            67.9477,
+            50.9065
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 48.2177,
+          "candidate_elapsed_ns_trial_medians": [
+            47.748,
+            48.2177,
+            50.2416
+          ],
+          "candidate_cpu_ns_per_operation": 49.4914,
+          "candidate_cpu_ns_trial_medians": [
+            48.0022,
+            49.4914,
+            50.4478
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.9501923334620812
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 33.8921,
+          "baseline_elapsed_ns_trial_medians": [
+            33.8921,
+            61.3965,
+            25.1327
+          ],
+          "baseline_cpu_ns_per_operation": 34.0285,
+          "baseline_cpu_ns_trial_medians": [
+            34.0285,
+            61.7135,
+            25.2264
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 34.2506,
+          "candidate_elapsed_ns_trial_medians": [
+            40.2371,
+            34.2506,
+            33.278
+          ],
+          "candidate_cpu_ns_per_operation": 34.423,
+          "candidate_cpu_ns_trial_medians": [
+            40.3818,
+            34.423,
+            33.3685
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.0105776862454672
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 206576.52,
+          "baseline_elapsed_ns_trial_medians": [
+            203621.94,
+            253373.42,
+            206576.52
+          ],
+          "baseline_cpu_ns_per_operation": 206632.87,
+          "baseline_cpu_ns_trial_medians": [
+            203687.21,
+            253424.35,
+            206632.87
+          ],
+          "baseline_allocated_bytes_per_operation": 194807.68,
+          "baseline_allocated_bytes_trial_medians": [
+            194952.48,
+            194160.48,
+            194807.68
+          ],
+          "candidate_elapsed_ns_per_operation": 191268.74,
+          "candidate_elapsed_ns_trial_medians": [
+            191268.74,
+            278219.25,
+            168005.7
+          ],
+          "candidate_cpu_ns_per_operation": 191214.02,
+          "candidate_cpu_ns_trial_medians": [
+            191214.02,
+            276344.13,
+            168102.25
+          ],
+          "candidate_allocated_bytes_per_operation": 186228.24,
+          "candidate_allocated_bytes_trial_medians": [
+            194777.44,
+            185650.08,
+            186228.24
+          ],
+          "elapsed_ratio": 0.9258977738612307
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 19944942.0,
+          "baseline_elapsed_ns_trial_medians": [
+            19444009.0,
+            20843288.0,
+            19944942.0
+          ],
+          "baseline_cpu_ns_per_operation": 19941076.0,
+          "baseline_cpu_ns_trial_medians": [
+            19346025.0,
+            20852328.0,
+            19941076.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12827960.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12700832.0,
+            12840728.0,
+            12827960.0
+          ],
+          "candidate_elapsed_ns_per_operation": 13420912.0,
+          "candidate_elapsed_ns_trial_medians": [
+            13420912.0,
+            13155519.0,
+            13926465.0
+          ],
+          "candidate_cpu_ns_per_operation": 13427539.0,
+          "candidate_cpu_ns_trial_medians": [
+            13427539.0,
+            13140343.0,
+            13933800.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12881688.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12834360.0,
+            12881688.0,
+            12942776.0
+          ],
+          "elapsed_ratio": 0.672898020961906
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 12.575,
+          "baseline_elapsed_ns_trial_medians": [
+            8.0591,
+            12.575,
+            14.1202
+          ],
+          "baseline_cpu_ns_per_operation": 12.7559,
+          "baseline_cpu_ns_trial_medians": [
+            8.1381,
+            12.7559,
+            14.2932
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 8.619,
+          "candidate_elapsed_ns_trial_medians": [
+            8.5153,
+            12.7642,
+            8.619
+          ],
+          "candidate_cpu_ns_per_operation": 8.717,
+          "candidate_cpu_ns_trial_medians": [
+            8.6068,
+            13.0053,
+            8.717
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.6854075546719682
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 15.6315,
+          "baseline_elapsed_ns_trial_medians": [
+            9.6115,
+            15.6315,
+            16.9775
+          ],
+          "baseline_cpu_ns_per_operation": 15.8235,
+          "baseline_cpu_ns_trial_medians": [
+            9.6964,
+            15.8235,
+            17.4319
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 9.7277,
+          "candidate_elapsed_ns_trial_medians": [
+            9.4787,
+            15.4343,
+            9.7277
+          ],
+          "candidate_cpu_ns_per_operation": 9.8226,
+          "candidate_cpu_ns_trial_medians": [
+            9.5632,
+            15.7924,
+            9.8226
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.6223139174103572
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 141616.67,
+          "baseline_elapsed_ns_trial_medians": [
+            133958.93,
+            218293.74,
+            141616.67
+          ],
+          "baseline_cpu_ns_per_operation": 141701.9,
+          "baseline_cpu_ns_trial_medians": [
+            133994.88,
+            218341.74,
+            141701.9
+          ],
+          "baseline_allocated_bytes_per_operation": 193712.48,
+          "baseline_allocated_bytes_trial_medians": [
+            193712.48,
+            194160.48,
+            193456.48
+          ],
+          "candidate_elapsed_ns_per_operation": 233988.68,
+          "candidate_elapsed_ns_trial_medians": [
+            151384.04,
+            233988.68,
+            255232.45
+          ],
+          "candidate_cpu_ns_per_operation": 230462.0,
+          "candidate_cpu_ns_trial_medians": [
+            151449.85,
+            230462.0,
+            249703.55
+          ],
+          "candidate_allocated_bytes_per_operation": 186096.48,
+          "candidate_allocated_bytes_trial_medians": [
+            193456.48,
+            185584.48,
+            186096.48
+          ],
+          "elapsed_ratio": 1.6522679145046977
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 10172774.0,
+          "baseline_elapsed_ns_trial_medians": [
+            10172774.0,
+            15067511.0,
+            9946777.0
+          ],
+          "baseline_cpu_ns_per_operation": 10171231.0,
+          "baseline_cpu_ns_trial_medians": [
+            10171231.0,
+            15076694.0,
+            9954109.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12722104.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12715232.0,
+            12722104.0,
+            12724320.0
+          ],
+          "candidate_elapsed_ns_per_operation": 16381331.0,
+          "candidate_elapsed_ns_trial_medians": [
+            16722090.0,
+            16381331.0,
+            9950933.0
+          ],
+          "candidate_cpu_ns_per_operation": 16391423.0,
+          "candidate_cpu_ns_trial_medians": [
+            16683226.0,
+            16391423.0,
+            9960869.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12724192.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12622576.0,
+            12724192.0,
+            12731616.0
+          ],
+          "elapsed_ratio": 1.6103111108140218
+        }
+      ],
+      "workflow_run": "39882154157",
+      "stage": "initial_short_warmup"
+    },
+    {
+      "target": "1.21.1",
+      "sources": {
+        "baseline": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+        "candidate": "83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54"
+      },
+      "trials_per_revision": 3,
+      "fixture_sha256": "02dc77c0a3fe252b39d985bfc245866cb4a6554f2197fa6786a49784b431e09e",
+      "scope": "Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.",
+      "measurements": [
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 38.7678,
+          "baseline_elapsed_ns_trial_medians": [
+            38.7678,
+            35.2704,
+            51.9106
+          ],
+          "baseline_cpu_ns_per_operation": 38.8589,
+          "baseline_cpu_ns_trial_medians": [
+            38.8589,
+            35.7362,
+            52.1237
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 51.4769,
+          "candidate_elapsed_ns_trial_medians": [
+            50.143,
+            51.4769,
+            53.0934
+          ],
+          "candidate_cpu_ns_per_operation": 51.698,
+          "candidate_cpu_ns_trial_medians": [
+            50.4302,
+            51.698,
+            53.3555
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.3278261856489149
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 24.5231,
+          "baseline_elapsed_ns_trial_medians": [
+            24.0574,
+            24.5231,
+            31.5458
+          ],
+          "baseline_cpu_ns_per_operation": 24.5807,
+          "baseline_cpu_ns_trial_medians": [
+            24.12,
+            24.5807,
+            31.6982
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 31.5308,
+          "candidate_elapsed_ns_trial_medians": [
+            30.1267,
+            44.6607,
+            31.5308
+          ],
+          "candidate_cpu_ns_per_operation": 31.7093,
+          "candidate_cpu_ns_trial_medians": [
+            30.234,
+            44.8769,
+            31.7093
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.2857591413809837
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 97706.721,
+          "baseline_elapsed_ns_trial_medians": [
+            97706.721,
+            91522.765,
+            99094.178
+          ],
+          "baseline_cpu_ns_per_operation": 93052.044,
+          "baseline_cpu_ns_trial_medians": [
+            93052.044,
+            87554.54,
+            94921.028
+          ],
+          "baseline_allocated_bytes_per_operation": 194032.048,
+          "baseline_allocated_bytes_trial_medians": [
+            194032.048,
+            193360.048,
+            194096.048
+          ],
+          "candidate_elapsed_ns_per_operation": 102792.817,
+          "candidate_elapsed_ns_trial_medians": [
+            98326.368,
+            103759.915,
+            102792.817
+          ],
+          "candidate_cpu_ns_per_operation": 98304.876,
+          "candidate_cpu_ns_trial_medians": [
+            95370.259,
+            101418.744,
+            98304.876
+          ],
+          "candidate_allocated_bytes_per_operation": 194032.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194032.048,
+            194064.048,
+            185504.048
+          ],
+          "elapsed_ratio": 1.052054719961383
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 8926988.0,
+          "baseline_elapsed_ns_trial_medians": [
+            10365175.0,
+            8470377.0,
+            8926988.0
+          ],
+          "baseline_cpu_ns_per_operation": 8934605.0,
+          "baseline_cpu_ns_trial_medians": [
+            10355745.0,
+            8479728.0,
+            8934605.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12596448.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12700688.0,
+            12596448.0,
+            12454960.0
+          ],
+          "candidate_elapsed_ns_per_operation": 7360288.0,
+          "candidate_elapsed_ns_trial_medians": [
+            7103223.0,
+            7360288.0,
+            8799974.0
+          ],
+          "candidate_cpu_ns_per_operation": 7370545.0,
+          "candidate_cpu_ns_trial_medians": [
+            7115605.0,
+            7370545.0,
+            8808048.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12712624.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12508976.0,
+            12712624.0,
+            12723784.0
+          ],
+          "elapsed_ratio": 0.8244984758577025
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 9.0798,
+          "baseline_elapsed_ns_trial_medians": [
+            9.0798,
+            8.8504,
+            10.6621
+          ],
+          "baseline_cpu_ns_per_operation": 9.1496,
+          "baseline_cpu_ns_trial_medians": [
+            9.1496,
+            8.9804,
+            11.1316
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 9.306,
+          "candidate_elapsed_ns_trial_medians": [
+            11.4954,
+            9.306,
+            9.0627
+          ],
+          "candidate_cpu_ns_per_operation": 9.384,
+          "candidate_cpu_ns_trial_medians": [
+            11.8126,
+            9.384,
+            9.1286
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.0249124430053524
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 9.3823,
+          "baseline_elapsed_ns_trial_medians": [
+            9.3823,
+            8.8404,
+            11.3792
+          ],
+          "baseline_cpu_ns_per_operation": 9.443,
+          "baseline_cpu_ns_trial_medians": [
+            9.443,
+            8.8972,
+            11.4801
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 9.0727,
+          "candidate_elapsed_ns_trial_medians": [
+            11.8459,
+            9.0727,
+            8.8314
+          ],
+          "candidate_cpu_ns_per_operation": 9.1326,
+          "candidate_cpu_ns_trial_medians": [
+            11.9418,
+            9.1326,
+            8.8892
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.9670016946804088
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 87968.352,
+          "baseline_elapsed_ns_trial_medians": [
+            91648.692,
+            87123.957,
+            87968.352
+          ],
+          "baseline_cpu_ns_per_operation": 87199.822,
+          "baseline_cpu_ns_trial_medians": [
+            91431.589,
+            85963.569,
+            87199.822
+          ],
+          "baseline_allocated_bytes_per_operation": 194032.048,
+          "baseline_allocated_bytes_trial_medians": [
+            194032.048,
+            193360.048,
+            194096.048
+          ],
+          "candidate_elapsed_ns_per_operation": 98363.199,
+          "candidate_elapsed_ns_trial_medians": [
+            99038.377,
+            97656.289,
+            98363.199
+          ],
+          "candidate_cpu_ns_per_operation": 97226.125,
+          "candidate_cpu_ns_trial_medians": [
+            97226.125,
+            96877.645,
+            97977.193
+          ],
+          "candidate_allocated_bytes_per_operation": 194032.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194032.048,
+            194064.048,
+            185504.048
+          ],
+          "elapsed_ratio": 1.118165758067174
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 6263866.0,
+          "baseline_elapsed_ns_trial_medians": [
+            7692074.0,
+            6263866.0,
+            5866834.0
+          ],
+          "baseline_cpu_ns_per_operation": 6269724.0,
+          "baseline_cpu_ns_trial_medians": [
+            7697593.0,
+            6269724.0,
+            5869899.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12600184.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12622760.0,
+            12600184.0,
+            12469104.0
+          ],
+          "candidate_elapsed_ns_per_operation": 5505217.0,
+          "candidate_elapsed_ns_trial_medians": [
+            6380416.0,
+            5505217.0,
+            5339245.0
+          ],
+          "candidate_cpu_ns_per_operation": 5508760.0,
+          "candidate_cpu_ns_trial_medians": [
+            6384205.0,
+            5508760.0,
+            5341130.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12485104.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12641576.0,
+            12485104.0,
+            12410064.0
+          ],
+          "elapsed_ratio": 0.878884861202331
+        }
+      ],
+      "workflow_run": "39882724538",
+      "stage": "longer_warmup_before_cycle_filter"
+    },
+    {
+      "target": "1.21.1",
+      "sources": {
+        "baseline": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+        "candidate": "66de5a29d33323ebbac71fccf4cef710291dbdfe"
+      },
+      "trials_per_revision": 3,
+      "fixture_sha256": "02dc77c0a3fe252b39d985bfc245866cb4a6554f2197fa6786a49784b431e09e",
+      "scope": "Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.",
+      "measurements": [
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 54.2565,
+          "baseline_elapsed_ns_trial_medians": [
+            54.9183,
+            54.2565,
+            53.598
+          ],
+          "baseline_cpu_ns_per_operation": 54.4632,
+          "baseline_cpu_ns_trial_medians": [
+            55.1332,
+            54.4632,
+            53.8854
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 53.5922,
+          "candidate_elapsed_ns_trial_medians": [
+            53.5922,
+            53.8214,
+            52.5744
+          ],
+          "candidate_cpu_ns_per_operation": 53.8133,
+          "candidate_cpu_ns_trial_medians": [
+            53.8133,
+            54.0166,
+            52.8969
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.9877563056960916
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 45.2203,
+          "baseline_elapsed_ns_trial_medians": [
+            47.5922,
+            42.9105,
+            45.2203
+          ],
+          "baseline_cpu_ns_per_operation": 45.3626,
+          "baseline_cpu_ns_trial_medians": [
+            47.7351,
+            43.1163,
+            45.3626
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 42.8417,
+          "candidate_elapsed_ns_trial_medians": [
+            43.4758,
+            42.8417,
+            31.5516
+          ],
+          "candidate_cpu_ns_per_operation": 42.9631,
+          "candidate_cpu_ns_trial_medians": [
+            43.627,
+            42.9631,
+            31.7053
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.9473997297673833
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 97405.156,
+          "baseline_elapsed_ns_trial_medians": [
+            101236.985,
+            97405.156,
+            96048.624
+          ],
+          "baseline_cpu_ns_per_operation": 92345.086,
+          "baseline_cpu_ns_trial_medians": [
+            98004.612,
+            92345.086,
+            88512.352
+          ],
+          "baseline_allocated_bytes_per_operation": 194032.048,
+          "baseline_allocated_bytes_trial_medians": [
+            193648.048,
+            194032.048,
+            194096.048
+          ],
+          "candidate_elapsed_ns_per_operation": 104574.238,
+          "candidate_elapsed_ns_trial_medians": [
+            104574.238,
+            105326.748,
+            103116.051
+          ],
+          "candidate_cpu_ns_per_operation": 99036.2,
+          "candidate_cpu_ns_trial_medians": [
+            99036.2,
+            100338.613,
+            98957.452
+          ],
+          "candidate_allocated_bytes_per_operation": 194096.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194096.048,
+            194128.048,
+            194096.048
+          ],
+          "elapsed_ratio": 1.0736006418387134
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 7599510.0,
+          "baseline_elapsed_ns_trial_medians": [
+            7573893.0,
+            7603739.0,
+            7599510.0
+          ],
+          "baseline_cpu_ns_per_operation": 7607902.0,
+          "baseline_cpu_ns_trial_medians": [
+            7582204.0,
+            7611897.0,
+            7607902.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12698848.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12607936.0,
+            12832808.0,
+            12698848.0
+          ],
+          "candidate_elapsed_ns_per_operation": 7234453.0,
+          "candidate_elapsed_ns_trial_medians": [
+            6713171.0,
+            8065905.0,
+            7234453.0
+          ],
+          "candidate_cpu_ns_per_operation": 7245171.0,
+          "candidate_cpu_ns_trial_medians": [
+            6720008.0,
+            8071232.0,
+            7245171.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12620864.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12620864.0,
+            12482384.0,
+            12634184.0
+          ],
+          "elapsed_ratio": 0.9519630870937732
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 9.237,
+          "baseline_elapsed_ns_trial_medians": [
+            9.0567,
+            21.9372,
+            9.237
+          ],
+          "baseline_cpu_ns_per_operation": 9.3068,
+          "baseline_cpu_ns_trial_medians": [
+            9.1706,
+            22.849,
+            9.3068
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 9.278,
+          "candidate_elapsed_ns_trial_medians": [
+            9.278,
+            22.5571,
+            9.1899
+          ],
+          "candidate_cpu_ns_per_operation": 9.4611,
+          "candidate_cpu_ns_trial_medians": [
+            9.3439,
+            27.9647,
+            9.4611
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.004438670564036
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 9.0347,
+          "baseline_elapsed_ns_trial_medians": [
+            9.0347,
+            10.2565,
+            8.9746
+          ],
+          "baseline_cpu_ns_per_operation": 9.0946,
+          "baseline_cpu_ns_trial_medians": [
+            9.0946,
+            10.3224,
+            9.0365
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 9.0507,
+          "candidate_elapsed_ns_trial_medians": [
+            9.0507,
+            10.0131,
+            8.9284
+          ],
+          "candidate_cpu_ns_per_operation": 9.1116,
+          "candidate_cpu_ns_trial_medians": [
+            9.1116,
+            10.082,
+            9.0004
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.0017709497825051
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 92770.797,
+          "baseline_elapsed_ns_trial_medians": [
+            96545.853,
+            92770.797,
+            89747.31
+          ],
+          "baseline_cpu_ns_per_operation": 92327.069,
+          "baseline_cpu_ns_trial_medians": [
+            96424.538,
+            92327.069,
+            88909.303
+          ],
+          "baseline_allocated_bytes_per_operation": 194032.048,
+          "baseline_allocated_bytes_trial_medians": [
+            193648.048,
+            194032.048,
+            194096.048
+          ],
+          "candidate_elapsed_ns_per_operation": 98129.364,
+          "candidate_elapsed_ns_trial_medians": [
+            98129.364,
+            97716.11,
+            101071.947
+          ],
+          "candidate_cpu_ns_per_operation": 97972.044,
+          "candidate_cpu_ns_trial_medians": [
+            97972.044,
+            97539.29,
+            99792.558
+          ],
+          "candidate_allocated_bytes_per_operation": 194096.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194096.048,
+            194128.048,
+            194096.048
+          ],
+          "elapsed_ratio": 1.0577613556559182
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 7028457.0,
+          "baseline_elapsed_ns_trial_medians": [
+            7200777.0,
+            7028457.0,
+            6660942.0
+          ],
+          "baseline_cpu_ns_per_operation": 7053616.0,
+          "baseline_cpu_ns_trial_medians": [
+            7212372.0,
+            7053616.0,
+            6666948.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12613640.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12623728.0,
+            12613640.0,
+            12607256.0
+          ],
+          "candidate_elapsed_ns_per_operation": 5848809.0,
+          "candidate_elapsed_ns_trial_medians": [
+            6680025.0,
+            5365754.0,
+            5848809.0
+          ],
+          "candidate_cpu_ns_per_operation": 5853967.0,
+          "candidate_cpu_ns_trial_medians": [
+            6699708.0,
+            5367773.0,
+            5853967.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12499056.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12625664.0,
+            12499056.0,
+            12394600.0
+          ],
+          "elapsed_ratio": 0.8321611699409984
+        }
+      ],
+      "workflow_run": "39883272449",
+      "stage": "cycle_filter"
+    },
+    {
+      "target": "1.21.1",
+      "sources": {
+        "baseline": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+        "candidate": "1cb1ee0eec9813a1e167c78258f361edf8278921"
+      },
+      "trials_per_revision": 3,
+      "fixture_sha256": "02dc77c0a3fe252b39d985bfc245866cb4a6554f2197fa6786a49784b431e09e",
+      "scope": "Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.",
+      "measurements": [
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 75.2701,
+          "baseline_elapsed_ns_trial_medians": [
+            75.2701,
+            92.2539,
+            53.6706
+          ],
+          "baseline_cpu_ns_per_operation": 75.7122,
+          "baseline_cpu_ns_trial_medians": [
+            75.7122,
+            92.6157,
+            53.8375
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 64.4468,
+          "candidate_elapsed_ns_trial_medians": [
+            66.9526,
+            64.4468,
+            59.4885
+          ],
+          "candidate_cpu_ns_per_operation": 64.6406,
+          "candidate_cpu_ns_trial_medians": [
+            67.3557,
+            64.6406,
+            59.8738
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.8562071792119313
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 61.3559,
+          "baseline_elapsed_ns_trial_medians": [
+            115.6748,
+            61.3559,
+            60.818
+          ],
+          "baseline_cpu_ns_per_operation": 61.6681,
+          "baseline_cpu_ns_trial_medians": [
+            116.0515,
+            61.6681,
+            61.1411
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 62.8748,
+          "candidate_elapsed_ns_trial_medians": [
+            84.6166,
+            62.8748,
+            40.7484
+          ],
+          "candidate_cpu_ns_per_operation": 63.2941,
+          "candidate_cpu_ns_trial_medians": [
+            84.9054,
+            63.2941,
+            40.8673
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.0247555654794405
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 165534.339,
+          "baseline_elapsed_ns_trial_medians": [
+            165534.339,
+            171514.716,
+            165295.04
+          ],
+          "baseline_cpu_ns_per_operation": 161463.436,
+          "baseline_cpu_ns_trial_medians": [
+            157798.678,
+            166788.139,
+            161463.436
+          ],
+          "baseline_allocated_bytes_per_operation": 194096.048,
+          "baseline_allocated_bytes_trial_medians": [
+            194096.048,
+            194096.048,
+            185264.048
+          ],
+          "candidate_elapsed_ns_per_operation": 173864.401,
+          "candidate_elapsed_ns_trial_medians": [
+            165243.466,
+            173864.401,
+            180521.738
+          ],
+          "candidate_cpu_ns_per_operation": 167361.859,
+          "candidate_cpu_ns_trial_medians": [
+            164784.372,
+            167361.859,
+            170394.727
+          ],
+          "candidate_allocated_bytes_per_operation": 194128.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194128.048,
+            194128.048,
+            193424.048
+          ],
+          "elapsed_ratio": 1.0503222597215918
+        },
+        {
+          "network": "4096_host_wired_cube",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 11264244.0,
+          "baseline_elapsed_ns_trial_medians": [
+            10077601.0,
+            11551142.0,
+            11264244.0
+          ],
+          "baseline_cpu_ns_per_operation": 11274735.0,
+          "baseline_cpu_ns_trial_medians": [
+            10084775.0,
+            11521766.0,
+            11274735.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12614160.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12376832.0,
+            12614160.0,
+            12714320.0
+          ],
+          "candidate_elapsed_ns_per_operation": 12233502.0,
+          "candidate_elapsed_ns_trial_medians": [
+            13640460.0,
+            9789460.0,
+            12233502.0
+          ],
+          "candidate_cpu_ns_per_operation": 12241810.0,
+          "candidate_cpu_ns_trial_medians": [
+            13652111.0,
+            9790088.0,
+            12241810.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12618472.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12713264.0,
+            12506488.0,
+            12618472.0
+          ],
+          "elapsed_ratio": 1.086047319287473
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "storage_membership_lookup",
+          "baseline_elapsed_ns_per_operation": 11.0697,
+          "baseline_elapsed_ns_trial_medians": [
+            13.1346,
+            11.0226,
+            11.0697
+          ],
+          "baseline_cpu_ns_per_operation": 11.2009,
+          "baseline_cpu_ns_trial_medians": [
+            13.2277,
+            11.2009,
+            11.1608
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 11.0618,
+          "candidate_elapsed_ns_trial_medians": [
+            18.9856,
+            11.0618,
+            10.4887
+          ],
+          "candidate_cpu_ns_per_operation": 11.1699,
+          "candidate_cpu_ns_trial_medians": [
+            19.3581,
+            11.1699,
+            10.6158
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 0.9992863401898878
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "reader_targets_lookup",
+          "baseline_elapsed_ns_per_operation": 12.3592,
+          "baseline_elapsed_ns_trial_medians": [
+            13.2408,
+            12.3592,
+            11.5357
+          ],
+          "baseline_cpu_ns_per_operation": 12.4452,
+          "baseline_cpu_ns_trial_medians": [
+            13.3469,
+            12.4452,
+            11.6387
+          ],
+          "baseline_allocated_bytes_per_operation": 0.0048,
+          "baseline_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "candidate_elapsed_ns_per_operation": 12.9814,
+          "candidate_elapsed_ns_trial_medians": [
+            20.4684,
+            11.5236,
+            12.9814
+          ],
+          "candidate_cpu_ns_per_operation": 13.1014,
+          "candidate_cpu_ns_trial_medians": [
+            20.7988,
+            11.6066,
+            13.1014
+          ],
+          "candidate_allocated_bytes_per_operation": 0.0048,
+          "candidate_allocated_bytes_trial_medians": [
+            0.0048,
+            0.0048,
+            0.0048
+          ],
+          "elapsed_ratio": 1.050343064276005
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "idle_transfer_cycle_128_endpoints_8_drivers",
+          "baseline_elapsed_ns_per_operation": 166509.207,
+          "baseline_elapsed_ns_trial_medians": [
+            166509.207,
+            166770.92,
+            164630.856
+          ],
+          "baseline_cpu_ns_per_operation": 161653.29,
+          "baseline_cpu_ns_trial_medians": [
+            158046.299,
+            161653.29,
+            161792.619
+          ],
+          "baseline_allocated_bytes_per_operation": 194096.048,
+          "baseline_allocated_bytes_trial_medians": [
+            194096.048,
+            194096.048,
+            185264.048
+          ],
+          "candidate_elapsed_ns_per_operation": 166709.009,
+          "candidate_elapsed_ns_trial_medians": [
+            164711.078,
+            166709.009,
+            171382.326
+          ],
+          "candidate_cpu_ns_per_operation": 166601.631,
+          "candidate_cpu_ns_trial_medians": [
+            163863.783,
+            166601.631,
+            171218.335
+          ],
+          "candidate_allocated_bytes_per_operation": 194128.048,
+          "candidate_allocated_bytes_trial_medians": [
+            194128.048,
+            194128.048,
+            193424.048
+          ],
+          "elapsed_ratio": 1.00119994565826
+        },
+        {
+          "network": "two_2048_host_cubes_with_wireless_bridge",
+          "operation": "topology_rebuild_4096_hosts",
+          "baseline_elapsed_ns_per_operation": 10876828.0,
+          "baseline_elapsed_ns_trial_medians": [
+            11095679.0,
+            9453821.0,
+            10876828.0
+          ],
+          "baseline_cpu_ns_per_operation": 10883386.0,
+          "baseline_cpu_ns_trial_medians": [
+            11102124.0,
+            9458477.0,
+            10883386.0
+          ],
+          "baseline_allocated_bytes_per_operation": 12618776.0,
+          "baseline_allocated_bytes_trial_medians": [
+            12618776.0,
+            12385312.0,
+            12726168.0
+          ],
+          "candidate_elapsed_ns_per_operation": 9622107.0,
+          "candidate_elapsed_ns_trial_medians": [
+            9622107.0,
+            10411186.0,
+            9487153.0
+          ],
+          "candidate_cpu_ns_per_operation": 9627202.0,
+          "candidate_cpu_ns_trial_medians": [
+            9627202.0,
+            10345552.0,
+            9494825.0
+          ],
+          "candidate_allocated_bytes_per_operation": 12495464.0,
+          "candidate_allocated_bytes_trial_medians": [
+            12495464.0,
+            12727120.0,
+            12489840.0
+          ],
+          "elapsed_ratio": 0.8846427469479153
+        }
+      ],
+      "workflow_run": "39884343327",
+      "stage": "wireless_handoff_candidate"
+    }
+  ],
+  "downloaded_artifact_sha256": "ae13488671531c34e6befec6a2a8efc150eee4c73c940493e5474ec3623b9ef4"
+}

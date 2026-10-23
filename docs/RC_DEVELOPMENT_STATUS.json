@@ -4,17 +4,17 @@
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "qualified_native_targets": 2,
+  "qualified_native_targets": 24,
   "feature_parity": "INCOMPLETE",
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
   "remaining_acceptance": [
     "advanced legacy editor/multipart/wireless-storage parity",
-    "actual client rendering and UI scales",
-    "installed optional providers",
-    "live multiplayer",
-    "copied user-world migration; legacy generated preview.3 worlds passed",
-    "measured large-network performance",
+    "installed optional providers and compatible alternatives",
+    "world displays, editor gestures and wider real-client/resolution coverage; 1.21.1 three-view snapshots at four GUI scales passed",
+    "broader multiplayer, online profiles, dimensions and other exact targets; 1.21.1 two real loopback clients/reconnect passed",
+    "arbitrary copied user/modpack worlds; generated legacy preview.3 and 1.21.1 released-beta-source worlds passed",
+    "sustained full-server and active-provider performance, plus other ports; 1.21.1 native operation measurements were mixed",
     "documented 1.16.1\u20131.16.4 launcher profiles"
   ],
   "targets": [
@@ -23,322 +23,427 @@
       "source_ref": "mc/1.14.4",
       "expected_native_fixtures": 194,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "327cdb70b2f5bc905407abbbcadba700a808680c",
+      "build_status_blob_sha": "cac281781ddaf56202b966fe5c0e601047e3ca65",
+      "workflow_run": "39885198395",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.15.2",
       "source_ref": "mc/1.15.2",
       "expected_native_fixtures": 194,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+      "build_status_blob_sha": "cbd9a5badee0a592e19542fb1712f4051d63c218",
+      "workflow_run": "39885198395",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.16.1",
       "source_ref": "mc/1.16.1",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+      "build_status_blob_sha": "4e30489567cccb5e832f9c52a726f37d1ea57958",
+      "workflow_run": "39885592948",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.16.2",
       "source_ref": "mc/1.16.2",
       "expected_native_fixtures": 195,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "b87021995889ea7dc00c8b312d5c35f711b7f57b",
+      "build_status_blob_sha": "822eaa8446d95b6dfb2af955c26aa509afbf88b4",
+      "workflow_run": "39885592948",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.16.3",
       "source_ref": "mc/1.16.3",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "99ff596b2b05fd81da8934085891e1671a641546",
+      "build_status_blob_sha": "04e6892061db4bc0b9a8172346b3849fe1672d26",
+      "workflow_run": "39885592948",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.16.4",
       "source_ref": "mc/1.16.4",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+      "build_status_blob_sha": "9c4e44ea4e49bcba35579491648323c03e4dc75d",
+      "workflow_run": "39885592948",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.16.5",
       "source_ref": "mc/1.16.5",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "593edc1ef5667deb69fc7c404597b64ca7331969",
+      "build_status_blob_sha": "33d8e88fa385e3194fc2c447fcf2e89fcfcc3b5a",
+      "workflow_run": "39885198395",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.17.1",
       "source_ref": "mc/1.17.1",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+      "build_status_blob_sha": "c135bde0144404c13e048954cc5437a8e2b0f301",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.18.1",
       "source_ref": "mc/1.18.1",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+      "build_status_blob_sha": "574b89ed050f7a49cf049cd07c4b5a57c14a7c78",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.18.2",
       "source_ref": "mc/1.18.2",
       "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+      "build_status_blob_sha": "07ec69158cf8b75496fec66781a931651d78fda7",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.19",
       "source_ref": "mc/1.19",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "a4cf686ba16aae111ab824b7c73707b502b48a35",
+      "build_status_blob_sha": "747aea8103aa41988e57ed8b4775491842567e80",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.19.1",
       "source_ref": "mc/1.19.1",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "746d2c58b5f2482f6202b4172e0e012d11097f50",
+      "build_status_blob_sha": "2fa66524d49d0fb3ebb521d4c8c0a871b897aa3c",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.19.2",
       "source_ref": "mc/1.19.2",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+      "build_status_blob_sha": "e3e47754e968629ca3a5b6e682ba7ca7b7878d72",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.19.3",
       "source_ref": "mc/1.19.3",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "e79b66dd28a1a9655b2148261504fd650d98e992",
+      "build_status_blob_sha": "7a73c0496ff5c11619b3688c6d1470ec0d353cf3",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.19.4",
       "source_ref": "mc/1.19.4",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+      "build_status_blob_sha": "aeac4f0b69f1a6ecd043a0c35df0f4263002cae7",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.20",
       "source_ref": "mc/1.20",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+      "build_status_blob_sha": "81b8cc3063876b8a44c695940a1a28b06153e762",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.20.1",
       "source_ref": "mc/1.20.1",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "d6db46e25f612df40c80b503775d17184644d35f",
+      "build_status_blob_sha": "4a68a3bf98535b5aee6e8fd1a8b2ce36bff100f6",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.20.2",
       "source_ref": "mc/1.20.2",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "1585d8b2a79dd9e6f8f389e0509c553187b08079",
+      "build_status_blob_sha": "634fa28385e2c0118e4bbe52ef4f2b631da46395",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.20.4",
       "source_ref": "mc/1.20.4",
       "expected_native_fixtures": 191,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+      "build_status_blob_sha": "2be626f117646ce7c65741930adb0ba4f8429355",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
       "expected_native_fixtures": 192,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39781194528",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "1b3d34af6173f2db59abc0259ca50462f05105d5",
+      "build_status_blob_sha": "c3fe913fdcc356e26ca1ed45ef7ce5d90c204a10",
+      "workflow_run": "39885592948",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "26.1.2",
       "source_ref": "mc/26.1.2",
       "expected_native_fixtures": 192,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "previous_native_gate": {
         "workflow_run": "39783257087",
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "c6eb07cfd089c74b44c34d71163a5405e302b656",
+      "build_status_blob_sha": "74cdfda6051834c7ac26966580790a4a4f03407d",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "26.3",
       "source_ref": "mc/26.3",
       "expected_native_fixtures": 192,
       "rc_publication_cleared": false,
-      "scope": "modern development baseline with persistent item mutation quarantine",
+      "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
       "validated_neoforge_profiles": [
         "26.3.0.23-beta",
@@ -349,8 +454,13 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
-      "resource_safety_native_fixtures": "PENDING"
+      "native_gate": "PASS",
+      "resource_safety_native_fixtures": "PASS",
+      "source_commit": "39c4f6b973d12993963ff3a0b353496d135fe783",
+      "build_status_blob_sha": "410085959dd0b60b682e5eabb31c036305689e05",
+      "workflow_run": "39884343348",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
+      "wireless_safety_native_fixtures": "PASS"
     },
     {
       "minecraft": "1.12.2",
@@ -363,7 +473,9 @@
       "scope": "transport and basic readers/displays",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
-      "runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604"
+      "runtime_sha256": "60879aca745332bee06b012e173b106c5ea00ba8e670046a68c866e551cb0604",
+      "source_commit": "08349126dc1e8129a8bdd13049bdd7a37bc2872a",
+      "build_status_blob_sha": "83fc1087189645b56cf9e02775064462b26e89ef"
     },
     {
       "minecraft": "1.6.4",
@@ -376,8 +488,19 @@
       "scope": "transport and basic readers/displays",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
-      "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1"
+      "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1",
+      "source_commit": "87c238bc94c3bfd5cafd253f32eb4e0d71a5962e",
+      "build_status_blob_sha": "28da1e975c93bcb0b4c55657f1a50c063781de32"
     }
   ],
-  "latest_work": "Fluid, FE and native energy mutation quarantine; native validation pending for changed modern source"
+  "latest_work": "All 24 native development gates passed; modern resource/wireless quarantine and cycle filtering validated independently. Narrow 1.21.1 real-client, generated-world and measured-operation evidence recorded.",
+  "partial_1211_acceptance": {
+    "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+    "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
+    "real_client_storage": "acceptance/rc-dev-1.21.1-real-client-storage.json",
+    "generated_world_upgrade": "acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
+    "native_operation_measurements": "acceptance/rc-dev-1.21.1-native-performance.json",
+    "closes_all_acceptance": false
+  },
+  "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS"
 }

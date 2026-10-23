@@ -1,0 +1,103 @@
+{
+  "workflow_run": "39885060205",
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885060205",
+  "artifact_id": 12471578913,
+  "scope": "Generated native world created by released v0.2b.0 tag source in an isolated development server, then copied after clean shutdown and opened by candidate source. Both actual client processes reconnect. This is not a checksum comparison against the published release JAR or an arbitrary user/modpack world.",
+  "phases": {
+    "seed": {
+      "server": {
+        "source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+        "phase": "seed",
+        "node_identity": "bdbcf3e7-3af9-4261-abe5-22e9551c283e",
+        "real_client_names": [
+          "PL4ProbeA",
+          "PL4ProbeB"
+        ],
+        "real_client_uuids": [
+          "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+          "7695116e-92a0-3022-93f7-a681fb949880"
+        ],
+        "fake_players": false,
+        "foreign_non_operator_denied": true,
+        "operator_access_explicitly_granted": true,
+        "initial_items": 128,
+        "items_per_player": [
+          17,
+          17
+        ],
+        "remaining_items": 94,
+        "duplicate_network_requests_ignored": true,
+        "saved_world_restore": false,
+        "scope": "Two actual development clients on a private loopback offline server. Seed checks concurrent single-use packets; restore checks saved node identity/owner, inventory, players and reopened sessions. No online authentication, arbitrary user-world, dimension, optional-provider or other-port acceptance."
+      },
+      "clients": [
+        {
+          "source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+          "phase": "seed",
+          "name": "PL4ProbeA",
+          "uuid": "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+          "client_player_class": "net.minecraft.client.player.LocalPlayer",
+          "items_received": 17,
+          "identical_packets_sent": 2
+        },
+        {
+          "source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+          "phase": "seed",
+          "name": "PL4ProbeB",
+          "uuid": "7695116e-92a0-3022-93f7-a681fb949880",
+          "client_player_class": "net.minecraft.client.player.LocalPlayer",
+          "items_received": 17,
+          "identical_packets_sent": 2
+        }
+      ]
+    },
+    "restore": {
+      "server": {
+        "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+        "phase": "restore",
+        "node_identity": "bdbcf3e7-3af9-4261-abe5-22e9551c283e",
+        "real_client_names": [
+          "PL4ProbeA",
+          "PL4ProbeB"
+        ],
+        "real_client_uuids": [
+          "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+          "7695116e-92a0-3022-93f7-a681fb949880"
+        ],
+        "fake_players": false,
+        "foreign_non_operator_denied": true,
+        "operator_access_explicitly_granted": true,
+        "initial_items": 128,
+        "items_per_player": [
+          17,
+          17
+        ],
+        "remaining_items": 94,
+        "duplicate_network_requests_ignored": false,
+        "saved_world_restore": true,
+        "scope": "Two actual development clients on a private loopback offline server. Seed checks concurrent single-use packets; restore checks saved node identity/owner, inventory, players and reopened sessions. No online authentication, arbitrary user-world, dimension, optional-provider or other-port acceptance."
+      },
+      "clients": [
+        {
+          "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+          "phase": "restore",
+          "name": "PL4ProbeA",
+          "uuid": "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+          "client_player_class": "net.minecraft.client.player.LocalPlayer",
+          "items_received": 17,
+          "identical_packets_sent": 0
+        },
+        {
+          "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+          "phase": "restore",
+          "name": "PL4ProbeB",
+          "uuid": "7695116e-92a0-3022-93f7-a681fb949880",
+          "client_player_class": "net.minecraft.client.player.LocalPlayer",
+          "items_received": 17,
+          "identical_packets_sent": 0
+        }
+      ]
+    }
+  },
+  "downloaded_artifact_sha256": "27f7f36221251ea73ecd8755131967f3b55cfeb77737686b4e285f073fc5eeee"
+}

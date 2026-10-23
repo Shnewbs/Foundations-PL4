@@ -17,9 +17,13 @@
 | AE2 | Synthetic read-only grid-energy contracts and grid deduplication | Powered/unpowered grids, security changes and real service lifecycle; no AE2 inventory/crafting access claim |
 | Other native-energy mods | Standard target API path where implemented | Each installed mod and exposed side; no blanket compatibility certification |
 | Jade / JEI / EMI / KubeJS and version-appropriate alternatives | Existing source only where present | Complete missing features and verify exact ecosystem versions before claiming parity |
-| Wireless Storage 0.2a | Network aggregation, component variants, filters, topology/access revalidation, replay and two simultaneous fake-player sessions in the 0.2a.1 native fixtures | Real storage wrappers, large networks, simultaneous users, reconnects and real-client UI acceptance |
+| Wireless Storage RC development | Aggregation, variants, filters, topology/access, replay and persistent handoff quarantine in exact-native fixtures; separate 1.21.1 proofs now use two actual clients | Installed wrappers; other-port real clients; wider permissions/reconnect/dimension/load coverage; full editor/UI acceptance |
 
 Development item transport persists an uncertainty marker before a foreign extraction or insertion. A normal refusal with a valid remainder remains retryable; an exception or invalid actual result requires inspection. Quarantine survives save/reload and part removal, and cannot be cleared by ordinary route edits. Legacy removal produces a sealed diagnostic receipt; modern removal retains the fault and escrow in the saved part payload. Do not restore uncertain quantities until the provider transaction has been reconciled.
+
+Modern fluid/FE/native-energy mutations now use persistent uncertainty fences as well. Wireless Storage stages offhand deposits in node escrow before provider execution; interrupted player delivery and malformed results also remain quarantined. Busy/quarantined nodes are excluded from new handoffs. A valid refusal returns the staged player quantity; unresolved quantities are never automatically replayed or converted into spendable raw drops.
+
+The 1.21.1 candidate now has [real client snapshot coverage](acceptance/rc-dev-1.21.1-client-visual.json), [two actual loopback clients with duplicate-packet conservation](acceptance/rc-dev-1.21.1-real-client-storage.json), [a generated released-tag-source world upgrade](acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json) and [native operation measurements](acceptance/rc-dev-1.21.1-native-performance.json). These are deliberately scoped results. They do not close installed optional-provider, world editor, arbitrary copied-world, authenticated multiplayer, sustained full-server load or another port's acceptance.
 
 ## Required alternatives when an optional API is unavailable
 

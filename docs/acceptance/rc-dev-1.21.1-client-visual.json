@@ -1,0 +1,119 @@
+{
+  "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+  "captures": [
+    {
+      "image": "guide-scale-1.png",
+      "requested_gui_scale": 1,
+      "actual_gui_scale": 1.0,
+      "gui_width": 1280,
+      "gui_height": 960,
+      "screen": "net.foundations.pl4.client.GuideScreen",
+      "sha256": "ee2b9df144becc52658eba29fb48cbed238fa145ecea41fb5ef2a2927dbf24ec"
+    },
+    {
+      "image": "wireless-storage-scale-1.png",
+      "requested_gui_scale": 1,
+      "actual_gui_scale": 1.0,
+      "gui_width": 1280,
+      "gui_height": 960,
+      "screen": "net.foundations.pl4.client.WirelessStorageScreen",
+      "sha256": "a7b2230a58e3ea6ec43c13083f749e25865762378c17ea74e16e5d9f17f01ba4"
+    },
+    {
+      "image": "reader-scale-1.png",
+      "requested_gui_scale": 1,
+      "actual_gui_scale": 1.0,
+      "gui_width": 1280,
+      "gui_height": 960,
+      "screen": "net.foundations.pl4.client.PartScreen",
+      "sha256": "464c0b6e51d89d0a1a3fb06382527b26ab6d6260d75cad4df2395a919da8e1d3"
+    },
+    {
+      "image": "guide-scale-2.png",
+      "requested_gui_scale": 2,
+      "actual_gui_scale": 2.0,
+      "gui_width": 640,
+      "gui_height": 480,
+      "screen": "net.foundations.pl4.client.GuideScreen",
+      "sha256": "49565214c94f942337cbcd916261960202e032bbb38b646deb5e1e89aa47aa0d"
+    },
+    {
+      "image": "wireless-storage-scale-2.png",
+      "requested_gui_scale": 2,
+      "actual_gui_scale": 2.0,
+      "gui_width": 640,
+      "gui_height": 480,
+      "screen": "net.foundations.pl4.client.WirelessStorageScreen",
+      "sha256": "87e1f6cd00e8fe999daf19ed1750710cd273a4b2f9d837707279d24548022003"
+    },
+    {
+      "image": "reader-scale-2.png",
+      "requested_gui_scale": 2,
+      "actual_gui_scale": 2.0,
+      "gui_width": 640,
+      "gui_height": 480,
+      "screen": "net.foundations.pl4.client.PartScreen",
+      "sha256": "dae40b90ffe8abb372ee8b966d43fa6bb701882d1fde654cb3debeff43273d69"
+    },
+    {
+      "image": "guide-scale-3.png",
+      "requested_gui_scale": 3,
+      "actual_gui_scale": 3.0,
+      "gui_width": 427,
+      "gui_height": 320,
+      "screen": "net.foundations.pl4.client.GuideScreen",
+      "sha256": "a6c8fb083efa7aed38d129f8a70ca652fcd6e03a3c9ada903df70ffec45f2a2c"
+    },
+    {
+      "image": "wireless-storage-scale-3.png",
+      "requested_gui_scale": 3,
+      "actual_gui_scale": 3.0,
+      "gui_width": 427,
+      "gui_height": 320,
+      "screen": "net.foundations.pl4.client.WirelessStorageScreen",
+      "sha256": "d0d52e333cd0c169f29ae2ae7e86a50c53f1d78dab78ca2a5f6e3c2e292a04eb"
+    },
+    {
+      "image": "reader-scale-3.png",
+      "requested_gui_scale": 3,
+      "actual_gui_scale": 3.0,
+      "gui_width": 427,
+      "gui_height": 320,
+      "screen": "net.foundations.pl4.client.PartScreen",
+      "sha256": "7802e9f223f08bc9378cb13438d0f3759a2f79b535d0ee9139fa0fa6df52e796"
+    },
+    {
+      "image": "guide-scale-4.png",
+      "requested_gui_scale": 4,
+      "actual_gui_scale": 4.0,
+      "gui_width": 320,
+      "gui_height": 240,
+      "screen": "net.foundations.pl4.client.GuideScreen",
+      "sha256": "fa857488afa272f46ea8de5ad5bafcc7a05723b9e8441f6174a3b1b9252ff3e0"
+    },
+    {
+      "image": "wireless-storage-scale-4.png",
+      "requested_gui_scale": 4,
+      "actual_gui_scale": 4.0,
+      "gui_width": 320,
+      "gui_height": 240,
+      "screen": "net.foundations.pl4.client.WirelessStorageScreen",
+      "sha256": "6a3a885419363007c305d05000fd314f770098ab3a96dbf484f5b85272212489"
+    },
+    {
+      "image": "reader-scale-4.png",
+      "requested_gui_scale": 4,
+      "actual_gui_scale": 4.0,
+      "gui_width": 320,
+      "gui_height": 240,
+      "screen": "net.foundations.pl4.client.PartScreen",
+      "sha256": "365fe4cb7de7f3fdc963b5c562de22c7cb31fa9e32f84d899faabbdc301a232b"
+    }
+  ],
+  "scope": "Actual development client, software OpenGL, snapshot data, title-menu background. No installed-client, world display, server interaction or multiplayer acceptance.",
+  "workflow_run": "39884343375",
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343375",
+  "artifact_id": 12471464339,
+  "review_scope": "Guide welcome, populated Wireless Storage and read-only reader snapshots; 1280x960 software OpenGL, GUI scales 1/2/3/4.",
+  "downloaded_artifact_sha256": "9b7437644d594484bc0d646f041a3bc928e2d73ffb7c242363fd9350a4b429af"
+}

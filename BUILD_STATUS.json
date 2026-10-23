@@ -14,8 +14,8 @@
   "expected_native_tests": 192,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "live_multiplayer_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
+  "live_multiplayer_acceptance": "PARTIAL_TWO_REAL_LOOPBACK_CLIENTS_STORAGE_REPLAY_AND_RECONNECT",
   "full_pl2_parity": false,
   "acceptance_matrix": "docs/API_TESTING.md",
   "release_notes": "docs/releases/0.2.0-rc.1-dev.md",
@@ -46,8 +46,8 @@
   "release_published": false,
   "port_status": "RC_DEVELOPMENT_NATIVE_GATE_PASSED",
   "installed_runtime_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
-  "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "measured_performance_acceptance": "PARTIAL_NATIVE_OPERATIONS_MEASURED_MIXED_RESULTS",
+  "migration_acceptance": "PARTIAL_GENERATED_RELEASED_BETA_SOURCE_WORLD_UPGRADE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
   "candidate_native_validation": "PASS",
   "candidate_workflow_run": "39885592948",
@@ -59,5 +59,11 @@
   "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
   "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE"
+  "native_compilation": "PASS_FOR_THIS_CANDIDATE",
+  "acceptance_evidence": {
+    "client_visual": "docs/acceptance/rc-dev-1.21.1-client-visual.json",
+    "real_client_storage": "docs/acceptance/rc-dev-1.21.1-real-client-storage.json",
+    "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
+    "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
+  }
 }

@@ -1,0 +1,46 @@
+{
+  "workflow_run": "39884343562",
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343562",
+  "artifact_id": 12471802189,
+  "server": {
+    "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+    "real_client_names": [
+      "PL4ProbeA",
+      "PL4ProbeB"
+    ],
+    "real_client_uuids": [
+      "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+      "7695116e-92a0-3022-93f7-a681fb949880"
+    ],
+    "fake_players": false,
+    "foreign_non_operator_denied": true,
+    "operator_access_explicitly_granted": true,
+    "initial_items": 128,
+    "items_per_player": [
+      17,
+      17
+    ],
+    "remaining_items": 94,
+    "duplicate_network_requests_ignored": true,
+    "scope": "Two actual development clients, private loopback offline server, concurrent single-use storage packets. No online authentication, reconnect/dimension, optional-provider or other-port acceptance."
+  },
+  "clients": [
+    {
+      "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+      "name": "PL4ProbeA",
+      "uuid": "c41a920d-c5eb-3c57-aa93-453b2df1da52",
+      "client_player_class": "net.minecraft.client.player.LocalPlayer",
+      "items_received": 17,
+      "identical_packets_sent": 2
+    },
+    {
+      "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+      "name": "PL4ProbeB",
+      "uuid": "7695116e-92a0-3022-93f7-a681fb949880",
+      "client_player_class": "net.minecraft.client.player.LocalPlayer",
+      "items_received": 17,
+      "identical_packets_sent": 2
+    }
+  ],
+  "downloaded_artifact_sha256": "b0a4bdfe24c39a8188969e6e2d8f2dae9ec480f93074f348e37c916fadccd458"
+}
