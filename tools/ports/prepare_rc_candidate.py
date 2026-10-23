@@ -8,6 +8,7 @@ from align_performance import network, transfers
 from align_storage_screen import screen, guide_edits
 from align_channel_status import engine as channel_engine, rules as channel_rules, regressions as channel_regressions
 from align_item_safety import edits as item_safety_edits, engine as safe_item_engine
+from align_resource_safety import edits as resource_safety_edits, engine as safe_resource_engine
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -34,6 +35,10 @@ def main():
     safety[java / "TransferEngine.java"] = safe_item_engine(edits[java / "TransferEngine.java"])
     edits.update(safety)
     owned_fixtures = [path for path in safety if path.name != "TransferEngine.java"]
+    resources = resource_safety_edits(root)
+    resources[java / "TransferEngine.java"] = safe_resource_engine(edits[java / "TransferEngine.java"])
+    edits.update(resources)
+    owned_fixtures.extend(resources)
     if args.minecraft in {"1.20.1", "1.20.2", "1.20.4"}:
         bootstrap = root / "src/portTest/java/net/foundations/pl4/PLPortTestMod.java"
         text = bootstrap.read_text()
@@ -72,6 +77,8 @@ def main():
                   further_api_testing_required=True,
                   item_provider_uncertainty="PERSISTENT_QUARANTINE_AND_SAVED_PART_PAYLOAD",
                   candidate_item_safety_validation="PENDING",
+                  resource_provider_uncertainty="PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
+                  candidate_resource_safety_validation="PENDING",
                   release_notes=f"docs/releases/{VERSION}.md",
                   performance_baseline="indexed-network-membership-and-cycle-endpoint-keys")
     status["candidate_native_validation"] = "PENDING"
@@ -86,6 +93,7 @@ def main():
         "Transfer status uses the same channel/direction decision as actual routing. "
         "Foreign item mutations now persist uncertainty before executing; interrupted or invalid results remain quarantined across reloads and part removal. "
         "Saved item escrow preserves full integer counts and unresolved payloads. Existing healthy saves keep their values. "
+        "Fluid, FE and native energy mutations also fence interrupted or invalid results; unresolved saved fluid payloads remain opaque. "
         "Target-specific loader APIs, routing, rates, filters and ownership are retained. These additive safety fields require forward migration acceptance; do not downgrade a world with unresolved transactions.\n\n"
         "Native build/scenario evidence must identify this exact source and artifact. Installed optional providers, actual client UI, "
         "live multiplayer, world migration and repeatable large-network performance acceptance remain open. "

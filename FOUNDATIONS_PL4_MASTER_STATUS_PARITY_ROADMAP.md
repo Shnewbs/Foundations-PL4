@@ -5,6 +5,12 @@
 **Project acceptance:** performance betas and alpha/experimental legacy previews. Full Practical Logistics 2 parity remains incomplete. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
 
+## Fluid and energy uncertainty hardening — validation in progress
+
+The next RC development change extends the item uncertainty policy to fluid, FE and native/conversion energy routes. A foreign handler that mutates and then throws, or returns an invalid amount/variant, leaves a persistent fence on the driving node. That fence survives saved parts, including empty-escrow failures. Unresolved fluid payloads are retained opaquely. Valid refusals remain retryable; conversion ratios, rounding, caps and routing remain target-native. Existing native scenarios are extended to cover post-mutation native energy failures in both ADD and REMOVE modes, resource save/drop fences and malformed fluid/FE results.
+
+This changes the modern runtime source, so its previous passing native results are historical evidence. The new exact-target build pass must finish before those candidates are treated as validated. Both legacy source candidates retain their independently passing baseline. No RC publication has been cleared.
+
 ## October 22 RC hardening and legacy monitoring
 
 The 24 currently published Minecraft target tracks now have `0.2.0-rc.1-dev` source: 22 modern ports and two legacy subsets. The legacy runtimes now include item, fluid, energy and network readers, plus an owner-controlled four-line physical display. Their readers use loaded targets and configured bounds, perform no extraction/insertion, and retain native units (FE on 1.12.2; PL4 internal units on 1.6.4). Displays default to private; publishing the four text lines requires an owner/operator command. This closes the initial monitoring gap but does **not** provide modern graphical editing, multipart or wireless-storage parity.

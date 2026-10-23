@@ -1,5 +1,5 @@
 name: Align and validate all RC development ports
-# Shared item mutation guards are validated inside each port's native R16 scenarios.
+# Item, fluid, FE and native energy uncertainty guards run inside exact-port fixtures.
 on:
   push:
     branches: [main]

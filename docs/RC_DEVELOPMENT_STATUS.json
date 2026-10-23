@@ -4,7 +4,7 @@
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "qualified_native_targets": 24,
+  "qualified_native_targets": 2,
   "feature_parity": "INCOMPLETE",
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
@@ -15,254 +15,342 @@
     "live multiplayer",
     "copied user-world migration; legacy generated preview.3 worlds passed",
     "measured large-network performance",
-    "documented 1.16.1–1.16.4 launcher profiles"
+    "documented 1.16.1\u20131.16.4 launcher profiles"
   ],
   "targets": [
     {
       "minecraft": "1.14.4",
       "source_ref": "mc/1.14.4",
       "expected_native_fixtures": 194,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.15.2",
       "source_ref": "mc/1.15.2",
       "expected_native_fixtures": 194,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.16.1",
       "source_ref": "mc/1.16.1",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.16.2",
       "source_ref": "mc/1.16.2",
       "expected_native_fixtures": 195,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.16.3",
       "source_ref": "mc/1.16.3",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.16.4",
       "source_ref": "mc/1.16.4",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.16.5",
       "source_ref": "mc/1.16.5",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.17.1",
       "source_ref": "mc/1.17.1",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.18.1",
       "source_ref": "mc/1.18.1",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.18.2",
       "source_ref": "mc/1.18.2",
       "expected_native_fixtures": 193,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.19",
       "source_ref": "mc/1.19",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.19.1",
       "source_ref": "mc/1.19.1",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.19.2",
       "source_ref": "mc/1.19.2",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.19.3",
       "source_ref": "mc/1.19.3",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.19.4",
       "source_ref": "mc/1.19.4",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.20",
       "source_ref": "mc/1.20",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.20.1",
       "source_ref": "mc/1.20.1",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.20.2",
       "source_ref": "mc/1.20.2",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.20.4",
       "source_ref": "mc/1.20.4",
       "expected_native_fixtures": 191,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
       "expected_native_fixtures": 192,
-      "native_gate": "PASS",
-      "workflow_run": "39781194528",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39781194528",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "26.1.2",
       "source_ref": "mc/26.1.2",
       "expected_native_fixtures": 192,
-      "native_gate": "PASS",
-      "workflow_run": "39783257087",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
-      "item_safety_native_fixtures": "PASS"
+      "item_safety_native_fixtures": "PASS",
+      "previous_native_gate": {
+        "workflow_run": "39783257087",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "26.3",
       "source_ref": "mc/26.3",
       "expected_native_fixtures": 192,
-      "native_gate": "PASS",
-      "workflow_run": "39783257087",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
       "rc_publication_cleared": false,
       "scope": "modern development baseline with persistent item mutation quarantine",
       "item_safety_native_fixtures": "PASS",
       "validated_neoforge_profiles": [
         "26.3.0.23-beta",
         "26.3.0.39-beta"
-      ]
+      ],
+      "previous_native_gate": {
+        "workflow_run": "39783257087",
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
+        "result": "PASS"
+      },
+      "native_gate": "PENDING_FOR_RESOURCE_SAFETY_UPDATE",
+      "resource_safety_native_fixtures": "PENDING"
     },
     {
       "minecraft": "1.12.2",
@@ -290,5 +378,6 @@
       "generated_preview3_world_upgrade": "PASS",
       "runtime_sha256": "2e0057550be101c006a2a30a4489d45d28451a13df2fba3d2ac0108f7c8b9ff1"
     }
-  ]
+  ],
+  "latest_work": "Fluid, FE and native energy mutation quarantine; native validation pending for changed modern source"
 }
