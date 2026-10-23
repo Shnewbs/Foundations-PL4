@@ -26,7 +26,16 @@ public final class R16GameTests {
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
         TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
-        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));resourceQuarantineChecks(ref(add,Direction.EAST));h.succeed();
+        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==17,"Normal Node must feed an ADD Transfer Node");itemQuarantineChecks(ref(add,Direction.EAST));resourceQuarantineChecks(ref(add,Direction.EAST));
+        from.setItem(0,new ItemStack(Items.DIAMOND,5));part(add,Direction.EAST).resourceTransferFault="Interrupted provider mutation";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined driver");
+        part(add,Direction.EAST).resourceTransferFault="";part(node,Direction.WEST).resourceTransferFault="Unresolved passive endpoint";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined passive endpoint");
+        part(node,Direction.WEST).resourceTransferFault="";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(!from.getItem(0).isEmpty()||to.getItem(0).getCount()!=22)throw new IllegalStateException("Healthy endpoint resumes without rebuilding the plan");wirelessHandoffQuarantine(ref(node,Direction.WEST));h.succeed();
     }
 
     @GameTest(batch=FoundationsPL4.ID,template="empty")
@@ -365,5 +374,24 @@ public final class R16GameTests {
         p.resourceTransferFault="";p.pendingEnergy=0;
         if(ResourceTransferSafety.insertEnergy(owner,8,()->0)!=0)throw new IllegalStateException("Refusal changed amount");ResourceTransferSafety.completed(owner);
         if(ResourceTransferSafety.blocked(p))throw new IllegalStateException("Healthy FE refusal must be retryable");
+    }
+
+    private static void wirelessHandoffQuarantine(NetworkEngine.Ref owner){
+        Part p=owner.part();ItemStack hand=new ItemStack(Items.DIAMOND,19);int[] actual={0};
+        try{WirelessItemTransfers.deposit(owner,hand,new ItemStack(Items.DIAMOND,7),sent->{actual[0]+=sent.getCount();throw new IllegalStateException("Destination mutated before failure");});throw new AssertionError("Missing deposit failure");}catch(IllegalStateException expected){}
+        if(hand.getCount()!=12||actual[0]!=7||p.pendingItem.getCount()!=7||!ItemTransferSafety.blocked(p))throw new IllegalStateException("Uncertain deposit must remove spendable offhand items and quarantine the node");
+        try{WirelessItemTransfers.deposit(owner,hand,new ItemStack(Items.DIAMOND,7),sent->{actual[0]+=sent.getCount();return ItemStack.EMPTY;});throw new AssertionError("Replayed wireless deposit");}catch(IllegalStateException expected){}
+        if(actual[0]!=7)throw new IllegalStateException("Quarantined wireless deposit cannot replay");
+        p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
+        int refused=WirelessItemTransfers.deposit(owner,hand,new ItemStack(Items.DIAMOND,7),sent->sent);
+        if(refused!=0||hand.getCount()!=12||!p.pendingItem.isEmpty()||ItemTransferSafety.blocked(p))throw new IllegalStateException("Healthy wireless refusal must return the staged hand items");
+        ItemStack fullHand=new ItemStack(Items.DIAMOND,7);
+        if(WirelessItemTransfers.deposit(owner,fullHand,fullHand.copy(),sent->sent)!=0||fullHand.getCount()!=7||fullHand.getItem()!=Items.DIAMOND)throw new IllegalStateException("Complete offhand staging must restore a healthy refusal");
+        int moved=WirelessItemTransfers.deposit(owner,hand,new ItemStack(Items.DIAMOND,7),sent->ItemStack.EMPTY);
+        if(moved!=7||hand.getCount()!=5||!p.pendingItem.isEmpty())throw new IllegalStateException("Valid wireless deposit settles exactly once");
+        p.pendingItem=new ItemStack(Items.DIAMOND,8);
+        try{WirelessItemTransfers.deliver(owner,sent->{actual[0]+=sent.getCount();throw new IllegalStateException("Player inventory mutated before failure");});throw new AssertionError("Missing delivery failure");}catch(IllegalStateException expected){}
+        if(!ItemTransferSafety.blocked(p)||p.pendingItem.getCount()!=8||actual[0]!=15)throw new IllegalStateException("Uncertain player delivery must remain fenced");
+        p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
     }
 }

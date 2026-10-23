@@ -59,7 +59,7 @@ public final class TransferEngine {
     }
     public static void run(MinecraftServer server,List<NetworkEngine.Ref> network){run(server,prepare(network));}
     public static void run(MinecraftServer server,Plan plan){
-        List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.nextDrivers();
+        List<NetworkEngine.Ref> endpoints=available(plan.endpoints()),transfer=available(plan.nextDrivers());
         if(transfer.isEmpty())return;
         boolean nativeEnergy=NativeEnergyTransfers.needed(plan);
         Map<NetworkEngine.Ref,TargetKey> targets=new IdentityHashMap<>();
@@ -100,6 +100,18 @@ public final class TransferEngine {
         for(NetworkEngine.Ref ref:transfer){updateStatus(ref,endpoints,targets);if(nativeEnergy&&!ref.part().energyTransferStatus.isEmpty())ref.part().status+="; "+ref.part().energyTransferStatus;}
     }
 
+    /** Healthy cycles reuse their immutable lists. A rare fault filters once, before any routing. */
+    private static List<NetworkEngine.Ref> available(List<NetworkEngine.Ref> refs){
+        for(NetworkEngine.Ref ref:refs)if(ResourceTransferSafety.blocked(ref.part())){
+            List<NetworkEngine.Ref> result=new ArrayList<>();
+            for(NetworkEngine.Ref candidate:refs){
+                if(ResourceTransferSafety.blocked(candidate.part()))candidate.part().status="Resource transfer quarantined; manual inspection required";
+                else result.add(candidate);
+            }
+            return result;
+        }
+        return refs;
+    }
     private static boolean hasPending(Part p){return !p.pendingItem.isEmpty()||!p.pendingFluid.isEmpty()||p.energyCredits()>0;}
     private static Comparator<NetworkEngine.Ref> driverOrder(){
         return Comparator.<NetworkEngine.Ref>comparingInt(r->r.part().priority).reversed()
@@ -141,7 +153,7 @@ public final class TransferEngine {
         return rotateTies(endpoints.stream().filter(s->routable(s,sink,targets)).toList(),cursor);
     }
     private static boolean routable(NetworkEngine.Ref source,NetworkEngine.Ref sink,Map<NetworkEngine.Ref,TargetKey> targets){
-        return !ResourceTransferSafety.blocked(source.part())&&!ResourceTransferSafety.blocked(sink.part())&&source!=sink&&!sameTarget(source,sink,targets)&&TransferRules.canRouteOnChannels(
+        return source!=sink&&!sameTarget(source,sink,targets)&&TransferRules.canRouteOnChannels(
             source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,source.part().outputChannel,
             sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode,sink.part().inputChannel);
     }
