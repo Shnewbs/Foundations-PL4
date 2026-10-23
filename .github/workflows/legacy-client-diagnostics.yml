@@ -1,0 +1,29 @@
+name: Inspect retained legacy client failure
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/legacy-client-diagnostics.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read retained stock-client launch diagnostics
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh api "repos/$GH_REPO/actions/artifacts/12507621816/zip" > /tmp/legacy-probe.zip
+          python3 - <<'PY'
+          import zipfile
+          with zipfile.ZipFile('/tmp/legacy-probe.zip') as z:
+              print('FILES:',z.namelist())
+              for name in ['results/client.log','results/forge-install.log','results/build.log']:
+                  if name in z.namelist():
+                      print('FILE:',name)
+                      print('\n'.join(z.read(name).decode(errors='replace').splitlines()[-100:]))
+          PY
