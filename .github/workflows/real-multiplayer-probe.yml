@@ -1,0 +1,44 @@
+name: Validate two real client storage sessions over loopback
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/real-multiplayer-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  two_real_clients:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: 66de5a29d33323ebbac71fccf4cef710291dbdfe
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: candidate/**/*.gradle*
+      - name: Install isolated virtual display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+      - name: Run real server and two real clients with separate development identities
+        run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py candidate results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-two-client-storage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            multiplayer-*/run/logs/
+            multiplayer-*/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: error
