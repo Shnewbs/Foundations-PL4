@@ -35,9 +35,9 @@ jobs:
           cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/legacy/java/net/foundations/pl4/legacy/
           cat >> candidate/build.gradle <<'GRADLE'
           configurations.runtimeClasspath {
-              exclude group: 'net.minecraftforge', module: 'mergetool'
               ['asm','asm-analysis','asm-tree','asm-util','asm-commons'].each { name -> exclude group: 'org.ow2.asm', module: name }
           }
+          configurations.all { resolutionStrategy.force 'net.minecraftforge:mergetool:0.2.3.3' }
           dependencies { runtimeOnly 'org.ow2.asm:asm-debug-all:5.2' }
           minecraft.runs.client {
               args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'

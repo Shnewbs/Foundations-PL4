@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 /** Disposable development harness, never included in a release. Exercises native client/server window packets. */
 @Mod(modid="pl4_wireless_client_probe",name="PL4 Wireless Client Probe",version="1",dependencies="required-after:foundations_pl4",clientSideOnly=true)
 public final class LegacyWirelessClientProbe {
-    private int phase,scale=1,oldRevision;private long due;private boolean waiting;
+    private int phase,scale=1,oldRevision,lastLogged=-1;private long due,started=System.nanoTime();
     private final AtomicReference<String> serverResult=new AtomicReference<String>();
     private final List<String> captures=new ArrayList<String>();
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){MinecraftForge.EVENT_BUS.register(this);}
@@ -59,6 +59,8 @@ public final class LegacyWirelessClientProbe {
     @SubscribeEvent public void tick(TickEvent.ClientTickEvent event){
         if(event.phase!=TickEvent.Phase.END)return;Minecraft mc=Minecraft.getMinecraft();
         try{
+            if(lastLogged!=phase){lastLogged=phase;System.out.println("PL4 WIRELESS CLIENT PHASE: "+phase);}
+            if(System.nanoTime()-started>300_000_000_000L)throw new IllegalStateException("Timed out in probe phase "+phase);
             String result=serverResult.get();if(result!=null&&!"PASS".equals(result))throw new IllegalStateException(result);
             if(System.nanoTime()<due)return;
             if(phase==0){if(!(mc.currentScreen instanceof GuiMainMenu))return;phase=1;mc.launchIntegratedServer("pl4-wireless-client-probe","PL4 Wireless Probe",new WorldSettings(0L,GameType.CREATIVE,false,false,WorldType.FLAT));waitUntilNext();return;}
