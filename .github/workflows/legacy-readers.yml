@@ -1,4 +1,4 @@
-name: Validate legacy readers, displays and handheld storage
+name: Validate legacy native storage and screen refinements
 on:
   push:
     branches: [main]
