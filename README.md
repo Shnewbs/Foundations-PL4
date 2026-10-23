@@ -1,5 +1,12 @@
 > Current development source: `0.2.0-rc.1-dev`. Basic legacy readers/displays are being independently validated; stable RC publication remains blocked by the remaining acceptance and feature work. See [candidate notes](docs/releases/0.2.0-rc.1-dev.md).
 
+## Native legacy development scope
+
+This Minecraft 1.6.4 branch packages `src/legacy`; `src/main` is excluded modern reference source. The unpublished `0.2.0-rc.1-dev` candidate includes transport, basic readers/displays and a craftable native handheld storage GUI. It passed 156 native scenarios, packaged-only startup and a generated published-preview.3 world upgrade. [Handheld usage](docs/LEGACY_WIRELESS_STORAGE.md) and [exact native evidence](docs/acceptance/rc-dev-legacy-wireless-native.json) describe the supported scope.
+
+Actual 1.6.4 client rendering and dedicated multiplayer remain pending; the separate 1.12.2 stock-client result does not certify this port. Modern search/sort/grouping, graphical editor/multipart parity and installed-provider acceptance remain incomplete. No RC publication is cleared.
+
+
 # Foundations PL4 1.6.4 - 0.2a-legacy-preview.3
 
 Legacy item, fluid and energy transport preview. **Further API testing is still required.**

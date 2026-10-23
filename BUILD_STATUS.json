@@ -63,5 +63,8 @@
   "candidate_workflow_run": "39970232872",
   "candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d",
   "candidate_runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
-  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
+  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS",
+  "acceptance_evidence": {
+    "legacy_wireless_native": "docs/acceptance/rc-dev-legacy-wireless-native.json"
+  }
 }
