@@ -13,7 +13,8 @@ public final class LegacyWirelessScreen extends GuiContainer {
         int revision=((LegacyWirelessContainer)inventorySlots).revision;if(revision<0)return;
         mc.playerController.windowClick(inventorySlots.windowId,slotId,(revision<<1)|button,type,mc.player);
     }
-    @Override protected void drawGuiContainerForegroundLayer(int mouseX,int mouseY){fontRenderer.drawString("Wireless Storage",8,6,0x404040);fontRenderer.drawString("Click to withdraw; right: 1",8,110,0x404040);}
+    @Override public void drawScreen(int mouseX,int mouseY,float partial){drawDefaultBackground();super.drawScreen(mouseX,mouseY,partial);renderHoveredToolTip(mouseX,mouseY);}
+    @Override protected void drawGuiContainerForegroundLayer(int mouseX,int mouseY){fontRenderer.drawString("Wireless Storage",8,6,0x404040);fontRenderer.drawString("Inventory: click to deposit",8,110,0x404040);}
     @Override protected void drawGuiContainerBackgroundLayer(float partial,int mouseX,int mouseY){
         org.lwjgl.opengl.GL11.glColor4f(1,1,1,1);mc.getTextureManager().bindTexture(TEXTURE);
         drawTexturedModalRect(guiLeft,guiTop,0,0,176,108);drawTexturedModalRect(guiLeft,guiTop+108,0,126,176,96);
