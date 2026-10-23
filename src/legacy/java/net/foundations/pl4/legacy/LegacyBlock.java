@@ -27,6 +27,7 @@ public final class LegacyBlock extends BlockContainer {
     @Override public boolean onBlockActivated(World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing face,float x,float y,float z){
         if(world.isRemote)return true;TileEntity raw=world.getTileEntity(pos);if(!(raw instanceof LegacyTile))return false;LegacyTile tile=(LegacyTile)raw;
         if(!tile.canEdit(player)){player.sendMessage(new TextComponentString("PL4: This host belongs to another player."));return true;}
+        if(LegacyWirelessStorage.tool(player.getHeldItem(hand))){if(player.isSneaking())LegacyWirelessStorage.bind(player,player.getHeldItem(hand),tile);else player.openGui(LegacyPL4.instance,0,world,0,0,0);return true;}
         if(role==LegacyReadings.DISPLAY){
             if(hand!=EnumHand.MAIN_HAND)return true;
             if(player.isSneaking())tile.displayFacing=LegacyReadings.horizontal(face.getIndex());else tile.readerIndex=(tile.readerIndex+1)%4096;

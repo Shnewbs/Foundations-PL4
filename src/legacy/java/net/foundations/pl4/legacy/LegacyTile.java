@@ -20,6 +20,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
     public String itemFault="";
+    public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
     public int itemOpaqueCount;
     public boolean publishReadings=false;
@@ -91,8 +92,8 @@ public final class LegacyTile extends TileEntity implements ITickable {
         if(inventory!=null){slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.getSlots()));for(int i=0;i<slots;i++){ItemStack stack=inventory.getStackInSlot(i);if(!stack.isEmpty())count+=Math.max(0,stack.getCount());}}
         return "PL4 "+(role()==0?"Cable":role()==1?"Export":"Import")+" | Side "+EnumFacing.getFront(side).getName()+" | Hosts "+(plan.overflow?"LIMIT":plan.nodes.size())+" | Slots "+slots+" | Items "+count+" | Escrow "+pending.getCount()+" | "+status;
     }
-    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");LegacyItemSafety.write(this,tag);return tag;}
-    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=LegacyItemSafety.loadSaved(tag);LegacyItemSafety.read(this,tag);}
+    @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setInteger("PL4LegacySchema",3);tag.setString("WirelessIdentity",wirelessIdentity);LegacyReadings.writeSettings(this,tag);energy.write(tag);fluid.write(tag);tag.setString("Owner",owner);tag.setInteger("Side",side);if(!pending.isEmpty())tag.setTag("Escrow",pending.writeToNBT(new NBTTagCompound()));else tag.removeTag("Escrow");LegacyItemSafety.write(this,tag);return tag;}
+    @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);if(tag.hasKey("WirelessIdentity")&&!tag.getString("WirelessIdentity").isEmpty())wirelessIdentity=tag.getString("WirelessIdentity");LegacyReadings.readSettings(this,tag);energy.read(tag);fluid.read(tag);owner=tag.getString("Owner");side=Math.max(0,Math.min(5,tag.getInteger("Side")));pending=LegacyItemSafety.loadSaved(tag);LegacyItemSafety.read(this,tag);}
     public static final ConservingItems.Stacks<ItemStack> STACKS=new ConservingItems.Stacks<ItemStack>(){
         public boolean empty(ItemStack value){return value==null||value.isEmpty();}public int count(ItemStack value){return empty(value)?0:value.getCount();}
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}

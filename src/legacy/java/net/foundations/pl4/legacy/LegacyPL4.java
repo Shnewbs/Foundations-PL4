@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @Mod(modid=LegacyPL4.ID,name="Foundations PL4",version=LegacyPL4.VERSION,acceptedMinecraftVersions="[1.12.2]",acceptableRemoteVersions="0.2.0-rc.1-dev")
 @Mod.EventBusSubscriber(modid=LegacyPL4.ID)
 public final class LegacyPL4 {
+    @net.minecraftforge.fml.common.Mod.Instance("foundations_pl4") public static LegacyPL4 instance;
     public static final String ID="foundations_pl4",VERSION="0.2.0-rc.1-dev";
     public static final LegacyBlock CABLE=new LegacyBlock("legacy_cable",0),EXPORT=new LegacyBlock("legacy_export",1),IMPORT=new LegacyBlock("legacy_import",2);
     public static final LegacyBlock FLUID_EXPORT=new LegacyBlock("legacy_fluid_export",3),FLUID_IMPORT=new LegacyBlock("legacy_fluid_import",4),TANK=new LegacyBlock("legacy_tank",5);
@@ -28,12 +29,14 @@ public final class LegacyPL4 {
 
     public static final LegacyBlock ITEM_READER=new LegacyBlock("legacy_item_reader",9),FLUID_READER=new LegacyBlock("legacy_fluid_reader",10),ENERGY_READER=new LegacyBlock("legacy_energy_reader",11),NETWORK_READER=new LegacyBlock("legacy_network_reader",12),DISPLAY=new LegacyBlock("legacy_display",13);
     public static final LegacyBlock[] BLOCKS={CABLE,EXPORT,IMPORT,FLUID_EXPORT,FLUID_IMPORT,TANK,ENERGY_EXPORT,ENERGY_IMPORT,ENERGY_BUFFER,ITEM_READER,FLUID_READER,ENERGY_READER,NETWORK_READER,DISPLAY};
+    public static final Item WIRELESS_STORAGE=new LegacyWirelessItem();
     public static int interval=10,itemRate=8,nodeLimit=256,slotLimit=256;
     public static boolean enabled=true,fluidsEnabled=true;
     public static int fluidRate=250;
     public static boolean energyEnabled=true; public static int energyRate=400,manualEnergy=40;
     public static org.apache.logging.log4j.Logger logger;
     @Mod.EventHandler public void preInit(FMLPreInitializationEvent event){
+        net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(this,new LegacyWirelessGuiHandler());
         logger=event.getModLog();Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
         enabled=config.getBoolean("transfersEnabled","network",true,"Enable native legacy item transport.");
         interval=config.getInt("intervalTicks","network",10,1,200,"Transfer cadence; lower values cost more server work.");
@@ -46,13 +49,14 @@ public final class LegacyPL4 {
         GameRegistry.registerTileEntity(LegacyTile.class,new ResourceLocation(ID,"legacy_host"));
     }
     @SubscribeEvent public static void blocks(RegistryEvent.Register<Block> event){event.getRegistry().registerAll(BLOCKS);}
-    @SubscribeEvent public static void items(RegistryEvent.Register<Item> event){event.getRegistry().register(ITEM_CELL);event.getRegistry().register(ENERGY_CELL);event.getRegistry().register(FLUID_CELL);for(LegacyBlock block:BLOCKS)event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));}
+    @SubscribeEvent public static void items(RegistryEvent.Register<Item> event){event.getRegistry().register(WIRELESS_STORAGE);event.getRegistry().register(ITEM_CELL);event.getRegistry().register(ENERGY_CELL);event.getRegistry().register(FLUID_CELL);for(LegacyBlock block:BLOCKS)event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));}
     @SubscribeEvent public static void protection(BlockEvent.BreakEvent event){
         if(event.getWorld().getTileEntity(event.getPos()) instanceof LegacyTile){LegacyTile tile=(LegacyTile)event.getWorld().getTileEntity(event.getPos());if(!tile.canEdit(event.getPlayer()))event.setCanceled(true);}
     }
     @Mod.EventHandler public void starting(FMLServerStartingEvent event){event.registerServerCommand(new LegacyCommands());}
     private static final ResourceLocation GROUP=new ResourceLocation(ID,"legacy_transport");
     @SubscribeEvent public static void recipes(RegistryEvent.Register<net.minecraft.item.crafting.IRecipe> event){
+        event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(WIRELESS_STORAGE),CABLE,Items.COMPASS,Items.ENDER_PEARL).setRegistryName(ID,"legacy_wireless_storage"));
         event.getRegistry().register(new net.minecraftforge.oredict.ShapedOreRecipe(GROUP,new ItemStack(CABLE,8),"IRI",'I',Items.IRON_INGOT,'R',Items.REDSTONE).setRegistryName(ID,"legacy_cable"));
         event.getRegistry().register(new net.minecraftforge.oredict.ShapedOreRecipe(GROUP,new ItemStack(EXPORT),"HCH",'H',Blocks.HOPPER,'C',CABLE).setRegistryName(ID,"legacy_export"));
         event.getRegistry().register(new net.minecraftforge.oredict.ShapelessOreRecipe(GROUP,new ItemStack(IMPORT),EXPORT).setRegistryName(ID,"legacy_import"));
