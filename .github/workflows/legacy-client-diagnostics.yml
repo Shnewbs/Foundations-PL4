@@ -1,4 +1,4 @@
-name: Inspect refined legacy native evidence
+name: Inspect refined stock-client visuals and reports
 on:
   push:
     branches: [main]
@@ -12,21 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Read exact native packaged and migration reports
+      - name: Inspect native screenshots and qualified artifact reports
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          gh api "repos/$GH_REPO/actions/artifacts/12509586214/zip" > /tmp/legacy-probe.zip
           python3 - <<'PY'
-          import hashlib,json,os,subprocess,zipfile
+          import base64,hashlib,json,struct,zipfile
           from pathlib import Path
-          for artifact in json.loads('[{"id":12509086277,"sha":"11da07e6c8890f0240d36be0bf18d705dd9f6fed0863aeb4873416606ee83516"},{"id":12509056481,"sha":"ba7feeb795dfafceafc31fa9043fda2efea6472398db5138a939e227c36b71f3"}]'):
-              path=Path('/tmp/native-'+str(artifact['id'])+'.zip')
-              with path.open('wb') as output:subprocess.run(['gh','api','repos/'+os.environ['GH_REPO']+'/actions/artifacts/'+str(artifact['id'])+'/zip'],stdout=output,check=True)
-              assert hashlib.sha256(path.read_bytes()).hexdigest()==artifact['sha']
-              with zipfile.ZipFile(path) as z:
-                  reports={name:json.loads(z.read('verification-logs/'+name+'.json')) for name in ['clean-native-summary','production-smoke','legacy-migration-summary','energy-summary']}
-                  print('NATIVE_REPORT_START',artifact['id'])
-                  print(json.dumps(dict(artifact_id=artifact['id'],artifact_sha256=artifact['sha'],reports=reports)))
-                  print('NATIVE_REPORT_END')
+          p=Path('/tmp/legacy-probe.zip')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='07f9dee3de07fda4fc31b0f5c28b34e8ce9ff3178c42e7f878f0e15e7df0e19e'
+          print('ARTIFACT_SHA256',hashlib.sha256(p.read_bytes()).hexdigest())
+          with zipfile.ZipFile(p) as z:
+              for name in ['results/legacy-wireless-client.json','results/stock-client-runtime.json']:
+                  print('REPORT_START',name);print(z.read(name).decode());print('REPORT_END')
+              images=[]
+              for name in z.namelist():
+                  if name.endswith('.png'):
+                      data=z.read(name);width,height=struct.unpack('>II',data[16:24])
+                      images.append(dict(name=name,sha256=hashlib.sha256(data).hexdigest(),width=width,height=height))
+              print('REPORT_START images');print(json.dumps(images));print('REPORT_END')
+              for name in ['results/legacy-wireless-storage-scale-1.png','results/legacy-wireless-storage-scale-4.png','results/legacy-wireless-storage-tooltip.png']:
+                  print('IMAGE_START',name);print(base64.b64encode(z.read(name)).decode());print('IMAGE_END')
           PY
