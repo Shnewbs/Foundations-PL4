@@ -26,3 +26,9 @@ Each GUI action carries its current server view revision in the native window pa
 [The native acceptance record](acceptance/rc-dev-legacy-wireless-native.json) identifies both exact source commits, packaged JAR hashes and workflow artifacts. Each passed 156 native scenarios, including 36 handheld/container scenarios, a production-only dedicated-server boot and an upgrade of a generated world made with the checksum-verified published preview.3 JAR.
 
 Native fixtures do not certify real-client rendering, dedicated multiplayer, installed optional providers, copied user/modpack worlds or sustained performance. Those remain separate checks. The [RC ledger](RC_DEVELOPMENT_STATUS.json) records current evidence and publication clearance.
+
+## Scoped stock-client check
+
+The [1.12.2 client record](acceptance/rc-dev-1.12.2-stock-wireless-client.json) uses the exact native-qualified production JAR on stock Forge 14.23.5.2864 with a separate client test mod. Mouse-driven withdrawals, deposits and paging, stale view rejection and packet codec round-trips passed in a private offline integrated world. Four GUI scales were captured at 1280×960; scales 1/4 and the Diamond tooltip were reviewed. This result does not apply to 1.6.4 or to physical displays/editor screens, dedicated multiplayer, installed providers or sustained load.
+
+The acceptance workflow is frozen to its qualified source, artifact ID and archive checksum. Its temporary build artifacts retain for 14 days. Requalify the intended source through the native gate and update those inputs before testing a new candidate or after artifact expiry; the stored reports do not silently certify later code.

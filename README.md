@@ -10,6 +10,8 @@ The maintained ports share **`0.2.0-rc.1-dev`**, an unpublished development vers
 
 The current hardening quarantines uncertain item/fluid/FE/native-energy mutations across saves and part removal. Wireless Storage stages offhand deposits in node escrow before foreign insertion and fences uncertain player delivery. [The exact-target ledger](docs/RC_DEVELOPMENT_STATUS.json) records native gates separately from RC clearance. The 1.21.1 candidate also has [actual client UI snapshots](docs/acceptance/rc-dev-1.21.1-client-visual.json), [two actual client storage sessions](docs/acceptance/rc-dev-1.21.1-real-client-storage.json), [a generated released-beta-source world upgrade](docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json) and [native operation measurements with mixed results](docs/acceptance/rc-dev-1.21.1-native-performance.json). These narrow results do not certify installed providers, full gameplay or another port.
 
+The 1.12.2 native-qualified JAR also passed a [stock Forge client check](docs/acceptance/rc-dev-1.12.2-stock-wireless-client.json): real mouse withdrawals/deposits/paging, stale view rejection, native packet codecs, four GUI scales and a reviewed native item tooltip. This is a private integrated-world handheld check; 1.6.4 client rendering, dedicated multiplayer, installed providers and other screens remain separate.
+
 ## New in 0.2b.0
 
 The six current beta targets reuse each endpoint's physical target key during transfer candidate checks and eligible-peer counting, reducing repeated identifier allocation in larger networks. Routing order, rates, filters and saved data remain unchanged. This is a source-level performance change; server TPS and memory improvements have not been measured.

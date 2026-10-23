@@ -477,7 +477,7 @@
       },
       "workflow_run": "39970232872",
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39970232872",
-      "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+      "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
       "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
@@ -485,7 +485,10 @@
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
       "candidate_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
-      "build_status_blob_sha": "31144423b264c6f0943ef787246d4f3f0eca571a"
+      "build_status_blob_sha": "45a4c21ce462864cda68dd87f26decaaefdc3bb9",
+      "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_AND_TOOLTIP",
+      "integrated_wireless_actions": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
+      "client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json"
     },
     {
       "minecraft": "1.6.4",
@@ -502,7 +505,7 @@
       },
       "workflow_run": "39970232872",
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39970232872",
-      "source_commit": "c6116c5b531b13d9084e630e927f30e9d6b6f1b9",
+      "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
       "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
@@ -510,10 +513,10 @@
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
       "candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d",
-      "build_status_blob_sha": "4b53f222ea21173b7c48dad7086a946bb92d6482"
+      "build_status_blob_sha": "aa6659b0f9c5ed4c838f459d0eb277e05688cbaf"
     }
   ],
-  "latest_work": "All 24 maintained native development targets pass. Refined legacy screens passed 156 scenarios, packaged startup and generated-world upgrades per target; fresh stock-client acceptance is running for the refined 1.12.2 payload.",
+  "latest_work": "Both legacy handheld storage ports passed 156 native scenarios, packaged startup and generated preview.3 upgrades. The refined 1.12.2 native-qualified JAR also passed stock-client mouse transfers, stale view rejection, packet codecs, four GUI scales and reviewed native tooltip/layout captures. All 24 native development tracks pass; full parity and RC clearance remain incomplete.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -522,5 +525,12 @@
     "native_operation_measurements": "acceptance/rc-dev-1.21.1-native-performance.json",
     "closes_all_acceptance": false
   },
-  "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS"
+  "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
+  "partial_1122_acceptance": {
+    "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+    "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
+    "workflow_run": "39971219774",
+    "stock_wireless_client": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
+    "closes_all_acceptance": false
+  }
 }
