@@ -19,7 +19,8 @@ jobs:
           path: control
       - uses: actions/checkout@v4
         with:
-          ref: ceb7fdf9944b8547f61ff8cff49245a1aadc0379
+          # Frozen native-qualified source and artifact; refresh both for a new candidate.
+          ref: 8d2e74ffc0f6bd9a2b99f328215864cd932726e3
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -49,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12504449158/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12509056481/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -98,6 +99,7 @@ jobs:
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r['result']=='PASS' and r['signed_byte_revision']==70
           for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page']:assert r[key]
+          assert (root/r['tooltip_capture']).stat().st_size>1000
           assert len(r['captures'])==4
           for name in r['captures']:assert (root/name).stat().st_size>1000
           assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()

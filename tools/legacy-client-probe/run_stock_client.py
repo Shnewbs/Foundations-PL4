@@ -25,7 +25,7 @@ def download(url,path,sha1=None):
 
 status=json.loads((root/'BUILD_STATUS.json').read_text());name='FoundationsPL4-1.12.2-'+status['version']+'.jar'
 qualified=root/'qualified-native.zip'
-assert hashlib.sha256(qualified.read_bytes()).hexdigest()=='f24950fbf0c4dbed9025da1aa178b8dceb6f4c5dda74f80a2bc2b7860cfb2474'
+assert hashlib.sha256(qualified.read_bytes()).hexdigest()=='ba7feeb795dfafceafc31fa9043fda2efea6472398db5138a939e227c36b71f3'
 with zipfile.ZipFile(qualified) as archive:
     assert archive.read('verification-logs/SOURCE_COMMIT.txt').decode().strip()==os.environ['PL4_CLIENT_SOURCE'],'Artifact source differs from checked source'
     runtime=game/'mods'/name

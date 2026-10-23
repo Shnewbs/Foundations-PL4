@@ -109,7 +109,7 @@ public final class LegacyWirelessClientProbe {
                 com.google.gson.JsonObject report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.12.2");report.addProperty("source_commit",System.getenv("PL4_CLIENT_SOURCE"));report.addProperty("result","PASS");
                 report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");
                 com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(name);report.add("captures",images);report.addProperty("scope","Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance.");
-                try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=13;mc.shutdown();
+                try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=14;mc.shutdown();
             }
         }catch(Exception error){throw new IllegalStateException("Legacy wireless client probe failed",error);}
     }

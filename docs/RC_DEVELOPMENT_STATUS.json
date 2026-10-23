@@ -4,7 +4,7 @@
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
   "release_channel": "development",
-  "qualified_native_targets": 22,
+  "qualified_native_targets": 24,
   "feature_parity": "INCOMPLETE",
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
@@ -466,7 +466,7 @@
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
       "expected_native_fixtures": 156,
-      "native_gate": "PENDING_UI_REFINEMENT",
+      "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
@@ -475,24 +475,23 @@
         "source_commit": "ceb7fdf9944b8547f61ff8cff49245a1aadc0379",
         "runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a"
       },
-      "workflow_run": "39961937700",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39961937700",
-      "source_commit": "ceb7fdf9944b8547f61ff8cff49245a1aadc0379",
-      "runtime_sha256": "4607323156a3a656ae87ab02e63fd309cedb7f30ddf8174e4960710a58ce827a",
+      "workflow_run": "39970232872",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39970232872",
+      "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+      "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 36,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "0cf10035d2794b5d0e60f33f975aaaad5a750d6c",
-      "build_status_blob_sha": "10e326481779f5be56dbfe05997c439bc113f3dc",
-      "latest_candidate_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f"
+      "candidate_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
+      "build_status_blob_sha": "31144423b264c6f0943ef787246d4f3f0eca571a"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
       "expected_native_fixtures": 156,
-      "native_gate": "PENDING_UI_REFINEMENT",
+      "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
@@ -501,21 +500,20 @@
         "source_commit": "11410b091df23f8b855ba032cc37409f0d4c19c8",
         "runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0"
       },
-      "workflow_run": "39961937700",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39961937700",
-      "source_commit": "11410b091df23f8b855ba032cc37409f0d4c19c8",
-      "runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+      "workflow_run": "39970232872",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39970232872",
+      "source_commit": "c6116c5b531b13d9084e630e927f30e9d6b6f1b9",
+      "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 36,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
-      "build_status_blob_sha": "91d55057ffb6f4a3cfddd4442d8a2ad38a9f967a",
-      "latest_candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d"
+      "candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d",
+      "build_status_blob_sha": "4b53f222ea21173b7c48dad7086a946bb92d6482"
     }
   ],
-  "latest_work": "Legacy 156-scenario source passed; stock 1.12.2 client passed native mouse/packet checks. Screenshot review prompted background, tooltip and deposit-label refinements; fresh exact-source gates pending.",
+  "latest_work": "All 24 maintained native development targets pass. Refined legacy screens passed 156 scenarios, packaged startup and generated-world upgrades per target; fresh stock-client acceptance is running for the refined 1.12.2 payload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
