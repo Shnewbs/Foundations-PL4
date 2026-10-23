@@ -1,0 +1,42 @@
+name: Measure loaded-network performance against released baseline
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/native-performance-comparison.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native_comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.2b.0
+          path: baseline
+      - uses: actions/checkout@v4
+        with:
+          ref: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: '**/*.gradle*'
+      - name: Three interleaved process trials per frozen revision
+        run: python3 control/tools/benchmarks/run_native_comparison.py baseline candidate results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: loaded-network-native-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            baseline/run/logs/
+            candidate/run/logs/
+          retention-days: 14
+          if-no-files-found: error
