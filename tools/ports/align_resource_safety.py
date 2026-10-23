@@ -89,10 +89,30 @@ def part_item(source):
     return once(source,'escrow.itemTransferFault=part.itemTransferFault;','escrow.resourceTransferFault=part.resourceTransferFault;escrow.opaqueFluidEscrow=part.opaqueFluidEscrow==null?null:part.opaqueFluidEscrow.copy();escrow.itemTransferFault=part.itemTransferFault;')
 
 
+def cycle_fence(source):
+    if 'private static List<NetworkEngine.Ref> available(' in source:return source
+    source=once(source,'List<NetworkEngine.Ref> endpoints=plan.endpoints(),transfer=plan.nextDrivers();','List<NetworkEngine.Ref> endpoints=available(plan.endpoints()),transfer=available(plan.nextDrivers());')
+    source=once(source,'return !ResourceTransferSafety.blocked(source.part())&&!ResourceTransferSafety.blocked(sink.part())&&source!=sink&&','return source!=sink&&')
+    helper='''    /** Healthy cycles reuse their immutable lists. A rare fault filters once, before any routing. */
+    private static List<NetworkEngine.Ref> available(List<NetworkEngine.Ref> refs){
+        for(NetworkEngine.Ref ref:refs)if(ResourceTransferSafety.blocked(ref.part())){
+            List<NetworkEngine.Ref> result=new ArrayList<>();
+            for(NetworkEngine.Ref candidate:refs){
+                if(ResourceTransferSafety.blocked(candidate.part()))candidate.part().status="Resource transfer quarantined; manual inspection required";
+                else result.add(candidate);
+            }
+            return result;
+        }
+        return refs;
+    }
+'''
+    return once(source,'    private static boolean hasPending(Part p)',helper+'    private static boolean hasPending(Part p)')
+
+
 def engine(source):
     if 'ResourceTransferSafety.extractFluid' in source:
         if source.count('ResourceTransferSafety.insertFluid(')!=3 or source.count('ResourceTransferSafety.insertEnergy(')!=3:raise ValueError('Incomplete resource guards')
-        return source
+        return cycle_fence(source)
     source=once(source,'return source!=sink&&','return !ResourceTransferSafety.blocked(source.part())&&!ResourceTransferSafety.blocked(sink.part())&&source!=sink&&')
     source=once(source,'Part p=ref.part();if(ItemTransferSafety.blocked(p))','Part p=ref.part();if(ResourceTransferSafety.blocked(p)){p.status="Resource transfer quarantined; manual inspection required";return;}if(ItemTransferSafety.blocked(p))')
     start=source.index('    // ------------------------------------------------------------ fluids')
@@ -131,7 +151,7 @@ def engine(source):
     owners=iter(['source','sink','sink'])
     section=re.sub(pattern,lambda m:'ResourceTransferSafety.insertEnergy('+next(owners)+',offered,()->to.receiveEnergy(offered,false))',section)
     section=once(section,'p.pendingEnergy=extracted-inserted;','p.pendingEnergy=extracted-inserted;ResourceTransferSafety.completed(sink);')
-    return before+section+after
+    return cycle_fence(before+section+after)
 
 
 def native_energy(source):
@@ -221,6 +241,21 @@ def native_fixtures(source):
     return source.rsplit('}',1)[0]+checks+'}\n'
 
 
+def cycle_fixture(source):
+    if 'Cycle fence must exclude a quarantined driver' in source:return source
+    checks='''resourceQuarantineChecks(ref(add,Direction.EAST));
+        from.setItem(0,new ItemStack(Items.DIAMOND,5));part(add,Direction.EAST).resourceTransferFault="Interrupted provider mutation";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined driver");
+        part(add,Direction.EAST).resourceTransferFault="";part(node,Direction.WEST).resourceTransferFault="Unresolved passive endpoint";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(from.getItem(0).getCount()!=5||to.getItem(0).getCount()!=17)throw new IllegalStateException("Cycle fence must exclude a quarantined passive endpoint");
+        part(node,Direction.WEST).resourceTransferFault="";
+        TransferEngine.run(h.getLevel().getServer(),List.of(ref(node,Direction.WEST),ref(add,Direction.EAST)));
+        if(!from.getItem(0).isEmpty()||to.getItem(0).getCount()!=22)throw new IllegalStateException("Healthy endpoint resumes without rebuilding the plan");'''
+    return once(source,'resourceQuarantineChecks(ref(add,Direction.EAST));',checks)
+
+
 def drop_fixtures(source):
     if 'Empty escrow does not discard an uncertain mutation fence' in source:return source
     if 'Resource quarantine survives canonical item payload' not in source:
@@ -257,7 +292,7 @@ def edits(root):
         text=once(text,'p.pendingEnergyEDRate==rates.fePerElectrodynamicsJ();','p.pendingEnergyEDRate==rates.fePerElectrodynamicsJ());')
     result[path]=text
     fixture_path=next(p for p in [root/'src/portTest/java/net/foundations/pl4/R16GameTests.java',java/'R16GameTests.java'] if p.exists())
-    result[fixture_path]=fixtures(fixture_path.read_text())
+    result[fixture_path]=cycle_fixture(fixtures(fixture_path.read_text()))
     path=fixture_path.with_name('EnergyIntegrationGameTests.java');result[path]=native_fixtures(path.read_text())
     path=fixture_path.with_name('R13GameTests.java');result[path]=drop_fixtures(path.read_text())
     return result

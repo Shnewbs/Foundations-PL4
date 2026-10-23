@@ -1,5 +1,5 @@
 name: Measure loaded-network performance against released baseline
-# Extended warm-up checks the mixed first-pass wireless timings.
+# Extended warm-up validates the per-cycle quarantine optimization.
 on:
   push:
     branches: [main]
@@ -21,7 +21,7 @@ jobs:
           path: baseline
       - uses: actions/checkout@v4
         with:
-          ref: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+          ref: ${{ github.sha }}
           path: candidate
       - uses: actions/setup-java@v4
         with:

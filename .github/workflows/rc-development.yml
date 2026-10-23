@@ -1,5 +1,5 @@
 name: Align and validate all RC development ports
-# Item, fluid, FE and native energy uncertainty guards run inside exact-port fixtures.
+# Quarantined endpoints are filtered once per cycle; exact-port fixtures verify blocked routing.
 on:
   push:
     branches: [main]
