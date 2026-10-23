@@ -1,5 +1,5 @@
 name: Measure loaded-network performance against released baseline
-# Extended warm-up validates the per-cycle quarantine optimization.
+# Extended warm-up records the candidate including persistent wireless player handoffs.
 on:
   push:
     branches: [main]

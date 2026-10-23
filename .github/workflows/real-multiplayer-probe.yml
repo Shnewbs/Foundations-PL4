@@ -18,7 +18,7 @@ jobs:
           path: control
       - uses: actions/checkout@v4
         with:
-          ref: 66de5a29d33323ebbac71fccf4cef710291dbdfe
+          ref: ${{ github.sha }}
           path: candidate
       - uses: actions/setup-java@v4
         with:

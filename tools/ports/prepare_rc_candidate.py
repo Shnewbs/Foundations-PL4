@@ -9,6 +9,7 @@ from align_storage_screen import screen, guide_edits
 from align_channel_status import engine as channel_engine, rules as channel_rules, regressions as channel_regressions
 from align_item_safety import edits as item_safety_edits, engine as safe_item_engine
 from align_resource_safety import edits as resource_safety_edits, engine as safe_resource_engine
+from align_wireless_safety import edits as wireless_safety_edits, network as safe_wireless_network, fixtures as safe_wireless_fixtures
 
 VERSION = "0.2.0-rc.1-dev"
 
@@ -39,6 +40,13 @@ def main():
     resources[java / "TransferEngine.java"] = safe_resource_engine(edits[java / "TransferEngine.java"])
     edits.update(resources)
     owned_fixtures.extend(resources)
+    wireless = wireless_safety_edits(root,edits)
+    wireless[java / "NetworkEngine.java"] = safe_wireless_network(edits[java / "NetworkEngine.java"])
+    for path in wireless:
+        if path.name == "R16GameTests.java":
+            wireless[path] = safe_wireless_fixtures(edits[path])
+    edits.update(wireless)
+    owned_fixtures.extend(wireless)
     if args.minecraft in {"1.20.1", "1.20.2", "1.20.4"}:
         bootstrap = root / "src/portTest/java/net/foundations/pl4/PLPortTestMod.java"
         text = bootstrap.read_text()
@@ -79,6 +87,7 @@ def main():
                   candidate_item_safety_validation="PENDING",
                   resource_provider_uncertainty="PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
                   candidate_resource_safety_validation="PENDING",
+                  candidate_wireless_safety_validation="PENDING",
                   release_notes=f"docs/releases/{VERSION}.md",
                   performance_baseline="indexed-network-membership-and-cycle-endpoint-keys")
     status["candidate_native_validation"] = "PENDING"
@@ -94,6 +103,7 @@ def main():
         "Foreign item mutations now persist uncertainty before executing; interrupted or invalid results remain quarantined across reloads and part removal. "
         "Saved item escrow preserves full integer counts and unresolved payloads. Existing healthy saves keep their values. "
         "Fluid, FE and native energy mutations also fence interrupted or invalid results; unresolved saved fluid payloads remain opaque. "
+        "Wireless Storage stages offhand deposits in node escrow before foreign insertion and fences uncertain player delivery. "
         "Target-specific loader APIs, routing, rates, filters and ownership are retained. These additive safety fields require forward migration acceptance; do not downgrade a world with unresolved transactions.\n\n"
         "Native build/scenario evidence must identify this exact source and artifact. Installed optional providers, actual client UI, "
         "live multiplayer, world migration and repeatable large-network performance acceptance remain open. "

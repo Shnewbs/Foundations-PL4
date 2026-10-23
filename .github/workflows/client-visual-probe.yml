@@ -18,7 +18,7 @@ jobs:
           path: control
       - uses: actions/checkout@v4
         with:
-          ref: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+          ref: ${{ github.sha }}
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -43,7 +43,7 @@ jobs:
       - name: Run real client and capture rendered screens
         env:
           PL4_CLIENT_OUTPUT: ${{ github.workspace }}/results
-          PL4_CLIENT_SOURCE: 83bcbbb30a4c6fbd89e30726f4ca3a1987d7aa54
+          PL4_CLIENT_SOURCE: ${{ github.sha }}
         working-directory: candidate
         run: timeout 1500 xvfb-run -a -s '-screen 0 1280x960x24' bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
       - name: Require all twelve native screenshots

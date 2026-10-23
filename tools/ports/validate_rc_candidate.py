@@ -93,6 +93,7 @@ def main():
                   candidate_native_validation="PASS", candidate_workflow_run=os.environ.get("GITHUB_RUN_ID"),
                   candidate_item_safety_validation="PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
                   candidate_resource_safety_validation="PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
+                  candidate_wireless_safety_validation="PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
                   rc_publication_cleared=False)
     if mc == "1.21.1" and (root / "src/portTest").is_dir():
         status["native_test_isolation"] = "PASS"

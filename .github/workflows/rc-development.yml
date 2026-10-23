@@ -1,5 +1,5 @@
 name: Align and validate all RC development ports
-# Quarantined endpoints are filtered once per cycle; exact-port fixtures verify blocked routing.
+# Wireless handoffs stage node escrow before player/provider mutations; exact-port fixtures verify uncertainty.
 on:
   push:
     branches: [main]

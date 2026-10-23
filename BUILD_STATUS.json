@@ -44,19 +44,19 @@
     "historical_evidence": "docs/releases/"
   },
   "release_published": false,
-  "port_status": "RC_DEVELOPMENT_NATIVE_GATE_PASSED",
+  "port_status": "RC_DEVELOPMENT_NATIVE_VALIDATION_PENDING",
   "installed_runtime_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "candidate_native_validation": "PASS",
+  "candidate_native_validation": "PENDING",
   "candidate_workflow_run": "39883101677",
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
   "native_test_isolation": "PASS",
-  "candidate_item_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
+  "candidate_item_safety_validation": "PENDING",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SAVED_PART_PAYLOAD",
   "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
-  "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE"
+  "candidate_resource_safety_validation": "PENDING",
+  "candidate_wireless_safety_validation": "PENDING"
 }
