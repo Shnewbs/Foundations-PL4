@@ -121,7 +121,7 @@ public final class WirelessStorage {
         }else if(!packet.action().equals("refresh")){sendClosed(player,"Unknown storage action.");return;}
         send(player,session.hand(),held,session.binding(),targets,page,query,sort,true,status);
         }catch(RuntimeException failure){
-            org.slf4j.LoggerFactory.getLogger("FoundationsPL4").error("Wireless Storage provider failed; inspect node escrow before recovery",failure);
+            org.apache.logging.log4j.LogManager.getLogger("FoundationsPL4").error("Wireless Storage provider failed; inspect node escrow before recovery",failure);
             sendClosed(player,"Storage provider failed; inspect node escrow before recovery.");
         }finally{player.inventory.setChanged();player.inventoryMenu.broadcastChanges();}
     }
