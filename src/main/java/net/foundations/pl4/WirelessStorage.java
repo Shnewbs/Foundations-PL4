@@ -16,7 +16,7 @@ import net.foundations.pl4.compat.PacketDistributor;
 /** Bounded server snapshots. Sessions retain identities and item variants, never capabilities. */
 public final class WirelessStorage {
     public static final int PAGE_SIZE=6,MAX_SLOTS=4096,MAX_ENDPOINTS=256;
-    private record Target(Part node,IItemHandler inventory,Part.Link link){}
+    private record Target(Part node,IItemHandler inventory,Part.Link link,NetworkEngine.Ref ref){}
     private record Slot(UUID node,int slot){}
     static final class Entry {
         final ItemStack item;long count;final List<Slot> sources=new ArrayList<>();
@@ -42,12 +42,12 @@ public final class WirelessStorage {
         for(var ref:NetworkEngine.storageNodes(player.getLevel().getServer(),node)){
             if(result.size()>=MAX_ENDPOINTS||slots>=MAX_SLOTS)break;
             var world=ref.level();var link=ref.adjacent();
-            if(ref.host().isRemoved()||!world.hasChunkAt(ref.host().getBlockPos())||!ref.host().canEdit(player)||!world.mayInteract(player,ref.host().getBlockPos())||!ref.part().items)continue;
+            if(!WirelessItemTransfers.available(ref.part())||ref.host().isRemoved()||!world.hasChunkAt(ref.host().getBlockPos())||!ref.host().canEdit(player)||!world.mayInteract(player,ref.host().getBlockPos())||!ref.part().items)continue;
             if(!PLConfig.CROSS_DIMENSION.get()&&world!=player.getLevel())continue;
             if(!world.hasChunkAt(link.pos())||!world.mayInteract(player,link.pos()))continue;
             IItemHandler inventory=net.foundations.pl4.compat.PortCapabilities.get(world,Capabilities.ItemHandler.BLOCK,link.pos(),link.side());
             if(inventory==null||!seen.inventory(world,link,inventory,inventory.getSlots()))continue;
-            result.add(new Target(ref.part(),inventory,link));slots+=Math.min(MAX_SLOTS-slots,Math.max(0,inventory.getSlots()));
+            result.add(new Target(ref.part(),inventory,link,ref));slots+=Math.min(MAX_SLOTS-slots,Math.max(0,inventory.getSlots()));
         }
         return result;
     }
@@ -84,6 +84,7 @@ public final class WirelessStorage {
         ItemStack held=player.getItemInHand(session.hand());
         if(held!=session.tool()||!(held.getItem()==FoundationsPL4.item("wirelessstorage"))||!Objects.equals(ToolItem.link(held),session.binding()))return;
         List<Target> targets=resolve(player,session.binding());if(targets==null){sendClosed(player,"Target unavailable or permission changed.");return;}
+        try{
         int page=session.page();String status="",query=session.query(),sort=session.sort();
         if(packet.action().equals("page"))page=net.foundations.pl4.compat.PortMath.clamp(packet.index(),0,MAX_SLOTS/PAGE_SIZE);
         else if(packet.action().equals("search")){
@@ -98,9 +99,9 @@ public final class WirelessStorage {
                 ItemStack stack=target.inventory().getStackInSlot(source.slot());
                 if(!net.foundations.pl4.compat.PortData.sameItem(expected.item,stack)||!TransferFilters.items(stack,target.node(),false))continue;
                 ItemStack trial=target.inventory().extractItem(source.slot(),remaining,true);
-                if(trial.isEmpty()||!net.foundations.pl4.compat.PortData.sameItem(expected.item,trial))continue;
-                ItemStack extracted=target.inventory().extractItem(source.slot(),Math.min(remaining,trial.getCount()),false);
-                if(extracted.isEmpty())continue;int count=extracted.getCount();player.inventory.add(extracted);if(!extracted.isEmpty())player.drop(extracted,false);moved+=count;remaining-=count;
+                if(!ItemTransferSafety.trial(trial,remaining)||!net.foundations.pl4.compat.PortData.sameItem(expected.item,trial))continue;
+                int requested=Math.min(remaining,trial.getCount());ItemStack extracted=ItemTransferSafety.extract(target.ref(),expected.item,requested,()->target.inventory().extractItem(source.slot(),requested,false));
+                if(extracted.isEmpty())continue;int count=WirelessItemTransfers.deliver(target.ref(),stackToPlayer->{player.inventory.add(stackToPlayer);return stackToPlayer;});moved+=count;remaining-=extracted.getCount();
             }
             player.inventory.setChanged();player.inventoryMenu.broadcastChanges();status=moved==0?"Nothing moved: contents, access, filters or available space changed.":"Withdrew "+moved+" item(s).";
         }else if(packet.action().equals("deposit")){
@@ -111,15 +112,18 @@ public final class WirelessStorage {
                     if(offhand.isEmpty())break;if(!TransferFilters.items(offhand,target.node(),true))continue;
                     for(int slot=0;slot<target.inventory().getSlots();slot++){
                         if(offhand.isEmpty()||scanned++>=MAX_SLOTS)break outer;
-                        ItemStack offered=offhand.copy();ItemStack simulated=target.inventory().insertItem(slot,offered,true);int capacity=offered.getCount()-simulated.getCount();if(capacity<=0)continue;
-                        ItemStack sent=net.foundations.pl4.compat.PortData.copyWithCount(offhand,Math.min(capacity,offhand.getCount()));int count=sent.getCount();ItemStack remainder=target.inventory().insertItem(slot,sent,false);
-                        int accepted=net.foundations.pl4.compat.PortMath.clamp(count-remainder.getCount(),0,count);offhand.shrink(accepted);moved+=accepted;
+                        ItemStack offered=offhand.copy();ItemStack simulated=target.inventory().insertItem(slot,offered,true);int capacity=offered.getCount()-ItemTransferSafety.remainder(offered,simulated);if(capacity<=0)continue;
+                        ItemStack sent=net.foundations.pl4.compat.PortData.copyWithCount(offhand,Math.min(capacity,offhand.getCount()));final int destinationSlot=slot;int accepted=WirelessItemTransfers.deposit(target.ref(),offhand,sent,value->target.inventory().insertItem(destinationSlot,value,false));moved+=accepted;
                     }
                 }
                 player.inventory.setChanged();player.inventoryMenu.broadcastChanges();status="Deposited "+moved+" item(s).";
             }
         }else if(!packet.action().equals("refresh")){sendClosed(player,"Unknown storage action.");return;}
         send(player,session.hand(),held,session.binding(),targets,page,query,sort,true,status);
+        }catch(RuntimeException failure){
+            org.slf4j.LoggerFactory.getLogger("FoundationsPL4").error("Wireless Storage provider failed; inspect node escrow before recovery",failure);
+            sendClosed(player,"Storage provider failed; inspect node escrow before recovery.");
+        }finally{player.inventory.setChanged();player.inventoryMenu.broadcastChanges();}
     }
     private static int room(ServerPlayerEntity player,ItemStack stack){int room=0;for(int i=0;i<36;i++){ItemStack existing=player.inventory.getItem(i);if(existing.isEmpty())room+=stack.getMaxStackSize();else if(net.foundations.pl4.compat.PortData.sameItem(existing,stack))room+=Math.max(0,Math.min(existing.getMaxStackSize(),stack.getMaxStackSize())-existing.getCount());if(room>=64)return 64;}return room;}
     private static UUID send(ServerPlayerEntity player,Hand hand,ItemStack tool,Part.Link binding,List<Target> targets,int page,String query,String sort,boolean reply,String status){
