@@ -30,23 +30,20 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xserver-xorg-core xserver-xorg-video-dummy x11-xserver-utils libgl1-mesa-dri
       - name: Inject isolated development probe
         run: |
-          mkdir -p results candidate/run
-          # The old generated development JAR can retain injected MergeTool enum classes.
-          # Recreate this exact cached profile after applying the compatibility pin.
-          rm -rf "$HOME/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.12.2-14.23.5.2864_mapped_snapshot_20171003-1.12"
+          mkdir -p results candidate/src/clientProbe/java/net/foundations/pl4/legacy
           git -C candidate rev-parse HEAD > results/SOURCE_COMMIT.txt
-          cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/legacy/java/net/foundations/pl4/legacy/
+          cp control/tools/legacy-client-probe/LegacyWirelessClientProbe.java candidate/src/clientProbe/java/net/foundations/pl4/legacy/
           cat >> candidate/build.gradle <<'GRADLE'
-          configurations.runtimeClasspath {
-              ['asm','asm-analysis','asm-tree','asm-util','asm-commons'].each { name -> exclude group: 'org.ow2.asm', module: name }
+          sourceSets {
+              clientProbe { java.srcDirs=['src/clientProbe/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
           }
-          configurations.all { resolutionStrategy.force 'net.minecraftforge:mergetool:0.2.3.3' }
-          dependencies { runtimeOnly 'org.ow2.asm:asm-debug-all:5.2' }
-          minecraft.runs.client {
-              jvmArgs '-verbose:class'
-              args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'
-          }
+          task clientProbeJar(type:Jar) { dependsOn clientProbeClasses; from sourceSets.clientProbe.output; classifier='client-probe' }
+          reobf { clientProbeJar { classpath=sourceSets.clientProbe.compileClasspath } }
+          clientProbeJar.finalizedBy reobfClientProbeJar
           GRADLE
+      - name: Build the exact production JAR and separate client test mod
+        working-directory: candidate
+        run: bash gradlew --no-daemon --console=plain clean build reobfClientProbeJar downloadAssets extractNatives > ../results/build.log 2>&1
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -84,13 +81,15 @@ jobs:
             if xrandr --current > ../results/display-modes.txt 2>&1; then break; fi
             sleep 1
           done
-          timeout 1500 bash gradlew --no-daemon --console=plain runClient > ../results/client.log 2>&1
+          timeout 900 python3 ../control/tools/legacy-client-probe/run_stock_client.py > ../results/client.log 2>&1
       - name: Require actual native actions and four captures
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
           root=Path('results');r=json.loads((root/'legacy-wireless-client.json').read_text())
+          stock=json.loads((root/'stock-client-runtime.json').read_text())
+          assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r['result']=='PASS' and r['signed_byte_revision']==70
           for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging']:assert r[key]
           assert len(r['captures'])==4
@@ -104,7 +103,7 @@ jobs:
           name: legacy-wireless-real-client-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             results/
-            candidate/run/logs/
-            candidate/run/crash-reports/
+            candidate/stock-client/logs/
+            candidate/stock-client/crash-reports/
           retention-days: 14
           if-no-files-found: error
