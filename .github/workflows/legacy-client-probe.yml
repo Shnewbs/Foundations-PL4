@@ -36,8 +36,9 @@ jobs:
           cat >> candidate/build.gradle <<'GRADLE'
           configurations.runtimeClasspath {
               exclude group: 'net.minecraftforge', module: 'mergetool'
-              exclude group: 'org.ow2.asm'
+              ['asm','asm-analysis','asm-tree','asm-util','asm-commons'].each { name -> exclude group: 'org.ow2.asm', module: name }
           }
+          dependencies { runtimeOnly 'org.ow2.asm:asm-debug-all:5.2' }
           minecraft.runs.client {
               args '--width', '1280', '--height', '960', '--username', 'PL4LegacyProbe'
           }
