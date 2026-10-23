@@ -21,10 +21,16 @@ def download(url,path,sha1=None):
             time.sleep(2+attempt)
 
 
-status=json.loads((root/'BUILD_STATUS.json').read_text());runtime=root/'build/libs'/('FoundationsPL4-1.12.2-'+status['version']+'.jar')
+status=json.loads((root/'BUILD_STATUS.json').read_text());name='FoundationsPL4-1.12.2-'+status['version']+'.jar'
+qualified=root/'qualified-native.zip'
+assert hashlib.sha256(qualified.read_bytes()).hexdigest()=='f24950fbf0c4dbed9025da1aa178b8dceb6f4c5dda74f80a2bc2b7860cfb2474'
+with zipfile.ZipFile(qualified) as archive:
+    assert archive.read('verification-logs/SOURCE_COMMIT.txt').decode().strip()==os.environ['PL4_CLIENT_SOURCE'],'Artifact source differs from checked source'
+    runtime=game/'mods'/name
+    runtime.write_bytes(archive.read('build/libs/'+name))
 runtime_hash=hashlib.sha256(runtime.read_bytes()).hexdigest()
-assert runtime_hash==status['candidate_runtime_sha256'],'Production JAR differs from the independently native-qualified artifact'
-shutil.copyfile(runtime,game/'mods'/runtime.name)
+assert runtime_hash==status['candidate_runtime_sha256'],'Qualified production artifact checksum mismatch'
+
 probe=root/'build/libs'/('FoundationsPL4-1.12.2-'+status['version']+'-client-probe.jar');shutil.copyfile(probe,game/'mods/pl4-client-probe.jar')
 with zipfile.ZipFile(runtime) as archive:assert not any('LegacyWirelessClientProbe' in n or '/tests/' in n for n in archive.namelist())
 

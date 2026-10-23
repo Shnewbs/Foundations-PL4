@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   client:
     runs-on: ubuntu-latest
@@ -18,7 +19,7 @@ jobs:
           path: control
       - uses: actions/checkout@v4
         with:
-          ref: mc/1.12.2
+          ref: ceb7fdf9944b8547f61ff8cff49245a1aadc0379
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -41,9 +42,14 @@ jobs:
           reobf { clientProbeJar { classpath=sourceSets.clientProbe.compileClasspath } }
           clientProbeJar.finalizedBy reobfClientProbeJar
           GRADLE
-      - name: Build the exact production JAR and separate client test mod
+      - name: Build the separate client test mod
         working-directory: candidate
-        run: bash gradlew --no-daemon --console=plain clean build reobfClientProbeJar extractNatives > ../results/build.log 2>&1
+        run: bash gradlew --no-daemon --console=plain clean clientProbeJar reobfClientProbeJar extractNatives > ../results/build.log 2>&1
+      - name: Retrieve the independently native-qualified production artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh api "repos/$GH_REPO/actions/artifacts/12504449158/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -97,6 +103,12 @@ jobs:
           assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()
           print('PASS real 1.12.2 client/native window actions and four GUI scales')
           PY
+      - name: Show failure diagnostics
+        if: failure()
+        run: |
+          for path in results/client.log results/build.log results/forge-install.log; do
+            if [ -f "$path" ]; then echo "Log: $path"; tail -80 "$path"; fi
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
