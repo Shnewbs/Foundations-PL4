@@ -1,0 +1,134 @@
+name: Exercise packaged legacy 1.6.4 storage in a stock client
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/legacy164-client-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 'true'
+      PL4_CLIENT_MC: '1.6.4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
+          # Frozen native-qualified source and artifact; refresh both for a new candidate.
+          ref: c6116c5b531b13d9084e630e927f30e9d6b6f1b9
+          path: candidate
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '7'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+          cache: gradle
+          cache-dependency-path: candidate/**/*.gradle*
+      - name: Install software display
+        run: sudo apt-get update && sudo apt-get install -y xserver-xorg-core xserver-xorg-video-dummy x11-xserver-utils libgl1-mesa-dri
+      - name: Inject isolated development probe
+        run: |
+          mkdir -p results candidate/src/clientProbe/java/net/foundations/pl4/legacy
+          git -C candidate rev-parse HEAD > results/SOURCE_COMMIT.txt
+          cp control/tools/legacy-client-probe/Legacy164WirelessClientProbe.java candidate/src/clientProbe/java/net/foundations/pl4/legacy/
+          cat >> candidate/build.gradle <<'GRADLE'
+          sourceSets {
+              clientProbe { java.srcDirs=['src/clientProbe/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
+          }
+          def probe=tasks.register('clientProbeJar',Jar) { dependsOn 'clientProbeClasses';from sourceSets.clientProbe.output;archiveClassifier='client-probe' }
+          def probeRuntime=renamer.classes(probe) {
+              map.from minecraft.dependency.toSrgFile
+              libraries.setFrom(sourceSets.clientProbe.compileClasspath)
+              archiveClassifier='client-probe-srg'
+          }
+          tasks.register('buildClientProbe') { dependsOn probeRuntime }
+          GRADLE
+      - name: Build the separate client test mod
+        working-directory: candidate
+        run: bash gradlew --no-daemon --console=plain clean buildClientProbe > ../results/build.log 2>&1
+      - name: Retrieve the independently native-qualified production artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh api "repos/$GH_REPO/actions/artifacts/12509086277/zip" > candidate/qualified-native.zip
+      - name: Run client, integrated world and native window actions
+        working-directory: candidate
+        env:
+          PL4_CLIENT_OUTPUT: ${{ github.workspace }}/results
+        run: |
+          export PL4_CLIENT_SOURCE=$(cat ../results/SOURCE_COMMIT.txt)
+          cat > ../results/xorg.conf <<'XORG'
+          Section "Device"
+            Identifier "Dummy"
+            Driver "dummy"
+            VideoRam 256000
+          EndSection
+          Section "Monitor"
+            Identifier "Monitor"
+            HorizSync 5.0-1000.0
+            VertRefresh 5.0-200.0
+            Modeline "1280x960" 108.00 1280 1376 1488 1800 960 961 964 1000 +HSync +VSync
+          EndSection
+          Section "Screen"
+            Identifier "Screen"
+            Device "Dummy"
+            Monitor "Monitor"
+            DefaultDepth 24
+            SubSection "Display"
+              Depth 24
+              Modes "1280x960"
+            EndSubSection
+          EndSection
+          XORG
+          export DISPLAY=:99
+          Xorg :99 -config "$GITHUB_WORKSPACE/results/xorg.conf" -noreset -nolisten tcp -logfile "$GITHUB_WORKSPACE/results/Xorg.log" > ../results/xorg-output.log 2>&1 &
+          display_pid=$!
+          trap 'kill "$display_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if xrandr --current > ../results/display-modes.txt 2>&1; then break; fi
+            sleep 1
+          done
+          timeout 900 python3 ../control/tools/legacy-client-probe/run_stock_client.py > ../results/client.log 2>&1
+      - name: Require actual native actions and four captures
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('results');r=json.loads((root/'legacy-wireless-client.json').read_text())
+          stock=json.loads((root/'stock-client-runtime.json').read_text())
+          assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
+          assert r['result']=='PASS' and r['signed_byte_revision']==70
+          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page']:assert r[key]
+          assert (root/r['tooltip_capture']).stat().st_size>1000
+          assert len(r['captures'])==4
+          for name in r['captures']:assert (root/name).stat().st_size>1000
+          assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()
+          print('PASS real 1.6.4 client/native window actions and four GUI scales')
+          PY
+      - name: Show failure diagnostics
+        if: failure()
+        run: |
+          for path in results/client.log results/build.log results/forge-install.log; do
+            if [ -f "$path" ]; then echo "Log: $path"; tail -80 "$path"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: legacy164-wireless-real-client-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/
+            candidate/stock-client/logs/
+            candidate/stock-client/crash-reports/
+          retention-days: 14
+          if-no-files-found: error
