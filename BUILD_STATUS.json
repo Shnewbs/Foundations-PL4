@@ -49,22 +49,18 @@
   "previous_candidate_native_evidence": {
     "candidate_native_validation": "PASS",
     "production_smoke": "PASS_FOR_THIS_CANDIDATE",
-    "candidate_workflow_run": "39961937700",
-    "candidate_source_commit": "25040101d5fb1f16cc095aecf89f5da30d4113f4",
-    "candidate_runtime_sha256": "f81fa115c149d99a4da7aa99c285ba9df599f7aa3398ffa3659aad6ccc8bfec0",
+    "candidate_workflow_run": "39970232872",
+    "candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d",
+    "candidate_runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
     "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
   },
-  "candidate_native_validation": "PASS",
-  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
+  "candidate_native_validation": "PENDING_DISPLAY_LIGHTING_FIX",
+  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
   "wireless_storage": "NATIVE_GUI_DEVELOPMENT",
-  "migration_workflow_run": "39970232872",
-  "candidate_workflow_run": "39970232872",
-  "candidate_source_commit": "9affdd51393861ac3ce813882089eeb7a8fd213d",
-  "candidate_runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
-  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS",
   "acceptance_evidence": {
     "legacy_wireless_native": "docs/acceptance/rc-dev-legacy-wireless-native.json"
-  }
+  },
+  "integrated_wireless_acceptance": "PENDING_FOR_THIS_CANDIDATE"
 }
