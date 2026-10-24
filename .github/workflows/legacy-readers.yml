@@ -1,4 +1,4 @@
-name: Validate legacy native storage and screen refinements
+name: Validate legacy display lighting and storage
 on:
   push:
     branches: [main]
