@@ -2,7 +2,7 @@ name: Exercise packaged legacy 1.12.2 storage in a stock client
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/legacy-client-probe.yml', 'tools/legacy-client-probe/run_stock_client.py']
+    paths: ['.github/workflows/legacy-client-probe.yml', 'tools/legacy-client-probe/run_stock_client.py', 'tools/legacy-client-probe/LegacyWirelessClientProbe.java']
   workflow_dispatch:
 permissions:
   contents: read
@@ -100,6 +100,8 @@ jobs:
           assert r['result']=='PASS' and r['signed_byte_revision']==70
           for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
+          assert r['native_display_projection_and_hide']
+          for name in r['display_captures']:assert (root/name).stat().st_size>1000
           assert len(r['captures'])==4
           for name in r['captures']:assert (root/name).stat().st_size>1000
           assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()
