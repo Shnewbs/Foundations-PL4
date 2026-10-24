@@ -34,7 +34,7 @@
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
-  "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_TOOLTIP_AND_NETWORK_DISPLAY",
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "live_multiplayer_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -57,10 +57,12 @@
     "legacy_wireless_native": "docs/acceptance/rc-dev-legacy-wireless-native.json",
     "stock_wireless_client": "docs/acceptance/rc-dev-1.12.2-stock-wireless-client.json"
   },
-  "integrated_wireless_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "integrated_wireless_acceptance": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
   "migration_workflow_run": "40111059152",
   "candidate_workflow_run": "40111059152",
   "candidate_source_commit": "a84bec293569b5b3b85996f1d02fb979d0a4417c",
   "candidate_runtime_sha256": "086e7e4a0ca28c52f5fd2466bbcb89651d0fcb80c06789514c18d24b1cbca68c",
-  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
+  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS",
+  "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
+  "stock_client_workflow_run": "40111601092"
 }

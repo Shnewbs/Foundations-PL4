@@ -1,20 +1,24 @@
 {
   "minecraft": "1.12.2",
   "result": "PASS_WITH_SCOPED_ACCEPTANCE",
-  "workflow_run": 39971219774,
-  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39971219774",
-  "workflow_source_commit": "2c8d39e43df30e8044ece71a2c04175debe75437",
-  "candidate_source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
-  "runtime_payload_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
-  "native_gate_workflow": 39970232872,
-  "artifact_id": 12509586214,
-  "artifact_sha256": "07f9dee3de07fda4fc31b0f5c28b34e8ce9ff3178c42e7f878f0e15e7df0e19e",
+  "recorded_date": "2026-10-24",
+  "timezone": "America/Los_Angeles",
+  "workflow_run": 40111601092,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40111601092",
+  "workflow_source_commit": "b4ee4b1c0788c5f900d0ebcd4a4471bb8c50cbaa",
+  "candidate_source_commit": "7c95596bd1870e00556fdd53f8a8bfb493511be2",
+  "runtime_payload_source_commit": "a84bec293569b5b3b85996f1d02fb979d0a4417c",
+  "native_gate_workflow": 40111059152,
+  "artifact_id": 12565989066,
+  "artifact_sha256": "5b49b6d6597de053c99e47a651d900a204d0be86cd8411c8626d431ac70c6495",
   "runtime": {
     "minecraft": "1.12.2",
     "forge": "14.23.5.2864",
-    "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1",
-    "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
-    "probe_sha256": "3c3363f1b3bf92e5fad07c2e5ead6561d6c9f402a280d5115427720026f3a52f",
+    "runtime_java": 8,
+    "runtime_sha256": "086e7e4a0ca28c52f5fd2466bbcb89651d0fcb80c06789514c18d24b1cbca68c",
+    "source_commit": "7c95596bd1870e00556fdd53f8a8bfb493511be2",
+    "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+    "probe_sha256": "8ea99771a7ccf4f40d3dad14e55e411ee30e3848048ce7018eefc164b262e592",
     "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
     "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
     "production_jar_matches_native_gate": true,
@@ -23,7 +27,7 @@
   },
   "client": {
     "minecraft": "1.12.2",
-    "source_commit": "8d2e74ffc0f6bd9a2b99f328215864cd932726e3",
+    "source_commit": "7c95596bd1870e00556fdd53f8a8bfb493511be2",
     "result": "PASS",
     "native_wireless_withdrawal": true,
     "stale_replay_rejected": true,
@@ -33,42 +37,59 @@
     "native_packet_codec_round_trip": true,
     "actual_mouse_withdraw_deposit_page": true,
     "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+    "native_display_projection_and_hide": true,
+    "display_captures": [
+      "legacy-private-display.png",
+      "legacy-public-display.png"
+    ],
     "captures": [
       "legacy-wireless-storage-scale-1.png",
       "legacy-wireless-storage-scale-2.png",
       "legacy-wireless-storage-scale-3.png",
       "legacy-wireless-storage-scale-4.png"
     ],
-    "scope": "Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+    "scope": "Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
   },
   "images": [
     {
+      "name": "results/legacy-private-display.png",
+      "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-public-display.png",
+      "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+      "width": 1280,
+      "height": 960
+    },
+    {
       "name": "results/legacy-wireless-storage-scale-1.png",
-      "sha256": "8c1172439ceef5cafd965ce2d96ef201fa43d7902856b88275ba06e10564532c",
+      "sha256": "01058cd31dd7bace1777b8fbcf1d0cb9971814b5dc48baaf34712b88c693e3be",
       "width": 1280,
       "height": 960
     },
     {
       "name": "results/legacy-wireless-storage-scale-2.png",
-      "sha256": "489908603fee72472f143830346a616b63c2a0086f90e0fcf34d7822933b1358",
+      "sha256": "7e0ec64c9e4d57c15edcd5f89d25e683f0c62a1fc9981a032e5e43e2ca54cd9b",
       "width": 1280,
       "height": 960
     },
     {
       "name": "results/legacy-wireless-storage-scale-3.png",
-      "sha256": "7191d0d432b28690275208364ce7192501f443ec5434e23630fd7686287829bb",
+      "sha256": "7ad8922fb2839bd5e10197bbc3b782e5a6a1cdbe4f6387dd94ea2af1c92c0176",
       "width": 1280,
       "height": 960
     },
     {
       "name": "results/legacy-wireless-storage-scale-4.png",
-      "sha256": "363f7ce783ab497ace5267da7df424f07cabcdbb69945ebc4fadaca88e9993e5",
+      "sha256": "4ab079910654eb5bcd203ec111ac5daf38620ec440f32b20148294b3b302d9bc",
       "width": 1280,
       "height": 960
     },
     {
       "name": "results/legacy-wireless-storage-tooltip.png",
-      "sha256": "c8294cfe17450348ef27de2015490f6a00397ca685165bf27cbe0490daf9ddf1",
+      "sha256": "77e5768294f8860dfecdcb147d508d4a9f643caa9c924382822da84f2415d1d7",
       "width": 1280,
       "height": 960
     }
@@ -89,18 +110,27 @@
   },
   "visual_review": {
     "reviewed": [
+      "legacy-private-display.png",
+      "legacy-public-display.png",
       "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
       "legacy-wireless-storage-scale-4.png",
       "legacy-wireless-storage-tooltip.png"
     ],
-    "result": "PASS_REVIEWED_LAYOUT_EXTREMES_AND_DIAMOND_TOOLTIP",
-    "automated_captures": "FOUR_ACTUAL_GUI_SCALES_1280x960",
-    "notes": "Header, paging controls, deposit label and inventory fit in reviewed captures. Vanilla tutorial disabled only in the isolated probe."
+    "result": "PASS_FOUR_GUI_SCALES_TOOLTIP_PRIVATE_AND_PUBLIC_NETWORK_DISPLAY",
+    "notes": "All four storage scales fit with readable controls and deposit label; Diamond tooltip is present. Private/public world-display text is bright and legible, with neighboring blocks and floor still textured. Hiding is asserted through the native client projection, without a separate hidden-state image. Tutorial overlays and focus pausing are disabled only in the test profile."
   },
   "limitations": [
     "Private offline integrated world and native packet codec round-trip; no dedicated multiplayer or online authentication acceptance",
-    "Handheld screen only; physical displays, editor gestures and other resolutions remain separate",
-    "No installed optional providers, sustained performance or 1.6.4 client acceptance"
+    "One south-facing network display; other reader/display/editor modes, faces, lighting conditions and resolutions remain separate",
+    "No installed optional providers, arbitrary user/modpack worlds or sustained performance acceptance"
   ],
-  "rc_publication_cleared": false
+  "rc_publication_cleared": false,
+  "previous_acceptance": {
+    "workflow_run": 39971219774,
+    "runtime_payload_source_commit": "8fcc68c5fe19532691470a751c052c00faf1bd7f",
+    "artifact_id": 12509586214,
+    "artifact_sha256": "07f9dee3de07fda4fc31b0f5c28b34e8ce9ff3178c42e7f878f0e15e7df0e19e"
+  }
 }

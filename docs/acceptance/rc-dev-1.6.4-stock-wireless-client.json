@@ -1,0 +1,130 @@
+{
+  "minecraft": "1.6.4",
+  "result": "PASS_WITH_SCOPED_ACCEPTANCE",
+  "recorded_date": "2026-10-24",
+  "timezone": "America/Los_Angeles",
+  "workflow_run": 40111601064,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40111601064",
+  "workflow_source_commit": "b4ee4b1c0788c5f900d0ebcd4a4471bb8c50cbaa",
+  "candidate_source_commit": "038e15515b111ad07915b2e16d064c24c92e1755",
+  "runtime_payload_source_commit": "f36adf9d45a6d33135a06789a6445e417f8fbff2",
+  "native_gate_workflow": 40111059152,
+  "artifact_id": 12566698317,
+  "artifact_sha256": "a88731c0840a402449cc3a9cae9c7ea5c710534cb40e54f35652035183fb8f11",
+  "runtime": {
+    "minecraft": "1.6.4",
+    "forge": "9.11.1.1345",
+    "runtime_java": 7,
+    "runtime_sha256": "4ea9269fdede91b5eee76c11658c5a79e1d297dbbfd54c0e73ad87e85444a214",
+    "source_commit": "038e15515b111ad07915b2e16d064c24c92e1755",
+    "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+    "probe_sha256": "1943754681584a04c9964b9293d5f41f774405a165a145dc0804dda336494e8e",
+    "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+    "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+    "production_jar_matches_native_gate": true,
+    "development_game_classpath": false,
+    "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+  },
+  "client": {
+    "minecraft": "1.6.4",
+    "source_commit": "038e15515b111ad07915b2e16d064c24c92e1755",
+    "result": "PASS",
+    "native_wireless_withdrawal": true,
+    "stale_replay_rejected": true,
+    "native_wireless_deposit": true,
+    "native_paging": true,
+    "signed_byte_revision": 70,
+    "native_packet_codec_round_trip": true,
+    "actual_mouse_withdraw_deposit_page": true,
+    "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+    "native_display_projection_and_hide": true,
+    "display_captures": [
+      "legacy-private-display.png",
+      "legacy-public-display.png"
+    ],
+    "captures": [
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
+      "legacy-wireless-storage-scale-4.png"
+    ],
+    "scope": "Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+  },
+  "images": [
+    {
+      "name": "results/legacy-private-display.png",
+      "sha256": "1738bfc5ea5a7719371ed1d491d0996a99bed9dbff48d2b012bdc98e7e6709df",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-public-display.png",
+      "sha256": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-1.png",
+      "sha256": "d9200bd3e08d020037aed9dbb50e994e8b0d155b2ac6af4e6d105e30477dd947",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-2.png",
+      "sha256": "360969c1bda18c9ef52ee5b082b599639569e536adfa7ec7a19c1c17f0e3c70b",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-3.png",
+      "sha256": "c7fc4224288d04040590da50a9da7b761f20bdb471ef4649d32fc3066b71e7e4",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-scale-4.png",
+      "sha256": "74ce9c8aed3d523bfa8954a834d041c4c091151ccff62e839539aa62b62abbec",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "name": "results/legacy-wireless-storage-tooltip.png",
+      "sha256": "6d2e6c20b1463db6060e48074c45845f591afdd46a9c92abc04c62732c7f8c17",
+      "width": 1280,
+      "height": 960
+    }
+  ],
+  "conservation_checks": {
+    "withdrawal": {
+      "source_before": 64,
+      "source_after": 63,
+      "player_received": 1
+    },
+    "deposit": {
+      "player_before": 32,
+      "player_after": 31,
+      "source_slot_before": 32,
+      "source_slot_after": 33
+    },
+    "stale_old_revision_after_withdrawal": "REJECTED_WITHOUT_SECOND_WITHDRAWAL"
+  },
+  "visual_review": {
+    "reviewed": [
+      "legacy-private-display.png",
+      "legacy-public-display.png",
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
+      "legacy-wireless-storage-scale-4.png",
+      "legacy-wireless-storage-tooltip.png"
+    ],
+    "result": "PASS_FOUR_GUI_SCALES_TOOLTIP_PRIVATE_AND_PUBLIC_NETWORK_DISPLAY",
+    "notes": "All four storage scales fit with readable controls and deposit label; Diamond tooltip is present. Private/public world-display text is bright and legible, with neighboring blocks and floor still textured. Hiding is asserted through the native client projection, without a separate hidden-state image. Tutorial overlays and focus pausing are disabled only in the test profile."
+  },
+  "limitations": [
+    "Private offline integrated world and native packet codec round-trip; no dedicated multiplayer or online authentication acceptance",
+    "One south-facing network display; other reader/display/editor modes, faces, lighting conditions and resolutions remain separate",
+    "No installed optional providers, arbitrary user/modpack worlds or sustained performance acceptance"
+  ],
+  "rc_publication_cleared": false
+}
