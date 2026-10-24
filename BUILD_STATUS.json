@@ -54,13 +54,18 @@
     "candidate_runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a",
     "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
   },
-  "candidate_native_validation": "PENDING_DISPLAY_LIGHTING_FIX",
-  "production_smoke": "PENDING_FOR_THIS_CANDIDATE",
-  "generated_world_migration_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "candidate_native_validation": "PASS",
+  "production_smoke": "PASS_FOR_THIS_CANDIDATE",
+  "generated_world_migration_acceptance": "PASS_PREVIEW3_TO_CANDIDATE",
   "item_provider_uncertainty": "PERSISTENT_QUARANTINE_AND_SEALED_RECEIPT",
   "wireless_storage": "NATIVE_GUI_DEVELOPMENT",
   "acceptance_evidence": {
     "legacy_wireless_native": "docs/acceptance/rc-dev-legacy-wireless-native.json"
   },
-  "integrated_wireless_acceptance": "PENDING_FOR_THIS_CANDIDATE"
+  "integrated_wireless_acceptance": "PENDING_FOR_THIS_CANDIDATE",
+  "migration_workflow_run": "40111059152",
+  "candidate_workflow_run": "40111059152",
+  "candidate_source_commit": "f36adf9d45a6d33135a06789a6445e417f8fbff2",
+  "candidate_runtime_sha256": "4ea9269fdede91b5eee76c11658c5a79e1d297dbbfd54c0e73ad87e85444a214",
+  "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS"
 }
