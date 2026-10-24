@@ -39,7 +39,15 @@ with zipfile.ZipFile(qualified) as archive:
 runtime_hash=hashlib.sha256(runtime.read_bytes()).hexdigest()
 assert runtime_hash==status['candidate_runtime_sha256'],'Qualified production artifact checksum mismatch'
 
-probe=root/'build/libs'/('FoundationsPL4-'+target+'-'+status['version']+'-'+profile['probe_suffix']+'.jar');shutil.copyfile(probe,game/'mods/pl4-client-probe.jar')
+probe=root/'build/libs'/('FoundationsPL4-'+target+'-'+status['version']+'-'+profile['probe_suffix']+'.jar')
+if target=='1.6.4' and not probe.exists():
+    candidates=list((root/'build').rglob('*client-probe*-srg.jar'))
+    assert len(candidates)==1,dict(message='Expected one remapped probe',jars=[str(p.relative_to(root)) for p in (root/'build').rglob('*.jar')])
+    probe=candidates[0]
+with zipfile.ZipFile(probe) as archive:
+    marker='net/foundations/pl4/legacy/'+('Legacy164WirelessClientProbe' if target=='1.6.4' else 'LegacyWirelessClientProbe')+'.class'
+    assert marker in archive.namelist(),'Missing isolated client harness'
+shutil.copyfile(probe,game/'mods/pl4-client-probe.jar')
 with zipfile.ZipFile(runtime) as archive:assert not any('WirelessClientProbe' in n or '/tests/' in n for n in archive.namelist())
 
 forge_version=target+'-'+profile['forge']
@@ -100,7 +108,7 @@ forge_candidates=list(game.glob('*forge*'+profile['forge']+'*.jar'));assert len(
 # Client classes precede any server-JAR reference in the installer-created Forge manifest.
 classpath=[client,forge]+sorted((game/'libraries').rglob('*.jar'))
 assert not any('mergetool' in str(p).lower() or 'mapped_snapshot' in str(p) for p in classpath)
-(out/'stock-client-runtime.json').write_text(json.dumps(dict(minecraft=target,forge=profile['forge'],runtime_java=profile['java'],runtime_sha256=runtime_hash,source_commit=os.environ['PL4_CLIENT_SOURCE'],probe_sha256=hashlib.sha256(probe.read_bytes()).hexdigest(),client_sha1=version['downloads']['client']['sha1'],installer_sha1=expected,production_jar_matches_native_gate=True,development_game_classpath=False,scope='Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world.'),indent=2)+'\n')
+(out/'stock-client-runtime.json').write_text(json.dumps(dict(minecraft=target,forge=profile['forge'],runtime_java=profile['java'],runtime_sha256=runtime_hash,source_commit=os.environ['PL4_CLIENT_SOURCE'],probe_file=probe.name,probe_sha256=hashlib.sha256(probe.read_bytes()).hexdigest(),client_sha1=version['downloads']['client']['sha1'],installer_sha1=expected,production_jar_matches_native_gate=True,development_game_classpath=False,scope='Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world.'),indent=2)+'\n')
 identity=str(uuid.UUID(bytes=hashlib.md5(b'OfflinePlayer:PL4LegacyProbe').digest(),version=3))
 game_java=str(Path(os.environ['JAVA_HOME_7_X64'])/'bin/java') if target=='1.6.4' else 'java'
 cmd=[game_java,'-Xmx2G','-Djava.library.path='+str(natives),'-cp',os.pathsep.join(map(str,classpath)),'net.minecraft.launchwrapper.Launch','--version',target,'--gameDir',str(game),'--assetsDir',str(game_assets),'--username','PL4LegacyProbe','--tweakClass',profile['tweaker'],'--width','1280','--height','960']

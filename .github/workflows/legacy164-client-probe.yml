@@ -111,6 +111,8 @@ jobs:
           assert r['result']=='PASS' and r['signed_byte_revision']==70
           for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
+          assert r['native_display_projection_and_hide']
+          for name in r['display_captures']:assert (root/name).stat().st_size>1000
           assert len(r['captures'])==4
           for name in r['captures']:assert (root/name).stat().st_size>1000
           assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()

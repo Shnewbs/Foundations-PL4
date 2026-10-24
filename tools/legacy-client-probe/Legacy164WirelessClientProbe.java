@@ -37,6 +37,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public final class Legacy164WirelessClientProbe implements ITickHandler {
     private int phase,scale=1,oldRevision,lastLogged=-1;private long due,started=System.nanoTime();
     private final AtomicReference<String> serverResult=new AtomicReference<String>();
+    private boolean worldChecked;
     private final List<String> captures=new ArrayList<String>();
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){TickRegistry.registerTickHandler(this,Side.CLIENT);TickRegistry.registerTickHandler(this,Side.SERVER);}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}
@@ -63,6 +64,15 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
         check(LegacyWirelessStorage.bind(player,player.inventory.getCurrentItem(),(LegacyTile)world.getBlockTileEntity(0,200,0)),"binding failed");
         player.openGui(LegacyPL4.instance,0,world,0,0,0);
     }
+    private void setupDisplay(){
+        EntityPlayerMP p=serverPlayer();WorldServer world=(WorldServer)p.worldObj;
+        world.setBlock(1,200,0,LegacyPL4.DISPLAY.blockID,0,3);world.setBlock(1,200,-1,LegacyPL4.NETWORK_READER.blockID,0,3);
+        LegacyTile display=(LegacyTile)world.getBlockTileEntity(1,200,0),reader=(LegacyTile)world.getBlockTileEntity(1,200,-1);
+        display.owner=LegacyTile.identity(p);reader.owner=LegacyTile.identity(p);reader.onInventoryChanged();
+        display.displayFacing=3;display.publishReadings=false;display.displayChanged();
+        p.playerNetServerHandler.setPlayerLocation(1.5,199,2.2,180,0);
+    }
+    private LegacyTile clientDisplay(){return (LegacyTile)Minecraft.getMinecraft().theWorld.getBlockTileEntity(1,200,0);}
     private void mouseClick(int logicalX,int logicalY,boolean right)throws Exception{
         Minecraft mc=Minecraft.getMinecraft();ScaledResolution resolution=new ScaledResolution(mc.gameSettings,mc.displayWidth,mc.displayHeight);int factor=resolution.getScaleFactor();
         int left=(resolution.getScaledWidth()-176)/2,top=(resolution.getScaledHeight()-204)/2;
@@ -122,10 +132,15 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
             if(phase==9){schedule(new Runnable(){public void run(){check(serverPlayer().inventory.getStackInSlot(9).stackSize==31&&source().getStackInSlot(1).stackSize==33,"native deposit failed");}});phase=10;waitUntilNext();return;}
             if(phase==10){check("PASS".equals(result),"deposit check missing");mouseClick(157,9,false);phase=11;waitUntilNext();return;}
             if(phase==11){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).page==1,"native page request failed");}});phase=12;waitUntilNext();return;}
+            if(phase==15){check("PASS".equals(result),"display setup failed");check(clientDisplay().displayFacing==3&&clientDisplay().displayLines[1].equals("Private"),"private native projection missing");capture(mc,"legacy-private-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().worldObj.getBlockTileEntity(1,200,0);display.publishReadings=true;display.displayChanged();}});phase=16;waitUntilNext();return;}
+            if(phase==16){check("PASS".equals(result),"display publication failed");check(clientDisplay().displayLines[0].equals("PL4 Network")&&clientDisplay().displayLines[1].equals("Hosts: 4"),"public native projection missing");capture(mc,"legacy-public-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().worldObj.getBlockTileEntity(1,200,0);display.publishReadings=false;display.displayChanged();}});phase=17;waitUntilNext();return;}
+            if(phase==17){check("PASS".equals(result)&&clientDisplay().displayLines[1].equals("Private"),"hiding failed to clear projected text");worldChecked=true;phase=12;}
             if(phase==12){check("PASS".equals(result),"page check missing");
+                if(!worldChecked){mc.thePlayer.closeScreen();schedule(new Runnable(){public void run(){setupDisplay();}});phase=15;waitUntilNext();return;}
+
                 com.google.gson.JsonObject report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.6.4");report.addProperty("source_commit",System.getenv("PL4_CLIENT_SOURCE"));report.addProperty("result","PASS");
-                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");
-                com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(new com.google.gson.JsonPrimitive(name));report.add("captures",images);report.addProperty("scope","Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions and native window handlers/packet codecs; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets.");
+                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");report.addProperty("native_display_projection_and_hide",true);com.google.gson.JsonArray displays=new com.google.gson.JsonArray();displays.add(new com.google.gson.JsonPrimitive("legacy-private-display.png"));displays.add(new com.google.gson.JsonPrimitive("legacy-public-display.png"));report.add("display_captures",displays);
+                com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(new com.google.gson.JsonPrimitive(name));report.add("captures",images);report.addProperty("scope","Actual stock Forge client with the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets.");
                 try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=14;mc.shutdown();
             }
         }catch(Exception error){throw new IllegalStateException("Legacy wireless client probe failed",error);}
