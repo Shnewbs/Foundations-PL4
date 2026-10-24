@@ -1,4 +1,4 @@
-"""Launch a private stock 1.12.2 Forge client with the exact native-qualified production JAR.
+"""Launch a private stock legacy Forge client with the exact native-qualified production JAR.
 
 Build tools and mapped development game JARs never enter this runtime classpath.
 """
@@ -13,7 +13,7 @@ profiles={
 }
 profile=profiles[target]
 root=Path.cwd();out=Path(os.environ['PL4_CLIENT_OUTPUT']);game=root/'stock-client';game.mkdir(exist_ok=True);(game/'mods').mkdir(exist_ok=True)
-(game/'options.txt').write_text('tutorialStep:none\n')
+(game/'options.txt').write_text('tutorialStep:none\npauseOnLostFocus:false\n')
 
 def download(url,path,sha1=None):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
