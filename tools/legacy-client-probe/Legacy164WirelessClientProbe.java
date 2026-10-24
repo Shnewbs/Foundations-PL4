@@ -103,6 +103,9 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
         if(type.contains(TickType.SERVER)){Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
         if(!type.contains(TickType.CLIENT))return;Minecraft mc=Minecraft.getMinecraft();
         try{
+            // Keep the first-world inventory tutorial from covering native paging controls in captures.
+            for(java.lang.reflect.Field field:mc.guiAchievement.getClass().getDeclaredFields())if(net.minecraft.stats.Achievement.class.isAssignableFrom(field.getType())){field.setAccessible(true);field.set(mc.guiAchievement,null);}
+
             if(lastLogged!=phase){lastLogged=phase;System.out.println("PL4 WIRELESS CLIENT PHASE: "+phase);}
             if(System.nanoTime()-started>300_000_000_000L)throw new IllegalStateException("Timed out in probe phase "+phase);
             String result=serverResult.get();if(result!=null&&!"PASS".equals(result))throw new IllegalStateException(result);

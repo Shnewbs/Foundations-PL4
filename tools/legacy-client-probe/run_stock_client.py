@@ -8,8 +8,8 @@ import hashlib,json,os,shutil,subprocess,time,urllib.request,uuid,zipfile
 
 target=os.environ.get('PL4_CLIENT_MC','1.12.2')
 profiles={
-    '1.12.2':dict(forge='14.23.5.2864',artifact_sha256='ba7feeb795dfafceafc31fa9043fda2efea6472398db5138a939e227c36b71f3',runtime_suffix='',probe_suffix='client-probe',tweaker='net.minecraftforge.fml.common.launcher.FMLTweaker',java=8),
-    '1.6.4':dict(forge='9.11.1.1345',artifact_sha256='11da07e6c8890f0240d36be0bf18d705dd9f6fed0863aeb4873416606ee83516',runtime_suffix='-srg',probe_suffix='client-probe-srg',tweaker='cpw.mods.fml.common.launcher.FMLTweaker',java=7),
+    '1.12.2':dict(forge='14.23.5.2864',artifact_sha256='f85c669bff43f9e338665d1a02e0b5e0ba5955e395c2c706cb31f0af788cd4e9',runtime_suffix='',probe_suffix='client-probe',tweaker='net.minecraftforge.fml.common.launcher.FMLTweaker',java=8),
+    '1.6.4':dict(forge='9.11.1.1345',artifact_sha256='0e6433c784629d036282982503aeb7d684a9cf1cbe7baac268f52994bba3c9ff',runtime_suffix='-srg',probe_suffix='client-probe-srg',tweaker='cpw.mods.fml.common.launcher.FMLTweaker',java=7),
 }
 profile=profiles[target]
 root=Path.cwd();out=Path(os.environ['PL4_CLIENT_OUTPUT']);game=root/'stock-client';game.mkdir(exist_ok=True);(game/'mods').mkdir(exist_ok=True)
