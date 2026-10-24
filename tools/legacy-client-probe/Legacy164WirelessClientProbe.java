@@ -100,7 +100,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
             if(phase==0){if(!(mc.currentScreen instanceof GuiMainMenu))return;phase=1;mc.launchIntegratedServer("pl4-wireless-client-probe","PL4 Wireless Probe",new WorldSettings(0L,EnumGameType.CREATIVE,false,false,WorldType.FLAT));waitUntilNext();return;}
             if(phase==1){if(mc.thePlayer==null||mc.theWorld==null||mc.getIntegratedServer()==null)return;schedule(new Runnable(){public void run(){setup();}});phase=2;waitUntilNext();return;}
             if(phase==2){if(!(mc.currentScreen instanceof LegacyWirelessScreen)||!"PASS".equals(result))return;
-                mc.gameSettings.guiScale=scale;mc.resize(mc.displayWidth,mc.displayHeight);new java.awt.Robot().mouseMove(8,mc.displayHeight-8);phase=3;waitUntilNext();return;}
+                mc.gameSettings.guiScale=scale;ScaledResolution resized=new ScaledResolution(mc.gameSettings,mc.displayWidth,mc.displayHeight);mc.currentScreen.setWorldAndResolution(mc,resized.getScaledWidth(),resized.getScaledHeight());new java.awt.Robot().mouseMove(8,mc.displayHeight-8);phase=3;waitUntilNext();return;}
             if(phase==3){
                 ScaledResolution resolution=new ScaledResolution(mc.gameSettings,mc.displayWidth,mc.displayHeight);check(resolution.getScaleFactor()==scale,"wrong actual GUI scale");
                 String name="legacy-wireless-storage-scale-"+scale+".png";capture(mc,name);captures.add(name);
