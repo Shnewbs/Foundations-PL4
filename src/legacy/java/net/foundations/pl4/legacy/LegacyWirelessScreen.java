@@ -34,7 +34,7 @@ public final class LegacyWirelessScreen extends GuiContainer {
     @Override protected void keyTyped(char typed,int key){
         if(key==1){super.keyTyped(typed,key);return;}
         if(searchField.isFocused()){
-            if(typed<=126)searchField.textboxKeyTyped(typed,key);
+            searchField.textboxKeyTyped(typed,key); // Native Delete uses char 127; sanitize text after handling editing keys.
             String text=searchField.getText();StringBuilder bounded=new StringBuilder();
             for(int i=0;i<text.length();i++)if(text.charAt(i)>=32&&text.charAt(i)<=126)bounded.append(text.charAt(i));
             if(!bounded.toString().equals(text))searchField.setText(bounded.toString());return;
