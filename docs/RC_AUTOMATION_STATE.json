@@ -5,7 +5,12 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-search-2026-10-25T17",
+    "claimed_at": "2026-10-25 17:10:38 UTC",
+    "expires_at": "2026-10-25T18:30:00Z",
+    "purpose": "Bounded legacy storage search implementation and exact-source validation"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -18,7 +23,7 @@
   "local_validation": "7 native-archive qualification cases, 12 hourly-controller cases and 4 publication-guard cases passed; Java 8/7 syntax checks, workflow YAML and diff whitespace checks passed. Exact native and stock-client gates are recorded separately.",
   "next_work": [
     "Implement bounded legacy storage search and grouped quantities, preserving physical endpoint/NBT variant identity, revision fencing and escrow conservation; current sort modes remain per physical slot.",
-    "Continue advanced legacy editor/multipart parity or Forge 1.16.1\u20131.16.4 stock launcher acceptance; use current exact branches and protected publishers.",
+    "Continue advanced legacy editor/multipart parity or Forge 1.16.1–1.16.4 stock launcher acceptance; use current exact branches and protected publishers.",
     "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider acceptance. Keep RC clearance false until exact-source requirements pass.",
     "Attribute the extra required GameTest on 26.1.2/26.3: logs show 193 executed/passed per profile while branch metadata declares 192; preserve both counts until reconciled."
   ],
