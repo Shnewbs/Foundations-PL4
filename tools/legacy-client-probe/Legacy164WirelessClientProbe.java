@@ -103,7 +103,10 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
         if(type.contains(TickType.SERVER)){
             if(phase>=18&&Minecraft.getMinecraft().thePlayer!=null){EntityPlayerMP player=serverPlayer();if(player.openContainer instanceof LegacyWirelessContainer)observedServerWindow=(LegacyWirelessContainer)player.openContainer;
                 if(observedServerWindow!=null&&observedServerWindow.revision!=observedRevision){observedRevision=observedServerWindow.revision;System.out.println("SORT SERVER VIEW phase="+phase+" revision="+observedRevision+" order="+observedServerWindow.sortOrder()+" interact="+observedServerWindow.canInteractWith(player)+" selected="+player.inventory.currentItem);}
-                if(observedServerWindow!=null&&!(player.openContainer instanceof LegacyWirelessContainer))System.out.println("SORT WINDOW CLOSED phase="+phase+" revision="+observedServerWindow.revision+" interact="+observedServerWindow.canInteractWith(player)+" tool="+player.inventory.getCurrentItem());
+                if(observedServerWindow!=null&&!(player.openContainer instanceof LegacyWirelessContainer)&&observedRevision!=-1000){
+                    System.out.println("SORT WINDOW CLOSED phase="+phase+" revision="+observedServerWindow.revision+" interact="+observedServerWindow.canInteractWith(player)+" tool="+player.inventory.getCurrentItem()+" tag="+player.inventory.getCurrentItem().getTagCompound()+" position="+player.posX+","+player.posY+","+player.posZ+" resolve="+LegacyWirelessStorage.resolve(player,player.inventory.getCurrentItem()));
+                    try{for(String name:new String[]{"failed","binding"}){java.lang.reflect.Field field=LegacyWirelessContainer.class.getDeclaredField(name);field.setAccessible(true);System.out.println("SORT CLOSED FIELD "+name+"="+field.get(observedServerWindow));}}catch(Exception error){error.printStackTrace();}observedRevision=-1000;
+                }
             }
             Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
         if(!type.contains(TickType.CLIENT))return;Minecraft mc=Minecraft.getMinecraft();
