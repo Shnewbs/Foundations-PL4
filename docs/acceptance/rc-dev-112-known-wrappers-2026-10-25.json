@@ -1,0 +1,549 @@
+{
+  "recorded_date": "2026-10-25",
+  "minecraft": "1.12.2",
+  "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+  "result": "PASS_NATIVE_AND_SCOPED_STOCK_CLIENT_REGRESSION",
+  "scope": "Exact Forge VanillaDoubleChestItemHandler and exact plain InvWrapper classes; original handlers retain all transfers. No inferred mapping of opaque subclasses, CombinedInvWrapper or SidedInvWrapper.",
+  "contract": {
+    "physical_slots": "Native double chest uses getChest(slot<27) plus slot%27; exact InvWrapper uses getInv() plus native slot. Equality uses backing object identity and physical slot, never display contents or provider equality.",
+    "overlap": "Deduplicate each occupied physical slot, preserving first logical source and disjoint remaining halves; raw slot scans, including duplicates, still consume the existing 4096 work bound.",
+    "quarantine": "Known backing inventories join the existing same-network loaded endpoint uncertainty fence before ready-route selection.",
+    "stale_backing": "Known physical identity is retained in snapshots, compared when refreshing rows and rechecked before extraction, so identical contents on a replacement backing inventory cannot authorize an old click.",
+    "opaque_lifecycle": "Opaque adapters keep their existing logical node/slot identity so fresh wrappers do not disable established routes. Their hidden backing identity remains unqualified.",
+    "bounds": "No reflection or raw backing-inventory transfer bypass; original sided/provider handlers, full-NBT variant checks, shared transfer work, persistent escrow and nonwrapping revisions remain."
+  },
+  "native_run": {
+    "id": 40234316705,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40234316705",
+    "result": "PASS",
+    "evidence": {
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 232,
+        "passed": 232,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "a30cd79f1bd46b6f94aa038cf0ece34c84a89dcdfee10396a60efb4d2a4ba370",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+        "native_gate": "PASS",
+        "expected_fixtures": 232,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "900b1932fc19ddf12bd578353ac09424a168bd73011c9a459412982b31d4ed39",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "807334d5ae02c03c08298fdad7cfead8d282a530db8391cce3e056cd9e30f1b7",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "c19aa053f96f75b79e09a7b15681d1e32db8d908485812a090158b46f341c391",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "a30cd79f1bd46b6f94aa038cf0ece34c84a89dcdfee10396a60efb4d2a4ba370"
+        },
+        "workflow_run": "40234316705",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "a30cd79f1bd46b6f94aa038cf0ece34c84a89dcdfee10396a60efb4d2a4ba370",
+        "migration_fixture_sha256": "900b1932fc19ddf12bd578353ac09424a168bd73011c9a459412982b31d4ed39",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "a30cd79f1bd46b6f94aa038cf0ece34c84a89dcdfee10396a60efb4d2a4ba370",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "artifact_id": 12614695315,
+      "archive_sha256": "024a8969641d7d85910426a72b788ff925da6e0273d26cf6aeadc28d67765245",
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "native_log_sha256": "6dc2e75a23948f49d16530790576d9b0c8b8e367b6fc87333654129ca8371525",
+        "success_markers": [
+          "[21:12:54] [Server thread/INFO] [STDOUT]: [net.foundations.pl4.legacy.tests.NativeScenarios:started:277]: PL4 LEGACY SCENARIOS: 232/232"
+        ],
+        "search_cases": {
+          "wireless search substring is case insensitive and read only": "PASS",
+          "wireless search blank matches physical rows": "PASS",
+          "wireless search no match has no fallback": "PASS",
+          "wireless search invalid text fails closed": "PASS",
+          "wireless search maximum length is enforced": "PASS",
+          "wireless search filtering composes with count sorting": "PASS",
+          "wireless search resets page and invalidates old actions": "PASS",
+          "wireless search stale character cannot append twice": "PASS",
+          "wireless search backspace clear and no-op": "PASS",
+          "wireless search append over bound is no-op": "PASS",
+          "wireless search cannot bypass held-tool authorization": "PASS",
+          "wireless search blocks quick move right click and invalid controls": "PASS",
+          "wireless search properties synchronize bounded authoritative text": "PASS",
+          "wireless search selected variant conserves items": "PASS",
+          "wireless search exhaustion never wraps stale revisions": "PASS",
+          "wireless search never reveals foreign network rows": "PASS"
+        },
+        "grouping_cases": {
+          "wireless grouping merges matching slots across endpoints": "PASS",
+          "wireless grouping keeps custom names separate": "PASS",
+          "wireless grouping keeps opaque full NBT variants separate": "PASS",
+          "wireless grouping keeps metadata variants separate": "PASS",
+          "wireless grouping preview snapshots remain read only": "PASS",
+          "wireless grouping physical rows remain selectable": "PASS",
+          "wireless grouping count sort uses aggregate totals": "PASS",
+          "wireless grouping filter and grouping compose": "PASS",
+          "wireless grouping network order uses first physical occurrence": "PASS",
+          "wireless grouping large totals never overflow int or stack byte": "PASS",
+          "wireless grouping withdraws across physical slots conservatively": "PASS",
+          "wireless grouping one-item action stays one item": "PASS",
+          "wireless grouping full player inventory prevents group extraction": "PASS",
+          "wireless grouping partial player capacity conserves group total": "PASS",
+          "wireless grouping changed member count rejects entire old group": "PASS",
+          "wireless grouping changed member NBT rejects entire old group": "PASS",
+          "wireless grouping new matching member invalidates old group": "PASS",
+          "wireless grouping removed endpoint invalidates old group": "PASS",
+          "wireless grouping foreign owner cannot withdraw group": "PASS",
+          "wireless grouping disabled transport leaves grouped view read only": "PASS",
+          "wireless grouping shared work budget cannot reset per source": "PASS",
+          "wireless grouping provider post-mutation failure never replays earlier sources": "PASS",
+          "wireless grouping control resets page and fences stale withdrawals": "PASS",
+          "wireless grouping control rejects stale duplicate and invalid modes": "PASS",
+          "wireless grouping control cannot bypass selected tool": "PASS",
+          "wireless grouping un-grouping restores physical previews": "PASS",
+          "wireless grouping member redistribution invalidates equal aggregate": "PASS",
+          "wireless grouping signed short segments preserve large totals": "PASS",
+          "wireless grouping malformed totals and metadata are bounded": "PASS",
+          "wireless grouping display formatting stays compact without overstatement": "PASS",
+          "wireless grouping revision exhaustion cannot wrap grouping actions": "PASS"
+        },
+        "alias_cases": {
+          "wireless alias shared native handler counted once": "PASS",
+          "wireless alias shared handler withdrawal conserves physical quantity": "PASS",
+          "wireless alias quarantine fences healthy shared route": "PASS",
+          "wireless alias quarantine blocks deposits through healthy route": "PASS",
+          "wireless alias distinct equal handlers remain independent": "PASS",
+          "wireless alias blocked independent handler leaves healthy source": "PASS"
+        },
+        "wrapper_cases": {
+          "wireless wrapper native double chest totals each physical slot once": "PASS",
+          "wireless wrapper native double chest withdrawal conserves both halves": "PASS",
+          "wireless wrapper native double chest quarantine crosses halves": "PASS",
+          "wireless wrapper removed double chest half rejects old roster": "PASS",
+          "wireless wrapper distinct plain wrappers share one backing inventory": "PASS",
+          "wireless wrapper equal independent inventories remain separate": "PASS",
+          "wireless wrapper partial overlap preserves second combined half": "PASS",
+          "wireless wrapper combined first overlap stays order independent": "PASS",
+          "wireless wrapper quarantine crosses distinct plain wrapper objects": "PASS",
+          "wireless wrapper replacement with equal contents invalidates old group": "PASS",
+          "wireless wrapper opaque recreated adapters preserve logical transfer": "PASS"
+        }
+      }
+    }
+  },
+  "main_native": {
+    "id": 40234316705,
+    "result": "PASS_192_PINNED_SOURCE",
+    "evidence": {
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "d79a1144043baad0a9b44193a7806b674dcfca97",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40234316705",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/rc-development-gate.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "validated_loader_profiles": [
+          null
+        ],
+        "native_coverage": {},
+        "source_parent": "d79a1144043baad0a9b44193a7806b674dcfca97",
+        "workflow_run": "40234316705",
+        "artifact_sha256": {
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182"
+        },
+        "performance_source_sha256": {
+          "NetworkEngine.java": "72f667ffd97e5522876a0a77f62acc886dcf80d861c14c8399649b3241e1c9e6",
+          "TransferEngine.java": "aaa7e4b190a37f6260fb10f1a192c98f0fb459e5de4e51ba316480cb495fada7"
+        },
+        "rc_publication_cleared": false,
+        "remaining_acceptance": [
+          "installed optional providers",
+          "actual client UI",
+          "live multiplayer",
+          "world migration",
+          "measured large-network performance",
+          "cross-port feature parity"
+        ]
+      },
+      "artifact_id": 12614172532,
+      "archive_sha256": "222bb4a4e5866fc0f6cb48c4159972b585fdfd15ea09b87f6bab2f1662386a57",
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "native_log_sha256": "6f5c2e4c69c2c6f252b2f8e4f073b4c422555b572372ab9a4ce30053ea96fc18",
+        "success_markers": [
+          "[21:13:42] [Server thread/INFO] [minecraft/GameTestServer]: All 192 required tests passed :)"
+        ]
+      }
+    }
+  },
+  "retained_targets": {
+    "count": 22,
+    "evidence": [
+      "rc-dev-164-target-aliases-2026-10-25.json",
+      "rc-dev-legacy-grouping-2026-10-25.json"
+    ],
+    "note": "1.6.4 and 21 modern targets retain qualified exact-source artifacts; not 24 fresh builds."
+  },
+  "publication_guard_review": {
+    "branch": "mc/1.12.2",
+    "inspected_parent": "c6c2a091d7a55085c03be9a72d785e3d4fa78dc8",
+    "publishers": [
+      ".github/workflows/release.yml",
+      ".github/workflows/legacy112-native.yml"
+    ],
+    "guards_unchanged": true,
+    "policy_regressions_passed": 4,
+    "archive_qualification_regressions_passed": 7,
+    "automatic_branch_run": 40234111670,
+    "automatic_native_marker": "232/232",
+    "publication_conclusion": "skipped",
+    "observed_hold": "Development snapshots are not qualified releases"
+  },
+  "source_history": [
+    {
+      "source": "025671f29c09a0889bef136f6535be4f0e88aae0",
+      "automatic_branch_run": 40233995724,
+      "result": "PASS_AUTOMATIC_BRANCH_ONLY",
+      "superseded": "Added opaque recreated-wrapper lifecycle preservation and an additional fixture before pinned qualification."
+    },
+    {
+      "source": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+      "result": "PASS_232_EXACT_NATIVE"
+    }
+  ],
+  "limitations": [
+    "Native fixtures cover actual adjacent vanilla double-chest halves plus plain/combined native wrapper overlap, known backing replacement, quarantine and recreated opaque wrapper transfer. This is not installed-provider certification.",
+    "SidedInvWrapper and general CombinedInvWrapper hide backing mappings; distinct opaque wrapper alias identity remains open. Logical routes are preserved without inventing shared physical identity.",
+    "Cross-network aliases, removed/rebound endpoints and durable backing-inventory uncertainty still require adversarial acceptance on both legacy ports.",
+    "Advanced legacy editor/multipart, installed providers/fallbacks, broader dedicated multiplayer, arbitrary copied user worlds and sustained active-provider/full-server performance remain open."
+  ],
+  "failed_native_cases": 0,
+  "rc_publication_cleared": false,
+  "new_github_releases": [],
+  "new_curseforge_uploads": [],
+  "client": {
+    "workflow_run": 40234570913,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40234570913",
+    "artifact": {
+      "id": 12614691663,
+      "name": "legacy-wireless-real-client-40234570913-1",
+      "size_in_bytes": 470596,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12614691663",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12614691663/zip",
+      "expired": false,
+      "created_at": "2026-10-25T21:18:52Z",
+      "expires_at": "2026-11-08T21:18:51Z",
+      "updated_at": "2026-10-25T21:18:52Z",
+      "digest": "sha256:5017d750646880fdc47d71004e562aea36143a36d52f9c7c8487ce223c80b4a9",
+      "workflow_run": {
+        "id": 40234570913,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "2f233e84b643bfe2f39954cbad5106ee825a6e5c"
+      }
+    },
+    "archive_digest_verified": true,
+    "runtime": {
+      "minecraft": "1.12.2",
+      "forge": "14.23.5.2864",
+      "runtime_java": 8,
+      "runtime_sha256": "a30cd79f1bd46b6f94aa038cf0ece34c84a89dcdfee10396a60efb4d2a4ba370",
+      "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+      "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+      "probe_sha256": "952feb5b33cc45f00c73c8f298f379539789dc7a6285cc30b2ac44c6e2911265",
+      "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+      "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+      "production_jar_matches_native_gate": true,
+      "development_game_classpath": false,
+      "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+    },
+    "assertions": {
+      "minecraft": "1.12.2",
+      "source_commit": "a29ed51d92ea96013e4a90a6bf642bbab90c78a2",
+      "result": "PASS",
+      "native_wireless_withdrawal": true,
+      "stale_replay_rejected": true,
+      "native_wireless_deposit": true,
+      "native_paging": true,
+      "native_grouping_totals_variants_and_conservation": true,
+      "stale_group_replay_rejected": true,
+      "group_variant_capture": "legacy-wireless-grouped-variants.png",
+      "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+      "native_keyboard_repeat_lifecycle": true,
+      "native_search_caret_edit": true,
+      "native_search_typing_clear_no_match": true,
+      "stale_search_replay_rejected": true,
+      "search_capture": "legacy-wireless-storage-search.png",
+      "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+      "native_sorting": true,
+      "stale_sort_replay_rejected": true,
+      "sorted_capture": "legacy-wireless-storage-sorted.png",
+      "signed_byte_revision": 70,
+      "native_packet_codec_round_trip": true,
+      "actual_mouse_withdraw_deposit_page": true,
+      "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+      "native_display_projection_and_hide": true,
+      "display_captures": [
+        "legacy-private-display.png",
+        "legacy-public-display.png"
+      ],
+      "captures": [
+        "legacy-wireless-storage-scale-1.png",
+        "legacy-wireless-storage-scale-2.png",
+        "legacy-wireless-storage-scale-3.png",
+        "legacy-wireless-storage-scale-4.png"
+      ],
+      "grouped_captures": [
+        "legacy-wireless-grouped-scale-1.png",
+        "legacy-wireless-grouped-scale-2.png",
+        "legacy-wireless-grouped-scale-3.png",
+        "legacy-wireless-grouped-scale-4.png"
+      ],
+      "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+    },
+    "captures": [
+      {
+        "name": "legacy-private-display.png",
+        "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-public-display.png",
+        "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-grouped-scale-1.png",
+        "sha256": "3e83f8ed30b7fac2254df8c5f30439e3ae2ad17ef00ebeaf5a0e85c66fb405c6",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-grouped-scale-2.png",
+        "sha256": "23f3e7d08cb6313fdddd01d85623b226e654d36dcf562df17dca2914b7181e7a",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-grouped-scale-3.png",
+        "sha256": "b57485c5f6507a835aecff3b2a4b18499408a27076e1203d41b45373256e5bac",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-grouped-scale-4.png",
+        "sha256": "134dd12e56a2ac31426bb26766c98399ed3c42cbdae81721fa103f7bd8549085",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "PASS_SCOPED",
+        "committed_path": "screenshots/rc-112-wrappers-2026-10-25/legacy-wireless-grouped-scale-4.png"
+      },
+      {
+        "name": "legacy-wireless-grouped-variants.png",
+        "sha256": "a271a38567cc30a2bc2ee6e7f87f4673160ee08026d955c180f4d500e5e59bda",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "PASS_SCOPED",
+        "committed_path": "screenshots/rc-112-wrappers-2026-10-25/legacy-wireless-grouped-variants.png"
+      },
+      {
+        "name": "legacy-wireless-grouped-withdrawal.png",
+        "sha256": "aa0ee786cda62cec1a1c804840b3af00cff5d0d8ffcae43c5a2f596edfcf5b9a",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "PASS_SCOPED",
+        "committed_path": "screenshots/rc-112-wrappers-2026-10-25/legacy-wireless-grouped-withdrawal.png"
+      },
+      {
+        "name": "legacy-wireless-storage-scale-1.png",
+        "sha256": "ea14e31242c68101739ef40e8e521ef3a72ad86c994f3ff8eacc81ebc57884f0",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-scale-2.png",
+        "sha256": "172fdfaac2d9359e0761daaca211d35bc0e838e7ed6a5f9fbbe87e8f1223b7b0",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-scale-3.png",
+        "sha256": "49ca1b7d90644a86e295441b21139689e9198abe8815e5bd87b4405c972e9b8c",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-scale-4.png",
+        "sha256": "6ee58d9d4c1203ba4041a7b19cc1849d6144ea7a209c8e80d37cff03ab06ed44",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-search-empty.png",
+        "sha256": "f4dedf51ac9414fa03be4f3564287cedc5af88a52b82f8b6977ed311f1349ba1",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "PASS_SCOPED",
+        "committed_path": "screenshots/rc-112-wrappers-2026-10-25/legacy-wireless-storage-search-empty.png"
+      },
+      {
+        "name": "legacy-wireless-storage-search.png",
+        "sha256": "b053bb81d2f0fe04abd33cdc2d6b673494621c48a4a260f9d409a05a0dc9047a",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-sorted.png",
+        "sha256": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      },
+      {
+        "name": "legacy-wireless-storage-tooltip.png",
+        "sha256": "1ddc7d43d45d8d7d73d217266828373096a33c2396ca4fed126b200e288ca154",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "committed_path": null
+      }
+    ],
+    "manually_reviewed": 4,
+    "findings": [
+      "Grouped scale-4 totals 864/833/63 and exact hover total fit; headers remain readable.",
+      "Plain iron 801 and NBT variant 32 stay separate.",
+      "The tested 64-item withdrawal leaves total 737 and tagged variant 32; exact hover total and player stack agree.",
+      "No-match xyz query remains empty."
+    ],
+    "log_sha256": {
+      "client.log": "a14cc7a1cbca944c013138c694d455cec02c66a383442544167153eb7a69c326",
+      "build.log": "723e36e6ad135d90651637d7d43646b58899704a07f9eee0ee5a33b28d03c47a"
+    },
+    "limitations": "Normal generated offline integrated-world screen regression. Known double-chest/wrapper overlap and replacement behavior is exercised in native fixtures, not installed-provider clients."
+  }
+}
