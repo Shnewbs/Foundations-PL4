@@ -37,7 +37,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public final class Legacy164WirelessClientProbe implements ITickHandler {
     private int phase,scale=1,oldRevision,lastLogged=-1;private long due,started=System.nanoTime();
     private final AtomicReference<String> serverResult=new AtomicReference<String>();
-    private boolean worldChecked,sortChecked;
+    private boolean worldChecked,sortChecked;private LegacyWirelessContainer observedServerWindow;private int observedRevision=-999;
     private final List<String> captures=new ArrayList<String>();
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){TickRegistry.registerTickHandler(this,Side.CLIENT);TickRegistry.registerTickHandler(this,Side.SERVER);}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}
@@ -100,7 +100,12 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
     private LegacyWirelessContainer clientContainer(){return (LegacyWirelessContainer)Minecraft.getMinecraft().thePlayer.openContainer;}
     private void waitUntilNext(){due=System.nanoTime()+2_000_000_000L;}
     @Override public void tickEnd(EnumSet<TickType> type,Object... data){
-        if(type.contains(TickType.SERVER)){Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
+        if(type.contains(TickType.SERVER)){
+            if(phase>=18&&Minecraft.getMinecraft().thePlayer!=null){EntityPlayerMP player=serverPlayer();if(player.openContainer instanceof LegacyWirelessContainer)observedServerWindow=(LegacyWirelessContainer)player.openContainer;
+                if(observedServerWindow!=null&&observedServerWindow.revision!=observedRevision){observedRevision=observedServerWindow.revision;System.out.println("SORT SERVER VIEW phase="+phase+" revision="+observedRevision+" order="+observedServerWindow.sortOrder()+" interact="+observedServerWindow.canInteractWith(player)+" selected="+player.inventory.currentItem);}
+                if(observedServerWindow!=null&&!(player.openContainer instanceof LegacyWirelessContainer))System.out.println("SORT WINDOW CLOSED phase="+phase+" revision="+observedServerWindow.revision+" interact="+observedServerWindow.canInteractWith(player)+" tool="+player.inventory.getCurrentItem());
+            }
+            Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
         if(!type.contains(TickType.CLIENT))return;Minecraft mc=Minecraft.getMinecraft();
         try{
             // Keep the first-world inventory tutorial from covering native paging controls in captures.
