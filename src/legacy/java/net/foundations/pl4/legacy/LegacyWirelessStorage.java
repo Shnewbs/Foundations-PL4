@@ -28,7 +28,32 @@ public final class LegacyWirelessStorage {
     }
     public static final class Entry {
         public final LegacyTile node;public final int slot;public final ItemStack snapshot;
-        private Entry(LegacyTile node,int slot,ItemStack stack){this.node=node;this.slot=slot;this.snapshot=stack.copy();}
+        private final PhysicalSlot physical;
+        private Entry(LegacyTile node,int slot,ItemStack stack,PhysicalSlot physical){this.node=node;this.slot=slot;this.snapshot=stack.copy();this.physical=physical;}
+    }
+    /** Native APIs only: never infer physical identity from visible stacks or provider equality. */
+    private static Object[] backing(net.minecraftforge.items.IItemHandler handler){
+        if(handler.getClass()==net.minecraftforge.items.VanillaDoubleChestItemHandler.class){
+            net.minecraftforge.items.VanillaDoubleChestItemHandler h=(net.minecraftforge.items.VanillaDoubleChestItemHandler)handler;
+            Object a=h.getChest(true),b=h.getChest(false);if(a==null||b==null)throw new IllegalStateException("Incomplete native double chest");return new Object[]{handler,a,b};
+        }
+        if(handler.getClass()==net.minecraftforge.items.wrapper.InvWrapper.class)return new Object[]{handler,((net.minecraftforge.items.wrapper.InvWrapper)handler).getInv()};
+        return new Object[]{handler};
+    }
+    private static final class PhysicalSlot {
+        final Object inventory;final int slot;
+        PhysicalSlot(Object inventory,int slot){this.inventory=inventory;this.slot=slot;}
+        @Override public int hashCode(){return 31*System.identityHashCode(inventory)+slot;}
+        @Override public boolean equals(Object other){return other instanceof PhysicalSlot&&inventory==((PhysicalSlot)other).inventory&&slot==((PhysicalSlot)other).slot;}
+    }
+    private static PhysicalSlot physical(net.minecraftforge.items.IItemHandler handler,int slot){
+        if(handler.getClass()==net.minecraftforge.items.VanillaDoubleChestItemHandler.class){
+            if(slot<0||slot>=54)throw new IllegalArgumentException("Invalid native double chest slot");
+            Object chest=((net.minecraftforge.items.VanillaDoubleChestItemHandler)handler).getChest(slot<27);
+            if(chest==null)throw new IllegalStateException("Missing native chest half");return new PhysicalSlot(chest,slot%27);
+        }
+        if(handler.getClass()==net.minecraftforge.items.wrapper.InvWrapper.class)return new PhysicalSlot(((net.minecraftforge.items.wrapper.InvWrapper)handler).getInv(),slot);
+        return new PhysicalSlot(handler,slot);
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
@@ -40,12 +65,13 @@ public final class LegacyWirelessStorage {
         for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
             int role=node.role();if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS)continue;
             net.minecraftforge.items.IItemHandler handler=node.inventory();handlers.put(node,handler);candidates.add(node);
-            if(!ready(node)){blockedTargets.add(node.fluidTarget());if(handler!=null)blockedHandlers.add(handler);}
+            if(!ready(node)){blockedTargets.add(node.fluidTarget());if(handler!=null)for(Object id:backing(handler))blockedHandlers.add(id);}
         }
         Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
         Set<Object> seenHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
         for(LegacyTile node:candidates){net.minecraftforge.items.IItemHandler handler=handlers.get(node);
-            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget())||blockedHandlers.contains(handler))continue;
+            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget()))continue;
+            boolean blocked=false;if(handler!=null)for(Object id:backing(handler))if(blockedHandlers.contains(id)){blocked=true;break;}if(blocked)continue;
             if(seen.contains(node.fluidTarget())||(handler!=null&&seenHandlers.contains(handler)))continue;
             seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
         }return result;
@@ -59,9 +85,9 @@ public final class LegacyWirelessStorage {
     }
     private static StorageInventory inventory(LegacyTile node){net.minecraftforge.items.IItemHandler handler=node.inventory();return handler==null?null:new StorageInventory(handler);}
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
-        List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;
+        List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();
         try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
-            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
+            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack)){PhysicalSlot id=physical(inventory.nativeInventory,i);if(seen.add(id))result.add(new Entry(node,i,stack,id));}}
         }}catch(RuntimeException provider){result.clear();}return result;
     }
     public static final int MAX_SEARCH=32;
@@ -127,7 +153,7 @@ public final class LegacyWirelessStorage {
     }
     public static boolean sameRow(Row a,Row b){
         if(a.grouped!=b.grouped||a.total!=b.total||!LegacyTile.STACKS.same(a.snapshot,b.snapshot)||a.sources.size()!=b.sources.size())return false;
-        for(int i=0;i<a.sources.size();i++){Entry x=a.sources.get(i),y=b.sources.get(i);if(x.node!=y.node||x.slot!=y.slot||!ItemStack.areItemStacksEqual(x.snapshot,y.snapshot))return false;}
+        for(int i=0;i<a.sources.size();i++){Entry x=a.sources.get(i),y=b.sources.get(i);if(x.node!=y.node||x.slot!=y.slot||!x.physical.equals(y.physical)||!ItemStack.areItemStacksEqual(x.snapshot,y.snapshot))return false;}
         return true;
     }
     public static String compactTotal(long value){
@@ -170,6 +196,7 @@ public final class LegacyWirelessStorage {
     }
     private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
         if(source==null||!ready(entry.node)||entry.slot<0||!work.take()||entry.slot>=Math.min(source.slots(),LegacyPL4.slotLimit)||!work.take())return 0;
+        if(!entry.physical.equals(physical(source.nativeInventory,entry.slot)))return 0;
         ItemStack current=source.peek(entry.slot);if(exact?!ItemStack.areItemStacksEqual(current,entry.snapshot):!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
         try{return ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(entry.node),one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
