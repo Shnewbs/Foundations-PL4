@@ -5,52 +5,45 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-alias164-2026-10-25T20",
-    "claimed_at": "2026-10-25T20:09:24Z",
-    "expires_at": "2026-10-25T20:55:00Z",
-    "purpose": "Implement 1.6.4 same-target quarantine fencing and exact native/client regression",
-    "renewed_at": "2026-10-25T20:14:17Z"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40224757343,
+  "last_verified_legacy_native_run": 40229644134,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40225003401,
-    "1.6.4": 40221632891
+    "1.6.4": 40229923358
   },
-  "current_checkpoint": "1.6.4 same-target quarantine fencing implemented at f6007f4e; hourly native run 40229644134 artifact passes 224/224 including 7 new alias cases, production-only boot and generated preview.3 migration; production/archive digests verified. Exact production stock client regression next; broader RC gates remain false.",
-  "local_validation": "1.12.2 native 221/221 and main 192 passed; native archive and packaged JAR digests verified. Exact-JAR stock client PASS. 4 publisher guard and 7 archive qualification regressions passed. Local JDK unavailable; exact Java 8 API compilation completed on native runner. Shared-handler coverage is synthetic native fixtures, not installed-provider acceptance.",
+  "current_checkpoint": "1.6.4 source f6007f4e now fences quarantined/pending target coordinates before ready-route selection. Passed 224/224, including 7 new same-target alias cases, production-only startup and generated preview.3 migration in hourly run 40229644134. Main source 72bb3745 passed 192. Exact production stock client 40229923358 passed group/search/sort/transfer/replay/codec/privacy regression; 4 captures reviewed/committed, all 16 capture hashes recorded. Automatic native branch validation 40229581345 passed with publication step observed skipped. 22 unchanged exact targets retain qualified artifacts. No RC clearance, new GitHub release or CurseForge upload.",
+  "local_validation": "Exact Java 7 runtime/Java 8 native compilation and 224 native cases passed; seven new same-target alias cases parsed from actual log. Main 192 passed. Native archive/JAR and client production SRG hashes verified. 4 publication guard and 7 archive qualification regressions passed. Current scoped offline integrated client and four reviewed captures passed; installed-provider and broader acceptance remain separate.",
   "next_work": [
-    "Add 1.6.4 same-target quarantine/alias native fixtures and implement conservative fencing as required; this port uses IInventory, not Forge capabilities. Do not transfer 1.12.2 alias acceptance onto it.",
-    "Define bounded physical-slot identity for distinct combined/sided wrapper objects over one backing inventory and test alias ordering, quarantine and source-roster changes; never deduplicate by equal visible contents.",
+    "Add exact 1.12.2 adjacent vanilla double-chest and distinct combined/sided-wrapper fixtures. Define bounded physical-slot identity before deduplication; preserve sided permissions, ordered full-NBT sources, shared work and quarantine. Never infer shared storage from equal contents.",
+    "Add adversarial cross-network and removed/rebound endpoint uncertainty fixtures on both legacy ports. Current same-target/handler fences observe loaded same-owner endpoints in one network; do not claim global durable backing-inventory quarantine.",
     "Continue advanced legacy editor/multipart and Forge 1.16.1–1.16.4 launcher profiles, installed optional providers/fallbacks, dedicated multiplayer, copied user worlds and sustained active-provider/full-server performance. Keep exact-source RC clearance false until applicable gates pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
-  "main_native_validation_run": 40224490194,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+  "main_native_validation_run": 40229644134,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40224490194,
-    40224757343
+    40229644134
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40224757343,
-    "1.6.4": 40221183821
+    "1.6.4": 40229644134
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
-    "1.6.4": "docs/acceptance/rc-dev-1.6.4-grouping-stock-client.json"
+    "1.6.4": "docs/acceptance/rc-dev-164-target-aliases-2026-10-25.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "1d5eb5a565d8aebc0778d27aef997f778a4e20fe",
+  "native_main_source_commit": "72bb3745686d3c31cf5223b14fb7565226333f64",
   "last_writer_release": {
-    "owner": "pl4-alias-2026-10-25T19",
-    "released_at": "2026-10-25T19:19:33Z",
-    "checkpoint": "1.12.2 handler identity/quarantine fix, 221 native and exact stock-client regression preserved; broader all-version RC goal open."
+    "owner": "pl4-alias164-2026-10-25T20",
+    "released_at": "2026-10-25T20:22:32Z",
+    "checkpoint": "1.6.4 same-target alias quarantine fix, 224 native and exact stock-client regression preserved; all-version RC goal remains open."
   }
 }
