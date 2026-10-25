@@ -9,7 +9,8 @@
     "owner": "pl4-wrapper-2026-10-25T21",
     "claimed_at": "2026-10-25T21:04:00Z",
     "expires_at": "2026-10-25T21:55:00Z",
-    "purpose": "Implement exact 1.12.2 vanilla combined chest and wrapper identity acceptance"
+    "purpose": "Implement exact 1.12.2 vanilla combined chest and wrapper identity acceptance",
+    "renewed_at": "2026-10-25T21:13:43Z"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
@@ -19,7 +20,7 @@
     "1.12.2": 40225003401,
     "1.6.4": 40229923358
   },
-  "current_checkpoint": "1.6.4 source f6007f4e now fences quarantined/pending target coordinates before ready-route selection. Passed 224/224, including 7 new same-target alias cases, production-only startup and generated preview.3 migration in hourly run 40229644134. Main source 72bb3745 passed 192. Exact production stock client 40229923358 passed group/search/sort/transfer/replay/codec/privacy regression; 4 captures reviewed/committed, all 16 capture hashes recorded. Automatic native branch validation 40229581345 passed with publication step observed skipped. 22 unchanged exact targets retain qualified artifacts. No RC clearance, new GitHub release or CurseForge upload.",
+  "current_checkpoint": "1.12.2 known native double-chest/plain InvWrapper physical-slot mapping, cross-wrapper quarantine and physical-backing stale-roster checks implemented at a29ed51d. Hourly run 40234316705 artifact passed 232/232 including 11 new wrapper cases, production-only startup and generated preview.3 migration; archive/JAR digests verified. Opaque recreated adapters retain existing logical routes. Exact stock client regression next; broader RC clearance remains false.",
   "local_validation": "Exact Java 7 runtime/Java 8 native compilation and 224 native cases passed; seven new same-target alias cases parsed from actual log. Main 192 passed. Native archive/JAR and client production SRG hashes verified. 4 publication guard and 7 archive qualification regressions passed. Current scoped offline integrated client and four reviewed captures passed; installed-provider and broader acceptance remain separate.",
   "next_work": [
     "Add exact 1.12.2 adjacent vanilla double-chest and distinct combined/sided-wrapper fixtures. Define bounded physical-slot identity before deduplication; preserve sided permissions, ordered full-NBT sources, shared work and quarantine. Never infer shared storage from equal contents.",
