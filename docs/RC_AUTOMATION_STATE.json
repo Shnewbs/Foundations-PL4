@@ -5,7 +5,12 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-group-2026-10-25T18",
+    "claimed_at": "2026-10-25T18:08:00Z",
+    "expires_at": "2026-10-25T19:20:00Z",
+    "purpose": "Implement bounded exact-NBT grouped legacy storage rows and validate conservation in exact native/client profiles"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
