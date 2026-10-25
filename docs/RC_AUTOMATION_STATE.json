@@ -8,7 +8,7 @@
   "writer_lease": {
     "owner": "pl4-legacy-search-20261025-1507",
     "claimed_at": "2026-10-25T15:08:25.266Z",
-    "expires_at": "2026-10-25T15:53:25.266Z",
+    "expires_at": "2026-10-25T16:15:44.207Z",
     "expected_parent": "763ee242d52bc6aba59921a73fa4f60ccaa9e5d7"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
@@ -19,7 +19,7 @@
     "1.6.4": 40111601064,
     "1.12.2": 40111601092
   },
-  "current_checkpoint": "Legacy sorting implemented. 1.12.2 passed 168 native scenarios, production startup and generated preview.3 migration in run 40205878290. 1.6.4 fixture item-name API mismatch repaired in d354b250618bb046d226befbbb896ff55c4e4bf7; its one-target retry passed 168 native scenarios, production startup and generated migration. All 24 exact targets have revalidated native evidence. Stock-client sorting acceptance is pending.",
+  "current_checkpoint": "Legacy sorting implemented. 1.12.2 passed 168 native scenarios, production startup and generated preview.3 migration in run 40205878290. 1.6.4 fixture item-name API mismatch repaired in d354b250618bb046d226befbbb896ff55c4e4bf7; its one-target retry passed 168 native scenarios, production startup and generated migration. All 24 exact targets have revalidated native evidence. Stock-client sorting acceptance is pending. 1.12.2 stock-client sorting/order/replay checks passed in run 40207248842; all eight captures were reviewed. The 1.6.4 stock client closes its window when canInteractWith becomes false at revision 75; targeted binding/position diagnostics are in progress.",
   "local_validation": "34 publication/scheduler/upload unittest cases passed (including 8 embedded-reader policy subcases); 44 workflow YAML files parsed; runtime/native-step preservation checked separately.",
   "next_work": [
     "Finish exact-JAR stock-client sorting/order/replay acceptance on both legacy ports and review the new captures; retain the first 1.6.4 compile failure as historical evidence.",
