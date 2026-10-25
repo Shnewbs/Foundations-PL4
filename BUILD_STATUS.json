@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 156,
+  "expected_native_scenarios": 168,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -70,5 +70,12 @@
   "candidate_runtime_sha256": "4ea9269fdede91b5eee76c11658c5a79e1d297dbbfd54c0e73ad87e85444a214",
   "candidate_wireless_validation": "PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS",
   "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
-  "stock_client_workflow_run": "40111601064"
+  "stock_client_workflow_run": "40111601064",
+  "wireless_sort_acceptance": "PENDING_NATIVE_AND_STOCK_CLIENT_FOR_THIS_SOURCE",
+  "wireless_sort_modes": [
+    "network",
+    "name",
+    "stack_count_descending"
+  ],
+  "wireless_search_and_grouping": "NOT_IMPLEMENTED"
 }

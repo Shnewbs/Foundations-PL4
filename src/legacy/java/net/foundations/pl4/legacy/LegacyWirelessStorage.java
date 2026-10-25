@@ -52,6 +52,17 @@ public final class LegacyWirelessStorage {
             int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
         }}catch(RuntimeException provider){result.clear();}return result;
     }
+    /** Sort copies only: each row keeps its physical endpoint/slot and full NBT variant. */
+    public static List<Entry> entries(EntityPlayer player,ItemStack tool,final int order){
+        List<Entry> result=entries(player,tool);
+        try{if(order==1||order==2)java.util.Collections.sort(result,new java.util.Comparator<Entry>(){
+            public int compare(Entry a,Entry b){
+                if(order==2){int count=Integer.compare(LegacyTile.STACKS.count(b.snapshot),LegacyTile.STACKS.count(a.snapshot));if(count!=0)return count;}
+                return a.snapshot.getDisplayName().compareToIgnoreCase(b.snapshot.getDisplayName());
+            }
+        });}catch(RuntimeException provider){result.clear();}
+        return result;
+    }
     private static ConservingItems.Inventory<ItemStack> playerInventory(final EntityPlayer player,final int only){return new ConservingItems.Inventory<ItemStack>(){
         public int slots(){return only<0?36:1;}
         private int index(int slot){return only<0?slot:only;}
