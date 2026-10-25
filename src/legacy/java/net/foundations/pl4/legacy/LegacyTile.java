@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 /** Native 1.12.2 adapter: loaded targets and owner partitions only. */
 public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyFluids.State fluid=new LegacyFluids.State(this);

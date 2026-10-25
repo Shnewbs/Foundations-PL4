@@ -64,10 +64,12 @@ public final class LegacyWirelessStorage {
         java.util.Map<LegacyTile,net.minecraftforge.items.IItemHandler> handlers=new java.util.IdentityHashMap<LegacyTile,net.minecraftforge.items.IItemHandler>();
         Set<Object> blockedHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
         Set<BoundedNetwork.Point> blockedTargets=new HashSet<BoundedNetwork.Point>();
+        java.util.Map<BoundedNetwork.Point,Boolean> allOwnedSided=new java.util.HashMap<BoundedNetwork.Point,Boolean>();
         // Inspect every authorized item endpoint before deduplication: a healthy alias must not bypass escrow quarantine.
         for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
             int role=node.role();if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS)continue;
             net.minecraftforge.items.IItemHandler handler=node.inventory();handlers.put(node,handler);candidates.add(node);
+            Boolean previous=allOwnedSided.get(node.fluidTarget());allOwnedSided.put(node.fluidTarget(),(previous==null||previous.booleanValue())&&handler!=null&&handler.getClass()==LegacySidedInventory.class);
             if(!ready(node)){blockedTargets.add(node.fluidTarget());if(handler!=null)for(Object id:backing(handler))blockedHandlers.add(id);}
         }
         Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
@@ -75,7 +77,7 @@ public final class LegacyWirelessStorage {
         for(LegacyTile node:candidates){net.minecraftforge.items.IItemHandler handler=handlers.get(node);
             if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget()))continue;
             boolean blocked=false;if(handler!=null)for(Object id:backing(handler))if(blockedHandlers.contains(id)){blocked=true;break;}if(blocked)continue;
-            if(seen.contains(node.fluidTarget())||(handler!=null&&seenHandlers.contains(handler)))continue;
+            if((!Boolean.TRUE.equals(allOwnedSided.get(node.fluidTarget()))&&seen.contains(node.fluidTarget()))||(handler!=null&&seenHandlers.contains(handler)))continue;
             seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
         }return result;
     }
