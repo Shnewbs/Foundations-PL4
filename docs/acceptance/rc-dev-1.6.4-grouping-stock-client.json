@@ -1,0 +1,268 @@
+{
+  "recorded_date": "2026-10-25",
+  "minecraft": "1.6.4",
+  "result": "PASS_SCOPED_EXACT_SOURCE_GROUPING_SEARCH_SORT_TRANSFERS_AND_DISPLAY",
+  "workflow_run": 40221632891,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40221632891",
+  "controller_commit": "eeda1bb9d42bee7b44fce9ff16bf2bdf220beb61",
+  "source_commit": "3297e4c54352f96e00e42ce0737fc51761e4d912",
+  "client_artifact": {
+    "id": 12609860811,
+    "name": "legacy164-wireless-real-client-40221632891-1",
+    "size_in_bytes": 294737,
+    "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12609860811",
+    "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12609860811/zip",
+    "expired": false,
+    "created_at": "2026-10-25T18:34:06Z",
+    "expires_at": "2026-11-08T18:34:06Z",
+    "updated_at": "2026-10-25T18:34:06Z",
+    "digest": "sha256:43b224f0ff5638d31c693b477812b3bcfd83e8b59ce7db3028725161cc290b03",
+    "workflow_run": {
+      "id": 40221632891,
+      "repository_id": 1396808859,
+      "head_repository_id": 1396808859,
+      "head_branch": "main",
+      "head_sha": "eeda1bb9d42bee7b44fce9ff16bf2bdf220beb61"
+    }
+  },
+  "archive_digest_verified": true,
+  "runtime": {
+    "minecraft": "1.6.4",
+    "forge": "9.11.1.1345",
+    "runtime_java": 7,
+    "runtime_sha256": "ce9f8e0a86a0a595323a40dec0c5c2ea7bbbfda872f38ab0d626ef2d7e1dbbf3",
+    "source_commit": "3297e4c54352f96e00e42ce0737fc51761e4d912",
+    "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+    "probe_sha256": "1b44bfbf98a7dbed64ada55ff9ac3dfba5868a6f864eda54e1490c268ad07d89",
+    "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+    "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+    "production_jar_matches_native_gate": true,
+    "development_game_classpath": false,
+    "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+  },
+  "native_artifact_id": 12609563369,
+  "native_archive_sha256": "3b923995026231dcc0cbece7bf564f7db901910392954a391781ec162a2f2b86",
+  "native_workflow_run": 40221183821,
+  "native_report": "acceptance/rc-dev-legacy-grouping-2026-10-25.json",
+  "client_assertions": {
+    "minecraft": "1.6.4",
+    "source_commit": "3297e4c54352f96e00e42ce0737fc51761e4d912",
+    "result": "PASS",
+    "native_wireless_withdrawal": true,
+    "stale_replay_rejected": true,
+    "native_wireless_deposit": true,
+    "native_paging": true,
+    "native_grouping_totals_variants_and_conservation": true,
+    "stale_group_replay_rejected": true,
+    "group_variant_capture": "legacy-wireless-grouped-variants.png",
+    "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+    "native_keyboard_repeat_lifecycle": true,
+    "native_search_caret_edit": true,
+    "native_search_typing_clear_no_match": true,
+    "stale_search_replay_rejected": true,
+    "search_capture": "legacy-wireless-storage-search.png",
+    "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+    "native_sorting": true,
+    "stale_sort_replay_rejected": true,
+    "sorted_capture": "legacy-wireless-storage-sorted.png",
+    "signed_byte_revision": 70,
+    "native_packet_codec_round_trip": true,
+    "actual_mouse_withdraw_deposit_page": true,
+    "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+    "native_display_projection_and_hide": true,
+    "display_captures": [
+      "legacy-private-display.png",
+      "legacy-public-display.png"
+    ],
+    "captures": [
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
+      "legacy-wireless-storage-scale-4.png"
+    ],
+    "grouped_captures": [
+      "legacy-wireless-grouped-scale-1.png",
+      "legacy-wireless-grouped-scale-2.png",
+      "legacy-wireless-grouped-scale-3.png",
+      "legacy-wireless-grouped-scale-4.png"
+    ],
+    "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+  },
+  "log_sha256": {
+    "client.log": "6cf8ef69dc6b3240a762ed916e1c96059cf932df35dffd72c2509d7fc95c698b",
+    "build.log": "3bea36799b1ac89297599797358f3c046518e767510a6b9c5caafb3f7fa4c244"
+  },
+  "manual_visual_review": {
+    "reviewed_captures": 16,
+    "result": "PASS_SCOPED",
+    "findings": [
+      "Physical slot and grouped screens fit all four 1280x960 GUI scales; sort, Slots/Groups and arrow controls do not overlap.",
+      "Grouped counts 864/833/63 fit within slot cells; full hovered total appears above player inventory; native tooltips remain readable.",
+      "NBT variant capture keeps plain iron 801 and tagged iron 32 as distinct rows with the same visible name.",
+      "Withdrawal capture shows plain iron 737 and tagged iron 32 after 64 items cross two physical source slots; exact hovered total and player quantity agree with passed server/client assertions.",
+      "Search gold and no-match xyz, physical count sorting, native tooltip and private/public network-display text remain visible and within their panels."
+    ]
+  },
+  "grouped_client_sequence": [
+    "Real mouse Slots to Groups with descending aggregate sorting: gold 864, iron 833, diamonds 63; grouped preview counts stay 1.",
+    "Insert opaque ProbeVariant=B NBT on iron slot 26: plain iron 801 and tagged iron 32 remain separate.",
+    "Search iron, then left-click plain row: player plain iron 31 to 95; source slot 1 (33) emptied and slot 2 leaves 1; plain total 801 to 737; tagged total unchanged at 32.",
+    "Replay previous view click: rejected with no extra transfer; clear query and return to physical Slots view."
+  ],
+  "captures": [
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-private-display.png",
+      "sha256": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-public-display.png",
+      "sha256": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-scale-1.png",
+      "sha256": "a51e76b6802ac53476991aa9142cd01d39f94ac6953a18b7acf6d49ec8da04de",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-scale-2.png",
+      "sha256": "6474bbf2f250e434f884ee773ee5f39ed0a93e59f9669e363ec37bc9454aae75",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-scale-3.png",
+      "sha256": "ffc67cd4741d3f9b868a3733853388d4dcb7cc68de81e7d2c44bb6e0b13eadaf",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-scale-4.png",
+      "sha256": "ccf4bf849c446b345e7167d5fd5db3170167ec1d1cbf6ef593075764a12ea1f2",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-variants.png",
+      "sha256": "0d87aeafe899257b4ef253444314439888c0f84e62964eb6534804eed89fe5b5",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-grouped-withdrawal.png",
+      "sha256": "cf2697560bacdd79ab1ed84cb0bc905bdabdc56b292cc3b04c4f61339c5eb782",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-scale-1.png",
+      "sha256": "66492bc6d6a0f3f458b6c296a5087b5924cd3dd834673eb9606b23b06f0efaf2",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-scale-2.png",
+      "sha256": "96fa04728597a58ad491768e1b7630d550cb29778a4fff0b87ae61691b22027a",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-scale-3.png",
+      "sha256": "34d21c70385a30a20bab77bdf4f1955af63bfd8f3570d12e57601bb3f3996d27",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-scale-4.png",
+      "sha256": "c35ac8cd578566d37e9bd2aac3be2c7666ff10ed77ff286c6563ceb749581351",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-search-empty.png",
+      "sha256": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-search.png",
+      "sha256": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-sorted.png",
+      "sha256": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    },
+    {
+      "path": "screenshots/rc-grouping-2026-10-25/1.6.4/legacy-wireless-storage-tooltip.png",
+      "sha256": "0a024eaed082e94af4f3195b00c3723a577cf188ac1b56ed00eab8b21d1a380c",
+      "dimensions": [
+        1280,
+        960
+      ],
+      "review": "PASS_SCOPED"
+    }
+  ],
+  "limitations": [
+    "Scoped generated offline integrated-world clients and vanilla separate chest endpoints only; no installed optional provider or dedicated multiplayer acceptance.",
+    "Combined-inventory/handler alias identity across distinct endpoint views requires further exact-target fixtures and installed-provider acceptance.",
+    "Advanced legacy editor/multipart parity, arbitrary user-world migration and sustained active-provider performance remain open.",
+    "Provider failures after foreign mutation retain uncertainty fences; no automatic retry or resource conversion.",
+    "ASCII search and the existing 127-revision open-window budget remain."
+  ],
+  "rc_publication_cleared": false,
+  "new_github_release": null,
+  "new_curseforge_upload": null
+}

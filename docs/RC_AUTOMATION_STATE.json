@@ -5,33 +5,27 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-group-2026-10-25T18",
-    "claimed_at": "2026-10-25T18:08:00Z",
-    "expires_at": "2026-10-25T19:20:00Z",
-    "purpose": "Implement bounded exact-NBT grouped legacy storage rows and validate conservation in exact native/client profiles",
-    "renewed_at": "2026-10-25T18:29:00Z"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40218575368,
+  "last_verified_legacy_native_run": 40221183821,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40218806552,
-    "1.6.4": 40218830955
+    "1.12.2": 40221597784,
+    "1.6.4": 40221632891
   },
-  "current_checkpoint": "Exact-NBT grouped legacy storage implemented; native retry 40221183821 passed 215/215 (1.12.2, 51e62a7c) and 217/217 (1.6.4, 3297e4c5), production-only boot and generated preview.3 migrations. Main source 32f785cd passed 192 in initial run 40220728599. Failed initial fixture run retained: old invalid-control test collided with new valid group button; synthetic INT_MAX stacks needed finally cleanup before world teardown. Exact native archive/JAR digests checked. Stock-client grouped totals/variants/transfers/scales are next; RC remains false.",
-  "local_validation": "30 targeted offline regressions passed: 13 hourly-controller, 6 count-attribution, 4 publisher-guard and 7 native archive qualification; exact Java 7/8 native compilation and 184/186 legacy scenarios passed. Gameplay acceptance stays separate.",
+  "current_checkpoint": "Exact item/metadata/full-NBT grouped legacy storage is implemented and scoped native/stock-client accepted. Final 1.12.2 source 51e62a7c passed 215/215; 1.6.4 source 3297e4c5 passed 217/217, production-only boot and generated preview.3 migrations in run 40221183821. Main pinned source 32f785cd passed 192 in initial run 40220728599; 21 unchanged targets retain qualified source/JAR artifacts. Both exact native-qualified production stock clients passed aggregate totals, same-name NBT separation, two-source 64-item withdrawal, stale replay and prior search/sort/transfer/display checks. All 32 captures reviewed and committed. Initial invalid-control and INT_MAX cleanup fixture failures retained. All 24 RC clearance flags remain false; no new releases or CurseForge uploads.",
+  "local_validation": "62 new exact-native grouping scenarios passed (31 per legacy target); final native totals 215/217 plus main 192. Both stock client runs PASS. 4 publication guard, 13 hourly controller and 7 native archive qualification regressions passed; Java 7/8 native compilation passed. Archive digests, packaged production JAR hashes, exact-source client runtime hashes and 32 screenshot blob hashes verified.",
   "next_work": [
-    "Implement grouped legacy storage quantities keyed by exact item/metadata/full NBT while retaining ordered physical sources. Keep bounded <=64 withdrawal through the existing escrow, and add native mixed-variant/stale-group/partial-provider conservation tests before client acceptance.",
-    "Continue advanced legacy editor/multipart parity or Forge 1.16.1–1.16.4 stock launcher acceptance, using exact source hashes and protected branch publishers.",
-    "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider/full-server performance acceptance. Keep RC clearance false until applicable exact-source requirements pass."
+    "Add exact-target vanilla combined-inventory and shared-handler alias fixtures before extending grouped acceptance to multiple endpoint views of one inventory. Normalize physical source identity conservatively if those fixtures expose double-counting or stale-roster ambiguity; preserve native full-NBT variants, bounded shared work and quarantine.",
+    "Continue advanced legacy editor/multipart parity or Forge 1.16.1–1.16.4 stock launcher acceptance, using exact source hashes and inspected branch-local publisher guards.",
+    "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider/full-server performance acceptance. Current generated offline integrated worlds and preview.3 migrations are scoped; keep RC clearance false until applicable exact-source requirements pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-search-2026-10-25.json",
-  "main_native_validation_run": 40195961776,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-grouping-2026-10-25.json",
+  "main_native_validation_run": 40220728599,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
@@ -39,18 +33,18 @@
     40221183821
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40218575368,
-    "1.6.4": 40218575368
+    "1.12.2": 40221183821,
+    "1.6.4": 40221183821
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-1.12.2-search-stock-client.json",
-    "1.6.4": "docs/acceptance/rc-dev-1.6.4-search-stock-client.json"
+    "1.12.2": "docs/acceptance/rc-dev-1.12.2-grouping-stock-client.json",
+    "1.6.4": "docs/acceptance/rc-dev-1.6.4-grouping-stock-client.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "f61d3e502e9561b84886c486fa96e8f0721cc9ab",
+  "native_main_source_commit": "32f785cda017e217515dd8aaf0535cd4fa04837a",
   "last_writer_release": {
-    "owner": "pl4-search-2026-10-25T17",
-    "released_at": "2026-10-25T18:03:00Z",
-    "checkpoint": "Exact search native/client evidence preserved; remaining RC goal open."
+    "owner": "pl4-group-2026-10-25T18",
+    "released_at": "2026-10-25T18:44:43Z",
+    "checkpoint": "Grouped legacy storage source, passing native/client reports and all 32 reviewed captures preserved; remaining all-version RC goal open."
   }
 }

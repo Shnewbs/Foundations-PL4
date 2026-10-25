@@ -1,6 +1,6 @@
 # Legacy Wireless Storage development
 
-The 1.12.2 and 1.6.4 development ports include a native handheld storage screen. This is a bounded functional subset; modern search, grouped quantities, component selection, graphical editor and multipart parity are still separate work. It is not yet an RC release.
+The 1.12.2 and 1.6.4 development ports include a native handheld storage screen. This is a bounded functional subset; ASCII search, sorting and exact-NBT grouped quantities have scoped acceptance; modern component selection, graphical editor and multipart parity remain separate work. It is not yet an RC release.
 
 ## Use
 
@@ -9,8 +9,8 @@ The 1.12.2 and 1.6.4 development ports include a native handheld storage screen.
 3. Hold the bound tool in the selected hotbar slot and use it within 64 blocks in the same dimension.
 4. Click a storage slot to withdraw up to one stack; right-click to withdraw one item. Items go directly into your inventory.
 5. Click a player-inventory slot to deposit up to one stack; right-click to deposit one item. The handheld itself cannot be deposited.
-6. Click **Sort** to cycle between network traversal order, item name and descending per-slot stack count. Rows remain separate physical slots, including NBT variants; this is not grouped storage. Sorting resets the page and invalidates old clicks. The name order uses the server-provided display name.
-7. Use the arrows to browse 45 occupied native inventory slots per page. A busy or rapidly changing network may reject a stale click; wait for the refreshed view and click again. Reopen after the window reaches its revision limit.
+6. Click **Network**, **Name** or **Count** to cycle sort modes. Click **Slots/Groups** to switch between physical slots and exact item/metadata/full-NBT groups. Count sorting uses the group total in Groups mode. Sorting/grouping reset the page and invalidate old clicks. The name order uses the server-provided display name.
+7. Use the arrows to browse 45 occupied physical slots or grouped variants per page. A busy or rapidly changing network may reject a stale click; wait for the refreshed view and click again. Reopen after the window reaches its revision limit.
 
 A cable network exposes loaded, unpaused item export/import nodes and item readers belonging to its owner. Sneak-click each endpoint's appropriate face to choose its adjacent inventory. Native sided access, configured host/slot limits, full destinations, ownership changes, removed hosts and the global transfer switch are enforced on the server. Oversized graphs stop. Browsing does not force-load chunks.
 
@@ -36,15 +36,24 @@ The acceptance workflow is frozen to its qualified source, artifact ID and archi
 
 ## Sorting development candidate
 
-The next 1.12.2 and 1.6.4 source candidates add three server-authoritative sort modes and 12 native sorting/control cases each (168 total declared cases per port). The exact 1.12.2 candidate passed 168 native cases; the repaired 1.6.4 candidate passed 170. Both passed production startup, generated preview.3 migration and scoped stock-client sorting/order/replay checks. All 16 reviewed captures and current production JAR hashes are linked from the RC ledger; prior 156-case evidence certifies only its recorded JARs. The 1.6.4 binding comparison now ignores only the NBT root transport name changed by ItemStack saving, retaining the complete payload fence. Search, grouping, editor/multipart parity and the remaining acceptance gates stay open.
+The next 1.12.2 and 1.6.4 source candidates add three server-authoritative sort modes and 12 native sorting/control cases each (168 total declared cases per port). The exact 1.12.2 candidate passed 168 native cases; the repaired 1.6.4 candidate passed 170. Both passed production startup, generated preview.3 migration and scoped stock-client sorting/order/replay checks. All 16 reviewed captures and current production JAR hashes are linked from the RC ledger; prior 156-case evidence certifies only its recorded JARs. The 1.6.4 binding comparison now ignores only the NBT root transport name changed by ItemStack saving, retaining the complete payload fence. This historical sorting checkpoint preceded the search/grouping work below; editor/multipart and broader acceptance remain open.
 
 
 ## Bounded legacy search development
 
-Both exact legacy branches now provide a Find field below the hotbar. It filters display names by case-insensitive substring and composes with the three sort modes. The current native protocol supports at most 32 printable ASCII characters. Filtering keeps each physical endpoint/slot and full NBT variant separate; grouped quantities remain pending.
+Both exact legacy branches now provide a Find field below the hotbar. It filters display names by case-insensitive substring and composes with the three sort modes. The current native protocol supports at most 32 printable ASCII characters. In Slots mode filtering keeps physical endpoint/slot rows; in Groups mode it filters exact item/metadata/full-NBT variants without merging different NBT under the same visible name.
 
 Text edits are sent one character/control per acknowledged native window revision. Typing, paste sanitization, backspace, Delete, caret/selection and clearing use the native text field. The client holds transfers, sorting and paging while its desired query is still being synchronized. Each accepted search edit resets to page zero and invalidates older selection packets; an empty result does not fall back to unfiltered rows. The existing finite revision budget closes an exhausted window rather than making old actions valid again; reopen it to continue browsing.
 
 Exact-source native and stock-client acceptance for this batch are recorded in the current RC ledger; a historical lighting/sorting report does not qualify the new search payload. Installed providers, dedicated multiplayer, arbitrary user-world migrations and sustained performance remain separate gates.
 
 Search keyboard repeats are enabled for the window lifetime and reset on close. Native Delete handling and text-field brightness were corrected from actual client findings. Both exact final stock-client runs passed search/caret/clear/no-match/replay and repeat-lifecycle checks; twenty captures passed scoped review. See the search acceptance reports for exact hashes and limitations.
+
+
+## Exact-variant grouped quantities
+
+The Groups view totals matching item, metadata and complete native NBT across an ordered roster of physical sources. It sends the total separately from a count-one preview ItemStack, using three unsigned 16-bit window-property segments. Slot totals scale to fit their cells; hovering shows the exact total above the player inventory. Search and sort retain the chosen view mode.
+
+A grouped click withdraws at most 64 items (right-click: one), even when the displayed total is larger. Before extracting, the server verifies the complete current membership, count and variant roster. Redistribution or a changed/added/removed member invalidates the old view. Extraction then uses the existing conserving escrow for each physical source, with one finite shared transfer work object; uncertain foreign mutations remain quarantined and are never automatically replayed. Snapshot enumeration and transfer calls have separate 4096 bounds. Combined-inventory/handler aliases across distinct endpoints still require explicit fixtures and installed-provider acceptance.
+
+The [grouping evidence](acceptance/rc-dev-legacy-grouping-2026-10-25.json) records 215/215 native cases on 1.12.2 and 217/217 on 1.6.4, including 31 new cases each, production boots and generated preview.3 upgrades. Both exact stock clients passed real mouse grouping, long-total transport, same-name NBT separation, a 64-item withdrawal across two source slots, stale replay and prior search/sort checks. All 32 captures were reviewed and preserved. These generated offline integrated worlds do not close dedicated multiplayer, installed-provider, arbitrary user-world migration or sustained-performance acceptance. All RC publication flags remain false.
