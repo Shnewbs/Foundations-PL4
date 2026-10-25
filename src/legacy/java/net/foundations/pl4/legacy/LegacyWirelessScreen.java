@@ -37,7 +37,7 @@ public final class LegacyWirelessScreen extends GuiContainer {
             if(typed<=126)searchField.textboxKeyTyped(typed,key);
             String text=searchField.getText();StringBuilder bounded=new StringBuilder();
             for(int i=0;i<text.length();i++)if(text.charAt(i)>=32&&text.charAt(i)<=126)bounded.append(text.charAt(i));
-            searchField.setText(bounded.toString());return;
+            if(!bounded.toString().equals(text))searchField.setText(bounded.toString());return;
         }super.keyTyped(typed,key);
     }
     @Override protected void mouseClicked(int x,int y,int button){super.mouseClicked(x,y,button);searchField.mouseClicked(x,y,button);}
