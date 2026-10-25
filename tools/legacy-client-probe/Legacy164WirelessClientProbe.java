@@ -37,7 +37,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public final class Legacy164WirelessClientProbe implements ITickHandler {
     private int phase,scale=1,oldRevision,lastLogged=-1;private long due,started=System.nanoTime();
     private final AtomicReference<String> serverResult=new AtomicReference<String>();
-    private boolean worldChecked,sortChecked;private LegacyWirelessContainer observedServerWindow;private int observedRevision=-999;
+    private boolean worldChecked,sortChecked;
     private final List<String> captures=new ArrayList<String>();
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){TickRegistry.registerTickHandler(this,Side.CLIENT);TickRegistry.registerTickHandler(this,Side.SERVER);}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}
@@ -100,15 +100,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
     private LegacyWirelessContainer clientContainer(){return (LegacyWirelessContainer)Minecraft.getMinecraft().thePlayer.openContainer;}
     private void waitUntilNext(){due=System.nanoTime()+2_000_000_000L;}
     @Override public void tickEnd(EnumSet<TickType> type,Object... data){
-        if(type.contains(TickType.SERVER)){
-            if(phase>=18&&Minecraft.getMinecraft().thePlayer!=null){EntityPlayerMP player=serverPlayer();if(player.openContainer instanceof LegacyWirelessContainer)observedServerWindow=(LegacyWirelessContainer)player.openContainer;
-                if(observedServerWindow!=null&&observedServerWindow.revision!=observedRevision){observedRevision=observedServerWindow.revision;System.out.println("SORT SERVER VIEW phase="+phase+" revision="+observedRevision+" order="+observedServerWindow.sortOrder()+" interact="+observedServerWindow.canInteractWith(player)+" selected="+player.inventory.currentItem);}
-                if(observedServerWindow!=null&&!(player.openContainer instanceof LegacyWirelessContainer)&&observedRevision!=-1000){
-                    System.out.println("SORT WINDOW CLOSED phase="+phase+" revision="+observedServerWindow.revision+" interact="+observedServerWindow.canInteractWith(player)+" tool="+player.inventory.getCurrentItem()+" tag="+player.inventory.getCurrentItem().getTagCompound()+" position="+player.posX+","+player.posY+","+player.posZ+" resolve="+LegacyWirelessStorage.resolve(player,player.inventory.getCurrentItem()));
-                    try{for(String name:new String[]{"failed","binding"}){java.lang.reflect.Field field=LegacyWirelessContainer.class.getDeclaredField(name);field.setAccessible(true);System.out.println("SORT CLOSED FIELD "+name+"="+field.get(observedServerWindow));}}catch(Exception error){error.printStackTrace();}observedRevision=-1000;
-                }
-            }
-            Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
+        if(type.contains(TickType.SERVER)){Runnable action=pending.getAndSet(null);if(action!=null)try{action.run();serverResult.set("PASS");}catch(Throwable error){serverResult.set(error.toString());error.printStackTrace();}return;}
         if(!type.contains(TickType.CLIENT))return;Minecraft mc=Minecraft.getMinecraft();
         try{
             // Keep the first-world inventory tutorial from covering native paging controls in captures.
@@ -145,7 +137,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
             if(phase==11){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).page==1,"native page request failed");}});phase=12;waitUntilNext();return;}
             if(phase==18){schedule(new Runnable(){public void run(){LegacyWirelessContainer c=(LegacyWirelessContainer)serverPlayer().openContainer;check(c.sortOrder()==1&&c.page==0,"native name sort/reset failed");}});phase=19;waitUntilNext();return;}
             if(phase==19){check("PASS".equals(result)&&clientContainer().sortOrder()==1,"client sort metadata missing");check(clientContainer().getSlot(1).getStack().itemID==Item.ingotGold.itemID,"actual client name ordering mismatch");mc.playerController.windowClick(clientContainer().windowId,0,(oldRevision<<1)|1,0,mc.thePlayer);phase=20;waitUntilNext();return;}
-            if(phase==20){schedule(new Runnable(){public void run(){check(diamonds()==1&&source().getStackInSlot(0).stackSize==63,"pre-sort replay mutated storage");}});phase=21;waitUntilNext();return;}
+            if(phase==20){schedule(new Runnable(){public void run(){check(diamonds()==1&&source().getStackInSlot(0).stackSize==63,"pre-sort replay mutated storage");serverPlayer().inventory.getCurrentItem().writeToNBT(new net.minecraft.nbt.NBTTagCompound());check(((LegacyWirelessContainer)serverPlayer().openContainer).canInteractWith(serverPlayer()),"native ItemStack save changed tool authorization");}});phase=21;waitUntilNext();return;}
             if(phase==21){check("PASS".equals(result),"sort replay check missing");mouseClick(50,9,false);phase=22;waitUntilNext();return;}
             if(phase==22){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).sortOrder()==2,"native count sort failed");}});phase=23;waitUntilNext();return;}
             if(phase==23){check("PASS".equals(result)&&clientContainer().sortOrder()==2,"client count sort metadata missing");check(clientContainer().getSlot(1).getStack().stackSize==33,"actual client count ordering mismatch");capture(mc,"legacy-wireless-storage-sorted.png");sortChecked=true;phase=12;}
