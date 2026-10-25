@@ -9,7 +9,8 @@
     "owner": "pl4-sided-2026-10-25T22",
     "claimed_at": "2026-10-25T22:09:00Z",
     "expires_at": "2026-10-25T22:55:00Z",
-    "purpose": "Implement bounded PL4-owned sided slot mapping preserving native permissions and exact native/client validation"
+    "purpose": "Implement bounded PL4-owned sided slot mapping preserving native permissions and exact native/client validation",
+    "renewed_at": "2026-10-25T22:21:30Z"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
@@ -19,7 +20,7 @@
     "1.12.2": 40234570913,
     "1.6.4": 40229923358
   },
-  "current_checkpoint": "1.12.2 source a29ed51d maps exact native double-chest/plain InvWrapper slots to physical inventory identity, deduplicates overlap without losing disjoint halves, propagates known backing quarantine and fences stale backing replacement. Opaque recreated wrappers retain established logical routes. Passed 232/232 including 11 new cases, production boot and generated preview.3 migration in hourly 40234316705; main d79a1144 passed 192. Exact production stock client 40234570913 passed existing group/search/sort/transfer/replay/codec/privacy checks; four current captures reviewed/committed, all 16 hashes recorded. 22 unchanged exact targets retain qualified artifacts. Automatic branch run 40234111670 passed 232 and publication was observed held/skipped. No RC clearance or new publication.",
+  "current_checkpoint": "PL4-owned 1.12.2 sided fallback captures bounded native slot mappings, respects native extraction/insertion permissions, shares physical identity/quarantine across faces and rejects remapping. Final source 83e8cb1a passed 245/245 including 13 new cases, production-only startup and generated preview.3 migration in hourly 40239598934; main b465173c passed 192. Archive and packaged JAR hashes verified. Provider-advertised handlers remain unchanged; exact stock client regression next, broader RC gates false.",
   "local_validation": "1.12.2 native 232/232 (11 new known-wrapper cases, 6 prior shared-handler, 31 grouping, 16 search); main 192 passed. Native archive and all packaged JAR checksums verified; exact stock runtime source/production hash matches native gate. Four publisher guard and seven archive qualification regressions passed. Four current captures reviewed. This remains scoped native and offline integrated-client regression, not installed-provider or full gameplay/performance acceptance.",
   "next_work": [
     "Add bounded explicit physical-slot mappings and overlap/quarantine/remapped-face fixtures for PL4-owned sided inventory adapters or exactly validated native sided containers. Preserve original native sided transfer permissions; general SidedInvWrapper/CombinedInvWrapper hide backing mappings and must not be inferred from equal contents or introspected by reflection.",
