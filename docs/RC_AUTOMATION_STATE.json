@@ -9,7 +9,8 @@
     "owner": "pl4-group-2026-10-25T18",
     "claimed_at": "2026-10-25T18:08:00Z",
     "expires_at": "2026-10-25T19:20:00Z",
-    "purpose": "Implement bounded exact-NBT grouped legacy storage rows and validate conservation in exact native/client profiles"
+    "purpose": "Implement bounded exact-NBT grouped legacy storage rows and validate conservation in exact native/client profiles",
+    "renewed_at": "2026-10-25T18:29:00Z"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
@@ -19,7 +20,7 @@
     "1.12.2": 40218806552,
     "1.6.4": 40218830955
   },
-  "current_checkpoint": "Bounded legacy storage search implemented and scoped exact-JAR stock-client accepted on 1.12.2 (2d4f1389, 184 native cases) and 1.6.4 (c7c391b1, 186). Final clients 40218806552/40218830955 passed search, caret/Delete, Backspace clearing, no-match/replay, native repeat enable/reset, sorting, transfers, paging and display privacy; 20 captures reviewed and preserved. Client-discovered Delete, text-lighting and old-keyboard-repeat failures are fixed, with failed runs retained. Main f61d3e50 passed 192 native tests; other 21 exact targets retain recorded passing evidence. 26.x 193-total counts are resolved as 192 PL4 plus 1 minecraft:default. No new RC or CurseForge upload.",
+  "current_checkpoint": "Exact-NBT grouped legacy storage implemented; native retry 40221183821 passed 215/215 (1.12.2, 51e62a7c) and 217/217 (1.6.4, 3297e4c5), production-only boot and generated preview.3 migrations. Main source 32f785cd passed 192 in initial run 40220728599. Failed initial fixture run retained: old invalid-control test collided with new valid group button; synthetic INT_MAX stacks needed finally cleanup before world teardown. Exact native archive/JAR digests checked. Stock-client grouped totals/variants/transfers/scales are next; RC remains false.",
   "local_validation": "30 targeted offline regressions passed: 13 hourly-controller, 6 count-attribution, 4 publisher-guard and 7 native archive qualification; exact Java 7/8 native compilation and 184/186 legacy scenarios passed. Gameplay acceptance stays separate.",
   "next_work": [
     "Implement grouped legacy storage quantities keyed by exact item/metadata/full NBT while retaining ordered physical sources. Keep bounded <=64 withdrawal through the existing escrow, and add native mixed-variant/stale-group/partial-provider conservation tests before client acceptance.",
@@ -34,11 +35,8 @@
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40215554193,
-    40215761515,
-    40216452462,
-    40217849321,
-    40218575368
+    40220728599,
+    40221183821
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40218575368,

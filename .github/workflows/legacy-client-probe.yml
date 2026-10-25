@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 35
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
-      PL4_NATIVE_ARCHIVE_SHA256: 'c5a519c7224f9d3605b69027dd15a05cf27c038f9504b5265efc580c0fe7548e'
+      PL4_NATIVE_ARCHIVE_SHA256: '8d97de96c69e97295f8545dc418cc654cce32f6028a355355a5fe0943bb83059'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: 2d4f1389f8f746224d9811fc2dc9985ce607780d
+          ref: 51e62a7c9505eaa94bacc330a9b8cf1fe71e937d
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12608925513/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12608959789/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -101,13 +101,16 @@ jobs:
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r['result']=='PASS' and r['signed_byte_revision']==70
-          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected','native_keyboard_repeat_lifecycle','native_search_caret_edit','native_search_typing_clear_no_match','stale_search_replay_rejected']:assert r[key]
+          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected','native_grouping_totals_variants_and_conservation','stale_group_replay_rejected','native_keyboard_repeat_lifecycle','native_search_caret_edit','native_search_typing_clear_no_match','stale_search_replay_rejected']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
           assert (root/r['sorted_capture']).stat().st_size>1000
           assert (root/r['search_capture']).stat().st_size>1000
           assert (root/r['search_empty_capture']).stat().st_size>1000
           assert r['native_display_projection_and_hide']
           for name in r['display_captures']:assert (root/name).stat().st_size>1000
+          assert len(r['grouped_captures'])==4
+          for name in r['grouped_captures']:assert (root/name).stat().st_size>1000
+          for key in ['group_variant_capture','group_withdrawal_capture']:assert (root/r[key]).stat().st_size>1000
           assert len(r['captures'])==4
           for name in r['captures']:assert (root/name).stat().st_size>1000
           assert r['source_commit']==(root/'SOURCE_COMMIT.txt').read_text().strip()
