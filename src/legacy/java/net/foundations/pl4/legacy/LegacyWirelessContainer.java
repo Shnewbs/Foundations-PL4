@@ -11,7 +11,9 @@ public final class LegacyWirelessContainer extends Container {
     private final EntityPlayer owner;private final int toolSlot;private final ItemStack binding;private final boolean client;
     private final InventoryBasic view=new InventoryBasic("Wireless Storage",false,45);
     private List<LegacyWirelessStorage.Entry> entries=new ArrayList<LegacyWirelessStorage.Entry>();
-    public static final int SORT_CONTROL=81;
+    public static final int SORT_CONTROL=81,SEARCH_CLEAR=82,SEARCH_BACKSPACE=83,SEARCH_CHARACTER=84,SEARCH_LAST=178;
+    private String search="";private int sentSearchRevision=-2,sentSearchListeners=-1;
+    public String search(){return search;}
     public int page=0,revision=-1;private int sortOrder;
     public int sortOrder(){return sortOrder;}private long lastAction=Long.MIN_VALUE,lastRefresh=Long.MIN_VALUE;private boolean failed;
     public LegacyWirelessContainer(EntityPlayer player,boolean client){
@@ -25,19 +27,40 @@ public final class LegacyWirelessContainer extends Container {
     private ItemStack held(){return owner.inventory.getStackInSlot(toolSlot);}
     @Override public boolean canInteractWith(EntityPlayer player){return player==owner&&!failed&&(client||owner.inventory.currentItem==toolSlot&&LegacyWirelessStorage.tool(held())&&ItemStack.areItemStackTagsEqual(binding,held())&&LegacyWirelessStorage.resolve(owner,held())!=null);}
     private void refresh(boolean force){
-        List<LegacyWirelessStorage.Entry> next=LegacyWirelessStorage.entries(owner,held(),sortOrder);boolean changed=force||next.size()!=entries.size();
+        List<LegacyWirelessStorage.Entry> next=LegacyWirelessStorage.entries(owner,held(),sortOrder,search);boolean changed=force||next.size()!=entries.size();
         if(!changed)for(int i=0;i<next.size();i++){LegacyWirelessStorage.Entry a=entries.get(i),b=next.get(i);if(a.node!=b.node||a.slot!=b.slot||!ItemStack.areItemStacksEqual(a.snapshot,b.snapshot)){changed=true;break;}}
         if(revision<0||changed){if(revision>=127){failed=true;return;}revision++;}
         entries=next;page=Math.max(0,Math.min(page,Math.max(0,(entries.size()-1)/45)));
         for(int i=0;i<45;i++){int at=page*45+i;view.setInventorySlotContents(i,at<entries.size()?entries.get(at).snapshot.copy():ItemStack.EMPTY);}
     }
-    private void sendRevision(){for(Object listener:listeners){net.minecraft.inventory.IContainerListener sink=(net.minecraft.inventory.IContainerListener)listener;sink.sendWindowProperty(this,1,sortOrder);sink.sendWindowProperty(this,2,page);sink.sendWindowProperty(this,0,revision);}}
-    @Override public void updateProgressBar(int id,int value){if(id==0)revision=value;else if(id==1)sortOrder=Math.max(0,Math.min(2,value));else if(id==2)page=Math.max(0,value);}
+    private void sendRevision(){
+        boolean sendSearch=sentSearchRevision!=revision||sentSearchListeners!=listeners.size();
+        for(Object listener:listeners){net.minecraft.inventory.IContainerListener sink=(net.minecraft.inventory.IContainerListener)listener;
+            sink.sendWindowProperty(this,1,sortOrder);sink.sendWindowProperty(this,2,page);
+            if(sendSearch){sink.sendWindowProperty(this,3,search.length());for(int i=0;i<search.length();i++)sink.sendWindowProperty(this,4+i,search.charAt(i));}
+            // Revision is the final acknowledgement after the complete authoritative search.
+            sink.sendWindowProperty(this,0,revision);
+        }sentSearchRevision=revision;sentSearchListeners=listeners.size();
+    }
+    @Override public void updateProgressBar(int id,int value){
+        if(id==0)revision=value;else if(id==1)sortOrder=Math.max(0,Math.min(2,value));else if(id==2)page=Math.max(0,value);
+        else if(id==3&&value>=0&&value<=LegacyWirelessStorage.MAX_SEARCH){search=search.substring(0,Math.min(search.length(),value));while(search.length()<value)search+=" ";}
+        else if(id>=4&&id<4+search.length()&&value>=32&&value<=126){StringBuilder text=new StringBuilder(search);text.setCharAt(id-4,(char)value);search=text.toString();}
+    }
 
     @Override public void detectAndSendChanges(){if(!client&&canInteractWith(owner)){long tick=owner.world.getTotalWorldTime();if(tick!=lastRefresh&&(lastRefresh==Long.MIN_VALUE||tick-lastRefresh>=10)){lastRefresh=tick;refresh(false);}}super.detectAndSendChanges();if(!client)sendRevision();}
     @Override public ItemStack transferStackInSlot(EntityPlayer player,int slot){return ItemStack.EMPTY;}
     @Override public ItemStack slotClick(int slot,int button,net.minecraft.inventory.ClickType mode,EntityPlayer player){
-        if(client||!canInteractWith(player)||!(mode==net.minecraft.inventory.ClickType.PICKUP||mode==net.minecraft.inventory.ClickType.QUICK_MOVE)||((button&255)>>>1)!=revision||slot<0||slot>SORT_CONTROL)return ItemStack.EMPTY;
+        if(client||!canInteractWith(player)||!(mode==net.minecraft.inventory.ClickType.PICKUP||mode==net.minecraft.inventory.ClickType.QUICK_MOVE)||((button&255)>>>1)!=revision||slot<0||slot>SEARCH_LAST)return ItemStack.EMPTY;
+        if(slot>=SEARCH_CLEAR){
+            if(mode!=net.minecraft.inventory.ClickType.PICKUP||(button&1)!=0)return ItemStack.EMPTY;
+            String next=search;
+            if(slot==SEARCH_CLEAR)next="";
+            else if(slot==SEARCH_BACKSPACE){if(!search.isEmpty())next=search.substring(0,search.length()-1);}
+            else if(search.length()<LegacyWirelessStorage.MAX_SEARCH)next=search+(char)(32+slot-SEARCH_CHARACTER);
+            if(!next.equals(search)){search=next;page=0;refresh(true);super.detectAndSendChanges();sendRevision();}
+            return ItemStack.EMPTY;
+        }
         if(slot==SORT_CONTROL){
             if(mode!=net.minecraft.inventory.ClickType.PICKUP)return ItemStack.EMPTY;
             sortOrder=(sortOrder+((button&1)==0?1:2))%3;page=0;refresh(true);
