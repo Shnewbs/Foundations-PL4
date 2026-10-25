@@ -35,7 +35,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
         if(world==null||side<0||side>5||!world.isBlockLoaded(target(),false))return null;
         TileEntity target=world.getTileEntity(target());if(target==null||target instanceof LegacyTile)return null;EnumFacing face=EnumFacing.getFront(side).getOpposite();
         if(target.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face))return target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face);
-        if(target instanceof ISidedInventory)return new SidedInvWrapper((ISidedInventory)target,face);
+        if(target instanceof ISidedInventory)return new LegacySidedInventory((ISidedInventory)target,face);
         if(target instanceof IInventory)return new InvWrapper((IInventory)target);return null;
     }
     public BoundedNetwork.Plan network(){

@@ -37,6 +37,7 @@ public final class LegacyWirelessStorage {
             net.minecraftforge.items.VanillaDoubleChestItemHandler h=(net.minecraftforge.items.VanillaDoubleChestItemHandler)handler;
             Object a=h.getChest(true),b=h.getChest(false);if(a==null||b==null)throw new IllegalStateException("Incomplete native double chest");return new Object[]{handler,a,b};
         }
+        if(handler.getClass()==LegacySidedInventory.class)return new Object[]{handler,((LegacySidedInventory)handler).inventoryIdentity()};
         if(handler.getClass()==net.minecraftforge.items.wrapper.InvWrapper.class)return new Object[]{handler,((net.minecraftforge.items.wrapper.InvWrapper)handler).getInv()};
         return new Object[]{handler};
     }
@@ -52,6 +53,7 @@ public final class LegacyWirelessStorage {
             Object chest=((net.minecraftforge.items.VanillaDoubleChestItemHandler)handler).getChest(slot<27);
             if(chest==null)throw new IllegalStateException("Missing native chest half");return new PhysicalSlot(chest,slot%27);
         }
+        if(handler.getClass()==LegacySidedInventory.class){LegacySidedInventory h=(LegacySidedInventory)handler;return new PhysicalSlot(h.inventoryIdentity(),h.physicalSlot(slot));}
         if(handler.getClass()==net.minecraftforge.items.wrapper.InvWrapper.class)return new PhysicalSlot(((net.minecraftforge.items.wrapper.InvWrapper)handler).getInv(),slot);
         // Opaque adapters retain their existing logical route identity; no backing-store alias claim.
         return new PhysicalSlot(node,slot);
