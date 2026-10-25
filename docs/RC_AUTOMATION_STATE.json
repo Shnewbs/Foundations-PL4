@@ -4,8 +4,12 @@
   "repository": "Shnewbs/Foundations-PL4",
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
-  "automation_id": null,
-  "writer_lease": null,
+  "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
+  "writer_lease": {
+    "owner": "foreground-hourly-rollout-20261025",
+    "expires_at": "2026-10-25T13:51:33.894424+00:00",
+    "purpose": "Verify the first hourly controller and finalize durable handoff"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -18,9 +22,11 @@
   "local_validation": "30 scheduler/publication/upload regression cases passed; three workflow YAML files parsed; diff whitespace check passed",
   "next_work": [
     "Complete the first live hourly-controller build cycle and repair any controller-specific failures without relabeling failures",
+    "Apply the explicit RC clearance policy to every version-specific publisher before promoting that port",
     "Select and implement the next highest-priority unfinished parity or launcher-profile item from the master roadmap",
     "Continue installed-provider, client/multiplayer/migration and sustained-performance acceptance on each actual exact payload"
   ],
   "rc_publication_cleared": false,
-  "stable_rc_published": false
+  "stable_rc_published": false,
+  "first_hourly_run": 40195962271
 }
