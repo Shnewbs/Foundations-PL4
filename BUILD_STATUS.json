@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 170,
+  "expected_native_scenarios": 186,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -77,6 +77,8 @@
     "name",
     "stack_count_descending"
   ],
-  "wireless_search_and_grouping": "NOT_IMPLEMENTED",
-  "wireless_binding_save_fence": "ROOT_NBT_TRANSPORT_NAME_IGNORED_FULL_PAYLOAD_PRESERVED"
+  "wireless_search_and_grouping": "SEARCH_IMPLEMENTED_GROUPING_PENDING",
+  "wireless_binding_save_fence": "ROOT_NBT_TRANSPORT_NAME_IGNORED_FULL_PAYLOAD_PRESERVED",
+  "wireless_search": "BOUNDED_ASCII_DISPLAY_NAME_SUBSTRING_REVISION_FENCED",
+  "wireless_search_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT"
 }

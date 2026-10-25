@@ -52,10 +52,24 @@ public final class LegacyWirelessStorage {
             int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
         }}catch(RuntimeException provider){result.clear();}return result;
     }
+    public static final int MAX_SEARCH=32;
+    /** Printable ASCII keeps native short-window controls bounded on both legacy protocols. */
+    public static boolean validSearch(String query){
+        if(query==null||query.length()>MAX_SEARCH)return false;
+        for(int i=0;i<query.length();i++)if(query.charAt(i)<32||query.charAt(i)>126)return false;
+        return true;
+    }
     /** Sort copies only: each row keeps its physical endpoint/slot and full NBT variant. */
     public static List<Entry> entries(EntityPlayer player,ItemStack tool,final int order){
+        return entries(player,tool,order,"");
+    }
+    /** Filtering never groups variants or changes physical endpoint identities. */
+    public static List<Entry> entries(EntityPlayer player,ItemStack tool,final int order,String query){
+        if(!validSearch(query))return new ArrayList<Entry>();
         List<Entry> result=entries(player,tool);
-        try{if(order==1||order==2)java.util.Collections.sort(result,new java.util.Comparator<Entry>(){
+        try{String needle=query.toLowerCase(java.util.Locale.ROOT);
+            if(!needle.isEmpty())for(java.util.Iterator<Entry> it=result.iterator();it.hasNext();)if(!it.next().snapshot.getDisplayName().toLowerCase(java.util.Locale.ROOT).contains(needle))it.remove();
+            if(order==1||order==2)java.util.Collections.sort(result,new java.util.Comparator<Entry>(){
             public int compare(Entry a,Entry b){
                 if(order==2){int count=Integer.compare(LegacyTile.STACKS.count(b.snapshot),LegacyTile.STACKS.count(a.snapshot));if(count!=0)return count;}
                 return a.snapshot.getDisplayName().compareToIgnoreCase(b.snapshot.getDisplayName());
