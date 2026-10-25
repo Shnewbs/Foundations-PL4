@@ -2359,3 +2359,10 @@ Release acceptance remains explicitly open for real-client visuals, two-player g
 ## 0.0.2a.R2.2 — final audit performance fix
 
 Reader-only browsing controls no longer invalidate network topology. Native packet coverage verifies unchanged topology build count across successful search/page edits. This completes the current correctness cleanup, while the client/multiplayer/installed-mod acceptance boundaries listed above remain open.
+
+
+## 2026-10-25 legacy search development
+
+Legacy handheld storage now implements bounded display-name substring search with the native text field and server-authoritative, revision-fenced view changes on both 1.12.2 and 1.6.4. It composes with existing per-slot sorting. Search supports 32 printable ASCII characters; grouped quantities and the remaining legacy editor/multipart parity are still open. Exact-source build/client outcomes are in the RC ledger; RC clearance remains false.
+
+The 26.x fixture count is reconciled: each retained loader-profile log has 192 PL4 tests plus one `minecraft:default` environment test, for 193 required passes. Keep the PL4 source declaration at 192. Future controller reports retain both totals and environment attribution rather than conflating them.

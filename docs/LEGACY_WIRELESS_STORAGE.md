@@ -37,3 +37,14 @@ The acceptance workflow is frozen to its qualified source, artifact ID and archi
 ## Sorting development candidate
 
 The next 1.12.2 and 1.6.4 source candidates add three server-authoritative sort modes and 12 native sorting/control cases each (168 total declared cases per port). The exact 1.12.2 candidate passed 168 native cases; the repaired 1.6.4 candidate passed 170. Both passed production startup, generated preview.3 migration and scoped stock-client sorting/order/replay checks. All 16 reviewed captures and current production JAR hashes are linked from the RC ledger; prior 156-case evidence certifies only its recorded JARs. The 1.6.4 binding comparison now ignores only the NBT root transport name changed by ItemStack saving, retaining the complete payload fence. Search, grouping, editor/multipart parity and the remaining acceptance gates stay open.
+
+
+## Bounded legacy search development
+
+Both exact legacy branches now provide a Find field below the hotbar. It filters display names by case-insensitive substring and composes with the three sort modes. The current native protocol supports at most 32 printable ASCII characters. Filtering keeps each physical endpoint/slot and full NBT variant separate; grouped quantities remain pending.
+
+Text edits are sent one character/control per acknowledged native window revision. Typing, paste sanitization, backspace, Delete, caret/selection and clearing use the native text field. The client holds transfers, sorting and paging while its desired query is still being synchronized. Each accepted search edit resets to page zero and invalidates older selection packets; an empty result does not fall back to unfiltered rows. The existing finite revision budget closes an exhausted window rather than making old actions valid again; reopen it to continue browsing.
+
+Exact-source native and stock-client acceptance for this batch are recorded in the current RC ledger; a historical lighting/sorting report does not qualify the new search payload. Installed providers, dedicated multiplayer, arbitrary user-world migrations and sustained performance remain separate gates.
+
+Search keyboard repeats are enabled for the window lifetime and reset on close. Native Delete handling and text-field brightness were corrected from actual client findings. Both exact final stock-client runs passed search/caret/clear/no-match/replay and repeat-lifecycle checks; twenty captures passed scoped review. See the search acceptance reports for exact hashes and limitations.

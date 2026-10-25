@@ -1,0 +1,197 @@
+{
+  "recorded_date": "2026-10-25",
+  "minecraft": "1.12.2",
+  "source_commit": "2d4f1389f8f746224d9811fc2dc9985ce607780d",
+  "runtime_sha256": "0251eead1ea1a577b5ec7a3af17ec455a80cacb4bbf7e480e2a4e07d3589dea6",
+  "native_workflow_run": 40218575368,
+  "client_workflow_run": 40218806552,
+  "client_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40218806552",
+  "client_controller_commit": "7491cde42337855905bea8121580818a49c1f6a6",
+  "native_artifact": {
+    "source": "2d4f1389f8f746224d9811fc2dc9985ce607780d",
+    "artifact": 12608925513,
+    "digest": "c5a519c7224f9d3605b69027dd15a05cf27c038f9504b5265efc580c0fe7548e"
+  },
+  "client_artifact": {
+    "id": 12608826197,
+    "name": "legacy-wireless-real-client-40218806552-1",
+    "size_in_bytes": 324592,
+    "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12608826197",
+    "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12608826197/zip",
+    "expired": false,
+    "created_at": "2026-10-25T17:58:26Z",
+    "expires_at": "2026-11-08T17:58:25Z",
+    "updated_at": "2026-10-25T17:58:26Z",
+    "digest": "sha256:de4d625ff595f8cd2f8a72b8b05f32d20365552eddea13c04b9c40dbff17792b",
+    "workflow_run": {
+      "id": 40218806552,
+      "repository_id": 1396808859,
+      "head_repository_id": 1396808859,
+      "head_branch": "main",
+      "head_sha": "7491cde42337855905bea8121580818a49c1f6a6"
+    }
+  },
+  "client_report": {
+    "minecraft": "1.12.2",
+    "source_commit": "2d4f1389f8f746224d9811fc2dc9985ce607780d",
+    "result": "PASS",
+    "native_wireless_withdrawal": true,
+    "stale_replay_rejected": true,
+    "native_wireless_deposit": true,
+    "native_paging": true,
+    "native_keyboard_repeat_lifecycle": true,
+    "native_search_caret_edit": true,
+    "native_search_typing_clear_no_match": true,
+    "stale_search_replay_rejected": true,
+    "search_capture": "legacy-wireless-storage-search.png",
+    "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+    "native_sorting": true,
+    "stale_sort_replay_rejected": true,
+    "sorted_capture": "legacy-wireless-storage-sorted.png",
+    "signed_byte_revision": 70,
+    "native_packet_codec_round_trip": true,
+    "actual_mouse_withdraw_deposit_page": true,
+    "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+    "native_display_projection_and_hide": true,
+    "display_captures": [
+      "legacy-private-display.png",
+      "legacy-public-display.png"
+    ],
+    "captures": [
+      "legacy-wireless-storage-scale-1.png",
+      "legacy-wireless-storage-scale-2.png",
+      "legacy-wireless-storage-scale-3.png",
+      "legacy-wireless-storage-scale-4.png"
+    ],
+    "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+  },
+  "stock_runtime": {
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2864",
+    "runtime_java": 8,
+    "runtime_sha256": "0251eead1ea1a577b5ec7a3af17ec455a80cacb4bbf7e480e2a4e07d3589dea6",
+    "source_commit": "2d4f1389f8f746224d9811fc2dc9985ce607780d",
+    "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+    "probe_sha256": "66d0e38d9d5cd794a386274a9b93eb8760650390092ca629a7a2f8ab5da69808",
+    "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+    "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+    "production_jar_matches_native_gate": true,
+    "development_game_classpath": false,
+    "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+  },
+  "visual_review": {
+    "result": "PASS_SCOPED",
+    "manually_reviewed_captures": 10,
+    "search_text_gray_level": 224,
+    "captures": [
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-private-display.png",
+        "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Private display omits network telemetry; command hint retains its intentional ellipsis."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-public-display.png",
+        "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Published network display shows 4 hosts, 1/1 export/import and 1 reader with readable in-world text."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-scale-1.png",
+        "sha256": "936c80e5ae82cbc32339f861927cbd836a1d6fd154f29ab893251c8b90893ab4",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Storage, sort/page buttons and Find strip fit the full viewport at this native scale; no control overlap."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-scale-2.png",
+        "sha256": "e68c5c0d6abb95c05d6ac48ca5b81154e6e3e48bc59cf2aabf90d113dae32895",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Storage, sort/page buttons and Find strip fit the full viewport at this native scale; no control overlap."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-scale-3.png",
+        "sha256": "71d72922180ec5fab0dbebcabbbde512680a4084ba4b035b98a128bacdfe5fd8",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Storage, sort/page buttons and Find strip fit the full viewport at this native scale; no control overlap."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-scale-4.png",
+        "sha256": "1358b69f9e93362c669b889da4b7d969d508eeaee5c0a4d46e584e06d9a295fb",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Storage, sort/page buttons and Find strip fit the full viewport at this native scale; no control overlap."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-search-empty.png",
+        "sha256": "0ae2477d4b26cf8eb7425ca5d0953134eb8a210088b868a928e0f3184563d0ab",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "xyz search shows empty storage without falling back to unfiltered rows; local inventory remains visible."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-search.png",
+        "sha256": "e822b70f93d7953c77e1dfb71d82ce0837902bb69b0b07f8d5573658367dd4e4",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "gold query is bright/readable, shows only the 27 matching gold stacks and retains per-slot quantities."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-sorted.png",
+        "sha256": "4bf0d9afc6e576119bbe0af890d8df3f97c9de213bcc2d3963ac79d792abeb90",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Descending count view: 63 diamonds, 33 iron then the 32-count stacks; no grouping."
+      },
+      {
+        "path": "docs/acceptance/screenshots/rc-search-2026-10-25/1.12.2/legacy-wireless-storage-tooltip.png",
+        "sha256": "691e4869e295f002cb7720000c2267389d5f4a36d22b848be2c8bc65da38539d",
+        "dimensions": [
+          1280,
+          960
+        ],
+        "result": "PASS_SCOPED",
+        "finding": "Readable Diamond tooltip inside the viewport."
+      }
+    ]
+  },
+  "rc_publication_cleared": false,
+  "limitations": [
+    "ASCII-only search; grouping remains open",
+    "finite 127 window revision budget; exhaustion closes the window instead of wrapping",
+    "offline integrated-world clients only; dedicated multiplayer and installed providers remain open",
+    "arbitrary user-world migration and sustained active-provider performance remain open",
+    "advanced legacy editor/multipart parity remains open"
+  ]
+}

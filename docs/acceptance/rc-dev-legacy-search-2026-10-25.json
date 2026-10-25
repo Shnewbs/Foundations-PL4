@@ -851,7 +851,21 @@
     "pre_fix_client_artifact": 12607598258,
     "pre_fix_client_archive_sha256": "681b1eed102dab4f89d6e1d65fbc22244061af5960cbb204d7ccfb436c751791",
     "pre_fix_automated_client_gate": "PASS",
-    "pre_fix_visual_gate": "NEEDS_SEARCH_TEXT_CONTRAST_FIX"
+    "pre_fix_visual_gate": "NEEDS_SEARCH_TEXT_CONTRAST_FIX",
+    "final_result": "PASS both exact clients, manually reviewed bright query text; grayscale 224 in both captures.",
+    "before_capture": "screenshots/rc-search-2026-10-25/before-search-text-lighting-1.12.2.png"
   },
-  "keyboard_repeat_root_cause": "Shortened End+4 Backspace+xyz sequence proved only one Backspace was accepted on 1.6.4. The native screen omitted Keyboard.enableRepeatEvents(true). Added the standard lifecycle to both exact GUI ports, restoring false on close; final client assertions require enabled state while editing and disabled after closing. Earlier modifier/burst interpretations are retained as diagnostic history, superseded by this narrowed reproduction."
+  "keyboard_repeat_root_cause": "Shortened End+4 Backspace+xyz sequence proved only one Backspace was accepted on 1.6.4. The native screen omitted Keyboard.enableRepeatEvents(true). Added the standard lifecycle to both exact GUI ports, restoring false on close; final client assertions require enabled state while editing and disabled after closing. Earlier modifier/burst interpretations are retained as diagnostic history, superseded by this narrowed reproduction. Both exact final clients passed enabled-while-editing/reset-after-close assertions and accepted repeated Backspace.",
+  "stock_client_evidence": {
+    "1.12.2": "docs/acceptance/rc-dev-1.12.2-search-stock-client.json",
+    "1.6.4": "docs/acceptance/rc-dev-1.6.4-search-stock-client.json"
+  },
+  "stock_client_search_acceptance": "PASS_SCOPED_BOTH_EXACT_TARGETS",
+  "manually_reviewed_captures": 20,
+  "browser_acceptance_proof": {
+    "path": "screenshots/rc-search-2026-10-25/client-acceptance-proof.jpg",
+    "sha256": "79a960e5b6f617ed1d219b714b95ca9408f735498c0cadfa4f1271fdaf5308a6",
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40218830955",
+    "result": "Browser visibly confirmed Success for final exact 1.6.4 client job; copied same captured bytes."
+  }
 }
