@@ -35,7 +35,9 @@ public final class LegacyBlock extends BlockContainer {
         }
         if(hand==EnumHand.MAIN_HAND&&LegacyEnergyPlatform.interact(tile,player,player.getHeldItem(hand))){player.sendMessage(new TextComponentString(tile.describe()+" | Sneak-click empty-handed to crank; 10-tick cooldown."));return true;}
         if(LegacyFluidPlatform.interact(tile,player,player.getHeldItem(hand))){player.sendMessage(new TextComponentString(tile.describe()));return true;}
-        if(player.isSneaking()&&role!=0&&role!=5&&role!=8){tile.side=face.getIndex();tile.markDirty();}
+        if(player.isSneaking()&&role!=0&&role!=5&&role!=8){if((role==1||role==2||role==LegacyReadings.ITEMS)&&!LegacyItemSafety.selectFace(tile,face.getIndex())){
+            player.sendMessage(new TextComponentString("PL4: Item route unchanged; inspect retained escrow or unresolved transfer before changing its face."));return true;
+        }else if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS){tile.side=face.getIndex();tile.markDirty();}}
         player.sendMessage(new TextComponentString(tile.describe()));
         player.sendMessage(new TextComponentString("Sneak-click a node face to choose its adjacent inventory. /pl4legacy recipes lists registered recipes."));return true;
     }

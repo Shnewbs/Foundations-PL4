@@ -12,6 +12,11 @@ public final class LegacyItemSafety {
         public void block(String reason){tile.itemFault=reason;tile.fluidDirty();}
         public void clearBlock(){if(tile.itemOpaque==null)tile.itemFault="";tile.fluidDirty();}
     };}
+    /** Refuse route edits while held items or unresolved foreign mutations fence this endpoint. */
+    public static boolean selectFace(LegacyTile tile,int face){
+        if(face<0||face>5||blocked(tile)||!LegacyTile.STACKS.empty(tile.pending))return false;
+        tile.side=face;tile.fluidDirty();return true;
+    }
     private static int count(ItemStack stack){return LegacyTile.STACKS.empty(stack)?0:stack.getCount();}
     public static void write(LegacyTile tile,NBTTagCompound tag){
         tag.setString("ItemTransferFault",tile.itemFault);
