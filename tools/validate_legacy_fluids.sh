@@ -25,7 +25,8 @@ python3 - <<'PY'
 import json,zipfile,struct
 from pathlib import Path
 report=json.loads(Path('run-legacy/legacy-scenarios.json').read_text())
-assert report['minecraft']=='1.12.2' and report['total']==156 and report['passed']==156 and report['failed']==0,report
+expected=json.loads(Path('BUILD_STATUS.json').read_text())['expected_native_scenarios']
+assert report['minecraft']=='1.12.2' and report['total']==expected and report['passed']==expected and report['failed']==0,report
 jar=Path('build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar')
 with zipfile.ZipFile(jar) as z:
     assert json.loads(z.read('mcmod.info'))[0]['version']=='0.2.0-rc.1-dev'

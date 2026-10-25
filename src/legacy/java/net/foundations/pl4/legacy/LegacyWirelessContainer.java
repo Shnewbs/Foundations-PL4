@@ -11,7 +11,9 @@ public final class LegacyWirelessContainer extends Container {
     private final EntityPlayer owner;private final int toolSlot;private final ItemStack binding;private final boolean client;
     private final InventoryBasic view=new InventoryBasic("Wireless Storage",false,45);
     private List<LegacyWirelessStorage.Entry> entries=new ArrayList<LegacyWirelessStorage.Entry>();
-    public int page=0,revision=-1;private long lastAction=Long.MIN_VALUE,lastRefresh=Long.MIN_VALUE;private boolean failed;
+    public static final int SORT_CONTROL=81;
+    public int page=0,revision=-1;private int sortOrder;
+    public int sortOrder(){return sortOrder;}private long lastAction=Long.MIN_VALUE,lastRefresh=Long.MIN_VALUE;private boolean failed;
     public LegacyWirelessContainer(EntityPlayer player,boolean client){
         this.owner=player;this.client=client;this.toolSlot=player.inventory.currentItem;ItemStack held=player.inventory.getStackInSlot(toolSlot);this.binding=LegacyTile.STACKS.empty(held)?ItemStack.EMPTY:held.copy();
         for(int i=0;i<45;i++)addSlotToContainer(locked(view,i,8+(i%9)*18,18+(i/9)*18));
@@ -23,19 +25,24 @@ public final class LegacyWirelessContainer extends Container {
     private ItemStack held(){return owner.inventory.getStackInSlot(toolSlot);}
     @Override public boolean canInteractWith(EntityPlayer player){return player==owner&&!failed&&(client||owner.inventory.currentItem==toolSlot&&LegacyWirelessStorage.tool(held())&&ItemStack.areItemStackTagsEqual(binding,held())&&LegacyWirelessStorage.resolve(owner,held())!=null);}
     private void refresh(boolean force){
-        List<LegacyWirelessStorage.Entry> next=LegacyWirelessStorage.entries(owner,held());boolean changed=force||next.size()!=entries.size();
+        List<LegacyWirelessStorage.Entry> next=LegacyWirelessStorage.entries(owner,held(),sortOrder);boolean changed=force||next.size()!=entries.size();
         if(!changed)for(int i=0;i<next.size();i++){LegacyWirelessStorage.Entry a=entries.get(i),b=next.get(i);if(a.node!=b.node||a.slot!=b.slot||!ItemStack.areItemStacksEqual(a.snapshot,b.snapshot)){changed=true;break;}}
         if(revision<0||changed){if(revision>=127){failed=true;return;}revision++;}
         entries=next;page=Math.max(0,Math.min(page,Math.max(0,(entries.size()-1)/45)));
         for(int i=0;i<45;i++){int at=page*45+i;view.setInventorySlotContents(i,at<entries.size()?entries.get(at).snapshot.copy():ItemStack.EMPTY);}
     }
-    private void sendRevision(){for(Object listener:listeners)((net.minecraft.inventory.IContainerListener)listener).sendWindowProperty(this,0,revision);}
-    @Override public void updateProgressBar(int id,int value){if(id==0)revision=value;}
+    private void sendRevision(){for(Object listener:listeners){net.minecraft.inventory.IContainerListener sink=(net.minecraft.inventory.IContainerListener)listener;sink.sendWindowProperty(this,1,sortOrder);sink.sendWindowProperty(this,2,page);sink.sendWindowProperty(this,0,revision);}}
+    @Override public void updateProgressBar(int id,int value){if(id==0)revision=value;else if(id==1)sortOrder=Math.max(0,Math.min(2,value));else if(id==2)page=Math.max(0,value);}
 
     @Override public void detectAndSendChanges(){if(!client&&canInteractWith(owner)){long tick=owner.world.getTotalWorldTime();if(tick!=lastRefresh&&(lastRefresh==Long.MIN_VALUE||tick-lastRefresh>=10)){lastRefresh=tick;refresh(false);}}super.detectAndSendChanges();if(!client)sendRevision();}
     @Override public ItemStack transferStackInSlot(EntityPlayer player,int slot){return ItemStack.EMPTY;}
     @Override public ItemStack slotClick(int slot,int button,net.minecraft.inventory.ClickType mode,EntityPlayer player){
-        if(client||!canInteractWith(player)||!(mode==net.minecraft.inventory.ClickType.PICKUP||mode==net.minecraft.inventory.ClickType.QUICK_MOVE)||((button&255)>>>1)!=revision||slot<0||slot>=81)return ItemStack.EMPTY;
+        if(client||!canInteractWith(player)||!(mode==net.minecraft.inventory.ClickType.PICKUP||mode==net.minecraft.inventory.ClickType.QUICK_MOVE)||((button&255)>>>1)!=revision||slot<0||slot>SORT_CONTROL)return ItemStack.EMPTY;
+        if(slot==SORT_CONTROL){
+            if(mode!=net.minecraft.inventory.ClickType.PICKUP)return ItemStack.EMPTY;
+            sortOrder=(sortOrder+((button&1)==0?1:2))%3;page=0;refresh(true);
+            super.detectAndSendChanges();sendRevision();return ItemStack.EMPTY;
+        }
         long tick=owner.world.getTotalWorldTime();if(lastAction==tick)return ItemStack.EMPTY;lastAction=tick;
         try{int amount=(button&1)==1?1:64;
             if(slot<45){int at=page*45+slot;if(at<entries.size())LegacyWirelessStorage.withdraw(owner,held(),entries.get(at),amount);}
