@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 224,
+  "expected_native_scenarios": 230,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -83,5 +83,6 @@
   "wireless_search_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
   "wireless_grouped_quantities": "EXACT_VARIANT_PHYSICAL_SOURCE_ROSTER_BOUNDED_WITHDRAWAL",
   "wireless_grouping_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
-  "wireless_same_target_alias_acceptance": "PENDING_EXACT_NATIVE_AND_CLIENT_REGRESSION"
+  "wireless_same_target_alias_acceptance": "PENDING_EXACT_NATIVE_AND_CLIENT_REGRESSION",
+  "item_route_retargeting": "Development: refuse item face selection while faulted, opaque or holding escrow; exact native validation pending. Cross-network/removal durability remains open."
 }
