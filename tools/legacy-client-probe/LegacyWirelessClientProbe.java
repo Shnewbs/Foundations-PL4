@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public final class LegacyWirelessClientProbe {
     private int phase,scale=1,oldRevision,lastLogged=-1;private long due,started=System.nanoTime();
     private final AtomicReference<String> serverResult=new AtomicReference<String>();
-    private boolean worldChecked,sortChecked;
+    private boolean worldChecked,sortChecked,searchChecked;
     private final List<String> captures=new ArrayList<String>();
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){MinecraftForge.EVENT_BUS.register(this);}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}
@@ -66,10 +66,17 @@ public final class LegacyWirelessClientProbe {
     private void capture(Minecraft mc,String name)throws Exception{ImageIO.write(ScreenShotHelper.createScreenshot(mc.displayWidth,mc.displayHeight,mc.getFramebuffer()),"png",new File(output(),name));}
     private void mouseClick(int logicalX,int logicalY,boolean right)throws Exception{
         Minecraft mc=Minecraft.getMinecraft();ScaledResolution resolution=new ScaledResolution(mc);int factor=resolution.getScaleFactor();
-        int left=(resolution.getScaledWidth()-176)/2,top=(resolution.getScaledHeight()-204)/2;
+        int left=(resolution.getScaledWidth()-176)/2,top=(resolution.getScaledHeight()-224)/2;
         java.awt.Robot robot=new java.awt.Robot();robot.mouseMove((left+logicalX)*factor,(top+logicalY)*factor);
         int button=right?java.awt.event.InputEvent.BUTTON3_DOWN_MASK:java.awt.event.InputEvent.BUTTON1_DOWN_MASK;
         robot.mousePress(button);robot.mouseRelease(button);
+    }
+    private void typeSearch(String text)throws Exception{
+        java.awt.Robot robot=new java.awt.Robot();
+        for(int i=0;i<text.length();i++){int code=java.awt.event.KeyEvent.getExtendedKeyCodeForChar(Character.toUpperCase(text.charAt(i)));robot.keyPress(code);robot.keyRelease(code);}
+    }
+    private void clearSearch()throws Exception{
+        java.awt.Robot robot=new java.awt.Robot();robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);robot.keyPress(java.awt.event.KeyEvent.VK_A);robot.keyRelease(java.awt.event.KeyEvent.VK_A);robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);robot.keyPress(java.awt.event.KeyEvent.VK_BACK_SPACE);robot.keyRelease(java.awt.event.KeyEvent.VK_BACK_SPACE);
     }
     private void packetRoundTrip()throws Exception{
         net.minecraft.network.PacketBuffer buffer=new net.minecraft.network.PacketBuffer(io.netty.buffer.Unpooled.buffer());
@@ -99,7 +106,7 @@ public final class LegacyWirelessClientProbe {
                 String name="legacy-wireless-storage-scale-"+scale+".png";ImageIO.write(ScreenShotHelper.createScreenshot(mc.displayWidth,mc.displayHeight,mc.getFramebuffer()),"png",new File(output(),name));captures.add(name);
                 if(++scale<=4){phase=2;return;}
                 ScaledResolution hover=new ScaledResolution(mc);int factor=hover.getScaleFactor();
-                new java.awt.Robot().mouseMove(((hover.getScaledWidth()-176)/2+16)*factor,((hover.getScaledHeight()-204)/2+26)*factor);
+                new java.awt.Robot().mouseMove(((hover.getScaledWidth()-176)/2+16)*factor,((hover.getScaledHeight()-224)/2+26)*factor);
                 phase=13;waitUntilNext();return;
             }
             if(phase==13){
@@ -121,15 +128,30 @@ public final class LegacyWirelessClientProbe {
             if(phase==21){check("PASS".equals(result),"sort replay check missing");mouseClick(50,9,false);phase=22;waitUntilNext();return;}
             if(phase==22){schedule(new Runnable(){public void run(){check(((LegacyWirelessContainer)serverPlayer().openContainer).sortOrder()==2,"native count sort failed");}});phase=23;waitUntilNext();return;}
             if(phase==23){check("PASS".equals(result)&&clientContainer().sortOrder()==2,"client count sort metadata missing");check(clientContainer().getSlot(1).getStack().getCount()==33,"actual client count ordering mismatch");capture(mc,"legacy-wireless-storage-sorted.png");sortChecked=true;phase=12;}
+            if(phase==24){typeSearch("gold");phase=25;waitUntilNext();return;}
+            if(phase==25){
+                if(!clientContainer().search().equals("gold"))return;
+                check(clientContainer().page==0&&clientContainer().getSlot(0).getStack().getItem()==Items.GOLD_INGOT,"actual filtered client rows mismatch");
+                check(clientContainer().getSlot(27).getStack().isEmpty(),"search retained nonmatching or duplicate rows");
+                capture(mc,"legacy-wireless-storage-search.png");
+                mc.playerController.windowClick(clientContainer().windowId,0,(oldRevision<<1)|1,ClickType.PICKUP,mc.player);
+                schedule(new Runnable(){public void run(){LegacyWirelessContainer c=(LegacyWirelessContainer)serverPlayer().openContainer;check(c.search().equals("gold")&&c.page==0&&diamonds()==1&&source().getStackInSlot(0).getCount()==63,"search replay/fence failed");}});
+                phase=26;waitUntilNext();return;
+            }
+            if(phase==26){check("PASS".equals(result),"search server assertion missing");java.awt.Robot edit=new java.awt.Robot();for(int key:new int[]{java.awt.event.KeyEvent.VK_HOME,java.awt.event.KeyEvent.VK_RIGHT,java.awt.event.KeyEvent.VK_DELETE}){edit.keyPress(key);edit.keyRelease(key);}typeSearch("o");phase=29;waitUntilNext();return;}
+            if(phase==29){check(clientContainer().search().equals("gold"),"middle-of-query caret edit failed");clearSearch();typeSearch("zzzz");phase=27;waitUntilNext();return;}
+            if(phase==27){if(!clientContainer().search().equals("zzzz"))return;check(clientContainer().getSlot(0).getStack().isEmpty(),"no-match search exposed a fallback row");capture(mc,"legacy-wireless-storage-search-empty.png");clearSearch();phase=28;waitUntilNext();return;}
+            if(phase==28){if(!clientContainer().search().isEmpty())return;check(clientContainer().getSlot(0).getStack().getCount()==63,"clearing search failed to restore count sort");searchChecked=true;phase=12;}
             if(phase==15){mc.getToastGui().clear();check("PASS".equals(result),"display setup failed");check(clientDisplay().displayFacing==3&&clientDisplay().displayLines[1].equals("Private"),"private native projection missing: facing="+clientDisplay().displayFacing+" lines="+java.util.Arrays.toString(clientDisplay().displayLines));capture(mc,"legacy-private-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().getServerWorld().getTileEntity(new BlockPos(1,200,0));display.publishReadings=true;display.displayChanged();}});phase=16;waitUntilNext();return;}
             if(phase==16){mc.getToastGui().clear();check("PASS".equals(result),"display publication failed");check(clientDisplay().displayLines[0].equals("PL4 Network")&&clientDisplay().displayLines[1].equals("Hosts: 4"),"public native projection missing");capture(mc,"legacy-public-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().getServerWorld().getTileEntity(new BlockPos(1,200,0));display.publishReadings=false;display.displayChanged();}});phase=17;waitUntilNext();return;}
             if(phase==17){check("PASS".equals(result)&&clientDisplay().displayLines[1].equals("Private"),"hiding failed to clear projected text");worldChecked=true;phase=12;}
             if(phase==12){check("PASS".equals(result),"page check missing");
                 if(!sortChecked){oldRevision=clientContainer().revision;mouseClick(50,9,false);phase=18;waitUntilNext();return;}
+                if(!searchChecked){oldRevision=clientContainer().revision;mouseClick(90,214,false);phase=24;waitUntilNext();return;}
                 if(!worldChecked){mc.gameSettings.hideGUI=true;mc.gameSettings.pauseOnLostFocus=false;mc.player.closeScreen();schedule(new Runnable(){public void run(){setupDisplay();}});phase=15;waitUntilNext();return;}
 
                 com.google.gson.JsonObject report=new com.google.gson.JsonObject();report.addProperty("minecraft","1.12.2");report.addProperty("source_commit",System.getenv("PL4_CLIENT_SOURCE"));report.addProperty("result","PASS");
-                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("native_sorting",true);report.addProperty("stale_sort_replay_rejected",true);report.addProperty("sorted_capture","legacy-wireless-storage-sorted.png");report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");report.addProperty("native_display_projection_and_hide",true);com.google.gson.JsonArray displays=new com.google.gson.JsonArray();displays.add("legacy-private-display.png");displays.add("legacy-public-display.png");report.add("display_captures",displays);
+                report.addProperty("native_wireless_withdrawal",true);report.addProperty("stale_replay_rejected",true);report.addProperty("native_wireless_deposit",true);report.addProperty("native_paging",true);report.addProperty("native_search_caret_edit",true);report.addProperty("native_search_typing_clear_no_match",true);report.addProperty("stale_search_replay_rejected",true);report.addProperty("search_capture","legacy-wireless-storage-search.png");report.addProperty("search_empty_capture","legacy-wireless-storage-search-empty.png");report.addProperty("native_sorting",true);report.addProperty("stale_sort_replay_rejected",true);report.addProperty("sorted_capture","legacy-wireless-storage-sorted.png");report.addProperty("signed_byte_revision",70);report.addProperty("native_packet_codec_round_trip",true);report.addProperty("actual_mouse_withdraw_deposit_page",true);report.addProperty("tooltip_capture","legacy-wireless-storage-tooltip.png");report.addProperty("native_display_projection_and_hide",true);com.google.gson.JsonArray displays=new com.google.gson.JsonArray();displays.add("legacy-private-display.png");displays.add("legacy-public-display.png");report.add("display_captures",displays);
                 com.google.gson.JsonArray images=new com.google.gson.JsonArray();for(String name:captures)images.add(name);report.add("captures",images);report.addProperty("scope","Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance.");
                 try(FileWriter file=new FileWriter(new File(output(),"legacy-wireless-client.json"))){new com.google.gson.GsonBuilder().setPrettyPrinting().create().toJson(report,file);}phase=14;mc.shutdown();
             }

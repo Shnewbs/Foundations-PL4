@@ -14,7 +14,7 @@ jobs:
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
       PL4_CLIENT_MC: '1.6.4'
-      PL4_NATIVE_ARCHIVE_SHA256: '89bbc35952f7dc14bf3919be039598fa6322286e7ed82c58ad4f15a4b9dbb118'
+      PL4_NATIVE_ARCHIVE_SHA256: '2973715beb6bfec8bb969882d26b0de7924ab25c05ce3bba8cc93255f5891b60'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: c817a61e494c7a70c4fb2752f01292c2a408692a
+          ref: 2a502a897f7b24183c26b79c27dd30542a41dca0
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -64,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12605162466/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12607109164/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -112,9 +112,11 @@ jobs:
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r['result']=='PASS' and r['signed_byte_revision']==70
-          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected']:assert r[key]
+          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected','native_search_caret_edit','native_search_typing_clear_no_match','stale_search_replay_rejected']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
           assert (root/r['sorted_capture']).stat().st_size>1000
+          assert (root/r['search_capture']).stat().st_size>1000
+          assert (root/r['search_empty_capture']).stat().st_size>1000
           assert r['native_display_projection_and_hide']
           for name in r['display_captures']:assert (root/name).stat().st_size>1000
           assert len(r['captures'])==4
