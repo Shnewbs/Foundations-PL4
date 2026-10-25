@@ -53,9 +53,9 @@ public final class LegacyWirelessScreen extends GuiContainer {
         fontRenderer.drawString(searchPending()?"Find...":"Find:",8,210,0x404040);
         if(container.grouped()){
             boolean lighting=org.lwjgl.opengl.GL11.glIsEnabled(org.lwjgl.opengl.GL11.GL_LIGHTING),depth=org.lwjgl.opengl.GL11.glIsEnabled(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);
-            org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_LIGHTING);org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);org.lwjgl.opengl.GL11.glPushMatrix();org.lwjgl.opengl.GL11.glScalef(.5f,.5f,1);
-            try{for(int i=0;i<45;i++)if(container.rowTotal(i)>0){String count=LegacyWirelessStorage.compactTotal(container.rowTotal(i));fontRenderer.drawStringWithShadow(count,(LegacyWirelessContainer.storageX(i)+16)*2-fontRenderer.getStringWidth(count),(LegacyWirelessContainer.storageY(i)+10)*2,0xffffff);}}
-            finally{org.lwjgl.opengl.GL11.glPopMatrix();if(lighting)org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_LIGHTING);if(depth)org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);}
+            org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_LIGHTING);org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);
+            try{for(int i=0;i<45;i++)if(container.rowTotal(i)>0){String count=LegacyWirelessStorage.compactTotal(container.rowTotal(i));int width=fontRenderer.getStringWidth(count);float scale=Math.min(1f,16f/Math.max(1,width));org.lwjgl.opengl.GL11.glPushMatrix();try{org.lwjgl.opengl.GL11.glTranslatef(LegacyWirelessContainer.storageX(i)+16,LegacyWirelessContainer.storageY(i)+9,0);org.lwjgl.opengl.GL11.glScalef(scale,scale,1);fontRenderer.drawStringWithShadow(count,-width,0,0xffffff);}finally{org.lwjgl.opengl.GL11.glPopMatrix();}}}
+            finally{if(lighting)org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_LIGHTING);if(depth)org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);}
         }
     }
     @Override protected void drawGuiContainerBackgroundLayer(float partial,int mouseX,int mouseY){
