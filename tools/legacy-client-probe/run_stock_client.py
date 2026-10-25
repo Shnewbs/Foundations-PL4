@@ -31,13 +31,10 @@ def download(url,path,sha1=None):
 
 status=json.loads((root/'BUILD_STATUS.json').read_text());name='FoundationsPL4-'+target+'-'+status['version']+profile['runtime_suffix']+'.jar'
 qualified=root/'qualified-native.zip'
-assert hashlib.sha256(qualified.read_bytes()).hexdigest()==profile['artifact_sha256']
-with zipfile.ZipFile(qualified) as archive:
-    assert archive.read('verification-logs/SOURCE_COMMIT.txt').decode().strip()==os.environ['PL4_CLIENT_SOURCE'],'Artifact source differs from checked source'
-    runtime=game/'mods'/name
-    runtime.write_bytes(archive.read('build/libs/'+name))
-runtime_hash=hashlib.sha256(runtime.read_bytes()).hexdigest()
-assert runtime_hash==status['candidate_runtime_sha256'],'Qualified production artifact checksum mismatch'
+from qualified_artifact import runtime_from_archive
+payload,runtime_hash=runtime_from_archive(qualified,os.environ.get('PL4_NATIVE_ARCHIVE_SHA256',profile['artifact_sha256']),target,os.environ['PL4_CLIENT_SOURCE'],status['expected_native_scenarios'],name)
+runtime=game/'mods'/name
+runtime.write_bytes(payload)
 
 probe=root/'build/libs'/('FoundationsPL4-'+target+'-'+status['version']+'-'+profile['probe_suffix']+'.jar')
 if target=='1.6.4' and not probe.exists():

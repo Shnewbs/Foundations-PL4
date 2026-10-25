@@ -489,7 +489,14 @@
       "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_TOOLTIP_AND_NETWORK_DISPLAY",
       "integrated_wireless_actions": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
       "client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY"
+      "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
+      "sorting_candidate": {
+        "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
+        "expected_native_fixtures": 168,
+        "native_gate": "PASS",
+        "stock_client_gate": "PENDING_EXACT_CANDIDATE",
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.6.4",
@@ -518,10 +525,17 @@
       "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_TOOLTIP_AND_NETWORK_DISPLAY",
       "integrated_wireless_actions": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
       "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
-      "client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json"
+      "client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
+      "sorting_candidate": {
+        "source_commit": "d354b250618bb046d226befbbb896ff55c4e4bf7",
+        "expected_native_fixtures": 168,
+        "native_gate": "PENDING_REPAIR_VALIDATION",
+        "stock_client_gate": "PENDING_EXACT_CANDIDATE",
+        "rc_publication_cleared": false
+      }
     }
   ],
-  "latest_work": "Branch-local publication policy hardened across 23 existing version branches (44 workflow files), including the unguarded 1.20.1 publisher. Explicit boolean RC clearance is required; dev/snapshot/nightly versions are blocked. Native commands and runtime source are unchanged. 34 regression cases passed; no new client/provider/multiplayer/migration/performance acceptance or RC publication is claimed.",
+  "latest_work": "Three revision-fenced legacy handheld sort modes implemented on 1.12.2 and 1.6.4. 1.12.2 passed 168 native cases plus production startup and generated migration. The first 1.6.4 compile caught six newer-API calls in added fixtures; exact legacy setters are repaired and pinned retry is pending. Client sorting qualification and RC publication remain open.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
