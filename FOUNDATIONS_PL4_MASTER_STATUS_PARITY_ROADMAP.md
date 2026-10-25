@@ -1,9 +1,13 @@
 # Foundations PL4 — Master Status, Parity Audit, Roadmap, and Expansion Plan
 
-**Roadmap reconciliation:** October 24, 2026 (America/Los_Angeles); historical sections retain their original snapshot dates.
+**Roadmap reconciliation:** October 25, 2026 (America/Los_Angeles); historical sections retain their original snapshot dates.
 **Current primary-track released baseline:** performance-only `0.2b.0` beta for Minecraft `1.21.1`, `26.1.2` and `26.3`, each as a separate exact-target JAR. Independently versioned Forge ports and legacy previews are listed below.
 **Project acceptance:** performance betas and alpha/experimental legacy previews. Full Practical Logistics 2 parity remains incomplete. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
+
+## Hourly continuation and exact-source builds
+
+The [hourly implementation/build/publication policy](docs/RC_HOURLY_WORKFLOW.md) is active. Its [first native revalidation](docs/acceptance/rc-dev-hourly-native-2026-10-25.json) passed all 24 maintained exact targets, with pinned commits, packaged hashes and retained artifacts. Main also passed 192 native tests; 30 scheduler/publication/upload regressions passed. The guarded CurseForge synchronization confirmed 24 existing release receipts with zero failures. This produced no new RC release and does not transfer prior client/provider acceptance onto new JAR hashes. The main and common CurseForge publishers now require explicit tagged-source RC clearance. Version-specific publisher guards remain an urgent audit item before further port source pushes; the stored automation state names the concrete remaining publisher gap.
 
 ## Legacy handheld storage development
 

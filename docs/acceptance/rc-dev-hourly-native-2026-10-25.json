@@ -1,0 +1,511 @@
+{
+  "recorded_date": "2026-10-25",
+  "timezone": "America/Los_Angeles",
+  "workflow_run": 40195962271,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40195962271",
+  "workflow_source_commit": "1bc1fab0544cb3bc4ff3285ee7b3e1b492d6075f",
+  "result": "PASS_NATIVE_REVALIDATION_ONLY",
+  "targets": [
+    {
+      "job_id": 121176802818,
+      "job_name": "native (1.6.4, mc/1.6.4, 21, legacy, c2f3ed12d35b5e2a7613676b6d96308500510961)",
+      "minecraft": "1.6.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "c2f3ed12d35b5e2a7613676b6d96308500510961",
+      "native_gate": "PASS",
+      "expected_fixtures": 156,
+      "gate_reports": [
+        "clean-native-summary.json",
+        "production-smoke.json",
+        "legacy-migration-summary.json"
+      ],
+      "artifact_sha256": "5b151cd02f588ee8297fc3696cdbcda90693c15c99a76b4c9b346ba56bd19244",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600118052,
+      "artifact_name": "hourly-native-1.6.4-c2f3ed12d35b5e2a7613676b6d96308500510961",
+      "artifact_expires_at": "2026-11-08T13:17:56Z"
+    },
+    {
+      "job_id": 121176802361,
+      "job_name": "native (1.12.2, mc/1.12.2, 8, legacy, 09682f6f7b9522c8d547db208c7f6bcb4980d085)",
+      "minecraft": "1.12.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "09682f6f7b9522c8d547db208c7f6bcb4980d085",
+      "native_gate": "PASS",
+      "expected_fixtures": 156,
+      "gate_reports": [
+        "clean-native-summary.json",
+        "production-smoke.json",
+        "legacy-migration-summary.json"
+      ],
+      "artifact_sha256": "62f97f79d8bd431f9985611228c15332ba456ec18b6e873fc40856d073cd0c3c",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600212483,
+      "artifact_name": "hourly-native-1.12.2-09682f6f7b9522c8d547db208c7f6bcb4980d085",
+      "artifact_expires_at": "2026-11-08T13:17:20Z"
+    },
+    {
+      "job_id": 121176801135,
+      "job_name": "native (1.14.4, mc/1.14.4, 17, modern, 327cdb70b2f5bc905407abbbcadba700a808680c)",
+      "minecraft": "1.14.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "327cdb70b2f5bc905407abbbcadba700a808680c",
+      "native_gate": "PASS",
+      "expected_fixtures": 194,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "96dc3fe40b193af0b74fdceb7cc85a4c277ed758a2608996c82ee0bdeeff10f1",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599801932,
+      "artifact_name": "hourly-native-1.14.4-327cdb70b2f5bc905407abbbcadba700a808680c",
+      "artifact_expires_at": "2026-11-08T13:08:25Z"
+    },
+    {
+      "job_id": 121176801150,
+      "job_name": "native (1.15.2, mc/1.15.2, 17, modern, c0f3da321efcfc4dab656dd939b8c3e43dadfa35)",
+      "minecraft": "1.15.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+      "native_gate": "PASS",
+      "expected_fixtures": 194,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "0944021493c449fd5f4470ef016ae52800a752815f2e14952e14ea21004d88e8",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600550552,
+      "artifact_name": "hourly-native-1.15.2-c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+      "artifact_expires_at": "2026-11-08T13:08:08Z"
+    },
+    {
+      "job_id": 121176801148,
+      "job_name": "native (1.16.1, mc/1.16.1, 17, modern, 1495bf419b0e63c40c95740d1b0a52bf93e0f21d)",
+      "minecraft": "1.16.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "85aee02bc74e1edb385f46e63ec53d9ad52ffcc61a1c51a8e60fcc9aa0141404",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599996420,
+      "artifact_name": "hourly-native-1.16.1-1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+      "artifact_expires_at": "2026-11-08T13:08:06Z"
+    },
+    {
+      "job_id": 121176801071,
+      "job_name": "native (1.16.2, mc/1.16.2, 17, modern, b87021995889ea7dc00c8b312d5c35f711b7f57b)",
+      "minecraft": "1.16.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "b87021995889ea7dc00c8b312d5c35f711b7f57b",
+      "native_gate": "PASS",
+      "expected_fixtures": 195,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "c66423a05c6164ba3b6fca303e418346eb88b2114f6f369e96f3b262d4d6d199",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599836780,
+      "artifact_name": "hourly-native-1.16.2-b87021995889ea7dc00c8b312d5c35f711b7f57b",
+      "artifact_expires_at": "2026-11-08T13:08:00Z"
+    },
+    {
+      "job_id": 121176801283,
+      "job_name": "native (1.16.3, mc/1.16.3, 17, modern, 99ff596b2b05fd81da8934085891e1671a641546)",
+      "minecraft": "1.16.3",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "99ff596b2b05fd81da8934085891e1671a641546",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "c3d3d34be1d6a989af51ac6e2ad7e5dbd4e96347c91684dc6af0de0cecf0e890",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599896706,
+      "artifact_name": "hourly-native-1.16.3-99ff596b2b05fd81da8934085891e1671a641546",
+      "artifact_expires_at": "2026-11-08T13:08:00Z"
+    },
+    {
+      "job_id": 121176801156,
+      "job_name": "native (1.16.4, mc/1.16.4, 17, modern, b8b42a8d110ae906009fe5f087ff58501ce56ac4)",
+      "minecraft": "1.16.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "3daa23ecd2193a8cdb67b9b2d2e683ef8f94b5cb98e8c3317f9eafd2bf1cb7bf",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600261214,
+      "artifact_name": "hourly-native-1.16.4-b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+      "artifact_expires_at": "2026-11-08T13:08:10Z"
+    },
+    {
+      "job_id": 121176801160,
+      "job_name": "native (1.16.5, mc/1.16.5, 17, modern, 593edc1ef5667deb69fc7c404597b64ca7331969)",
+      "minecraft": "1.16.5",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "593edc1ef5667deb69fc7c404597b64ca7331969",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "1d2f1324294d6ef381eb40ae79e4be21efe50f828f12932aef6aacb69caa4b77",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600121915,
+      "artifact_name": "hourly-native-1.16.5-593edc1ef5667deb69fc7c404597b64ca7331969",
+      "artifact_expires_at": "2026-11-08T13:11:05Z"
+    },
+    {
+      "job_id": 121176801129,
+      "job_name": "native (1.17.1, mc/1.17.1, 17, modern, 24cbb94fb167950c0cafb5fdd5f120fc5fffe117)",
+      "minecraft": "1.17.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "baee6f9872262a339df1b38bf60a213a3653f2e71cf61d7691ba3cb60d95de42",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600446439,
+      "artifact_name": "hourly-native-1.17.1-24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+      "artifact_expires_at": "2026-11-08T13:13:20Z"
+    },
+    {
+      "job_id": 121176801159,
+      "job_name": "native (1.18.1, mc/1.18.1, 17, modern, 9b78569508b76b314b64b12a2653b2f4a1aaecdb)",
+      "minecraft": "1.18.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "79e7b5817a9a1a1cebb97e2a97ecbf75ce5d96a07e603bbaf5d4ebb0608868b7",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600211909,
+      "artifact_name": "hourly-native-1.18.1-9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+      "artifact_expires_at": "2026-11-08T13:13:17Z"
+    },
+    {
+      "job_id": 121176801155,
+      "job_name": "native (1.18.2, mc/1.18.2, 17, modern, 0003bd168f1ce1e39044f82fb2406c922f9ff56b)",
+      "minecraft": "1.18.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+      "native_gate": "PASS",
+      "expected_fixtures": 193,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "9cbb68415cea67b0359241a42ba6b59875f8ba025f0c9714b05d35f85db1c99e",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599847168,
+      "artifact_name": "hourly-native-1.18.2-0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+      "artifact_expires_at": "2026-11-08T13:12:49Z"
+    },
+    {
+      "job_id": 121176801133,
+      "job_name": "native (1.19, mc/1.19, 17, modern, a4cf686ba16aae111ab824b7c73707b502b48a35)",
+      "minecraft": "1.19",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "a4cf686ba16aae111ab824b7c73707b502b48a35",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "b2d4104d9d4f69b7fde5a557c1f9044a2d76eb4af138c1f8f3c133fa61e84e00",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600531141,
+      "artifact_name": "hourly-native-1.19-a4cf686ba16aae111ab824b7c73707b502b48a35",
+      "artifact_expires_at": "2026-11-08T13:12:28Z"
+    },
+    {
+      "job_id": 121176801241,
+      "job_name": "native (1.19.1, mc/1.19.1, 17, modern, 746d2c58b5f2482f6202b4172e0e012d11097f50)",
+      "minecraft": "1.19.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "746d2c58b5f2482f6202b4172e0e012d11097f50",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "574e8cadb873bebe59d63dc6ce3d8411930e299909c09f78d93fe1054f2bc4b1",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600800362,
+      "artifact_name": "hourly-native-1.19.1-746d2c58b5f2482f6202b4172e0e012d11097f50",
+      "artifact_expires_at": "2026-11-08T13:12:37Z"
+    },
+    {
+      "job_id": 121176801220,
+      "job_name": "native (1.19.2, mc/1.19.2, 17, modern, 9dfc5f7837cbfafb54e09282c96bc664f5d66313)",
+      "minecraft": "1.19.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "bed967b98b67ec4d20f36a692f5662fc65e705d144a46fca39cc7473924b8163",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599787504,
+      "artifact_name": "hourly-native-1.19.2-9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+      "artifact_expires_at": "2026-11-08T13:14:46Z"
+    },
+    {
+      "job_id": 121176801132,
+      "job_name": "native (1.19.3, mc/1.19.3, 17, modern, e79b66dd28a1a9655b2148261504fd650d98e992)",
+      "minecraft": "1.19.3",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "e79b66dd28a1a9655b2148261504fd650d98e992",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "801d200154b8b944ce6f03115f1a1a06f2caea5247f5b2fa54ec513215b67208",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600017035,
+      "artifact_name": "hourly-native-1.19.3-e79b66dd28a1a9655b2148261504fd650d98e992",
+      "artifact_expires_at": "2026-11-08T13:15:32Z"
+    },
+    {
+      "job_id": 121176801180,
+      "job_name": "native (1.19.4, mc/1.19.4, 17, modern, eee54a6a9e652d2080ab7ba7689dc66d22b87ea7)",
+      "minecraft": "1.19.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "ea9c733bd8abdf9d8925f85bef6c83d824874b4e28f54f5f94f34bf6b24ece59",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600471513,
+      "artifact_name": "hourly-native-1.19.4-eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+      "artifact_expires_at": "2026-11-08T13:15:13Z"
+    },
+    {
+      "job_id": 121176801262,
+      "job_name": "native (1.20, mc/1.20, 17, modern, 5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86)",
+      "minecraft": "1.20",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "9f72a8619482ec3f2944f21d6f454c12fe5f1c879197df54c08e15d443a86445",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600092052,
+      "artifact_name": "hourly-native-1.20-5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+      "artifact_expires_at": "2026-11-08T13:17:45Z"
+    },
+    {
+      "job_id": 121176802189,
+      "job_name": "native (1.20.1, mc/1.20.1, 17, modern, d6db46e25f612df40c80b503775d17184644d35f)",
+      "minecraft": "1.20.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "d6db46e25f612df40c80b503775d17184644d35f",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "e11b85e80cf9ca15cf41c27a652e5c5b9a854f602efd33d64f002fbaab5de866",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599762606,
+      "artifact_name": "hourly-native-1.20.1-d6db46e25f612df40c80b503775d17184644d35f",
+      "artifact_expires_at": "2026-11-08T13:15:49Z"
+    },
+    {
+      "job_id": 121176802157,
+      "job_name": "native (1.20.2, mc/1.20.2, 17, modern, 1585d8b2a79dd9e6f8f389e0509c553187b08079)",
+      "minecraft": "1.20.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "1585d8b2a79dd9e6f8f389e0509c553187b08079",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "739ba238fdf3f464bcc886e56136c0093aec77a0e61f24fd7ff1420aa71d387e",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599614947,
+      "artifact_name": "hourly-native-1.20.2-1585d8b2a79dd9e6f8f389e0509c553187b08079",
+      "artifact_expires_at": "2026-11-08T13:15:25Z"
+    },
+    {
+      "job_id": 121176802233,
+      "job_name": "native (1.20.4, mc/1.20.4, 17, modern, 85fb50223762ae75a3249b7867e1b5a4e0e3fa6f)",
+      "minecraft": "1.20.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+      "native_gate": "PASS",
+      "expected_fixtures": 191,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "839dc196dbf0931ca335088278a5ac0ed718b61394edda4bc566f17242136f2f",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599807656,
+      "artifact_name": "hourly-native-1.20.4-85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+      "artifact_expires_at": "2026-11-08T13:16:57Z"
+    },
+    {
+      "job_id": 121176802215,
+      "job_name": "native (1.21.1, main, 21, modern, 1bc1fab0544cb3bc4ff3285ee7b3e1b492d6075f)",
+      "minecraft": "1.21.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "1bc1fab0544cb3bc4ff3285ee7b3e1b492d6075f",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "0c7a43805b31bca10bcdfaca86ff7cadc128a7f6ca5d06dcea6a8bbc2dc47e2c",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12599992403,
+      "artifact_name": "hourly-native-1.21.1-1bc1fab0544cb3bc4ff3285ee7b3e1b492d6075f",
+      "artifact_expires_at": "2026-11-08T13:16:41Z"
+    },
+    {
+      "job_id": 121176802280,
+      "job_name": "native (26.1.2, mc/26.1.2, 25, modern, c6eb07cfd089c74b44c34d71163a5405e302b656)",
+      "minecraft": "26.1.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "c6eb07cfd089c74b44c34d71163a5405e302b656",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "04691f89743c27960b4776c12c1439ea650bc1a02b0eaa60077aabf62a84d5cb",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600417098,
+      "artifact_name": "hourly-native-26.1.2-c6eb07cfd089c74b44c34d71163a5405e302b656",
+      "artifact_expires_at": "2026-11-08T13:17:11Z"
+    },
+    {
+      "job_id": 121176802256,
+      "job_name": "native (26.3, mc/26.3, 25, modern, 39c4f6b973d12993963ff3a0b353496d135fe783)",
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "39c4f6b973d12993963ff3a0b353496d135fe783",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": "9d7f4caaebfe70e8a8fb0a5bd56c444628a3ae42f052fde96bb35baf27828b5f",
+      "workflow_run": "40195962271",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12600477037,
+      "artifact_name": "hourly-native-26.3-39c4f6b973d12993963ff3a0b353496d135fe783",
+      "artifact_expires_at": "2026-11-08T13:18:01Z"
+    }
+  ],
+  "publication_policy_validation": {
+    "local_regression_cases": 30,
+    "main_source_native_run": 40195961776,
+    "main_required_native_tests": 192,
+    "github_publisher_run": 40195961739,
+    "development_publication": "HELD",
+    "curseforge_sync_run": 40195961622,
+    "existing_target_receipts": 24,
+    "failed_receipts": 0,
+    "new_rc_release_published": false
+  },
+  "limitations": [
+    "Native revalidation only; no added provider/client/multiplayer/performance acceptance",
+    "Prior client screenshots certify their recorded exact JARs; acceptance is not inherited onto these rebuilt JAR hashes",
+    "Version-specific publisher guards still require audit before further version-branch source changes or RC promotion"
+  ],
+  "rc_publication_cleared": false
+}

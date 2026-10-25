@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-24",
+  "recorded_date": "2026-10-25",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -521,7 +521,7 @@
       "client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json"
     }
   ],
-  "latest_work": "Both legacy lighting fixes passed 156 native scenarios each, packaged server startup and generated preview.3 upgrades. Each exact JAR also passed its stock Forge client on Java 7 or 8: real mouse transfers/paging, stale views, signed-byte codecs and private/public/hidden network-display projections. All seven captures per port were reviewed: four storage GUI scales, a tooltip and private/public displays. World-lightmap darkening is fixed. All 24 native development tracks pass; full parity and RC clearance remain incomplete.",
+  "latest_work": "The first pinned hourly controller revalidated all 24 maintained exact targets and retained per-JAR hashes, independently of earlier acceptance records. Main passed 192 native tests; 30 scheduling/publication/upload regressions passed, and CurseForge confirmed 24 existing receipts with zero failures. Scheduled implementation and builds are enabled. Development snapshots remain unpublished; advanced parity and broader acceptance remain open.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -544,5 +544,7 @@
     "workflow_run": "40111601064",
     "stock_wireless_client": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
     "closes_all_acceptance": false
-  }
+  },
+  "hourly_native_revalidation": "acceptance/rc-dev-hourly-native-2026-10-25.json",
+  "hourly_work_policy": "RC_HOURLY_WORKFLOW.md"
 }
