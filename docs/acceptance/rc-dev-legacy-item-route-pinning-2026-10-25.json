@@ -1,0 +1,408 @@
+{
+  "recorded_date": "2026-10-25",
+  "result": "PASS_SCOPED_EXACT_NATIVE_253_AND_230",
+  "scope": "Legacy item route face selection only. A pending stack, opaque saved escrow or item transfer fault prevents an owner-authorized face change. Healthy routes remain configurable. Other resource routes and displays retain their existing interaction paths.",
+  "sources": {
+    "1.12.2": {
+      "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+      "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+      "build_status_blob_sha": "3cded94e21d7d3fe327e8fdbc645eed9952ce5d5"
+    },
+    "1.6.4": {
+      "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+      "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+      "build_status_blob_sha": "bad50634e2051652f90a873d0ead7b4b515fe458"
+    }
+  },
+  "implementation": [
+    "LegacyItemSafety.selectFace validates the face and refuses mutation while item uncertainty or held escrow remains.",
+    "LegacyBlock uses the checked edit after the existing owner authorization for export, import and item-reader roles, with a refusal message.",
+    "Six new exact native cases per legacy target exercise fault, pending/opaque escrow, save/reload persistence, healthy and invalid face selection. 1.12.2 also invokes native sneak-click; 1.6.4 exercises stale alias withdrawal after rejection."
+  ],
+  "native": {
+    "12617877227": {
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 253,
+        "passed": 253,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "native_gate": "PASS",
+        "expected_fixtures": 253,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "28f90364ef04542ace1f7a2f392e8498035990a3f15ce978ab43312e5b15e710",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "93ac17b33920a5211bed77f7346eff113f5dbc35c50ddc3efaf2f1717651e3aa",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "c8a5b2dc8d8f9cacc5e197dcacaf0f3faf85a65940bda5317d51a123a8cfec3f",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff"
+        },
+        "workflow_run": "40243447575",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+        "migration_fixture_sha256": "28f90364ef04542ace1f7a2f392e8498035990a3f15ce978ab43312e5b15e710",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "artifact_id": 12617877227,
+      "archive_sha256": "0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+      "packaged_jar_hashes_verified": true,
+      "route_cases": {
+        "item route faulted face edit preserves original target": true,
+        "item route pending escrow refuses face edit": true,
+        "item route opaque saved escrow refuses face edit": true,
+        "item route saved fault remains pinned after reload": true,
+        "item route healthy face selection validates bounds": true,
+        "item route native sneak click cannot move quarantine": true
+      },
+      "native_log_sha256": "5f9a56157284adc7fedea121490bac2407649ca4cb9ba51fc071a1d8bf3b3330",
+      "markers": [
+        "[23:10:18] [Server thread/INFO] [STDOUT]: [net.foundations.pl4.legacy.tests.NativeScenarios:started:298]: PL4 LEGACY SCENARIOS: 253/253"
+      ]
+    },
+    "12618270657": {
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "8ac28500a070962136a24143b6556d3c77e63d62",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40243447575",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/rc-development-gate.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "validated_loader_profiles": [
+          null
+        ],
+        "native_coverage": {},
+        "source_parent": "8ac28500a070962136a24143b6556d3c77e63d62",
+        "workflow_run": "40243447575",
+        "artifact_sha256": {
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182"
+        },
+        "performance_source_sha256": {
+          "NetworkEngine.java": "72f667ffd97e5522876a0a77f62acc886dcf80d861c14c8399649b3241e1c9e6",
+          "TransferEngine.java": "aaa7e4b190a37f6260fb10f1a192c98f0fb459e5de4e51ba316480cb495fada7"
+        },
+        "rc_publication_cleared": false,
+        "remaining_acceptance": [
+          "installed optional providers",
+          "actual client UI",
+          "live multiplayer",
+          "world migration",
+          "measured large-network performance",
+          "cross-port feature parity"
+        ]
+      },
+      "artifact_id": 12618270657,
+      "archive_sha256": "8073e4d56e78ecf67c02a62e84a2b2907f564dd2e801efe9ec3d83d39f97d6ee",
+      "packaged_jar_hashes_verified": true,
+      "route_cases": {},
+      "native_log_sha256": "0e3e3222d4fd34e4d954ea8fa3ffb2be51a8e9cd519e562c4a50481e40eb2270",
+      "markers": [
+        "[23:11:28] [Server thread/INFO] [minecraft/GameTestServer]: All 192 required tests passed :)"
+      ]
+    },
+    "12617856905": {
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "total": 230,
+        "passed": 230,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "build_api_forge": "9.11.1.960",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "native_gate": "PASS",
+        "expected_fixtures": 230,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "0f4d6d1c9f203443717a740c75705823860656ddd002350484e3c8bb31ad2e5e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "44298993561719d1cb9248e28f3ff7737117268eb3887a3485058b28867469cb",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "ec80ad10f5a360f141ceeaa4ad80a2e486e2863d3368c0e54c4da6012c01c117",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "cc5f1c3506f25dbc92b70fec5de36f9029bc05c41c06b380f371a3469e52ada8",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "8d15de41cdc67e166399224095efbb5dc374ae92cbee086776269a875a452a55"
+        },
+        "workflow_run": "40243930980",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+        "migration_fixture_sha256": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "artifact_id": 12617856905,
+      "archive_sha256": "1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+      "packaged_jar_hashes_verified": true,
+      "route_cases": {
+        "item route faulted face edit preserves original target": true,
+        "item route pending escrow refuses face edit": true,
+        "item route opaque saved escrow refuses face edit": true,
+        "item route saved fault remains pinned after reload": true,
+        "item route healthy face selection validates bounds": true,
+        "item route rejected face edit preserves alias quarantine": true
+      },
+      "native_log_sha256": "ea74f6039710b5497b27c148af8a667592e3aeca28da4e8470c2db60e6135e8b",
+      "markers": [
+        "2026-10-25 23:16:41 [INFO] [STDOUT] PL4 LEGACY SCENARIOS: 230/230"
+      ]
+    }
+  },
+  "native_runs": {
+    "1.12.2": 40243447575,
+    "1.6.4": 40243930980
+  },
+  "publication_guard_review": {
+    "branches": [
+      "mc/1.12.2",
+      "mc/1.6.4"
+    ],
+    "inspected_publishers": [
+      ".github/workflows/release.yml",
+      ".github/workflows/legacy112-native.yml",
+      ".github/workflows/legacy164-native.yml"
+    ],
+    "source_parent_112": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
+    "source_parent_164": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
+    "native_validation_preserved": true,
+    "development_and_uncleared_rc_guards_preserved": true,
+    "local_publisher_regression_passes": 4,
+    "local_qualified_archive_regression_passes": 7,
+    "automatic_branch_runs": {
+      "1.12.2": 40243413100,
+      "1.6.4": 40243790909
+    },
+    "automatic_publication_steps": {
+      "1.12.2": "skipped",
+      "1.6.4": "skipped"
+    }
+  },
+  "failed_attempts": [
+    {
+      "source": "3050caccc0e9d81c1b501b463e8710e806bf823b",
+      "minecraft": "1.6.4",
+      "automatic_run": 40243544498,
+      "hourly_run": 40243703678,
+      "result": "FAIL",
+      "failure": "Native sneak-click fixture reached the new refusal chat message, but the Forge fake player had no chat connection: NullPointerException in EntityPlayerMP.func_71035_c. Production guard compiled. No passing qualification claimed.",
+      "repair_source": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+      "repair": "Replaced the disconnected fake-player chat fixture with a stale-alias withdrawal/conservation check after rejected native face selection. Other five route tests and all existing tests retained.",
+      "observed_native": {
+        "passed": 229,
+        "total": 230,
+        "failed": 1
+      }
+    }
+  ],
+  "stock_client": {
+    "new_source_runs": [],
+    "status": "NOT_RUN_FOR_THESE_EXACT_JARS",
+    "previous_exact_source_reports": [
+      "rc-dev-112-owned-sided-2026-10-25.json",
+      "rc-dev-164-target-aliases-2026-10-25.json"
+    ],
+    "boundary": "Prior stock client results remain evidence for their original source/JAR hashes. They are not transferred onto the new route-edit JARs. Native 1.12.2 activation and 1.6.4 stale-alias tests are separate from full stock clients."
+  },
+  "limitations": [
+    "This pins item-side edits only while a loaded endpoint retains pending/opaque/fault state. Removing or moving a node, unloading it, changing network membership, or redirecting an opaque provider can still outlive the currently collected per-network fence.",
+    "Cross-network and removed/rebound durable backing uncertainty remain open on both ports.",
+    "No installed optional-provider, dedicated multiplayer, copied user-world, advanced legacy editor/multipart or sustained full-server performance acceptance added."
+  ],
+  "rc_publication_cleared": false,
+  "new_github_releases": [],
+  "new_curseforge_uploads": [],
+  "retained_targets": {
+    "count": 21,
+    "scope": "Unchanged modern tracks retain their own exact-source ledger evidence. Main revalidated 192 on 8ac28500; two changed legacy sources validated separately. This is not 24 fresh builds."
+  },
+  "artifact_receipts": [
+    {
+      "id": 12618270657,
+      "name": "hourly-native-1.21.1-8ac28500a070962136a24143b6556d3c77e63d62",
+      "size_in_bytes": 5418857,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12618270657",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12618270657/zip",
+      "expired": false,
+      "created_at": "2026-10-25T23:11:32Z",
+      "expires_at": "2026-11-08T23:11:31Z",
+      "updated_at": "2026-10-25T23:11:32Z",
+      "digest": "sha256:8073e4d56e78ecf67c02a62e84a2b2907f564dd2e801efe9ec3d83d39f97d6ee",
+      "workflow_run": {
+        "id": 40243447575,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "8ac28500a070962136a24143b6556d3c77e63d62"
+      }
+    },
+    {
+      "id": 12617877227,
+      "name": "hourly-native-1.12.2-cc6a7b2aefda7362215848a348b93b9a2950764d",
+      "size_in_bytes": 1774294,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12617877227",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12617877227/zip",
+      "expired": false,
+      "created_at": "2026-10-25T23:10:40Z",
+      "expires_at": "2026-11-08T23:10:39Z",
+      "updated_at": "2026-10-25T23:10:40Z",
+      "digest": "sha256:0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+      "workflow_run": {
+        "id": 40243447575,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "8ac28500a070962136a24143b6556d3c77e63d62"
+      }
+    },
+    {
+      "id": 12617856905,
+      "name": "hourly-native-1.6.4-0dc2f1242308ccf5c062b1b1659011923589c0aa",
+      "size_in_bytes": 2084600,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12617856905",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12617856905/zip",
+      "expired": false,
+      "created_at": "2026-10-25T23:17:04Z",
+      "expires_at": "2026-11-08T23:17:04Z",
+      "updated_at": "2026-10-25T23:17:04Z",
+      "digest": "sha256:1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+      "workflow_run": {
+        "id": 40243930980,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "8ac28500a070962136a24143b6556d3c77e63d62"
+      }
+    }
+  ]
+}

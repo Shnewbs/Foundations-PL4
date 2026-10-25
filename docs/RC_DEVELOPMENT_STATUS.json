@@ -15,7 +15,7 @@
     "broader multiplayer, online profiles, dimensions and other exact targets; 1.21.1 two real loopback clients/reconnect passed",
     "arbitrary copied user/modpack worlds; generated legacy preview.3 and 1.21.1 released-beta-source worlds passed",
     "sustained full-server and active-provider performance, plus other ports; 1.21.1 native operation measurements were mixed",
-    "documented 1.16.1\u20131.16.4 launcher profiles"
+    "documented 1.16.1–1.16.4 launcher profiles"
   ],
   "targets": [
     {
@@ -450,11 +450,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "e52856e7fc65cbcd794d4d3ace385fac4c52cd82",
-      "workflow_run": "40240535863",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40240535863",
+      "source_commit": "8ac28500a070962136a24143b6556d3c77e63d62",
+      "workflow_run": "40243447575",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40243447575",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
@@ -518,7 +518,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 247,
+      "expected_native_fixtures": 253,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -528,17 +528,17 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40240535863",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40240535863",
-      "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
-      "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
+      "workflow_run": "40243447575",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40243447575",
+      "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+      "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 127,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
-      "build_status_blob_sha": "4096b3bc52134fef8c133d510ec27a0d6db0ccdf",
+      "candidate_source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+      "build_status_blob_sha": "3cded94e21d7d3fe327e8fdbc645eed9952ce5d5",
       "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
       "integrated_wireless_actions": "PASS_GROUP_TOTALS_VARIANTS_MULTISLOT_TRANSFER_STALE_REPLAY_SEARCH_SORT_TRANSFERS_AND_CODECS",
       "client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
@@ -553,9 +553,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 247,
+      "observed_native_fixtures": 253,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -609,12 +609,25 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40240809290
+      "client_workflow_run": 40240809290,
+      "previous_route_edit_candidate": {
+        "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
+        "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
+        "client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+        "native_gate": "PASS",
+        "observed_native_fixtures": 247
+      },
+      "current_source_stock_client_regression": "NOT_RUN_FOR_ROUTE_EDIT_SOURCE",
+      "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+      "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
+      "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
+      "acceptance_attribution": "Existing client/search/grouping acceptance fields retain prior scoped exact-source evidence. They do not certify this new route-edit source; see previous_route_edit_candidate and current_source_stock_client_regression.",
+      "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 224,
+      "expected_native_fixtures": 230,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -624,16 +637,16 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40229644134",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40229644134",
-      "source_commit": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
-      "runtime_sha256": "fe9cec47b1982999663290cc0f8c6dc5864d51187148f232cfc3b23a012ce715",
+      "workflow_run": "40243930980",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40243930980",
+      "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+      "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 104,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
+      "candidate_source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
       "client_visual_acceptance": "PARTIAL_EXACT_STOCK_REGRESSION_FOUR_CAPTURES_REVIEWED",
       "integrated_wireless_actions": "PASS_GROUP_TOTALS_VARIANTS_MULTISLOT_TRANSFER_STALE_REPLAY_SEARCH_SORT_TRANSFERS_AND_CODECS",
       "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
@@ -648,10 +661,10 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "build_status_blob_sha": "be5fb89e7c6f933f0832bfa86632e3e005de7e89",
-      "observed_native_fixtures": 224,
+      "build_status_blob_sha": "bad50634e2051652f90a873d0ead7b4b515fe458",
+      "observed_native_fixtures": 230,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -686,10 +699,23 @@
         "client_gate": "PASS_SCOPED"
       },
       "same_target_alias_native_validation": "PASS_7_EXACT_164_CASES",
-      "same_target_alias_acceptance": "PASS_7_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION"
+      "same_target_alias_acceptance": "PASS_7_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
+      "previous_route_edit_candidate": {
+        "source_commit": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
+        "runtime_sha256": "fe9cec47b1982999663290cc0f8c6dc5864d51187148f232cfc3b23a012ce715",
+        "client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+        "native_gate": "PASS",
+        "observed_native_fixtures": 224
+      },
+      "current_source_stock_client_regression": "NOT_RUN_FOR_ROUTE_EDIT_SOURCE",
+      "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+      "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
+      "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
+      "acceptance_attribution": "Existing client/search/grouping acceptance fields retain prior scoped exact-source evidence. They do not certify this new route-edit source; see previous_route_edit_candidate and current_source_stock_client_regression.",
+      "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES"
     }
   ],
-  "latest_work": "PL4-owned 1.12.2 sided fallback now captures bounded physical mappings, preserves native permissions and transfer rules, retains natural same-target disjoint slots and deduplicates overlapping faces, shares backing quarantine and rejects changed/in-place slot mappings. Per-slot validation avoids full face rescans by PL4. Existing provider-advertised handlers remain unchanged. All 247 native cases passed including 15 new sided cases, production-only startup and generated preview.3 migration; main passed 192 and 22 other targets retain qualified artifacts. The exact-qualified-JAR stock client passed ordinary grouped transfers, stale replay, search, sort and display probes; four current captures were manually reviewed and all sixteen hashed. Sided-face native fixtures and ordinary client regression remain distinct acceptance scopes. Opaque composites, cross-network/rebound uncertainty and broader parity/gameplay/performance acceptance remain open; no RC cleared or published.",
+  "latest_work": "Item route face changes now refuse unresolved faults, opaque escrow or pending held items on 1.12.2 and 1.6.4, keeping the existing target fence from moving during owner edits. Final native 253/253 and 230/230 passed with six new exact cases each, production-only startup and generated preview.3 migration; main passed 192 and 21 modern tracks retain prior artifacts. Initial 1.6.4 disconnected fake-player chat fixture failure (229/230) is preserved with its repaired stale-alias fixture. New-source stock clients were not run; earlier client/search/grouping results retain original source/hash scope. Cross-network/removal/rebind durability, parity/provider/multiplayer/migration/performance acceptance remain open. No RC cleared or published.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -713,7 +739,7 @@
     "stock_wireless_client": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
