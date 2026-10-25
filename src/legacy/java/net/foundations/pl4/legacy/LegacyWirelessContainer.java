@@ -23,7 +23,16 @@ public final class LegacyWirelessContainer extends Container {
     }
     private static Slot locked(net.minecraft.inventory.IInventory inventory,int i,int x,int y){return new Slot(inventory,i,x,y){public boolean isItemValid(ItemStack stack){return false;}public boolean canTakeStack(EntityPlayer player){return false;}};}
     private ItemStack held(){return owner.inventory.getStackInSlot(toolSlot);}
-    @Override public boolean canInteractWith(EntityPlayer player){return player==owner&&!failed&&(client||owner.inventory.currentItem==toolSlot&&LegacyWirelessStorage.tool(held())&&ItemStack.areItemStackTagsEqual(binding,held())&&LegacyWirelessStorage.resolve(owner,held())!=null);}
+    /** Saving a legacy ItemStack assigns its compound the transport name "tag".
+     * Keep the complete binding payload fence, ignoring only that root tag name. */
+    private boolean sameBinding(ItemStack stack){
+        if(stack==null||binding==null)return stack==binding;
+        net.minecraft.nbt.NBTTagCompound saved=binding.getTagCompound(),current=stack.getTagCompound();
+        if(saved==null||current==null)return saved==current;
+        net.minecraft.nbt.NBTTagCompound copy=(net.minecraft.nbt.NBTTagCompound)current.copy();
+        copy.setName(saved.getName());return saved.equals(copy);
+    }
+    @Override public boolean canInteractWith(EntityPlayer player){return player==owner&&!failed&&(client||owner.inventory.currentItem==toolSlot&&LegacyWirelessStorage.tool(held())&&sameBinding(held())&&LegacyWirelessStorage.resolve(owner,held())!=null);}
     private void refresh(boolean force){
         List<LegacyWirelessStorage.Entry> next=LegacyWirelessStorage.entries(owner,held(),sortOrder);boolean changed=force||next.size()!=entries.size();
         if(!changed)for(int i=0;i<next.size();i++){LegacyWirelessStorage.Entry a=entries.get(i),b=next.get(i);if(a.node!=b.node||a.slot!=b.slot||!ItemStack.areItemStacksEqual(a.snapshot,b.snapshot)){changed=true;break;}}
