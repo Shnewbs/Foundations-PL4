@@ -85,7 +85,12 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
         for(int i=0;i<text.length();i++){int code=java.awt.event.KeyEvent.getExtendedKeyCodeForChar(Character.toUpperCase(text.charAt(i)));robot.keyPress(code);robot.keyRelease(code);}
     }
     private void clearSearch()throws Exception{
-        java.awt.Robot robot=new java.awt.Robot();robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);robot.keyPress(java.awt.event.KeyEvent.VK_A);robot.keyRelease(java.awt.event.KeyEvent.VK_A);robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);robot.keyPress(java.awt.event.KeyEvent.VK_BACK_SPACE);robot.keyRelease(java.awt.event.KeyEvent.VK_BACK_SPACE);
+        java.awt.Robot robot=new java.awt.Robot();robot.keyPress(java.awt.event.KeyEvent.VK_END);robot.keyRelease(java.awt.event.KeyEvent.VK_END);for(int i=0;i<LegacyWirelessStorage.MAX_SEARCH;i++){robot.keyPress(java.awt.event.KeyEvent.VK_BACK_SPACE);robot.keyRelease(java.awt.event.KeyEvent.VK_BACK_SPACE);}
+    }
+    private String searchDebug()throws Exception{
+        java.lang.reflect.Field field=LegacyWirelessScreen.class.getDeclaredField("searchField");field.setAccessible(true);
+        net.minecraft.client.gui.GuiTextField text=(net.minecraft.client.gui.GuiTextField)field.get(Minecraft.getMinecraft().currentScreen);
+        return " authoritative="+clientContainer().search()+" desired="+text.getText()+" revision="+clientContainer().revision;
     }
     private void packetRoundTrip()throws Exception{
         byte[] click={1,0,0,(byte)141,0,7,0,(byte)255,(byte)255};
@@ -114,7 +119,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
             for(java.lang.reflect.Field field:mc.guiAchievement.getClass().getDeclaredFields())if(net.minecraft.stats.Achievement.class.isAssignableFrom(field.getType())){field.setAccessible(true);field.set(mc.guiAchievement,null);}
 
             if(lastLogged!=phase){lastLogged=phase;System.out.println("PL4 WIRELESS CLIENT PHASE: "+phase);}
-            if(System.nanoTime()-started>300_000_000_000L)throw new IllegalStateException("Timed out in probe phase "+phase);
+            if(System.nanoTime()-started>300_000_000_000L){capture(mc,"legacy-wireless-timeout.png");throw new IllegalStateException("Timed out in probe phase "+phase+(mc.currentScreen instanceof LegacyWirelessScreen?searchDebug():""));}
             String result=serverResult.get();if(result!=null&&!"PASS".equals(result))throw new IllegalStateException(result);
             if(System.nanoTime()<due)return;
             if(phase==0){if(!(mc.currentScreen instanceof GuiMainMenu))return;phase=1;mc.launchIntegratedServer("pl4-wireless-client-probe","PL4 Wireless Probe",new WorldSettings(0L,EnumGameType.CREATIVE,false,false,WorldType.FLAT));waitUntilNext();return;}
