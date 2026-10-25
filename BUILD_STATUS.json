@@ -30,7 +30,7 @@
     "verified_runtime_sha256": "31995fa3c46ab4fb6d76262d82484c9579b36cda1739f0844d2509f85c50d6dc",
     "release_published": false
   },
-  "expected_native_scenarios": 231,
+  "expected_native_scenarios": 232,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
