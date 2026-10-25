@@ -450,11 +450,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "32f785cda017e217515dd8aaf0535cd4fa04837a",
-      "workflow_run": "40220728599",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40220728599",
+      "source_commit": "1d5eb5a565d8aebc0778d27aef997f778a4e20fe",
+      "workflow_run": "40224490194",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40224490194",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-grouping-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
@@ -518,7 +518,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 215,
+      "expected_native_fixtures": 221,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -528,20 +528,20 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40221183821",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40221183821",
-      "source_commit": "51e62a7c9505eaa94bacc330a9b8cf1fe71e937d",
-      "runtime_sha256": "0894b589bea55d46c386e7567a48ac04949da285cc3822a6722824e952d57c18",
+      "workflow_run": "40224757343",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40224757343",
+      "source_commit": "c6c2a091d7a55085c03be9a72d785e3d4fa78dc8",
+      "runtime_sha256": "336efa01bcfd4e21c944530ff360759cc9a151aff014b767c4e61c19c64b6174",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
-      "wireless_storage_native_scenarios": 95,
+      "wireless_storage_native_scenarios": 101,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "51e62a7c9505eaa94bacc330a9b8cf1fe71e937d",
-      "build_status_blob_sha": "15b0eb79b4d38bfb9772b3f7302ea7f9e1cf7ece",
-      "client_visual_acceptance": "PARTIAL_STOCK_GROUPED_TOTALS_VARIANTS_SEARCH_SORT_FOUR_GUI_SCALES_TOOLTIP_NETWORK_DISPLAY",
+      "candidate_source_commit": "c6c2a091d7a55085c03be9a72d785e3d4fa78dc8",
+      "build_status_blob_sha": "b37d00dd5ff9654dc8b313278a2e12e4c1c202f8",
+      "client_visual_acceptance": "PARTIAL_EXACT_STOCK_REGRESSION_FOUR_CAPTURES_REVIEWED",
       "integrated_wireless_actions": "PASS_GROUP_TOTALS_VARIANTS_MULTISLOT_TRANSFER_STALE_REPLAY_SEARCH_SORT_TRANSFERS_AND_CODECS",
-      "client_evidence": "acceptance/rc-dev-1.12.2-grouping-stock-client.json",
+      "client_evidence": "acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
       "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -553,9 +553,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-grouping-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 215,
+      "observed_native_fixtures": 221,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -571,7 +571,7 @@
         "rc_publication_cleared": false
       },
       "wireless_grouping_native_validation": "PASS_31_EXACT_TARGET_SCENARIOS",
-      "wireless_grouping_acceptance": "PASS_SCOPED_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
+      "wireless_grouping_acceptance": "PASS_SCOPED_EXACT_NATIVE_AND_STOCK_CLIENT",
       "grouping_candidate": {
         "source_commit": "51e62a7c9505eaa94bacc330a9b8cf1fe71e937d",
         "runtime_sha256": "0894b589bea55d46c386e7567a48ac04949da285cc3822a6722824e952d57c18",
@@ -581,7 +581,16 @@
         "client_workflow_run": 40221597784,
         "client_evidence": "acceptance/rc-dev-1.12.2-grouping-stock-client.json",
         "rc_publication_cleared": false
-      }
+      },
+      "previous_grouping_source": {
+        "source_commit": "51e62a7c9505eaa94bacc330a9b8cf1fe71e937d",
+        "runtime_sha256": "0894b589bea55d46c386e7567a48ac04949da285cc3822a6722824e952d57c18",
+        "client_evidence": "acceptance/rc-dev-1.12.2-grouping-stock-client.json",
+        "native_gate": "PASS",
+        "client_gate": "PASS_SCOPED"
+      },
+      "shared_handler_alias_native_validation": "PASS_6_EXACT_112_CASES",
+      "shared_handler_alias_acceptance": "PASS_6_NATIVE_CASES_NORMAL_STOCK_REGRESSION_INSTALLED_PROVIDER_PENDING"
     },
     {
       "minecraft": "1.6.4",
@@ -652,7 +661,7 @@
       }
     }
   ],
-  "latest_work": "Exact item/metadata/full-NBT grouped legacy storage implemented with long totals, native Slots/Groups control, search/sort composition, physical-source preflight, shared finite transfer work and existing persistent escrow quarantine. Final 1.12.2 passed 215/215 and 1.6.4 217/217 (31 new grouping cases each), production-only boot and generated preview.3 migration. Main pinned source passed 192 in the initial matrix; 21 unchanged targets retain qualified evidence. Both exact production stock clients passed grouped totals, same-name NBT separation, multi-slot withdrawal, stale replay, prior search/sort/transfer/codecs and privacy checks; all 32 captures reviewed and preserved. Initial failed control/INT_MAX cleanup fixtures are retained. No RC is cleared or published; alias/provider, editor/multipart and broader acceptance remain open.",
+  "latest_work": "1.12.2 shared native-handler identity deduplication and quarantine fencing implemented; 221/221 native cases including 6 alias checks, production boot and generated preview.3 migration passed. Main passed 192 scoped cases; 22 unchanged targets retain earlier evidence. Initial fixture generic-cast compile failure retained. Exact native-qualified production stock-client regression passed all existing group/search/sort/transfer/replay/codec/privacy checks; four selected current captures reviewed and committed, all 16 capture hashes recorded. Opaque combined/sided wrappers, 1.6.4 alias fixtures, installed providers and broader acceptance remain open. No RC is cleared or published.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -663,10 +672,10 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "51e62a7c9505eaa94bacc330a9b8cf1fe71e937d",
-    "runtime_sha256": "0894b589bea55d46c386e7567a48ac04949da285cc3822a6722824e952d57c18",
-    "workflow_run": "40221597784",
-    "stock_wireless_client": "acceptance/rc-dev-1.12.2-grouping-stock-client.json",
+    "source_commit": "c6c2a091d7a55085c03be9a72d785e3d4fa78dc8",
+    "runtime_sha256": "336efa01bcfd4e21c944530ff360759cc9a151aff014b767c4e61c19c64b6174",
+    "workflow_run": "40225003401",
+    "stock_wireless_client": "acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
@@ -676,7 +685,7 @@
     "stock_wireless_client": "acceptance/rc-dev-1.6.4-grouping-stock-client.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-grouping-2026-10-25.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-112-handler-aliases-2026-10-25.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
