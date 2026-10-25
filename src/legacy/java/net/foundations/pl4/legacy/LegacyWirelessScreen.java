@@ -41,7 +41,7 @@ public final class LegacyWirelessScreen extends GuiContainer {
         }super.keyTyped(typed,key);
     }
     @Override protected void mouseClicked(int x,int y,int button){super.mouseClicked(x,y,button);searchField.mouseClicked(x,y,button);}
-    @Override public void drawScreen(int mouseX,int mouseY,float partial){drawDefaultBackground();super.drawScreen(mouseX,mouseY,partial);searchField.drawTextBox();}
+    @Override public void drawScreen(int mouseX,int mouseY,float partial){drawDefaultBackground();super.drawScreen(mouseX,mouseY,partial);org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_LIGHTING);org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);searchField.drawTextBox();org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_DEPTH_TEST);}
     @Override protected void drawGuiContainerForegroundLayer(int mouseX,int mouseY){fontRenderer.drawString("Inventory: click to deposit",8,110,0x404040);fontRenderer.drawString(searchPending()?"Find...":"Find:",8,210,0x404040);}
     @Override protected void drawGuiContainerBackgroundLayer(float partial,int mouseX,int mouseY){
         org.lwjgl.opengl.GL11.glColor4f(1,1,1,1);mc.getTextureManager().bindTexture(TEXTURE);
