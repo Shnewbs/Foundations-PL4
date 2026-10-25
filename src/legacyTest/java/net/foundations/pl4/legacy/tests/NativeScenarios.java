@@ -332,7 +332,7 @@ public final class NativeScenarios {
         final net.minecraftforge.items.IItemHandler handler;
         AliasChest(net.minecraftforge.items.IItemHandler handler){this.handler=handler;}
         @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,net.minecraft.util.EnumFacing side){return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY||super.hasCapability(cap,side);}
-        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing side){return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY?cap.cast(handler):super.getCapability(cap,side);}
+        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing side){return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY?net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler):super.getCapability(cap,side);}
     }
     public static final class FaultyChest extends TileEntityChest {
         boolean failInsert,failExtract;
