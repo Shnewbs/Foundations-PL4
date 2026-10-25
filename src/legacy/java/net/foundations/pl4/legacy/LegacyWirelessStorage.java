@@ -32,9 +32,14 @@ public final class LegacyWirelessStorage {
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
-        Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
-        for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner)||!ready(node)||node.fluidPowered())continue;
+        List<LegacyTile> candidates=new ArrayList<LegacyTile>();Set<BoundedNetwork.Point> blocked=new HashSet<BoundedNetwork.Point>();
+        // Collect uncertainty before selecting ready routes: another face must not bypass the same target's escrow fence.
+        for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
             int role=node.role();if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS)continue;
+            candidates.add(node);if(!ready(node))blocked.add(node.fluidTarget());
+        }
+        Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
+        for(LegacyTile node:candidates){if(!ready(node)||node.fluidPowered()||blocked.contains(node.fluidTarget()))continue;
             if(seen.add(node.fluidTarget()))result.add(node);
         }return result;
     }
