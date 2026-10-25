@@ -32,11 +32,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "327cdb70b2f5bc905407abbbcadba700a808680c",
+      "source_commit": "ab3041b0903189876ba31815094656a925ad94d3",
       "build_status_blob_sha": "cac281781ddaf56202b966fe5c0e601047e3ca65",
-      "workflow_run": "39885198395",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.15.2",
@@ -52,11 +53,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+      "source_commit": "dae47a9a2a97cbf3a36a05c4f00197be88c42779",
       "build_status_blob_sha": "cbd9a5badee0a592e19542fb1712f4051d63c218",
-      "workflow_run": "39885198395",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.16.1",
@@ -72,11 +74,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+      "source_commit": "5a4063f93ca9b8ba2a2c499a30041a9f919250fa",
       "build_status_blob_sha": "4e30489567cccb5e832f9c52a726f37d1ea57958",
-      "workflow_run": "39885592948",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.16.2",
@@ -92,11 +95,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "b87021995889ea7dc00c8b312d5c35f711b7f57b",
+      "source_commit": "18220f4c40ed7c9c1ef16027c7c6a119d8b2c744",
       "build_status_blob_sha": "822eaa8446d95b6dfb2af955c26aa509afbf88b4",
-      "workflow_run": "39885592948",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.16.3",
@@ -112,11 +116,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "99ff596b2b05fd81da8934085891e1671a641546",
+      "source_commit": "432cd8aee685406b927e1c5c65b124b181d24448",
       "build_status_blob_sha": "04e6892061db4bc0b9a8172346b3849fe1672d26",
-      "workflow_run": "39885592948",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.16.4",
@@ -132,11 +137,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+      "source_commit": "8e3786682ab785444b7bb2576261219a261cdecc",
       "build_status_blob_sha": "9c4e44ea4e49bcba35579491648323c03e4dc75d",
-      "workflow_run": "39885592948",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.16.5",
@@ -152,11 +158,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "593edc1ef5667deb69fc7c404597b64ca7331969",
+      "source_commit": "00f5900963461847e68c82b5afd51c36c90ee95d",
       "build_status_blob_sha": "33d8e88fa385e3194fc2c447fcf2e89fcfcc3b5a",
-      "workflow_run": "39885198395",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885198395",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.17.1",
@@ -172,11 +179,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+      "source_commit": "65db7cebf82fdbce7d011e7dd9d08f14b8bf55a5",
       "build_status_blob_sha": "c135bde0144404c13e048954cc5437a8e2b0f301",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.18.1",
@@ -192,11 +200,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+      "source_commit": "99dc4390178b843f1287f0e08ae215eb87da0652",
       "build_status_blob_sha": "574b89ed050f7a49cf049cd07c4b5a57c14a7c78",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.18.2",
@@ -212,11 +221,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+      "source_commit": "2d611112aa98c89ff7917fd1d983f38b111bb2a1",
       "build_status_blob_sha": "07ec69158cf8b75496fec66781a931651d78fda7",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.19",
@@ -232,11 +242,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "a4cf686ba16aae111ab824b7c73707b502b48a35",
+      "source_commit": "414bdb31deceb8ab1fc6a97b0d02f349a2c513b7",
       "build_status_blob_sha": "747aea8103aa41988e57ed8b4775491842567e80",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.19.1",
@@ -252,11 +263,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "746d2c58b5f2482f6202b4172e0e012d11097f50",
+      "source_commit": "f18ba07a2dcdfee1bd61f247c7d79a516d30a7e8",
       "build_status_blob_sha": "2fa66524d49d0fb3ebb521d4c8c0a871b897aa3c",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.19.2",
@@ -272,11 +284,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+      "source_commit": "e49402f31dff9b5c00daf0493b4df10e9b5def29",
       "build_status_blob_sha": "e3e47754e968629ca3a5b6e682ba7ca7b7878d72",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.19.3",
@@ -292,11 +305,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "e79b66dd28a1a9655b2148261504fd650d98e992",
+      "source_commit": "5cdc459ca69e0b0e5cdd49285517e82ae7119817",
       "build_status_blob_sha": "7a73c0496ff5c11619b3688c6d1470ec0d353cf3",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.19.4",
@@ -312,11 +326,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+      "source_commit": "31b3a4826feab88bb9d79acbabc90a5a4b074a63",
       "build_status_blob_sha": "aeac4f0b69f1a6ecd043a0c35df0f4263002cae7",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.20",
@@ -332,11 +347,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+      "source_commit": "21922c79a9d59d2788d40dcf1543f5c7424f21c3",
       "build_status_blob_sha": "81b8cc3063876b8a44c695940a1a28b06153e762",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.20.1",
@@ -352,11 +368,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "d6db46e25f612df40c80b503775d17184644d35f",
+      "source_commit": "68c06271ab2d472bd7340eb3646b9f5ff7eb9ff4",
       "build_status_blob_sha": "4a68a3bf98535b5aee6e8fd1a8b2ce36bff100f6",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.20.2",
@@ -372,11 +389,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "1585d8b2a79dd9e6f8f389e0509c553187b08079",
+      "source_commit": "a7495d63402b4c3a990496018015c7ab2893b9f5",
       "build_status_blob_sha": "634fa28385e2c0118e4bbe52ef4f2b631da46395",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.20.4",
@@ -392,11 +410,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+      "source_commit": "e83c02a96db193dc24ee435e265cb7c30e2a7377",
       "build_status_blob_sha": "2be626f117646ce7c65741930adb0ba4f8429355",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.21.1",
@@ -412,11 +431,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "1b3d34af6173f2db59abc0259ca50462f05105d5",
+      "source_commit": "aaebe2bdf1625498f992c1ac9a4eaced0bc0e3bc",
       "build_status_blob_sha": "c3fe913fdcc356e26ca1ed45ef7ce5d90c204a10",
-      "workflow_run": "39885592948",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39885592948",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "26.1.2",
@@ -432,11 +452,12 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c6eb07cfd089c74b44c34d71163a5405e302b656",
+      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
       "build_status_blob_sha": "74cdfda6051834c7ac26966580790a4a4f03407d",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "26.3",
@@ -456,16 +477,17 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "39c4f6b973d12993963ff3a0b353496d135fe783",
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
       "build_status_blob_sha": "410085959dd0b60b682e5eabb31c036305689e05",
-      "workflow_run": "39884343348",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39884343348",
-      "wireless_safety_native_fixtures": "PASS"
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "wireless_safety_native_fixtures": "PASS",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 156,
+      "expected_native_fixtures": 168,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -475,16 +497,16 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40111059152",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40111059152",
-      "source_commit": "09682f6f7b9522c8d547db208c7f6bcb4980d085",
-      "runtime_sha256": "086e7e4a0ca28c52f5fd2466bbcb89651d0fcb80c06789514c18d24b1cbca68c",
+      "workflow_run": "40205878290",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
+      "runtime_sha256": "2ebfaff0ee7ae7e1bb101e8d7f8fda0ce5a0daa6b12b930f71c9f674d86acf29",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
-      "wireless_storage_native_scenarios": 36,
+      "wireless_storage_native_scenarios": 48,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "a84bec293569b5b3b85996f1d02fb979d0a4417c",
+      "candidate_source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
       "build_status_blob_sha": "39211a871d17fd39307dbe98e241d0996ee63d26",
       "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_TOOLTIP_AND_NETWORK_DISPLAY",
       "integrated_wireless_actions": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
@@ -495,13 +517,16 @@
         "expected_native_fixtures": 168,
         "native_gate": "PASS",
         "stock_client_gate": "PENDING_EXACT_CANDIDATE",
-        "rc_publication_cleared": false
-      }
+        "rc_publication_cleared": false,
+        "runtime_sha256": "2ebfaff0ee7ae7e1bb101e8d7f8fda0ce5a0daa6b12b930f71c9f674d86acf29",
+        "workflow_run": "40205878290"
+      },
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 156,
+      "expected_native_fixtures": 168,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -511,16 +536,16 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40111059152",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40111059152",
-      "source_commit": "c2f3ed12d35b5e2a7613676b6d96308500510961",
-      "runtime_sha256": "4ea9269fdede91b5eee76c11658c5a79e1d297dbbfd54c0e73ad87e85444a214",
+      "workflow_run": "40207117939",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40207117939",
+      "source_commit": "d354b250618bb046d226befbbb896ff55c4e4bf7",
+      "runtime_sha256": "141ffff29e00077b90149d9d74557afa67a6f2653ff680a5fad30384854f1378",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
-      "wireless_storage_native_scenarios": 36,
+      "wireless_storage_native_scenarios": 48,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "f36adf9d45a6d33135a06789a6445e417f8fbff2",
+      "candidate_source_commit": "d354b250618bb046d226befbbb896ff55c4e4bf7",
       "build_status_blob_sha": "dd4e1bbc1e4524c521d873edb04046c372a7cbd3",
       "client_visual_acceptance": "PARTIAL_STOCK_HANDHELD_FOUR_GUI_SCALES_TOOLTIP_AND_NETWORK_DISPLAY",
       "integrated_wireless_actions": "PASS_REAL_MOUSE_AND_NATIVE_PACKET_CODECS",
@@ -529,13 +554,16 @@
       "sorting_candidate": {
         "source_commit": "d354b250618bb046d226befbbb896ff55c4e4bf7",
         "expected_native_fixtures": 168,
-        "native_gate": "PENDING_REPAIR_VALIDATION",
+        "native_gate": "PASS",
         "stock_client_gate": "PENDING_EXACT_CANDIDATE",
-        "rc_publication_cleared": false
-      }
+        "rc_publication_cleared": false,
+        "runtime_sha256": "141ffff29e00077b90149d9d74557afa67a6f2653ff680a5fad30384854f1378",
+        "workflow_run": "40207117939"
+      },
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json"
     }
   ],
-  "latest_work": "Three revision-fenced legacy handheld sort modes implemented on 1.12.2 and 1.6.4. 1.12.2 passed 168 native cases plus production startup and generated migration. The first 1.6.4 compile caught six newer-API calls in added fixtures; exact legacy setters are repaired and pinned retry is pending. Client sorting qualification and RC publication remain open.",
+  "latest_work": "Legacy Wireless Storage now has network/name/descending-stack-count sorting with revision-fenced controls. Both exact legacy candidates passed 168 native scenarios each, production-only startup and generated preview.3 migrations. All 24 exact targets have revalidated native evidence across the first 23-pass run and one-target repaired 1.6.4 retry. The original 1.6.4 fixture compile failure remains recorded. Stock-client sorting runs are separate and pending; no RC clearance or publication.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -559,7 +587,7 @@
     "stock_wireless_client": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-hourly-native-2026-10-25.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json"
 }

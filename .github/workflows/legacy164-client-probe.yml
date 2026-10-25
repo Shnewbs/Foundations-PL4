@@ -2,7 +2,7 @@ name: Exercise packaged legacy 1.6.4 storage in a stock client
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/legacy164-client-probe.yml', 'tools/legacy-client-probe/run_stock_client.py', 'tools/legacy-client-probe/Legacy164WirelessClientProbe.java']
+    paths: ['.github/workflows/legacy164-client-probe.yml', 'tools/legacy-client-probe/run_stock_client.py', 'tools/legacy-client-probe/qualified_artifact.py', 'tools/legacy-client-probe/Legacy164WirelessClientProbe.java']
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +14,7 @@ jobs:
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
       PL4_CLIENT_MC: '1.6.4'
+      PL4_NATIVE_ARCHIVE_SHA256: 'ea03e9b91c12233d0c30d9a3096d937ec5357752f134770eb8cba3e2199307f8'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: 038e15515b111ad07915b2e16d064c24c92e1755
+          ref: d354b250618bb046d226befbbb896ff55c4e4bf7
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -35,6 +36,8 @@ jobs:
             21
           cache: gradle
           cache-dependency-path: candidate/**/*.gradle*
+      - name: Check native archive qualification regressions
+        run: python3 -m unittest discover -s control/tools/legacy-client-probe -p test_qualified_artifact.py
       - name: Install software display
         run: sudo apt-get update && sudo apt-get install -y xserver-xorg-core xserver-xorg-video-dummy x11-xserver-utils libgl1-mesa-dri
       - name: Inject isolated development probe
@@ -61,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12566662422/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12604061175/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -109,8 +112,9 @@ jobs:
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r['result']=='PASS' and r['signed_byte_revision']==70
-          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page']:assert r[key]
+          for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
+          assert (root/r['sorted_capture']).stat().st_size>1000
           assert r['native_display_projection_and_hide']
           for name in r['display_captures']:assert (root/name).stat().st_size>1000
           assert len(r['captures'])==4

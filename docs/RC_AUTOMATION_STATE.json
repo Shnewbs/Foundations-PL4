@@ -19,18 +19,22 @@
     "1.6.4": 40111601064,
     "1.12.2": 40111601092
   },
-  "current_checkpoint": "Legacy sorting implemented. 1.12.2 passed 168 native scenarios, production startup and generated preview.3 migration in run 40205878290. 1.6.4 fixture item-name API mismatch repaired in d354b250618bb046d226befbbb896ff55c4e4bf7; changed-source native retry dispatched. Stock-client sorting acceptance is pending.",
+  "current_checkpoint": "Legacy sorting implemented. 1.12.2 passed 168 native scenarios, production startup and generated preview.3 migration in run 40205878290. 1.6.4 fixture item-name API mismatch repaired in d354b250618bb046d226befbbb896ff55c4e4bf7; its one-target retry passed 168 native scenarios, production startup and generated migration. All 24 exact targets have revalidated native evidence. Stock-client sorting acceptance is pending.",
   "local_validation": "34 publication/scheduler/upload unittest cases passed (including 8 embedded-reader policy subcases); 44 workflow YAML files parsed; runtime/native-step preservation checked separately.",
   "next_work": [
-    "Finish repaired 1.6.4 native build, then pin its new artifact/source/digest into the stock-client workflow; preserve first failed compilation evidence.",
+    "Finish exact-JAR stock-client sorting/order/replay acceptance on both legacy ports and review the new captures; retain the first 1.6.4 compile failure as historical evidence.",
     "Run both stock-client sort controls/order/replay probes against their exact independently native-qualified JARs and review captures.",
     "Continue legacy search/grouping, editor/multipart and broader installed-provider/multiplayer/migration/performance acceptance; RC clearance remains false."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-hourly-native-2026-10-25.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
   "main_native_validation_run": 40195961776,
   "curseforge_reconciliation_run": 40195961622,
-  "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json"
+  "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
+  "latest_native_runs": [
+    40205878290,
+    40207117939
+  ]
 }
