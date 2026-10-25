@@ -9,39 +9,40 @@
     "owner": "pl4-search-2026-10-25T17",
     "claimed_at": "2026-10-25 17:10:38 UTC",
     "expires_at": "2026-10-25T18:30:00Z",
-    "purpose": "Bounded legacy storage search implementation and exact-source validation"
+    "purpose": "Bounded legacy storage search implementation and exact-source validation",
+    "renewed_at": "2026-10-25T17:32:00Z"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40215761515,
+  "last_verified_legacy_native_run": 40216452462,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40207248842,
     "1.6.4": 40209250286
   },
-  "current_checkpoint": "Bounded legacy storage search implemented on both exact branches. Final-source native run 40215761515 passed 184/186 cases plus production-only startup and preview.3 generated migration. Stock client search/caret/clear/no-match/replay validation is in progress; RC clearance remains false.",
+  "current_checkpoint": "Bounded legacy search native gate passed on final Delete-corrected sources: 184/184 (1.12.2), 186/186 (1.6.4), main 192/192 in 40216452462. Production-only startup, preview.3 generated migration and archive/JAR digests verified. Earlier client runs failed native Delete/caret; corrected client runs 40216688843 and 40216725526 are active with the same assertion. 26.x counts attributed to 192 PL4 plus 1 minecraft:default per profile; controller tests pass. RC clearance remains false.",
   "local_validation": "7 native-archive qualification cases, 12 hourly-controller cases and 4 publication-guard cases passed; Java 8/7 syntax checks, workflow YAML and diff whitespace checks passed. Exact native and stock-client gates are recorded separately.",
   "next_work": [
-    "Implement bounded legacy storage search and grouped quantities, preserving physical endpoint/NBT variant identity, revision fencing and escrow conservation; current sort modes remain per physical slot.",
-    "Continue advanced legacy editor/multipart parity or Forge 1.16.1–1.16.4 stock launcher acceptance; use current exact branches and protected publishers.",
-    "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider acceptance. Keep RC clearance false until exact-source requirements pass.",
-    "Attribute the extra required GameTest on 26.1.2/26.3: logs show 193 executed/passed per profile while branch metadata declares 192; preserve both counts until reconciled."
+    "Finish exact-JAR stock-client search/caret/clear/no-match acceptance for runs 40216688843 (1.12.2) and 40216725526 (1.6.4); preserve prior failed runs 40216054092/40216100651, inspect captures before accepting.",
+    "Implement grouped legacy storage quantities preserving full NBT variants, physical endpoint routing, revision fences and escrow conservation.",
+    "Continue legacy advanced editor/multipart parity and Forge 1.16.1–1.16.4 stock launcher acceptance.",
+    "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider performance acceptance. Keep RC clearance false until requirements pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-search-2026-10-25.json",
   "main_native_validation_run": 40195961776,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40205878290,
-    40207117939,
-    40208949789
+    40215554193,
+    40215761515,
+    40216452462
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40205878290,
-    "1.6.4": 40208949789
+    "1.12.2": 40216452462,
+    "1.6.4": 40216452462
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-1.12.2-sorting-stock-client.json",
