@@ -77,6 +77,70 @@ public final class LegacyWirelessStorage {
         });}catch(RuntimeException provider){result.clear();}
         return result;
     }
+    public static final long MAX_TOTAL=(long)WORK_LIMIT*Integer.MAX_VALUE;
+    /** Display rows retain an immutable ordered roster of physical snapshot sources. */
+    public static final class Row {
+        public final ItemStack snapshot;public final long total;public final boolean grouped;
+        private final List<Entry> sources;
+        private Row(List<Entry> sources,boolean grouped){
+            this.sources=java.util.Collections.unmodifiableList(new ArrayList<Entry>(sources));this.grouped=grouped;
+            snapshot=LegacyTile.STACKS.copy(sources.get(0).snapshot,1);long sum=0;
+            for(Entry source:sources)sum+=LegacyTile.STACKS.count(source.snapshot);total=sum;
+        }
+        public int physicalSlots(){return sources.size();}
+        /** Group counts never travel in the signed-byte native ItemStack count. */
+        public ItemStack preview(){return LegacyTile.STACKS.copy(snapshot,grouped?1:(int)Math.min(total,Math.max(1,Math.min(64,snapshot.getMaxStackSize()))));}
+    }
+    private static final class VariantKey {
+        final ItemStack stack;
+        VariantKey(ItemStack stack){this.stack=LegacyTile.STACKS.copy(stack,1);}
+        @Override public int hashCode(){return 31*(31*System.identityHashCode(stack.getItem())+stack.getItemDamage())+(stack.hasTagCompound()?stack.getTagCompound().hashCode():0);}
+        @Override public boolean equals(Object other){return other instanceof VariantKey&&LegacyTile.STACKS.same(stack,((VariantKey)other).stack);}
+    }
+    public static List<Row> rows(EntityPlayer player,ItemStack tool,final int order,String query,boolean grouped){
+        List<Row> result=new ArrayList<Row>();
+        try{
+            java.util.Map<VariantKey,List<Entry>> groups=new java.util.LinkedHashMap<VariantKey,List<Entry>>();
+            for(Entry entry:entries(player,tool,0,query)){
+                if(!grouped){result.add(new Row(java.util.Collections.singletonList(entry),false));continue;}
+                VariantKey key=new VariantKey(entry.snapshot);List<Entry> members=groups.get(key);
+                if(members==null){members=new ArrayList<Entry>();groups.put(key,members);}members.add(entry);
+            }
+            if(grouped)for(List<Entry> members:groups.values())result.add(new Row(members,true));
+            if(order==1||order==2)java.util.Collections.sort(result,new java.util.Comparator<Row>(){
+                public int compare(Row a,Row b){if(order==2){int count=Long.compare(b.total,a.total);if(count!=0)return count;}return a.snapshot.getDisplayName().compareToIgnoreCase(b.snapshot.getDisplayName());}
+            });
+        }catch(RuntimeException provider){result.clear();}
+        return result;
+    }
+    public static boolean sameRow(Row a,Row b){
+        if(a.grouped!=b.grouped||a.total!=b.total||!LegacyTile.STACKS.same(a.snapshot,b.snapshot)||a.sources.size()!=b.sources.size())return false;
+        for(int i=0;i<a.sources.size();i++){Entry x=a.sources.get(i),y=b.sources.get(i);if(x.node!=y.node||x.slot!=y.slot||!ItemStack.areItemStacksEqual(x.snapshot,y.snapshot))return false;}
+        return true;
+    }
+    public static String compactTotal(long value){
+        if(value<1000)return Long.toString(Math.max(0,value));
+        long unit=1000;int index=0;String[] names={"k","M","B","T"};while(index<3&&value/unit>=1000){unit*=1000;index++;}
+        long whole=value/unit,tenth=(value%unit)/(unit/10);return Long.toString(whole)+(whole<100&&tenth>0?"."+tenth:"")+names[index];
+    }
+    public static int withdrawRow(EntityPlayer player,ItemStack tool,Row selected,int amount){return withdrawRow(player,tool,selected,amount,new ConservingItems.Work(WORK_LIMIT));}
+    /** Explicit work object permits callers to share a finite transfer budget. Snapshot scans remain separately bounded by WORK_LIMIT. */
+    public static int withdrawRow(EntityPlayer player,ItemStack tool,Row selected,int amount,ConservingItems.Work work){
+        LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||work==null)return 0;
+        if(!selected.grouped){Entry entry=selected.sources.get(0);return endpoints(root).contains(entry.node)?withdrawEntry(player,entry,amount,inventory(entry.node),work,false):0;}
+        // Reject changed counts, variants or group membership before the first extraction.
+        boolean current=false;for(Row row:rows(player,tool,0,"",true))if(LegacyTile.STACKS.same(row.snapshot,selected.snapshot)){current=sameRow(row,selected);break;}
+        if(!current)return 0;
+        int moved=0;
+        java.util.Map<LegacyTile,StorageInventory> adapters=new java.util.HashMap<LegacyTile,StorageInventory>();
+        for(Entry entry:selected.sources){
+            if(moved>=amount||!work.available()||resolve(player,tool)!=root)break;
+            if(!endpoints(root).contains(entry.node))break;
+            StorageInventory source=adapters.get(entry.node);if(source==null){if(!work.take())break;source=inventory(entry.node);if(source==null)break;adapters.put(entry.node,source);}
+            int part=withdrawEntry(player,entry,amount-moved,source,work,true);moved+=part;
+            if(part==0||!ready(entry.node))break;
+        }return moved;
+    }
     private static ConservingItems.Inventory<ItemStack> playerInventory(final EntityPlayer player,final int only){return new ConservingItems.Inventory<ItemStack>(){
         public int slots(){return only<0?36:1;}
         private int index(int slot){return only<0?slot:only;}
@@ -89,11 +153,14 @@ public final class LegacyWirelessStorage {
             return LegacyTile.STACKS.copy(value,LegacyTile.STACKS.count(value)-n);}
     };}
     public static int withdraw(EntityPlayer player,ItemStack tool,Entry selected,int amount){
-        LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64)return 0;
-        if(!endpoints(root).contains(selected.node))return 0;final StorageInventory source=inventory(selected.node);if(source==null||selected.slot<0||selected.slot>=Math.min(source.slots(),LegacyPL4.slotLimit))return 0;
-        final Entry entry=selected;ItemStack current=source.peek(entry.slot);if(!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
+        LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||!endpoints(root).contains(selected.node))return 0;
+        return withdrawEntry(player,selected,amount,inventory(selected.node),new ConservingItems.Work(WORK_LIMIT),false);
+    }
+    private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
+        if(source==null||!ready(entry.node)||entry.slot<0||!work.take()||entry.slot>=Math.min(source.slots(),LegacyPL4.slotLimit)||!work.take())return 0;
+        ItemStack current=source.peek(entry.slot);if(exact?!ItemStack.areItemStacksEqual(current,entry.snapshot):!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
-        try{return ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(entry.node),one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),new ConservingItems.Work(WORK_LIMIT));}
+        try{return ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(entry.node),one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
         finally{retain(entry.node);player.inventory.onInventoryChanged();}
     }
     public static int deposit(EntityPlayer player,ItemStack tool,int slot,int amount){
