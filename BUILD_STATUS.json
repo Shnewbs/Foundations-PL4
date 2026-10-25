@@ -30,7 +30,7 @@
     "verified_runtime_sha256": "31995fa3c46ab4fb6d76262d82484c9579b36cda1739f0844d2509f85c50d6dc",
     "release_published": false
   },
-  "expected_native_scenarios": 215,
+  "expected_native_scenarios": 221,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -75,5 +75,6 @@
   "wireless_search": "BOUNDED_ASCII_DISPLAY_NAME_SUBSTRING_REVISION_FENCED",
   "wireless_search_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
   "wireless_grouped_quantities": "EXACT_VARIANT_PHYSICAL_SOURCE_ROSTER_BOUNDED_WITHDRAWAL",
-  "wireless_grouping_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT"
+  "wireless_grouping_acceptance": "PENDING_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
+  "wireless_shared_handler_alias_acceptance": "PENDING_EXACT_SOURCE_NATIVE"
 }

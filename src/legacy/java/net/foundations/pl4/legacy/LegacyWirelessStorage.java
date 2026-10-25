@@ -32,10 +32,22 @@ public final class LegacyWirelessStorage {
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
-        Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
-        for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner)||!ready(node)||node.fluidPowered())continue;
+        List<LegacyTile> candidates=new ArrayList<LegacyTile>();
+        java.util.Map<LegacyTile,net.minecraftforge.items.IItemHandler> handlers=new java.util.IdentityHashMap<LegacyTile,net.minecraftforge.items.IItemHandler>();
+        Set<Object> blockedHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
+        Set<BoundedNetwork.Point> blockedTargets=new HashSet<BoundedNetwork.Point>();
+        // Inspect every authorized item endpoint before deduplication: a healthy alias must not bypass escrow quarantine.
+        for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
             int role=node.role();if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS)continue;
-            if(seen.add(node.fluidTarget()))result.add(node);
+            net.minecraftforge.items.IItemHandler handler=node.inventory();handlers.put(node,handler);candidates.add(node);
+            if(!ready(node)){blockedTargets.add(node.fluidTarget());if(handler!=null)blockedHandlers.add(handler);}
+        }
+        Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
+        Set<Object> seenHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
+        for(LegacyTile node:candidates){net.minecraftforge.items.IItemHandler handler=handlers.get(node);
+            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget())||blockedHandlers.contains(handler))continue;
+            if(seen.contains(node.fluidTarget())||(handler!=null&&seenHandlers.contains(handler)))continue;
+            seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
         }return result;
     }
     private static final class StorageInventory implements ConservingItems.Inventory<ItemStack>{
