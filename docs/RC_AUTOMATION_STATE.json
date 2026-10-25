@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261025-publisher-guards",
-    "claimed_at": "2026-10-25T14:04:52.225805+00:00",
-    "expires_at": "2026-10-25T14:44:52.225805+00:00",
-    "expected_parent": "eac34b66aa5a4862a04ab1e6688c581876f5497d"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -19,17 +14,18 @@
     "1.6.4": 40111601064,
     "1.12.2": 40111601092
   },
-  "current_checkpoint": "First hourly controller passed all 24 exact targets; main passed 192 native tests, and the guarded CurseForge sync confirmed 24 existing receipts with zero failures. No new RC was published.",
-  "local_validation": "30 scheduler/publication/upload regression cases passed; three workflow YAML files parsed; diff whitespace check passed",
+  "current_checkpoint": "Hardened 44 branch-local publication workflows across 23 existing version branches; the previously unguarded 1.20.1 publisher now rejects development and uncleared RC versions. Runtime source unchanged; no new RC published.",
+  "local_validation": "34 publication/scheduler/upload unittest cases passed (including 8 embedded-reader policy subcases); 44 workflow YAML files parsed; runtime/native-step preservation checked separately.",
   "next_work": [
-    "Before any version-branch source push, audit and add development/explicit RC clearance guards to its push-triggered publishers. The retained 1.20.1 forge-port.yml publisher lacks a direct maturity check; retain native validation while guarding its publication step. Inspect other version publishers rather than assuming the main fix applies to them.",
-    "Continue concrete unfinished parity or Forge 1.16.1\u20131.16.4 stock-client launcher-profile acceptance from the master roadmap, with exact runtime evidence.",
-    "Continue installed-provider, broader client/multiplayer/migration and sustained-performance acceptance; publish only genuinely cleared exact-target versions."
+    "Continue Forge 1.16.1\u20131.16.4 stock-client launcher-profile acceptance or legacy storage search/sort/grouping parity from current exact branches. Branch-local maturity guards are now in place.",
+    "Use hourly-builds.yml for next changed-source native validation; prior artifacts qualify their original commits only. Preserve all client/provider/multiplayer/migration/performance acceptance gaps.",
+    "Do not execute historical frozen publishers against expired artifacts. Re-audit any previously excluded manual cross-version controller before use."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
   "latest_hourly_evidence": "docs/acceptance/rc-dev-hourly-native-2026-10-25.json",
   "main_native_validation_run": 40195961776,
-  "curseforge_reconciliation_run": 40195961622
+  "curseforge_reconciliation_run": 40195961622,
+  "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json"
 }

@@ -1,0 +1,432 @@
+{
+  "recorded_date": "2026-10-25",
+  "scope": "Branch-local publication policy only; no runtime source or RC acceptance promotion",
+  "branches": [
+    {
+      "branch": "mc/1.14.4",
+      "parent": "327cdb70b2f5bc905407abbbcadba700a808680c",
+      "commit": "ab3041b0903189876ba31815094656a925ad94d3",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "511e5035747f0060cfb50a0db877a1380ec264d0"
+    },
+    {
+      "branch": "mc/1.15.2",
+      "parent": "c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+      "commit": "dae47a9a2a97cbf3a36a05c4f00197be88c42779",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "06bfbb407bda4da62981b7843662ab4f6534eaf7"
+    },
+    {
+      "branch": "mc/1.16.1",
+      "parent": "1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+      "commit": "5a4063f93ca9b8ba2a2c499a30041a9f919250fa",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "70624c94324cbe678db8ea41540801cd93e3fe4b"
+    },
+    {
+      "branch": "mc/1.16.2",
+      "parent": "b87021995889ea7dc00c8b312d5c35f711b7f57b",
+      "commit": "18220f4c40ed7c9c1ef16027c7c6a119d8b2c744",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "438bd839c893c997da6bd79455fb92dc1dd812b1"
+    },
+    {
+      "branch": "mc/1.16.3",
+      "parent": "99ff596b2b05fd81da8934085891e1671a641546",
+      "commit": "432cd8aee685406b927e1c5c65b124b181d24448",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "06bd028827dc83faf8b324545b850c5d6350995c"
+    },
+    {
+      "branch": "mc/1.16.4",
+      "parent": "b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+      "commit": "8e3786682ab785444b7bb2576261219a261cdecc",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "ecb27091f86373715025058ec80792dc7d5de8fa"
+    },
+    {
+      "branch": "mc/1.16.5",
+      "parent": "593edc1ef5667deb69fc7c404597b64ca7331969",
+      "commit": "00f5900963461847e68c82b5afd51c36c90ee95d",
+      "workflows": [
+        ".github/workflows/forge-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "cd58860299c918a230066769d7b5db7840ef1a48"
+    },
+    {
+      "branch": "mc/1.17.1",
+      "parent": "24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+      "commit": "65db7cebf82fdbce7d011e7dd9d08f14b8bf55a5",
+      "workflows": [
+        ".github/workflows/forge117-native.yml",
+        ".github/workflows/forge118-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "3daedc91ea768dd23ff8d64878211741d671c01f"
+    },
+    {
+      "branch": "mc/1.18.1",
+      "parent": "9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+      "commit": "99dc4390178b843f1287f0e08ae215eb87da0652",
+      "workflows": [
+        ".github/workflows/forge118-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "727b0e0e1fab8b8b7641e65dc6490c4b8322454f"
+    },
+    {
+      "branch": "mc/1.18.2",
+      "parent": "0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+      "commit": "2d611112aa98c89ff7917fd1d983f38b111bb2a1",
+      "workflows": [
+        ".github/workflows/forge118-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "9d6384f1a7dc2acbea37382c9afdb5cf78b1a72c"
+    },
+    {
+      "branch": "mc/1.19",
+      "parent": "a4cf686ba16aae111ab824b7c73707b502b48a35",
+      "commit": "414bdb31deceb8ab1fc6a97b0d02f349a2c513b7",
+      "workflows": [
+        ".github/workflows/forge1191-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "611af00bce3a8387bf618905377bb100e830d093"
+    },
+    {
+      "branch": "mc/1.19.1",
+      "parent": "746d2c58b5f2482f6202b4172e0e012d11097f50",
+      "commit": "f18ba07a2dcdfee1bd61f247c7d79a516d30a7e8",
+      "workflows": [
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "569b3f4c5d79f1b2ff34e90807c601ec4efc8e2e"
+    },
+    {
+      "branch": "mc/1.19.2",
+      "parent": "9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+      "commit": "e49402f31dff9b5c00daf0493b4df10e9b5def29",
+      "workflows": [
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "4c75e861c8d5005833996f29983828e2a938f8c6"
+    },
+    {
+      "branch": "mc/1.19.3",
+      "parent": "e79b66dd28a1a9655b2148261504fd650d98e992",
+      "commit": "5cdc459ca69e0b0e5cdd49285517e82ae7119817",
+      "workflows": [
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "679dc2af3983ad045b277daa17e4fa36cd314621"
+    },
+    {
+      "branch": "mc/1.19.4",
+      "parent": "eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+      "commit": "31b3a4826feab88bb9d79acbabc90a5a4b074a63",
+      "workflows": [
+        ".github/workflows/forge1193-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "e1734473c02b88f2713a55cfd0b9c0ee050c3dea"
+    },
+    {
+      "branch": "mc/1.20",
+      "parent": "5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+      "commit": "21922c79a9d59d2788d40dcf1543f5c7424f21c3",
+      "workflows": [
+        ".github/workflows/forge120-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "63cc146c1f0c5fcf06781cef4cacfba5ab564ce4"
+    },
+    {
+      "branch": "mc/1.20.1",
+      "parent": "d6db46e25f612df40c80b503775d17184644d35f",
+      "commit": "68c06271ab2d472bd7340eb3646b9f5ff7eb9ff4",
+      "workflows": [
+        ".github/workflows/forge-port.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "68da6dfb5e5e657a6e45b92e13e46ea039aafc6f"
+    },
+    {
+      "branch": "mc/1.20.2",
+      "parent": "1585d8b2a79dd9e6f8f389e0509c553187b08079",
+      "commit": "a7495d63402b4c3a990496018015c7ab2893b9f5",
+      "workflows": [
+        ".github/workflows/forge1202-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "953868568529ca87a19d850e21b70a7097c4897f"
+    },
+    {
+      "branch": "mc/1.20.4",
+      "parent": "85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+      "commit": "e83c02a96db193dc24ee435e265cb7c30e2a7377",
+      "workflows": [
+        ".github/workflows/forge1204-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "44e0859d69209b3729d003db28c41470c4642c3e"
+    },
+    {
+      "branch": "mc/26.1.2",
+      "parent": "c6eb07cfd089c74b44c34d71163a5405e302b656",
+      "commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+      "workflows": [
+        ".github/workflows/port-26.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "40acd59d22a77de247dc50cce66bca2bfa306de6"
+    },
+    {
+      "branch": "mc/26.3",
+      "parent": "39c4f6b973d12993963ff3a0b353496d135fe783",
+      "commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "workflows": [
+        ".github/workflows/port-26.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "d6ea64566c4a84f0be91305dea08abc0233f47bb"
+    },
+    {
+      "branch": "mc/1.12.2",
+      "parent": "09682f6f7b9522c8d547db208c7f6bcb4980d085",
+      "commit": "7b78f3c5564a6f2229397a659164b30d091e807f",
+      "workflows": [
+        ".github/workflows/legacy112-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "82be8688b4962b6e2db368eefef7bb84a6b75543"
+    },
+    {
+      "branch": "mc/1.6.4",
+      "parent": "c2f3ed12d35b5e2a7613676b6d96308500510961",
+      "commit": "7d48ebbc0d9b621daf47c3fa7963659d33d258ff",
+      "workflows": [
+        ".github/workflows/legacy164-native.yml",
+        ".github/workflows/release.yml"
+      ],
+      "guard_commit": "c0d29be12109b3f8ccdcd44432a68bcb156d5c38"
+    }
+  ],
+  "tests": {
+    "unittest_cases": 34,
+    "generated_reader_policy_cases": 8,
+    "workflow_yaml_files": 44,
+    "native_rebuild": "Not performed: runtime source unchanged; prior artifacts inspected, no active/queued runs"
+  },
+  "publication": {
+    "new_github_releases": [],
+    "new_curseforge_uploads": [],
+    "rc_publication_cleared": false
+  },
+  "limitations": [
+    "Legacy and modern client/provider/multiplayer/migration/performance acceptance remains open.",
+    "Historical frozen publishers without a source checkout were not executed; transformer now rejects them for manual review.",
+    "Existing retained native artifacts certify prior source commits and payload hashes only; workflow-only successors are not relabeled as newly native-qualified."
+  ],
+  "verification": {
+    "verified_at": "2026-10-25T14:11:02.080793+00:00",
+    "branch_refs_verified": 23,
+    "workflow_yaml_parses": 44,
+    "native_and_other_nonpublication_steps": "Identical before and after (excluding replaced maturity-reader steps)",
+    "runtime_source_diff": "No changes outside the recorded workflow files",
+    "branch_diff_whitespace": "PASS",
+    "live_build_inventory": {
+      "active": [],
+      "queued": [],
+      "artifacts": [
+        {
+          "id": 12600800362,
+          "name": "hourly-native-1.19.1-746d2c58b5f2482f6202b4172e0e012d11097f50",
+          "expired": false,
+          "expires_at": "2026-11-08T13:12:37Z",
+          "digest": "sha256:574e8cadb873bebe59d63dc6ce3d8411930e299909c09f78d93fe1054f2bc4b1"
+        },
+        {
+          "id": 12600550552,
+          "name": "hourly-native-1.15.2-c0f3da321efcfc4dab656dd939b8c3e43dadfa35",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:08Z",
+          "digest": "sha256:0944021493c449fd5f4470ef016ae52800a752815f2e14952e14ea21004d88e8"
+        },
+        {
+          "id": 12600531141,
+          "name": "hourly-native-1.19-a4cf686ba16aae111ab824b7c73707b502b48a35",
+          "expired": false,
+          "expires_at": "2026-11-08T13:12:28Z",
+          "digest": "sha256:b2d4104d9d4f69b7fde5a557c1f9044a2d76eb4af138c1f8f3c133fa61e84e00"
+        },
+        {
+          "id": 12600477037,
+          "name": "hourly-native-26.3-39c4f6b973d12993963ff3a0b353496d135fe783",
+          "expired": false,
+          "expires_at": "2026-11-08T13:18:01Z",
+          "digest": "sha256:9d7f4caaebfe70e8a8fb0a5bd56c444628a3ae42f052fde96bb35baf27828b5f"
+        },
+        {
+          "id": 12600471513,
+          "name": "hourly-native-1.19.4-eee54a6a9e652d2080ab7ba7689dc66d22b87ea7",
+          "expired": false,
+          "expires_at": "2026-11-08T13:15:13Z",
+          "digest": "sha256:ea9c733bd8abdf9d8925f85bef6c83d824874b4e28f54f5f94f34bf6b24ece59"
+        },
+        {
+          "id": 12600446439,
+          "name": "hourly-native-1.17.1-24cbb94fb167950c0cafb5fdd5f120fc5fffe117",
+          "expired": false,
+          "expires_at": "2026-11-08T13:13:20Z",
+          "digest": "sha256:baee6f9872262a339df1b38bf60a213a3653f2e71cf61d7691ba3cb60d95de42"
+        },
+        {
+          "id": 12600417098,
+          "name": "hourly-native-26.1.2-c6eb07cfd089c74b44c34d71163a5405e302b656",
+          "expired": false,
+          "expires_at": "2026-11-08T13:17:11Z",
+          "digest": "sha256:04691f89743c27960b4776c12c1439ea650bc1a02b0eaa60077aabf62a84d5cb"
+        },
+        {
+          "id": 12600261214,
+          "name": "hourly-native-1.16.4-b8b42a8d110ae906009fe5f087ff58501ce56ac4",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:10Z",
+          "digest": "sha256:3daa23ecd2193a8cdb67b9b2d2e683ef8f94b5cb98e8c3317f9eafd2bf1cb7bf"
+        },
+        {
+          "id": 12600212483,
+          "name": "hourly-native-1.12.2-09682f6f7b9522c8d547db208c7f6bcb4980d085",
+          "expired": false,
+          "expires_at": "2026-11-08T13:17:20Z",
+          "digest": "sha256:62f97f79d8bd431f9985611228c15332ba456ec18b6e873fc40856d073cd0c3c"
+        },
+        {
+          "id": 12600211909,
+          "name": "hourly-native-1.18.1-9b78569508b76b314b64b12a2653b2f4a1aaecdb",
+          "expired": false,
+          "expires_at": "2026-11-08T13:13:17Z",
+          "digest": "sha256:79e7b5817a9a1a1cebb97e2a97ecbf75ce5d96a07e603bbaf5d4ebb0608868b7"
+        },
+        {
+          "id": 12600121915,
+          "name": "hourly-native-1.16.5-593edc1ef5667deb69fc7c404597b64ca7331969",
+          "expired": false,
+          "expires_at": "2026-11-08T13:11:05Z",
+          "digest": "sha256:1d2f1324294d6ef381eb40ae79e4be21efe50f828f12932aef6aacb69caa4b77"
+        },
+        {
+          "id": 12600118052,
+          "name": "hourly-native-1.6.4-c2f3ed12d35b5e2a7613676b6d96308500510961",
+          "expired": false,
+          "expires_at": "2026-11-08T13:17:56Z",
+          "digest": "sha256:5b151cd02f588ee8297fc3696cdbcda90693c15c99a76b4c9b346ba56bd19244"
+        },
+        {
+          "id": 12600092052,
+          "name": "hourly-native-1.20-5cd2fd3228fd38ffd1d806c9fe3f01f61f25cd86",
+          "expired": false,
+          "expires_at": "2026-11-08T13:17:45Z",
+          "digest": "sha256:9f72a8619482ec3f2944f21d6f454c12fe5f1c879197df54c08e15d443a86445"
+        },
+        {
+          "id": 12600017035,
+          "name": "hourly-native-1.19.3-e79b66dd28a1a9655b2148261504fd650d98e992",
+          "expired": false,
+          "expires_at": "2026-11-08T13:15:32Z",
+          "digest": "sha256:801d200154b8b944ce6f03115f1a1a06f2caea5247f5b2fa54ec513215b67208"
+        },
+        {
+          "id": 12599996420,
+          "name": "hourly-native-1.16.1-1495bf419b0e63c40c95740d1b0a52bf93e0f21d",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:06Z",
+          "digest": "sha256:85aee02bc74e1edb385f46e63ec53d9ad52ffcc61a1c51a8e60fcc9aa0141404"
+        },
+        {
+          "id": 12599992403,
+          "name": "hourly-native-1.21.1-1bc1fab0544cb3bc4ff3285ee7b3e1b492d6075f",
+          "expired": false,
+          "expires_at": "2026-11-08T13:16:41Z",
+          "digest": "sha256:0c7a43805b31bca10bcdfaca86ff7cadc128a7f6ca5d06dcea6a8bbc2dc47e2c"
+        },
+        {
+          "id": 12599896706,
+          "name": "hourly-native-1.16.3-99ff596b2b05fd81da8934085891e1671a641546",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:00Z",
+          "digest": "sha256:c3d3d34be1d6a989af51ac6e2ad7e5dbd4e96347c91684dc6af0de0cecf0e890"
+        },
+        {
+          "id": 12599847168,
+          "name": "hourly-native-1.18.2-0003bd168f1ce1e39044f82fb2406c922f9ff56b",
+          "expired": false,
+          "expires_at": "2026-11-08T13:12:49Z",
+          "digest": "sha256:9cbb68415cea67b0359241a42ba6b59875f8ba025f0c9714b05d35f85db1c99e"
+        },
+        {
+          "id": 12599836780,
+          "name": "hourly-native-1.16.2-b87021995889ea7dc00c8b312d5c35f711b7f57b",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:00Z",
+          "digest": "sha256:c66423a05c6164ba3b6fca303e418346eb88b2114f6f369e96f3b262d4d6d199"
+        },
+        {
+          "id": 12599807656,
+          "name": "hourly-native-1.20.4-85fb50223762ae75a3249b7867e1b5a4e0e3fa6f",
+          "expired": false,
+          "expires_at": "2026-11-08T13:16:57Z",
+          "digest": "sha256:839dc196dbf0931ca335088278a5ac0ed718b61394edda4bc566f17242136f2f"
+        },
+        {
+          "id": 12599801932,
+          "name": "hourly-native-1.14.4-327cdb70b2f5bc905407abbbcadba700a808680c",
+          "expired": false,
+          "expires_at": "2026-11-08T13:08:25Z",
+          "digest": "sha256:96dc3fe40b193af0b74fdceb7cc85a4c277ed758a2608996c82ee0bdeeff10f1"
+        },
+        {
+          "id": 12599787504,
+          "name": "hourly-native-1.19.2-9dfc5f7837cbfafb54e09282c96bc664f5d66313",
+          "expired": false,
+          "expires_at": "2026-11-08T13:14:46Z",
+          "digest": "sha256:bed967b98b67ec4d20f36a692f5662fc65e705d144a46fca39cc7473924b8163"
+        },
+        {
+          "id": 12599762606,
+          "name": "hourly-native-1.20.1-d6db46e25f612df40c80b503775d17184644d35f",
+          "expired": false,
+          "expires_at": "2026-11-08T13:15:49Z",
+          "digest": "sha256:e11b85e80cf9ca15cf41c27a652e5c5b9a854f602efd33d64f002fbaab5de866"
+        },
+        {
+          "id": 12599614947,
+          "name": "hourly-native-1.20.2-1585d8b2a79dd9e6f8f389e0509c553187b08079",
+          "expired": false,
+          "expires_at": "2026-11-08T13:15:25Z",
+          "digest": "sha256:739ba238fdf3f464bcc886e56136c0093aec77a0e61f24fd7ff1420aa71d387e"
+        }
+      ]
+    }
+  }
+}

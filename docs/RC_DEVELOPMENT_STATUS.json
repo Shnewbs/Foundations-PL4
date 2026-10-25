@@ -521,7 +521,7 @@
       "client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json"
     }
   ],
-  "latest_work": "The first pinned hourly controller revalidated all 24 maintained exact targets and retained per-JAR hashes, independently of earlier acceptance records. Main passed 192 native tests; 30 scheduling/publication/upload regressions passed, and CurseForge confirmed 24 existing receipts with zero failures. Scheduled implementation and builds are enabled. Development snapshots remain unpublished; advanced parity and broader acceptance remain open.",
+  "latest_work": "Branch-local publication policy hardened across 23 existing version branches (44 workflow files), including the unguarded 1.20.1 publisher. Explicit boolean RC clearance is required; dev/snapshot/nightly versions are blocked. Native commands and runtime source are unchanged. 34 regression cases passed; no new client/provider/multiplayer/migration/performance acceptance or RC publication is claimed.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -546,5 +546,6 @@
     "closes_all_acceptance": false
   },
   "hourly_native_revalidation": "acceptance/rc-dev-hourly-native-2026-10-25.json",
-  "hourly_work_policy": "RC_HOURLY_WORKFLOW.md"
+  "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
+  "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json"
 }
