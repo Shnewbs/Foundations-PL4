@@ -5,26 +5,22 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-legacy-search-20261025-1507",
-    "claimed_at": "2026-10-25T15:08:25.266Z",
-    "expires_at": "2026-10-25T16:15:44.207Z",
-    "expected_parent": "763ee242d52bc6aba59921a73fa4f60ccaa9e5d7"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40111059152,
+  "last_verified_legacy_native_run": 40208949789,
   "last_verified_legacy_client_runs": {
-    "1.6.4": 40111601064,
-    "1.12.2": 40111601092
+    "1.12.2": 40207248842,
+    "1.6.4": 40209250286
   },
-  "current_checkpoint": "Legacy sorting implemented. 1.12.2 passed 168 native scenarios, production startup and generated preview.3 migration in run 40205878290. 1.6.4 fixture item-name API mismatch repaired in d354b250618bb046d226befbbb896ff55c4e4bf7; its one-target retry passed 168 native scenarios, production startup and generated migration. All 24 exact targets have revalidated native evidence. Stock-client sorting acceptance is pending. 1.12.2 stock-client sorting/order/replay checks passed in run 40207248842; all eight captures were reviewed. The 1.6.4 stock client closes its window when canInteractWith becomes false at revision 75; targeted binding/position diagnostics are in progress.",
-  "local_validation": "34 publication/scheduler/upload unittest cases passed (including 8 embedded-reader policy subcases); 44 workflow YAML files parsed; runtime/native-step preservation checked separately.",
+  "current_checkpoint": "Legacy sorting and 1.6.4 ItemStack-save binding fix implemented and scoped stock-client accepted. Native: 1.12.2 168, 1.6.4 170, main 192; all 24 exact targets have recorded passing source/JAR evidence. Both stock clients passed actual mouse order/replay/transfer/paging, four scales and display privacy; 16 captures reviewed and preserved. Initial compile and client failures remain in the evidence. No new RC release or CurseForge upload.",
+  "local_validation": "7 native-archive qualification cases, 12 hourly-controller cases and 4 publication-guard cases passed; Java 8/7 syntax checks, workflow YAML and diff whitespace checks passed. Exact native and stock-client gates are recorded separately.",
   "next_work": [
-    "Finish exact-JAR stock-client sorting/order/replay acceptance on both legacy ports and review the new captures; retain the first 1.6.4 compile failure as historical evidence.",
-    "Run both stock-client sort controls/order/replay probes against their exact independently native-qualified JARs and review captures.",
-    "Continue legacy search/grouping, editor/multipart and broader installed-provider/multiplayer/migration/performance acceptance; RC clearance remains false."
+    "Implement bounded legacy storage search and grouped quantities, preserving physical endpoint/NBT variant identity, revision fencing and escrow conservation; current sort modes remain per physical slot.",
+    "Continue advanced legacy editor/multipart parity or Forge 1.16.1\u20131.16.4 stock launcher acceptance; use current exact branches and protected publishers.",
+    "Continue installed-provider/fallback, dedicated multiplayer, copied user-world and sustained active-provider acceptance. Keep RC clearance false until exact-source requirements pass.",
+    "Attribute the extra required GameTest on 26.1.2/26.3: logs show 193 executed/passed per profile while branch metadata declares 192; preserve both counts until reconciled."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -35,6 +31,15 @@
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
     40205878290,
-    40207117939
-  ]
+    40207117939,
+    40208949789
+  ],
+  "last_verified_legacy_native_runs": {
+    "1.12.2": 40205878290,
+    "1.6.4": 40208949789
+  },
+  "latest_stock_client_evidence": {
+    "1.12.2": "docs/acceptance/rc-dev-1.12.2-sorting-stock-client.json",
+    "1.6.4": "docs/acceptance/rc-dev-1.6.4-sorting-stock-client.json"
+  }
 }

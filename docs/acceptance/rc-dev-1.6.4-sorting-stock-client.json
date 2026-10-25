@@ -1,0 +1,70 @@
+{
+  "minecraft": "1.6.4",
+  "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+  "result": "PASS",
+  "native_wireless_withdrawal": true,
+  "stale_replay_rejected": true,
+  "native_wireless_deposit": true,
+  "native_paging": true,
+  "native_sorting": true,
+  "stale_sort_replay_rejected": true,
+  "sorted_capture": "legacy-wireless-storage-sorted.png",
+  "signed_byte_revision": 70,
+  "native_packet_codec_round_trip": true,
+  "actual_mouse_withdraw_deposit_page": true,
+  "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+  "native_display_projection_and_hide": true,
+  "display_captures": [
+    "legacy-private-display.png",
+    "legacy-public-display.png"
+  ],
+  "captures": [
+    "legacy-wireless-storage-scale-1.png",
+    "legacy-wireless-storage-scale-2.png",
+    "legacy-wireless-storage-scale-3.png",
+    "legacy-wireless-storage-scale-4.png"
+  ],
+  "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets.",
+  "recorded_date": "2026-10-25",
+  "workflow_run": 40209250286,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40209250286",
+  "artifact_id": 12604093941,
+  "artifact_archive_sha256": "cfdbabdf76fc25c5c845557abb3f22deb0a130a85c2767872338419ddd706e8b",
+  "stock_runtime": {
+    "minecraft": "1.6.4",
+    "forge": "9.11.1.1345",
+    "runtime_java": 7,
+    "runtime_sha256": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+    "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+    "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+    "probe_sha256": "85d0406c6ccfb32adece10972e32c75234efe6bc9929b49ad9158cee3c34dfcd",
+    "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+    "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+    "production_jar_matches_native_gate": true,
+    "development_game_classpath": false,
+    "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+  },
+  "reviewed_capture_sha256": {
+    "legacy-wireless-storage-scale-3.png": "78cc5b66de0cece88abc62ae92e835052b773284e2fd83725858332eb6553950",
+    "legacy-wireless-storage-scale-2.png": "50d0325f9bd1a10455bf73d904b803a1d4c9650ba1370b3c80200412eac15e6d",
+    "legacy-private-display.png": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+    "legacy-public-display.png": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+    "legacy-wireless-storage-scale-1.png": "4f60979741eeb25ce6c409936b45a5b48f37893d196abe8785b144225b262630",
+    "legacy-wireless-storage-scale-4.png": "704203d3f4341a7ad14cfbfa664ece63847399c935666649424c7287c6b92524",
+    "legacy-wireless-storage-tooltip.png": "08af23be2637ac6851f23a177e76cd362a999e590fce9b6aed43030ca98346d2",
+    "legacy-wireless-storage-sorted.png": "099f168ec3951e4287c589d54803df3f13cce0db77f3567de535bfdd14b3221f"
+  },
+  "committed_capture_directory": "screenshots/rc-sorting-2026-10-25/1.6.4",
+  "visual_review": {
+    "captures_reviewed": 8,
+    "result": "PASS_SCOPED_STORAGE_AND_NETWORK_DISPLAY",
+    "notes": "Four GUI scales at 1280x960 fit. Sort/paging controls fit. Count order shows 63 diamonds, 33 iron, then 32-count stacks; tooltip and private/public display text remain readable. The existing command-hint ellipsis is retained."
+  },
+  "rc_publication_cleared": false,
+  "native_itemstack_save_with_open_window": "PASS_EXPLICIT_STOCK_CLIENT_ASSERTION_AND_NATIVE_REGRESSION",
+  "prior_failed_client_runs": [
+    40207491638,
+    40208050011,
+    40208426141
+  ]
+}

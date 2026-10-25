@@ -44,12 +44,6 @@
     "development_game_classpath": false,
     "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
   },
-  "visual_review": {
-    "captures_reviewed": 8,
-    "result": "PASS_SCOPED_STORAGE_AND_NETWORK_DISPLAY",
-    "notes": "Four GUI scales fit within 1280x960; sort and paging buttons fit. Count view shows 63 diamonds, 33 iron, then 32-count stacks. Tooltip remains readable. Private/public network display text remains bright and correctly scoped; command hint uses its existing ellipsis."
-  },
-  "rc_publication_cleared": false,
   "reviewed_capture_sha256": {
     "legacy-wireless-storage-scale-3.png": "858a07004bf9e73d338767c3ac98bd2b456bb1634b22359f5d76900b2310d169",
     "legacy-wireless-storage-scale-2.png": "bf4672ba83e9a2b584caa119dd1166a24712421e944a2ee8fca7bac93c4e5e2d",
@@ -59,5 +53,12 @@
     "legacy-wireless-storage-scale-4.png": "44caa16d7dd1032de24b65d6016f19578ffc3e668967fa4e53ea8f3b7f4a40b1",
     "legacy-wireless-storage-tooltip.png": "c7d8e849593e76961568530605425cfb83615c6a36ab3ac5c999fc7cc07b3663",
     "legacy-wireless-storage-sorted.png": "021985f8e531fe4690071c129a84c305a2a3cb2571f788bede53d2f3f5e0f818"
-  }
+  },
+  "committed_capture_directory": "screenshots/rc-sorting-2026-10-25/1.12.2",
+  "visual_review": {
+    "captures_reviewed": 8,
+    "result": "PASS_SCOPED_STORAGE_AND_NETWORK_DISPLAY",
+    "notes": "Four GUI scales at 1280x960 fit. Sort/paging controls fit. Count order shows 63 diamonds, 33 iron, then 32-count stacks; tooltip and private/public display text remain readable. The existing command-hint ellipsis is retained."
+  },
+  "rc_publication_cleared": false
 }

@@ -107,7 +107,28 @@
           "installed_optional_mods": "PENDING",
           "client_visuals": "PENDING"
         }
-      }
+      },
+      "native_execution_evidence": {
+        "verification-logs/clean-native-summary.json": {
+          "minecraft": "1.12.2",
+          "version": "0.2.0-rc.1-dev",
+          "total": 168,
+          "passed": 168,
+          "failed": 0,
+          "fixture_cleanup": "PASS",
+          "fixture_save_mapping_error": false,
+          "published_runtime_used": false,
+          "runtime_sha256": "2ebfaff0ee7ae7e1bb101e8d7f8fda0ce5a0daa6b12b930f71c9f674d86acf29",
+          "rebuilt_archive_entries_match": true,
+          "verification_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
+          "runtime_forge": "14.23.5.2864",
+          "runtime_java": 8,
+          "build_api_forge": "14.23.5.2864",
+          "further_api_testing_required": true,
+          "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+        }
+      },
+      "observed_native_fixtures": 168
     },
     {
       "minecraft": "1.14.4",
@@ -133,7 +154,38 @@
       "artifact_id": 12603104300,
       "artifact_archive_sha256": "939818259993b92c1472571f38a2d7779840a7923daacc42731b7a032d5c6855",
       "artifact_expires_at": "2026-11-08T15:17:44Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.14.4",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "28.2.26",
+          "native_total": 194,
+          "native_passed": 194,
+          "native_failed": 0,
+          "runtime_sha256": "1a2f2707e6f20c49d85cc91b3fd26db9372a7a4551073e1f2fc8ee0452527ee3",
+          "source_commit": "ab3041b0903189876ba31815094656a925ad94d3",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": true,
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.14.4",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 194,
+          "passed": 194,
+          "failed": 0,
+          "server_ticks": 1789,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 194
     },
     {
       "minecraft": "1.15.2",
@@ -159,7 +211,38 @@
       "artifact_id": 12602844927,
       "artifact_archive_sha256": "38638534f4a62c240fb004c0cdcada7a58235beae78fff472998d86ab9f90075",
       "artifact_expires_at": "2026-11-08T15:18:03Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.15.2",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "31.2.62",
+          "native_total": 194,
+          "native_passed": 194,
+          "native_failed": 0,
+          "runtime_sha256": "74c972c2aae40ebe497e1317c71922165eb7df31e021257fb16723d2a4395370",
+          "source_commit": "dae47a9a2a97cbf3a36a05c4f00197be88c42779",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": true,
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.15.2",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 194,
+          "passed": 194,
+          "failed": 0,
+          "server_ticks": 1789,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 194
     },
     {
       "minecraft": "1.16.1",
@@ -185,7 +268,39 @@
       "artifact_id": 12603952418,
       "artifact_archive_sha256": "4df657abee6c09f0d4ac255b1afe051df76743243eaf6f5d5cb2c41136365ca4",
       "artifact_expires_at": "2026-11-08T15:17:06Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.16.1",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "32.0.108",
+          "native_total": 193,
+          "native_passed": 193,
+          "native_failed": 0,
+          "runtime_sha256": "a730ca64612e717f62a905a93b72b63777d7771032850b935cd140a0ae90a176",
+          "source_commit": "5a4063f93ca9b8ba2a2c499a30041a9f919250fa",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": false,
+          "modlauncher": "8.1.3",
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.16.1",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 193,
+          "passed": 193,
+          "failed": 0,
+          "server_ticks": 1788,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.16.2",
@@ -211,7 +326,39 @@
       "artifact_id": 12603413946,
       "artifact_archive_sha256": "bc6b8f4eb443ceacfbf7b4d86f01406bd89a794f1392508277b4f36e88516c49",
       "artifact_expires_at": "2026-11-08T15:17:57Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.16.2",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "33.0.61",
+          "native_total": 195,
+          "native_passed": 195,
+          "native_failed": 0,
+          "runtime_sha256": "db773146f71dd060516c03a8ab7ac7cd03805814b3d36e734668734f4435b560",
+          "source_commit": "18220f4c40ed7c9c1ef16027c7c6a119d8b2c744",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": false,
+          "modlauncher": "8.1.3",
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.16.2",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 195,
+          "passed": 195,
+          "failed": 0,
+          "server_ticks": 1790,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 195
     },
     {
       "minecraft": "1.16.3",
@@ -237,7 +384,39 @@
       "artifact_id": 12603304158,
       "artifact_archive_sha256": "867ca4c14519843637f7f35780ecaf6080863b6d06bcdac9d61e1e87c001da7a",
       "artifact_expires_at": "2026-11-08T15:17:43Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.16.3",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "34.1.42",
+          "native_total": 193,
+          "native_passed": 193,
+          "native_failed": 0,
+          "runtime_sha256": "ff8304bd899b44b84b304f537ebd837c6c63b61ab2fbe36edc4616fd99538160",
+          "source_commit": "432cd8aee685406b927e1c5c65b124b181d24448",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": false,
+          "modlauncher": "8.1.3",
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.16.3",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 193,
+          "passed": 193,
+          "failed": 0,
+          "server_ticks": 1788,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.16.4",
@@ -263,7 +442,39 @@
       "artifact_id": 12603668565,
       "artifact_archive_sha256": "472b46204d1889d04e58d329f75e76890d10ade8dbb09bc0ca3a9aa49e435b3f",
       "artifact_expires_at": "2026-11-08T15:17:41Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.16.4",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "35.1.37",
+          "native_total": 193,
+          "native_passed": 193,
+          "native_failed": 0,
+          "runtime_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+          "source_commit": "8e3786682ab785444b7bb2576261219a261cdecc",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": false,
+          "modlauncher": "8.1.3",
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.16.4",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 193,
+          "passed": 193,
+          "failed": 0,
+          "server_ticks": 1788,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.16.5",
@@ -289,7 +500,38 @@
       "artifact_id": 12603064793,
       "artifact_archive_sha256": "5edb81b40301eccf54fa0bf31b713214ee06952fc3516dd276ffa06de66a9172",
       "artifact_expires_at": "2026-11-08T15:21:16Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/java8-summary.json": {
+          "minecraft": "1.16.5",
+          "version": "0.2.0-rc.1-dev",
+          "runtime_java": 8,
+          "build_java": 17,
+          "forge": "36.2.42",
+          "native_total": 191,
+          "native_passed": 191,
+          "native_failed": 0,
+          "runtime_sha256": "573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614",
+          "source_commit": "00f5900963461847e68c82b5afd51c36c90ee95d",
+          "installed_runtime": "PASS",
+          "stock_forge_libraries": true,
+          "runtime_agent_required": false,
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.16.5",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 191,
+          "passed": 191,
+          "failed": 0,
+          "server_ticks": 1786,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.17.1",
@@ -312,7 +554,19 @@
       "artifact_id": 12603559017,
       "artifact_archive_sha256": "87b6571395e803ab32b615b1ab697ccac26502b691de58b58ceac89b5a11a714",
       "artifact_expires_at": "2026-11-08T15:21:43Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/port-scenarios.json": {
+          "minecraft": "1.17.1",
+          "harness": "PL4 isolated dedicated-server scenarios",
+          "total": 193,
+          "passed": 193,
+          "failed": 0,
+          "server_ticks": 1788,
+          "failures": []
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.18.1",
@@ -335,7 +589,20 @@
       "artifact_id": 12603319864,
       "artifact_archive_sha256": "eb6df7b20440b6f0ceb2de3efdb20d1e9b2e6ebeef74f93121ba8af82be94b1a",
       "artifact_expires_at": "2026-11-08T15:21:32Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1181-native.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.18.2",
@@ -357,7 +624,15 @@
       "artifact_id": 12603129704,
       "artifact_archive_sha256": "7ddb2a3682f7d0568002f944799d600794a38f11dd0332c7c6c204711edb424c",
       "artifact_expires_at": "2026-11-08T15:22:23Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        }
+      },
+      "observed_native_fixtures": 193
     },
     {
       "minecraft": "1.19.1",
@@ -380,7 +655,20 @@
       "artifact_id": 12603858517,
       "artifact_archive_sha256": "cfc0743c1881ad6c295b614a74782a285350fabf4c762dca9860c48a1d380f81",
       "artifact_expires_at": "2026-11-08T15:22:30Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1191-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.19.2",
@@ -402,7 +690,15 @@
       "artifact_id": 12604040741,
       "artifact_archive_sha256": "85fc9be7892b23dffef3b2bf20584daa45d6e5b8a6d88810dba3fa22c78d2bb0",
       "artifact_expires_at": "2026-11-08T15:23:19Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.19.3",
@@ -425,7 +721,20 @@
       "artifact_id": 12604240119,
       "artifact_archive_sha256": "2fae3a04bb0735217c383f99e9658a4435b84b1cae26292c29004e0a513bc882",
       "artifact_expires_at": "2026-11-08T15:23:57Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1193-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.19.4",
@@ -448,7 +757,20 @@
       "artifact_id": 12603619735,
       "artifact_archive_sha256": "8e2bc86871df74a422d7a6395cee475760d5611c1d03f5c3a6f9c7a2600e85d5",
       "artifact_expires_at": "2026-11-08T15:25:48Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1194-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.19",
@@ -471,7 +793,20 @@
       "artifact_id": 12603449383,
       "artifact_archive_sha256": "a4fe026f2d6568e3184017eb5bd791b4edb291bd58ce790190bd6753245a46cc",
       "artifact_expires_at": "2026-11-08T15:22:05Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1190-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.20.1",
@@ -494,7 +829,20 @@
       "artifact_id": 12603574419,
       "artifact_archive_sha256": "4d1cb18c2d2b920e72fca39570ac7bde6e26f7932acb4b705a44e17d7e9b7851",
       "artifact_expires_at": "2026-11-08T15:24:39Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1201-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.20.2",
@@ -517,7 +865,20 @@
       "artifact_id": 12604130516,
       "artifact_archive_sha256": "326dd767ac37e74a59083b86f1f290cb8894416c28ea3f23e3f83e1c22d7eded",
       "artifact_expires_at": "2026-11-08T15:24:26Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1202-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.20.4",
@@ -540,7 +901,20 @@
       "artifact_id": 12604275300,
       "artifact_archive_sha256": "3fca207ef802b8c0dd5a5f655093eac097f385d124396edc51e7b56016e1d91b",
       "artifact_expires_at": "2026-11-08T15:25:27Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/installed-1204-native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        },
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
     {
       "minecraft": "1.20",
@@ -562,8 +936,235 @@
       "artifact_id": 12603529652,
       "artifact_archive_sha256": "d6490617f57c9d42cb7f3a0d20d612d466d637e287addf2e190445bfbcf051f0",
       "artifact_expires_at": "2026-11-08T15:24:10Z",
-      "packaged_jar_hashes_verified": true
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            191
+          ]
+        }
+      },
+      "observed_native_fixtures": 191
     },
+    {
+      "minecraft": "1.21.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "047a0b89a6acbd880fb66d68f8695d1bd79a40b8",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": {
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+      },
+      "workflow_run": "40208949789",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12604623741,
+      "artifact_archive_sha256": "8da47f9a51bc49bc0c102fbd9ba937b4c5f344c956cf9abf5e7c597161223374",
+      "artifact_expires_at": "2026-11-08T15:54:07Z",
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            192
+          ]
+        }
+      },
+      "observed_native_fixtures": 192
+    },
+    {
+      "minecraft": "1.6.4",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+      "native_gate": "PASS",
+      "expected_fixtures": 170,
+      "gate_reports": [
+        "clean-native-summary.json",
+        "production-smoke.json",
+        "legacy-migration-summary.json"
+      ],
+      "artifact_sha256": {
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "0f4d6d1c9f203443717a740c75705823860656ddd002350484e3c8bb31ad2e5e",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "e2deaabceff24efaff169975e4482323c6e6ce52c0a348d219c14f4f9edf53b9",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "74d44108b6744f9cb13f497311e4584493bad08977d893e8384a34882491fad3",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "50ac5caf9c2b848fbe048a22c0d54311ec962b76346418790f1b6d6e530cab00",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+        "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "cd94691f0b14d4f839d37873a86125ddfaf592f20cdbdf8091308d53d9a7c946"
+      },
+      "workflow_run": "40208949789",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12605162466,
+      "artifact_archive_sha256": "89bbc35952f7dc14bf3919be039598fa6322286e7ed82c58ad4f15a4b9dbb118",
+      "artifact_expires_at": "2026-11-08T15:53:39Z",
+      "packaged_jar_hashes_verified": true,
+      "native_production_migration_reports": {
+        "clean-native-summary.json": {
+          "minecraft": "1.6.4",
+          "version": "0.2.0-rc.1-dev",
+          "total": 170,
+          "passed": 170,
+          "failed": 0,
+          "fixture_cleanup": "PASS",
+          "fixture_save_mapping_error": false,
+          "published_runtime_used": false,
+          "runtime_sha256": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+          "rebuilt_archive_entries_match": true,
+          "verification_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+          "runtime_forge": "9.11.1.1345",
+          "runtime_java": 7,
+          "build_api_forge": "9.11.1.960",
+          "further_api_testing_required": true,
+          "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+        },
+        "production-smoke.json": {
+          "minecraft": "1.6.4",
+          "forge": "9.11.1.1345",
+          "runtime_java": 7,
+          "runtime_sha256": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+          "production_only_startup": "PASS",
+          "clean_stop": "PASS",
+          "scenario_mod_installed": false,
+          "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+          "client_visuals": "PENDING",
+          "installed_optional_apis": "PENDING",
+          "multiplayer": "PENDING",
+          "further_api_testing_required": true
+        },
+        "legacy-migration-summary.json": {
+          "minecraft": "1.6.4",
+          "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+          "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+          "candidate_version": "0.2.0-rc.1-dev",
+          "candidate_runtime_sha256": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+          "migration_fixture_sha256": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+          "forge": "9.11.1.1345",
+          "runtime_java": 7,
+          "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+          "generated_preview3_world_upgrade": "PASS",
+          "preserved": [
+            "owner",
+            "facing",
+            "item escrow",
+            "fluid tank",
+            "fluid escrow",
+            "energy storage",
+            "energy escrow",
+            "vanilla inventory"
+          ],
+          "new_monitoring_on_existing_inventory": "PASS",
+          "old_hosts_default_private": "PASS",
+          "real_user_worlds": "PENDING",
+          "installed_optional_mods": "PENDING",
+          "client_visuals": "PENDING"
+        }
+      },
+      "native_execution_evidence": {
+        "verification-logs/clean-native-summary.json": {
+          "minecraft": "1.6.4",
+          "version": "0.2.0-rc.1-dev",
+          "total": 170,
+          "passed": 170,
+          "failed": 0,
+          "fixture_cleanup": "PASS",
+          "fixture_save_mapping_error": false,
+          "published_runtime_used": false,
+          "runtime_sha256": "c1e3f7b4aa39006edd89119e3ec75124473fc7b164604446f3744056bd383a3d",
+          "rebuilt_archive_entries_match": true,
+          "verification_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+          "runtime_forge": "9.11.1.1345",
+          "runtime_java": 7,
+          "build_api_forge": "9.11.1.960",
+          "further_api_testing_required": true,
+          "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+        }
+      },
+      "observed_native_fixtures": 170
+    },
+    {
+      "minecraft": "26.1.2",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": {
+        "FoundationsPL4-26.1.2-0.2.0-rc.1-dev-sources.jar": "e5091265a7678e78b685ca5643f4ae811bbbc5da368fb7a6b4290d53c44a20d2",
+        "FoundationsPL4-26.1.2-0.2.0-rc.1-dev.jar": "847bd064c999fb220f926441a6de547ec6bf2a277d4fa2e1df93845ae0cbacf7"
+      },
+      "workflow_run": "40205878290",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12603509712,
+      "artifact_archive_sha256": "437aaecd8dc850949167015ccd5530b398c583a26fdb960a1947912b814da37a",
+      "artifact_expires_at": "2026-11-08T15:26:00Z",
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        }
+      },
+      "observed_native_fixtures": 193,
+      "fixture_count_note": "All native profiles logged 193 required tests passed; tagged-source declaration is 192. The additional executed test is not yet attributed. Preserve both values; do not promote acceptance or rewrite metadata from the log count alone."
+    },
+    {
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": {
+        "FoundationsPL4-26.3-0.2.0-rc.1-dev-sources.jar": "3a6f14ab43e947e697f033d3bb89ae3ab24e21368a69ef6d50fb483997d1f68d",
+        "FoundationsPL4-26.3-0.2.0-rc.1-dev.jar": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591"
+      },
+      "workflow_run": "40205878290",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
+      "artifact_id": 12603949042,
+      "artifact_archive_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
+      "artifact_expires_at": "2026-11-08T15:27:36Z",
+      "packaged_jar_hashes_verified": true,
+      "native_execution_evidence": {
+        "verification-logs/native-26.3.0.23-beta.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        },
+        "verification-logs/native-26.3.0.39-beta.log": {
+          "required_test_pass_counts": [
+            193
+          ]
+        }
+      },
+      "observed_native_fixtures": 193,
+      "fixture_count_note": "All native profiles logged 193 required tests passed; tagged-source declaration is 192. The additional executed test is not yet attributed. Preserve both values; do not promote acceptance or rewrite metadata from the log count alone."
+    }
+  ],
+  "stock_client_sort_acceptance": "PASS_SCOPED_BOTH_EXACT_TARGETS",
+  "limitations": [
+    "Name and descending stack-count sorting are per physical slot; search, grouping, graphical editor and multipart parity remain open.",
+    "These native gates do not certify installed providers, dedicated multiplayer, arbitrary user worlds or sustained performance.",
+    "Prior screenshots certify their recorded JAR hashes only.",
+    "No new GitHub release or CurseForge upload; development maturity and RC clearance remain closed."
+  ],
+  "rc_publication_cleared": false,
+  "prior_native_records_before_save_fix": [
     {
       "minecraft": "1.21.1",
       "version": "0.2.0-rc.1-dev",
@@ -676,58 +1277,27 @@
           "client_visuals": "PENDING"
         }
       }
-    },
-    {
-      "minecraft": "26.1.2",
-      "version": "0.2.0-rc.1-dev",
-      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
-      "native_gate": "PASS",
-      "expected_fixtures": 192,
-      "gate_reports": [
-        "rc-development-gate.json"
-      ],
-      "artifact_sha256": {
-        "FoundationsPL4-26.1.2-0.2.0-rc.1-dev-sources.jar": "e5091265a7678e78b685ca5643f4ae811bbbc5da368fb7a6b4290d53c44a20d2",
-        "FoundationsPL4-26.1.2-0.2.0-rc.1-dev.jar": "847bd064c999fb220f926441a6de547ec6bf2a277d4fa2e1df93845ae0cbacf7"
-      },
-      "workflow_run": "40205878290",
-      "publication_performed": false,
-      "rc_publication_cleared": false,
-      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
-      "artifact_id": 12603509712,
-      "artifact_archive_sha256": "437aaecd8dc850949167015ccd5530b398c583a26fdb960a1947912b814da37a",
-      "artifact_expires_at": "2026-11-08T15:26:00Z",
-      "packaged_jar_hashes_verified": true
-    },
-    {
-      "minecraft": "26.3",
-      "version": "0.2.0-rc.1-dev",
-      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
-      "native_gate": "PASS",
-      "expected_fixtures": 192,
-      "gate_reports": [
-        "rc-development-gate.json"
-      ],
-      "artifact_sha256": {
-        "FoundationsPL4-26.3-0.2.0-rc.1-dev-sources.jar": "3a6f14ab43e947e697f033d3bb89ae3ab24e21368a69ef6d50fb483997d1f68d",
-        "FoundationsPL4-26.3-0.2.0-rc.1-dev.jar": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591"
-      },
-      "workflow_run": "40205878290",
-      "publication_performed": false,
-      "rc_publication_cleared": false,
-      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate",
-      "artifact_id": 12603949042,
-      "artifact_archive_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
-      "artifact_expires_at": "2026-11-08T15:27:36Z",
-      "packaged_jar_hashes_verified": true
     }
   ],
-  "stock_client_sort_acceptance": "PENDING_SEPARATE_EXACT_JAR_RUNS",
-  "limitations": [
-    "Name and descending stack-count sorting are per physical slot; search, grouping, graphical editor and multipart parity remain open.",
-    "These native gates do not certify installed providers, dedicated multiplayer, arbitrary user worlds or sustained performance.",
-    "Prior screenshots certify their recorded JAR hashes only.",
-    "No new GitHub release or CurseForge upload; development maturity and RC clearance remain closed."
+  "save_fence_repair_run": {
+    "id": 40208949789,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40208949789",
+    "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
+    "legacy_native_cases": 170,
+    "main_native_cases": 192,
+    "root_cause": "Native legacy ItemStack.save assigns the bound compound its transport root name; vanilla strict tag equality then rejects an otherwise identical bound tool. The added native regression proves strict equality changes while authorization remains valid.",
+    "fix": "Compare complete NBT payloads with only the root transport name normalized on a copy. Preserve owner, selected-tool, range, dimension, anchor, full payload and provider-safety checks.",
+    "negative_regression": "An actual added NBT payload field remains rejected even when the host still resolves."
+  },
+  "stock_client_failed_runs": [
+    40207491638,
+    40208050011,
+    40208426141
   ],
-  "rc_publication_cleared": false
+  "stock_client_evidence": {
+    "1.12.2": "rc-dev-1.12.2-sorting-stock-client.json",
+    "1.6.4": "rc-dev-1.6.4-sorting-stock-client.json"
+  },
+  "new_releases": [],
+  "new_curseforge_uploads": []
 }
