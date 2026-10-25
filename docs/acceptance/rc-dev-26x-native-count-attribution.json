@@ -1,0 +1,245 @@
+{
+  "recorded_date": "2026-10-25",
+  "workflow_run": 40205878290,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+  "finding": "All three exact loader-profile logs executed 192 PL4 regression tests plus one test in minecraft:default, for 193 total required passes. The BUILD_STATUS declaration counts PL4 fixtures correctly; it must remain 192.",
+  "profiles": [
+    {
+      "minecraft": "26.1.2",
+      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+      "artifact_id": 12603509712,
+      "artifact_archive_sha256": "437aaecd8dc850949167015ccd5530b398c583a26fdb960a1947912b814da37a",
+      "native_log": "verification-logs/native.log",
+      "pl4_fixtures": 192,
+      "other_fixtures": 1,
+      "total_required_passed": 193,
+      "environment_batches": [
+        {
+          "environment": "foundations_pl4:r8gametests",
+          "batch": 0,
+          "tests": 15
+        },
+        {
+          "environment": "foundations_pl4:r9gametests",
+          "batch": 0,
+          "tests": 35
+        },
+        {
+          "environment": "foundations_pl4:r6gametests",
+          "batch": 0,
+          "tests": 4
+        },
+        {
+          "environment": "foundations_pl4:r16gametests",
+          "batch": 0,
+          "tests": 29
+        },
+        {
+          "environment": "foundations_pl4:performancegametests",
+          "batch": 0,
+          "tests": 11
+        },
+        {
+          "environment": "foundations_pl4:energyintegrationgametests",
+          "batch": 0,
+          "tests": 28
+        },
+        {
+          "environment": "foundations_pl4:r13gametests",
+          "batch": 0,
+          "tests": 3
+        },
+        {
+          "environment": "foundations_pl4:plgametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r10gametests",
+          "batch": 0,
+          "tests": 5
+        },
+        {
+          "environment": "foundations_pl4:r7gametests",
+          "batch": 0,
+          "tests": 23
+        },
+        {
+          "environment": "minecraft:default",
+          "batch": 0,
+          "tests": 1
+        },
+        {
+          "environment": "foundations_pl4:r5gametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r11gametests",
+          "batch": 0,
+          "tests": 5
+        }
+      ],
+      "native_log_sha256": "d4a3cf732e1e6ed8ea38127f6524ab0030cd821c41e1d62babce1d017a62ecef"
+    },
+    {
+      "minecraft": "26.3",
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "artifact_id": 12603949042,
+      "artifact_archive_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
+      "native_log": "verification-logs/native-26.3.0.23-beta.log",
+      "pl4_fixtures": 192,
+      "other_fixtures": 1,
+      "total_required_passed": 193,
+      "environment_batches": [
+        {
+          "environment": "foundations_pl4:r13gametests",
+          "batch": 0,
+          "tests": 3
+        },
+        {
+          "environment": "foundations_pl4:r5gametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r8gametests",
+          "batch": 0,
+          "tests": 15
+        },
+        {
+          "environment": "foundations_pl4:r9gametests",
+          "batch": 0,
+          "tests": 35
+        },
+        {
+          "environment": "foundations_pl4:r6gametests",
+          "batch": 0,
+          "tests": 4
+        },
+        {
+          "environment": "foundations_pl4:r7gametests",
+          "batch": 0,
+          "tests": 23
+        },
+        {
+          "environment": "foundations_pl4:r11gametests",
+          "batch": 0,
+          "tests": 5
+        },
+        {
+          "environment": "minecraft:default",
+          "batch": 0,
+          "tests": 1
+        },
+        {
+          "environment": "foundations_pl4:energyintegrationgametests",
+          "batch": 0,
+          "tests": 28
+        },
+        {
+          "environment": "foundations_pl4:plgametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r16gametests",
+          "batch": 0,
+          "tests": 29
+        },
+        {
+          "environment": "foundations_pl4:r10gametests",
+          "batch": 0,
+          "tests": 5
+        },
+        {
+          "environment": "foundations_pl4:performancegametests",
+          "batch": 0,
+          "tests": 11
+        }
+      ],
+      "native_log_sha256": "10db1e826eb3b8f63a8488bd49ed61f03fd87448d5e7965b50ecdb91bcbfff7f"
+    },
+    {
+      "minecraft": "26.3",
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "artifact_id": 12603949042,
+      "artifact_archive_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
+      "native_log": "verification-logs/native-26.3.0.39-beta.log",
+      "pl4_fixtures": 192,
+      "other_fixtures": 1,
+      "total_required_passed": 193,
+      "environment_batches": [
+        {
+          "environment": "foundations_pl4:r10gametests",
+          "batch": 0,
+          "tests": 5
+        },
+        {
+          "environment": "foundations_pl4:r9gametests",
+          "batch": 0,
+          "tests": 35
+        },
+        {
+          "environment": "foundations_pl4:r5gametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r7gametests",
+          "batch": 0,
+          "tests": 23
+        },
+        {
+          "environment": "foundations_pl4:energyintegrationgametests",
+          "batch": 0,
+          "tests": 28
+        },
+        {
+          "environment": "foundations_pl4:r13gametests",
+          "batch": 0,
+          "tests": 3
+        },
+        {
+          "environment": "foundations_pl4:plgametests",
+          "batch": 0,
+          "tests": 17
+        },
+        {
+          "environment": "foundations_pl4:r16gametests",
+          "batch": 0,
+          "tests": 29
+        },
+        {
+          "environment": "foundations_pl4:r6gametests",
+          "batch": 0,
+          "tests": 4
+        },
+        {
+          "environment": "minecraft:default",
+          "batch": 0,
+          "tests": 1
+        },
+        {
+          "environment": "foundations_pl4:r11gametests",
+          "batch": 0,
+          "tests": 5
+        },
+        {
+          "environment": "foundations_pl4:r8gametests",
+          "batch": 0,
+          "tests": 15
+        },
+        {
+          "environment": "foundations_pl4:performancegametests",
+          "batch": 0,
+          "tests": 11
+        }
+      ],
+      "native_log_sha256": "0d88c2a15054ee0f3a6d5cc49ea8ca2785e957ce317189ae4d2e4b8cb0024a96"
+    }
+  ],
+  "validation": "Archive SHA-256 digests checked before parsing complete retained native logs. Six offline count-attribution regressions and thirteen controller regressions passed.",
+  "controller_change": "Future 26.x gates retain per-profile PL4/other/total counts and environment attribution; refuse omitted PL4 fixtures, duplicate batches, missing success, or unattributed total counts. This does not clear any gameplay/release acceptance.",
+  "rc_publication_cleared": false
+}

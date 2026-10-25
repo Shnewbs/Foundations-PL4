@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import sys
+from native_26_coverage import coverage
 
 
 def main():
@@ -45,6 +46,7 @@ def main():
     profiles = [None] if mc != "26.3" else ["26.3.0.23-beta", "26.3.0.39-beta"]
     installed_runners = {"1.19": "1190", "1.19.1": "1191", "1.19.3": "1193", "1.19.4": "1194",
                          "1.20.1": "1201", "1.20.2": "1202", "1.20.4": "1204"}
+    native_coverage = {}
     for profile in profiles:
         suffix = ("-" + profile) if profile else ""
         command = gradle + (["-PneoForgeVersion=" + profile] if profile else [])
@@ -68,6 +70,7 @@ def main():
             text = run(command + ["runGameTestServer"], log_name)
             if mc.startswith("26."):
                 run([sys.executable, "tools/verify_native_port_run.py", str(logs / log_name)], "fixture-check" + suffix + ".log")
+                native_coverage[profile or "default"] = coverage(text, expected)
             elif not re.search(r"All\s+" + str(expected) + r"\s+required tests passed", text, re.I):
                 raise ValueError(f"Missing exact {expected}-fixture native success marker")
         if profile:
@@ -83,6 +86,7 @@ def main():
                for name in ["NetworkEngine.java", "TransferEngine.java"]}
     report = {"minecraft": mc, "version": status["version"], "native_gate": "PASS",
               "expected_fixtures": expected, "validated_loader_profiles": profiles,
+              "native_coverage": native_coverage,
               "source_parent": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
               "workflow_run": os.environ.get("GITHUB_RUN_ID"), "artifact_sha256": hashes,
               "performance_source_sha256": sources, "rc_publication_cleared": False,

@@ -98,6 +98,17 @@ class HourlyBuildTests(unittest.TestCase):
                 self.assertFalse(report['publication_performed'])
                 self.assertFalse(report['rc_publication_cleared'])
 
+    def test_26_native_receipt_requires_and_preserves_count_attribution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);self.fixture(root)
+            status=root/'BUILD_STATUS.json';data=json.loads(status.read_text());data['minecraft']='26.1.2';status.write_text(json.dumps(data))
+            gate=root/'verification-logs/rc-development-gate.json';data=json.loads(gate.read_text());data['minecraft']='26.1.2';gate.write_text(json.dumps(data))
+            with patch.object(builds.subprocess,'check_output',return_value=SHA):
+                with self.assertRaisesRegex(ValueError,'count attribution'):builds.record(root,'26.1.2',SHA)
+                data['native_coverage']={'default':dict(pl4_fixtures=156,other_fixtures=1,total_required_passed=157)};gate.write_text(json.dumps(data))
+                report=builds.record(root,'26.1.2',SHA)
+            self.assertEqual(report['native_coverage'],data['native_coverage'])
+
     def test_changed_runtime_or_wrong_source_never_get_success_receipt(self):
         for legacy in (False,True):
             with tempfile.TemporaryDirectory() as directory:

@@ -95,6 +95,13 @@ def record(root, expected_mc, expected_sha):
                 and native["source_parent"] == actual and native["native_gate"] == "PASS"
                 and native["expected_fixtures"] == expected):
             raise ValueError("Modern exact-source native evidence disagrees")
+        if expected_mc.startswith("26."):
+            profiles = {"26.3.0.23-beta", "26.3.0.39-beta"} if expected_mc == "26.3" else {"default"}
+            observed = native.get("native_coverage", {})
+            if set(observed) != profiles or any(row["pl4_fixtures"] != expected
+                    or row["total_required_passed"] != row["pl4_fixtures"] + row["other_fixtures"]
+                    for row in observed.values()):
+                raise ValueError("Missing coherent 26.x per-profile native count attribution")
         for name, digest in native["artifact_sha256"].items():
             path = (root / name).resolve()
             if not path.is_relative_to((root / "build/libs").resolve()) or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
@@ -110,6 +117,8 @@ def record(root, expected_mc, expected_sha):
                   artifact_sha256=hashes, workflow_run=os.environ.get("GITHUB_RUN_ID"),
                   publication_performed=False, rc_publication_cleared=False,
                   scope="Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate")
+    if native.get("native_coverage"):
+        report["native_coverage"] = native["native_coverage"]
     (logs / "hourly-native.json").write_text(json.dumps(report, indent=2) + "\n")
     return report
 

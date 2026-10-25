@@ -4,7 +4,7 @@ on:
     - cron: '37 * * * *'
   push:
     branches: [main]
-    paths: ['.github/workflows/hourly-builds.yml', 'tools/hourly_builds.py']
+    paths: ['.github/workflows/hourly-builds.yml', 'tools/hourly_builds.py', 'tools/ports/validate_rc_candidate.py', 'tools/ports/native_26_coverage.py', 'tools/test_native_26_coverage.py']
   workflow_dispatch:
     inputs:
       force:
@@ -28,6 +28,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check scheduler and publication regressions
         run: python3 -m unittest discover -s tools -p 'test_hourly_builds.py'
+      - name: Check 26.x native count attribution regressions
+        run: python3 -m unittest discover -s tools -p 'test_native_26_coverage.py'
       - id: targets
         env:
           GH_TOKEN: ${{ github.token }}
