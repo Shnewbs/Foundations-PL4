@@ -85,7 +85,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
         for(int i=0;i<text.length();i++){int code=java.awt.event.KeyEvent.getExtendedKeyCodeForChar(Character.toUpperCase(text.charAt(i)));robot.keyPress(code);robot.keyRelease(code);}
     }
     private void clearSearch()throws Exception{
-        java.awt.Robot robot=new java.awt.Robot();robot.keyPress(java.awt.event.KeyEvent.VK_END);robot.keyRelease(java.awt.event.KeyEvent.VK_END);for(int i=0;i<LegacyWirelessStorage.MAX_SEARCH;i++){robot.keyPress(java.awt.event.KeyEvent.VK_BACK_SPACE);robot.keyRelease(java.awt.event.KeyEvent.VK_BACK_SPACE);}
+        java.awt.Robot robot=new java.awt.Robot();robot.keyPress(java.awt.event.KeyEvent.VK_END);robot.keyRelease(java.awt.event.KeyEvent.VK_END);for(int i=0;i<clientContainer().search().length();i++){robot.keyPress(java.awt.event.KeyEvent.VK_BACK_SPACE);robot.keyRelease(java.awt.event.KeyEvent.VK_BACK_SPACE);}
     }
     private String searchDebug()throws Exception{
         java.lang.reflect.Field field=LegacyWirelessScreen.class.getDeclaredField("searchField");field.setAccessible(true);
@@ -164,8 +164,8 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
                 phase=26;waitUntilNext();return;
             }
             if(phase==26){check("PASS".equals(result),"search server assertion missing");java.awt.Robot edit=new java.awt.Robot();for(int key:new int[]{java.awt.event.KeyEvent.VK_HOME,java.awt.event.KeyEvent.VK_RIGHT,java.awt.event.KeyEvent.VK_DELETE}){edit.keyPress(key);edit.keyRelease(key);}typeSearch("o");phase=29;waitUntilNext();return;}
-            if(phase==29){check(clientContainer().search().equals("gold"),"middle-of-query caret edit failed");clearSearch();typeSearch("zzzz");phase=27;waitUntilNext();return;}
-            if(phase==27){if(!clientContainer().search().equals("zzzz"))return;check(clientContainer().getSlot(0).getStack()==null,"no-match search exposed a fallback row");capture(mc,"legacy-wireless-storage-search-empty.png");clearSearch();phase=28;waitUntilNext();return;}
+            if(phase==29){check(clientContainer().search().equals("gold"),"middle-of-query caret edit failed");clearSearch();typeSearch("xyz");phase=27;waitUntilNext();return;}
+            if(phase==27){if(!clientContainer().search().equals("xyz"))return;check(clientContainer().getSlot(0).getStack()==null,"no-match search exposed a fallback row");capture(mc,"legacy-wireless-storage-search-empty.png");clearSearch();phase=28;waitUntilNext();return;}
             if(phase==28){if(!clientContainer().search().isEmpty())return;check(clientContainer().getSlot(0).getStack().stackSize==63,"clearing search failed to restore count sort");searchChecked=true;phase=12;}
             if(phase==15){check("PASS".equals(result),"display setup failed");check(clientDisplay().displayFacing==3&&clientDisplay().displayLines[1].equals("Private"),"private native projection missing: facing="+clientDisplay().displayFacing+" lines="+java.util.Arrays.toString(clientDisplay().displayLines));capture(mc,"legacy-private-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().worldObj.getBlockTileEntity(1,200,0);display.publishReadings=true;display.displayChanged();}});phase=16;waitUntilNext();return;}
             if(phase==16){check("PASS".equals(result),"display publication failed");check(clientDisplay().displayLines[0].equals("PL4 Network")&&clientDisplay().displayLines[1].equals("Hosts: 4"),"public native projection missing");capture(mc,"legacy-public-display.png");schedule(new Runnable(){public void run(){LegacyTile display=(LegacyTile)serverPlayer().worldObj.getBlockTileEntity(1,200,0);display.publishReadings=false;display.displayChanged();}});phase=17;waitUntilNext();return;}
