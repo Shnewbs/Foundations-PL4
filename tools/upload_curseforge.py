@@ -13,6 +13,7 @@ import tempfile
 import urllib.error
 import urllib.request
 import uuid
+from publication_policy import release_type, is_rc, require_publication
 
 API = "https://minecraft.curseforge.com/api"
 MARKER = "curseforge-upload.json"
@@ -59,18 +60,6 @@ def request_json(path, token, data=None, content_type=None):
         raise RuntimeError("CurseForge connection failed. Check the project file list before retrying an upload; the request may have succeeded.") from None
 
 
-def release_type(version):
-    """Never label an alpha port or preview as a stable CurseForge release."""
-    text = version.lower()
-    if re.search(r"(?:^|[.\-])(?:dev|snapshot|nightly)(?:[.\-]|$)", text):
-        raise ValueError("Development snapshots are not qualified CurseForge releases")
-    if re.search(r"beta|(?:^|[.\-])rc\d*(?:[.\-]|$)|\db(?:[.\-]|$)", text):
-        return "beta"
-    if re.search(r"alpha|preview|experimental|(?:^|[.\-])port(?:[.\-]|$)|\da(?:[.\-]|$)", text):
-        return "alpha"
-    return "release"
-
-
 def multipart(metadata, jar):
     boundary = "pl4-" + uuid.uuid4().hex
     part = b"--" + boundary.encode()
@@ -96,6 +85,8 @@ def main():
     tag, repo = (os.environ[k] for k in ("RELEASE_TAG", "GITHUB_REPOSITORY"))
     minecraft, version, loader = parse_tag(tag)
     release_type(version)  # Reject development builds before staging or authenticated API calls.
+    if is_rc(version):
+        require_publication(json.loads(Path('BUILD_STATUS.json').read_text()), minecraft, version)
     if (os.environ.get("VERSION", version) != version
             or os.environ.get("MINECRAFT_VERSION", minecraft) != minecraft
             or os.environ.get("MOD_LOADER", loader) != loader):

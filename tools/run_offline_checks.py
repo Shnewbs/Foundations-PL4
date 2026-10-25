@@ -30,6 +30,7 @@ def main():
         run('java','-cp',tmp,'R16RegressionTests')
         run('java','-cp',tmp,'VerifyJavaSyntax',ROOT)
     run(sys.executable,ROOT/'tools/test_curseforge_upload.py')
+    run(sys.executable,'-m','unittest','discover','-s','tools','-p','test_hourly_builds.py')
     run(sys.executable,ROOT/'tools/verify_r5_assets.py')
     run(sys.executable,ROOT/'tools/test_screen_layers.py')
     run(sys.executable,ROOT/'tools/verify_r6.py')

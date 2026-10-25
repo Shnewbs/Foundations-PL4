@@ -4,6 +4,7 @@ A backfill uses only the newest published PL4 release per Minecraft version,
 never overwrites tags, and does not claim CurseForge moderator approval.
 """
 import argparse
+import base64
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -12,6 +13,8 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from urllib.parse import quote
+from publication_policy import is_rc, require_publication
 
 from upload_curseforge import MARKER, gh, main as upload, parse_tag, release_type
 
@@ -61,6 +64,12 @@ def latest_tags(repo):
 def stage_release(tag, repo, folder):
     minecraft, version, loader = parse_tag(tag)
     release_type(version)
+    if is_rc(version):
+        # Clearance must come from the immutable tagged source, never today's main.
+        metadata = json.loads(gh('api', f'repos/{repo}/contents/BUILD_STATUS.json?ref=' + quote(tag, safe='')))
+        status = json.loads(base64.b64decode(metadata['content'], validate=False))
+        require_publication(status, minecraft, version)
+        (folder / 'BUILD_STATUS.json').write_text(json.dumps(status, indent=2) + '\n')
     jar_name = f"FoundationsPL4-{minecraft}-{version}.jar"
     lib = folder / "build/libs"
     lib.mkdir(parents=True)

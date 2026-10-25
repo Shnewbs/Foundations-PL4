@@ -29,10 +29,17 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import json, os
+          import json, os, sys
           from pathlib import Path
+          sys.path.insert(0, 'tools')
+          from publication_policy import require_publication
           status = json.loads(Path('BUILD_STATUS.json').read_text())
-          allowed = status.get('release_channel') != 'development' and not status['version'].endswith('-dev')
+          try:
+              require_publication(status)
+              allowed = True
+          except ValueError as error:
+              allowed = False
+              print('Publication held:', error)
           with open(os.environ['GITHUB_ENV'], 'a') as output:
               output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
           PY
@@ -42,6 +49,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: gradle
+
+      - name: Check scheduled-build and publication policy regressions
+        run: python -m unittest discover -s tools -p test_hourly_builds.py
 
       - name: Verify tag matches mod version
         id: version

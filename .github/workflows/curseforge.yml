@@ -14,6 +14,7 @@ on:
       - 'tools/upload_curseforge.py'
       - 'tools/curseforge_sync.py'
       - 'tools/test_curseforge_publish.py'
+      - 'tools/publication_policy.py'
   workflow_dispatch:
     inputs:
       tag:
@@ -40,7 +41,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate target identities, release maturity and checksum rules
-        run: python3 tools/test_curseforge_publish.py
+        run: |
+          python3 tools/test_curseforge_publish.py
+          python3 -m unittest discover -s tools -p 'test_hourly_builds.py'
       - name: Upload exact validated versions and record receipts
         shell: bash
         env:

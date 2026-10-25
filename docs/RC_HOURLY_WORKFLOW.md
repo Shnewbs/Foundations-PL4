@@ -1,0 +1,25 @@
+# Hourly RC development and publication
+
+The owner authorized continuing implementation plus hourly builds and qualified releases on October 25, 2026 (America/Los_Angeles). The objective remains accepted feature/performance parity and RC releases for all 24 maintained exact targets. Native gate success alone does not clear an RC.
+
+## Execution
+
+- The ChatGPT task continues actual implementation from `main` and existing `mc/<version>` branches. Read `RC_DEVELOPMENT_STATUS.json`, the master roadmap and `RC_AUTOMATION_STATE.json` first. Complete the next authorized implementation/acceptance item and preserve resumable source/evidence. Do not create feature branches, overwrite unrelated work or use the attached R16 archive as current source.
+- `hourly-builds.yml` checks at minute 37 of every UTC hour, and on changes to its controller. It resolves each current target to an immutable commit, uses the exact native harness and runtime profile, and retains successful source/JAR/hash evidence for 14 days. It never applies the old source-alignment transforms or commits build-generated status onto version branches.
+- An unchanged target with a retained successful artifact from this trusted workflow is skipped. Changed sources, expired artifacts and failed targets remain eligible. A manual `force` input reruns all targets. Only successful target artifacts receive the deduplication name; a failure on another matrix target does not invalidate a successful target's scoped evidence.
+- Legacy jobs also require production-only server startup and generated preview.3 migration. The 1.6.4 game runtime is Java 7, its compiler is Java 8 and its build tool runs on Java 21. Modern ports retain their existing exact installed/native runners and loader profiles.
+- The existing `curseforge.yml` checks at minute 17 of every UTC hour and after published GitHub releases. It mirrors eligible immutable releases using the existing repository secret and records upload receipts. No new release is manufactured merely because an hour elapsed. RC maturity remains beta on CurseForge.
+- Development/snapshot/nightly versions cannot publish. RC publication additionally requires boolean `rc_publication_cleared: true` in the exact tagged source. The main publisher checks the same policy before creating a GitHub release; CurseForge reconciliation checks tagged metadata before downloading or uploading an RC. Native checks, publication clearance and upload acceptance are separate facts.
+- Runner checkouts/builds are removed after evidence upload; ephemeral runners dispose of their remaining temporary files. Keep editable source, compact reports/hashes and upload receipts. Never delete the only copy of uncommitted work or the historical user attachment.
+
+GitHub scheduled workflows can start late or be limited by hosted-runner availability/quota. An enabled schedule does not prove a successful build or release. Report actual run URLs, failed gates and receipts. Do not repeatedly rerun an unchanged environmental/billing failure; record it and continue independent source work. No credential values belong in logs, prompts or repository files.
+
+## Coordination and remaining work
+
+Before source edits, claim a finite writer lease in `RC_AUTOMATION_STATE.json` by an expected-parent commit/ref update. Respect another unexpired writer lease, work from isolated checkouts, renew while writing and clear your own lease at a checkpoint. Never force a stale ref. Read-only pinned builds do not own this source-writer lease. Check for an existing run for the same source before starting extra expensive validation.
+
+The last verified native baseline is 24 passing exact tracks. Both legacy lighting fixes separately passed 156 scenarios, production startup, generated-world upgrades, stock-client mouse/codec/projection checks, and seven reviewed captures per port. Those results certify their recorded payload hashes only.
+
+Open priorities remain advanced legacy editor/multipart and storage search/sort/grouping parity; installed optional providers and fallbacks; broader display/editor/resolution and multiplayer/profile/dimension acceptance; user/modpack migrations; sustained active-provider/full-server performance; and Forge 1.16.1–1.16.4 launcher profiles. Read the current ledger for updated priorities. Keep unresolved acceptance explicit and continue implementation rather than producing repeated unchanged status summaries.
+
+The task runs finite scheduled sessions. Completing one session/checkpoint is not completing the RC goal, and no continuous daemon is implied between runs. Keep the recurring work enabled until the owner stops it or the agreed all-version acceptance/publication goal is demonstrably complete.
