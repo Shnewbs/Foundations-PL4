@@ -5,7 +5,12 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-legacy-search-20261025-1507",
+    "claimed_at": "2026-10-25T15:08:25.266Z",
+    "expires_at": "2026-10-25T15:53:25.266Z",
+    "expected_parent": "763ee242d52bc6aba59921a73fa4f60ccaa9e5d7"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -17,7 +22,7 @@
   "current_checkpoint": "Hardened 44 branch-local publication workflows across 23 existing version branches; the previously unguarded 1.20.1 publisher now rejects development and uncleared RC versions. Runtime source unchanged; no new RC published.",
   "local_validation": "34 publication/scheduler/upload unittest cases passed (including 8 embedded-reader policy subcases); 44 workflow YAML files parsed; runtime/native-step preservation checked separately.",
   "next_work": [
-    "Continue Forge 1.16.1\u20131.16.4 stock-client launcher-profile acceptance or legacy storage search/sort/grouping parity from current exact branches. Branch-local maturity guards are now in place.",
+    "Continue Forge 1.16.1–1.16.4 stock-client launcher-profile acceptance or legacy storage search/sort/grouping parity from current exact branches. Branch-local maturity guards are now in place.",
     "Use hourly-builds.yml for next changed-source native validation; prior artifacts qualify their original commits only. Preserve all client/provider/multiplayer/migration/performance acceptance gaps.",
     "Do not execute historical frozen publishers against expired artifacts. Re-audit any previously excluded manual cross-version controller before use."
   ],
