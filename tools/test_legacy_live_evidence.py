@@ -17,6 +17,9 @@ class LiveEvidenceCasesTests(unittest.TestCase):
         validate_live_evidence_cases(self.root, mc)
     def test_exact_named_cases(self): self.validate()
     def test_exact_164_markers(self): self.validate("1.6.4")
+    def test_164_native_timestamp_prefix(self):
+        self.lines = ["2026-10-26 21:15:59 [INFO] [STDOUT] " + line for line in self.lines]
+        self.validate("1.6.4")
     def test_missing_case(self):
         self.rows.pop()
         with self.assertRaises(ValueError): self.validate()

@@ -250,7 +250,8 @@ def validate_live_evidence_cases(root, minecraft):
             if len(matches) != 1 or matches[0].get("passed") is not True:
                 raise ValueError("Missing unique passing live evidence case: " + name)
     elif minecraft == "1.6.4":
-        lines = (root / "verification-logs/native.log").read_text(errors="replace").splitlines()
+        raw_lines = (root / "verification-logs/native.log").read_text(errors="replace").splitlines()
+        lines = [re.sub(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \[INFO\] \[STDOUT\] ", "", line) for line in raw_lines]
         for name in required:
             if lines.count("PASS " + name) != 1:
                 raise ValueError("Missing unique passing live evidence marker: " + name)
