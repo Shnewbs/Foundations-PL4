@@ -140,6 +140,21 @@ def validate_preupgrade(root, report, mc, sha, runtime):
         raise ValueError("Pre-upgrade saved world changed")
 
 
+def validate_legacy_counts(root, native, expected):
+    observed = json.loads((root / "run-legacy/legacy-scenarios.json").read_text())
+    if (observed.get("minecraft") != native["minecraft"]
+            or any(type(observed.get(k)) is not int for k in ["total", "passed", "failed"])
+            or observed["total"] != expected or observed["passed"] != expected or observed["failed"] != 0):
+        raise ValueError("Actual native scenario counters disagree with summary")
+    if "results" in observed:
+        rows = observed["results"]
+        if not isinstance(rows, list) or len(rows) != expected or any(r.get("passed") is not True for r in rows):
+            raise ValueError("Native per-case outcomes disagree with counters")
+    text = (root / "verification-logs/native.log").read_text(errors="replace")
+    if "PL4 LEGACY SCENARIOS: " + str(expected) + "/" + str(expected) not in text:
+        raise ValueError("Missing actual native scenario completion marker")
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -160,6 +175,7 @@ def record(root, expected_mc, expected_sha):
                 and smoke["production_only_startup"] == smoke["clean_stop"] == "PASS"
                 and migration["generated_preview3_world_upgrade"] == "PASS"):
             raise ValueError("Legacy native/production/migration evidence disagrees")
+        validate_legacy_counts(root, native, expected)
         gate_files = ["clean-native-summary.json", "production-smoke.json", "legacy-migration-summary.json"]
         if status.get("item_restart_fixture") is True:
             restart = json.loads((logs / "legacy-item-restart-summary.json").read_text())

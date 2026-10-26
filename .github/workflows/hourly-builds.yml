@@ -28,6 +28,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check scheduler and publication regressions
         run: python3 -m unittest discover -s tools -p 'test_hourly_builds.py'
+      - name: Check actual legacy native count regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_native_counts.py'
       - name: Check legacy restart evidence regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_restart_gate.py'
       - name: Check pre-upgrade fault evidence regressions

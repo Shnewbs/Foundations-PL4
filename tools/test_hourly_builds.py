@@ -81,6 +81,9 @@ class HourlyBuildTests(unittest.TestCase):
         def save(name, value):(logs/name).write_text(json.dumps(value))
         (root/'BUILD_STATUS.json').write_text(json.dumps(dict(minecraft=mc,version='0.2.0-rc.1-dev',expected_native_scenarios=156)))
         if legacy:
+            (root/'run-legacy').mkdir()
+            (root/'run-legacy/legacy-scenarios.json').write_text(json.dumps(dict(minecraft=mc,total=156,passed=156,failed=0)))
+            (logs/'native.log').write_text('PL4 LEGACY SCENARIOS: 156/156\n')
             save('clean-native-summary.json',dict(minecraft=mc,verification_commit=SHA,total=156,passed=156,failed=0,runtime_sha256=digest))
             save('production-smoke.json',dict(minecraft=mc,source_commit=SHA,runtime_sha256=digest,production_only_startup='PASS',clean_stop='PASS'))
             save('legacy-migration-summary.json',dict(minecraft=mc,source_commit=SHA,candidate_runtime_sha256=digest,generated_preview3_world_upgrade='PASS'))
