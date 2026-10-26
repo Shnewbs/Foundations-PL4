@@ -5,22 +5,17 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-context-types-2026-10-26T11",
-    "claimed_at": "2026-10-26T11:07:00Z",
-    "expires_at": "2026-10-26T11:55:00Z",
-    "purpose": "Guard nested saved item-context scalar types and validate exact native regressions"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40309048557,
+  "last_verified_legacy_native_run": 40313036829,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40309781841,
-    "1.6.4": 40309781699
+    "1.12.2": 40313555396,
+    "1.6.4": 40313555488
   },
-  "current_checkpoint": "Implemented explicit legacy-unknown import for observed saved item faults without trustworthy route context. Observed owner is fenced dimension-wide; unowned faults fence all owners. Original target/phase are not invented, malformed context/evidence remain sealed, and full-capacity fallback stays opaque after native NBT reload. Exact 1.12.2 5689ab3d passed 335/335 and 1.6.4 bb163a5e passed 313/313 native cases, 23 new each. Both passed production-only startup, generated preview.3 migration, 124 current-runtime clean/post-save-kill restart assertions and 24 actual pre-journal-world migration checks across three JVMs. Both exact-JAR stock clients rendered imported token/unknown target/phase/observed-host/owner-wide no-replay text through native chat; inspection preserved barriers. Six current captures reviewed, forty hashed and six preserved in the repository. Main e8b1b0e3 passed192; 21 other tracks retain exact native evidence. All24 RC flags remain false; no release/upload. Installed-provider outcomes, reviewed recovery, arbitrary pre-save crash/power-loss, copied worlds, dedicated multiplayer, performance and broader parity remain open.",
-  "local_validation": "10 pre-upgrade proof, 8 restart proof and 13 scheduler regressions PASS. Final native335/313 and main192 with exact source/run/JAR/archive/log/world/token/PID coherence independently verified. All17 packaged JAR digests match hourly reports; copied historical baseline bytes re-qualified against fixed old source/JAR hashes. Final branch publishers observed skipped. Both exact stock JARs passed normal actions and native imported-fault chat, six captures reviewed, all40 hashed. Initial fixture cleanup contamination, 1.6 named-NBT equality and native malformed-tag cast failures plus capacity fallback review finding are preserved with runs/artifacts and repairs.",
+  "current_checkpoint": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
+  "local_validation": "Exact source/JAR/archive identities, raw native counters and completion markers verified; six new case results per port checked. Production/migration/restart gates passed. Both stock runtime hashes equal native-qualified artifacts. Four captures reviewed,40 hashed. 7 native-counter+13 scheduler+8 restart+10 pre-upgrade proof regressions PASS. Branch publishers observed skipped.",
   "next_work": [
     "Continue reviewed provider-outcome reconciliation before any recovery operation. Implement persisting provider/ownership/conservation fixtures for unknown historical and current receipts, keeping source-removal losses unaccounted rather than fabricating items. Loaded historical faults, clean pre-journal world import/restart and actual imported-fault chat now have scoped evidence; arbitrary pre-save/OS/power-loss atomicity, full-process capacity-overflow faults and provider-private persistence remain unqualified. No automatic replay/redemption/minting, blanket fence clear or inference from missing tokens.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
@@ -30,27 +25,27 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
-  "main_native_validation_run": 40309048557,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
+  "main_native_validation_run": 40313036829,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40309048557
+    40313036829
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40309048557,
-    "1.6.4": 40309048557
+    "1.12.2": 40313036829,
+    "1.6.4": 40313036829
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "e8b1b0e3f3578453339ae8ed4ca8fffec896101d",
+  "native_main_source_commit": "3f2009dd3776a55e76c9586df0237787c3ea93c5",
   "last_writer_release": {
-    "owner": "pl4-preupgrade-2026-10-26T10",
-    "released_at": "2026-10-26T10:55:51Z",
-    "checkpoint": "Historical unknown-route import, schema2 persistence, exact native and both exact-JAR client chat/capture acceptance preserved. All-version RC acceptance/publication remains unfinished."
+    "owner": "pl4-context-types-2026-10-26T11",
+    "released_at": "2026-10-26T11:21:41Z",
+    "checkpoint": "Nested context type hardening and actual native count qualification accepted at scoped evidence boundary; all-version RC goal remains unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json"
 }

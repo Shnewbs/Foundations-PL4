@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "e8b1b0e3f3578453339ae8ed4ca8fffec896101d",
-      "workflow_run": "40309048557",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
+      "source_commit": "3f2009dd3776a55e76c9586df0237787c3ea93c5",
+      "workflow_run": "40313036829",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40313036829",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -468,6 +468,11 @@
         "source_commit": "5f9a13fce7862f2dda9dc6b0c26c51b983a89ef1",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": "40302204768"
+      },
+      "previous_context_type_candidate": {
+        "source_commit": "e8b1b0e3f3578453339ae8ed4ca8fffec896101d",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "native_run": "40309048557"
       }
     },
     {
@@ -529,7 +534,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 335,
+      "expected_native_fixtures": 341,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -539,19 +544,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40309048557",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
-      "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
-      "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
+      "workflow_run": "40313036829",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40313036829",
+      "source_commit": "048f70b3a28c2781eafba59913cdde1cf60530c8",
+      "runtime_sha256": "a34250dd2b4e5af40c69c463438f0fbb5d1667fedfe984f5983d62e1416b9b2b",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
-      "client_visual_acceptance": "PARTIAL_3_CURRENT_CAPTURES_REVIEWED_20_HASHED",
+      "candidate_source_commit": "048f70b3a28c2781eafba59913cdde1cf60530c8",
+      "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -563,9 +568,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 335,
+      "observed_native_fixtures": 341,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -619,7 +624,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40309781841,
+      "client_workflow_run": 40313555396,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -683,10 +688,10 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
-        "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
-        "workflow_run": 40309781841,
-        "scope": "Current exact production JAR and artificial imported-fault client fixture; actual pre-journal saved-world import proven separately."
+        "source_commit": "048f70b3a28c2781eafba59913cdde1cf60530c8",
+        "runtime_sha256": "a34250dd2b4e5af40c69c463438f0fbb5d1667fedfe984f5983d62e1416b9b2b",
+        "workflow_run": 40313555396,
+        "scope": "Exact current JAR; normal actions and imported-unknown chat; six malformed-scalar cases are native fixtures, not exhaustive graphical malformed-command coverage."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -705,12 +710,21 @@
         "current_restart_processes": 4,
         "current_restart_assertions": 124,
         "counts_are_separate": true
-      }
+      },
+      "previous_context_type_candidate": {
+        "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+        "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
+        "native_run": "40309048557",
+        "client_run": 40309781841,
+        "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
+      },
+      "item_context_scalar_types": "PASS_6_EXACT_NATIVE_CASES",
+      "item_context_scalar_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 313,
+      "expected_native_fixtures": 319,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -720,19 +734,19 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40309048557",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
-      "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
-      "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
+      "workflow_run": "40313036829",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40313036829",
+      "source_commit": "6489326392a2ef4ff8b15134d93ed5bf69766ac8",
+      "runtime_sha256": "cef889ae06c3dbdbc42868e8826b2b501c6abad87bfc3ba39c6c1f5e7116ed49",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
-      "client_visual_acceptance": "PARTIAL_3_CURRENT_CAPTURES_REVIEWED_20_HASHED",
+      "candidate_source_commit": "6489326392a2ef4ff8b15134d93ed5bf69766ac8",
+      "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -743,9 +757,9 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "observed_native_fixtures": 313,
+      "observed_native_fixtures": 319,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -794,7 +808,7 @@
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
       "acceptance_attribution": "Historical unlinked/mismatched/malformed saved tile faults import as unknown-route owner/dimension barriers, with observed host only and preserved sealed evidence. Full-capacity opaque fallback survives native serialized reload. Actual pinned pre-journal JVM writes faults; candidate imports/removes hosts and a third JVM reloads linked receipts/barriers. Exact current stock chat renders unknown route and no replay; inspection preserves barrier. No arbitrary copied modpack migration, full-process capacity crash, pre-save/power-loss atomicity, installed-provider outcome, loss-free extraction or recovery API inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
-      "client_workflow_run": 40309781699,
+      "client_workflow_run": 40313555488,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
       "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES",
       "previous_journal_candidate": {
@@ -829,10 +843,10 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
-        "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
-        "workflow_run": 40309781699,
-        "scope": "Current exact production JAR and artificial imported-fault client fixture; actual pre-journal saved-world import proven separately."
+        "source_commit": "6489326392a2ef4ff8b15134d93ed5bf69766ac8",
+        "runtime_sha256": "cef889ae06c3dbdbc42868e8826b2b501c6abad87bfc3ba39c6c1f5e7116ed49",
+        "workflow_run": 40313555488,
+        "scope": "Exact current JAR; normal actions and imported-unknown chat; six malformed-scalar cases are native fixtures, not exhaustive graphical malformed-command coverage."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -851,10 +865,19 @@
         "current_restart_processes": 4,
         "current_restart_assertions": 124,
         "counts_are_separate": true
-      }
+      },
+      "previous_context_type_candidate": {
+        "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+        "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
+        "native_run": "40309048557",
+        "client_run": 40309781699,
+        "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
+      },
+      "item_context_scalar_types": "PASS_6_EXACT_NATIVE_CASES",
+      "item_context_scalar_evidence": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json"
     }
   ],
-  "latest_work": "Implemented explicit legacy-unknown import for observed saved item faults without trustworthy route context. Observed owner is fenced dimension-wide; unowned faults fence all owners. Original target/phase are not invented, malformed context/evidence remain sealed, and full-capacity fallback stays opaque after native NBT reload. Exact 1.12.2 5689ab3d passed 335/335 and 1.6.4 bb163a5e passed 313/313 native cases, 23 new each. Both passed production-only startup, generated preview.3 migration, 124 current-runtime clean/post-save-kill restart assertions and 24 actual pre-journal-world migration checks across three JVMs. Both exact-JAR stock clients rendered imported token/unknown target/phase/observed-host/owner-wide no-replay text through native chat; inspection preserved barriers. Six current captures reviewed, forty hashed and six preserved in the repository. Main e8b1b0e3 passed192; 21 other tracks retain exact native evidence. All24 RC flags remain false; no release/upload. Installed-provider outcomes, reviewed recovery, arbitrary pre-save crash/power-loss, copied worlds, dedicated multiplayer, performance and broader parity remain open.",
+  "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -865,20 +888,20 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
-    "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
-    "workflow_run": 40309781841,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+    "source_commit": "048f70b3a28c2781eafba59913cdde1cf60530c8",
+    "runtime_sha256": "a34250dd2b4e5af40c69c463438f0fbb5d1667fedfe984f5983d62e1416b9b2b",
+    "workflow_run": 40313555396,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
-    "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
-    "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
-    "workflow_run": 40309781699,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+    "source_commit": "6489326392a2ef4ff8b15134d93ed5bf69766ac8",
+    "runtime_sha256": "cef889ae06c3dbdbc42868e8826b2b501c6abad87bfc3ba39c6c1f5e7116ed49",
+    "workflow_run": 40313555488,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
@@ -974,6 +997,21 @@
     "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
     "workflow_run": 40297680275,
     "stock_wireless_client": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+    "closes_all_acceptance": false
+  },
+  "context_scalar_type_acceptance": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
+  "previous_scalar_partial_1122_acceptance": {
+    "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+    "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
+    "workflow_run": 40309781841,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+    "closes_all_acceptance": false
+  },
+  "previous_scalar_partial_164_acceptance": {
+    "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+    "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
+    "workflow_run": 40309781699,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
     "closes_all_acceptance": false
   }
 }
