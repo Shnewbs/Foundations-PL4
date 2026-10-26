@@ -64,7 +64,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12673589036/zip" > candidate/qualified-native.zip
+        shell: bash
+        run: |
+          for attempt in 1 2; do
+            if gh api "repos/$GH_REPO/actions/artifacts/12673589036/zip" > candidate/qualified-native.zip.tmp 2> results/native-archive-download.err; then
+              echo "$PL4_NATIVE_ARCHIVE_SHA256  candidate/qualified-native.zip.tmp" | sha256sum --check -
+              mv candidate/qualified-native.zip.tmp candidate/qualified-native.zip
+              break
+            fi
+            cat results/native-archive-download.err >&2
+            rm -f candidate/qualified-native.zip.tmp
+            if [ "$attempt" = '2' ] || ! grep -Eq 'HTTP (429|50[0-9])' results/native-archive-download.err; then exit 1; fi
+            echo 'Transient artifact HTTP error; one retry in five seconds.'
+            sleep 5
+          done
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
