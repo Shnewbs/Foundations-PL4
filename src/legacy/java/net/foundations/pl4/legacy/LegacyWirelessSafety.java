@@ -100,7 +100,7 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         BoundedNetwork.Point observed=node.point();
         if(records.size()>=LIMIT||node.owner.length()>128||observed.y<0||observed.y>255){
             NBTTagCompound saved=new NBTTagCompound();writeToNBT(saved);
-            saved.setTag("UnlocatedLegacyFault",node.itemLegacyEvidence.copy());opaque=saved;markDirty();node.fluidDirty();return;
+            NBTTagCompound retained=new NBTTagCompound();retained.setTag("PreviousJournal",saved);retained.setTag("UnlocatedLegacyFault",node.itemLegacyEvidence.copy());opaque=retained;markDirty();node.fluidDirty();return;
         }
         String token=UUID.randomUUID().toString();Record record=new Record(node.owner,observed,(NBTTagCompound)node.itemLegacyEvidence.copy());begin(token,record);
         NBTTagCompound context=new NBTTagCompound();context.setString("Token",token);context.setString("Owner",record.owner);context.setInteger("Dimension",node.worldObj.provider.dimensionId);context.setString("Scope","legacy-unknown");
