@@ -19,7 +19,7 @@
     "1.12.2": 40394588419,
     "1.6.4": 40394588431
   },
-  "current_checkpoint": "Receipt diagnostic API now rejects foreign player-world, remote and null world queries before inspecting context or journal. Both legacy ports pass 64 new owner/unrelated/operator/foreign-world authorization assertions across clean and completed-save/flush parent-SIGKILL JVMs. These are included in field-suite 528 and total decode 876/28 JVMs per port; provider188 and historical60 stay separate. Ordinary native370/348/main192 and149 local test executions pass. All17 packaged hashes, source archives,28 decode worlds and32 provider/decode process identities per port verified. Both changed production JARs pass fresh stock clients and complete5/4-page export regressions;4 captures reviewed and42 hashed. All24 RC flagsfalse; no release/upload.",
+  "current_checkpoint": "Both legacy unmodified production sources reproduced all eight live retained-evidence regressions (370/378 and348/356). Both source fixes are committed; exact-source native and new hourly qualification pending.",
   "local_validation": "PASS: 149 local executions, ordinary native370/348/main192, 64 receipt authorization checks per port (subset of field528 and total decode876). Four exact native role/world assertions are present in every field-suite phase report (36 write/30 verify). All raw saved decode/provider/historical NBT checked independently. Both fresh exact-JAR stock clients pass. No dedicated multiplayer, online identity, live mutation, installed-provider or recovery clearance.",
   "next_work": [
     "Test live public field mutations: LegacyItemSafety.blocked currently checks opaque/raw/missing context or nonempty itemFault, without directly checking retained ItemLegacyEvidence. Exercise external itemFault clearing plus owner/context rewrites before admission, after reload and before removal; fix any demonstrated bypass while preserving all evidence and sealed claims. No live transfer bypass is claimed from source inspection alone.",
@@ -67,6 +67,11 @@
     "source": "997edb3c94da9696b0029fe80e375cdc76cd5102",
     "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyItemSafety.java",
     "observation": "    public static boolean blocked(LegacyTile tile){return tile.itemOpaque!=null||tile.itemRawJournalContext!=null||tile.itemMissingJournalContext||!tile.itemFault.isEmpty();}",
-    "scope": "Live mutation audit pending; not a demonstrated transfer bypass. Add exact native tests for external itemFault clearing with retained evidence and owner/context changes."
+    "scope": "Live mutation audit pending; not a demonstrated transfer bypass. Add exact native tests for external itemFault clearing with retained evidence and owner/context changes.",
+    "status": "DEMONSTRATED_NATIVE_REGRESSIONS_FIX_VALIDATION_PENDING",
+    "fixed_sources": {
+      "1.12.2": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "1.6.4": "6797ecc0bd09a7808f2059f34cb255af9d570ed2"
+    }
   }
 }

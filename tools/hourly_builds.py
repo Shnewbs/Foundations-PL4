@@ -239,6 +239,25 @@ def validate_legacy_counts(root, native, expected):
         raise ValueError("Missing actual native scenario completion marker")
 
 
+def validate_live_evidence_cases(root, minecraft):
+    """Require the concrete live-mutation regressions, not only aggregate counters."""
+    required = ["live retained evidence blocks after external fault clearing","live retained evidence rejects face edit with empty escrow","live retained evidence prevents transfer after owner rewrite","live retained evidence reload schedules admission without fault text","live retained evidence reload preserves wide escrow count","live retained evidence rewritten context freezes on reload admission","live retained evidence removal seals after fault clearing","live retained evidence removal rejects rewritten owner context"]
+    observed = json.loads((root / "run-legacy/legacy-scenarios.json").read_text())
+    if minecraft == "1.12.2":
+        rows = observed.get("results", [])
+        for name in required:
+            matches = [row for row in rows if row.get("name") == name]
+            if len(matches) != 1 or matches[0].get("passed") is not True:
+                raise ValueError("Missing unique passing live evidence case: " + name)
+    elif minecraft == "1.6.4":
+        lines = (root / "verification-logs/native.log").read_text(errors="replace").splitlines()
+        for name in required:
+            if lines.count("PASS " + name) != 1:
+                raise ValueError("Missing unique passing live evidence marker: " + name)
+    else:
+        raise ValueError("Live evidence cases require an exact legacy target")
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -260,6 +279,8 @@ def record(root, expected_mc, expected_sha):
                 and migration["generated_preview3_world_upgrade"] == "PASS"):
             raise ValueError("Legacy native/production/migration evidence disagrees")
         validate_legacy_counts(root, native, expected)
+        if status.get("item_live_evidence_fixture") is True:
+            validate_live_evidence_cases(root, expected_mc)
         gate_files = ["clean-native-summary.json", "production-smoke.json", "legacy-migration-summary.json"]
         if status.get("item_opaque_journal_export"):
             from verify_legacy_journal_export import verify_native_log
