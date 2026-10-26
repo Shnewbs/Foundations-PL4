@@ -1413,5 +1413,15 @@
     "workflow_run": 40309781699,
     "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
     "closes_all_acceptance": false
+  },
+  "pending_live_evidence_candidate": {
+    "sources": {
+      "1.12.2": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "1.6.4": "6797ecc0bd09a7808f2059f34cb255af9d570ed2"
+    },
+    "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
+    "native": "PENDING",
+    "client": "PENDING",
+    "rc_publication_cleared": false
   }
 }

@@ -1,0 +1,74 @@
+{
+  "recorded_date": "2026-10-26",
+  "timezone": "America/Los_Angeles",
+  "purpose": "Retained legacy evidence remains quarantined under external fault text, owner and context mutations",
+  "local_test_executions": 160,
+  "new_local_test_methods": 11,
+  "source_changes": [
+    "Treat nonnull retained ItemLegacyEvidence as a direct quarantine signal, independently of public fault text.",
+    "Restore an uncertainty fault marker before native escrow count decoding when saved evidence survives empty fault text."
+  ],
+  "new_native_cases": [
+    "live retained evidence blocks after external fault clearing",
+    "live retained evidence rejects face edit with empty escrow",
+    "live retained evidence prevents transfer after owner rewrite",
+    "live retained evidence reload schedules admission without fault text",
+    "live retained evidence reload preserves wide escrow count",
+    "live retained evidence rewritten context freezes on reload admission",
+    "live retained evidence removal seals after fault clearing",
+    "live retained evidence removal rejects rewritten owner context"
+  ],
+  "initial_fixture_compile_errors": {
+    "description": "Receipt comparison placeholder substitution corrected before behavioral reproduction; no acceptance attributed to these runs.",
+    "runs": [
+      40402200867,
+      40402207210
+    ],
+    "sources": {
+      "1.12.2": "d0bdeaf3c00954cd6d3c8dcb6c4872719db3d717",
+      "1.6.4": "fc1656ed924f6dea34634999612b12f7c7847803"
+    }
+  },
+  "red_reproduction": {
+    "1.12.2": {
+      "source": "3f367e6eb654fe1aeed0061413aae367287e8692",
+      "run": 40402251742,
+      "total": 378,
+      "passed": 370,
+      "failed": 8
+    },
+    "1.6.4": {
+      "source": "e6675ce889576c441479cd8dbfedf45aa9051af8",
+      "run": 40402260098,
+      "total": 356,
+      "passed": 348,
+      "failed": 8
+    }
+  },
+  "limitations": [
+    "Eight new cases use actual native game objects and native NBT serialization within the ordinary scenario JVM. They do not constitute a new separate-process live-mutation restart suite.",
+    "Retained evidence and original tokens are preserved; no provider outcomes/routes are inferred, and no recovery/redemption/replay/mint/fence-clear action is implemented.",
+    "Public Java field mutation fixtures are an API robustness boundary, not proof of a network/client exploit.",
+    "Installed-provider identity/API/authorization/durability, dedicated multiplayer/online profiles/real dimension travel, arbitrary user/modpack saves, pre-save/power-loss atomicity, reviewed reconciliation, sustained performance and broader parity remain open."
+  ],
+  "rc_publication_cleared": false,
+  "github_release_url": null,
+  "curseforge_upload_id": null,
+  "curseforge_moderation_status": null,
+  "curseforge_public_visibility": null,
+  "controller_repair": {
+    "source": "11932b9b7b0b83523f552fb9bd0d8b7f36f8b76d",
+    "original_source": "ddbf8b6f141f6146f1b262102b040a696b9e4164",
+    "description": "Exact 1.6.4 native log lines carry the dated INFO STDOUT prefix; normalize only that anchored prefix before checking unique whole PASS markers. Original controller run may fail its marker check; no native failure inferred.",
+    "regression_test": "test_164_native_timestamp_prefix"
+  },
+  "status": "SOURCE_FIX_COMMITTED_EXACT_NATIVE_AND_CLIENT_QUALIFICATION_PENDING",
+  "source_commits": {
+    "1.12.2": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+    "1.6.4": "6797ecc0bd09a7808f2059f34cb255af9d570ed2"
+  },
+  "hourly_runs": [
+    40403001650,
+    40403201527
+  ]
+}
