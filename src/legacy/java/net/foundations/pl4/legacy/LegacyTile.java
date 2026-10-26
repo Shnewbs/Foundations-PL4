@@ -19,7 +19,8 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
     public String itemFault="";
-    public NBTTagCompound itemJournalContext;
+    public NBTTagCompound itemJournalContext,itemLegacyEvidence;
+    public boolean itemImportPending;
     public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
     public int itemOpaqueCount;
@@ -54,6 +55,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
         markDirty();refreshDisplay();world.notifyBlockUpdate(pos,world.getBlockState(pos),world.getBlockState(pos),2);
     }
     @Override public void update(){
+        LegacyItemSafety.importSaved(this);
         if(fluidServer()&&role()==LegacyReadings.DISPLAY){
             long now=world.getTotalWorldTime();long phase=now+pos.toLong();
             if(now!=lastDisplay&&((phase%20)+20)%20==0){lastDisplay=now;refreshDisplay();}return;
@@ -64,6 +66,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
         try{transferOnce();}catch(RuntimeException error){status="Provider error; transfer stopped";if(lastError==Long.MIN_VALUE||tick-lastError>=1200){lastError=tick;if(LegacyPL4.logger!=null)LegacyPL4.logger.warn("PL4 legacy provider failed at "+pos+"; retained escrow",error);}}
     }
     public int transferOnce(){
+        LegacyItemSafety.importSaved(this);
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
         if(fluidServer()&&role()==1&&LegacyWirelessSafety.data(world).blocked(owner,target())){status="Item target fenced by unresolved wireless handoff";return 0;}

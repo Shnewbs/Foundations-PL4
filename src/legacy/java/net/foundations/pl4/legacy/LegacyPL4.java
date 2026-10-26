@@ -37,7 +37,7 @@ public final class LegacyPL4 {
     public static org.apache.logging.log4j.Logger logger;
     @Mod.EventHandler public void preInit(FMLPreInitializationEvent event){
         net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(this,new LegacyWirelessGuiHandler());
-        logger=event.getModLog();Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
+        logger=event.getModLog();net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new LegacyItemFaultImport());Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
         enabled=config.getBoolean("transfersEnabled","network",true,"Enable native legacy item transport.");
         interval=config.getInt("intervalTicks","network",10,1,200,"Transfer cadence; lower values cost more server work.");
         itemRate=config.getInt("itemsPerOperation","network",8,1,64,"Maximum items moved by each exporter per operation.");

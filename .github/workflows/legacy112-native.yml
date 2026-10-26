@@ -76,6 +76,11 @@ jobs:
         run: bash tools/validate_legacy_fluids.sh
       - name: Verify item receipt and journal across native processes
         run: python3 tools/verify_legacy_item_restart.py
+      - name: Verify actual pre-journal fault world import and restart
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 tools/verify_preupgrade_item_faults.py
       - name: Publish a new tested version without rewriting existing releases
         if: env.PL4_ALLOW_PUBLICATION == 'true'
         shell: bash

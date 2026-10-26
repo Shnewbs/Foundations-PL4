@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import java.io.FileWriter;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,19 +24,59 @@ public final class MigrationScenarios {
     private static final String OWNER="fae1b877-c6b4-4538-a26a-630190b54205";
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
         String phase=System.getProperty("foundations_pl4.legacyMigration","");
-        if(!"write".equals(phase)&&!"upgrade".equals(phase))throw new IllegalStateException("Disposable migration phase required");
+        if(!"write".equals(phase)&&!"upgrade".equals(phase)&&!"fault-write".equals(phase)&&!"fault-upgrade".equals(phase)&&!"fault-verify".equals(phase))throw new IllegalStateException("Disposable migration phase required");
         MinecraftServer server=FMLCommonHandler.instance().getMinecraftServerInstance();
-        if(!"pl4-legacy-migration-world".equals(server.getFolderName()))throw new IllegalStateException("Refusing non-migration world");
+        if(!(phase.startsWith("fault-")?"pl4-preupgrade-fault-world":"pl4-legacy-migration-world").equals(server.getFolderName()))throw new IllegalStateException("Refusing non-migration world");
         world=server.getWorld(0);
         boolean passed=false;
         try{
-            if("write".equals(phase))writeBaseline();else verifyUpgrade();
+            if("fault-write".equals(phase))writeFaults();else if("fault-upgrade".equals(phase))upgradeFaults();else if("fault-verify".equals(phase))verifyFaults();else if("write".equals(phase))writeBaseline();else verifyUpgrade();
             passed=true;System.out.println("PL4 LEGACY MIGRATION "+phase+": PASS");
         }finally{
             FileWriter out=new FileWriter("legacy-migration-"+phase+".json");
-            try{out.write("{\"minecraft\":\"1.12.2\",\"phase\":\""+phase+"\",\"passed\":"+passed+"}\n");}finally{out.close();}
+            try{if(phase.startsWith("fault-")){java.util.Map<String,Object> r=new java.util.LinkedHashMap<String,Object>();r.put("minecraft","1.12.2");r.put("phase",phase);r.put("passed",passed);r.put("checks",faultChecks);r.put("tokens",faultTokens);r.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());new com.google.gson.Gson().toJson(r,out);}else out.write("{\"minecraft\":\"1.12.2\",\"phase\":\""+phase+"\",\"passed\":"+passed+"}\n");}finally{out.close();}
             server.initiateShutdown();
         }
+    }
+
+    private int faultChecks;private final java.util.List<String> faultTokens=new java.util.ArrayList<String>();
+    private void faultCheck(boolean value,String reason){check(value,reason);faultChecks++;}
+    private TileEntityChest faultChest(int x){return (TileEntityChest)world.getTileEntity(new BlockPos(x,200,32));}
+    private void writeFaults(){
+        place(8,LegacyPL4.EXPORT);node(8).pending=diamond(8);node(8).itemFault="Historical insertion outcome unknown";node(8).fluidDirty();
+        place(10,LegacyPL4.EXPORT);node(10).itemFault="Historical extraction outcome unknown";node(10).fluidDirty();
+        world.setBlockState(new BlockPos(12,200,32),Blocks.CHEST.getDefaultState(),3);world.setBlockState(new BlockPos(13,200,32),Blocks.CHEST.getDefaultState(),3);world.setBlockState(new BlockPos(14,200,32),Blocks.CHEST.getDefaultState(),3);
+        ItemStack oldReceipt=new ItemStack(LegacyPL4.ITEM_CELL);NBTTagCompound tag=new NBTTagCompound();tag.setString("ItemTransferFault","Unlinked historical receipt");tag.setInteger("ItemEscrowCount",5);tag.setTag("Escrow",diamond(5).writeToNBT(new NBTTagCompound()));oldReceipt.setTagCompound(tag);faultChest(12).setInventorySlotContents(0,oldReceipt);
+        faultCheck(LegacyItemSafety.blocked(node(8))&&count(node(8).pending)==8,"old insertion fault and held claim");
+        faultCheck(LegacyItemSafety.blocked(node(10))&&count(node(10).pending)==0,"old source fault without substitute");
+        NBTTagCompound saved=new NBTTagCompound();node(8).writeToNBT(saved);faultCheck(!saved.hasKey("ItemJournalContext"),"baseline has no operation context");
+        faultCheck(!oldReceipt.getTagCompound().hasKey("ItemJournalContext"),"baseline loose receipt has no reliable owner or target");
+    }
+    private void upgradeFaults(){
+        LegacyPL4.enabled=false;
+        for(int x:new int[]{8,10}){
+            LegacyTile n=node(x);NBTTagCompound c=n.itemJournalContext;
+            faultCheck(c!=null&&"legacy-unknown".equals(c.getString("Scope"))&&!n.itemImportPending,"native chunk load imported historical fault");
+            faultCheck(!c.hasKey("X")&&!c.hasKey("Phase")&&c.getInteger("HostX")==x,"only observed host, no invented target/phase");
+            faultCheck(n.itemLegacyEvidence!=null&&LegacyItemSafety.blocked(n)&&count(n.pending)==(x==8?8:0),"raw evidence and uncertain claim retained");
+            faultTokens.add(c.getString("Token"));world.setBlockToAir(new BlockPos(x,200,32));
+            ItemStack receipt=ItemStack.EMPTY;for(EntityItem e:world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(x-1,199,31,x+2,203,34))){if(!e.isDead&&e.getItem().getItem()==LegacyPL4.ITEM_CELL){receipt=e.getItem().copy();e.setDead();}}
+            faultCheck(receipt!=null&&!receipt.isEmpty(),"sealed imported receipt after host removal");faultChest(x==8?13:14).setInventorySlotContents(0,receipt);faultChest(x==8?13:14).markDirty();
+        }
+        faultCheck(LegacyWirelessSafety.data(world).blocked(OWNER,new BlockPos(80,200,80))&&!LegacyWirelessSafety.data(world).blocked("unrelated-owner",new BlockPos(80,200,80)),"owner barrier active after original host removal");
+        faultCheck(!faultChest(12).getStackInSlot(0).getTagCompound().hasKey("ItemJournalContext"),"old loose receipt remains unlinked");
+    }
+    private void verifyFaults(){
+        LegacyPL4.enabled=false;
+        for(int x:new int[]{8,10}){
+            faultCheck(!(world.getTileEntity(new BlockPos(x,200,32)) instanceof LegacyTile),"removed original host persists");
+            ItemStack receipt=faultChest(x==8?13:14).getStackInSlot(0);NBTTagCompound tag=receipt.getTagCompound(),c=tag.getCompoundTag("ItemJournalContext");faultTokens.add(c.getString("Token"));
+            faultCheck(tag.getInteger("ItemEscrowCount")== (x==8?8:0)&&tag.hasKey("ItemLegacyEvidence"),"sealed receipt and evidence persist across candidate process restart");
+            faultCheck("legacy-unknown".equals(c.getString("Scope"))&&!c.hasKey("X")&&!c.hasKey("Phase"),"unknown history stays unknown");
+            faultCheck(LegacyWirelessSafety.data(world).receiptStatus(c).contains("original target/phase unknown"),"persisted journal links unknown receipt");
+        }
+        faultCheck(LegacyWirelessSafety.data(world).blocked(OWNER,new BlockPos(80,200,80))&&!LegacyWirelessSafety.data(world).blocked("unrelated-owner",new BlockPos(80,200,80)),"owner-wide barrier persists across fresh JVM");
+        faultCheck(!faultChest(12).getStackInSlot(0).getTagCompound().hasKey("ItemJournalContext"),"unlinked historical loose receipt not authenticated");
     }
     private void writeBaseline(){
         for(int x=0;x<=5;x++){world.getChunkFromBlockCoords(new BlockPos(x,200,32));world.setBlockToAir(new BlockPos(x,200,32));}
