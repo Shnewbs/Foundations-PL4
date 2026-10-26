@@ -11,11 +11,15 @@ class RestartProofTests(unittest.TestCase):
             self.report['processes'].append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest()))
             tokens=['00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002']
             self.report['phase_reports'][phase]=dict(minecraft=self.mc,phase=phase,passed=True,assertions=['check']*(36 if phase.endswith('write') else 26),process=str(pid)+'@runner',tokens=tokens)
+            (logs/('item-restart-'+phase+'.json')).write_text(json.dumps(self.report['phase_reports'][phase]))
         for mode in ['clean','barrier']:
             name='item-restart-'+mode+'-world.zip';p=logs/name;p.write_bytes(b'world-fixture')
             self.report['world_archives'][mode]=dict(file=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
     def validate(self):builds.validate_restart(self.root,self.report,self.mc,self.sha,self.runtime,dict(write=36,verify=26))
     def test_coherent(self):self.validate()
+    def test_raw_phase_report_disagrees(self):
+        (self.root/'verification-logs/item-restart-verify.json').write_text('{}')
+        with self.assertRaises(ValueError):self.validate()
     def test_wrong_source(self):
         self.report['source_commit']='c'*40
         with self.assertRaises(ValueError):self.validate()
@@ -38,3 +42,4 @@ class RestartProofTests(unittest.TestCase):
         self.report['phase_reports']['verify']['assertions'].pop()
         with self.assertRaises(ValueError):self.validate()
 if __name__=='__main__':unittest.main()
+

@@ -91,6 +91,8 @@ def validate_restart(root, report, mc, sha, runtime, counts):
                 or not isinstance(r.get("assertions"), list) or not all(isinstance(x, str) for x in r["assertions"]) or len(r["assertions"]) != expected or not r.get("process", "").startswith(str(p["pid"]) + "@")
                 or hashlib.sha256((logs / ("item-restart-" + phase + ".log")).read_bytes()).hexdigest() != p["log_sha256"]):
             raise ValueError("Restart phase proof disagrees: " + phase)
+        if json.loads((logs / ("item-restart-" + phase + ".json")).read_text()) != r:
+            raise ValueError("Raw restart phase report disagrees: " + phase)
     for a, b in [("write", "verify"), ("crash-write", "crash-verify")]:
         tokens = details[a].get("tokens", [])
         if not isinstance(tokens, list) or not all(isinstance(t, str) and re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", t) for t in tokens) or len(set(tokens)) != 2 or tokens != details[b].get("tokens"):
@@ -285,4 +287,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
