@@ -5,27 +5,22 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-route-clients-2026-10-26T00",
-    "claimed_at": "2026-10-26T00:10:00Z",
-    "expires_at": "2026-10-26T00:48:00Z",
-    "purpose": "Close exact-JAR legacy route-edit stock-client regression and preserve acceptance evidence"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
   "last_verified_legacy_native_run": 40243930980,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40240809290,
-    "1.6.4": 40229923358
+    "1.12.2": 40247971424,
+    "1.6.4": 40247971395
   },
-  "current_checkpoint": "Item route face changes now refuse unresolved faults, opaque escrow or pending held items on 1.12.2 and 1.6.4, keeping the existing target fence from moving during owner edits. Final native 253/253 and 230/230 passed with six new exact cases each, production-only startup and generated preview.3 migration; main passed 192 and 21 modern tracks retain prior artifacts. Initial 1.6.4 disconnected fake-player chat fixture failure (229/230) is preserved with its repaired stale-alias fixture. New-source stock clients were not run; earlier client/search/grouping results retain original source/hash scope. Cross-network/removal/rebind durability, parity/provider/multiplayer/migration/performance acceptance remain open. No RC cleared or published.",
-  "local_validation": "1.12.2 native 253/253, 1.6.4 native 230/230, six new route-face cases each; both production-only startup/generated preview.3 migrations PASS. Archive SHA256 and all packaged production/test/source JAR hashes independently verified. Main pinned 8ac28500 native 192 PASS. Four publisher and seven archive qualification regressions PASS. Both automatic branch publisher steps skipped. No stock-client runs or manual client captures on these new hashes; prior results remain scoped to original sources.",
+  "current_checkpoint": "Closed ordinary exact-JAR stock-client regression for the unchanged native-qualified item-route-edit sources: 1.12.2 cc6a7b2a/a16797ab and 1.6.4 0dc2f124/52b34855. Both stock Forge clients passed actual mouse withdraw/deposit/paging, grouping/full-NBT variants and 64-item conservation, search/sort/stale replay, keyboard lifecycle, native codecs and private/public display probes. Eight current captures manually reviewed and all 32 hashed; production runtime hashes match their qualified native archives. Existing native results remain 253/253 and 230/230; no fresh native or production implementation change is claimed. Cross-network/removal/rebind uncertainty, opaque providers, advanced legacy parity and broader acceptance remain open. No RC cleared or published.",
+  "local_validation": "Current 1.12.2 stock client 40247971424 and 1.6.4 stock client 40247971395 PASS with archive SHA256 verified and exact production/source hashes equal their retained hourly-native qualification. Separate probe hashes and native codec/mouse/group/search/sort/display flags retained. Four current captures per target manually reviewed; all sixteen per target hashed. Native 253/253 and 230/230, production startup and generated migration remain the prior exact-source results; no duplicate native build started. Controller release publication step observed skipped.",
   "next_work": [
     "Continue cross-network and removed/rebound endpoint uncertainty on both legacy ports. Owner face edits are now pinned while the node retains fault/opaque/pending state. Current backing/target fences still collect only nodes in one loaded same-owner network; removing/unloading/replacing that node can outlive the fence. Add explicit persisted owner/world/target uncertainty before foreign mutation and preserve it through sealed-receipt removal, without scanning the entire loaded world or guessing hidden backing identity. Add adversarial native cross-network/removal/reload/rebind cases before treating this gap as closed.",
     "General provider SidedInvWrapper/CombinedInvWrapper and opaque composites still hide backing mappings. PL4-owned ISidedInventory fallback now has scoped native mapping/permissions acceptance. Add provider-specific explicit identity only where its exact native contract is validated; retain original capability handlers and avoid reflection/heuristic alias inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 stock launcher profiles, installed optional providers/fallbacks, dedicated multiplayer, copied user worlds and sustained active-provider/full-server performance. Keep exact-source RC clearance false until applicable gates pass.",
-    "Run current exact-JAR stock client regressions for 1.12.2 cc6a7b2a and 1.6.4 0dc2f124 via validated publisher-free client probes, checking retained pinned artifacts first. Native route/activation coverage does not transfer prior stock-client evidence onto the new runtime hashes."
+    "The current route-edit production JARs now have scoped normal stock-client regression. Next source work should address persisted cross-network/removal/rebind uncertainty rather than rerunning unchanged client checks; preserve the separate provider/face-edit native versus ordinary integrated-client evidence boundaries."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -43,14 +38,15 @@
     "1.6.4": 40243930980
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-112-owned-sided-2026-10-25.json",
-    "1.6.4": "docs/acceptance/rc-dev-164-target-aliases-2026-10-25.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "8ac28500a070962136a24143b6556d3c77e63d62",
   "last_writer_release": {
-    "owner": "pl4-cross-network-2026-10-25T23",
-    "released_at": "2026-10-25T23:17:47Z",
-    "checkpoint": "Both legacy item face-edit guards and 12 exact native cases validated; source, JAR hashes and repaired fixture failure preserved. RC goal remains open."
-  }
+    "owner": "pl4-route-clients-2026-10-26T00",
+    "released_at": "2026-10-26T00:15:49Z",
+    "checkpoint": "Both unchanged route-edit JAR stock-client regressions qualified; 8 current screenshots reviewed, 32 hashed. Cross-network implementation and broader RC goal remain open."
+  },
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json"
 }

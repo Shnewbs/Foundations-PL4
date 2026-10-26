@@ -1,0 +1,510 @@
+{
+  "recorded_date": "2026-10-25",
+  "controller_commit": "759a4aea3458439bccc2a79e7c9fcd7f18c06245",
+  "result": "PASS_BOTH_EXACT_JAR_STOCK_CLIENT_REGRESSIONS",
+  "scope": "Normal packaged-stock-client regression on the exact native-qualified legacy item-route-edit JARs. Native face-edit/quarantine fixtures remain separate from these ordinary client flows.",
+  "native_evidence": "rc-dev-legacy-item-route-pinning-2026-10-25.json",
+  "sources": {
+    "1.12.2": {
+      "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+      "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+      "build_status_blob_sha": "3cded94e21d7d3fe327e8fdbc645eed9952ce5d5"
+    },
+    "1.6.4": {
+      "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+      "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+      "build_status_blob_sha": "bad50634e2051652f90a873d0ead7b4b515fe458"
+    }
+  },
+  "clients": {
+    "1.12.2": {
+      "report": {
+        "minecraft": "1.12.2",
+        "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "result": "PASS",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+      },
+      "runtime": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+        "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+        "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+        "probe_sha256": "84f1db24f9a1de64c8778e42425c2492138e5a0bf9f7a60f8e4ef3bb94e9369c",
+        "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+        "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "captures": [
+        {
+          "file": "legacy-private-display.png",
+          "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+          "git_blob_sha": "68ada934c75b8065e74bdb95d1c7f35e66d6a09c",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-public-display.png",
+          "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+          "git_blob_sha": "2e8cb8d77f05cc1dfa20a85173fe0ef450d49268",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-1.png",
+          "sha256": "4c77d728772a4b6f14f528cf4bae4d991972588fd754fff911cb5da06214c15a",
+          "git_blob_sha": "963a42ad5be5c76df49d7d5ddc703b7cf7c91c73",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-2.png",
+          "sha256": "436a5792d847f3463cde4a15d1b2520b77d0454d262c0f8170de0cde1e5c6e15",
+          "git_blob_sha": "1ac45b8dc1eef911269b4c1c4c3a452b7b7975be",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-3.png",
+          "sha256": "0abdbb9f696e442c2c20900b35242395153bce3b7402d8ac25f073c9f5a526c5",
+          "git_blob_sha": "5d94f313e8ce251e6ae7aada437574021db6ad39",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-4.png",
+          "sha256": "ab70c3303a16307b17ed01c7bde12adb667b7bf401938df73f090555689489a0",
+          "git_blob_sha": "7ada50be0b4c76c10ed70200a3f53fa309b69968",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: gold 864, iron 833 and diamonds 63 grouped totals remain readable; hovered total 864 fits the panel.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.12.2/legacy-wireless-grouped-scale-4.png"
+        },
+        {
+          "file": "legacy-wireless-grouped-variants.png",
+          "sha256": "166bd015a49a93562eea6c930d2d579e4f97db1363b159db35dfb5d398bcf3a4",
+          "git_blob_sha": "45ab91ad87e60974668d8efae17066796fc24fae",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: plain iron 801 and tagged iron 32 occupy separate rows.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.12.2/legacy-wireless-grouped-variants.png"
+        },
+        {
+          "file": "legacy-wireless-grouped-withdrawal.png",
+          "sha256": "5d84b979f8c0901250ae0d59d9df2567594d31459162d378c780ef7189a4ecf1",
+          "git_blob_sha": "d71ac076aff259d49ff30b08b3a94e1b34458881",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: iron search shows plain 737 and tagged 32 after the conserved 64-item withdrawal; player stack and hovered total agree.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.12.2/legacy-wireless-grouped-withdrawal.png"
+        },
+        {
+          "file": "legacy-wireless-storage-scale-1.png",
+          "sha256": "34a0b3d0daa4c80e434ff9c770a4988b43f747899a2d6b82dd22b4e2c3b2ac4f",
+          "git_blob_sha": "c22414cccd01767045a1296df98355d3257cd310",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-2.png",
+          "sha256": "7f049486f79fea5b2a1689b6f7bdf09679d4edda7f06dee91ab1c202d431462e",
+          "git_blob_sha": "629855e42bb8752832df74ccb461d8b9b08e7085",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-3.png",
+          "sha256": "064885712fe923acb4fdb7e047a9fc23415469eb38a5a068ddd752a476fdaa13",
+          "git_blob_sha": "de9a1be4dea410c6ce239551c9538a2d2e68e50a",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-4.png",
+          "sha256": "df4db305871cd99a1040594514ab0277ce98f079a5e9264d60810f3ab1398c7d",
+          "git_blob_sha": "dfe1601a324f2b41a98fa3568ac5a4108d6f7949",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-search-empty.png",
+          "sha256": "5b2c62d132ba61e061c181c6018d119cfea8f4ad71cedd0dc7dfc0cff045924f",
+          "git_blob_sha": "4d10729b71d80f1e02e2b22b8df1647a35db52e7",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: xyz no-match view is readable and contains no stale result rows.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.12.2/legacy-wireless-storage-search-empty.png"
+        },
+        {
+          "file": "legacy-wireless-storage-search.png",
+          "sha256": "b053bb81d2f0fe04abd33cdc2d6b673494621c48a4a260f9d409a05a0dc9047a",
+          "git_blob_sha": "1350b7ea1da2cd03f03aa8399a4dff14c4401057",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-sorted.png",
+          "sha256": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+          "git_blob_sha": "b2aee4c0e7a4eea4d3eefd3bedba64e8c0eb5b93",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-tooltip.png",
+          "sha256": "5fb0a28d45b29ff9897acb15ebefccf11024c0277ae74cd9f7a986a1288c0f74",
+          "git_blob_sha": "a64ee12805bc440762df5dd9c0c7da70fc89c836",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        }
+      ],
+      "captures_generated": 16,
+      "captures_manually_reviewed": 4,
+      "log_sha256": {
+        "client.log": "97a45c6a6e6bb04ba0542cab5a0f0d79cb066f5dd83fa2125b4a0c2aeb9ac7ca",
+        "build.log": "853c09f539017d23ca77ba6337245f01ff2aed93aec6bc9608ee574cb670fa66"
+      },
+      "workflow_run": 40247971424,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40247971424",
+      "job_id": 121333495857,
+      "job_conclusion": "success",
+      "artifact_receipt": {
+        "id": 12619616064,
+        "name": "legacy-wireless-real-client-40247971424-1",
+        "size_in_bytes": 465178,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12619616064",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12619616064/zip",
+        "expired": false,
+        "created_at": "2026-10-26T00:13:04Z",
+        "expires_at": "2026-11-09T00:13:03Z",
+        "updated_at": "2026-10-26T00:13:04Z",
+        "digest": "sha256:435d7255c3d1c5bb21997c2a411b79511047081652667c8452f5e5231777027b",
+        "workflow_run": {
+          "id": 40247971424,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "759a4aea3458439bccc2a79e7c9fcd7f18c06245"
+        }
+      },
+      "archive_sha256": "435d7255c3d1c5bb21997c2a411b79511047081652667c8452f5e5231777027b",
+      "archive_sha256_verified_before_extraction": true
+    },
+    "1.6.4": {
+      "report": {
+        "minecraft": "1.6.4",
+        "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "result": "PASS",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+      },
+      "runtime": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+        "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+        "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+        "probe_sha256": "1b44bfbf98a7dbed64ada55ff9ac3dfba5868a6f864eda54e1490c268ad07d89",
+        "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+        "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "captures": [
+        {
+          "file": "legacy-private-display.png",
+          "sha256": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+          "git_blob_sha": "298d648d4eec4843f1151cef01070d69c5f6abdd",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-public-display.png",
+          "sha256": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+          "git_blob_sha": "34e0955952286995c0d6775bc244466b2b03aa64",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-1.png",
+          "sha256": "0974aa0c905e4d8003050732cc45b84043d7f02f50d0c6ef36690829618b0849",
+          "git_blob_sha": "6211a8ac4e058d55bec85496523d8e6047e0cc49",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-2.png",
+          "sha256": "2aa35c2de47627265170df4aab554cb705b00d9ec58c9bed23038f0e2ddf7ae6",
+          "git_blob_sha": "2f15b5f5ed9e414ba4dd9b016c3338f1f43e3229",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-3.png",
+          "sha256": "291f152fb1530fd746d7b8f7eb5c0887a5bc200dff4165694670072a01fc6d14",
+          "git_blob_sha": "64840c006f0f025dcbd18e1e2677ebe0ccf9b77a",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-4.png",
+          "sha256": "87acca436cb3c452ce03d2a16fa5665b5961a51150d9e632213cedd0dff4b088",
+          "git_blob_sha": "abc8317c55c3dcb8a6096be7ed63bfd2938d976a",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: gold 864, iron 833 and diamonds 63 grouped totals remain readable; hovered total 864 fits the panel.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.6.4/legacy-wireless-grouped-scale-4.png"
+        },
+        {
+          "file": "legacy-wireless-grouped-variants.png",
+          "sha256": "dc902a1c06cf6f9c1e474e23b50fe338d26d28f1964a7279390c4f7bc020da07",
+          "git_blob_sha": "d3ec3793d88e94bc10c95e99de806e8da07f5318",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: plain iron 801 and tagged iron 32 occupy separate rows.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.6.4/legacy-wireless-grouped-variants.png"
+        },
+        {
+          "file": "legacy-wireless-grouped-withdrawal.png",
+          "sha256": "7bd5eea7d3a7a525719672267cfcfc46ed14658b6a261267f8787c157cce65bb",
+          "git_blob_sha": "328791b94355671753a2438f8c5197dcb27a5da2",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: iron search shows plain 737 and tagged 32 after the conserved 64-item withdrawal; player stack and hovered total agree.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.6.4/legacy-wireless-grouped-withdrawal.png"
+        },
+        {
+          "file": "legacy-wireless-storage-scale-1.png",
+          "sha256": "907f9b35a6590638495526a6c0cada1d4e4a9ff5398d1b9d057072ad95a98119",
+          "git_blob_sha": "d6db594afc35d48e78dcfd92de6c708c54d41ae7",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-2.png",
+          "sha256": "c7c50ced58516e7e0aa5f1433afb1e2f7b7f050aca72fb78b02d1ce150340c06",
+          "git_blob_sha": "2624d2a7d2d3841faee5eabac8700dd60b72ae43",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-3.png",
+          "sha256": "11b3df71c2fc1dbc1e84909f1ebc17f5897991da3bf7df7e2b04695033aa6b2f",
+          "git_blob_sha": "614db412b64dc2fb8237b14c3936612715209824",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-scale-4.png",
+          "sha256": "e2accc80e32117e1e4824c454db6bd2b29dd9261a3c5721f67cd82230bc4554a",
+          "git_blob_sha": "d2901c41e65ecd53c0ecd33cf07aefbf5d0af88a",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-search-empty.png",
+          "sha256": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+          "git_blob_sha": "43697c56fc303b2e862affdec562ffb3b4c93449",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "PASS: xyz no-match view is readable and contains no stale result rows.",
+          "repository_path": "docs/acceptance/screenshots/rc-route-clients-2026-10-25/1.6.4/legacy-wireless-storage-search-empty.png"
+        },
+        {
+          "file": "legacy-wireless-storage-search.png",
+          "sha256": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+          "git_blob_sha": "0c6abb314af43b100c34a09b091ea0f9bee864a0",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-sorted.png",
+          "sha256": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+          "git_blob_sha": "448ff4ca1c46fc1c03c7f4cdea61fc7534ba440c",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        },
+        {
+          "file": "legacy-wireless-storage-tooltip.png",
+          "sha256": "0f5303576ee5532bc18eaac04c15638f5421f51591be5fa129db21b8997ff6a9",
+          "git_blob_sha": "4e5b26b13a6a9bb070a5a48cf683e1e41e1de836",
+          "width": 1280,
+          "height": 960,
+          "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+          "repository_path": null
+        }
+      ],
+      "captures_generated": 16,
+      "captures_manually_reviewed": 4,
+      "log_sha256": {
+        "client.log": "fbef20f486c3150065bec827884efd78fc3184a2ff79cbe66d5f8ef162664575",
+        "build.log": "536e8da4330a71594661eed00372ac207cd446adb9afaf61e2ab578e8df08632"
+      },
+      "workflow_run": 40247971395,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40247971395",
+      "job_id": 121333495760,
+      "job_conclusion": "success",
+      "artifact_receipt": {
+        "id": 12619511334,
+        "name": "legacy164-wireless-real-client-40247971395-1",
+        "size_in_bytes": 295429,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12619511334",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12619511334/zip",
+        "expired": false,
+        "created_at": "2026-10-26T00:12:19Z",
+        "expires_at": "2026-11-09T00:12:19Z",
+        "updated_at": "2026-10-26T00:12:19Z",
+        "digest": "sha256:1d514947eb6cb34f6fba81b5ff5d433eef05f79aa3deb9a534aa681662ef46bc",
+        "workflow_run": {
+          "id": 40247971395,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "759a4aea3458439bccc2a79e7c9fcd7f18c06245"
+        }
+      },
+      "archive_sha256": "1d514947eb6cb34f6fba81b5ff5d433eef05f79aa3deb9a534aa681662ef46bc",
+      "archive_sha256_verified_before_extraction": true
+    }
+  },
+  "client_runtime_policy": "Production runtime hashes must equal the exact qualified hourly artifacts; separate test mods are allowed only outside the production JAR; no development game classpath.",
+  "limitations": [
+    "Private generated offline integrated worlds only; no installed third-party provider, dedicated multiplayer, copied user-world or sustained full-server performance acceptance.",
+    "These client probes do not exercise cross-network/removal/rebind durability and do not certify arbitrary hidden backing identities.",
+    "Only the captures explicitly marked reviewed were manually inspected in this checkpoint."
+  ],
+  "rc_publication_cleared": false,
+  "new_github_releases": [],
+  "new_curseforge_uploads": [],
+  "publication_observation": {
+    "controller_run": 40247971405,
+    "job_id": 121333495945,
+    "publish_validated_github_release": "skipped",
+    "qualified_new_releases": 0
+  }
+}

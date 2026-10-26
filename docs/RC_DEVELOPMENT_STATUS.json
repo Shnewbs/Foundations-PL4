@@ -540,9 +540,9 @@
       "candidate_source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
       "build_status_blob_sha": "3cded94e21d7d3fe327e8fdbc645eed9952ce5d5",
       "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
-      "integrated_wireless_actions": "PASS_GROUP_TOTALS_VARIANTS_MULTISLOT_TRANSFER_STALE_REPLAY_SEARCH_SORT_TRANSFERS_AND_CODECS",
-      "client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
-      "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_VISUAL_REVIEW",
+      "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
+      "client_evidence": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
+      "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
         "expected_native_fixtures": 168,
@@ -559,7 +559,7 @@
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
-      "wireless_search_acceptance": "PASS_SCOPED_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
+      "wireless_search_acceptance": "PASS_SCOPED_EXACT_NATIVE_AND_STOCK_CLIENT",
       "search_candidate": {
         "source_commit": "2d4f1389f8f746224d9811fc2dc9985ce607780d",
         "runtime_sha256": "0251eead1ea1a577b5ec7a3af17ec455a80cacb4bbf7e480e2a4e07d3589dea6",
@@ -609,7 +609,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40240809290,
+      "client_workflow_run": 40247971424,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -617,11 +617,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "NOT_RUN_FOR_ROUTE_EDIT_SOURCE",
+      "current_source_stock_client_regression": "PASS_NORMAL_GENERATED_INTEGRATED_WORLD",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Existing client/search/grouping acceptance fields retain prior scoped exact-source evidence. They do not certify this new route-edit source; see previous_route_edit_candidate and current_source_stock_client_regression.",
+      "acceptance_attribution": "The route-edit source has exact-JAR ordinary stock-client regression. Provider/sided alias and face-edit adversarial behavior remains scoped native evidence; no cross-network/provider/dedicated multiplayer acceptance is inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES"
     },
     {
@@ -647,10 +647,10 @@
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
       "candidate_source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
-      "client_visual_acceptance": "PARTIAL_EXACT_STOCK_REGRESSION_FOUR_CAPTURES_REVIEWED",
-      "integrated_wireless_actions": "PASS_GROUP_TOTALS_VARIANTS_MULTISLOT_TRANSFER_STALE_REPLAY_SEARCH_SORT_TRANSFERS_AND_CODECS",
-      "world_display_acceptance": "PARTIAL_STOCK_PRIVATE_PUBLIC_HIDE_AND_REVIEWED_NETWORK_DISPLAY",
-      "client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+      "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
+      "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
+      "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
+      "client_evidence": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -668,7 +668,7 @@
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
-      "wireless_search_acceptance": "PASS_SCOPED_EXACT_SOURCE_NATIVE_AND_STOCK_CLIENT",
+      "wireless_search_acceptance": "PASS_SCOPED_EXACT_NATIVE_AND_STOCK_CLIENT",
       "search_candidate": {
         "source_commit": "c7c391b1b5d24a2ff8919efecf9e09f867b4486c",
         "runtime_sha256": "8a0883b968f2da1bedf7410b75854aeed1ef5063184a32f7efd9c1be76b7f1b6",
@@ -707,15 +707,16 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 224
       },
-      "current_source_stock_client_regression": "NOT_RUN_FOR_ROUTE_EDIT_SOURCE",
+      "current_source_stock_client_regression": "PASS_NORMAL_GENERATED_INTEGRATED_WORLD",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Existing client/search/grouping acceptance fields retain prior scoped exact-source evidence. They do not certify this new route-edit source; see previous_route_edit_candidate and current_source_stock_client_regression.",
-      "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES"
+      "acceptance_attribution": "The route-edit source has exact-JAR ordinary stock-client regression. Provider/sided alias and face-edit adversarial behavior remains scoped native evidence; no cross-network/provider/dedicated multiplayer acceptance is inferred.",
+      "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
+      "client_workflow_run": 40247971395
     }
   ],
-  "latest_work": "Item route face changes now refuse unresolved faults, opaque escrow or pending held items on 1.12.2 and 1.6.4, keeping the existing target fence from moving during owner edits. Final native 253/253 and 230/230 passed with six new exact cases each, production-only startup and generated preview.3 migration; main passed 192 and 21 modern tracks retain prior artifacts. Initial 1.6.4 disconnected fake-player chat fixture failure (229/230) is preserved with its repaired stale-alias fixture. New-source stock clients were not run; earlier client/search/grouping results retain original source/hash scope. Cross-network/removal/rebind durability, parity/provider/multiplayer/migration/performance acceptance remain open. No RC cleared or published.",
+  "latest_work": "Closed ordinary exact-JAR stock-client regression for the unchanged native-qualified item-route-edit sources: 1.12.2 cc6a7b2a/a16797ab and 1.6.4 0dc2f124/52b34855. Both stock Forge clients passed actual mouse withdraw/deposit/paging, grouping/full-NBT variants and 64-item conservation, search/sort/stale replay, keyboard lifecycle, native codecs and private/public display probes. Eight current captures manually reviewed and all 32 hashed; production runtime hashes match their qualified native archives. Existing native results remain 253/253 and 230/230; no fresh native or production implementation change is claimed. Cross-network/removal/rebind uncertainty, opaque providers, advanced legacy parity and broader acceptance remain open. No RC cleared or published.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -726,17 +727,17 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
-    "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
-    "workflow_run": "40240809290",
-    "stock_wireless_client": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+    "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+    "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+    "workflow_run": "40247971424",
+    "stock_wireless_client": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
-    "source_commit": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
-    "runtime_sha256": "fe9cec47b1982999663290cc0f8c6dc5864d51187148f232cfc3b23a012ce715",
-    "workflow_run": "40229923358",
-    "stock_wireless_client": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+    "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+    "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+    "workflow_run": "40247971395",
+    "stock_wireless_client": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
     "closes_all_acceptance": false
   },
   "hourly_native_revalidation": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
@@ -755,5 +756,21 @@
     "workflow_run": "40111601064",
     "stock_wireless_client": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
     "closes_all_acceptance": false
+  },
+  "previous_route_client_acceptance": {
+    "1.12.2": {
+      "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
+      "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
+      "workflow_run": "40240809290",
+      "stock_wireless_client": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
+      "closes_all_acceptance": false
+    },
+    "1.6.4": {
+      "source_commit": "f6007f4ed69a8a3c11ea139927b8f2fce72e4588",
+      "runtime_sha256": "fe9cec47b1982999663290cc0f8c6dc5864d51187148f232cfc3b23a012ce715",
+      "workflow_run": "40229923358",
+      "stock_wireless_client": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
+      "closes_all_acceptance": false
+    }
   }
 }
