@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-admission-2026-10-26T23",
-    "claimed_at": "2026-10-26T23:26:25Z",
-    "expires_at": "2026-10-26T23:36:25Z",
-    "scope": "Final native/client admission-fix evidence and resumable state"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40409934243,
+  "last_verified_legacy_native_run": 40418076575,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40410933793,
-    "1.6.4": 40405023609
+    "1.12.2": 40419011296,
+    "1.6.4": 40419011289
   },
-  "current_checkpoint": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
-  "local_validation": "PASS:119 targeted local controller tests,1044 decode assertions/28 JVMs per port including168 new live checks,provider188/historical60 separately,ordinary378/356/main192,all17 packaged hashes and raw saved-world inspections. Fresh1.12.2 client;1.6.4 retains byte-identical exact-payload evidence.",
+  "current_checkpoint": "Fixed the cleared admission latch on retained legacy evidence: explicit admission/server ticks now revalidate existing owner/context and preserve original evidence, freezing rejected changes and fencing the tested disconnected same-target alias after observation. Both ports reproduced4 failures plus1 passing idempotence control, then pass all5 new cases: native383/383 and361/361; main192 passes.125 local controller and176 CI executions pass. Existing decode1044/28 JVMs,provider188 andhistorical60 per port separately requalify, with raw saved NBT andall17 packaged hashes. Both fresh exact-JAR clients pass complete5/4-page export and normal regressions;4 captures reviewed,42 hashed. Initial1.6.4 fixture-constructor/cascading-cleanup failure is recorded and corrected before accepted reproduction. CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads. All24 RC flagsfalse.",
+  "local_validation": "PASS:125 local controller tests;176 hourly CI executions;ordinary383/361/main192;five named admission cases per port;decode1044/provider188/historical60 separately;raw world/hash/source/fixture evidence;both fresh exact production clients. Observed tick/admission scope only.",
   "next_work": [
-    "Extend remaining owner/context rewrite, transfer and actual removal live mutations across separate native processes. Probe disconnected aliases after owner/context edits with itemImportPending already false. Current168 new process assertions cover fault clearing, empty-escrow face-edit refusal and NBT evidence/count preservation only; no remaining alias bypass demonstrated.",
+    "Extend live owner/context rewrite, transfer and actual-removal mutations through separate native processes. Probe disconnected alias reads before any host tick/admission observation and loaded/unloaded host boundaries without a global world scan or force-load. Current5 native cases cover explicit admission, observed tick, observed disconnected same-target alias, valid idempotence and raw context edits; they do not grant general alias or mutation-process clearance.",
     "Continue bounded owner-authorized linked-host/receipt export and dedicated multiplayer/online profile/dimension travel authorization. Current native fake-player receipt checks do not certify online identity, provider permissions or actual dimension travel.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
@@ -31,44 +26,38 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-live-process-2026-10-26.json",
-  "main_native_validation_run": 40409934243,
-  "curseforge_reconciliation_run": 40385322437,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+  "main_native_validation_run": 40418076575,
+  "curseforge_reconciliation_run": 40417802166,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40409934243
+    40418076575
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40409934243,
-    "1.6.4": 40409934243
+    "1.12.2": 40418076575,
+    "1.6.4": 40418076575
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-live-process-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
+  "native_main_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
   "last_writer_release": {
     "owner": "pl4-live-admission-2026-10-26T23",
-    "released_at": "2026-10-26T23:19:54Z",
-    "checkpoint": "Native383/361/main192 and retained restart/world evidence qualified; both exact new production clients pinned and pending."
+    "released_at": "2026-10-26T23:27:26Z",
+    "checkpoint": "Exact admission-fix native/client evidence qualified and preserved; unobserved edits, mutation-process and broader acceptance remain resumable."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-process-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-live-process-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "d9679803b394b67bd55cf643f5a371bb1136322f",
-      "1.6.4": "86dd76fb02b942cd1206b4ccdf4c8094eff4ace6"
+      "1.12.2": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
+      "1.6.4": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4"
     },
     "publication_steps": "SKIPPED"
   },
-  "previous_checkpoint": "Fixed retained-evidence quarantine bypasses caused by external fault text clearing and owner/context edits on both legacy ports. All8 new native cases first failed on unchanged production (370/378 and348/356), then passed after the fix:378/378 and356/356. Main192 passes with unchanged production bytes.160 local and166 CI controller executions pass. Existing decode876/28 JVMs, provider188/4 JVMs and historical60/3 JVMs per port are separately requalified, including raw saved NBT and all17 packaged hashes. Both fresh exact-JAR stock clients pass full5/4-page export and ordinary storage regressions;4 captures reviewed,42 hashed. Initial fixture compile error and first1.6.4 controller timestamp-marker failure are preserved and repaired. All24 RC flags remainfalse;no new release/upload.",
-  "pending_live_mutation_finding": {
-    "source": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
-    "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyItemSafety.java",
-    "observation": "importSaved only calls importLegacy while itemImportPending is true; the latch is cleared after first admission. The new blocked predicate directly guards retained nodes, but repeated live owner/context edits with already-cleared admission latch need separate disconnected-network/alias probes.",
-    "scope": "Source observation only; no remaining alias transfer bypass demonstrated. Test same backing native inventory through a disconnected alias after old/new owner rewrites, before and after tick/reload/removal. Preserve original evidence and unknown route scope."
-  },
+  "previous_checkpoint": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -95,17 +84,30 @@
     "new_assertions_per_port": 168,
     "total_decode_assertions_per_port": 1044
   },
-  "pending_live_admission_candidate": {
+  "resolved_live_mutation_finding": {
+    "prior": {
+      "source": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyItemSafety.java",
+      "observation": "importSaved only calls importLegacy while itemImportPending is true; the latch is cleared after first admission. The new blocked predicate directly guards retained nodes, but repeated live owner/context edits with already-cleared admission latch need separate disconnected-network/alias probes.",
+      "scope": "Source observation only; no remaining alias transfer bypass demonstrated. Test same backing native inventory through a disconnected alias after old/new owner rewrites, before and after tick/reload/removal. Preserve original evidence and unknown route scope."
+    },
+    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "resolution": "Retained evidence is revalidated despite cleared initial latch; matching contexts remain scoped/idempotent. Four native failures reproduced and fixed per port. Unobserved edits remain separate acceptance."
+  },
+  "completed_live_admission_checkpoint": {
+    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
     "sources": {
       "1.12.2": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
       "1.6.4": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4"
     },
-    "reproduction_runs": {
-      "1.12.2": 40417237824,
-      "1.6.4": 40417692788
-    },
-    "status": "EXACT_NATIVE_PASS_BOTH_CURRENT_PRODUCTION_CLIENTS_PENDING",
-    "limits": "Observed host tick or explicit admission only; before-observation/unloaded edits and broad alias/provider/recovery acceptance remain open.",
-    "native_run": 40418076575
+    "native_run": 40418076575,
+    "new_native_cases_per_port": 5,
+    "reproduced_failures_per_port": 4
+  },
+  "latest_curseforge_reconciliation": {
+    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "already_submitted": 24,
+    "new_uploads": 0,
+    "moderation_and_public_visibility_reverified": false
   }
 }
