@@ -99,7 +99,7 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         // Preserve the first rejection and freeze this dimension for reviewed reconciliation.
         if(node.itemLegacyEvidence!=null&&previous!=null){
             if(opaque==null){
-                NBTTagCompound retained=new NBTTagCompound();retained.setTag("PreviousJournal",writeToNBT(new NBTTagCompound()));
+                NBTTagCompound saved=new NBTTagCompound();writeToNBT(saved);NBTTagCompound retained=new NBTTagCompound();retained.setTag("PreviousJournal",saved);
                 retained.setTag("RejectedContext",previous.copy());retained.setTag("ExistingLegacyEvidence",node.itemLegacyEvidence.copy());
                 opaque=retained;markDirty();
             }
