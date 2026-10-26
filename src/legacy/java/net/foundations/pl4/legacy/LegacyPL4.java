@@ -31,7 +31,7 @@ public final class LegacyPL4 {
     public static java.util.logging.Logger logger;
     @Mod.EventHandler public void preInit(FMLPreInitializationEvent event){
         cpw.mods.fml.common.network.NetworkRegistry.instance().registerGuiHandler(this,new LegacyWirelessGuiHandler());
-        logger=event.getModLog();Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
+        logger=event.getModLog();net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new LegacyItemFaultImport());Configuration config=new Configuration(event.getSuggestedConfigurationFile());config.load();
         int cable=config.getBlock("legacyCable",3500).getInt(),export=config.getBlock("legacyExport",3501).getInt(),sink=config.getBlock("legacyImport",3502).getInt();
         int fluidExport=config.getBlock("legacyFluidExport",3503).getInt(),fluidImport=config.getBlock("legacyFluidImport",3504).getInt(),tank=config.getBlock("legacyTank",3505).getInt();
         int energyExport=config.getBlock("legacyEnergyExport",3506).getInt(),energyImport=config.getBlock("legacyEnergyImport",3507).getInt(),energyBuffer=config.getBlock("legacyEnergyBuffer",3508).getInt();

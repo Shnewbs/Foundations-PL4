@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 290,
+  "expected_native_scenarios": 310,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -91,5 +91,8 @@
   "item_restart_fixture": true,
   "item_restart_acceptance": "PENDING_EXACT_SEPARATE_PROCESS_VALIDATION",
   "item_restart_write_assertions": 36,
-  "item_restart_verify_assertions": 26
+  "item_restart_verify_assertions": 26,
+  "preupgrade_item_fault_import": "PENDING_EXACT_NATIVE_AND_MIGRATION_VALIDATION",
+  "item_journal_schema": 2,
+  "preupgrade_item_fault_fixture": true
 }

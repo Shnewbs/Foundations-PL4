@@ -15,7 +15,8 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending;public String status="Idle";
     public String itemFault="";
-    public NBTTagCompound itemJournalContext;
+    public NBTTagCompound itemJournalContext,itemLegacyEvidence;
+    public boolean itemImportPending;
     public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
     public int itemOpaqueCount;
@@ -41,6 +42,7 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
         onInventoryChanged();refreshDisplay();worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
     }
     @Override public void updateEntity(){
+        LegacyItemSafety.importSaved(this);
         if(fluidServer()&&role()==LegacyReadings.DISPLAY){
             long now=worldObj.getTotalWorldTime();long phase=now+xCoord*31L+yCoord*17L+zCoord;
             if(now!=lastDisplay&&((phase%20)+20)%20==0){lastDisplay=now;refreshDisplay();}return;
@@ -50,6 +52,7 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
         try{transferOnce();}catch(RuntimeException error){status="Provider error; retained escrow";if(lastError==Long.MIN_VALUE||tick-lastError>=1200){lastError=tick;if(LegacyPL4.logger!=null)LegacyPL4.logger.log(java.util.logging.Level.WARNING,"PL4 legacy transfer stopped at "+point(),error);}}
     }
     public int transferOnce(){
+        LegacyItemSafety.importSaved(this);
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
         if(fluidServer()&&role()==1&&LegacyWirelessSafety.data(worldObj).blocked(owner,target())){status="Item target fenced by unresolved item handoff";return 0;}
