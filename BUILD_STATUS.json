@@ -101,5 +101,7 @@
   "item_decode_restart_fixture": true,
   "item_decode_restart_acceptance": "PENDING_EXACT_SEPARATE_PROCESS_VALIDATION",
   "item_decode_restart_write_assertions": 32,
-  "item_decode_restart_verify_assertions": 26
+  "item_decode_restart_verify_assertions": 26,
+  "item_compound_restart_fixture": true,
+  "item_compound_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_VALIDATION"
 }
