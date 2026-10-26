@@ -1,0 +1,3915 @@
+{
+  "recorded_date": "2026-10-26",
+  "repository": "Shnewbs/Foundations-PL4",
+  "version": "0.2.0-rc.1-dev",
+  "release_channel": "development",
+  "checkpoint": "Legacy evidence settlement guard and rejected-compound process persistence",
+  "workflow_run": 40374749926,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40374749926",
+  "local_test_executions": 120,
+  "new_controller_cases": 5,
+  "targets": [
+    {
+      "minecraft": "1.12.2",
+      "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+      "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+      "hourly": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "native_gate": "PASS",
+        "expected_fixtures": 357,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json",
+          "legacy-item-restart-summary.json",
+          "legacy-item-decode-raw-restart-summary.json",
+          "legacy-item-decode-missing-restart-summary.json",
+          "legacy-item-decode-compound-restart-summary.json",
+          "legacy-decode-world-inspection.json",
+          "preupgrade-item-fault-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "e6236709af2b8d5b6646dac4bc076992d1f4047e05e5801d86f64d4d3af74add",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "340a0e0886fdb0d7cc100a86b1528223ad053e0b9d3a50e5c0fb1c13e69696ed",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-restart-scenarios.jar": "0044fa46e97d88b7ecdf7f8a23e5503503ef0be4ae14580c20ec31cc7e838c48",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "c2ddfb4df1f2eb66c39185430f006e20bd4aa64f68119db19cdf517b292d2efb",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314"
+        },
+        "workflow_run": "40374749926",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "production-smoke.json": "13559bb35871e194fc25d5dd8d2e80fc918231442b251b586c802635c40f66c1",
+        "preupgrade-item-fault-summary.json": "cc92be1b645150e2cf71859479a21d8663ca3e601a6a99dee4496003bf8fd304",
+        "preupgrade-fault-write.json": "c3096ff59624e449361292251ad99692a9ee0d7c2dadc7a3c44681f236973572",
+        "preupgrade-fault-verify.json": "a868e576f7c5ba1bcd9cd34ce57d9e4eff5ea990a8fe5e31a6577c4a895346cb",
+        "preupgrade-fault-upgrade.json": "36f9dc0cdf60c31c53313cc539520c1d12a408f29f00c96ef5a4f2dbffc120cc",
+        "preupgrade-baseline-origin.json": "e0da66f700043a931a8f0e0996d43cf0b74f4be45cbd3446543793f41143e3c4",
+        "preupgrade-baseline-native.json": "eec6a4a4e9b7e3a850ec93631c512246305cd76a0f7b3c5fb0f4afafc955fc99",
+        "legacy-migration-summary.json": "57f28ce5094d6e06791ba981ca00de605f26cc5fb64c439379fe69b7e6465c5d",
+        "legacy-item-restart-summary.json": "cd1fbdbcc9987e400824dd91c231c3063e1855668c95b20694022226ed7b94fd",
+        "legacy-item-decode-raw-restart-summary.json": "34f1fdd856200ab3080b595616c098f153909ea32c94da160028f2789072561d",
+        "legacy-item-decode-missing-restart-summary.json": "3f04318e2e28354e56c3f1056357dea38e859b6818927a551fbafded8f20d5ba",
+        "legacy-item-decode-compound-restart-summary.json": "55c126bf0fb60926d729f7ae8c1c163b6c4299d536f72c797db0168de25547d3",
+        "legacy-decode-world-inspection.json": "bffab55c5e2f63fc4a2d63d82e2b95409487a6a8022d0bf7b33d81773cf99ad8",
+        "item-restart-write.json": "a80f8e7bbff6d7a87b06a4502a05f7ed242b685c55abfd67f87ccd2266ef563f",
+        "item-restart-verify.json": "8b6b11fc74aae0111f2cc1e4a89c1f76a142c773a4c637e0bd56faf8dfd9d14f",
+        "item-restart-crash-write.json": "6ecc0c6cd963b9fb85a56061c1a071782911d37ecb5d83b2784e8dec55b7a7a1",
+        "item-restart-crash-verify.json": "ad3100f367942853d01d3738265fef80b9041ea0c0a2a1cdb8434521f54f85fb",
+        "item-decode-raw-restart-write.json": "f072c4c45bbc2b7ace293a469337568f762602b8ff81a89d7b961d19e5cef81c",
+        "item-decode-raw-restart-verify.json": "97a62bb538c2797e8ce221211b06a6e9a092818577324157464f2bcbf2fd46d0",
+        "item-decode-raw-restart-crash-write.json": "002c412452c1b8c432bd142fd23037376cb61810934f9a0252458c95cd55e6d0",
+        "item-decode-raw-restart-crash-verify.json": "f78c6090b683d9a6cbf8cc7f0ae39c53e69486955a42278b24a31ea20fc4a4f8",
+        "item-decode-missing-restart-write.json": "92d50fa1a4b7373ea49b91ba3d5b7415387088a5b6c11230f15fa7d3bce4c7a5",
+        "item-decode-missing-restart-verify.json": "cab2d33d3713b1a6dbc3079e7a518a4fbfaf280ff782b64874de382ab1ff1a22",
+        "item-decode-missing-restart-crash-write.json": "6f5202722b90aa1fb1b0714c5bc0d6d41a4e4aa5f68fc603972e3af6e5a61138",
+        "item-decode-missing-restart-crash-verify.json": "c20cd5102d359274de8c13fda03c7328e46f5bd5a5007cf6036f3cb8c645561f",
+        "item-decode-compound-restart-write.json": "3ad03c1bc672f03454eb7c2991990ddd21d03b258400d49e217c6c0233bfd4ea",
+        "item-decode-compound-restart-verify.json": "e31ac514bc679b0a958c2c04c24bfca12d3bf2ef65a32549434cdbf07c90cceb",
+        "item-decode-compound-restart-crash-write.json": "31f79084e629634d9262c9114321d7ff943092c4b5cd6ff5c3984e9519c3566e",
+        "item-decode-compound-restart-crash-verify.json": "d17d6037d6dccfb00e0f89c54b1980980ff7715f51fe96b4ae78bb2de334047d",
+        "hourly-native.json": "fe54c70cdd3522a97e2b4cec5caab7a6d0fe7e821509c6882cc7aa7f8e02f1c3",
+        "energy-summary.json": "f51545b298a980a84e7a258ef3bf08ed0e35c6373db3fab19f119568726a6258",
+        "clean-native-summary.json": "385b2d0f44e7f80f2ce3173e77dce8e64918cd59bf6f68008631941d7764fcb0"
+      },
+      "ordinary_native": 357,
+      "provider_restart": {
+        "suite": "item",
+        "minecraft": "1.12.2",
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+        "fixture_sha256": "0044fa46e97d88b7ecdf7f8a23e5503503ef0be4ae14580c20ec31cc7e838c48",
+        "clean_restart": "PASS",
+        "save_barrier_abrupt_restart": "PASS",
+        "processes": [
+          {
+            "phase": "write",
+            "pid": 2845,
+            "exit_code": 0,
+            "log_sha256": "0ec318386584837d2b0e026df94dd2bc4375f8c70b054099212cd61c03f8a650"
+          },
+          {
+            "phase": "verify",
+            "pid": 2882,
+            "exit_code": 0,
+            "log_sha256": "f901d953df0b7fa020a5560be4d1b82b6306cfe9dd6a6a024c66b9ae3c9927a1"
+          },
+          {
+            "phase": "crash-write",
+            "pid": 2922,
+            "exit_code": -9,
+            "log_sha256": "eb76c39d63f2582825e5764d10dea0d032b9e229148c577777555f1eef2f7e59"
+          },
+          {
+            "phase": "crash-verify",
+            "pid": 2955,
+            "exit_code": 0,
+            "log_sha256": "7a88039f4b1d38dbfc69d0aa3a82bc701236ab443d91eeae883a369813d9cce7"
+          }
+        ],
+        "phase_reports": {
+          "write": {
+            "minecraft": "1.12.2",
+            "phase": "write",
+            "passed": true,
+            "assertions": 52,
+            "tokens": [
+              "a688a761-dfaf-4116-8862-56c65bb80759",
+              "8be91fc6-7949-4842-8fce-960c6c37098f"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "e0493b0c-d74b-41dc-ba75-a45161904541",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "a688a761-dfaf-4116-8862-56c65bb80759",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "eeb3c25b-ed32-4cb9-ada1-5da1586935a9",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "8be91fc6-7949-4842-8fce-960c6c37098f",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2845@runnervmtai0g"
+          },
+          "verify": {
+            "minecraft": "1.12.2",
+            "phase": "verify",
+            "passed": true,
+            "assertions": 42,
+            "tokens": [
+              "a688a761-dfaf-4116-8862-56c65bb80759",
+              "8be91fc6-7949-4842-8fce-960c6c37098f"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "e0493b0c-d74b-41dc-ba75-a45161904541",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "a688a761-dfaf-4116-8862-56c65bb80759",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "eeb3c25b-ed32-4cb9-ada1-5da1586935a9",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "8be91fc6-7949-4842-8fce-960c6c37098f",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2882@runnervmtai0g"
+          },
+          "crash-write": {
+            "minecraft": "1.12.2",
+            "phase": "crash-write",
+            "passed": true,
+            "assertions": 52,
+            "tokens": [
+              "0f1d01ea-398c-4173-bfc4-d778ff75ae2a",
+              "f0ac2486-9c38-4902-ab41-ebce4e4292d0"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "e39c7d8a-68d1-4df7-8770-74d0cd0fc4c4",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "0f1d01ea-398c-4173-bfc4-d778ff75ae2a",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "8f1b0fff-3398-4c98-81d7-469bddb39e80",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "f0ac2486-9c38-4902-ab41-ebce4e4292d0",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2922@runnervmtai0g"
+          },
+          "crash-verify": {
+            "minecraft": "1.12.2",
+            "phase": "crash-verify",
+            "passed": true,
+            "assertions": 42,
+            "tokens": [
+              "0f1d01ea-398c-4173-bfc4-d778ff75ae2a",
+              "f0ac2486-9c38-4902-ab41-ebce4e4292d0"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "e39c7d8a-68d1-4df7-8770-74d0cd0fc4c4",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "0f1d01ea-398c-4173-bfc4-d778ff75ae2a",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "8f1b0fff-3398-4c98-81d7-469bddb39e80",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "f0ac2486-9c38-4902-ab41-ebce4e4292d0",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2955@runnervmtai0g"
+          }
+        },
+        "world_archives": {
+          "clean": {
+            "file": "item-restart-clean-world.zip",
+            "sha256": "78a5d3bb9ef2a4d3d005552271a9facc7699f7503c014d9e868c633894de15ed"
+          },
+          "barrier": {
+            "file": "item-restart-barrier-world.zip",
+            "sha256": "f321bd25776b2199eeb3f82a9438711dd3d29e03aca6bdb3d312f506f4f38a4f"
+          }
+        },
+        "scope": "Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting."
+      },
+      "raw_provider_worlds": {
+        "clean": {
+          "world_archive_sha256": "78a5d3bb9ef2a4d3d005552271a9facc7699f7503c014d9e868c633894de15ed",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "eeb3c25b-ed32-4cb9-ada1-5da1586935a9",
+              "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "e0493b0c-d74b-41dc-ba75-a45161904541",
+              "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        },
+        "barrier": {
+          "world_archive_sha256": "f321bd25776b2199eeb3f82a9438711dd3d29e03aca6bdb3d312f506f4f38a4f",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "8f1b0fff-3398-4c98-81d7-469bddb39e80",
+              "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "e39c7d8a-68d1-4df7-8770-74d0cd0fc4c4",
+              "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        }
+      },
+      "decode_restart": {
+        "decode-raw": {
+          "suite": "decode-raw",
+          "minecraft": "1.12.2",
+          "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+          "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+          "fixture_sha256": "0044fa46e97d88b7ecdf7f8a23e5503503ef0be4ae14580c20ec31cc7e838c48",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 2996,
+              "exit_code": 0,
+              "log_sha256": "a37f929617947496607333a85138c29ac45f040a34bf634173cb87f393997993"
+            },
+            {
+              "phase": "verify",
+              "pid": 3032,
+              "exit_code": 0,
+              "log_sha256": "fa26825f6d434d0ddc6b391286c4740ef86bf121f00fc26454d42bb996f43483"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3072,
+              "exit_code": -9,
+              "log_sha256": "99d19a57da2ab52cafaf9b37982b9deaaac3783e99e8b323c37be6e171c6cde1"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3164,
+              "exit_code": 0,
+              "log_sha256": "42eebad434b4357904ed6a6bbe41ad09242454d1eae7a715593020852325bd16"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-raw",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "854fac77-1418-4a30-90e7-b33b2c4e34f5",
+                "f57096c2-1b23-44cf-9c67-aab59660ef15"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "854fac77-1418-4a30-90e7-b33b2c4e34f5",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "f57096c2-1b23-44cf-9c67-aab59660ef15",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "2996@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-raw",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "854fac77-1418-4a30-90e7-b33b2c4e34f5",
+                "f57096c2-1b23-44cf-9c67-aab59660ef15"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "854fac77-1418-4a30-90e7-b33b2c4e34f5",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "f57096c2-1b23-44cf-9c67-aab59660ef15",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3032@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-raw",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "7144e633-40fc-4093-97f4-feed958a882b",
+                "7df8e763-0720-4ea7-92ac-45bb0775c068"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "7144e633-40fc-4093-97f4-feed958a882b",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "7df8e763-0720-4ea7-92ac-45bb0775c068",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3072@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-raw",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "7144e633-40fc-4093-97f4-feed958a882b",
+                "7df8e763-0720-4ea7-92ac-45bb0775c068"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "7144e633-40fc-4093-97f4-feed958a882b",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "7df8e763-0720-4ea7-92ac-45bb0775c068",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3164@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-raw-restart-clean-world.zip",
+              "sha256": "d1eccf857101a8ab36399a8be5755c5c37054a7b9216e0c01337cee0583509fa"
+            },
+            "barrier": {
+              "file": "item-decode-raw-restart-barrier-world.zip",
+              "sha256": "06227dc3e75ff9b53df0d8bfc535ab133555990366d2e46d5e6ae0687936c195"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "854fac77-1418-4a30-90e7-b33b2c4e34f5",
+                "f57096c2-1b23-44cf-9c67-aab59660ef15"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "d1eccf857101a8ab36399a8be5755c5c37054a7b9216e0c01337cee0583509fa"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "7144e633-40fc-4093-97f4-feed958a882b",
+                "7df8e763-0720-4ea7-92ac-45bb0775c068"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "06227dc3e75ff9b53df0d8bfc535ab133555990366d2e46d5e6ae0687936c195"
+            }
+          }
+        },
+        "decode-missing": {
+          "suite": "decode-missing",
+          "minecraft": "1.12.2",
+          "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+          "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+          "fixture_sha256": "0044fa46e97d88b7ecdf7f8a23e5503503ef0be4ae14580c20ec31cc7e838c48",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3206,
+              "exit_code": 0,
+              "log_sha256": "c13b8a7422954c6de166bd0f9bef8ceeff2b0017c730be7802e234b6803a4b79"
+            },
+            {
+              "phase": "verify",
+              "pid": 3245,
+              "exit_code": 0,
+              "log_sha256": "98f71a295ea372035d0e152064d936a67d0d440e410653b96e112d7e984d5fca"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3284,
+              "exit_code": -9,
+              "log_sha256": "0f91e8bfa01046bfc90fc9b27d8e8c1d4d605ee6f73f10d04e1a020d91135b66"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3318,
+              "exit_code": 0,
+              "log_sha256": "6fa7ca606350a32a7d059422c1df16dfd1a22a779c828c33d7226800b71b138f"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-missing",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "d87b0fae-8f5e-4253-9a2e-7fcbcfee7344",
+                "a8eb9b8e-2b01-4d8d-93c3-865565a38b87"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "d87b0fae-8f5e-4253-9a2e-7fcbcfee7344",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "a8eb9b8e-2b01-4d8d-93c3-865565a38b87",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3206@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-missing",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "d87b0fae-8f5e-4253-9a2e-7fcbcfee7344",
+                "a8eb9b8e-2b01-4d8d-93c3-865565a38b87"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "d87b0fae-8f5e-4253-9a2e-7fcbcfee7344",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "a8eb9b8e-2b01-4d8d-93c3-865565a38b87",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3245@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-missing",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "909cb8f9-75a7-4e97-b593-9d4c586f491f",
+                "7699becb-cd7c-498e-b481-ab20532ef409"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "909cb8f9-75a7-4e97-b593-9d4c586f491f",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "7699becb-cd7c-498e-b481-ab20532ef409",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3284@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-missing",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "909cb8f9-75a7-4e97-b593-9d4c586f491f",
+                "7699becb-cd7c-498e-b481-ab20532ef409"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "909cb8f9-75a7-4e97-b593-9d4c586f491f",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "7699becb-cd7c-498e-b481-ab20532ef409",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3318@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-missing-restart-clean-world.zip",
+              "sha256": "99b3b697c007373cd86900169a485928b0132d5eac9c2a63fdc138cad68e86d7"
+            },
+            "barrier": {
+              "file": "item-decode-missing-restart-barrier-world.zip",
+              "sha256": "ffafda82f898f0a3c77e37ae9e040956fa29e77f269e57ac8cd1fe270b401822"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "d87b0fae-8f5e-4253-9a2e-7fcbcfee7344",
+                "a8eb9b8e-2b01-4d8d-93c3-865565a38b87"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "99b3b697c007373cd86900169a485928b0132d5eac9c2a63fdc138cad68e86d7"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "909cb8f9-75a7-4e97-b593-9d4c586f491f",
+                "7699becb-cd7c-498e-b481-ab20532ef409"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "ffafda82f898f0a3c77e37ae9e040956fa29e77f269e57ac8cd1fe270b401822"
+            }
+          }
+        },
+        "decode-compound": {
+          "suite": "decode-compound",
+          "minecraft": "1.12.2",
+          "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+          "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+          "fixture_sha256": "0044fa46e97d88b7ecdf7f8a23e5503503ef0be4ae14580c20ec31cc7e838c48",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3357,
+              "exit_code": 0,
+              "log_sha256": "19b94aad097e41dede796a03601b9efc9ba1bafdd3c0f56e755bf1313d1489ba"
+            },
+            {
+              "phase": "verify",
+              "pid": 3395,
+              "exit_code": 0,
+              "log_sha256": "96dce243d0a4d28eb14c51df1ba123686229aa4e85bcd134d43100d83ea2396c"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3433,
+              "exit_code": -9,
+              "log_sha256": "9e62380d3e6fdde7ae8e39188145607f24a952d92fc2df4670e94c293b55417b"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3469,
+              "exit_code": 0,
+              "log_sha256": "c7fcfab1b1aa9134326368e51d24279fb61d73c42456121087c9e466fef51c38"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-compound",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "da87767e-388d-42ff-9a61-dcd7135996fe",
+                "56c0f169-4469-47ff-a583-d88b50b3d708"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "da87767e-388d-42ff-9a61-dcd7135996fe",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "56c0f169-4469-47ff-a583-d88b50b3d708",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3357@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-compound",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "da87767e-388d-42ff-9a61-dcd7135996fe",
+                "56c0f169-4469-47ff-a583-d88b50b3d708"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "da87767e-388d-42ff-9a61-dcd7135996fe",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "56c0f169-4469-47ff-a583-d88b50b3d708",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3395@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.12.2",
+              "suite": "decode-compound",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+                "d00cc10b-85db-49aa-926a-3e2614a70420"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "d00cc10b-85db-49aa-926a-3e2614a70420",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3433@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.12.2",
+              "suite": "decode-compound",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+                "d00cc10b-85db-49aa-926a-3e2614a70420"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "d00cc10b-85db-49aa-926a-3e2614a70420",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3469@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-compound-restart-clean-world.zip",
+              "sha256": "7d593b338d5079e955b6a9835bac60da09d938d9fb896d7731ecdeec144de1fe"
+            },
+            "barrier": {
+              "file": "item-decode-compound-restart-barrier-world.zip",
+              "sha256": "6d31e16f96238a52dbcbd10fd781e69067935b8cd70eea580b1ebb9d4aa6a6eb"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "da87767e-388d-42ff-9a61-dcd7135996fe",
+                "56c0f169-4469-47ff-a583-d88b50b3d708"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "7d593b338d5079e955b6a9835bac60da09d938d9fb896d7731ecdeec144de1fe"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+                "d00cc10b-85db-49aa-926a-3e2614a70420"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "6d31e16f96238a52dbcbd10fd781e69067935b8cd70eea580b1ebb9d4aa6a6eb"
+            }
+          }
+        }
+      },
+      "historical": {
+        "minecraft": "1.12.2",
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+        "fixture_sha256": "e6236709af2b8d5b6646dac4bc076992d1f4047e05e5801d86f64d4d3af74add",
+        "baseline": {
+          "original_artifact_id": 12617877227,
+          "original_archive_sha256": "0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+          "retrieved_artifact_id": 12617877227,
+          "retrieved_archive_sha256": "sha256:0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+          "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+          "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff"
+        },
+        "processes": [
+          {
+            "phase": "fault-write",
+            "pid": 3528,
+            "exit_code": 0,
+            "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+            "log_sha256": "aba67cf91b9784e27bcec3b66480af7d41932e293e2896ebbe2ec5bdf33d4a9a",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-write",
+              "passed": true,
+              "checks": 16,
+              "tokens": [],
+              "provider_outcomes": [
+                {
+                  "provider_id": "53092591-ea4e-4b9c-bdb7-84e0c708a801",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "918799aa-5c75-4413-b5d3-a93c8b728317",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3528@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-upgrade",
+            "pid": 3563,
+            "exit_code": 0,
+            "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+            "log_sha256": "7e8f480c64fbc31446fa6aa796f917720ca915f5d65982b394b2b338fcaac0ec",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-upgrade",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "9f56d1fe-341a-4729-8fca-48c9099e2684",
+                "1327acbe-fa7c-4ce5-a3e1-3679a321cbf0"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "53092591-ea4e-4b9c-bdb7-84e0c708a801",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "918799aa-5c75-4413-b5d3-a93c8b728317",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3563@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-verify",
+            "pid": 3599,
+            "exit_code": 0,
+            "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+            "log_sha256": "70d689c7322d05a7726ecdc11c22be58f5ca2334bca7defeb0c0d24f74445ca2",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-verify",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "9f56d1fe-341a-4729-8fca-48c9099e2684",
+                "1327acbe-fa7c-4ce5-a3e1-3679a321cbf0"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "53092591-ea4e-4b9c-bdb7-84e0c708a801",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "918799aa-5c75-4413-b5d3-a93c8b728317",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3599@runnervmtai0g"
+            }
+          }
+        ],
+        "preupgrade_unlocated_fault_import": "PASS",
+        "candidate_restart": "PASS",
+        "world_archive": {
+          "file": "preupgrade-item-fault-world.zip",
+          "sha256": "60b95e8592f95359376e971042e3e5f7eff7fdb938732b1d3d9ae3bb40921773"
+        },
+        "scope": "Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API."
+      },
+      "raw_historical_world": {
+        "world_archive_sha256": "60b95e8592f95359376e971042e3e5f7eff7fdb938732b1d3d9ae3bb40921773",
+        "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+        "providers": [
+          {
+            "provider_id": "918799aa-5c75-4413-b5d3-a93c8b728317",
+            "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "outcome": "extract",
+            "mutation_calls": 1,
+            "removed_units": 8,
+            "accepted_units": 0,
+            "inventory_units": 32,
+            "fault_extract": 1,
+            "fault_insert": 0,
+            "position": [
+              31,
+              200,
+              32
+            ]
+          },
+          {
+            "provider_id": "53092591-ea4e-4b9c-bdb7-84e0c708a801",
+            "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "outcome": "insert",
+            "mutation_calls": 1,
+            "removed_units": 0,
+            "accepted_units": 8,
+            "inventory_units": 8,
+            "fault_extract": 0,
+            "fault_insert": 1,
+            "position": [
+              11,
+              200,
+              32
+            ]
+          }
+        ],
+        "result": "PASS"
+      },
+      "production": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "migration": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+        "migration_fixture_sha256": "e6236709af2b8d5b6646dac4bc076992d1f4047e05e5801d86f64d4d3af74add",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "compound_copied_save_queries": [
+        {
+          "query": {
+            "token": "da87767e-388d-42ff-9a61-dcd7135996fe",
+            "owner_label": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "da87767e-388d-42ff-9a61-dcd7135996fe",
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                64,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "b10170cba6f35d0f3079b2b8ef9e3d26faf41116adb48b3e189062ad3a35190b",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [
+            {
+              "position": [
+                64,
+                200,
+                32
+              ],
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "context_state": "compound",
+              "sealed_claim_count": 8,
+              "tile_sha256": "7b711020ffcde8de54920bb04df160500eea18c24bcdf0c8083ec27777b4c7f5",
+              "original_route_inferred": false
+            }
+          ],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": "foundations_pl4:legacy_item_cell",
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": false,
+              "receipt_sha256": "180178a9351c1187436081d3bf35c0feb6e83a0dbfd62c3ab6feadd23d551e61",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "minecraft:chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "2de68915ba9a75fa33961fabec50ef2385e11c462bdc3ad75f9ba16f8ea931ba",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": "foundations_pl4:legacy_item_cell",
+                  "saved_count": 1,
+                  "saved_stack_sha256": "180178a9351c1187436081d3bf35c0feb6e83a0dbfd62c3ab6feadd23d551e61"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.12.2",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "7d593b338d5079e955b6a9835bac60da09d938d9fb896d7731ecdeec144de1fe",
+          "journal_value_sha256": "a9d84899ba62f8bea4275c2f26483a14c9b81139e3e8f4bed6bc92808eab4a46",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5619712
+        },
+        {
+          "query": {
+            "token": "56c0f169-4469-47ff-a583-d88b50b3d708",
+            "owner_label": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "56c0f169-4469-47ff-a583-d88b50b3d708",
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                80,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "73500182798dd0ef8821f9e8ba6adfa5b7b32de461a3fe110f2e04ed3e95d927",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": "foundations_pl4:legacy_item_cell",
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "receipt_sha256": "180178a9351c1187436081d3bf35c0feb6e83a0dbfd62c3ab6feadd23d551e61",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "minecraft:chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "2de68915ba9a75fa33961fabec50ef2385e11c462bdc3ad75f9ba16f8ea931ba",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": "foundations_pl4:legacy_item_cell",
+                  "saved_count": 1,
+                  "saved_stack_sha256": "180178a9351c1187436081d3bf35c0feb6e83a0dbfd62c3ab6feadd23d551e61"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.12.2",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "7d593b338d5079e955b6a9835bac60da09d938d9fb896d7731ecdeec144de1fe",
+          "journal_value_sha256": "a9d84899ba62f8bea4275c2f26483a14c9b81139e3e8f4bed6bc92808eab4a46",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5619712
+        },
+        {
+          "query": {
+            "token": "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+            "owner_label": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "aa74062e-937f-4f19-a483-bf3a1ea7fa26",
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                64,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "5bb1753aeaccd12c539ede4764c4a72b1784f920bd12c06fbfafd7b85a731bf8",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [
+            {
+              "position": [
+                64,
+                200,
+                32
+              ],
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "context_state": "compound",
+              "sealed_claim_count": 8,
+              "tile_sha256": "c042d2e006fb3d61338866cc138e430bbf8f860b74e4f0e36b6ee3f245678761",
+              "original_route_inferred": false
+            }
+          ],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": "foundations_pl4:legacy_item_cell",
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": false,
+              "receipt_sha256": "cef9cef5aa587247e6e64c19037128f42d4cf6c557faa768bbe58d5a6f97e2d4",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "minecraft:chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "dba769dbf52be18b1ac348f1be6ff843795b14ec13f87d52acfd3a13adb427af",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": "foundations_pl4:legacy_item_cell",
+                  "saved_count": 1,
+                  "saved_stack_sha256": "cef9cef5aa587247e6e64c19037128f42d4cf6c557faa768bbe58d5a6f97e2d4"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.12.2",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "6d31e16f96238a52dbcbd10fd781e69067935b8cd70eea580b1ebb9d4aa6a6eb",
+          "journal_value_sha256": "5307130384ed146afc1937f59d51229750d0e2eb3705a87a60c53a8c7e61c03c",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 6,
+          "selected_region_bytes": 5173248
+        },
+        {
+          "query": {
+            "token": "d00cc10b-85db-49aa-926a-3e2614a70420",
+            "owner_label": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "d00cc10b-85db-49aa-926a-3e2614a70420",
+              "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                80,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "bd8e81643a0335008d8962d55b6ff0b591912150e24c2809ea96161c78e9250c",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": "foundations_pl4:legacy_item_cell",
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "receipt_sha256": "cef9cef5aa587247e6e64c19037128f42d4cf6c557faa768bbe58d5a6f97e2d4",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "minecraft:chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "dba769dbf52be18b1ac348f1be6ff843795b14ec13f87d52acfd3a13adb427af",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": "foundations_pl4:legacy_item_cell",
+                  "saved_count": 1,
+                  "saved_stack_sha256": "cef9cef5aa587247e6e64c19037128f42d4cf6c557faa768bbe58d5a6f97e2d4"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.12.2",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "6d31e16f96238a52dbcbd10fd781e69067935b8cd70eea580b1ebb9d4aa6a6eb",
+          "journal_value_sha256": "5307130384ed146afc1937f59d51229750d0e2eb3705a87a60c53a8c7e61c03c",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 6,
+          "selected_region_bytes": 5173248
+        }
+      ],
+      "new_compound_assertions": 116,
+      "new_compound_jvms": 4,
+      "total_decode_assertions": 348,
+      "total_decode_jvms": 12,
+      "provider_restart_assertions": 188,
+      "historical_checks": 60,
+      "current_provider_and_decode_distinct_jvms": 16
+    },
+    {
+      "minecraft": "1.6.4",
+      "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+      "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+      "hourly": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "native_gate": "PASS",
+        "expected_fixtures": 335,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json",
+          "legacy-item-restart-summary.json",
+          "legacy-item-decode-raw-restart-summary.json",
+          "legacy-item-decode-missing-restart-summary.json",
+          "legacy-item-decode-compound-restart-summary.json",
+          "legacy-decode-world-inspection.json",
+          "preupgrade-item-fault-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "db780e3d20bf7bad32194fb2cc7f99b214e9a3a4ac1034d358becd3beb662e8c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "cebd4a47594364e79237ac093f1e75d9e46410c7de11eb541c51d93c35070c6b",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "c396bc7fde32ab07231885282143f5bd65071ccd697f791e85e609303d893e01",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios-restart-scenarios-srg.jar": "3e97ef8e185a9c876887b097a2ac22bd1006f665e1a63e627dd14d4e0be0dd7c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios.jar": "ddb440aa1f5e67efbcea7a70e6541c67ebb9ec88cf771599d53a25135588fd2e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "f1c329d0b3e994dd1af55105fda5170bd0d859045e4d45b9f524b578d43360d5",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "4c88be7e4614cb92f088cc885a3ac24b13d190208836d136ed279fe55b4ed57e"
+        },
+        "workflow_run": "40374749926",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "production-smoke.json": "1e90a07fcad00473bb25ba86e9f3c4ca840f0ab4642e5daeee8608d0a4c047e8",
+        "preupgrade-item-fault-summary.json": "c1b07c25fb9a4089504e772b805247d522c10a3443476c04e809f6e16a10e14e",
+        "preupgrade-fault-write.json": "4034aedb7c94879cdd376e5167f4ca987877468d41f5da0636b2e0d9dd709877",
+        "preupgrade-fault-verify.json": "f1247ea6eb4028889bf776dc27ec01775c179db04f245a5e320897414339f45d",
+        "preupgrade-fault-upgrade.json": "5483bd9e56af340727b526fd603a3249d78c75e0d982a501cc5b5b223f74fa32",
+        "preupgrade-baseline-origin.json": "779cb640e382f24e6c7c20e950fef3efd8958c6d52de7668e684fd0d1a62998a",
+        "preupgrade-baseline-native.json": "6e5f64597525a813a4c0e1341605ac0ea0085023537dc98c514c5ab61e7545f9",
+        "legacy-migration-summary.json": "3c02dbf435e09ed03692513940f11281074bbef3cccd965fc8dec4f519bbae10",
+        "legacy-item-restart-summary.json": "fcbf1b6dabec988734d3e7b74ad49c94380dfbbcdcb90afe353249d736c8f2ab",
+        "legacy-item-decode-raw-restart-summary.json": "239c733146cb7c0c24e458628c14eb2e0f5e41ad7626a1d4ef9e949b968c96d4",
+        "legacy-item-decode-missing-restart-summary.json": "b1a235fcb4014309df003f01f57ddf0c9d66ed4946eb80db29cbcec99f694bc7",
+        "legacy-item-decode-compound-restart-summary.json": "79529ce473bac90fcf460ea0ace06e7a38d92f0dee426217706a831c0ca204ef",
+        "legacy-decode-world-inspection.json": "93549939e32cc12ab985b88dbe43efe4f70a083f1f5ad5d843f5e3a5609c0f90",
+        "item-restart-write.json": "3e17f29bbd9f99e0b4d398c33bab980dd099f254c321b28b045e221a5c4bf294",
+        "item-restart-verify.json": "f75b80d71f74eb5dd9fa75b3c9eae8bedbbf042ceb41f8c79c114396295246e5",
+        "item-restart-crash-write.json": "5ee289a0c39146b00f1ed8107b5c35608cf233cf393a458a530dbacdb6f477d7",
+        "item-restart-crash-verify.json": "fb6bd9465738a40bc1ae5b3862d9ace3587fc451f0a9ed76c0c73f632cd90190",
+        "item-decode-raw-restart-write.json": "f98385d23932d9d4d94b29901f16b5d0f8aa51f5fa53c7307d43f8f6b57cf500",
+        "item-decode-raw-restart-verify.json": "0480f03d4d11a3403fc9ce071f2cc890809b4c4eaab7671c8497f66e485e8c29",
+        "item-decode-raw-restart-crash-write.json": "3c47d563ed4d7c21585fc344e4bb220f048ea6a6e01fabbb254bd10aa6f29d39",
+        "item-decode-raw-restart-crash-verify.json": "55c3626dbb942a9baa4afca3a7e7e5f63b27f4c34fea633b7fef500afee70fd6",
+        "item-decode-missing-restart-write.json": "8f16b2d0c027e9be6973421c3b8e31b22fdbfd9902380c5ffa7ea2822bb05be9",
+        "item-decode-missing-restart-verify.json": "cfbf7fe9cbb0c02ceb4cb519b783422f948f14e6444dfb7e875f97611a2d2372",
+        "item-decode-missing-restart-crash-write.json": "3df7a967febadecfb51629c0455441dab172041e2ac43edc4d0cae3877e28e4e",
+        "item-decode-missing-restart-crash-verify.json": "4016e2086fda3b60b82f139ca3727315111428334bca58b93ed9388720df8498",
+        "item-decode-compound-restart-write.json": "9d8e96fa3073bed5c6cb4c7d208a435448c45925943f0c214dcb70e6d4f6395f",
+        "item-decode-compound-restart-verify.json": "80022d72c554293988ff8f9e19f3dbfb44951579c6bbf070bd532d17381bdf3b",
+        "item-decode-compound-restart-crash-write.json": "2bb9cb8fa8f2372e0e35422caca8e7e618c4a8756e607b7472277b1018f2400e",
+        "item-decode-compound-restart-crash-verify.json": "2021992a7cec17d3400efd30103d36f0c2304bb3dd9a97bdca4857eae506cac1",
+        "hourly-native.json": "e254bdde9d8b7f30a4780a2dd2c253f07bd97d4a0db2a53692745376588d9d51",
+        "energy-summary.json": "c622f59a46fee599fc3cd9caa5cd1a2523142801ce16a3ab9673a2c8f209b176",
+        "clean-native-summary.json": "8397ddcc345b7f8b2c2ca90aaef81498dfd093407590f1a9846e9d6e1165467c"
+      },
+      "ordinary_native": 335,
+      "provider_restart": {
+        "suite": "item",
+        "minecraft": "1.6.4",
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+        "fixture_sha256": "3e97ef8e185a9c876887b097a2ac22bd1006f665e1a63e627dd14d4e0be0dd7c",
+        "clean_restart": "PASS",
+        "save_barrier_abrupt_restart": "PASS",
+        "processes": [
+          {
+            "phase": "write",
+            "pid": 2975,
+            "exit_code": 0,
+            "log_sha256": "2394fb5bfa8cc6aedfecad0b638f695412c6501b1cf16376421dc9c33e2f783f"
+          },
+          {
+            "phase": "verify",
+            "pid": 2998,
+            "exit_code": 0,
+            "log_sha256": "444fec5b4df58191cb1961c74db0f2d6417de1d9ee51d2261a8895acce403848"
+          },
+          {
+            "phase": "crash-write",
+            "pid": 3023,
+            "exit_code": -9,
+            "log_sha256": "5b60ba4b9e0be14203f83e725ab4ecc6e141c465f7ca87e7ea62a37f7bb40625"
+          },
+          {
+            "phase": "crash-verify",
+            "pid": 3046,
+            "exit_code": 0,
+            "log_sha256": "23e2ef58c399540c7c9520fa2e22b947f1465dd1c8cac3c8fcba57f5af637ec3"
+          }
+        ],
+        "phase_reports": {
+          "write": {
+            "minecraft": "1.6.4",
+            "phase": "write",
+            "passed": true,
+            "assertions": 52,
+            "tokens": [
+              "63fb1478-4c18-4344-a178-07d99137b59a",
+              "d0d65961-812f-490f-a680-bee5f88ab665"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "fdcd98c6-e848-4ea5-b903-284ed797420f",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "63fb1478-4c18-4344-a178-07d99137b59a",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "7e300206-59c3-45f6-b7a6-5848c8ccbfb3",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "d0d65961-812f-490f-a680-bee5f88ab665",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2975@runnervmtai0g"
+          },
+          "verify": {
+            "minecraft": "1.6.4",
+            "phase": "verify",
+            "passed": true,
+            "assertions": 42,
+            "tokens": [
+              "63fb1478-4c18-4344-a178-07d99137b59a",
+              "d0d65961-812f-490f-a680-bee5f88ab665"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "fdcd98c6-e848-4ea5-b903-284ed797420f",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "63fb1478-4c18-4344-a178-07d99137b59a",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "7e300206-59c3-45f6-b7a6-5848c8ccbfb3",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "d0d65961-812f-490f-a680-bee5f88ab665",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2998@runnervmtai0g"
+          },
+          "crash-write": {
+            "minecraft": "1.6.4",
+            "phase": "crash-write",
+            "passed": true,
+            "assertions": 52,
+            "tokens": [
+              "a99c94ca-cde9-44c3-9f2a-662b977c2b83",
+              "1280d7bb-e026-43f7-9a6c-83d9f6e84952"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "a981b1af-3bff-4330-b30e-4286c8469754",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "a99c94ca-cde9-44c3-9f2a-662b977c2b83",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "e670d0bd-b2cd-4be5-9899-88c4611b2310",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "1280d7bb-e026-43f7-9a6c-83d9f6e84952",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3023@runnervmtai0g"
+          },
+          "crash-verify": {
+            "minecraft": "1.6.4",
+            "phase": "crash-verify",
+            "passed": true,
+            "assertions": 42,
+            "tokens": [
+              "a99c94ca-cde9-44c3-9f2a-662b977c2b83",
+              "1280d7bb-e026-43f7-9a6c-83d9f6e84952"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "a981b1af-3bff-4330-b30e-4286c8469754",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "a99c94ca-cde9-44c3-9f2a-662b977c2b83",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "e670d0bd-b2cd-4be5-9899-88c4611b2310",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "1280d7bb-e026-43f7-9a6c-83d9f6e84952",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3046@runnervmtai0g"
+          }
+        },
+        "world_archives": {
+          "clean": {
+            "file": "item-restart-clean-world.zip",
+            "sha256": "51de4f0e3dd4a9b72dbcc5d79079ac61c7a7b2dcfecef15b8af99a2bd84c8540"
+          },
+          "barrier": {
+            "file": "item-restart-barrier-world.zip",
+            "sha256": "40a8ef977e28e0f0ba66d6479cc5eb5b012cb10eaf82248084db45ed939e3ee7"
+          }
+        },
+        "scope": "Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting."
+      },
+      "raw_provider_worlds": {
+        "clean": {
+          "world_archive_sha256": "51de4f0e3dd4a9b72dbcc5d79079ac61c7a7b2dcfecef15b8af99a2bd84c8540",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "7e300206-59c3-45f6-b7a6-5848c8ccbfb3",
+              "owner": "pl4owner",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "fdcd98c6-e848-4ea5-b903-284ed797420f",
+              "owner": "pl4owner",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        },
+        "barrier": {
+          "world_archive_sha256": "40a8ef977e28e0f0ba66d6479cc5eb5b012cb10eaf82248084db45ed939e3ee7",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "e670d0bd-b2cd-4be5-9899-88c4611b2310",
+              "owner": "pl4owner",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "a981b1af-3bff-4330-b30e-4286c8469754",
+              "owner": "pl4owner",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        }
+      },
+      "decode_restart": {
+        "decode-raw": {
+          "suite": "decode-raw",
+          "minecraft": "1.6.4",
+          "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+          "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+          "fixture_sha256": "3e97ef8e185a9c876887b097a2ac22bd1006f665e1a63e627dd14d4e0be0dd7c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3071,
+              "exit_code": 0,
+              "log_sha256": "d855cdddd7daed452edeb497b9d25a1d49f1cdbc956f316b062b2ae7d32a7e28"
+            },
+            {
+              "phase": "verify",
+              "pid": 3095,
+              "exit_code": 0,
+              "log_sha256": "fc4d3baa98ec2e2c051915a18db2fc7928755be13a4f79deb9cdfe5da4a42af5"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3119,
+              "exit_code": -9,
+              "log_sha256": "a43b62056db2a128e98d134c86cf2e7572c0d4f58ce7c3fe076dfa95fce10a70"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3140,
+              "exit_code": 0,
+              "log_sha256": "1b14ef678c9dc28609bae59f46df910e55efd0ae47e86e0d6e631d40325b82e8"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "2a69f17d-5ba9-4047-80a2-16f71c6268bb",
+                "21074a9b-fc03-446a-9e52-8779d7d7ad1c"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2a69f17d-5ba9-4047-80a2-16f71c6268bb",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "21074a9b-fc03-446a-9e52-8779d7d7ad1c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3071@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "2a69f17d-5ba9-4047-80a2-16f71c6268bb",
+                "21074a9b-fc03-446a-9e52-8779d7d7ad1c"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2a69f17d-5ba9-4047-80a2-16f71c6268bb",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "21074a9b-fc03-446a-9e52-8779d7d7ad1c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3095@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "24883e13-0ed2-4ff8-afdf-70eb3a978a6d",
+                "638ca178-020c-4669-b9fa-6ff3fa27a70a"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "24883e13-0ed2-4ff8-afdf-70eb3a978a6d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "638ca178-020c-4669-b9fa-6ff3fa27a70a",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3119@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "24883e13-0ed2-4ff8-afdf-70eb3a978a6d",
+                "638ca178-020c-4669-b9fa-6ff3fa27a70a"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "24883e13-0ed2-4ff8-afdf-70eb3a978a6d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "638ca178-020c-4669-b9fa-6ff3fa27a70a",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3140@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-raw-restart-clean-world.zip",
+              "sha256": "6c51920b4d58f05fabfa3ed606404ec25d4d430e6448e5f03b74ee4847fa649d"
+            },
+            "barrier": {
+              "file": "item-decode-raw-restart-barrier-world.zip",
+              "sha256": "4561e3a2f566dce54965cd38e3f0246fda3ae102ff15e3314dc0f77cb8ee53f3"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "2a69f17d-5ba9-4047-80a2-16f71c6268bb",
+                "21074a9b-fc03-446a-9e52-8779d7d7ad1c"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "6c51920b4d58f05fabfa3ed606404ec25d4d430e6448e5f03b74ee4847fa649d"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "24883e13-0ed2-4ff8-afdf-70eb3a978a6d",
+                "638ca178-020c-4669-b9fa-6ff3fa27a70a"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "4561e3a2f566dce54965cd38e3f0246fda3ae102ff15e3314dc0f77cb8ee53f3"
+            }
+          }
+        },
+        "decode-missing": {
+          "suite": "decode-missing",
+          "minecraft": "1.6.4",
+          "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+          "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+          "fixture_sha256": "3e97ef8e185a9c876887b097a2ac22bd1006f665e1a63e627dd14d4e0be0dd7c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3227,
+              "exit_code": 0,
+              "log_sha256": "e62dd3229329a36d91c69eb6a43ae86332321c534d779b18374d039a60fc6b35"
+            },
+            {
+              "phase": "verify",
+              "pid": 3251,
+              "exit_code": 0,
+              "log_sha256": "233c99d5fb38efb53fb0ac237f164c6e04afdb57d476bb55987515d91f074785"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3275,
+              "exit_code": -9,
+              "log_sha256": "034aff38bce0414b193e9075190f989717f22012bca948b47bd031fc9cdded93"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3297,
+              "exit_code": 0,
+              "log_sha256": "878a6af92425d47f517cf374104b54bebcd323dfd723cd9d6850aa0ea18ad4cf"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "f682bfc8-ae21-4b29-b1d0-208d02b5d18f",
+                "85245adc-fe28-4817-b073-3881a03fcda2"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f682bfc8-ae21-4b29-b1d0-208d02b5d18f",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "85245adc-fe28-4817-b073-3881a03fcda2",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3227@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "f682bfc8-ae21-4b29-b1d0-208d02b5d18f",
+                "85245adc-fe28-4817-b073-3881a03fcda2"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f682bfc8-ae21-4b29-b1d0-208d02b5d18f",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "85245adc-fe28-4817-b073-3881a03fcda2",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3251@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "70f31397-dd1b-4f24-b927-a0b5a3a711bd",
+                "2cc86bf7-86e3-47bf-bd76-eb8d9081dddf"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "70f31397-dd1b-4f24-b927-a0b5a3a711bd",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "2cc86bf7-86e3-47bf-bd76-eb8d9081dddf",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3275@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "70f31397-dd1b-4f24-b927-a0b5a3a711bd",
+                "2cc86bf7-86e3-47bf-bd76-eb8d9081dddf"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "70f31397-dd1b-4f24-b927-a0b5a3a711bd",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "2cc86bf7-86e3-47bf-bd76-eb8d9081dddf",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3297@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-missing-restart-clean-world.zip",
+              "sha256": "c3c2a26e4d2fcaabd86ea507c0e46e2e3950ab4d9f2051d58a9e231de17c85e0"
+            },
+            "barrier": {
+              "file": "item-decode-missing-restart-barrier-world.zip",
+              "sha256": "c6270fc4b63b0b0b4ad77c64fdb7f8ff944878c92c90b81eea6d4eedb3971271"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "f682bfc8-ae21-4b29-b1d0-208d02b5d18f",
+                "85245adc-fe28-4817-b073-3881a03fcda2"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "c3c2a26e4d2fcaabd86ea507c0e46e2e3950ab4d9f2051d58a9e231de17c85e0"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "70f31397-dd1b-4f24-b927-a0b5a3a711bd",
+                "2cc86bf7-86e3-47bf-bd76-eb8d9081dddf"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "c6270fc4b63b0b0b4ad77c64fdb7f8ff944878c92c90b81eea6d4eedb3971271"
+            }
+          }
+        },
+        "decode-compound": {
+          "suite": "decode-compound",
+          "minecraft": "1.6.4",
+          "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+          "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+          "fixture_sha256": "3e97ef8e185a9c876887b097a2ac22bd1006f665e1a63e627dd14d4e0be0dd7c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3323,
+              "exit_code": 0,
+              "log_sha256": "827a47ef23fd93ea1ea59830bafd1bb0540d0e465b157bd266685bc5ec73fc99"
+            },
+            {
+              "phase": "verify",
+              "pid": 3346,
+              "exit_code": 0,
+              "log_sha256": "31b37ef44a0abd0cd31752e504102c79ba238dcea11f3c4514633a6ba3d574db"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3369,
+              "exit_code": -9,
+              "log_sha256": "7fdc1ff273876c6bc3e8ad3635232ba6e36ce25ecd87db9d24dd37f0ce95ecf6"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3391,
+              "exit_code": 0,
+              "log_sha256": "ba7b5d12a270d38c0209142d26e086f1be0d2e67876f70f97acb3761112d7425"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+                "a809c862-edd9-4789-883a-e1c385ffd58c"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "a809c862-edd9-4789-883a-e1c385ffd58c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3323@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+                "a809c862-edd9-4789-883a-e1c385ffd58c"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "a809c862-edd9-4789-883a-e1c385ffd58c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3346@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": 32,
+              "tokens": [
+                "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+                "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3369@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": 26,
+              "tokens": [
+                "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+                "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3391@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-compound-restart-clean-world.zip",
+              "sha256": "9c91d224843e8bde07266dc9710ef31bf16678a240f78809b469c525a6885995"
+            },
+            "barrier": {
+              "file": "item-decode-compound-restart-barrier-world.zip",
+              "sha256": "7fe80f44d2d6bbdf290a87f795092798c70a32321bbe89cefa4ca35780024b35"
+            }
+          },
+          "scope": "Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+                "a809c862-edd9-4789-883a-e1c385ffd58c"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "9c91d224843e8bde07266dc9710ef31bf16678a240f78809b469c525a6885995"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+                "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "7fe80f44d2d6bbdf290a87f795092798c70a32321bbe89cefa4ca35780024b35"
+            }
+          }
+        }
+      },
+      "historical": {
+        "minecraft": "1.6.4",
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+        "fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "baseline": {
+          "original_artifact_id": 12617856905,
+          "original_archive_sha256": "1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "retrieved_artifact_id": 12617856905,
+          "retrieved_archive_sha256": "sha256:1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+          "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282"
+        },
+        "processes": [
+          {
+            "phase": "fault-write",
+            "pid": 3439,
+            "exit_code": 0,
+            "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+            "log_sha256": "37911831b73fbc50b8346f3caf4a45c58ba08f4cb549c9c20d554e674b572953",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-write",
+              "passed": true,
+              "checks": 16,
+              "tokens": [],
+              "provider_outcomes": [
+                {
+                  "provider_id": "6695422f-1eda-49fa-b7a7-bb8be140be2d",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "cd849516-2512-44db-b79f-b2e55a0abf86",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3439@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-upgrade",
+            "pid": 3481,
+            "exit_code": 0,
+            "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+            "log_sha256": "e2056119e041fbc2c2510b7799dd2af2e887c6a01cb0b47759cffccd0e766eb2",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-upgrade",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "6a4241bd-4cf7-449f-ab51-19fe43c0e84d",
+                "022aea49-161e-484f-8ca7-476438021707"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "6695422f-1eda-49fa-b7a7-bb8be140be2d",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "cd849516-2512-44db-b79f-b2e55a0abf86",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3481@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-verify",
+            "pid": 3505,
+            "exit_code": 0,
+            "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+            "log_sha256": "8682df5c354307307320c5ec969b2f930f7788d2b16e009168ca92428b9363db",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-verify",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "6a4241bd-4cf7-449f-ab51-19fe43c0e84d",
+                "022aea49-161e-484f-8ca7-476438021707"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "6695422f-1eda-49fa-b7a7-bb8be140be2d",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "cd849516-2512-44db-b79f-b2e55a0abf86",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3505@runnervmtai0g"
+            }
+          }
+        ],
+        "preupgrade_unlocated_fault_import": "PASS",
+        "candidate_restart": "PASS",
+        "world_archive": {
+          "file": "preupgrade-item-fault-world.zip",
+          "sha256": "b90160cff672545a6fd370d04fe2b66db30f03bcd73a1356c0a1c52a4ba5cccb"
+        },
+        "scope": "Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API."
+      },
+      "raw_historical_world": {
+        "world_archive_sha256": "b90160cff672545a6fd370d04fe2b66db30f03bcd73a1356c0a1c52a4ba5cccb",
+        "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+        "providers": [
+          {
+            "provider_id": "cd849516-2512-44db-b79f-b2e55a0abf86",
+            "owner": "pl4owner",
+            "outcome": "extract",
+            "mutation_calls": 1,
+            "removed_units": 8,
+            "accepted_units": 0,
+            "inventory_units": 32,
+            "fault_extract": 1,
+            "fault_insert": 0,
+            "position": [
+              31,
+              200,
+              32
+            ]
+          },
+          {
+            "provider_id": "6695422f-1eda-49fa-b7a7-bb8be140be2d",
+            "owner": "pl4owner",
+            "outcome": "insert",
+            "mutation_calls": 1,
+            "removed_units": 0,
+            "accepted_units": 8,
+            "inventory_units": 8,
+            "fault_extract": 0,
+            "fault_insert": 1,
+            "position": [
+              11,
+              200,
+              32
+            ]
+          }
+        ],
+        "result": "PASS"
+      },
+      "production": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "migration": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+        "migration_fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "compound_copied_save_queries": [
+        {
+          "query": {
+            "token": "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+            "owner_label": "pl4owner",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "f5355f4f-de03-4d38-950b-dfbc65b2317a",
+              "saved_owner": "pl4owner",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                64,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "7fbea00717d21936b155c74d37511f10cb09d1410efba0c686ffeee8095b2240",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [
+            {
+              "position": [
+                64,
+                200,
+                32
+              ],
+              "saved_owner": null,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "context_state": "compound",
+              "sealed_claim_count": 8,
+              "tile_sha256": "8ca6d09ced2f6be5552913249939a57878a00290ff43be096481908c39997410",
+              "original_route_inferred": false
+            }
+          ],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": 12758,
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": false,
+              "receipt_sha256": "fcfa119d52b476f3490fa1082842f53c462500b7401fc2f56f3a8ab8e77c2a04",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "Chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "7c5d727b108f8c6888f75e782d2dab26674772046fe3d845e5b90dc7e1266f0b",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": 12758,
+                  "saved_count": 1,
+                  "saved_stack_sha256": "fcfa119d52b476f3490fa1082842f53c462500b7401fc2f56f3a8ab8e77c2a04"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.6.4",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "9c91d224843e8bde07266dc9710ef31bf16678a240f78809b469c525a6885995",
+          "journal_value_sha256": "3aab182fafcc35f1f377b75fa838cc03763aa51d5e0c83cf2538981a707a26d7",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5165056
+        },
+        {
+          "query": {
+            "token": "a809c862-edd9-4789-883a-e1c385ffd58c",
+            "owner_label": "pl4owner",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "a809c862-edd9-4789-883a-e1c385ffd58c",
+              "saved_owner": "pl4owner",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                80,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "841920f0f28a56e9f6a65c3b8ae5aab7607ece60bead95e270c29b10bbbb7088",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": 12758,
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "receipt_sha256": "fcfa119d52b476f3490fa1082842f53c462500b7401fc2f56f3a8ab8e77c2a04",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "Chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "7c5d727b108f8c6888f75e782d2dab26674772046fe3d845e5b90dc7e1266f0b",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": 12758,
+                  "saved_count": 1,
+                  "saved_stack_sha256": "fcfa119d52b476f3490fa1082842f53c462500b7401fc2f56f3a8ab8e77c2a04"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.6.4",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "9c91d224843e8bde07266dc9710ef31bf16678a240f78809b469c525a6885995",
+          "journal_value_sha256": "3aab182fafcc35f1f377b75fa838cc03763aa51d5e0c83cf2538981a707a26d7",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5165056
+        },
+        {
+          "query": {
+            "token": "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+            "owner_label": "pl4owner",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "69c39b51-ec0a-475e-aeda-9390cdeb8a07",
+              "saved_owner": "pl4owner",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                64,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "952a264b383f77c52d47764ea775a28b6951df54e0d8146f656fde4721738882",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [
+            {
+              "position": [
+                64,
+                200,
+                32
+              ],
+              "saved_owner": null,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "context_state": "compound",
+              "sealed_claim_count": 8,
+              "tile_sha256": "a24938a90e746709016434c778c77d233a45cfc28f4c94a1c27e399c7011004a",
+              "original_route_inferred": false
+            }
+          ],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": 12758,
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": false,
+              "receipt_sha256": "4174f361707cb0b4bef783ea25073c8b555511e81cef9db04dd9cdda7164e53f",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "Chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "c5659ae96abc6000757be7a703c174c85c6dee31d955bcae54619a0a08fc939b",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": 12758,
+                  "saved_count": 1,
+                  "saved_stack_sha256": "4174f361707cb0b4bef783ea25073c8b555511e81cef9db04dd9cdda7164e53f"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.6.4",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "7fe80f44d2d6bbdf290a87f795092798c70a32321bbe89cefa4ca35780024b35",
+          "journal_value_sha256": "50bcaa6b12302f4fded8fd015c9806fb9f3673874f7955acd7fee3ec39f37bb7",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5537792
+        },
+        {
+          "query": {
+            "token": "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d",
+            "owner_label": "pl4owner",
+            "dimension": 0
+          },
+          "value_hash_format": "pl4-parsed-value-v2",
+          "journal_present": true,
+          "opaque_journal": true,
+          "matching_saved_records": [
+            {
+              "token": "9d1180fb-69cc-4c1e-8bcc-09aeaec8d59d",
+              "saved_owner": "pl4owner",
+              "owner_label_matches_query": true,
+              "original_target": null,
+              "observed_host": [
+                80,
+                200,
+                32
+              ],
+              "record_validation_errors": [],
+              "duplicate_token_observation": false,
+              "original_target_withheld": true,
+              "record_sha256": "e768037c0b0f671d1573b216d59246fa9a8da99d7610385ee292f11d1a9b1fe3",
+              "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+            }
+          ],
+          "observed_fault_tiles": [],
+          "observed_receipts": [
+            {
+              "container": [
+                85,
+                200,
+                32
+              ],
+              "slot": 0,
+              "saved_item_id": 12758,
+              "saved_stack_count": 1,
+              "sealed_claim_count": 8,
+              "current_context_token_matches": false,
+              "preserved_evidence_token_occurrence": true,
+              "receipt_sha256": "4174f361707cb0b4bef783ea25073c8b555511e81cef9db04dd9cdda7164e53f",
+              "spendable_claim": false,
+              "original_route_inferred": false
+            }
+          ],
+          "explicit_inventory_observations": [
+            {
+              "position": [
+                85,
+                200,
+                32
+              ],
+              "saved_tile_id": "Chest",
+              "saved_provider_id": null,
+              "saved_provider_owner_label": null,
+              "tile_sha256": "c5659ae96abc6000757be7a703c174c85c6dee31d955bcae54619a0a08fc939b",
+              "slots": [
+                {
+                  "slot": 0,
+                  "saved_item_id": 12758,
+                  "saved_count": 1,
+                  "saved_stack_sha256": "4174f361707cb0b4bef783ea25073c8b555511e81cef9db04dd9cdda7164e53f"
+                }
+              ],
+              "identity_or_alias_proven": false,
+              "authorization_proven": false,
+              "spendable_total_inferred": false
+            }
+          ],
+          "result_limit_reached": false,
+          "reconciliation_cleared": false,
+          "original_route_inferred": false,
+          "minecraft_label": "1.6.4",
+          "minecraft_identity_proven_by_save": false,
+          "source_archive_sha256": "7fe80f44d2d6bbdf290a87f795092798c70a32321bbe89cefa4ca35780024b35",
+          "journal_value_sha256": "50bcaa6b12302f4fded8fd015c9806fb9f3673874f7955acd7fee3ec39f37bb7",
+          "selected_dimension_scan_complete": false,
+          "scan_stop_reason": "chunk bound",
+          "scanned_chunks": 128,
+          "scanned_tiles": 3,
+          "selected_region_bytes": 5537792
+        }
+      ],
+      "new_compound_assertions": 116,
+      "new_compound_jvms": 4,
+      "total_decode_assertions": 348,
+      "total_decode_jvms": 12,
+      "provider_restart_assertions": 188,
+      "historical_checks": 60,
+      "current_provider_and_decode_distinct_jvms": 16
+    },
+    {
+      "minecraft": "1.21.1",
+      "source_commit": "c57a17cbb25d90e6734088427feff67f059411e8",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "hourly": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "c57a17cbb25d90e6734088427feff67f059411e8",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40374749926",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "rc-development-gate.json": "9d8eff01bf70f0a84b617ed84db1d19086da05f94feac7df573fa9aab59830e9",
+        "hourly-native.json": "6c52c446ffb398e463c308e32fbb5e1f4b9fd0c747767bc1d60d03cc1823330a"
+      },
+      "ordinary_native": 192
+    }
+  ],
+  "production_fix": "Generic escrow settlement refuses clearing while original legacy evidence exists, including compound/valid imported unknown contexts. No recovery or fence-clear operation is introduced.",
+  "limitations": [
+    "Clean restart and parent SIGKILL after completed native world/storage save and flush only; not pre-save/power-loss atomicity.",
+    "Rejected-compound fixture uses malformed integer Token with retained original evidence and nested byte payload; other malformed fields and arbitrary rewrites remain open.",
+    "Registered providers and generated migration/save fixtures are not installed optional-provider identity/access-control/durability, copied user-world or multiplayer acceptance.",
+    "Sealed uncertain claims remain nonspendable; extracted losses stay unaccounted. No replay, redemption, minting or inferred reconciliation.",
+    "Other21 targets retain prior exact native evidence; broad editor/multipart parity, in-game export, multiplayer/profile/dimension, launcher profiles and sustained performance remain unfinished."
+  ],
+  "environment": "Full local overlay prevented default temp creation; only duplicate GitHub-preserved downloads removed. Temporary staging/tests moved to RAM with TMPDIR;120 tests then passed. Remote native gates were preserved.",
+  "rc_publication_cleared": false,
+  "cleared_targets": 0,
+  "new_github_release": null,
+  "new_curseforge_upload_id": null,
+  "curseforge_moderation": null,
+  "curseforge_public_visibility": null,
+  "controller_sha256": {
+    "hourly_builds.py": "42e7543e4e6d9abdba63a3fe239a884abf6729fb1d05b6039932e37ce7d249b7",
+    "inspect_legacy_decode_world.py": "9c6c5df6dff603f3e60861be48e8e3a625d2a91450828ef199dd73ce808fa07d",
+    "test_legacy_decode_restart_gate.py": "01a15386d3295186b1481fb8fb6ddd3f4a984ea1befa9010ad2018e0f684e29b",
+    "test_legacy_decode_world.py": "7a0098b9018925a640d23d4e169ebbae33eb643ecf12579fad9dab002564256b"
+  },
+  "client_transport_failure": {
+    "run": 40375515505,
+    "job": 121757387541,
+    "step": "Retrieve the independently native-qualified production artifact",
+    "observed": "gh: HTTP 503",
+    "client_started": false,
+    "failed_artifact_id": 12673908607,
+    "failed_artifact_zip_sha256": "589ed4bfc96ef0cf6af9b43156c025a120f59e30f9cce01ec958cd08291d8817",
+    "repair": "One bounded retry only for429/5xx; staged download checksum checked before atomic rename. Bash syntax check passed. No repeated unchanged workflow retry.",
+    "retry_source": "9f42aed11b3c12fc238902ebd8b4e74a6b36a746"
+  },
+  "clients": {
+    "112": {
+      "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+      "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+      "result": "PASS",
+      "runtime": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+        "probe_sha256": "a17caeb54c8374433e3a36c98b8afb36c513fb31a8f00db0e32adc6913d206fe",
+        "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+        "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "probe": {
+        "minecraft": "1.12.2",
+        "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "986894d7-2392-4ca4-b175-bf12a25589f5",
+        "diagnostic_journal_messages": "[PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only., Token 986894d7-2392-4ca4-b175-bf12a25589f5; inspection required; no automatic replay.]",
+        "diagnostic_chat_messages": "[PL4 item receipt: unresolved token 986894d7-2392-4ca4-b175-bf12a25589f5; recorded phase wireless at -1,200,0; preserve receipt; no replay.]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "04449798-08e7-4c5e-96c8-80f1dbcbe0ac",
+        "preupgrade_import_journal_messages": "[PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only., Token 04449798-08e7-4c5e-96c8-80f1dbcbe0ac; legacy import: original target/phase unknown; owner-wide fence; no replay., Token 986894d7-2392-4ca4-b175-bf12a25589f5; inspection required; no automatic replay.]",
+        "preupgrade_import_receipt_messages": "[PL4 item receipt: unresolved legacy token 04449798-08e7-4c5e-96c8-80f1dbcbe0ac; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+      },
+      "screenshot_sha256": {
+        "legacy-wireless-storage-tooltip.png": "81af555c17bdea251464b2971db994ed1617a027115651f12573236eb0ee653c",
+        "legacy-wireless-storage-sorted.png": "2db99ecdea6df4417c8d4e7246e1136e1450266dff8cfc53c600d87c89ec12f5",
+        "legacy-wireless-storage-search.png": "57c0e52c064e2972c9b419718891e6c41988faccfe3e6356d2757a3d0b2aee27",
+        "legacy-wireless-storage-search-empty.png": "1d72a5f198eefcd1a24e75ea36a3411ec3c00c21a0e4e1a6259aaaa2d386f8eb",
+        "legacy-wireless-storage-scale-4.png": "00cfa107fe333dc6020e8299d560d337163b3475364750490f155e33cf792813",
+        "legacy-wireless-storage-scale-2.png": "8f5abc1730375329d0658eba2afed3821e1937cbabfb4c7b8ff8ee5b56d7fea4",
+        "legacy-wireless-storage-scale-3.png": "cd16081cba6c766d8f56f1aa007f10a032f85a10779862a8e601cab2dfba0146",
+        "legacy-wireless-storage-scale-1.png": "75611109559b8965797f24d24aabddc2c4ee057d5d4e4c8421e56d50a1e39ec6",
+        "legacy-wireless-grouped-withdrawal.png": "444d61d1b3d90a5cddb6a0e5b696a1571cc114764f0342f9fcd00a789e5d148b",
+        "legacy-wireless-grouped-variants.png": "796f583619adf4796a3d7b166073ae8f9f5847fe9d1be2fef041130dccf6a30f",
+        "legacy-wireless-grouped-scale-4.png": "a7db61609096d4ae7521bce69376497c04367ecbbe1bf6f597c2b5734df2786d",
+        "legacy-wireless-grouped-scale-3.png": "b57485c5f6507a835aecff3b2a4b18499408a27076e1203d41b45373256e5bac",
+        "legacy-wireless-grouped-scale-2.png": "23f3e7d08cb6313fdddd01d85623b226e654d36dcf562df17dca2914b7181e7a",
+        "legacy-wireless-grouped-scale-1.png": "249ca6657a717d58c85d0ebede1392bf33b39e8f96e7a928c34677b2ae71c6d6",
+        "legacy-public-display.png": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+        "legacy-private-display.png": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+        "legacy-item-receipt-chat.png": "a9c7903d18f950808a09215c73258309069ac229a656309404d3b1d48214c3f9",
+        "legacy-item-journal-chat.png": "363a8f3ddfd4c85f42c7a336fe4621d3c67dd42762ef7ffddfc4e9d841e21c58",
+        "legacy-item-import-receipt-chat.png": "fee2d05a6557195d3ba31826912270cf23524ec3557493ec401b8a82db6f5986",
+        "legacy-item-import-journal-chat.png": "18213f59ceae1c6b271a9752fcb716319775561bb9f50e271fcd1b7142c5cd94"
+      },
+      "scope": "Current exact hourly production JAR; normal stock storage/actions/display and imported-unknown native chat. Compound rejection is separate native JVM evidence, not graphical corruption/recovery acceptance.",
+      "workflow_run": 40375515653,
+      "controller_source": "795f73705df31b2c1d4121fe89e019b21e3769b5",
+      "artifact": {
+        "id": 12674333846,
+        "name": "legacy-wireless-real-client-40375515653-1",
+        "size_in_bytes": 554536,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12674333846",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12674333846/zip",
+        "expired": false,
+        "created_at": "2026-10-26T18:15:08Z",
+        "expires_at": "2026-11-09T18:15:07Z",
+        "updated_at": "2026-10-26T18:15:08Z",
+        "digest": "sha256:65983815b7d438085377e34a4446db267c0583699a72363d7c406815c8ca1a1a",
+        "workflow_run": {
+          "id": 40375515653,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "795f73705df31b2c1d4121fe89e019b21e3769b5"
+        }
+      }
+    },
+    "164": {
+      "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+      "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+      "result": "PASS",
+      "runtime": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+        "probe_sha256": "2e45d88819e78fc8cf63e98d0f45aadd6fa9a3614ae22076228cb914cab9c2ac",
+        "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+        "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "probe": {
+        "minecraft": "1.6.4",
+        "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "5529e2e2-146a-4239-b4cd-745ef128dcc1",
+        "diagnostic_journal_messages": "[{\"text\":\"PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only.\"}, {\"text\":\"Token 5529e2e2-146a-4239-b4cd-745ef128dcc1; inspection required; no automatic replay.\"}]",
+        "diagnostic_chat_messages": "[{\"text\":\"PL4 item receipt: unresolved token 5529e2e2-146a-4239-b4cd-745ef128dcc1; recorded phase wireless at -1,200,0; preserve receipt; no replay.\"}]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "ae53c03b-2d5a-42ef-acb7-3ac2dcd1d19d",
+        "preupgrade_import_journal_messages": "[{\"text\":\"PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only.\"}, {\"text\":\"Token 5529e2e2-146a-4239-b4cd-745ef128dcc1; inspection required; no automatic replay.\"}, {\"text\":\"Token ae53c03b-2d5a-42ef-acb7-3ac2dcd1d19d; legacy import: original target/phase unknown; owner-wide fence; no replay.\"}]",
+        "preupgrade_import_receipt_messages": "[{\"text\":\"PL4 item receipt: unresolved legacy token ae53c03b-2d5a-42ef-acb7-3ac2dcd1d19d; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.\"}]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+      },
+      "screenshot_sha256": {
+        "legacy-wireless-storage-tooltip.png": "d5ca49854a1cd48642610d9603247b387d73cda6d7743982f1b5a654fa3088d5",
+        "legacy-wireless-storage-sorted.png": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+        "legacy-wireless-storage-search.png": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+        "legacy-wireless-storage-scale-4.png": "5f813e8bdfeb2cb0a50b014a7191339ff3c3cb05c1a818824edcc8695002d10e",
+        "legacy-wireless-storage-search-empty.png": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+        "legacy-wireless-storage-scale-3.png": "ffb15300b061b23057d4d309934664846fc51f9cbab24ec3a5e788eee2e3604c",
+        "legacy-wireless-storage-scale-2.png": "8fa03d91a132baa184276ca735f898d42970d1467ce0d562304c9cdf5541ca24",
+        "legacy-wireless-storage-scale-1.png": "0f664401e2f3b8069058d81b175488e1d54def037f9bdf318c7d88cc4b57ff68",
+        "legacy-wireless-grouped-withdrawal.png": "7921f755375ad12561bafa535d69aebbeea7b9cf8303bc8a60173c67b44a8ac2",
+        "legacy-wireless-grouped-variants.png": "a7ee841f9802a60209e8b5a21253b64985d051191b9740d1553a01fcfba558a1",
+        "legacy-wireless-grouped-scale-4.png": "740ee2904d7217f4927b9a25878779a5f0d38c7bb2d1852fd794605623380d07",
+        "legacy-wireless-grouped-scale-3.png": "6cf2f1c57b9a7588c3215b9879053cf1ade17a51f33c1e14c6ce8b3742742a0a",
+        "legacy-wireless-grouped-scale-2.png": "aa054f55705a870858124c9530223b78c29b74ed4d0f833ca3d590c9112d6548",
+        "legacy-wireless-grouped-scale-1.png": "2c5620d73f25fd5ecfcb9dfc4a1db8908f4640d73a973dfd2b6d07ae88d96d63",
+        "legacy-public-display.png": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+        "legacy-private-display.png": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+        "legacy-item-receipt-chat.png": "19029a6c70d7c674c6cb1f5ed31d14d3d55618ed8f15c204f45960fd8996eb61",
+        "legacy-item-journal-chat.png": "ec9c168689839be9e19e54b368461d95cb58eb10fa711d15f86b4f5deeb7a594",
+        "legacy-item-import-receipt-chat.png": "70674b69be8706adfdb60f1e80977b3bfe8597e213f1a361a2f50ecdd97522c2",
+        "legacy-item-import-journal-chat.png": "996aeea34c7cb332a8bd76b8e53372066b62dedd2896e2dd78d6750f070d48e1"
+      },
+      "scope": "Current exact hourly production JAR; normal stock storage/actions/display and imported-unknown native chat. Compound rejection is separate native JVM evidence, not graphical corruption/recovery acceptance.",
+      "workflow_run": 40375932328,
+      "controller_source": "9f42aed11b3c12fc238902ebd8b4e74a6b36a746",
+      "artifact": {
+        "id": 12675625047,
+        "name": "legacy164-wireless-real-client-40375932328-1",
+        "size_in_bytes": 441428,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12675625047",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12675625047/zip",
+        "expired": false,
+        "created_at": "2026-10-26T18:18:00Z",
+        "expires_at": "2026-11-09T18:17:59Z",
+        "updated_at": "2026-10-26T18:18:00Z",
+        "digest": "sha256:b1888748ff04b0646bc3be819b70c06a1b4b0f9a25697744c0027664cae82424",
+        "workflow_run": {
+          "id": 40375932328,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "9f42aed11b3c12fc238902ebd8b4e74a6b36a746"
+        }
+      }
+    }
+  },
+  "native_artifacts": [
+    {
+      "id": 12675275565,
+      "name": "hourly-native-1.21.1-c57a17cbb25d90e6734088427feff67f059411e8",
+      "size_in_bytes": 7049610,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12675275565",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12675275565/zip",
+      "expired": false,
+      "created_at": "2026-10-26T18:08:38Z",
+      "expires_at": "2026-11-09T18:08:37Z",
+      "updated_at": "2026-10-26T18:08:38Z",
+      "digest": "sha256:ac49b5ce6606e6c6a04a19d8ca65e897fa2fd0dacbc10ec5a6547b596b7787c0",
+      "workflow_run": {
+        "id": 40374749926,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "c57a17cbb25d90e6734088427feff67f059411e8"
+      }
+    },
+    {
+      "id": 12674142237,
+      "name": "hourly-native-1.12.2-e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+      "size_in_bytes": 3915629,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12674142237",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12674142237/zip",
+      "expired": false,
+      "created_at": "2026-10-26T18:10:42Z",
+      "expires_at": "2026-11-09T18:10:41Z",
+      "updated_at": "2026-10-26T18:10:42Z",
+      "digest": "sha256:76884ba29e0cfa554f64a23c3a6e79ca8d579d92e9699377205f760351ae8b17",
+      "workflow_run": {
+        "id": 40374749926,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "c57a17cbb25d90e6734088427feff67f059411e8"
+      }
+    },
+    {
+      "id": 12673589036,
+      "name": "hourly-native-1.6.4-cdb5933cfaf79e6000193db4bae3687825e68aa6",
+      "size_in_bytes": 4085862,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12673589036",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12673589036/zip",
+      "expired": false,
+      "created_at": "2026-10-26T18:10:27Z",
+      "expires_at": "2026-11-09T18:10:26Z",
+      "updated_at": "2026-10-26T18:10:27Z",
+      "digest": "sha256:7ab5d02d354ca0b62a470ecc730d065a4b652fad26c50737bdbcb5672a39d145",
+      "workflow_run": {
+        "id": 40374749926,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "c57a17cbb25d90e6734088427feff67f059411e8"
+      }
+    }
+  ],
+  "reviewed_screenshots": [
+    {
+      "path": "docs/acceptance/screenshots/compound-process-2026-10-26/1.12.2/legacy-item-import-receipt-chat.png",
+      "blob_sha": "964323b1b9f626d762bbb761c702f501cc57d2f6",
+      "sha256": "fee2d05a6557195d3ba31826912270cf23524ec3557493ec401b8a82db6f5986"
+    },
+    {
+      "path": "docs/acceptance/screenshots/compound-process-2026-10-26/1.12.2/legacy-wireless-grouped-withdrawal.png",
+      "blob_sha": "7f800a7f9a0a83a4e8aea1c6736f2cf80ad87d83",
+      "sha256": "444d61d1b3d90a5cddb6a0e5b696a1571cc114764f0342f9fcd00a789e5d148b"
+    },
+    {
+      "path": "docs/acceptance/screenshots/compound-process-2026-10-26/1.6.4/legacy-item-import-receipt-chat.png",
+      "blob_sha": "21b3458d53de5118864c5ce551ba57407f38c0fa",
+      "sha256": "70674b69be8706adfdb60f1e80977b3bfe8597e213f1a361a2f50ecdd97522c2"
+    },
+    {
+      "path": "docs/acceptance/screenshots/compound-process-2026-10-26/1.6.4/legacy-wireless-grouped-withdrawal.png",
+      "blob_sha": "b6b4b7a9e6e5bde215fc1396c922a47ab9db9e8c",
+      "sha256": "7921f755375ad12561bafa535d69aebbeea7b9cf8303bc8a60173c67b44a8ac2"
+    }
+  ],
+  "branch_publisher_review": {
+    "sources": {
+      "1.12.2": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+      "1.6.4": "cdb5933cfaf79e6000193db4bae3687825e68aa6"
+    },
+    "guard_review_parents": {
+      "1.12.2": "e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
+      "1.6.4": "16947d862e3f4599d801137502ae2fd1600657fb"
+    },
+    "native_workflow_runs": [
+      40374624849,
+      40374632159
+    ],
+    "publication_steps": "SKIPPED",
+    "policy": "Branch-local development/snapshot denial and explicit RC clearance gates inspected before version-branch source updates. Workflow files inherited unchanged."
+  }
+}

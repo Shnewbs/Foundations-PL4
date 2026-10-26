@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-compound-process-2026-10-26T18",
-    "claimed_at": "2026-10-26T18:04:00Z",
-    "expires_at": "2026-10-26T18:50:00Z",
-    "purpose": "Rejected-compound exact legacy process fixtures and native qualification"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40357554810,
+  "last_verified_legacy_native_run": 40374749926,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40358548914,
-    "1.6.4": 40351177054
+    "1.12.2": 40375515653,
+    "1.6.4": 40375932328
   },
-  "current_checkpoint": "Copied-save collector now withholds original targets for opaque, malformed or duplicate-token records; malformed containers reject rather than silently losing evidence. Versioned pl4-parsed-value-v2 hashes distinguish bytes from look-alike compounds and retain parsed-journal digest.115 local test executions pass (9 new regressions),24 unchanged native save-copy queries and10 generated malformed-copy cases pass. Main a0b450e2 passed192 native in40365518434;all3 packaged hashes/source archive/raw report checked and production hash unchanged. Existing legacy357/335,decode232,provider188,historical60 and client evidence remain scoped to prior exact sources. All24 RC clearances false; no release/upload.",
-  "local_validation": "PASS115 local executions;24 copied native save queries with input hashes unchanged;10 generated offline malformed-journal copies withheld targets or rejected malformed input. New native main192 exact-source gate and3 packaged hashes verified;production bytes unchanged. No new legacy gameplay/JVM/provider/client acceptance claimed.",
+  "current_checkpoint": "Generic escrow settlement now refuses fault clearing while preserved legacy evidence exists. Rejected-compound contexts with nested payloads passed116 new assertions across4 JVMs per legacy port, plus independent raw-world inspection and8 copied-save queries. Total decode348/12JVMs per port is separate from provider188 andhistorical60. Ordinary native357/335 andmain192 pass;all17 packaged hashes/source archives/phase reports/logs/worlds verified. Both new exact-JAR stock clients pass;4 captures reviewed and40 hashed. Initial1.6.4 artifact HTTP503 was preserved; one bounded transient retry/checksum controller repair led to successful new client run.120 local test executions pass using RAM TMPDIR after full-overlay temp failure. All24 RC flags false;no release/upload.",
+  "local_validation": "PASS120 local executions, scoped native357/335/192, new compound116 per port plus raw/missing232, provider188 andhistorical60 separately. Raw NBT checks all6 decode worlds per port and provider/historical worlds;16 provider+decode native process IDs distinct per port. Both exact hourly-JAR clients passed. HTTP503 transport failure recorded; changed download step retries once only on429/5xx and validates pinned archive SHA. No pre-save/power-loss/installed-provider/recovery clearance.",
   "next_work": [
-    "Copied-save malformed record attribution and versioned parsed-value hashing are hardened. Next extend exact separate-JVM decode coverage to rejected-compound contexts/other malformed saved fields and add bounded read-only in-game opaque-journal collection/export with owner/operator checks. Validate copied user/modpack worlds and installed provider exact identity/API/access-control/durability. Parsed-value hashes are not original encoded NBT tag-width hashes; never compare unversioned and v2 digests as identity. No recovery/replay/redemption/minting or blanket fence clearing; losses remain unaccounted and sealed claims nonspendable.",
+    "Rejected-compound integer-token persistence now has scoped clean and completed-save/flush parent-SIGKILL evidence. Next implement bounded read-only in-game opaque-journal inspection/export with explicit owner/operator checks and original-evidence hashes; test ownership/profile/dimension boundaries without inventing lost routes. Extend native process coverage to other malformed fields/external rewrites and validate copied user/modpack saves plus installed provider exact identity/API/access-control/durability. Generic settlement must not clear preserved legacy evidence. No replay, redemption, minting or blanket fence clear; losses remain unaccounted and sealed insertion claims nonspendable.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -30,36 +25,36 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-copied-save-record-validation-2026-10-26.json",
-  "main_native_validation_run": 40365518434,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
+  "main_native_validation_run": 40374749926,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40365518434
+    40374749926
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40357554810,
-    "1.6.4": 40357554810
+    "1.12.2": 40374749926,
+    "1.6.4": 40374749926
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-compound-process-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "a0b450e23646cbfeea16a0a78003b7c8611a513e",
+  "native_main_source_commit": "c57a17cbb25d90e6734088427feff67f059411e8",
   "last_writer_release": {
-    "owner": "pl4-record-validation-2026-10-26T17",
-    "released_at": "2026-10-26T17:10:16Z",
-    "checkpoint": "Copied-save record/hash hardening checked; rejected-compound native process acceptance, in-game export and all-version RC work remain unfinished."
+    "owner": "pl4-compound-process-2026-10-26T18",
+    "released_at": "2026-10-26T18:21:55Z",
+    "checkpoint": "Legacy settlement guard and scoped compound native process/client qualification complete; in-game export, reviewed reconciliation and all-version RC acceptance remain unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-copied-save-record-validation-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
-      "1.6.4": "16947d862e3f4599d801137502ae2fd1600657fb"
+      "1.12.2": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
+      "1.6.4": "cdb5933cfaf79e6000193db4bae3687825e68aa6"
     },
     "publication_steps": "SKIPPED"
   },
-  "previous_checkpoint": "Dedicated raw/missing decode suites passed232 assertions across8 separate JVMs per legacy port (32/26 per write/read pair, clean and completed-save/flush parent SIGKILL). Retained tile, actual sealed removal receipt, raw integer/string or missing context, nested original evidence, prior tokens and opaque dimension barrier persist. Independent raw NBT verified8 decode,4 current-provider and2 historical worlds. Native357/335 andmain192 pass;188 provider restart and60 historical checks remain separate. Bounded copied-save collector passed24 native-fixture queries, with explicit partial scans and no inferred history/clearance; global cross-region priority bug repaired.106 local test executions pass. Fresh exact hourly-JAR1.12.2 stock client passed;2 captures reviewed and20 hashed.1.6.4 retains prior client proof for identical production bytes. All24 RC flags remain false; no release/upload."
+  "previous_checkpoint": "Copied-save collector now withholds original targets for opaque, malformed or duplicate-token records; malformed containers reject rather than silently losing evidence. Versioned pl4-parsed-value-v2 hashes distinguish bytes from look-alike compounds and retain parsed-journal digest.115 local test executions pass (9 new regressions),24 unchanged native save-copy queries and10 generated malformed-copy cases pass. Main a0b450e2 passed192 native in40365518434;all3 packaged hashes/source archive/raw report checked and production hash unchanged. Existing legacy357/335,decode232,provider188,historical60 and client evidence remain scoped to prior exact sources. All24 RC clearances false; no release/upload."
 }
