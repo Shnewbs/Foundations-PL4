@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 35
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
-      PL4_NATIVE_ARCHIVE_SHA256: 'ea2d102f31db14a61f313f260c89a9d062320b328bc41b22a765837918052cb4'
+      PL4_NATIVE_ARCHIVE_SHA256: 'ee1716b3e5a49faf4f18a500f73483dfc16872316938c817ccac20320a9ecb8c'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: a35e98e3907290ee307562ad377174ce2f1fd229
+          ref: c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12637794719/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12640319899/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
