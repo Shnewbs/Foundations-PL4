@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-process-2026-10-26T22",
-    "claimed_at": "2026-10-26T22:14:42Z",
-    "expires_at": "2026-10-26T22:24:42Z",
-    "scope": "Pin changed 1.12.2 exact production hash for stock regression"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -51,8 +46,8 @@
   "native_main_source_commit": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
   "last_writer_release": {
     "owner": "pl4-live-process-2026-10-26T22",
-    "released_at": "2026-10-26T22:07:38Z",
-    "checkpoint": "Live fault-clear restart assertions and strict controller committed; pinned native jobs run without writer lease."
+    "released_at": "2026-10-26T22:14:45Z",
+    "checkpoint": "Native live decode1044 per port qualified; 1.12.2 exact client pending, 1.6.4 unchanged production retains prior client."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -94,7 +89,7 @@
     "controller": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
     "added_assertions_per_port": 168,
     "expected_total_decode_assertions": 1044,
-    "status": "PENDING_EXACT_NATIVE",
+    "status": "NATIVE_PASS_112_FRESH_CLIENT_PENDING_164_BYTE_IDENTICAL_RETAINS_CLIENT",
     "limitations": "Three live fault/face/NBT guards per retained host phase and both pre-rejection seeds; not every eight-case mutation, disconnected alias, arbitrary pre-save crash, provider or recovery acceptance."
   }
 }
