@@ -9,6 +9,7 @@ base.archivesName='FoundationsPL4-1.6.4'
 java { toolchain.languageVersion=JavaLanguageVersion.of(8); withSourcesJar() }
 sourceSets {
     main { java.setSrcDirs(['src/legacy/java']); resources.setSrcDirs(['src/legacy/resources']) }
+    restartTest { java.srcDirs=['src/restartTest/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     migrationTest { java.srcDirs=['src/migrationTest/java']; compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyTest { compileClasspath+=sourceSets.main.output+sourceSets.main.compileClasspath; runtimeClasspath+=sourceSets.main.output+sourceSets.main.runtimeClasspath }
     legacyRules { java.setSrcDirs(['tools']); java.include 'CoreChecks.java','FluidChecks.java','EnergyChecks.java'; compileClasspath+=sourceSets.main.output; runtimeClasspath+=sourceSets.main.output }
@@ -55,3 +56,11 @@ def migrationRuntime=renamer.classes(migrationFixtures) {
     archiveClassifier='migration-scenarios-srg'
 }
 tasks.named('build') { dependsOn migrationRuntime }
+
+def restartFixtures=tasks.register('restartTestJar',Jar) { dependsOn 'restartTestClasses';from sourceSets.restartTest.output;archiveClassifier='restart-scenarios' }
+def restartRuntime=renamer.classes(restartFixtures) {
+    map.from minecraft.dependency.toSrgFile
+    libraries.setFrom(sourceSets.restartTest.compileClasspath)
+    archiveClassifier='restart-scenarios-srg'
+}
+tasks.named('build') { dependsOn restartRuntime }
