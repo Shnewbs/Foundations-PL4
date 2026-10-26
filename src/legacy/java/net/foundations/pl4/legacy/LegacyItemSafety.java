@@ -37,7 +37,15 @@ public final class LegacyItemSafety {
     public static void read(LegacyTile tile,NBTTagCompound tag){
         tile.itemJournalContext=tag.hasKey("ItemJournalContext")?(NBTTagCompound)tag.getCompoundTag("ItemJournalContext").copy():null;
         tile.itemLegacyEvidence=tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound?(NBTTagCompound)tag.getCompoundTag("ItemLegacyEvidence").copy():null;
-        tile.itemOpaque=null;tile.itemFault=tag.getString("ItemTransferFault");
+        boolean malformedContext=tag.hasKey("ItemJournalContext")&&!(tag.getTag("ItemJournalContext") instanceof NBTTagCompound);
+        boolean malformedEvidence=tag.hasKey("ItemLegacyEvidence")&&!(tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound);
+        if(malformedContext||malformedEvidence){
+            if(tile.itemLegacyEvidence==null)tile.itemLegacyEvidence=new NBTTagCompound();
+            tile.itemLegacyEvidence.setString("OriginalFault",tag.getString("ItemTransferFault"));
+            if(malformedContext){tile.itemLegacyEvidence.setTag("MalformedContext",tag.getTag("ItemJournalContext").copy());tile.itemJournalContext=null;}
+            if(malformedEvidence)tile.itemLegacyEvidence.setTag("MalformedEvidence",tag.getTag("ItemLegacyEvidence").copy());
+        }
+        tile.itemOpaque=null;tile.itemFault=malformedContext||malformedEvidence?"Unresolved saved item context; manual inspection required":tag.getString("ItemTransferFault");
         if(tile.itemFault.length()>512)tile.itemFault=tile.itemFault.substring(0,512);
         int count=tag.getInteger("ItemEscrowCount");tile.itemOpaqueCount=Math.max(0,count);
         if(tag.hasKey("Escrow")&&LegacyTile.STACKS.empty(tile.pending)&&count>0&&!tile.itemFault.isEmpty()){
