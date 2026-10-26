@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-command-chat-2026-10-26T08",
-    "claimed_at": "2026-10-26T08:41:30Z",
-    "expires_at": "2026-10-26T09:30:00Z",
-    "purpose": "Implement bounded receipt phase output and exact legacy command/chat integration tests"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40285128584,
+  "last_verified_legacy_native_run": 40296474314,
   "last_verified_legacy_client_runs": {
-    "1.6.4": 40284893571,
-    "1.12.2": 40285435756
+    "1.6.4": 40297680275,
+    "1.12.2": 40297680200
   },
-  "current_checkpoint": "Both legacy ports now persist active item journal token/owner/dimension/target/phase into tiles and sealed removal receipts, with bounded read-only journal and owner/operator receipt diagnostics. Exact 1.12.2 source 2ae21d75 passed 301/301 native tests; 1.6.4 c429041b passed 279/279, fourteen new diagnostic cases per port. Production startup/generated preview.3 migration and exact-JAR ordinary stock-client regressions passed independently; eight current captures reviewed and all 32 hashed. Main ef0cd3a8 passed 192; 22 other targets retain exact evidence. Recovery/replay/redemption remains unavailable. Native diagnostic helpers are tested; actual command/chat rendering, pre-upgrade fault import, full-process/crash and broader provider/multiplayer/performance acceptance remain open. No RC cleared or published.",
-  "local_validation": "28 new native diagnostic cases PASS; 301/301 1.12.2 and 279/279 1.6.4; fourteen each covering context persistence, executed phase, removal receipt linkage, healthy settlement, bounded sorted read-only pages, owner isolation, opaque data, mismatch, legacy unlinked receipt, invalid page, unrelated-owner rejection and wrong-dimension rejection. Native artifact digests/all packaged JAR hashes verified. Both stock source/runtime hashes match their exact native production artifacts; ordinary GUI transfer/group/search/sort/replay/codec/display probes PASS with autonomous transport disabled. Four current captures per port reviewed; sixteen each hashed. Both branch-local publish steps observed skipped.",
+  "current_checkpoint": "Fixed public legacy command dispatch with cheats disabled while retaining handler ownership/operator/proximity checks; receipt chat includes bounded recorded phase. Final 1.12.2 a35e98e3 passed 312/312 and 1.6.4 bf9a49a8 passed 290/290 native cases, including eleven new command/phase cases per port and registered nonoperator-owner dispatch. Native production startup/generated preview.3 migration and exact-JAR stock regressions passed. Both clients received/rendered journal tokens and linked receipt phase via real native chat packets; inspection left target fenced. Six current captures reviewed and all 36 hashed. Main f40d9627 passed 192; 22 other tracks retain exact evidence. No RC cleared or published. Reviewed recovery, full-process/crash semantics, pre-upgrade import and broader provider/multiplayer/performance/parity remain open.",
+  "local_validation": "312/312 and 290/290 native: 22 new command/phase fixtures including real registered dispatcher without operator permission. Exact native archives and all JAR hashes verified. Production startup and generated preview.3 migration PASS. Final exact stock runtime source/hash matches native artifacts; both native chat round trips, rendered token/phase captures and post-inspection world fences PASS. Six accepted current captures reviewed, 36 hashed. Seven archive qualification regressions PASS. Initial 1.6 fake-player coordinate fixture, vanilla no-cheats command dispatch and token-only probe filter failures are recorded with exact runs/artifacts/log hashes. Final branch publication steps skipped.",
   "next_work": [
-    "Continue from receipt-linked read-only diagnostics: design and implement a reviewed recovery operation only after reconciling the actual source, destination, held escrow and provider outcome. No automatic replay/minting or blind journal clearing. Add actual diagnostic command/chat integration coverage, persistent full-process receipt/journal reload and crash-boundary acceptance. Current diagnostic fixtures exercise helper/receipt/phase/pagination/owner checks; ordinary stock clients do not render diagnostic chat commands.",
+    "Continue reviewed recovery work by implementing and testing full-process receipt/journal reload plus bounded crash behavior and actual provider-outcome/conservation evidence before exposing any recovery operation. Public command dispatch/native chat coverage is now scoped accepted for both exact legacy JARs. No automatic replay/minting, blanket fence clearing, fabricated pre-upgrade destination or inference from missing tokens.",
     "Plan migration/import acceptance for unresolved pre-upgrade tile faults. Older automatic faults lack reliable destination-phase route context; do not invent an original target. Preserve opaque/unknown uncertainty and require appropriate inspection rather than silently treating it as a newly instrumented handoff.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -30,28 +25,27 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
-  "main_native_validation_run": 40285128584,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+  "main_native_validation_run": 40296474314,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40284538598,
-    40285128584
+    40296474314
   ],
   "last_verified_legacy_native_runs": {
-    "1.6.4": 40284538598,
-    "1.12.2": 40285128584
+    "1.6.4": 40296474314,
+    "1.12.2": 40296474314
   },
   "latest_stock_client_evidence": {
-    "1.6.4": "docs/acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
-    "1.12.2": "docs/acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json"
+    "1.6.4": "docs/acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+    "1.12.2": "docs/acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "ef0cd3a8a66ed741a91917a50d6dbf2f20fdc814",
+  "native_main_source_commit": "f40d96271e3a04f0dbeccf67d1a58ed71a862d1d",
   "last_writer_release": {
-    "owner": "pl4-diagnostics-2026-10-26T07",
-    "released_at": "2026-10-26T07:28:15Z",
-    "checkpoint": "Receipt-linked read-only diagnostics and exact native/client evidence for both legacy ports preserved; all-version RC acceptance/publication remains unfinished."
+    "owner": "pl4-command-chat-2026-10-26T08",
+    "released_at": "2026-10-26T09:18:09Z",
+    "checkpoint": "Both legacy public dispatcher/phase fixes and native/exact-JAR chat acceptance preserved; all-version RC acceptance/publication remains unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json"
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json"
 }

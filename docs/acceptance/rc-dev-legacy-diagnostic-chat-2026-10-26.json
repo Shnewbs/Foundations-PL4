@@ -1,0 +1,1420 @@
+{
+  "recorded_date": "2026-10-26",
+  "implementation": [
+    "Fix public legacy command dispatch with cheats disabled; existing ownership/proximity/operator checks remain in each handler.",
+    "Receipt output includes whitelisted recorded mutation phase; unknown/untrusted phase values render as unknown rather than expanding chat output",
+    "Real native diagnostic command handlers tested with captured player chat for owner/operator authorization, distance bounds, page validation and sealed receipts",
+    "Stock client probe sends native client chat commands through the integrated server and records received journal/receipt messages and screenshots",
+    "Inspection leaves unresolved target fenced after node removal and receipt creation"
+  ],
+  "initial_failure": {
+    "source": "4bed0bb7571a9aa29369f80157f8efb06a53e269",
+    "workflow_run": 40294347924,
+    "result": "287/289",
+    "cause": "Forge 1.6 FakePlayer getPlayerCoordinates is hard-coded to origin; fixture now reports its actual position. Two authorized journal command cases initially failed distance checks.",
+    "correction": "477d5edce5fe6ff9f0d3f2c567524df1e38bc6d5"
+  },
+  "limits": [
+    "Artificial unresolved wireless token fixture in generated integrated client world; no foreign-provider fault or recovery accepted by chat test",
+    "No recovery/replay/redemption/minting/fence-release command",
+    "No full-process/crash recovery semantics, pre-upgrade uncertainty import, installed-provider, dedicated multiplayer or sustained performance acceptance",
+    "Other 22 exact tracks retain their existing evidence; not newly client-tested"
+  ],
+  "publication": {
+    "rc_publication_cleared": false,
+    "new_github_release": null,
+    "new_curseforge_upload_id": null,
+    "moderation": null,
+    "public_visibility": null,
+    "branch_publish_steps": {
+      "1.6.4": [
+        [
+          {
+            "name": "Publish a new tested version without rewriting existing releases",
+            "conclusion": "skipped"
+          }
+        ]
+      ],
+      "1.12.2": [
+        [
+          {
+            "name": "Publish a new tested version without rewriting existing releases",
+            "conclusion": "skipped"
+          }
+        ]
+      ]
+    }
+  },
+  "native": {
+    "1.6.4": {
+      "workflow_run": 40296474314,
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "total": 290,
+        "passed": 290,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "build_api_forge": "9.11.1.960",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "native_gate": "PASS",
+        "expected_fixtures": 290,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "0f4d6d1c9f203443717a740c75705823860656ddd002350484e3c8bb31ad2e5e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "0f9a41c670c37a8dea99373129002d3511f0a1b3b83ac0ed40791b1919a66634",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "1df259f72127ff23bc459cd1592d2b605cb896cad9279ae0c2e30eec76ace461",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "1c66de1a442bbe6e8706c71300db6405464000ac79585789798d00f29710111b",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "aafef6122539557cd54727653eed07520301083d054bfb5a5de71e5f69b260b1"
+        },
+        "workflow_run": "40296474314",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+        "migration_fixture_sha256": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "command_cases": [
+        "journal command owner journal command returns token without mutation",
+        "journal command journal command rejects other owner",
+        "journal command journal command enforces distance",
+        "journal command journal command bounds page input",
+        "journal command receipt command exposes recorded phase and token",
+        "journal command receipt command rejects unrelated player",
+        "journal command operator journal command can inspect owned target",
+        "journal command legacy receipt command remains unlinked",
+        "journal command untrusted receipt phase cannot expand chat output",
+        "journal command missing receipt phase remains explicitly unknown",
+        "journal command registered dispatcher accepts nonoperator owner"
+      ],
+      "diagnostic_cases": [
+        "journal diagnostic wireless token captures target and survives tile save",
+        "journal diagnostic automatic destination fault links its executed phase",
+        "journal diagnostic removal receipt retains token while journal remains fenced",
+        "journal diagnostic healthy automatic transfer clears transient context",
+        "journal diagnostic healthy wireless settlement clears its context",
+        "journal diagnostic diagnostic inspection never clears token or escrow",
+        "journal diagnostic sorted pagination preserves overlapping tokens",
+        "journal diagnostic owner partition hides unrelated token details",
+        "journal diagnostic opaque journal diagnosis stays fail closed",
+        "journal diagnostic receipt context mismatch does not grant clearance",
+        "journal diagnostic legacy receipt remains explicitly unlinked",
+        "journal diagnostic invalid page cannot mutate journal",
+        "journal diagnostic receipt rejects unrelated owner",
+        "journal diagnostic receipt different dimension does not query wrong target"
+      ],
+      "artifact_id": 12638322157,
+      "archive_sha256": "53c3680e0aeabd9fc1168ed84dbd1e9d6e04c778d6ebdc24e122784e978d211e",
+      "packaged_jar_hashes_verified": true,
+      "native_results": {
+        "minecraft": "1.6.4",
+        "total": 290,
+        "passed": 290,
+        "failed": 0,
+        "build_api_forge": "9.11.1.960",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7
+      },
+      "wireless_journal_cases": [
+        "wireless journal cross-network target fence survives disconnected alias",
+        "wireless journal removal keeps target fenced and receipt sealed",
+        "wireless journal saved reload retains target fence",
+        "wireless journal owner partition leaves unrelated owner available",
+        "wireless journal independent target remains usable",
+        "wireless journal successful withdrawal clears transient target entry",
+        "wireless journal successful deposit clears transient target entry",
+        "wireless journal actual post-mutation extraction fault persists",
+        "wireless journal malformed saved data is retained fail closed",
+        "wireless journal automatic source cannot bypass wireless fence",
+        "wireless journal automatic sink cannot bypass wireless fence",
+        "wireless journal post-mutation deposit fault retains world fence",
+        "wireless journal capacity refuses new reservation without dropping entries",
+        "wireless journal overlapping tokens settle independently",
+        "wireless journal captures target before route callback changes",
+        "wireless journal compressed world data survives storage reload",
+        "wireless journal normalized legacy owner identity shares fence"
+      ],
+      "automatic_journal_cases": [
+        "automatic journal extraction fault fences only source target",
+        "automatic journal insertion fault fences only destination target",
+        "automatic journal source fault blocks disconnected wireless access",
+        "automatic journal destination fault blocks disconnected wireless access",
+        "automatic journal source removal preserves target fence",
+        "automatic journal destination uncertainty survives driver removal",
+        "automatic journal compressed file reload preserves phase target",
+        "automatic journal healthy transfer releases both phase tokens",
+        "automatic journal simulated refusal creates no token",
+        "automatic journal healthy executed extraction refusal permits retry",
+        "automatic journal known pending flush selects insertion phase",
+        "automatic journal pending flush fault fences destination only",
+        "automatic journal context snapshots survive later route edits",
+        "automatic journal full capacity refuses before foreign extraction",
+        "automatic journal destination fault leaves independent source usable",
+        "automatic journal malformed saved data prevents foreign mutation",
+        "automatic journal source discovery cannot redirect captured route",
+        "automatic journal destination discovery cannot redirect captured route"
+      ],
+      "native_log_sha256": "d9fa9a1217f26aa8d33be3f7e15dfb8e5bd99c0cfcd165bee5287e3a320e52a8",
+      "markers": [
+        "2026-10-26 09:03:00 [INFO] [STDOUT] PL4 LEGACY SCENARIOS: 290/290"
+      ]
+    },
+    "1.12.2": {
+      "workflow_run": 40296474314,
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 312,
+        "passed": 312,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "native_gate": "PASS",
+        "expected_fixtures": 312,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "73523de7fe2c48f48caaa955f6909366fcd854d98034777e731a9033c7700a55",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "64931c676e6cd2257a3f184abe67dc4ea091eb823dbf1d7e679b1f8b71b2789a",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "5156be8970ce4cbf36c26616aaf05f28a8a8fa66b969ad19c294ac25f39fc506",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f"
+        },
+        "workflow_run": "40296474314",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
+        "migration_fixture_sha256": "73523de7fe2c48f48caaa955f6909366fcd854d98034777e731a9033c7700a55",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "prior_wireless_journal_cases": {
+        "wireless journal cross-network target fence survives disconnected alias": true,
+        "wireless journal removal keeps target fenced and receipt sealed": true,
+        "wireless journal saved reload retains target fence": true,
+        "wireless journal owner partition leaves unrelated owner available": true,
+        "wireless journal independent target remains usable": true,
+        "wireless journal successful withdrawal clears transient target entry": true,
+        "wireless journal successful deposit clears transient target entry": true,
+        "wireless journal actual post-mutation extraction fault persists": true,
+        "wireless journal malformed saved data is retained fail closed": true,
+        "wireless journal automatic source cannot bypass wireless fence": true,
+        "wireless journal automatic sink cannot bypass wireless fence": true,
+        "wireless journal post-mutation deposit fault retains world fence": true,
+        "wireless journal capacity refuses new reservation without dropping entries": true,
+        "wireless journal overlapping tokens settle independently": true,
+        "wireless journal captures target before route callback changes": true,
+        "wireless journal compressed world data survives storage reload": true
+      },
+      "observed_wireless_cases": 143,
+      "command_cases": [
+        "journal command owner journal command returns token without mutation",
+        "journal command journal command rejects other owner",
+        "journal command journal command enforces distance",
+        "journal command journal command bounds page input",
+        "journal command receipt command exposes recorded phase and token",
+        "journal command receipt command rejects unrelated player",
+        "journal command operator journal command can inspect owned target",
+        "journal command legacy receipt command remains unlinked",
+        "journal command untrusted receipt phase cannot expand chat output",
+        "journal command missing receipt phase remains explicitly unknown",
+        "journal command registered dispatcher accepts nonoperator owner"
+      ],
+      "diagnostic_cases": [
+        "journal diagnostic wireless token captures target and survives tile save",
+        "journal diagnostic automatic destination fault links its executed phase",
+        "journal diagnostic removal receipt retains token while journal remains fenced",
+        "journal diagnostic healthy automatic transfer clears transient context",
+        "journal diagnostic healthy wireless settlement clears its context",
+        "journal diagnostic diagnostic inspection never clears token or escrow",
+        "journal diagnostic sorted pagination preserves overlapping tokens",
+        "journal diagnostic owner partition hides unrelated token details",
+        "journal diagnostic opaque journal diagnosis stays fail closed",
+        "journal diagnostic receipt context mismatch does not grant clearance",
+        "journal diagnostic legacy receipt remains explicitly unlinked",
+        "journal diagnostic invalid page cannot mutate journal",
+        "journal diagnostic receipt rejects unrelated owner",
+        "journal diagnostic receipt different dimension does not query wrong target"
+      ],
+      "artifact_id": 12637794719,
+      "archive_sha256": "ea2d102f31db14a61f313f260c89a9d062320b328bc41b22a765837918052cb4",
+      "packaged_jar_hashes_verified": true,
+      "journal_cases": {
+        "automatic journal extraction fault fences only source target": true,
+        "automatic journal insertion fault fences only destination target": true,
+        "automatic journal source fault blocks disconnected wireless access": true,
+        "automatic journal destination fault blocks disconnected wireless access": true,
+        "automatic journal source removal preserves target fence": true,
+        "automatic journal destination uncertainty survives driver removal": true,
+        "automatic journal compressed file reload preserves phase target": true,
+        "automatic journal healthy transfer releases both phase tokens": true,
+        "automatic journal simulated refusal creates no token": true,
+        "automatic journal healthy executed refusal permits known escrow retry": true,
+        "automatic journal known pending flush selects insertion phase": true,
+        "automatic journal pending flush fault fences destination only": true,
+        "automatic journal context snapshots survive later route edits": true,
+        "automatic journal full capacity refuses before foreign extraction": true,
+        "automatic journal destination fault leaves independent source usable": true,
+        "automatic journal malformed saved data prevents foreign mutation": true,
+        "automatic journal source discovery cannot redirect captured route": true,
+        "automatic journal destination discovery cannot redirect captured route": true
+      },
+      "native_log_sha256": "e05d314e2b63bc65af1161dd4bc5b0a5f8af8a28e894f56bdc62189534e60b1b",
+      "markers": [
+        "[09:03:02] [Server thread/INFO] [STDOUT]: [net.foundations.pl4.legacy.tests.NativeScenarios:started:357]: PL4 LEGACY SCENARIOS: 312/312"
+      ]
+    }
+  },
+  "main_native": {
+    "verification-logs/hourly-native.json": {
+      "minecraft": "1.21.1",
+      "version": "0.2.0-rc.1-dev",
+      "source_commit": "f40d96271e3a04f0dbeccf67d1a58ed71a862d1d",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "gate_reports": [
+        "rc-development-gate.json"
+      ],
+      "artifact_sha256": {
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+      },
+      "workflow_run": "40296474314",
+      "publication_performed": false,
+      "rc_publication_cleared": false,
+      "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+    },
+    "verification-logs/rc-development-gate.json": {
+      "minecraft": "1.21.1",
+      "version": "0.2.0-rc.1-dev",
+      "native_gate": "PASS",
+      "expected_fixtures": 192,
+      "validated_loader_profiles": [
+        null
+      ],
+      "native_coverage": {},
+      "source_parent": "f40d96271e3a04f0dbeccf67d1a58ed71a862d1d",
+      "workflow_run": "40296474314",
+      "artifact_sha256": {
+        "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+        "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182"
+      },
+      "performance_source_sha256": {
+        "NetworkEngine.java": "72f667ffd97e5522876a0a77f62acc886dcf80d861c14c8399649b3241e1c9e6",
+        "TransferEngine.java": "aaa7e4b190a37f6260fb10f1a192c98f0fb459e5de4e51ba316480cb495fada7"
+      },
+      "rc_publication_cleared": false,
+      "remaining_acceptance": [
+        "installed optional providers",
+        "actual client UI",
+        "live multiplayer",
+        "world migration",
+        "measured large-network performance",
+        "cross-port feature parity"
+      ]
+    },
+    "artifact_id": 12638910795,
+    "archive_sha256": "626edbf14f96fb296b44c764f5bc5cfa574b8b7311973cd41b5f580ec8e81c7e",
+    "packaged_jar_hashes_verified": true,
+    "journal_cases": {},
+    "native_log_sha256": "0066bdc161f222ad68085ae7d6c3788dbae2ed6b9d95ad38c8ae9e8f15adf4fe",
+    "markers": [
+      "[09:04:20] [Server thread/INFO] [minecraft/GameTestServer]: All 192 required tests passed :)"
+    ]
+  },
+  "archive_qualification_regressions": {
+    "tests": 7,
+    "result": "PASS"
+  },
+  "real_client_failure": {
+    "runs": {
+      "1.12.2": 40295174875,
+      "1.6.4": 40295174806
+    },
+    "artifacts": {
+      "1.12.2": [
+        {
+          "id": 12638715061,
+          "name": "legacy-wireless-real-client-40295174875-1",
+          "size_in_bytes": 513270,
+          "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638715061",
+          "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638715061/zip",
+          "expired": false,
+          "created_at": "2026-10-26T08:57:35Z",
+          "expires_at": "2026-11-09T08:57:34Z",
+          "updated_at": "2026-10-26T08:57:35Z",
+          "digest": "sha256:7b03862e4046e1c810b5ec1342f46f481cc5676b87b0032c29f3b19e895f37df",
+          "workflow_run": {
+            "id": 40295174875,
+            "repository_id": 1396808859,
+            "head_repository_id": 1396808859,
+            "head_branch": "main",
+            "head_sha": "f40d96271e3a04f0dbeccf67d1a58ed71a862d1d"
+          }
+        }
+      ],
+      "1.6.4": [
+        {
+          "id": 12638415790,
+          "name": "legacy164-wireless-real-client-40295174806-1",
+          "size_in_bytes": 326242,
+          "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638415790",
+          "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638415790/zip",
+          "expired": false,
+          "created_at": "2026-10-26T08:57:21Z",
+          "expires_at": "2026-11-09T08:57:20Z",
+          "updated_at": "2026-10-26T08:57:21Z",
+          "digest": "sha256:6ff3b2bb4288422d9e0faa2febe4c8d9adbf484c3d60bb1c04c7f410163432cd",
+          "workflow_run": {
+            "id": 40295174806,
+            "repository_id": 1396808859,
+            "head_repository_id": 1396808859,
+            "head_branch": "main",
+            "head_sha": "f40d96271e3a04f0dbeccf67d1a58ed71a862d1d"
+          }
+        }
+      ]
+    },
+    "evidence_hashes": [
+      {
+        "minecraft": "112",
+        "client_log_sha256": "822ec206969957458d4a44fab05baef126c2e565ecce7f53ac3f80e609cced1f",
+        "timeout_capture_sha256": "abe6eede6bacd26f9cb548284363347d70885c0bbe31f3260a2a10aaf0593e82"
+      },
+      {
+        "minecraft": "164",
+        "client_log_sha256": "64bcfe167e4eb2bc52b5b88e9acbfdaaddd24c1016f33bfc31e02c4f0cb6edd5",
+        "timeout_capture_sha256": "46d791bc1ff20f30dd1da1c8ebe6e7058c74fe757818410ff97c4d542ff65927"
+      }
+    ],
+    "observed": "Both real clients received 'You do not have permission to use this command' and timed out waiting for journal chat in phase 45.",
+    "cause": "Vanilla command dispatcher still asks player permission when cheats are disabled even at required level zero; direct-handler tests did not exercise this dispatch check.",
+    "fix": "Public command permission override, with existing per-handler owner/operator/proximity validation retained; added registered-dispatcher nonoperator-owner test on each exact port."
+  },
+  "previous_native_before_dispatch_fix": {
+    "1.6.4": {
+      "workflow_run": 40294817681,
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "total": 289,
+        "passed": 289,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "6f5f567460d2d968559255bc81ccd9e8ba323657c0f7ef3282c8eb8d5ca7c7a0",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "477d5edce5fe6ff9f0d3f2c567524df1e38bc6d5",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "build_api_forge": "9.11.1.960",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "477d5edce5fe6ff9f0d3f2c567524df1e38bc6d5",
+        "native_gate": "PASS",
+        "expected_fixtures": 289,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "0f4d6d1c9f203443717a740c75705823860656ddd002350484e3c8bb31ad2e5e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "7d506a905295491d26bfa5ca0def2f43ca52ce14eaf90bae34fa01f4f78a8651",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "ee3ea8ee8b1a34137d518195d53819ba058d5ed5396355085e8d12a191fa5e0d",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "25603ce3e78942fee36b97348f5d0e4dec42f4c0cb5a51646f0f1798a33f9d3e",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "6f5f567460d2d968559255bc81ccd9e8ba323657c0f7ef3282c8eb8d5ca7c7a0",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "b06d37d9b96362a3bb20a6e565d2ba763ae82c5569cd215e3893388aec657dd3"
+        },
+        "workflow_run": "40294817681",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "6f5f567460d2d968559255bc81ccd9e8ba323657c0f7ef3282c8eb8d5ca7c7a0",
+        "migration_fixture_sha256": "be5d5d8eb0bebe19c34aff5743c693322c2dbea928d3ca2649ef09a629ad8c61",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "477d5edce5fe6ff9f0d3f2c567524df1e38bc6d5",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "6f5f567460d2d968559255bc81ccd9e8ba323657c0f7ef3282c8eb8d5ca7c7a0",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "477d5edce5fe6ff9f0d3f2c567524df1e38bc6d5",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "command_cases": [
+        "journal command owner journal command returns token without mutation",
+        "journal command journal command rejects other owner",
+        "journal command journal command enforces distance",
+        "journal command journal command bounds page input",
+        "journal command receipt command exposes recorded phase and token",
+        "journal command receipt command rejects unrelated player",
+        "journal command operator journal command can inspect owned target",
+        "journal command legacy receipt command remains unlinked",
+        "journal command untrusted receipt phase cannot expand chat output",
+        "journal command missing receipt phase remains explicitly unknown"
+      ],
+      "diagnostic_cases": [
+        "journal diagnostic wireless token captures target and survives tile save",
+        "journal diagnostic automatic destination fault links its executed phase",
+        "journal diagnostic removal receipt retains token while journal remains fenced",
+        "journal diagnostic healthy automatic transfer clears transient context",
+        "journal diagnostic healthy wireless settlement clears its context",
+        "journal diagnostic diagnostic inspection never clears token or escrow",
+        "journal diagnostic sorted pagination preserves overlapping tokens",
+        "journal diagnostic owner partition hides unrelated token details",
+        "journal diagnostic opaque journal diagnosis stays fail closed",
+        "journal diagnostic receipt context mismatch does not grant clearance",
+        "journal diagnostic legacy receipt remains explicitly unlinked",
+        "journal diagnostic invalid page cannot mutate journal",
+        "journal diagnostic receipt rejects unrelated owner",
+        "journal diagnostic receipt different dimension does not query wrong target"
+      ],
+      "artifact_id": 12637234232,
+      "archive_sha256": "5f1fba775086b76f4d139c7d27906b049b38b037490583ed3172d2cac8df58e7",
+      "packaged_jar_hashes_verified": true,
+      "native_results": {
+        "minecraft": "1.6.4",
+        "total": 289,
+        "passed": 289,
+        "failed": 0,
+        "build_api_forge": "9.11.1.960",
+        "runtime_forge": "9.11.1.1345",
+        "runtime_java": 7
+      },
+      "wireless_journal_cases": [
+        "wireless journal cross-network target fence survives disconnected alias",
+        "wireless journal removal keeps target fenced and receipt sealed",
+        "wireless journal saved reload retains target fence",
+        "wireless journal owner partition leaves unrelated owner available",
+        "wireless journal independent target remains usable",
+        "wireless journal successful withdrawal clears transient target entry",
+        "wireless journal successful deposit clears transient target entry",
+        "wireless journal actual post-mutation extraction fault persists",
+        "wireless journal malformed saved data is retained fail closed",
+        "wireless journal automatic source cannot bypass wireless fence",
+        "wireless journal automatic sink cannot bypass wireless fence",
+        "wireless journal post-mutation deposit fault retains world fence",
+        "wireless journal capacity refuses new reservation without dropping entries",
+        "wireless journal overlapping tokens settle independently",
+        "wireless journal captures target before route callback changes",
+        "wireless journal compressed world data survives storage reload",
+        "wireless journal normalized legacy owner identity shares fence"
+      ],
+      "automatic_journal_cases": [
+        "automatic journal extraction fault fences only source target",
+        "automatic journal insertion fault fences only destination target",
+        "automatic journal source fault blocks disconnected wireless access",
+        "automatic journal destination fault blocks disconnected wireless access",
+        "automatic journal source removal preserves target fence",
+        "automatic journal destination uncertainty survives driver removal",
+        "automatic journal compressed file reload preserves phase target",
+        "automatic journal healthy transfer releases both phase tokens",
+        "automatic journal simulated refusal creates no token",
+        "automatic journal healthy executed extraction refusal permits retry",
+        "automatic journal known pending flush selects insertion phase",
+        "automatic journal pending flush fault fences destination only",
+        "automatic journal context snapshots survive later route edits",
+        "automatic journal full capacity refuses before foreign extraction",
+        "automatic journal destination fault leaves independent source usable",
+        "automatic journal malformed saved data prevents foreign mutation",
+        "automatic journal source discovery cannot redirect captured route",
+        "automatic journal destination discovery cannot redirect captured route"
+      ],
+      "native_log_sha256": "2e591a099860f8c58bf451a9b2f779c1f902fd8ae8cbdfcca813a612ac0e2fc6",
+      "markers": [
+        "2026-10-26 08:49:45 [INFO] [STDOUT] PL4 LEGACY SCENARIOS: 289/289"
+      ]
+    },
+    "1.12.2": {
+      "workflow_run": 40294817681,
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 311,
+        "passed": 311,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "e68df8207a71751bf729ea6d5d67a253046b14997fa2137186bebd9f7ee3f2a2",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "928c981d5868989547596a456be76b2d408f43c4",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "928c981d5868989547596a456be76b2d408f43c4",
+        "native_gate": "PASS",
+        "expected_fixtures": 311,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "f0fad10ea256036bcff01dfa564ddd6feabd69f0a29946083ac0a6fd816551bb",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "ccb94502bedff6a806abd5e4d88a3b8dd895801687f209b1727ae06e580f5bd2",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "f07a5fa5d3ac6205279546b8dab018044ddb29b9f5190ac8e60aba2f3a1756ee",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "e68df8207a71751bf729ea6d5d67a253046b14997fa2137186bebd9f7ee3f2a2"
+        },
+        "workflow_run": "40294817681",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "e68df8207a71751bf729ea6d5d67a253046b14997fa2137186bebd9f7ee3f2a2",
+        "migration_fixture_sha256": "f0fad10ea256036bcff01dfa564ddd6feabd69f0a29946083ac0a6fd816551bb",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "928c981d5868989547596a456be76b2d408f43c4",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "e68df8207a71751bf729ea6d5d67a253046b14997fa2137186bebd9f7ee3f2a2",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "928c981d5868989547596a456be76b2d408f43c4",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "prior_wireless_journal_cases": {
+        "wireless journal cross-network target fence survives disconnected alias": true,
+        "wireless journal removal keeps target fenced and receipt sealed": true,
+        "wireless journal saved reload retains target fence": true,
+        "wireless journal owner partition leaves unrelated owner available": true,
+        "wireless journal independent target remains usable": true,
+        "wireless journal successful withdrawal clears transient target entry": true,
+        "wireless journal successful deposit clears transient target entry": true,
+        "wireless journal actual post-mutation extraction fault persists": true,
+        "wireless journal malformed saved data is retained fail closed": true,
+        "wireless journal automatic source cannot bypass wireless fence": true,
+        "wireless journal automatic sink cannot bypass wireless fence": true,
+        "wireless journal post-mutation deposit fault retains world fence": true,
+        "wireless journal capacity refuses new reservation without dropping entries": true,
+        "wireless journal overlapping tokens settle independently": true,
+        "wireless journal captures target before route callback changes": true,
+        "wireless journal compressed world data survives storage reload": true
+      },
+      "observed_wireless_cases": 143,
+      "command_cases": [
+        "journal command owner journal command returns token without mutation",
+        "journal command journal command rejects other owner",
+        "journal command journal command enforces distance",
+        "journal command journal command bounds page input",
+        "journal command receipt command exposes recorded phase and token",
+        "journal command receipt command rejects unrelated player",
+        "journal command operator journal command can inspect owned target",
+        "journal command legacy receipt command remains unlinked",
+        "journal command untrusted receipt phase cannot expand chat output",
+        "journal command missing receipt phase remains explicitly unknown"
+      ],
+      "diagnostic_cases": [
+        "journal diagnostic wireless token captures target and survives tile save",
+        "journal diagnostic automatic destination fault links its executed phase",
+        "journal diagnostic removal receipt retains token while journal remains fenced",
+        "journal diagnostic healthy automatic transfer clears transient context",
+        "journal diagnostic healthy wireless settlement clears its context",
+        "journal diagnostic diagnostic inspection never clears token or escrow",
+        "journal diagnostic sorted pagination preserves overlapping tokens",
+        "journal diagnostic owner partition hides unrelated token details",
+        "journal diagnostic opaque journal diagnosis stays fail closed",
+        "journal diagnostic receipt context mismatch does not grant clearance",
+        "journal diagnostic legacy receipt remains explicitly unlinked",
+        "journal diagnostic invalid page cannot mutate journal",
+        "journal diagnostic receipt rejects unrelated owner",
+        "journal diagnostic receipt different dimension does not query wrong target"
+      ],
+      "artifact_id": 12637867495,
+      "archive_sha256": "336c5ed25abd792b5323b06947387426bf40e217e649c27eead040d494f66420",
+      "packaged_jar_hashes_verified": true,
+      "journal_cases": {
+        "automatic journal extraction fault fences only source target": true,
+        "automatic journal insertion fault fences only destination target": true,
+        "automatic journal source fault blocks disconnected wireless access": true,
+        "automatic journal destination fault blocks disconnected wireless access": true,
+        "automatic journal source removal preserves target fence": true,
+        "automatic journal destination uncertainty survives driver removal": true,
+        "automatic journal compressed file reload preserves phase target": true,
+        "automatic journal healthy transfer releases both phase tokens": true,
+        "automatic journal simulated refusal creates no token": true,
+        "automatic journal healthy executed refusal permits known escrow retry": true,
+        "automatic journal known pending flush selects insertion phase": true,
+        "automatic journal pending flush fault fences destination only": true,
+        "automatic journal context snapshots survive later route edits": true,
+        "automatic journal full capacity refuses before foreign extraction": true,
+        "automatic journal destination fault leaves independent source usable": true,
+        "automatic journal malformed saved data prevents foreign mutation": true,
+        "automatic journal source discovery cannot redirect captured route": true,
+        "automatic journal destination discovery cannot redirect captured route": true
+      },
+      "native_log_sha256": "4faf9709462071f3ccbbe6f5dfa87c4907d403c46c4ad0f532ddace0e68c7069",
+      "markers": [
+        "[08:49:51] [Server thread/INFO] [STDOUT]: [net.foundations.pl4.legacy.tests.NativeScenarios:started:356]: PL4 LEGACY SCENARIOS: 311/311"
+      ]
+    }
+  },
+  "chat_probe_filter_failure": {
+    "runs": {
+      "1.12.2": 40296750971,
+      "1.6.4": 40296751056
+    },
+    "artifacts": {
+      "1.12.2": [
+        {
+          "id": 12638707869,
+          "name": "legacy-wireless-real-client-40296750971-1",
+          "size_in_bytes": 499752,
+          "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638707869",
+          "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638707869/zip",
+          "expired": false,
+          "created_at": "2026-10-26T09:10:38Z",
+          "expires_at": "2026-11-09T09:10:38Z",
+          "updated_at": "2026-10-26T09:10:38Z",
+          "digest": "sha256:d5863f502d385ad78c9871adb9e5730bc14879af3ce9d781718d5c7bedcacc38",
+          "workflow_run": {
+            "id": 40296750971,
+            "repository_id": 1396808859,
+            "head_repository_id": 1396808859,
+            "head_branch": "main",
+            "head_sha": "9b3d5082ee4816f85c2afb9a521771655633b2a2"
+          }
+        }
+      ],
+      "1.6.4": [
+        {
+          "id": 12638328200,
+          "name": "legacy164-wireless-real-client-40296751056-1",
+          "size_in_bytes": 328791,
+          "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638328200",
+          "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12638328200/zip",
+          "expired": false,
+          "created_at": "2026-10-26T09:10:26Z",
+          "expires_at": "2026-11-09T09:10:25Z",
+          "updated_at": "2026-10-26T09:10:26Z",
+          "digest": "sha256:07471ee08b45f4d97cc464008f6800f353c28aae77e15ec5949a00c195c81612",
+          "workflow_run": {
+            "id": 40296751056,
+            "repository_id": 1396808859,
+            "head_repository_id": 1396808859,
+            "head_branch": "main",
+            "head_sha": "9b3d5082ee4816f85c2afb9a521771655633b2a2"
+          }
+        }
+      ]
+    },
+    "evidence_hashes": [
+      {
+        "minecraft": "112",
+        "client_log_sha256": "7f387af854a7bdd5e503e532897fb5ff1edcb12b56cf9e9b955977a5ea8e6243",
+        "timeout_capture_sha256": "8a77aca5653527ec9f95221d54fd6ba0fc65116e24bf3671934187d5901a3722"
+      },
+      {
+        "minecraft": "164",
+        "client_log_sha256": "4a876893dd4935d6d0eea0fd3fba761ac14f249fc7cfe03dfd5186b2936321c7",
+        "timeout_capture_sha256": "74c3ff678d93530e3329c26edab03498e2ac5ba6ad28f3c0f39ce6c6bf7058d7"
+      }
+    ],
+    "observed": "Both real clients displayed the journal header and token, but probe response filter excluded standalone Token lines and waited until phase45 timeout.",
+    "fix": "Retain token-only received chat messages in addition to PL4 item-prefixed lines. Runtime sources/native artifacts remain unchanged."
+  },
+  "stock_clients": {
+    "1.6.4": {
+      "workflow_run": 40297680275,
+      "artifact_id": 12639186682,
+      "archive_sha256": "4afbea30b2eadb6a7bd594c30334f540f5f95ab0cf8531d2e377e46a23fbdb29",
+      "client": {
+        "minecraft": "1.6.4",
+        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "d465f51f-c14c-48ed-a5e1-8922fdbe2dbe",
+        "diagnostic_journal_messages": "[{\"text\":\"PL4 item journal: 1 unresolved at -1,200,0; page 1/1; capacity 1/4096. Read only.\"}, {\"text\":\"Token d465f51f-c14c-48ed-a5e1-8922fdbe2dbe; inspection required; no automatic replay.\"}]",
+        "diagnostic_chat_messages": "[{\"text\":\"PL4 item receipt: unresolved token d465f51f-c14c-48ed-a5e1-8922fdbe2dbe; recorded phase wireless at -1,200,0; preserve receipt; no replay.\"}]",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+      },
+      "runtime": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+        "probe_sha256": "28050949d6d160852ed13206065280992cd6683d3e72fbc89b3db9800d3e6256",
+        "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+        "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "images": [
+        {
+          "file": "legacy-item-journal-chat.png",
+          "sha256": "3dc3e1d92984bb31571ce92e568adb2196ca8d818042b76da502cccdc230798c",
+          "bytes": 37680,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-item-receipt-chat.png",
+          "sha256": "df0c59d9315ac9497b77c329c500a2b97ce4fb676c2cfa78dac3cfe0073ecc8f",
+          "bytes": 43989,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-private-display.png",
+          "sha256": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+          "bytes": 29448,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-public-display.png",
+          "sha256": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+          "bytes": 29287,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-1.png",
+          "sha256": "5ade4b9222a6c9e9d3359bccae08adaab1d9304de72a5b9870a9563b853e30d4",
+          "bytes": 20933,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-2.png",
+          "sha256": "4b191139800557f3ba4abd602f276c5e956db0c5f340a1bc1ae4fe9eb29ce55b",
+          "bytes": 22096,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-3.png",
+          "sha256": "3c6e20637ea5403c8ebf5cb2a2906b33733e6898897ff4878c47a4d985124fe9",
+          "bytes": 23735,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-4.png",
+          "sha256": "de762ed239c0aafc5c461f06b8e8bf7b5fbdd8f2b54e7afb3c1697de7a590af4",
+          "bytes": 23904,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-variants.png",
+          "sha256": "1c40a41ac73773b4591c719bf11855a2afcb3e89fc0f9c2b4f625327b4c1db8d",
+          "bytes": 23956,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-withdrawal.png",
+          "sha256": "68b9c32f45d6efc9355d278205e789ee3556cfa1fcda52a8bc373b74018e3c3c",
+          "bytes": 23966,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-wireless-storage-scale-1.png",
+          "sha256": "dda5781a32b013e065d2635dab098e89ccb393e687a5aa1c71ce52a51050c412",
+          "bytes": 28164,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-2.png",
+          "sha256": "3dad26b574d6552df13076eee87d4758b539763a0c82deef7df696a26e217f4c",
+          "bytes": 26292,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-3.png",
+          "sha256": "a8cdbbcec85f85aba09c2d18730b6a38efedd132631679589e6038cc5b4dea9d",
+          "bytes": 26748,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-4.png",
+          "sha256": "9f60d7a96e2b736f58f346693c498b4adc512118ad6352d14fb1e1d26fece6cd",
+          "bytes": 25321,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-search-empty.png",
+          "sha256": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+          "bytes": 22352,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-search.png",
+          "sha256": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+          "bytes": 23253,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-sorted.png",
+          "sha256": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+          "bytes": 24868,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-tooltip.png",
+          "sha256": "d047fa9734e1858e0c7821fcacabbfb48971cc5e9ce0344cd6bd2e64a8aa0a73",
+          "bytes": 26002,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        }
+      ]
+    },
+    "1.12.2": {
+      "workflow_run": 40297680200,
+      "artifact_id": 12639042929,
+      "archive_sha256": "f6449a86ceb326d21d056c500ee7044e649d23c80a28150e14c9b5943c0b7bd6",
+      "client": {
+        "minecraft": "1.12.2",
+        "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "a5658242-91df-471a-a73d-6029ed9cb40c",
+        "diagnostic_journal_messages": "[PL4 item journal: 1 unresolved at -1,200,0; page 1/1; capacity 1/4096. Read only., Token a5658242-91df-471a-a73d-6029ed9cb40c; inspection required; no automatic replay.]",
+        "diagnostic_chat_messages": "[PL4 item receipt: unresolved token a5658242-91df-471a-a73d-6029ed9cb40c; recorded phase wireless at -1,200,0; preserve receipt; no replay.]",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+      },
+      "runtime": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
+        "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
+        "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+        "probe_sha256": "75e2adfa5ae732f2e3529ea51c861a97dac434ea846f67a4c57da75eed09cb8c",
+        "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+        "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "images": [
+        {
+          "file": "legacy-item-journal-chat.png",
+          "sha256": "c85775df5e96ca14bcb8c54d477219380e1620c92a5be55ca8d9106d0a22de5f",
+          "bytes": 34153,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-item-receipt-chat.png",
+          "sha256": "563b554779805fd0dd80c5c8e59ce6488539738d44695a84c7ce2d63bf0d3701",
+          "bytes": 40829,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-private-display.png",
+          "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+          "bytes": 25885,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-public-display.png",
+          "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+          "bytes": 25722,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-1.png",
+          "sha256": "0d0968f43bfb2086129103d5ff7f82fc8da401d1822e52cda2dda29b2af9c194",
+          "bytes": 30656,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-2.png",
+          "sha256": "13caf4b6499d313926025b15b86214780ef0412a90204f1c58e43f50a5b1cecf",
+          "bytes": 31296,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-3.png",
+          "sha256": "a13b0c68068eeb67228c0bbd53f9a7b1d1d77d8c7f8b69e0af7ab3bb8fb0a4e8",
+          "bytes": 31380,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-scale-4.png",
+          "sha256": "9a85840e9fd54853f9b0241a13b4da4462bb5164c5f31585dcec619fc4806353",
+          "bytes": 29033,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-variants.png",
+          "sha256": "454fb2a500ca78f6bbf3a1d2a0e38318459a98b6dd458329a6d7ff051fde19d9",
+          "bytes": 29091,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-grouped-withdrawal.png",
+          "sha256": "fc7d87dfde3b72ed9aac0f618c9dec374b379c8d43b907376411bf8109d72768",
+          "bytes": 29207,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": true
+        },
+        {
+          "file": "legacy-wireless-storage-scale-1.png",
+          "sha256": "b9f054bfe488c5bac23d628c432dd1ee36a32f0c9f048461c3d0bb5225eca4d8",
+          "bytes": 67561,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-2.png",
+          "sha256": "c22177452bc1b3afc0c8e409357d430007bebc2b47e30c75744970d348295878",
+          "bytes": 56234,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-3.png",
+          "sha256": "0286fa507cfd0705ca7d9699bd965ecab1a2dd12973184a014fe41ab2054039d",
+          "bytes": 46405,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-scale-4.png",
+          "sha256": "cbfeceedc004fe0545167e12c12c0c47a2bf728e5fb1ef30e5416bafb0e50871",
+          "bytes": 36574,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-search-empty.png",
+          "sha256": "93f1133f19ce0dea32bf9df8ed477b8c370c6fd92b51c43c7163651b6efb5e67",
+          "bytes": 27376,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-search.png",
+          "sha256": "253e6c5a2f720e7b80ca0fcce53438a3f4f6acf777d8f74cc8bc09af054cccc0",
+          "bytes": 28248,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-sorted.png",
+          "sha256": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+          "bytes": 29914,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        },
+        {
+          "file": "legacy-wireless-storage-tooltip.png",
+          "sha256": "bdbcefe2c53bd3c5bc17e5149156a7bac121015f0267646a7f20023378629fd3",
+          "bytes": 35129,
+          "dimensions": [
+            1280,
+            960
+          ],
+          "reviewed_this_checkpoint": false
+        }
+      ]
+    }
+  },
+  "reviewed_capture_paths": [
+    "docs/acceptance/captures/command-chat-2026-10-26/1.6.4/legacy-item-journal-chat.png",
+    "docs/acceptance/captures/command-chat-2026-10-26/1.6.4/legacy-item-receipt-chat.png",
+    "docs/acceptance/captures/command-chat-2026-10-26/1.6.4/legacy-wireless-grouped-withdrawal.png",
+    "docs/acceptance/captures/command-chat-2026-10-26/1.12.2/legacy-item-journal-chat.png",
+    "docs/acceptance/captures/command-chat-2026-10-26/1.12.2/legacy-item-receipt-chat.png",
+    "docs/acceptance/captures/command-chat-2026-10-26/1.12.2/legacy-wireless-grouped-withdrawal.png"
+  ],
+  "visual_review": "Both clients display a one-token journal and the same token in a linked sealed-receipt reply, including recorded phase wireless, target -1,200,0 and preserve/no replay wording. No permission denial remains. Grouped withdrawal regression displays 737 plain and 32 variant items, 64 withdrawn in player inventory. Six current captures reviewed; thirty others hashed only.",
+  "sources": {
+    "1.6.4": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+    "1.12.2": "a35e98e3907290ee307562ad377174ce2f1fd229"
+  },
+  "current_boundary": "Dispatcher/phase output implementation, 22 new native cases and both exact-JAR integrated stock command/chat regressions preserved; this is not all-version RC completion."
+}
