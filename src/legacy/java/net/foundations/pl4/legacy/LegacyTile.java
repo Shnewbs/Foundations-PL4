@@ -20,6 +20,8 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
     public String itemFault="";
     public NBTTagCompound itemJournalContext,itemLegacyEvidence;
+    public net.minecraft.nbt.NBTBase itemRawJournalContext;
+    public boolean itemMissingJournalContext;
     public boolean itemImportPending;
     public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
@@ -128,3 +130,4 @@ public final class LegacyTile extends TileEntity implements ITickable {
     @Override public net.minecraft.network.play.server.SPacketUpdateTileEntity getUpdatePacket(){return new net.minecraft.network.play.server.SPacketUpdateTileEntity(pos,0,getUpdateTag());}
     @Override public void onDataPacket(net.minecraft.network.NetworkManager net,net.minecraft.network.play.server.SPacketUpdateTileEntity packet){handleUpdateTag(packet.getNbtCompound());}
 }
+

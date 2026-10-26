@@ -21,11 +21,16 @@ public final class LegacyItemSafety {
         if(!tile.itemImportPending||!tile.fluidServer())return;
         LegacyWirelessSafety.data(tile.getWorld()).importLegacy(tile);tile.itemImportPending=false;
     }
+    private static void writeContext(LegacyTile tile,NBTTagCompound tag){
+        if(tile.itemRawJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemRawJournalContext.copy());
+        else if(tile.itemJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemJournalContext.copy());
+        else tag.removeTag("ItemJournalContext");
+    }
     private static int count(ItemStack stack){return LegacyTile.STACKS.empty(stack)?0:stack.getCount();}
     public static void write(LegacyTile tile,NBTTagCompound tag){
         tag.setString("ItemTransferFault",tile.itemFault);
         if(tile.itemLegacyEvidence!=null)tag.setTag("ItemLegacyEvidence",tile.itemLegacyEvidence.copy());else tag.removeTag("ItemLegacyEvidence");
-        if(tile.itemJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemJournalContext.copy());else tag.removeTag("ItemJournalContext");
+        writeContext(tile,tag);
         if(tile.itemOpaque!=null)tag.setTag("Escrow",tile.itemOpaque.copy());
         tag.setInteger("ItemEscrowCount",tile.itemOpaque!=null?tile.itemOpaqueCount:count(tile.pending));
     }
@@ -35,17 +40,18 @@ public final class LegacyItemSafety {
     }
     public static ItemStack loadSaved(NBTTagCompound tag){return tag.hasKey("Escrow")?parse(tag.getCompoundTag("Escrow")):ItemStack.EMPTY;}
     public static void read(LegacyTile tile,NBTTagCompound tag){
+        tile.itemRawJournalContext=null;tile.itemMissingJournalContext=!tag.hasKey("ItemJournalContext")&&tag.hasKey("ItemLegacyEvidence");
         tile.itemJournalContext=tag.getTag("ItemJournalContext") instanceof NBTTagCompound?(NBTTagCompound)tag.getCompoundTag("ItemJournalContext").copy():null;
         tile.itemLegacyEvidence=tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound?(NBTTagCompound)tag.getCompoundTag("ItemLegacyEvidence").copy():null;
         boolean malformedContext=tag.hasKey("ItemJournalContext")&&!(tag.getTag("ItemJournalContext") instanceof NBTTagCompound);
         boolean malformedEvidence=tag.hasKey("ItemLegacyEvidence")&&!(tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound);
         if(malformedContext||malformedEvidence){
-            if(tile.itemLegacyEvidence==null)tile.itemLegacyEvidence=new NBTTagCompound();
-            tile.itemLegacyEvidence.setString("OriginalFault",tag.getString("ItemTransferFault"));
-            if(malformedContext){tile.itemLegacyEvidence.setTag("MalformedContext",tag.getTag("ItemJournalContext").copy());tile.itemJournalContext=null;}
+            boolean retainedEvidence=tile.itemLegacyEvidence!=null;
+            if(!retainedEvidence){tile.itemLegacyEvidence=new NBTTagCompound();tile.itemLegacyEvidence.setString("OriginalFault",tag.getString("ItemTransferFault"));}
+            if(malformedContext){if(tag.hasKey("ItemLegacyEvidence"))tile.itemRawJournalContext=tag.getTag("ItemJournalContext").copy();else tile.itemLegacyEvidence.setTag("MalformedContext",tag.getTag("ItemJournalContext").copy());tile.itemJournalContext=null;}
             if(malformedEvidence)tile.itemLegacyEvidence.setTag("MalformedEvidence",tag.getTag("ItemLegacyEvidence").copy());
         }
-        tile.itemOpaque=null;tile.itemFault=malformedContext||malformedEvidence?"Unresolved saved item context; manual inspection required":tag.getString("ItemTransferFault");
+        tile.itemOpaque=null;tile.itemFault=malformedContext||malformedEvidence||tile.itemMissingJournalContext?"Unresolved saved item context; manual inspection required":tag.getString("ItemTransferFault");
         if(tile.itemFault.length()>512)tile.itemFault=tile.itemFault.substring(0,512);
         int count=tag.getInteger("ItemEscrowCount");tile.itemOpaqueCount=Math.max(0,count);
         if(tag.hasKey("Escrow")&&LegacyTile.STACKS.empty(tile.pending)&&count>0&&!tile.itemFault.isEmpty()){
@@ -62,11 +68,12 @@ public final class LegacyItemSafety {
         ItemStack receipt=new ItemStack(LegacyPL4.ITEM_CELL);NBTTagCompound tag=new NBTTagCompound();
         tag.setString("ItemTransferFault",tile.itemFault);
         if(tile.itemLegacyEvidence!=null)tag.setTag("ItemLegacyEvidence",tile.itemLegacyEvidence.copy());else tag.removeTag("ItemLegacyEvidence");
-        if(tile.itemJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemJournalContext.copy());else tag.removeTag("ItemJournalContext");
+        writeContext(tile,tag);
         if(tile.itemOpaque!=null)tag.setTag("Escrow",tile.itemOpaque.copy());
         else if(!LegacyTile.STACKS.empty(tile.pending))tag.setTag("Escrow",tile.pending.writeToNBT(new NBTTagCompound()));
         tag.setInteger("ItemEscrowCount",tile.itemOpaque!=null?tile.itemOpaqueCount:count(tile.pending));receipt.setTagCompound(tag);
-        tile.itemJournalContext=null;tile.itemLegacyEvidence=null;tile.itemImportPending=false;tile.pending=ItemStack.EMPTY;tile.itemFault="";tile.itemOpaque=null;tile.itemOpaqueCount=0;tile.fluidDirty();tile.getWorld().spawnEntity(new EntityItem(tile.getWorld(),tile.getPos().getX()+.5,tile.getPos().getY()+.5,tile.getPos().getZ()+.5,receipt));
+        tile.itemJournalContext=null;tile.itemRawJournalContext=null;tile.itemMissingJournalContext=false;tile.itemLegacyEvidence=null;tile.itemImportPending=false;tile.pending=ItemStack.EMPTY;tile.itemFault="";tile.itemOpaque=null;tile.itemOpaqueCount=0;tile.fluidDirty();tile.getWorld().spawnEntity(new EntityItem(tile.getWorld(),tile.getPos().getX()+.5,tile.getPos().getY()+.5,tile.getPos().getZ()+.5,receipt));
     }
     private LegacyItemSafety(){}
 }
+
