@@ -121,10 +121,14 @@ def validate_preupgrade(root, report, mc, sha, runtime):
     for row, (phase, count, selected) in zip(rows, phases):
         proof = row.get("report", {})
         log = logs / ("preupgrade-" + phase + ".log")
+        text = log.read_text(errors="replace")
         if (row.get("phase") != phase or type(row.get("exit_code")) is not int or row["exit_code"] != 0 or row.get("runtime_sha256") != selected
                 or proof.get("minecraft") != mc or proof.get("phase") != phase or proof.get("passed") is not True or type(proof.get("checks")) is not int or proof["checks"] != count
                 or not proof.get("process", "").startswith(str(row["pid"]) + "@")
                 or hashlib.sha256(log.read_bytes()).hexdigest() != row["log_sha256"]
+                or not re.search("Starting minecraft server version " + re.escape(mc) + r"\b", text, re.I)
+                or "PL4 LEGACY MIGRATION " + phase + ": PASS" not in text or "Stopping server" not in text
+                or any(marker in text for marker in ["missing a mapping", "It will not persist", "Exception in server tick loop", "UnsupportedClassVersionError"])
                 or json.loads((logs / ("preupgrade-" + phase + ".json")).read_text()) != proof):
             raise ValueError("Pre-upgrade phase proof disagrees: " + phase)
     tokens = rows[1]["report"].get("tokens", [])
