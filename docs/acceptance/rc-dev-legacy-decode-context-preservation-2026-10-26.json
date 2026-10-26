@@ -1,0 +1,1837 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-26",
+  "scope": "Missing recorded contexts and noncompound current contexts with saved legacy evidence; preserve native NBT type/evidence across save/removal without granting recovery",
+  "sources": {
+    "1.12.2": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+    "1.6.4": "7004a71105283b3270249945c8c665bc10c65e83"
+  },
+  "controller_source": "c850f00a314f12723bc81c6c85d514229a5848ae",
+  "implementation": [
+    "Keep a noncompound current context as raw NBT when saved evidence exists; do not overwrite an earlier MalformedContext/OriginalFault payload in that saved evidence.",
+    "Write raw context type/value unchanged through tile saves and sealed removal receipts. Reset transient raw/missing flags on fresh reads and after removal.",
+    "A missing context paired with saved compound evidence is explicitly unresolved, even if fault text disappeared. Do not create a replacement token/context; retain absence and freeze all item targets in the current dimension.",
+    "Generic escrow settlement cannot clear raw/missing decode uncertainty; blocked() also observes those flags independently of fault text.",
+    "Valid imported contexts remain scoped/idempotent. Initial malformed-evidence imports retain their original unknown-route compatibility behavior.",
+    "Make historical disposable fixture chunk reads/placements explicit, preventing spawn-position-dependent null tiles without changing assertions.",
+    "Historical qualification binds its reported fixture hash to the packaged JAR; restart proof revalidates native version/PASS/shutdown/readiness markers alongside raw JSON and hashes. Scheduler regression edits now trigger its checks."
+  ],
+  "validation": {
+    "new_native_cases_per_port": 10,
+    "ordinary_native_counts": {
+      "1.12.2": 357,
+      "1.6.4": 335,
+      "1.21.1": 192
+    },
+    "current_restart_assertions_per_port": 188,
+    "historical_process_checks_per_port": 60,
+    "local_controller_test_executions": 77,
+    "new_controller_cases": 6,
+    "stock_clients": "PASS_BOTH_FINAL_EXACT_PRODUCTION_JARS",
+    "screenshots_reviewed": 4,
+    "screenshots_hashed": 40
+  },
+  "native_workflow": {
+    "run": 40350289583,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
+    "jobs": [
+      {
+        "id": 121668176566,
+        "name": "discover",
+        "conclusion": "success"
+      },
+      {
+        "id": 121668430845,
+        "name": "native (1.6.4, mc/1.6.4, 21, legacy, 7004a71105283b3270249945c8c665bc10c65e83)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121668430854,
+        "name": "native (1.12.2, mc/1.12.2, 8, legacy, 98836a5c9da4ab611f57bfc3ebff6f96587a4215)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121668431116,
+        "name": "native (1.21.1, main, 21, modern, c850f00a314f12723bc81c6c85d514229a5848ae)",
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 12664050023,
+        "name": "hourly-native-1.12.2-98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "size_in_bytes": 2548884,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12664050023",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12664050023/zip",
+        "expired": false,
+        "created_at": "2026-10-26T15:35:08Z",
+        "expires_at": "2026-11-09T15:35:07Z",
+        "updated_at": "2026-10-26T15:35:08Z",
+        "digest": "sha256:07927043fa109ad07f6dd8291bdcd48f6877c01537c8c045e2bcb7b3d844022f",
+        "workflow_run": {
+          "id": 40350289583,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "c850f00a314f12723bc81c6c85d514229a5848ae"
+        }
+      },
+      {
+        "id": 12663995298,
+        "name": "hourly-native-1.21.1-c850f00a314f12723bc81c6c85d514229a5848ae",
+        "size_in_bytes": 6794272,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12663995298",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12663995298/zip",
+        "expired": false,
+        "created_at": "2026-10-26T15:34:53Z",
+        "expires_at": "2026-11-09T15:34:52Z",
+        "updated_at": "2026-10-26T15:34:53Z",
+        "digest": "sha256:271079d734004a6b7e0d34d9cbd9e660e8b4ec4084d40543b4b9edf7442d509f",
+        "workflow_run": {
+          "id": 40350289583,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "c850f00a314f12723bc81c6c85d514229a5848ae"
+        }
+      },
+      {
+        "id": 12662768429,
+        "name": "hourly-native-1.6.4-7004a71105283b3270249945c8c665bc10c65e83",
+        "size_in_bytes": 2940894,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12662768429",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12662768429/zip",
+        "expired": false,
+        "created_at": "2026-10-26T15:35:09Z",
+        "expires_at": "2026-11-09T15:35:08Z",
+        "updated_at": "2026-10-26T15:35:09Z",
+        "digest": "sha256:57b92029e19efd30d7834eb9d9d517c13da8463476a81f4686fe639df5751449",
+        "workflow_run": {
+          "id": 40350289583,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "c850f00a314f12723bc81c6c85d514229a5848ae"
+        }
+      }
+    ]
+  },
+  "targets": [
+    {
+      "minecraft": "1.12.2",
+      "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+      "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+      "hourly": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "native_gate": "PASS",
+        "expected_fixtures": 357,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json",
+          "legacy-item-restart-summary.json",
+          "preupgrade-item-fault-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "7b1bd1e2e4efd20125c5ed1d9f5a5f2d969112886926871434b4a75d177e04ed",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "218487f2a3de7fd0d295e498dd40a17312ef730d89746887f7c71b9d7761caaa",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-restart-scenarios.jar": "cbf4cedd88c86dd1982236121da4f91cf7f16e6d91d171e1a9e84fc4d64bbbe1",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "c686260d15e1d0eaa056b2754cf61ef12ba9a6575807437147a624cfa2038eaa",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547"
+        },
+        "workflow_run": "40350289583",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "clean-native-summary.json": "3fbc9467886fd64be71d1ebed0f78374e590fb0e5b898326f0c576f6f82a3277",
+        "preupgrade-item-fault-summary.json": "a17eb4a60366742f8341b9644d1d366097b2a8dcedec4c0df4ca033600beceb4",
+        "item-restart-write.json": "80f82a5e3fe8210b25b0d5a58ac92721c8af66d5dd37ee5d090895bd314702da",
+        "energy-summary.json": "b640e8ec9a28d2d54b1272ac642cb50eff133f700c5a36823b6ad29d18983e22",
+        "preupgrade-fault-write.json": "83b89073878af55b95bcbff8f2b8981a49f6b2bc5f0e105fdd059a5c88d4b0af",
+        "legacy-migration-summary.json": "5f894c654e4c9f465e396e1a288f0603c37e4e0eb60fed7e82821458fc11a935",
+        "item-restart-crash-verify.json": "f49b81cfce206d300ed098a2964a4f814c862c7ad541691e2648497b226bf1aa",
+        "preupgrade-fault-upgrade.json": "0ba1f40ef8a2455ad0888016e68a6884123ed37260eac622c54414031db8644b",
+        "production-smoke.json": "b72e7b6db5f018bc0fde6e91478860dcd70a76e165b4f1c11b416885ba0ebab7",
+        "preupgrade-baseline-native.json": "eec6a4a4e9b7e3a850ec93631c512246305cd76a0f7b3c5fb0f4afafc955fc99",
+        "preupgrade-baseline-origin.json": "e0da66f700043a931a8f0e0996d43cf0b74f4be45cbd3446543793f41143e3c4",
+        "item-restart-crash-write.json": "732b319bc6ada3b234031a2bdc5aaadb3c2e3d01697d9467f58f5bb76187b495",
+        "item-restart-verify.json": "9524360b6310a2c6ffb956405813d98cff8a23e2f6c8594ffe1b9c699733a8f2",
+        "hourly-native.json": "d0a830d577b136b8c75bc0ca9b5298c661da5af58cd70e46dffe56404c4d13c2",
+        "legacy-item-restart-summary.json": "1cc9539e331a00d3174eb882b8d3333b462e8c8cf9fa994f48256f49cf7c5e6a",
+        "preupgrade-fault-verify.json": "56d91437e38c6518e8a77a2bc6b1085fd01275bba30f89f9fc8eda24b9e8fdf6"
+      },
+      "ordinary_native": 357,
+      "restart": {
+        "minecraft": "1.12.2",
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "fixture_sha256": "cbf4cedd88c86dd1982236121da4f91cf7f16e6d91d171e1a9e84fc4d64bbbe1",
+        "clean_restart": "PASS",
+        "save_barrier_abrupt_restart": "PASS",
+        "processes": [
+          {
+            "phase": "write",
+            "pid": 2865,
+            "exit_code": 0,
+            "log_sha256": "00f423e7c12b391fa422b341c2fe019cf8d4263df9ff7be33269dae35362bf23"
+          },
+          {
+            "phase": "verify",
+            "pid": 2902,
+            "exit_code": 0,
+            "log_sha256": "0a13bc1f81da898b1242566f484d8aebdf562397e8224a848f3736741eead67d"
+          },
+          {
+            "phase": "crash-write",
+            "pid": 2938,
+            "exit_code": -9,
+            "log_sha256": "bddb83cc380acea2ce7d878e262d7db85490051e6638131bf3d9f06e38f80a61"
+          },
+          {
+            "phase": "crash-verify",
+            "pid": 2971,
+            "exit_code": 0,
+            "log_sha256": "04be7bc85b25cd8ef08078dab0ad7b751986957887451fbb4aaa652c2ec083fc"
+          }
+        ],
+        "phase_reports": {
+          "write": {
+            "minecraft": "1.12.2",
+            "phase": "write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "75670889-80bd-464c-97d8-e746e7d81968",
+              "1e7df57b-410b-4880-854f-c2ed51f45896"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "2a2488ec-97cf-4f04-94e1-1f168eb36777",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "75670889-80bd-464c-97d8-e746e7d81968",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "ab4fef16-0b5b-41ea-8e19-cb545ac610f2",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "1e7df57b-410b-4880-854f-c2ed51f45896",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2865@runnervmtai0g"
+          },
+          "verify": {
+            "minecraft": "1.12.2",
+            "phase": "verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "75670889-80bd-464c-97d8-e746e7d81968",
+              "1e7df57b-410b-4880-854f-c2ed51f45896"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "2a2488ec-97cf-4f04-94e1-1f168eb36777",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "75670889-80bd-464c-97d8-e746e7d81968",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "ab4fef16-0b5b-41ea-8e19-cb545ac610f2",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "1e7df57b-410b-4880-854f-c2ed51f45896",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2902@runnervmtai0g"
+          },
+          "crash-write": {
+            "minecraft": "1.12.2",
+            "phase": "crash-write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "1d1f563f-e8f0-43ca-9921-d44fbc464ebc",
+              "4e1f70fb-3c57-4fa7-b0fc-7b5152a767a2"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "209c4d37-5bec-4d8a-9d00-918ac5899483",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "1d1f563f-e8f0-43ca-9921-d44fbc464ebc",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "5e296f05-c094-40d5-bde9-1dc430b85c0b",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "4e1f70fb-3c57-4fa7-b0fc-7b5152a767a2",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2938@runnervmtai0g"
+          },
+          "crash-verify": {
+            "minecraft": "1.12.2",
+            "phase": "crash-verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "1d1f563f-e8f0-43ca-9921-d44fbc464ebc",
+              "4e1f70fb-3c57-4fa7-b0fc-7b5152a767a2"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "209c4d37-5bec-4d8a-9d00-918ac5899483",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "insert",
+                "token": "1d1f563f-e8f0-43ca-9921-d44fbc464ebc",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "5e296f05-c094-40d5-bde9-1dc430b85c0b",
+                "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                "outcome": "extract",
+                "token": "4e1f70fb-3c57-4fa7-b0fc-7b5152a767a2",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2971@runnervmtai0g"
+          }
+        },
+        "world_archives": {
+          "clean": {
+            "file": "item-restart-clean-world.zip",
+            "sha256": "03e18f63d07f701b8ab38815ac4097c0cc1dfc77d507d99ff38a83cad8c7216d"
+          },
+          "barrier": {
+            "file": "item-restart-barrier-world.zip",
+            "sha256": "1618cbbd4b142d4e9217e20f15e0944f1d3b8f19ce2dd87f433275b5bd6d6b60"
+          }
+        },
+        "scope": "Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting."
+      },
+      "raw_historical_world": {
+        "world_archive_sha256": "20eeaa4a81ef90eeeb6edcfb5b17ef2028748e7c0da52c65c4d26a8773a459e2",
+        "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+        "providers": [
+          {
+            "provider_id": "09c1161d-ba84-4598-b649-ca217c2cc978",
+            "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "outcome": "extract",
+            "mutation_calls": 1,
+            "removed_units": 8,
+            "accepted_units": 0,
+            "inventory_units": 32,
+            "fault_extract": 1,
+            "fault_insert": 0,
+            "position": [
+              31,
+              200,
+              32
+            ]
+          },
+          {
+            "provider_id": "a65ff485-650b-482e-9eaa-503d56f72b9e",
+            "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+            "outcome": "insert",
+            "mutation_calls": 1,
+            "removed_units": 0,
+            "accepted_units": 8,
+            "inventory_units": 8,
+            "fault_extract": 0,
+            "fault_insert": 1,
+            "position": [
+              11,
+              200,
+              32
+            ]
+          }
+        ],
+        "result": "PASS"
+      },
+      "historical": {
+        "minecraft": "1.12.2",
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "fixture_sha256": "7b1bd1e2e4efd20125c5ed1d9f5a5f2d969112886926871434b4a75d177e04ed",
+        "baseline": {
+          "original_artifact_id": 12617877227,
+          "original_archive_sha256": "0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+          "retrieved_artifact_id": 12617877227,
+          "retrieved_archive_sha256": "sha256:0f3ba07e9ff432d8a00818bc5dfbe72368948c809e5933865ea603e3fcef3bb5",
+          "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+          "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff"
+        },
+        "processes": [
+          {
+            "phase": "fault-write",
+            "pid": 3030,
+            "exit_code": 0,
+            "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+            "log_sha256": "3195d868cf1eefbdfa6b893defb8080ac720a07633ae0a3f812e4876febf35bf",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-write",
+              "passed": true,
+              "checks": 16,
+              "tokens": [],
+              "provider_outcomes": [
+                {
+                  "provider_id": "a65ff485-650b-482e-9eaa-503d56f72b9e",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "09c1161d-ba84-4598-b649-ca217c2cc978",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3030@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-upgrade",
+            "pid": 3066,
+            "exit_code": 0,
+            "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+            "log_sha256": "91fa435c3752f97dd8bdc49ab54def7c0f7d53000176203d3bdaa55cde887235",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-upgrade",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "04064ced-65a6-460e-b200-8425bb5c5f8a",
+                "35b247f2-6e14-4e20-948c-35bbcf616abc"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "a65ff485-650b-482e-9eaa-503d56f72b9e",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "09c1161d-ba84-4598-b649-ca217c2cc978",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3066@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-verify",
+            "pid": 3102,
+            "exit_code": 0,
+            "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+            "log_sha256": "3312d4f161b5ff5a5d316ed3e2b9fce1eec3251e310d200d78e6c8a39a49d74e",
+            "report": {
+              "minecraft": "1.12.2",
+              "phase": "fault-verify",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "04064ced-65a6-460e-b200-8425bb5c5f8a",
+                "35b247f2-6e14-4e20-948c-35bbcf616abc"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "a65ff485-650b-482e-9eaa-503d56f72b9e",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "09c1161d-ba84-4598-b649-ca217c2cc978",
+                  "owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3102@runnervmtai0g"
+            }
+          }
+        ],
+        "preupgrade_unlocated_fault_import": "PASS",
+        "candidate_restart": "PASS",
+        "world_archive": {
+          "file": "preupgrade-item-fault-world.zip",
+          "sha256": "20eeaa4a81ef90eeeb6edcfb5b17ef2028748e7c0da52c65c4d26a8773a459e2"
+        },
+        "scope": "Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API."
+      },
+      "production": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "migration": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "migration_fixture_sha256": "7b1bd1e2e4efd20125c5ed1d9f5a5f2d969112886926871434b4a75d177e04ed",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      }
+    },
+    {
+      "minecraft": "1.6.4",
+      "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+      "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+      "hourly": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "native_gate": "PASS",
+        "expected_fixtures": 335,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json",
+          "legacy-item-restart-summary.json",
+          "preupgrade-item-fault-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "db780e3d20bf7bad32194fb2cc7f99b214e9a3a4ac1034d358becd3beb662e8c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "cebd4a47594364e79237ac093f1e75d9e46410c7de11eb541c51d93c35070c6b",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "c396bc7fde32ab07231885282143f5bd65071ccd697f791e85e609303d893e01",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios-restart-scenarios-srg.jar": "8f951e81096ed3756dfb6757af198f50eb98e3f36d23eff3c6a10fe5cfee4552",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios.jar": "90bb37b36b565408d3b470678b89b899e6fb5d18fb099acc05e6b8126a8e4acc",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "dcf756d3259766156e60a87c593af367c7750cc95f929c10c15c5fd00e0b685f",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "a153f0a819c16c25c581ce507990c88f8cff4d70c80b143b7a0812f8e905feea"
+        },
+        "workflow_run": "40350289583",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "clean-native-summary.json": "1e67b081c721d367cea593a02033d2530063420fa8b9a5cb362d9dfacb723513",
+        "preupgrade-item-fault-summary.json": "6fc05ccdec81b10f93744698cab4a4b886de7aef2b8cf527497da86ca5f3d660",
+        "item-restart-write.json": "a213e819dbf730ce4e307a0658182520e66d6caf4cb2ea278b20cfb33483ff35",
+        "energy-summary.json": "2b702e31cead8bc3c452df53a587133ea0b73dfc3edca642ec82f20683e40ede",
+        "preupgrade-fault-write.json": "f04823763df5727eb9761845777e4ea241d63e1e16a2a911bd569c198b4a8b00",
+        "legacy-migration-summary.json": "ea58eb52c76e3300e9afbefd8e57038130d21106144e7448849ac66911a6ba45",
+        "item-restart-crash-verify.json": "94a04e3765dcf64b7c46104e993aefc1f10b91dd506163749a123f29ce8e22a7",
+        "preupgrade-fault-upgrade.json": "8358379b35bd5a2ae8544244f3d9cb29d8fba88a8f64c032fc90cfff46e3240c",
+        "production-smoke.json": "b4cc22e7fc94873ce6a1cadc2b06e8b220b0c432b3339bbebdcf5ca329a87f86",
+        "preupgrade-baseline-native.json": "6e5f64597525a813a4c0e1341605ac0ea0085023537dc98c514c5ab61e7545f9",
+        "preupgrade-baseline-origin.json": "779cb640e382f24e6c7c20e950fef3efd8958c6d52de7668e684fd0d1a62998a",
+        "item-restart-crash-write.json": "88fe1074f55d094f4a16a4ef608919ba75f331c8ec702ed494923e2031b67475",
+        "item-restart-verify.json": "5daa4e49228a555fa17c71ee4831fbf71cd7808b6986797c0ae87fcc1a623972",
+        "hourly-native.json": "55e947123d7eb96118ba68bcc40ef3392c74e765c3aaf26ae380ef43ff1aac7a",
+        "legacy-item-restart-summary.json": "8488d4a1398a6c0f2ffa18912d6a57b7b86c3d9496eea9c443177f2818866f8f",
+        "preupgrade-fault-verify.json": "1b9287512e935bc8a4495f3e59ca74763635d5def942b334c82ed1ab7d872500"
+      },
+      "ordinary_native": 335,
+      "restart": {
+        "minecraft": "1.6.4",
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "fixture_sha256": "8f951e81096ed3756dfb6757af198f50eb98e3f36d23eff3c6a10fe5cfee4552",
+        "clean_restart": "PASS",
+        "save_barrier_abrupt_restart": "PASS",
+        "processes": [
+          {
+            "phase": "write",
+            "pid": 2975,
+            "exit_code": 0,
+            "log_sha256": "905652a35d0e90f1610b9dbf7fabb990daa14acc1bdfe7c14e136683c6b6c2ca"
+          },
+          {
+            "phase": "verify",
+            "pid": 2998,
+            "exit_code": 0,
+            "log_sha256": "c1ee64ce389d559dac00b23b7a220096f21dee7c997861b9630cc351d34a065b"
+          },
+          {
+            "phase": "crash-write",
+            "pid": 3023,
+            "exit_code": -9,
+            "log_sha256": "f51ab33f79bbfc03f3a956fa8e6a47cb5680ec00db47a1c1c3857931a8f11c8a"
+          },
+          {
+            "phase": "crash-verify",
+            "pid": 3045,
+            "exit_code": 0,
+            "log_sha256": "9976012004ef7ace3a803de832f9d51338aefbef17890c677fa78c07f94ce1b6"
+          }
+        ],
+        "phase_reports": {
+          "write": {
+            "minecraft": "1.6.4",
+            "phase": "write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "11c1f344-dad8-46c2-b979-56ca6ffde85f",
+              "92bbcf32-cd5b-4a99-aff1-74f9722903e9"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "89f1262a-d09c-49a7-b9cd-94520bd7d2c2",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "11c1f344-dad8-46c2-b979-56ca6ffde85f",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "c1c17237-0ca6-449f-b166-3a9b3eb900f1",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "92bbcf32-cd5b-4a99-aff1-74f9722903e9",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2975@runnervmtai0g"
+          },
+          "verify": {
+            "minecraft": "1.6.4",
+            "phase": "verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "11c1f344-dad8-46c2-b979-56ca6ffde85f",
+              "92bbcf32-cd5b-4a99-aff1-74f9722903e9"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "89f1262a-d09c-49a7-b9cd-94520bd7d2c2",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "11c1f344-dad8-46c2-b979-56ca6ffde85f",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "c1c17237-0ca6-449f-b166-3a9b3eb900f1",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "92bbcf32-cd5b-4a99-aff1-74f9722903e9",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2998@runnervmtai0g"
+          },
+          "crash-write": {
+            "minecraft": "1.6.4",
+            "phase": "crash-write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "4f0c2a9c-d61b-4aac-8693-092dd6561957",
+              "89016632-e91b-4877-a6f9-b29d66bffa18"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "12c670cb-10b6-42e9-92ff-9de3a8292fca",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "4f0c2a9c-d61b-4aac-8693-092dd6561957",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "88ca75dc-5a85-4bf3-953b-011df58258eb",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "89016632-e91b-4877-a6f9-b29d66bffa18",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3023@runnervmtai0g"
+          },
+          "crash-verify": {
+            "minecraft": "1.6.4",
+            "phase": "crash-verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "4f0c2a9c-d61b-4aac-8693-092dd6561957",
+              "89016632-e91b-4877-a6f9-b29d66bffa18"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "12c670cb-10b6-42e9-92ff-9de3a8292fca",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "4f0c2a9c-d61b-4aac-8693-092dd6561957",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "88ca75dc-5a85-4bf3-953b-011df58258eb",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "89016632-e91b-4877-a6f9-b29d66bffa18",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3045@runnervmtai0g"
+          }
+        },
+        "world_archives": {
+          "clean": {
+            "file": "item-restart-clean-world.zip",
+            "sha256": "828e57296e67dd00aa2599e130d567f6d9a5e98aa55d6c80ddf8de6bfe4d9b42"
+          },
+          "barrier": {
+            "file": "item-restart-barrier-world.zip",
+            "sha256": "c0ea806f0c750e8c283b5a2870ffea291ff4cfeaccfba04d9352d63d14af5390"
+          }
+        },
+        "scope": "Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting."
+      },
+      "raw_historical_world": {
+        "world_archive_sha256": "9d727b4f594142a2a180e6f1418fe8da579eb3df56d7bba71bbb446c841eee7e",
+        "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+        "providers": [
+          {
+            "provider_id": "3a867f60-6f4f-4ebe-921b-e7cf659fcb2d",
+            "owner": "pl4owner",
+            "outcome": "extract",
+            "mutation_calls": 1,
+            "removed_units": 8,
+            "accepted_units": 0,
+            "inventory_units": 32,
+            "fault_extract": 1,
+            "fault_insert": 0,
+            "position": [
+              31,
+              200,
+              32
+            ]
+          },
+          {
+            "provider_id": "7526f65d-9aa8-482b-9fd8-2816fc2cfca8",
+            "owner": "pl4owner",
+            "outcome": "insert",
+            "mutation_calls": 1,
+            "removed_units": 0,
+            "accepted_units": 8,
+            "inventory_units": 8,
+            "fault_extract": 0,
+            "fault_insert": 1,
+            "position": [
+              11,
+              200,
+              32
+            ]
+          }
+        ],
+        "result": "PASS"
+      },
+      "historical": {
+        "minecraft": "1.6.4",
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "baseline": {
+          "original_artifact_id": 12617856905,
+          "original_archive_sha256": "1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "retrieved_artifact_id": 12617856905,
+          "retrieved_archive_sha256": "sha256:1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+          "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282"
+        },
+        "processes": [
+          {
+            "phase": "fault-write",
+            "pid": 3091,
+            "exit_code": 0,
+            "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+            "log_sha256": "fd1ea4468e9852e276a22ddde360a91ba65bb9b6832c1c2e121738454bedfbb0",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-write",
+              "passed": true,
+              "checks": 16,
+              "tokens": [],
+              "provider_outcomes": [
+                {
+                  "provider_id": "7526f65d-9aa8-482b-9fd8-2816fc2cfca8",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "3a867f60-6f4f-4ebe-921b-e7cf659fcb2d",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3091@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-upgrade",
+            "pid": 3115,
+            "exit_code": 0,
+            "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+            "log_sha256": "1f3b85f6483462b4827d5071923dbc5281828768f8331f7b9f27bf13576e2fd6",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-upgrade",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "91a4a30f-5d48-4783-8e35-5cf8e2800152",
+                "e16a612a-16da-456f-aafc-cff25bfcab9e"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "7526f65d-9aa8-482b-9fd8-2816fc2cfca8",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "3a867f60-6f4f-4ebe-921b-e7cf659fcb2d",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3115@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-verify",
+            "pid": 3142,
+            "exit_code": 0,
+            "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+            "log_sha256": "36a88f36a63b2e079b17bc8e48b280e41a4b7bbdfe1f7a7baffea2e58e8f3f94",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-verify",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "91a4a30f-5d48-4783-8e35-5cf8e2800152",
+                "e16a612a-16da-456f-aafc-cff25bfcab9e"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "7526f65d-9aa8-482b-9fd8-2816fc2cfca8",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "3a867f60-6f4f-4ebe-921b-e7cf659fcb2d",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3142@runnervmtai0g"
+            }
+          }
+        ],
+        "preupgrade_unlocated_fault_import": "PASS",
+        "candidate_restart": "PASS",
+        "world_archive": {
+          "file": "preupgrade-item-fault-world.zip",
+          "sha256": "9d727b4f594142a2a180e6f1418fe8da579eb3df56d7bba71bbb446c841eee7e"
+        },
+        "scope": "Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API."
+      },
+      "production": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "migration": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "migration_fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      }
+    },
+    {
+      "minecraft": "1.21.1",
+      "source_commit": "c850f00a314f12723bc81c6c85d514229a5848ae",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "hourly": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "c850f00a314f12723bc81c6c85d514229a5848ae",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40350289583",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "hourly-native.json": "dd3f3defc8dce85c380da5cdc88d02c7b6542f13b6ad4b139efb988f9a9a767e",
+        "rc-development-gate.json": "ccd158a436c2fa82f1c32c75125d5544e10ac17e8eea9356e91dcd8d66f9d62e"
+      },
+      "ordinary_native": 192
+    }
+  ],
+  "failure_and_refinement": [
+    {
+      "sources": {
+        "1.12.2": "9206c22ecefd3860ce3252da56308897c47798e1",
+        "1.6.4": "be8c539dfdd7d70508e978757dfa8f509e4e3fea"
+      },
+      "runs": [
+        40347569897,
+        40347583076
+      ],
+      "observed_failure": "Existing first-time malformed prior-evidence scenario hit NullPointerException when a replacement context was no longer created.",
+      "repair": "Restrict missing-recorded-context classification to saved compound evidence. Keep initial malformed-evidence import behavior; do not weaken assertions."
+    },
+    {
+      "prior_qualified_sources": {
+        "1.12.2": "7392d5885aa9c75a01aa001483939d0ca8ac39c3",
+        "1.6.4": "b5689e3487b577b9c152a57f5a1270830672acb0"
+      },
+      "native_run": 40347907995,
+      "counts": {
+        "1.12.2": 356,
+        "1.6.4": 334
+      },
+      "refinement": "Further review found generic settlement should explicitly respect raw/missing flags; add a tenth native case and guard both blocked() and clearBlock()."
+    },
+    {
+      "source": "b8e58b5d8130eb5dbd16089c2b5670c43cafaaac",
+      "run": 40349144778,
+      "job": 121664367581,
+      "artifact": 12662043713,
+      "archive_sha256": "d5db7e53828a9d9392d8f43f91467662c18f1a4dbc4701e36ff4e846c6a25269",
+      "observed_failure": "All335 native cases/production/restart passed, then historical fault-write failed with NullPointerException in MigrationScenarios.place:108.",
+      "repair": "Explicitly load each bounded disposable fixture chunk before tile placement/read. Current sources pass the unchanged full gate."
+    }
+  ],
+  "limitations": [
+    "Ten new native cases cover missing context, raw string/integer retention, older payload preservation, repeated reads, serialized journal/tile reload, actual sealed host-removal receipts, valid-context compatibility and settlement guard.",
+    "No fresh JVM/crash fixture specifically exercises the new raw/missing decode path. Existing188 current-runtime and60 historical process assertions are regression evidence with their original boundaries.",
+    "String/integer raw contexts are tested; other malformed fields and arbitrary external rewrite histories are not exhaustively qualified.",
+    "Opaque journal freezes item targets for all owners in the current dimension. No replay, redemption, minting, fence-clear or generic recovery command is added.",
+    "Stock-client probes cover ordinary actions and existing imported-unknown chat, not graphical malformed-context interactions.",
+    "Installed providers/access control, arbitrary copied worlds, profiles/dimensions, dedicated multiplayer, power-loss atomicity, sustained performance and broader parity remain open."
+  ],
+  "publication": {
+    "rc_publication_cleared": false,
+    "cleared_targets": 0,
+    "new_github_release": null,
+    "new_curseforge_upload_id": null,
+    "moderation": null,
+    "public_visibility": null
+  },
+  "stock_clients": {
+    "1.12.2": {
+      "runtime": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+        "probe_sha256": "421af4c28a3b2202e6cff19dcbfc73d9d528b9c937c0a48ab9e04757b41b6afd",
+        "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+        "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "probe": {
+        "minecraft": "1.12.2",
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "4a922d81-986a-4dc7-88fc-b3dde8cc124e",
+        "diagnostic_journal_messages": "[PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only., Token 4a922d81-986a-4dc7-88fc-b3dde8cc124e; inspection required; no automatic replay.]",
+        "diagnostic_chat_messages": "[PL4 item receipt: unresolved token 4a922d81-986a-4dc7-88fc-b3dde8cc124e; recorded phase wireless at -1,200,0; preserve receipt; no replay.]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "b0cb7aa1-e1c7-441c-bbcb-254f2962be78",
+        "preupgrade_import_journal_messages": "[PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only., Token 4a922d81-986a-4dc7-88fc-b3dde8cc124e; inspection required; no automatic replay., Token b0cb7aa1-e1c7-441c-bbcb-254f2962be78; legacy import: original target/phase unknown; owner-wide fence; no replay.]",
+        "preupgrade_import_receipt_messages": "[PL4 item receipt: unresolved legacy token b0cb7aa1-e1c7-441c-bbcb-254f2962be78; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+      },
+      "png_sha256": {
+        "legacy-wireless-storage-scale-3.png": "e564e28c84a2881b6ce83975813cf2e56b817a907beb31a7c62df9f6392afb7d",
+        "legacy-wireless-grouped-scale-3.png": "b57485c5f6507a835aecff3b2a4b18499408a27076e1203d41b45373256e5bac",
+        "legacy-public-display.png": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+        "legacy-wireless-storage-scale-1.png": "28897432542901a9931304884cc9441e662d86815b10c7cae8433a4eb3ae4b4d",
+        "legacy-wireless-storage-tooltip.png": "43e308584f327a66771cae3aaec85ffa012a40d07e51b02665f45b1e72111f8a",
+        "legacy-private-display.png": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+        "legacy-wireless-storage-search-empty.png": "7b70de5b9f713c203ba7e896e3e0d68591ff49d3a7f803f192bee593a0dc1ba0",
+        "legacy-wireless-grouped-variants.png": "9a01844366cef9b2623337d9e886b70dbf96cacb8508f8361fa99ad3d9b14b61",
+        "legacy-wireless-storage-scale-2.png": "8a476c52a5e42128d47dd329feb5d81ff6989872f820196ebb3dafb1dd824928",
+        "legacy-wireless-storage-search.png": "1dcdb1f85d996a2ad485252134c79f9bfd57babf51a520d0aa62240312a95099",
+        "legacy-item-receipt-chat.png": "9248617ca5e3dd5e7940605a505b429c8d1d44abeb756ef3356e03c6ca297875",
+        "legacy-wireless-storage-sorted.png": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+        "legacy-wireless-storage-scale-4.png": "d07d06f844cdbe96198566d9112a76a98e782171d703283b0f84016104fc1e5a",
+        "legacy-wireless-grouped-withdrawal.png": "68de702cd5220562e3fc2a180eb8114dd0a0880b35b57fd48b243591b42405c2",
+        "legacy-wireless-grouped-scale-1.png": "9b1a32d5305978455486b147218ac4d8a0d768add352e44a7a9311d0d6b2e362",
+        "legacy-wireless-grouped-scale-2.png": "84db7d7b471367c4f5b1e54af7dd9d0cbb7011a269385bb2045448794b7bfee1",
+        "legacy-wireless-grouped-scale-4.png": "134dd12e56a2ac31426bb26766c98399ed3c42cbdae81721fa103f7bd8549085",
+        "legacy-item-import-journal-chat.png": "16c029f47c2ebd42141c5e66186f51636561dfb5c91c8bc0ace2646a0bdf260c",
+        "legacy-item-journal-chat.png": "ae9f423d6063e95691c29da67976d1449cf8f30a65c360725c734bfb04422042",
+        "legacy-item-import-receipt-chat.png": "4deeff7706843148e1740444638bc6a3efa23229389b19cacb4e505e85c0f0ac"
+      },
+      "report_sha256": {
+        "stock-client-runtime.json": "6a37487986501a27bbedbd592b3bb52e08c24076e3a3ea61ba15dc9799da760d",
+        "legacy-wireless-client.json": "412eeecfed9011db8b5f0f53cf944efac520ab83dad533e361873cf39c072957"
+      },
+      "run": 40351177405,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40351177405",
+      "artifact": {
+        "id": 12664675616,
+        "name": "legacy-wireless-real-client-40351177405-1",
+        "size_in_bytes": 609927,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12664675616",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12664675616/zip",
+        "expired": false,
+        "created_at": "2026-10-26T15:41:26Z",
+        "expires_at": "2026-11-09T15:41:24Z",
+        "updated_at": "2026-10-26T15:41:26Z",
+        "digest": "sha256:876eb566f457d2a80124279c3eef2be5b9e9a1c36937941c7775c12379afd76d",
+        "workflow_run": {
+          "id": 40351177405,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "16453b62a8ce08b9913884ca73c34028d6d5ce8e"
+        }
+      },
+      "reviewed_screenshots": [
+        "docs/acceptance/screenshots/decode-context-2026-10-26/1.12.2/legacy-item-import-receipt-chat.png",
+        "docs/acceptance/screenshots/decode-context-2026-10-26/1.12.2/legacy-wireless-grouped-withdrawal.png"
+      ],
+      "visual_scope": "Two current captures reviewed: readable imported token/unknown route/observed host/owner-wide fence/no replay and grouped total737, variant32, player31+64. Other18 screenshots per port hashed only. Private offline integrated world, autonomous transport disabled. Decode cases have separate native coverage, not graphical malformed-context acceptance."
+    },
+    "1.6.4": {
+      "runtime": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+        "probe_sha256": "2e45d88819e78fc8cf63e98d0f45aadd6fa9a3614ae22076228cb914cab9c2ac",
+        "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+        "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "probe": {
+        "minecraft": "1.6.4",
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "result": "PASS",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "be520d49-81f6-4440-97a0-68d01b49765b",
+        "diagnostic_journal_messages": "[{\"text\":\"PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only.\"}, {\"text\":\"Token be520d49-81f6-4440-97a0-68d01b49765b; inspection required; no automatic replay.\"}]",
+        "diagnostic_chat_messages": "[{\"text\":\"PL4 item receipt: unresolved token be520d49-81f6-4440-97a0-68d01b49765b; recorded phase wireless at -1,200,0; preserve receipt; no replay.\"}]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "8eabc4fc-afed-4c78-a0c6-512e6e0bb561",
+        "preupgrade_import_journal_messages": "[{\"text\":\"PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only.\"}, {\"text\":\"Token 8eabc4fc-afed-4c78-a0c6-512e6e0bb561; legacy import: original target/phase unknown; owner-wide fence; no replay.\"}, {\"text\":\"Token be520d49-81f6-4440-97a0-68d01b49765b; inspection required; no automatic replay.\"}]",
+        "preupgrade_import_receipt_messages": "[{\"text\":\"PL4 item receipt: unresolved legacy token 8eabc4fc-afed-4c78-a0c6-512e6e0bb561; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.\"}]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+      },
+      "png_sha256": {
+        "legacy-wireless-storage-scale-3.png": "70131ade56fd2a47ffeecd610bbbe2bc9ce75a239cb4d84aab353ac92779ba60",
+        "legacy-wireless-grouped-scale-3.png": "851ab1f1ebc9abc3ede101ff875d83d7a95a3b58f13e502b4bce2c61c149c6fd",
+        "legacy-public-display.png": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+        "legacy-wireless-storage-scale-1.png": "d166b354fd5492c22e7019f4e969cae97038711ddff415e86b913af6c5012e82",
+        "legacy-wireless-storage-tooltip.png": "de0c07fea4949a483a93c1cfc76f526aa9eaf1688edcfdd77c45929768675656",
+        "legacy-private-display.png": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+        "legacy-wireless-storage-search-empty.png": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+        "legacy-wireless-grouped-variants.png": "fc4304e41a8edb50e62235e4c6c7d7b080e8e8360766a18dc16561d3fae10182",
+        "legacy-wireless-storage-scale-2.png": "63522bc09e6328d39c6e67b1b2ac6b9951e8a9e077503d2366b1954f6baa3c83",
+        "legacy-wireless-storage-search.png": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+        "legacy-item-receipt-chat.png": "91a1b1fa0c9523ca0db8500fb11b2d1ed43a1092f436c71a82ed349b4cd554ba",
+        "legacy-wireless-storage-sorted.png": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+        "legacy-wireless-storage-scale-4.png": "eb7a98673aabecce1bbd5facc713718c61f2cebc1a6fe4b4ce8848f671793715",
+        "legacy-wireless-grouped-withdrawal.png": "0b5afb7de17b2b90b2f17b79fe038ed334f2260506516a96695c60cfb9877c90",
+        "legacy-wireless-grouped-scale-1.png": "e2473f6c9171646278b0ae46010c51847fec8e04ee67b7179a8f81bc2cd1d9b6",
+        "legacy-wireless-grouped-scale-2.png": "4759e3e26097290a4d3de3f8b5ea080eb6b61e02483497c7260895e6c7bce6a0",
+        "legacy-wireless-grouped-scale-4.png": "de762ed239c0aafc5c461f06b8e8bf7b5fbdd8f2b54e7afb3c1697de7a590af4",
+        "legacy-item-import-journal-chat.png": "555c01907c808f5ccb37e3d0fc3febf3373f57bc22c4c53b9a50d04688417ba6",
+        "legacy-item-journal-chat.png": "d98bc1a9b0f381798e1e96410c24b955ed6e2e4e07329ebe708e2553f6d648df",
+        "legacy-item-import-receipt-chat.png": "ab04806e74059839aefb57cbe13f3106dbead790d3997fd8a2947334a64e3b1f"
+      },
+      "report_sha256": {
+        "stock-client-runtime.json": "0f7eadca6a1f0dc4d10ca088fe8d7b666a6d4aad1d8d8cc3e36028eb4e84c2ed",
+        "legacy-wireless-client.json": "1bd4f9cd30564eeba70f8c53e23cdab81a770ef40df01d0f366c2e9d5f5cfeef"
+      },
+      "run": 40351177054,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40351177054",
+      "artifact": {
+        "id": 12663489216,
+        "name": "legacy164-wireless-real-client-40351177054-1",
+        "size_in_bytes": 451274,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12663489216",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12663489216/zip",
+        "expired": false,
+        "created_at": "2026-10-26T15:42:02Z",
+        "expires_at": "2026-11-09T15:42:01Z",
+        "updated_at": "2026-10-26T15:42:02Z",
+        "digest": "sha256:db47ab5449f3d8add9c38bbc2b13f4cf8bc41b192dd8204b2372ee01e1b1a0db",
+        "workflow_run": {
+          "id": 40351177054,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "16453b62a8ce08b9913884ca73c34028d6d5ce8e"
+        }
+      },
+      "reviewed_screenshots": [
+        "docs/acceptance/screenshots/decode-context-2026-10-26/1.6.4/legacy-item-import-receipt-chat.png",
+        "docs/acceptance/screenshots/decode-context-2026-10-26/1.6.4/legacy-wireless-grouped-withdrawal.png"
+      ],
+      "visual_scope": "Two current captures reviewed: readable imported token/unknown route/observed host/owner-wide fence/no replay and grouped total737, variant32, player31+64. Other18 screenshots per port hashed only. Private offline integrated world, autonomous transport disabled. Decode cases have separate native coverage, not graphical malformed-context acceptance."
+    }
+  },
+  "publisher_guards": {
+    "reviewed_branch_local_release_and_native_publishing_before_each_version_push": true,
+    "observed_jobs": [
+      {
+        "run_id": 40350257520,
+        "jobs": [
+          {
+            "id": 121668058713,
+            "conclusion": "success",
+            "publisher": [
+              "skipped"
+            ]
+          }
+        ]
+      },
+      {
+        "run_id": 40350272741,
+        "jobs": [
+          {
+            "id": 121668114789,
+            "conclusion": "success",
+            "publisher": [
+              "skipped"
+            ]
+          }
+        ]
+      }
+    ],
+    "publication_steps": "SKIPPED"
+  }
+}

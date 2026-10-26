@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-decode-evidence-2026-10-26T15",
-    "claimed_at": "2026-10-26T15:12:00Z",
-    "expires_at": "2026-10-26T15:55:00Z",
-    "scope": "Missing/noncompound context preservation in native tile decode and uncertainty admission"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40338361267,
+  "last_verified_legacy_native_run": 40350289583,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40338361159,
-    "1.6.4": 40338971256
+    "1.12.2": 40351177405,
+    "1.6.4": 40351177054
   },
-  "current_checkpoint": "Preserve rejected non-null compound contexts when legacy evidence already exists: retain tile context/original evidence and prior journal in a bounded opaque envelope. Freeze all item targets in the current dimension; matching valid contexts stay idempotent and repeated admission creates no new tokens/wrappers. Six new exact native cases per port passed at 347/325, plus production startup, preview.3 migration, 188 current-runtime restart assertions and 60 historical checks per port. Main 13b86410 passed 192; 21 other exact tracks retain evidence. Corrected initial 1.6.4 void-NBT API compile error and legacy payload comparisons. Qualification now checks raw restart phase JSON and packaged fixture hashes; 71 local test executions passed. All 24 RC flags remain false; no release/upload. Missing/noncompound decode preservation, reviewed recovery, installed providers, multiplayer, crash/performance and broader parity remain open. Both fresh exact-JAR stock clients passed; four current captures reviewed and forty hashed.",
-  "local_validation": "Exact native/raw counts and six new case outcomes per port verified, all packaged JAR hashes and source ZIP commit/hash checked; migration/restart fixture hashes and raw phase/log/world/provider snapshots coherent. 71 controller test executions passed, including raw phase disagreement and changed/missing fixture JAR rejection. Initial 1.6.4 source ea635be0 failed to compile; corrected 643fcbaf passed branch-native validation and trusted hourly qualification. Both current packaged production hashes match stock runtimes; four captures reviewed and forty hashed.",
+  "current_checkpoint": "Missing recorded contexts remain absent and unresolved; noncompound current context type/value and saved original evidence survive tile saves and sealed removal receipts. Raw/missing flags keep item transfers blocked even through generic settlement. Valid imported contexts stay idempotent and first-time malformed imports retain compatibility. Ten new native cases per port passed at 357/335, plus production startup, preview.3 migration, 188 current-runtime restart assertions and 60 historical checks per port. Explicit historical fixture chunk loads repair the observed placement null. Main c850f00a passed 192; 21 other tracks retain evidence. Qualification binds migration fixture hashes and checks restart native version/PASS/shutdown/readiness markers; 77 local test executions pass. Both final exact-JAR clients passed;4 captures reviewed and40 hashed. All 24 RC clearances remain false; no release/upload. Dedicated new-path process/crash evidence, other malformed fields, reconciliation, installed providers, multiplayer/performance and broader parity remain open.",
+  "local_validation": "All packaged JAR/archive hashes, source ZIP hashes/commit comments, raw native counts and ten new case outcomes per port, raw phase/log/world/provider identities and both fixture hashes verified. 77 local controller test executions passed. Native malformed-evidence compatibility failure and 1.6.4 historical placement failure were preserved and repaired without weakening checks. Final trusted run 40350289583 and both current clients passed;4 captures reviewed and40 hashed. Branch publication steps observed skipped.",
   "next_work": [
-    "Before adding reconciliation operations, finish preserving missing/noncompound repeated contexts and earlier malformed-field replacement in LegacyTile.readFromNBT. The current fix covers rejected non-null compounds with existing legacy evidence, retaining the context plus prior journal/evidence and freezing the dimension. Add exact native preservation/removal/reload cases for the remaining decode boundaries, then bounded read-only token/owner/dimension/provider/inventory evidence collection. No replay/redemption/minting, blanket fence clear or inference from missing tokens. Keep source-removal losses unaccounted and insertion claims nonspendable.",
+    "Add exact separate-JVM decode fixtures that persist raw/missing context, original evidence, sealed host-removal receipts and the dimension-wide opaque journal barrier through clean and controlled completed-save SIGKILL restarts. Current decode cases cover in-process serialization/removal only; existing 188 restart and60 historical process assertions are separate regression evidence. Then implement bounded read-only token/owner/dimension/provider/observed-inventory reconciliation evidence collection. Never infer lost history from missing tokens. No replay, redemption, minting or blanket fence clearing. Keep extracted losses unaccounted and insertion claims nonspendable. Other malformed fields, installed-provider authorization/durability and arbitrary power-loss/world/multiplayer behavior remain open.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -30,35 +25,34 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
-  "main_native_validation_run": 40338361267,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+  "main_native_validation_run": 40350289583,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40337587637,
-    40338361267
+    40350289583
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40337587637,
-    "1.6.4": 40338361267
+    "1.12.2": 40350289583,
+    "1.6.4": 40350289583
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "13b864109789c1b6c254e8f91115a2c81ecc580e",
+  "native_main_source_commit": "c850f00a314f12723bc81c6c85d514229a5848ae",
   "last_writer_release": {
-    "owner": "pl4-repeat-evidence-2026-10-26T14",
-    "released_at": "2026-10-26T14:26:41Z",
-    "checkpoint": "Rejected non-null compound preservation qualified at scoped native/serialized-NBT boundary; missing/noncompound decoding and reviewed recovery remain unfinished."
+    "owner": "pl4-decode-evidence-2026-10-26T15",
+    "released_at": "2026-10-26T15:46:15Z",
+    "checkpoint": "Raw/missing decode preservation and settlement guard qualified at scoped native save/removal boundary; dedicated decode process/crash evidence and reviewed reconciliation remain unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
-      "1.6.4": "643fcbaf42638e0aa9677e3cc024cf7603c1162b"
+      "1.12.2": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+      "1.6.4": "7004a71105283b3270249945c8c665bc10c65e83"
     },
     "publication_steps": "SKIPPED"
   }

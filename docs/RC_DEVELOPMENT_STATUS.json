@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "13b864109789c1b6c254e8f91115a2c81ecc580e",
-      "workflow_run": "40338361267",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40338361267",
+      "source_commit": "c850f00a314f12723bc81c6c85d514229a5848ae",
+      "workflow_run": "40350289583",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -488,6 +488,11 @@
         "source_commit": "3d6404a03205ea573aab029a0399e58552768b7a",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": "40329550159"
+      },
+      "previous_decode_candidate": {
+        "source_commit": "13b864109789c1b6c254e8f91115a2c81ecc580e",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "workflow_run": "40338361267"
       }
     },
     {
@@ -549,7 +554,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 347,
+      "expected_native_fixtures": 357,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -559,19 +564,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40337587637",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40337587637",
-      "source_commit": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
-      "runtime_sha256": "86220e1944b2f99c3c8e2e06b2f9e4f74657891e3e3eb7259a8c541f3b7769e2",
+      "workflow_run": "40350289583",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
+      "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+      "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
+      "candidate_source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -583,9 +588,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 347,
+      "observed_native_fixtures": 357,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -639,7 +644,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40338361159,
+      "client_workflow_run": 40351177405,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -651,7 +656,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "A rejected non-null compound with existing legacy evidence is retained without replacing tile context or original evidence. An opaque envelope preserves prior journal plus rejection/evidence, freezing all item targets in the dimension. Six native cases cover payload preservation, owner-change fencing, serialized reload, bounded repeated admission, no-clearance diagnostic and tile save. Missing/noncompound decode paths and new-path process/crash durability remain unqualified; no recovery API.",
+      "acceptance_attribution": "Saved compound legacy evidence remains unchanged when current context is malformed or missing. Raw current string/integer tag type survives native save and actual sealed host-removal receipts. Missing recorded context never receives a replacement token, forces uncertainty even with cleared fault text, and raw/missing flags cannot be cleared by generic settlement. Dimension-wide opaque barrier persists across serialized reload. Valid contexts remain idempotent; initial malformed imports retain compatibility. Existing188 restart/60 historical assertions pass, but no dedicated crash/JVM fixture exercises the new decode path; other malformed fields, installed providers/access control, arbitrary worlds and reviewed recovery remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -703,10 +708,10 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
-        "runtime_sha256": "86220e1944b2f99c3c8e2e06b2f9e4f74657891e3e3eb7259a8c541f3b7769e2",
-        "workflow_run": 40338361159,
-        "scope": "Fresh exact-JAR normal storage and imported-unknown chat regression. Two current screenshots reviewed, twenty hashed per port. Repeated-rejection cases are native fixtures, not graphical acceptance."
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "workflow_run": 40351177405,
+        "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -778,12 +783,26 @@
         }
       },
       "rejected_compound_evidence": "PASS_6_EXACT_NATIVE_CASES_PRESERVE_REJECTED_CONTEXT_WITH_EXISTING_LEGACY_EVIDENCE",
-      "rejected_compound_evidence_report": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json"
+      "rejected_compound_evidence_report": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "previous_decode_candidate": {
+        "source_commit": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
+        "runtime_sha256": "86220e1944b2f99c3c8e2e06b2f9e4f74657891e3e3eb7259a8c541f3b7769e2",
+        "workflow_run": "40337587637",
+        "client_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+        "stock_client_attribution": {
+          "source_commit": "2b3eb03194365a27fb77c56f60e7d4ccf5e132b4",
+          "runtime_sha256": "86220e1944b2f99c3c8e2e06b2f9e4f74657891e3e3eb7259a8c541f3b7769e2",
+          "workflow_run": 40338361159,
+          "scope": "Fresh exact-JAR normal storage and imported-unknown chat regression. Two current screenshots reviewed, twenty hashed per port. Repeated-rejection cases are native fixtures, not graphical acceptance."
+        }
+      },
+      "context_decode_preservation": "PASS_10_NATIVE_MISSING_RAW_SAVE_REMOVAL_SERIALIZATION_VALID_CONTEXT_AND_SETTLEMENT_CASES",
+      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 325,
+      "expected_native_fixtures": 335,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -793,19 +812,19 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40338361267",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40338361267",
-      "source_commit": "643fcbaf42638e0aa9677e3cc024cf7603c1162b",
-      "runtime_sha256": "58d73f35b1deabc1e116dfaff59109f9b32dd17fbcd98f31afe4d7007ba99c18",
+      "workflow_run": "40350289583",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
+      "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+      "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "643fcbaf42638e0aa9677e3cc024cf7603c1162b",
+      "candidate_source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -816,9 +835,9 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "observed_native_fixtures": 325,
+      "observed_native_fixtures": 335,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -865,9 +884,9 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "A rejected non-null compound with existing legacy evidence is retained without replacing tile context or original evidence. An opaque envelope preserves prior journal plus rejection/evidence, freezing all item targets in the dimension. Six native cases cover payload preservation, owner-change fencing, serialized reload, bounded repeated admission, no-clearance diagnostic and tile save. Missing/noncompound decode paths and new-path process/crash durability remain unqualified; no recovery API.",
+      "acceptance_attribution": "Saved compound legacy evidence remains unchanged when current context is malformed or missing. Raw current string/integer tag type survives native save and actual sealed host-removal receipts. Missing recorded context never receives a replacement token, forces uncertainty even with cleared fault text, and raw/missing flags cannot be cleared by generic settlement. Dimension-wide opaque barrier persists across serialized reload. Valid contexts remain idempotent; initial malformed imports retain compatibility. Existing188 restart/60 historical assertions pass, but no dedicated crash/JVM fixture exercises the new decode path; other malformed fields, installed providers/access control, arbitrary worlds and reviewed recovery remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
-      "client_workflow_run": 40338971256,
+      "client_workflow_run": 40351177054,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
       "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES",
       "previous_journal_candidate": {
@@ -902,10 +921,10 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "643fcbaf42638e0aa9677e3cc024cf7603c1162b",
-        "runtime_sha256": "58d73f35b1deabc1e116dfaff59109f9b32dd17fbcd98f31afe4d7007ba99c18",
-        "workflow_run": 40338971256,
-        "scope": "Fresh exact-JAR normal storage and imported-unknown chat regression. Two current screenshots reviewed, twenty hashed per port. Repeated-rejection cases are native fixtures, not graphical acceptance."
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "workflow_run": 40351177054,
+        "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -982,7 +1001,21 @@
         }
       },
       "rejected_compound_evidence": "PASS_6_EXACT_NATIVE_CASES_PRESERVE_REJECTED_CONTEXT_WITH_EXISTING_LEGACY_EVIDENCE",
-      "rejected_compound_evidence_report": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json"
+      "rejected_compound_evidence_report": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+      "previous_decode_candidate": {
+        "source_commit": "643fcbaf42638e0aa9677e3cc024cf7603c1162b",
+        "runtime_sha256": "58d73f35b1deabc1e116dfaff59109f9b32dd17fbcd98f31afe4d7007ba99c18",
+        "workflow_run": "40338361267",
+        "client_evidence": "acceptance/rc-dev-legacy-rejected-context-evidence-2026-10-26.json",
+        "stock_client_attribution": {
+          "source_commit": "643fcbaf42638e0aa9677e3cc024cf7603c1162b",
+          "runtime_sha256": "58d73f35b1deabc1e116dfaff59109f9b32dd17fbcd98f31afe4d7007ba99c18",
+          "workflow_run": 40338971256,
+          "scope": "Fresh exact-JAR normal storage and imported-unknown chat regression. Two current screenshots reviewed, twenty hashed per port. Repeated-rejection cases are native fixtures, not graphical acceptance."
+        }
+      },
+      "context_decode_preservation": "PASS_10_NATIVE_MISSING_RAW_SAVE_REMOVAL_SERIALIZATION_VALID_CONTEXT_AND_SETTLEMENT_CASES",
+      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json"
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
