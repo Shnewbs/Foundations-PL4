@@ -15,12 +15,17 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 public final class LegacyCommands extends CommandBase {
     public String getCommandName(){return "pl4legacy";}
-    public String getCommandUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | journal <x> <y> <z> [page] | receipt | status";}
+    public String getCommandUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | journal <x> <y> <z> [page] | journal-export [page] | receipt | status";}
     @Override public int getRequiredPermissionLevel(){return 0;}
     // Public entry point: individual host/receipt handlers still enforce ownership and proximity.
     @Override public boolean canCommandSenderUseCommand(ICommandSender sender){return true;}
     public void processCommand(ICommandSender sender,String[] args){
         if(args.length==0||"status".equals(args[0])){send(sender,"PL4 1.6.4 experimental native item/fluid/energy transport preview. Name-based legacy ownership, sided inventories, escrow and built-in recipe/inspection fallbacks. Modern displays, wireless, third-party energy and scripting parity pending. Further API testing is still required.");return;}
+        if("journal-export".equals(args[0])&&(args.length==1||args.length==2)){
+            if(!(sender instanceof EntityPlayer))throw new WrongUsageException("Opaque journal export requires an in-dimension operator");
+            int page=args.length==2?parseIntBounded(sender,args[1],1,128):1;
+            try{for(String line:LegacyWirelessSafety.opaqueExport(sender.getEntityWorld(),(EntityPlayer)sender,page))send(sender,line);}catch(IllegalArgumentException invalid){throw new WrongUsageException(invalid.getMessage());}return;
+        }
         if("receipt".equals(args[0])&&args.length==1){
             if(!(sender instanceof EntityPlayer))throw new WrongUsageException("Hold a sealed receipt as its owner or an operator");
             try{send(sender,LegacyWirelessSafety.receiptDiagnostic(sender.getEntityWorld(),(EntityPlayer)sender,((EntityPlayer)sender).getCurrentEquippedItem()));}catch(IllegalArgumentException invalid){throw new WrongUsageException(invalid.getMessage());}return;

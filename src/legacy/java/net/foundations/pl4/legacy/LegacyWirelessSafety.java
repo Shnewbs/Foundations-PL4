@@ -49,6 +49,31 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         for(int i=(page-1)*4;i<Math.min(page*4,tokens.size());i++){String token=tokens.get(i);lines.add("Token "+token+(records.get(token).legacy()?"; legacy import: original target/phase unknown; "+(records.get(token).owner.isEmpty()?"dimension-wide":"owner-wide")+" fence; no replay.":"; inspection required; no automatic replay."));}
         return lines.toArray(new String[lines.size()]);
     }
+    /** Operator-only paginated hex of original opaque native NBT, capped before materialization.
+     * Hash is native-nbt-uncompressed-v1 bytes, not a cross-version canonical value hash. */
+    public static String[] opaqueExport(World world,net.minecraft.entity.player.EntityPlayer player,int page){
+        if(world==null||world.isRemote||player==null||player.worldObj!=world||!player.canCommandSenderUseCommand(2,"pl4legacy"))
+            throw new IllegalArgumentException("Opaque journal export requires an operator in this dimension");
+        if(page<1||page>128)throw new IllegalArgumentException("Export page out of range");
+        LegacyWirelessSafety journal=data(world);
+        if(journal.opaque==null)throw new IllegalArgumentException("No opaque journal in this dimension; use owner-scoped journal inspection");
+        final java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();
+        java.io.OutputStream bounded=new java.io.OutputStream(){
+            public void write(int value)throws java.io.IOException{if(bytes.size()>=16384)throw new java.io.IOException("Export cap");bytes.write(value);}
+            public void write(byte[] value,int offset,int length)throws java.io.IOException{if(length>16384-bytes.size())throw new java.io.IOException("Export cap");bytes.write(value,offset,length);}
+        };
+        try{
+            net.minecraft.nbt.CompressedStreamTools.write(journal.opaque,new java.io.DataOutputStream(bounded));
+            byte[] raw=bytes.toByteArray();int pages=Math.max(1,(raw.length+127)/128);
+            if(page>pages)throw new IllegalArgumentException("Export page exceeds "+pages);
+            byte[] digest=java.security.MessageDigest.getInstance("SHA-256").digest(raw);
+            return new String[]{"PL4 opaque export native-nbt-uncompressed-v1; dimension "+world.provider.dimensionId+"; bytes "+raw.length+"; sha256 "+hex(digest,0,digest.length),
+                "Page "+page+"/"+pages+" hex "+hex(raw,(page-1)*128,Math.min(page*128,raw.length)),
+                "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."};
+        }catch(java.io.IOException capped){throw new IllegalArgumentException("Opaque export exceeds 16384 bytes or cannot encode; preserve an offline save copy. No partial export or clearance.");}
+        catch(java.security.NoSuchAlgorithmException impossible){throw new IllegalStateException(impossible);}
+    }
+    private static String hex(byte[] bytes,int start,int end){StringBuilder text=new StringBuilder((end-start)*2);for(int i=start;i<end;i++){int n=bytes[i]&255;text.append("0123456789abcdef".charAt(n>>>4)).append("0123456789abcdef".charAt(n&15));}return text.toString();}
     private static void link(LegacyTile node,String token,Record record,String phase){
         NBTTagCompound context=new NBTTagCompound();context.setString("Token",token);context.setString("Owner",record.owner);
         context.setInteger("Dimension",node.worldObj.provider.dimensionId);context.setInteger("X",record.target.x);context.setInteger("Y",record.target.y);context.setInteger("Z",record.target.z);context.setString("Phase",phase);
