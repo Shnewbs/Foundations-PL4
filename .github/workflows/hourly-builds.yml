@@ -32,6 +32,8 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_legacy_native_counts.py'
       - name: Check legacy restart evidence regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_restart_gate.py'
+      - name: Check raw and missing decode process evidence regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_decode_restart_gate.py'
       - name: Check persisted provider outcome regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_provider_outcomes.py'
       - name: Check historical provider outcome regressions

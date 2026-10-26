@@ -68,7 +68,7 @@ def discover(ledger, repo, force=False, lookup=api):
     return selected
 
 
-def validate_restart(root, report, mc, sha, runtime, counts):
+def validate_restart(root, report, mc, sha, runtime, counts, prefix="item-restart"):
     phases = {"write": 0, "verify": 0, "crash-write": -9, "crash-verify": 0}
     if (report.get("minecraft") != mc or report.get("source_commit") != sha
             or report.get("runtime_sha256") != runtime
@@ -93,11 +93,11 @@ def validate_restart(root, report, mc, sha, runtime, counts):
         if (type(expected) is not int or expected <= 0 or type(p["exit_code"]) is not int or p["exit_code"] != code
                 or r.get("minecraft") != mc or r.get("phase") != phase or r.get("passed") is not True
                 or not isinstance(r.get("assertions"), list) or not all(isinstance(x, str) for x in r["assertions"]) or len(r["assertions"]) != expected or not r.get("process", "").startswith(str(p["pid"]) + "@")
-                or hashlib.sha256((logs / ("item-restart-" + phase + ".log")).read_bytes()).hexdigest() != p["log_sha256"]):
+                or hashlib.sha256((logs / (prefix + "-" + phase + ".log")).read_bytes()).hexdigest() != p["log_sha256"]):
             raise ValueError("Restart phase proof disagrees: " + phase)
-        if json.loads((logs / ("item-restart-" + phase + ".json")).read_text()) != r:
+        if json.loads((logs / (prefix + "-" + phase + ".json")).read_text()) != r:
             raise ValueError("Raw restart phase report disagrees: " + phase)
-        text = (logs / ("item-restart-" + phase + ".log")).read_text(errors='replace')
+        text = (logs / (prefix + "-" + phase + ".log")).read_text(errors='replace')
         if (not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I)
                 or 'PL4 ITEM RESTART '+phase+': PASS' not in text
                 or ('Stopping server' in text) == (phase == 'crash-write')
@@ -111,8 +111,31 @@ def validate_restart(root, report, mc, sha, runtime, counts):
     if set(archives) != {"clean", "barrier"}:
         raise ValueError("Missing saved-world evidence")
     for mode, a in archives.items():
-        if a["file"] != "item-restart-" + mode + "-world.zip" or hashlib.sha256((logs / a["file"]).read_bytes()).hexdigest() != a["sha256"]:
+        if a["file"] != prefix + "-" + mode + "-world.zip" or hashlib.sha256((logs / a["file"]).read_bytes()).hexdigest() != a["sha256"]:
             raise ValueError("Restart world archive changed")
+
+
+def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
+    """Qualify decode persistence separately from provider and historical scenarios."""
+    if suite not in {"decode-raw", "decode-missing"} or report.get("suite") != suite:
+        raise ValueError("Decode suite identity disagrees")
+    validate_restart(root, report, mc, sha, runtime, counts, "item-" + suite + "-restart")
+    owner = "fae1b877-c6b4-4538-a26a-630190b54205" if mc == "1.12.2" else "pl4owner"
+    details = report["phase_reports"]
+    for first, second in [("write", "verify"), ("crash-write", "crash-verify")]:
+        rows = details[first].get("decode_outcomes")
+        if not isinstance(rows, list) or len(rows) != 2 or rows != details[second].get("decode_outcomes"):
+            raise ValueError("Decode evidence changed across native JVMs")
+        if any(details[p].get("suite") != suite for p in [first, second]):
+            raise ValueError("Raw decode phase suite disagrees")
+        for i, row in enumerate(rows):
+            expected = dict(host_x=64 if i == 0 else 80, host_removed=i == 1,
+                            original_token=details[first]["tokens"][i], owner=owner, dimension=0,
+                            context_kind="absent" if suite == "decode-missing" else "int" if i == 0 else "string",
+                            context_value="" if suite == "decode-missing" else "71" if i == 0 else "current-raw-context",
+                            sealed_units=8, evidence_marker="first-raw-payload", original_route_known=False)
+            if row != expected or any(type(row.get(k)) is not type(v) for k, v in expected.items()):
+                raise ValueError("Decode type, evidence, receipt or original identity disagrees")
 
 
 def validate_provider_outcomes(report, mc):
@@ -241,6 +264,13 @@ def record(root, expected_mc, expected_sha):
             if status.get("item_provider_fixture") is True:
                 validate_provider_outcomes(restart, expected_mc)
             gate_files.append("legacy-item-restart-summary.json")
+        if status.get("item_decode_restart_fixture") is True:
+            counts = {"write": status["item_decode_restart_write_assertions"], "verify": status["item_decode_restart_verify_assertions"]}
+            for suite in ["decode-raw", "decode-missing"]:
+                name = "legacy-item-" + suite + "-restart-summary.json"
+                decode = json.loads((logs / name).read_text())
+                validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"], counts, suite)
+                gate_files.append(name)
         if status.get("preupgrade_item_fault_fixture") is True:
             fault_import = json.loads((logs / "preupgrade-item-fault-summary.json").read_text())
             validate_preupgrade(root, fault_import, expected_mc, actual, native["runtime_sha256"], status.get('historical_provider_fixture') is True)
