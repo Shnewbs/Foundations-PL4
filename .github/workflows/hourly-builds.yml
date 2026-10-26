@@ -30,6 +30,8 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_hourly_builds.py'
       - name: Check legacy restart evidence regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_restart_gate.py'
+      - name: Check pre-upgrade fault evidence regressions
+        run: python3 -m unittest discover -s tools -p 'test_preupgrade_item_fault_gate.py'
       - name: Check 26.x native count attribution regressions
         run: python3 -m unittest discover -s tools -p 'test_native_26_coverage.py'
       - id: targets
@@ -98,6 +100,7 @@ jobs:
           fi
           python3 tools/verify_legacy_upgrade.py
           if [ -f tools/verify_legacy_item_restart.py ]; then python3 tools/verify_legacy_item_restart.py; fi
+          if [ -f tools/verify_preupgrade_item_faults.py ]; then python3 tools/verify_preupgrade_item_faults.py; fi
       - name: Require coherent exact-source and packaged-artifact evidence
         run: python3 control/tools/hourly_builds.py record port '${{ matrix.minecraft }}' '${{ matrix.sha }}'
       - uses: actions/upload-artifact@v4

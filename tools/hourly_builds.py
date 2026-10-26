@@ -103,6 +103,39 @@ def validate_restart(root, report, mc, sha, runtime, counts):
             raise ValueError("Restart world archive changed")
 
 
+def validate_preupgrade(root, report, mc, sha, runtime):
+    logs = root / "verification-logs"
+    if (report.get("minecraft") != mc or report.get("source_commit") != sha or report.get("runtime_sha256") != runtime
+            or report.get("preupgrade_unlocated_fault_import") != "PASS" or report.get("candidate_restart") != "PASS"):
+        raise ValueError("Pre-upgrade candidate identity/status disagrees")
+    baseline = report["baseline"]
+    old = json.loads((logs / "preupgrade-baseline-native.json").read_text())
+    if (old.get("minecraft") != mc or old.get("source_commit") != baseline["source_commit"] or old.get("native_gate") != "PASS"
+            or baseline["runtime_sha256"] not in old.get("artifact_sha256", {}).values()
+            or hashlib.sha256((logs / "preupgrade-baseline-runtime.jar").read_bytes()).hexdigest() != baseline["runtime_sha256"]):
+        raise ValueError("Pre-upgrade historical runtime identity disagrees")
+    rows = report.get("processes", [])
+    phases = [("fault-write", 4, baseline["runtime_sha256"]), ("fault-upgrade", 10, runtime), ("fault-verify", 10, runtime)]
+    if len(rows) != 3 or any(type(p.get("pid")) is not int or p["pid"] <= 0 for p in rows) or len({p["pid"] for p in rows}) != 3:
+        raise ValueError("Pre-upgrade processes are not independent")
+    for row, (phase, count, selected) in zip(rows, phases):
+        proof = row.get("report", {})
+        log = logs / ("preupgrade-" + phase + ".log")
+        if (row.get("phase") != phase or type(row.get("exit_code")) is not int or row["exit_code"] != 0 or row.get("runtime_sha256") != selected
+                or proof.get("minecraft") != mc or proof.get("phase") != phase or proof.get("passed") is not True or type(proof.get("checks")) is not int or proof["checks"] != count
+                or not proof.get("process", "").startswith(str(row["pid"]) + "@")
+                or hashlib.sha256(log.read_bytes()).hexdigest() != row["log_sha256"]
+                or json.loads((logs / ("preupgrade-" + phase + ".json")).read_text()) != proof):
+            raise ValueError("Pre-upgrade phase proof disagrees: " + phase)
+    tokens = rows[1]["report"].get("tokens", [])
+    if (len(tokens) != 2 or len(set(tokens)) != 2 or any(not isinstance(t, str) or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", t) for t in tokens)
+            or rows[2]["report"].get("tokens") != tokens or rows[0]["report"].get("tokens") != []):
+        raise ValueError("Historical unknown-route token proof disagrees")
+    archive = report["world_archive"]
+    if archive["file"] != "preupgrade-item-fault-world.zip" or hashlib.sha256((logs / archive["file"]).read_bytes()).hexdigest() != archive["sha256"]:
+        raise ValueError("Pre-upgrade saved world changed")
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -128,6 +161,10 @@ def record(root, expected_mc, expected_sha):
             restart = json.loads((logs / "legacy-item-restart-summary.json").read_text())
             validate_restart(root, restart, expected_mc, actual, native["runtime_sha256"], {"write": status["item_restart_write_assertions"], "verify": status["item_restart_verify_assertions"]})
             gate_files.append("legacy-item-restart-summary.json")
+        if status.get("preupgrade_item_fault_fixture") is True:
+            fault_import = json.loads((logs / "preupgrade-item-fault-summary.json").read_text())
+            validate_preupgrade(root, fault_import, expected_mc, actual, native["runtime_sha256"])
+            gate_files.append("preupgrade-item-fault-summary.json")
     else:
         native = json.loads((logs / "rc-development-gate.json").read_text())
         if not (native["minecraft"] == expected_mc and native["version"] == status["version"]
