@@ -93,5 +93,9 @@
   "preupgrade_item_fault_fixture": true,
   "item_provider_fixture": true,
   "item_provider_acceptance": "PENDING_EXACT_REGISTERED_PROVIDER_RESTART_VALIDATION",
-  "historical_provider_fixture": true
+  "historical_provider_fixture": true,
+  "item_decode_restart_fixture": true,
+  "item_decode_restart_acceptance": "PENDING_EXACT_SEPARATE_PROCESS_VALIDATION",
+  "item_decode_restart_write_assertions": 32,
+  "item_decode_restart_verify_assertions": 26
 }

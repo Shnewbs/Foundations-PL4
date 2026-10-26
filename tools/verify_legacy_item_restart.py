@@ -3,7 +3,10 @@ from pathlib import Path
 import hashlib,json,os,re,shutil,subprocess,zipfile,time
 ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-def verify():
+def verify(suite="item"):
+    decode=suite in {"decode-raw","decode-missing"}
+    if suite!="item" and not decode:raise ValueError("Unknown restart suite")
+    prefix="item-"+suite+"-restart" if decode else "item-restart"
     status=json.loads((ROOT/'BUILD_STATUS.json').read_text());mc=status['minecraft']
     if mc not in {'1.12.2','1.6.4'}:raise ValueError('Unsupported exact restart target')
     suffix='-srg.jar' if mc=='1.6.4' else '.jar'
@@ -17,7 +20,7 @@ def verify():
     java=Path(os.environ['JAVA_HOME_7_X64' if mc=='1.6.4' else 'JAVA_HOME_8_X64'])/'bin/java'
     logs=ROOT/'verification-logs';logs.mkdir(exist_ok=True);processes=[];reports={};archives={}
     for mode,phases in [('clean',['write','verify']),('barrier',['crash-write','crash-verify'])]:
-        work=ROOT/('run-legacy-item-restart-'+mode)
+        work=ROOT/('run-legacy-'+prefix+'-'+mode)
         if work.exists():raise ValueError('Use a fresh disposable restart directory')
         work.mkdir()
         for p in (ROOT/'run-legacy').iterdir():
@@ -31,15 +34,16 @@ def verify():
         for phase in phases:
             if digest(work/'mods/FoundationsPL4-runtime.jar')!=digest(runtime):raise ValueError('Installed runtime changed')
             cmd=[str(java),'-Xms512M','-Xmx2G','-Dfoundations_pl4.itemRestart='+phase]
+            if decode:cmd+=['-Dfoundations_pl4.decodeRestart='+suite.removeprefix('decode-')]
             if phase=='crash-write':cmd+=['-Dfoundations_pl4.restartHalt=true']
-            cmd+=['-jar',str(launchers[0]),'nogui'];logfile=logs/('item-restart-'+phase+'.log')
+            cmd+=['-jar',str(launchers[0]),'nogui'];logfile=logs/(prefix+'-'+phase+'.log')
             with logfile.open('w') as out:
                 with subprocess.Popen(cmd,cwd=work,stdout=out,stderr=subprocess.STDOUT) as proc:
                     try:
                         if phase=='crash-write':
                             deadline=time.monotonic()+420
                             while proc.poll() is None and time.monotonic()<deadline:
-                                ready=work/('item-restart-'+phase+'.json')
+                                ready=work/(prefix+'-'+phase+'.json')
                                 if ready.is_file() and 'PL4 ITEM RESTART KILL READY' in logfile.read_text(errors='replace'):
                                     proof=json.loads(ready.read_text())
                                     if proof.get('passed') is True and proof.get('process','').startswith(str(proc.pid)+'@'):
@@ -50,7 +54,7 @@ def verify():
                         if proc.poll() is None:proc.kill();proc.wait()
                     pid=proc.pid
             text=logfile.read_text(errors='replace');expected=-9 if phase=='crash-write' else 0
-            report=json.loads((work/('item-restart-'+phase+'.json')).read_text())
+            report=json.loads((work/(prefix+'-'+phase+'.json')).read_text())
             if code!=expected or report['minecraft']!=mc or report['phase']!=phase or report['passed'] is not True or not report['assertions']:raise ValueError('Restart phase failed: '+phase+'; inspect '+str(logfile))
             if not report['process'].startswith(str(pid)+'@') or 'PL4 ITEM RESTART '+phase+': PASS' not in text or not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I):raise ValueError('Missing process/native identity')
             if ('Stopping server' in text)==(phase=='crash-write'):raise ValueError('Unexpected shutdown path')
@@ -59,17 +63,24 @@ def verify():
             if not (work/'pl4-item-restart-world/level.dat').is_file():raise ValueError('No saved level')
             processes.append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=digest(logfile)))
             reports[phase]=report
-            (logs/('item-restart-'+phase+'.json')).write_text(json.dumps(report,indent=2)+'\n')
+            (logs/(prefix+'-'+phase+'.json')).write_text(json.dumps(report,indent=2)+'\n')
         if reports[phases[0]]['tokens']!=reports[phases[1]]['tokens'] or len(set(reports[phases[0]]['tokens']))!=2:raise ValueError('Tokens changed across JVMs')
-        if status.get('item_provider_fixture') is True:
+        if decode:
+            if reports[phases[0]].get('decode_outcomes')!=reports[phases[1]].get('decode_outcomes') or len(reports[phases[0]].get('decode_outcomes',[]))!=2:raise ValueError('Decode evidence changed across JVMs')
+            if any(reports[p].get('suite')!=suite for p in phases):raise ValueError('Decode suite identity mismatch')
+        if not decode and status.get('item_provider_fixture') is True:
             if reports[phases[0]].get('provider_outcomes')!=reports[phases[1]].get('provider_outcomes') or len(reports[phases[0]].get('provider_outcomes',[]))!=2:raise ValueError('Provider private state changed across JVMs')
-        archive=logs/('item-restart-'+mode+'-world.zip')
+        archive=logs/(prefix+'-'+mode+'-world.zip')
         with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
             for p in sorted((work/'pl4-item-restart-world').rglob('*')):
                 if p.is_file() and not p.is_symlink():z.write(p,p.relative_to(work).as_posix())
         archives[mode]=dict(file=archive.name,sha256=digest(archive))
     if len({p['pid'] for p in processes})!=4:raise ValueError('Processes were not distinct')
-    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
-    (logs/'legacy-item-restart-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+    summary=dict(suite=suite,minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
+    if decode:summary['scope']='Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.'
+    (logs/('legacy-'+prefix+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
     print('PASS '+mc+' separate JVM item/receipt restart and controlled post-save halt',flush=True)
-if __name__=='__main__':verify()
+if __name__=='__main__':
+    verify()
+    if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_decode_restart_fixture') is True:
+        verify('decode-raw');verify('decode-missing')
