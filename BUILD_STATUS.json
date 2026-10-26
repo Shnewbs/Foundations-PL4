@@ -30,7 +30,7 @@
     "verified_runtime_sha256": "31995fa3c46ab4fb6d76262d82484c9579b36cda1739f0844d2509f85c50d6dc",
     "release_published": false
   },
-  "expected_native_scenarios": 269,
+  "expected_native_scenarios": 287,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -80,5 +80,6 @@
   "wireless_known_wrapper_acceptance": "PENDING_EXACT_NATIVE_AND_STOCK_CLIENT",
   "wireless_owned_sided_acceptance": "PENDING_EXACT_NATIVE_AND_STOCK_REGRESSION",
   "item_route_retargeting": "Development: refuse item face selection while faulted, opaque or holding escrow; exact native validation pending. Cross-network/removal durability remains open.",
-  "wireless_target_journal": "Development: bounded per-dimension owner/target wireless handoff uncertainty survives removal/network changes; exact native validation pending. Automatic-origin uncertainty, different-target hidden aliases and recovery UI remain open."
+  "wireless_target_journal": "Development: bounded per-dimension owner/target wireless handoff uncertainty survives removal/network changes; exact native validation pending. Automatic-origin uncertainty, different-target hidden aliases and recovery UI remain open.",
+  "automatic_target_journal": "Development: phase-specific source/destination automatic item uncertainty; exact native validation pending. Pre-upgrade faults, 1.6.4, recovery tooling and wider acceptance remain open."
 }

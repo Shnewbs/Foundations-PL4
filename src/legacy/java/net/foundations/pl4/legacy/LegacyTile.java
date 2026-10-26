@@ -69,13 +69,17 @@ public final class LegacyTile extends TileEntity implements ITickable {
         if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(world==null||world.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||world.isBlockPowered(pos))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network exceeds configured host limit";return 0;}
+        BlockPos sourceTarget=target();String transferOwner=owner;
         IItemHandler source=inventory();if(source==null&&pending.isEmpty()){status="No loaded source inventory";return 0;}
         ConservingItems.Work work=new ConservingItems.Work(1024);int moved=0;Set<BlockPos> seenTargets=new HashSet<BlockPos>();seenTargets.add(target());
         for(BoundedNetwork.Point p:plan.nodes){
             TileEntity raw=world.getTileEntity(new BlockPos(p.x,p.y,p.z));if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
             if(sink.role()!=2||!owner.equals(sink.owner)||LegacyWirelessSafety.data(world).blocked(owner,sink.target())||!seenTargets.add(sink.target())||world.isBlockPowered(sink.pos))continue;
+            BlockPos destinationTarget=sink.target();
             IItemHandler destination=sink.inventory();if(destination==null||destination==source)continue;
-            ConservingItems.Escrow<ItemStack> escrow=LegacyItemSafety.escrow(this);
+            // Capability discovery must not silently redirect the captured route or authorization.
+            if(!transferOwner.equals(owner)||!transferOwner.equals(sink.owner)||!sourceTarget.equals(target())||!destinationTarget.equals(sink.target())){status="Item route changed during provider discovery";continue;}
+            ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.automaticEscrow(this,sourceTarget,destinationTarget);
             int budget=LegacyPL4.itemRate-moved;
             if(!pending.isEmpty())moved+=ConservingItems.flush(STACKS,escrow,adapt(destination),budget,LegacyPL4.slotLimit,work);
             else if(source!=null)moved+=ConservingItems.move(STACKS,escrow,adapt(source),adapt(destination),budget,LegacyPL4.slotLimit,work);

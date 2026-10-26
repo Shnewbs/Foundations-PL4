@@ -4,6 +4,8 @@ public final class ConservingItems {
     public interface Stacks<S>{boolean empty(S value);int count(S value);boolean same(S a,S b);S copy(S value,int count);}
     public interface Inventory<S>{int slots();S extract(int slot,int count,boolean simulate);S insert(int slot,S value,boolean simulate);}
     public interface Escrow<S>{S get();void set(S value);boolean blocked();void block(String reason);void clearBlock();}
+    /** Optional phase hooks run immediately before the matching executed mutation is fenced. */
+    public interface PhasedEscrow<S> extends Escrow<S>{void extracting();void inserting();}
     /** Shared across all candidate inventories in one operation; bounds provider calls, not only moved items. */
     public static final class Work {
         private int left;
@@ -26,6 +28,7 @@ public final class ConservingItems {
             if(!work.take())break;int count=Math.min(s.count(pending),budget-moved);S offered=s.copy(pending,count);
             int accepted=count-remainder(s,offered,sink.insert(slot,s.copy(offered,count),true));if(accepted<=0)continue;
             if(!work.take())break;offered=s.copy(pending,accepted);
+            if(e instanceof PhasedEscrow)((PhasedEscrow<?>)e).inserting();
             e.block("Item insertion interrupted or returned an invalid result; manual inspection required");
             int actual=accepted-remainder(s,offered,sink.insert(slot,s.copy(offered,accepted),false));if(actual==0){e.clearBlock();continue;}
             int left=s.count(pending)-actual;pending=left==0?null:s.copy(pending,left);e.set(pending);e.clearBlock();moved+=actual;
@@ -46,7 +49,7 @@ public final class ConservingItems {
                 int left=remainder(s,remaining,sink.insert(dest,s.copy(remaining,s.count(remaining)),true));remaining=left==0?null:s.copy(remaining,left);
             }
             int amount=s.count(trial)-(s.empty(remaining)?0:s.count(remaining));if(amount==0)continue;
-            if(!work.take())return 0;e.block("Item extraction interrupted or returned an invalid result; manual inspection required");
+            if(!work.take())return 0;if(e instanceof PhasedEscrow)((PhasedEscrow<?>)e).extracting();e.block("Item extraction interrupted or returned an invalid result; manual inspection required");
             S extracted=source.extract(slot,amount,false);if(s.empty(extracted)){e.clearBlock();continue;}
             e.set(s.copy(extracted,s.count(extracted)));
             // Unexpected actual variants remain in escrow, not forwarded as the simulated item.

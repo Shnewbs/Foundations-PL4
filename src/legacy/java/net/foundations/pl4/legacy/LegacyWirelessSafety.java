@@ -57,6 +57,28 @@ public final class LegacyWirelessSafety extends WorldSavedData {
             public void clearBlock(){delegate.clearBlock();if(!delegate.blocked()&&LegacyTile.STACKS.empty(delegate.get()))journal.finish(token);}
         };
     }
+    /** Automatic transfers reserve only the foreign endpoint about to mutate.
+     * Validated known escrow may retry later, so healthy phase settlement releases its own token. */
+    public static ConservingItems.PhasedEscrow<ItemStack> automaticEscrow(final LegacyTile node,BlockPos source,BlockPos destination){
+        final LegacyWirelessSafety journal=data(node.getWorld());
+        final Record sourceRecord=new Record(node.owner,source),destinationRecord=new Record(node.owner,destination);
+        final String sourceToken=UUID.randomUUID().toString(),destinationToken=UUID.randomUUID().toString();
+        final ConservingItems.Escrow<ItemStack> delegate=LegacyItemSafety.escrow(node);
+        return new ConservingItems.PhasedEscrow<ItemStack>(){
+            private Record active;private String token;
+            public void extracting(){active=sourceRecord;token=sourceToken;}
+            public void inserting(){active=destinationRecord;token=destinationToken;}
+            public ItemStack get(){return delegate.get();}
+            public void set(ItemStack value){delegate.set(value);}
+            public boolean blocked(){return delegate.blocked();}
+            public void block(String reason){
+                delegate.block(reason);
+                if(active==null)throw new IllegalStateException("Automatic mutation phase missing; no provider call permitted");
+                journal.begin(token,active);
+            }
+            public void clearBlock(){delegate.clearBlock();if(!delegate.blocked())journal.finish(token);}
+        };
+    }
     @Override public void readFromNBT(NBTTagCompound tag){
         records.clear();targets.clear();opaque=null;
         try{
