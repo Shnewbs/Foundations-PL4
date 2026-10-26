@@ -68,6 +68,41 @@ def discover(ledger, repo, force=False, lookup=api):
     return selected
 
 
+def validate_restart(root, report, mc, sha, runtime, counts):
+    phases = {"write": 0, "verify": 0, "crash-write": 73, "crash-verify": 0}
+    if (report.get("minecraft") != mc or report.get("source_commit") != sha
+            or report.get("runtime_sha256") != runtime
+            or report.get("clean_restart") != "PASS" or report.get("save_barrier_abrupt_restart") != "PASS"):
+        raise ValueError("Restart identity/status disagrees")
+    processes = report.get("processes", [])
+    rows = {p["phase"]: p for p in processes}
+    details = report.get("phase_reports", {})
+    if len(processes) != 4 or set(rows) != set(phases) or set(details) != set(phases):
+        raise ValueError("Missing independent restart processes")
+    ids = [p["pid"] for p in processes]
+    if any(type(pid) is not int or pid <= 0 for pid in ids) or len(set(ids)) != 4:
+        raise ValueError("Restart PIDs are not distinct")
+    logs = root / "verification-logs"
+    for phase, code in phases.items():
+        p, r = rows[phase], details[phase]
+        expected = counts["write" if phase.endswith("write") else "verify"]
+        if (type(expected) is not int or expected <= 0 or type(p["exit_code"]) is not int or p["exit_code"] != code
+                or r.get("minecraft") != mc or r.get("phase") != phase or r.get("passed") is not True
+                or not isinstance(r.get("assertions"), list) or not all(isinstance(x, str) for x in r["assertions"]) or len(r["assertions"]) != expected or not r.get("process", "").startswith(str(p["pid"]) + "@")
+                or hashlib.sha256((logs / ("item-restart-" + phase + ".log")).read_bytes()).hexdigest() != p["log_sha256"]):
+            raise ValueError("Restart phase proof disagrees: " + phase)
+    for a, b in [("write", "verify"), ("crash-write", "crash-verify")]:
+        tokens = details[a].get("tokens", [])
+        if not isinstance(tokens, list) or not all(isinstance(t, str) and re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", t) for t in tokens) or len(set(tokens)) != 2 or tokens != details[b].get("tokens"):
+            raise ValueError("Restart token identity changed")
+    archives = report.get("world_archives", {})
+    if set(archives) != {"clean", "barrier"}:
+        raise ValueError("Missing saved-world evidence")
+    for mode, a in archives.items():
+        if a["file"] != "item-restart-" + mode + "-world.zip" or hashlib.sha256((logs / a["file"]).read_bytes()).hexdigest() != a["sha256"]:
+            raise ValueError("Restart world archive changed")
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -89,6 +124,10 @@ def record(root, expected_mc, expected_sha):
                 and migration["generated_preview3_world_upgrade"] == "PASS"):
             raise ValueError("Legacy native/production/migration evidence disagrees")
         gate_files = ["clean-native-summary.json", "production-smoke.json", "legacy-migration-summary.json"]
+        if status.get("item_restart_fixture") is True:
+            restart = json.loads((logs / "legacy-item-restart-summary.json").read_text())
+            validate_restart(root, restart, expected_mc, actual, native["runtime_sha256"], {"write": status["item_restart_write_assertions"], "verify": status["item_restart_verify_assertions"]})
+            gate_files.append("legacy-item-restart-summary.json")
     else:
         native = json.loads((logs / "rc-development-gate.json").read_text())
         if not (native["minecraft"] == expected_mc and native["version"] == status["version"]
