@@ -55,15 +55,16 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         node.itemJournalContext=context;node.fluidDirty();
     }
     private static void unlink(LegacyTile node,String token){
-        if(node.itemJournalContext!=null&&token.equals(node.itemJournalContext.getString("Token"))){node.itemJournalContext=null;node.fluidDirty();}
+        if(node.itemJournalContext!=null&&token.equals(text(node.itemJournalContext,"Token"))){node.itemJournalContext=null;node.fluidDirty();}
     }
+    private static String text(NBTTagCompound tag,String key){return tag.getTag(key) instanceof net.minecraft.nbt.NBTTagString?tag.getString(key):"";}
     private static String receiptPhase(NBTTagCompound context){
-        String phase=context.getString("Phase");
+        String phase=text(context,"Phase");
         return "wireless".equals(phase)||"extract".equals(phase)||"insert".equals(phase)?phase:"unknown";
     }
     public String receiptStatus(NBTTagCompound context){
         if(context==null)return "PL4 item receipt: unlinked legacy fault; original target/outcome unknown. Preserve receipt.";
-        String token=context.getString("Token");Record record=records.get(token);
+        String token=text(context,"Token");Record record=records.get(token);
         if(opaque!=null)return "PL4 item receipt: opaque journal; preserve receipt and saved data.";
         if(record==null)return "PL4 item receipt: token not present in this dimension; this is not recovery clearance.";
         boolean matches=matches(record,context);
@@ -74,15 +75,17 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         if(receipt==null||receipt.itemID!=LegacyPL4.ITEM_CELL.itemID)throw new IllegalArgumentException("Hold a sealed PL4 item receipt");
         NBTTagCompound tag=receipt.getTagCompound(),context=tag!=null&&tag.getTag("ItemJournalContext") instanceof NBTTagCompound?tag.getCompoundTag("ItemJournalContext"):null;
         if(context!=null&&!tag.hasKey("ItemJournalContext"))context=null;
+        boolean authenticatedContext=context!=null&&context.getTag("Owner") instanceof net.minecraft.nbt.NBTTagString&&context.getTag("Dimension") instanceof net.minecraft.nbt.NBTTagInt;
         // Unlinked historical receipts have no trustworthy owner; operator inspection only.
-        if(player==null||(!(context!=null&&LegacyTile.identity(player).equals(context.getString("Owner")))&&!player.canCommandSenderUseCommand(2,"pl4legacy")))throw new IllegalArgumentException("Receipt inspection requires its recorded owner or an operator");
+        if(player==null||(!(authenticatedContext&&LegacyTile.identity(player).equals(text(context,"Owner")))&&!player.canCommandSenderUseCommand(2,"pl4legacy")))throw new IllegalArgumentException("Receipt inspection requires its recorded owner or an operator");
+        if(context!=null&&!authenticatedContext)return "PL4 item receipt: malformed owner/dimension context; preserve receipt. No recovery clearance.";
         if(context!=null&&context.getInteger("Dimension")!=world.provider.dimensionId)return "PL4 item receipt: different dimension; inspect in recorded dimension. No clearance.";
         return data(world).receiptStatus(context);
     }
 
     private static boolean matches(Record record,NBTTagCompound context){
         String prefix=record.legacy()?"Host":"";
-        return record.owner.equals(context.getString("Owner"))&&(record.legacy()?"legacy-unknown".equals(context.getString("Scope")):context.getString("Scope").isEmpty())
+        return context.getTag("Owner") instanceof net.minecraft.nbt.NBTTagString&&context.getTag("Dimension") instanceof net.minecraft.nbt.NBTTagInt&&(!context.hasKey("Scope")||context.getTag("Scope") instanceof net.minecraft.nbt.NBTTagString)&&record.owner.equals(text(context,"Owner"))&&(record.legacy()?"legacy-unknown".equals(text(context,"Scope")):text(context,"Scope").isEmpty())
             &&context.getTag(prefix+"X") instanceof net.minecraft.nbt.NBTTagInt&&context.getTag(prefix+"Y") instanceof net.minecraft.nbt.NBTTagInt&&context.getTag(prefix+"Z") instanceof net.minecraft.nbt.NBTTagInt
             &&record.target.x==context.getInteger(prefix+"X")&&record.target.y==context.getInteger(prefix+"Y")&&record.target.z==context.getInteger(prefix+"Z");
     }
@@ -90,7 +93,7 @@ public final class LegacyWirelessSafety extends WorldSavedData {
     public void importLegacy(LegacyTile node){
         if(!LegacyItemSafety.blocked(node))return;
         NBTTagCompound previous=node.itemJournalContext;
-        Record known=previous==null?null:records.get(previous.getString("Token"));
+        Record known=previous==null?null:records.get(text(previous,"Token"));
         if(known!=null&&matches(known,previous)&&known.owner.equals(node.owner)&&previous.getTag("Dimension") instanceof net.minecraft.nbt.NBTTagInt&&previous.getInteger("Dimension")==node.worldObj.provider.dimensionId)return;
         if(node.itemLegacyEvidence==null){
             node.itemLegacyEvidence=new NBTTagCompound();node.itemLegacyEvidence.setString("Fault",node.itemFault);node.itemLegacyEvidence.setString("ObservedOwner",node.owner);node.itemLegacyEvidence.setInteger("ObservedDimension",node.worldObj.provider.dimensionId);node.itemLegacyEvidence.setInteger("HostX",node.xCoord);node.itemLegacyEvidence.setInteger("HostY",node.yCoord);node.itemLegacyEvidence.setInteger("HostZ",node.zCoord);
