@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 35
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
-      PL4_NATIVE_ARCHIVE_SHA256: 'e853117137fc990016e721b76ba07a9a56cebd543aba78b7aed67d7647c0c361'
+      PL4_NATIVE_ARCHIVE_SHA256: '336c5ed25abd792b5323b06947387426bf40e217e649c27eead040d494f66420'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: 2ae21d754605d6dc912e8a7088e5639d42bb014f
+          ref: 928c981d5868989547596a456be76b2d408f43c4
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12633732104/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12637867495/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -100,6 +100,9 @@ jobs:
           root=Path('results');r=json.loads((root/'legacy-wireless-client.json').read_text())
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
+          assert r.get('native_diagnostic_chat_round_trip') is True
+          assert len(r['diagnostic_token'])==36 and r['diagnostic_token'] in r['diagnostic_journal_messages'] and r['diagnostic_token'] in r['diagnostic_chat_messages']
+          for key in ['diagnostic_journal_capture','diagnostic_receipt_capture']:assert (root/r[key]).stat().st_size>1000
           assert r['result']=='PASS' and r['signed_byte_revision']==70
           for key in ['native_wireless_withdrawal','stale_replay_rejected','native_wireless_deposit','native_paging','native_packet_codec_round_trip','actual_mouse_withdraw_deposit_page','native_sorting','stale_sort_replay_rejected','native_grouping_totals_variants_and_conservation','stale_group_replay_rejected','native_keyboard_repeat_lifecycle','native_search_caret_edit','native_search_typing_clear_no_match','stale_search_replay_rejected']:assert r[key]
           assert (root/r['tooltip_capture']).stat().st_size>1000
