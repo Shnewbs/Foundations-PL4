@@ -87,7 +87,8 @@
     "Eight new cases use actual native game objects and native NBT serialization within the ordinary scenario JVM. They do not constitute a new separate-process live-mutation restart suite.",
     "Retained evidence and original tokens are preserved; no provider outcomes/routes are inferred, and no recovery/redemption/replay/mint/fence-clear action is implemented.",
     "Public Java field mutation fixtures are an API robustness boundary, not proof of a network/client exploit.",
-    "Installed-provider identity/API/authorization/durability, dedicated multiplayer/online profiles/real dimension travel, arbitrary user/modpack saves, pre-save/power-loss atomicity, reviewed reconciliation, sustained performance and broader parity remain open."
+    "Installed-provider identity/API/authorization/durability, dedicated multiplayer/online profiles/real dimension travel, arbitrary user/modpack saves, pre-save/power-loss atomicity, reviewed reconciliation, sustained performance and broader parity remain open.",
+    "The other21 maintained exact targets retain their prior evidence; main192 is separately pinned. All24 RC flags remain false. No new release/upload; historical CurseForge receipts and moderation/visibility are not newly reverified."
   ],
   "rc_publication_cleared": false,
   "github_release_url": null,
@@ -98,9 +99,14 @@
     "source": "11932b9b7b0b83523f552fb9bd0d8b7f36f8b76d",
     "original_source": "ddbf8b6f141f6146f1b262102b040a696b9e4164",
     "description": "Exact 1.6.4 native log lines carry the dated INFO STDOUT prefix; normalize only that anchored prefix before checking unique whole PASS markers. Original controller run may fail its marker check; no native failure inferred.",
-    "regression_test": "test_164_native_timestamp_prefix"
+    "regression_test": "test_164_native_timestamp_prefix",
+    "observed_failure_run": 40403001650,
+    "observed_failure_job": 121853659644,
+    "error": "ValueError: Missing unique passing live evidence marker: live retained evidence blocks after external fault clearing",
+    "qualified_replacement_run": 40403201527,
+    "native_game_failure": false
   },
-  "status": "BOTH_LEGACY_NATIVE_QUALIFIED_112_CLIENT_PASS_164_CLIENT_PENDING",
+  "status": "PASS_SCOPED_EXACT_NATIVE_AND_CURRENT_STOCK_CLIENTS",
   "targets": {
     "1.12.2": {
       "minecraft": "1.12.2",
@@ -3668,7 +3674,131 @@
         "real_user_worlds": "PENDING",
         "installed_optional_mods": "PENDING",
         "client_visuals": "PENDING"
-      }
+      },
+      "retained_file_sha256": {
+        "source-SHA256SUMS.txt": "d5a8dc5f07c31905216ea19fcdbfa30c7fb269a394f99a71813fbf88a584c03f",
+        "production-smoke.log": "8e33ddcaadb6b9a43dc9f45c7525ae8d0477a1930b2270e007df1bcbb7923d54",
+        "production-smoke.json": "b90ea183bf5db24eba70c592bcb86b436a6ff6ae0e3aaaeb2d3248202485dffe",
+        "preupgrade-item-fault-world.zip": "f6b2d135cc8dedf1cf7fb5bd61721a44d4edc12f85a232d4fcef5a5bb304391a",
+        "preupgrade-item-fault-summary.json": "2eae2c1147bc3ff029329a6eb0d6a89a18600d38119769c67299e9dde6231d35",
+        "preupgrade-fault-write.log": "e90802bc087f6aa48685c78c6dab3b010a094c128806b717dc4a8b2c385cf7a5",
+        "preupgrade-fault-write.json": "398279c7ac1cf6b5d1ae99e4f81fd652b40d801986715a54803ffff8c63dd0f9",
+        "preupgrade-fault-verify.log": "8147e058e3dbcdbfd0022e774ff4a5ea35125d66516e3d6fe9a6ce0f510144f2",
+        "preupgrade-fault-verify.json": "6b934e04202d91c723493f30f75dd0ebfc0d902b54437bc873ef6216a3c1d4b2",
+        "preupgrade-fault-upgrade.log": "551e073d251b6c821da9d1aa863873e1c6b9b3ae9f90ebc3397c7db5e7481de6",
+        "preupgrade-fault-upgrade.json": "c95ebfe948fd2583efe58b7105700a9a8261fc0f6f87b5d2efaf45f7f23248c8",
+        "preupgrade-baseline-runtime.jar": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
+        "preupgrade-baseline-origin.json": "e0da66f700043a931a8f0e0996d43cf0b74f4be45cbd3446543793f41143e3c4",
+        "preupgrade-baseline-native.json": "eec6a4a4e9b7e3a850ec93631c512246305cd76a0f7b3c5fb0f4afafc955fc99",
+        "native.log": "6c57b13478fc0ba4064d8ce720b2948be781cef0519c53d8deeb130482d46f28",
+        "migration-write.log": "fb7a1d00440969c5d3f98051cdea0831d60ea8e4ff493f10190280dd59466322",
+        "legacy-opaque-export-inspection.json": "92ef60c53b8572cd0a7a14640d38d0478620ad0d9a1a3ddafdb971f1d8b541f3",
+        "migration-upgrade.log": "56d1eea8650efd4c856e34f1beaee795ec90597c9b9f1a3ce5e8ce07385df510",
+        "legacy-migration-summary.json": "e881059d7be4ee833a3470dcc707d69c405f2eb52ff421eb7e5b45f9effc8a4f",
+        "legacy-item-restart-summary.json": "0db99f35048e6f1114ab96e89ada9e1a71df415f62ce65ebeb1abe15d97855cc",
+        "legacy-item-decode-scope-restart-summary.json": "9517085fc48407dbf6c8207a850856babe218c41a03f1ab78c0072f48125adb2",
+        "legacy-item-decode-rewrite-restart-summary.json": "60b0b842e5c920d58b107c40f33e802ef0f03d737b92b77a1f72bbfbd7adf631",
+        "legacy-item-decode-raw-restart-summary.json": "decb5064972cb259df506d504d5bc0bb748b688d0356d1ad3e6595a43a8fb8a9",
+        "legacy-item-decode-owner-restart-summary.json": "e41450582e5845d9f0f82a213f2ec04b7fd2ea2fad1803620b1094a1695a8b9a",
+        "legacy-item-decode-missing-restart-summary.json": "e9f2251e4c73f42fe1492dd5add2adf7ca5b57051b794d59dd768cbb7e6d41ad",
+        "legacy-item-decode-dimension-restart-summary.json": "109a00af75d7665a3715bfe72c8a5a9a5980531da49d1be08afac717dc37d25b",
+        "legacy-item-decode-compound-restart-summary.json": "ecb8e5edf7e8311cbe574d80e258acd0b77f6b8f4ad6e12e4670ea7b69953f6f",
+        "legacy-decode-world-inspection.json": "8fc925cdb51710101d920cdf0003c159178d575220ded437d7f63e1d04ceba8d",
+        "item-restart-write.log": "ad2ac990e9f21b214a08bc0f25a95eeca54e8d92e49db9f0b9db4b76a5312478",
+        "item-restart-write.json": "a68537ded135a7037c9b0e7a63fdda5b2bd22f4111b8cfc8756315786691e246",
+        "item-restart-verify.log": "f178a65dff267dce2cd438a5291aa7de69bf1b3795fb541c28a898529ab22795",
+        "item-restart-verify.json": "2c3d61e2c72a006ec03f4b99c5db7fd5a8e45e7410d824ee3c61e9e8fbcd5263",
+        "item-restart-crash-write.log": "54e8bfa880ec072afc96b810eeaf9e55dbd6e50fe45148798d52caadc8a2ccdd",
+        "item-restart-crash-write.json": "682da594733e8cccbe21be901cefa49dc7eba24576a53c88e84fe85100b8a2b3",
+        "item-restart-crash-verify.log": "20c790bf2b7f29796ae54f4adbbd3e0918cbe48b242b19fcaf6dbf84ba9f186a",
+        "item-restart-crash-verify.json": "918efb9c21eee1621b68eeaa00a961d41531293d4da2918a03688d791246077a",
+        "item-restart-clean-world.zip": "abc78e8f5369c4c4803adb0815f8ffd05560e281364e54293744e9fd4012452e",
+        "item-restart-barrier-world.zip": "41087d7ef9644ca699f7890456a5786470faa3163d3b0551ddf8b3291d12e8ed",
+        "item-decode-scope-restart-write.log": "b36d79d23c6fc773fa20000bbf0c152434e0a92cac59c43a2ea9c256eeeebe82",
+        "item-decode-scope-restart-write.json": "48adbdc3a28a36bede80ec6ee637506e412ff8ea767a7d695caf57b366651acf",
+        "item-decode-scope-restart-verify.log": "10fddb4bb6544fcd95290fec030498e1dabf6d78f6806ed3260252456103a038",
+        "item-decode-scope-restart-verify.json": "b196fab794101605fc92a5cf7c6214f8d661074053e5021480f8a42994a5eb87",
+        "item-decode-scope-restart-crash-write.log": "075113b867a37c08ac99ebd67e2619f3baf51dca6101788fe4deba899f68244e",
+        "item-decode-scope-restart-crash-write.json": "804c481fabb57b827f6c0e2d9d172eee3685ee3221829dbaef0e1c354344039f",
+        "item-decode-scope-restart-crash-verify.log": "6b5f7a1bff3a8af5c9f45d4376c6f0ac9a4b5599016cc99655ab379436d6ee24",
+        "item-decode-scope-restart-crash-verify.json": "041c7533d846c942cb2d83b32ce0f9685b1b54273c70037e9f4ab0c886541b17",
+        "item-decode-scope-restart-clean-world.zip": "22e81c6a58c52e0d9690d5297e4d6dff7385777cd5441ec22fe011e0385526ce",
+        "item-decode-scope-restart-barrier-world.zip": "6a892d76a0e6d78027613561fa5bb02b7299d38a8cfb240c19022d263bf77cef",
+        "item-decode-rewrite-restart-write.log": "1c49d2b83d088962f5c13fdde4bfd56ea24119fb5f4bbeb6dc99fb8921d5ad87",
+        "item-decode-rewrite-restart-write.json": "3512bcfcfbd81268e2f66b9eeed48d77cddd85dd2e6e88b99cafebac18ddec15",
+        "item-decode-rewrite-restart-crash-write.log": "410276915880c008fd9591a2c9b737e12f0a7686befee5c609c6cdc3242edc07",
+        "item-decode-rewrite-restart-verify.log": "ddaa29b1a7b1406a1fa3dc20913a7aaccc2ad46b90ca880e4ded69e359040770",
+        "item-decode-rewrite-restart-verify.json": "a3c771c2635c71c7ea7904c436f658525bd9733390f7f4ba49197724a540722d",
+        "item-decode-rewrite-restart-crash-write.json": "674b8eb6ca7606d185fce61f793c8821d036b8a8f8cf1c772e4920618946189d",
+        "item-decode-rewrite-restart-crash-verify.log": "826bfdbafdecbf61e4bc5161c8d7785b773d496fc0cf39b221968f5376cac7e4",
+        "item-decode-rewrite-restart-crash-verify.json": "bd79e23e7373babaa6b0ca6302fe2f6e3aa1aa37d61615e1eb03821977c3ec17",
+        "item-decode-rewrite-restart-clean-world.zip": "a7e0b0d4a25328c74b6f8b89498e06c48c17aeaee85fa1308dea4c2ecad156b1",
+        "item-decode-rewrite-restart-barrier-world.zip": "a145358c15a9d7cf490b4f417b5b776d51b900228bfcae410182a9d1ac41ef44",
+        "item-decode-raw-restart-write.log": "04c614c3ef36ac5a4798f04da030957bf1b25096d270109490a6f63ce9779be1",
+        "item-decode-raw-restart-write.json": "eab7770a3129d8964a2d23e7ca2dc6b23822a89f134f08df6e961e8f44f324f7",
+        "item-decode-raw-restart-verify.log": "d402e4e3ecf11a9d01cc1e9664814b713755cfb6d1863e311e6023f1b396e641",
+        "item-decode-raw-restart-verify.json": "8445eee902e7acc8417fe7c5888f478400f1359ff1565a77e83275afd826705e",
+        "item-decode-raw-restart-crash-write.log": "a58e82751baa0063421f5c701eaeeda5f1f6fd40a7400c5d07e69facd131ad6b",
+        "item-decode-raw-restart-crash-write.json": "3750304bbea19113614b42fd73fd5c1b41f8706d08f04c473d6017327fbd9546",
+        "item-decode-raw-restart-crash-verify.log": "f308f25967a8aeb7fc144eef351bf3a7c541fa812e804521e98f9c6ff292ce9f",
+        "item-decode-raw-restart-crash-verify.json": "fc2ee95bd84b80275276e4101dc5f4e4c45116b76e98e58c2a534c0c1d81afca",
+        "item-decode-raw-restart-clean-world.zip": "7ebdb29f98a302309bf1250679c083b0b7ee365f1500057f98140af2a596d358",
+        "item-decode-raw-restart-barrier-world.zip": "f76fa867b9d29e09668acccb5ea48da86c702d9159383d2123d20cc3dfa25734",
+        "item-decode-owner-restart-write.log": "25106ea03ec9e2e09e636e42d299842d84b9dda638bc6df82a2a82525f4d3dec",
+        "item-decode-owner-restart-write.json": "66ad8d21247b2aa60360057efdb5990d4de135e03cb1dc063f78b0978c9c7e04",
+        "item-decode-owner-restart-verify.log": "1241e56689710adc80fc6bb9106d5f8f26aecce433230bf77a0f40164b4e48ba",
+        "item-decode-owner-restart-verify.json": "b0d33dc64562273ed32a2cb99bd5e0eb1a72c12f11b5c5e6df1c9ee90d230887",
+        "item-decode-owner-restart-crash-write.log": "f1d3656a75250f1eb06467f1ec5164d946417c8fff136f6cf3f39f250e498f5b",
+        "item-decode-owner-restart-crash-write.json": "8ebc6b98caef0768d580446ab41e917bed8aad1de3aacaf168dbfa15c8609a92",
+        "item-decode-owner-restart-crash-verify.log": "a4a269fd42ce9ed8c6822c2e5060b46609221b844b4ec5f314c2a5c60676c2aa",
+        "item-decode-owner-restart-crash-verify.json": "8feb41eaeb6385bc954a1af4daf62807351b155195994aa38d889ebb4d12eb4d",
+        "item-decode-owner-restart-clean-world.zip": "ccf13328f0ec6ccf62912ac8c12fff992b45cc78ae18da3a905c963ba6078b2c",
+        "item-decode-owner-restart-barrier-world.zip": "36bebb3f864ab671f2345b58ea4d0f312e295e8f99558a9791b9bc031fb33df7",
+        "item-decode-missing-restart-write.log": "e2c7a59c0ce86a4f2cacd26a61b9d22d0e194d670d8839bb3eda9d41e91f6392",
+        "item-decode-missing-restart-write.json": "f4fe2cc67371c0a2fde7daa94795c2c543c468c9df3bbd392add90d92ee37ed6",
+        "item-decode-missing-restart-verify.log": "0b99d27e2de3f8f6469d0b5cc36bb3af52828ecc35fadf6a60811460c8405cec",
+        "item-decode-missing-restart-verify.json": "abf22cfc56f62263a94edd6f1cb2922c216f5ee1b93d6112e5023ce7916d1860",
+        "item-decode-missing-restart-crash-write.log": "75e26281de17f3eacdb520eedde34f13decdeedf774debb8ed4aed761b5161ac",
+        "item-decode-missing-restart-crash-write.json": "20349e85d1f814f06c00d6fef17fd3ba603a76508ee9cb8391b808551eb62318",
+        "item-decode-missing-restart-crash-verify.log": "0ae57f53e8ecd74e636da2e8b94b90382d417e8bcb46f1eb046c6a3c05c7ae70",
+        "item-decode-missing-restart-crash-verify.json": "2fca104ac0cd9566ca46d0160bd666b9bf009edd3d653c3445120617755ccc80",
+        "item-decode-missing-restart-clean-world.zip": "708a198283a4202286233ec20ee33840ea379ef17860a55cc2cadd2e2e93bff3",
+        "item-decode-missing-restart-barrier-world.zip": "b7d740489796bdf1390f5785d78a2110cf9518299212c721958fca32b4272056",
+        "item-decode-dimension-restart-write.log": "82ed0405aeb12a48457df958bfe2b09a4ed583e137a66e959d9d7a31746069ac",
+        "item-decode-dimension-restart-write.json": "a04668efc451126ffa3caf9d1d0feae2c2aa5d25eead82a2cca1cd60eacb3260",
+        "item-decode-dimension-restart-verify.log": "0c98d5e7ffe03fab6a54e114bed52efe5ca867d74611aad74263fcd78b4dc988",
+        "item-decode-dimension-restart-verify.json": "203eb2311119c4d082340d7b90f6b3288e23efc9ed510cd7771a1cea147117e7",
+        "item-decode-dimension-restart-crash-write.log": "d3488f9c674f136db40f172685fd7ba6f80e82b09cf135629bc298647bac4424",
+        "item-decode-dimension-restart-crash-write.json": "4ab9eb26461ecda9e0b42a5a9486907931fb9f4e49037385b63df6c2f7a97560",
+        "item-decode-dimension-restart-crash-verify.log": "070f51383c3ee17cacf83ae4392a8259a9e1f4d3ed5a81a72fe739faabfe02d2",
+        "item-decode-dimension-restart-crash-verify.json": "b2191b00e2560294176cf4c4e625c60f4f8bbc9f875e08a9072cf2ea2fc7f325",
+        "item-decode-dimension-restart-clean-world.zip": "c633f0a67d37aca5c36d03702f0b28449b5c69fcfc24a6f0c09e916b58784da4",
+        "item-decode-dimension-restart-barrier-world.zip": "57e7c57ed6d01dd4e25d72c7f0912de3753abe23c696fda23a2adb30e35518ee",
+        "item-decode-compound-restart-write.log": "1fbd30fd184f32bbcb32bc5c6ece430c13ef1b5a61b35b516ffc37603d72d31f",
+        "item-decode-compound-restart-write.json": "7670116919269138453e0de502091dd8bccf5b155b0ebcd3891f008b5f6c1c13",
+        "item-decode-compound-restart-verify.log": "20f3c41399b1c801c2b1306f047191d74b6a68ad0301f1288f53684e33bde0af",
+        "item-decode-compound-restart-verify.json": "b7426048cf1808858ddc1a74b75fce2d79ddd0fa6a3be587325124a058d2b85b",
+        "item-decode-compound-restart-crash-write.log": "193f19f3766c661713428e359022025c129e05c7723469cd89b3fb71e1e2cb8d",
+        "item-decode-compound-restart-crash-write.json": "c6f59aadee07352b43f3fc3274657b5a7790d2541524f49b91e06c848560843b",
+        "item-decode-compound-restart-crash-verify.log": "8b6642a33734a22a32c17c5739d611feb28db1974af328acda995dc920766da0",
+        "item-decode-compound-restart-crash-verify.json": "8fb5ef0a4adbf460184b5e4665fe7a18bb5baa5636880a538c48771f53689209",
+        "item-decode-compound-restart-clean-world.zip": "2c70596c3207ee18e8de5a207286cc8b22a25b2596b683e6e7bb819224b92265",
+        "item-decode-compound-restart-barrier-world.zip": "b8f3f846d4448928f728d7f5f14e419afc60522e1a240387de74ddef9b67f6df",
+        "installer-SHA256.txt": "bf45d0a005220f14587f3862ac57c6a43b36d9a46dc91b939c1bc27230337bf0",
+        "install.log": "58603b7b08c8b1187ad7eb93e357d1339515564da7d561208d7bfb635c1b6365",
+        "hourly-native.json": "79b1de87c7829a6f6c4bcbedf54478af02ee44418cb38fe5a171fd5350e88b2b",
+        "energy-summary.json": "0ba3eed6efc4f638cf2d0574d6c3c2d0fba2115cfc3fa180fbc331aadd0de9a5",
+        "clean-native-summary.json": "4f34d313937dfc1db0dd68f15dfa3cc2ab878f64280665e5a1291ec9670f585b",
+        "build.log": "104974b98ba0bc9ab352b8246694d32aa3fc129e1e9682fbdcd3f606b7b10684",
+        "checked-source.zip": "f2ad440be3651b66254ab70c16239112cde2fc893d47f54c494b1f12f75b9fcd",
+        "SOURCE_COMMIT.txt": "3802d5f184270ef61c258f60ccdc801b4118b6f96c6240f0041f11211cbce365"
+      },
+      "source_archive_sha256": "f2ad440be3651b66254ab70c16239112cde2fc893d47f54c494b1f12f75b9fcd",
+      "new_live_mutation_native_cases": 8,
+      "total_decode_process_assertions": 876,
+      "total_decode_jvms": 28,
+      "provider_restart_assertions": 188,
+      "historical_checks": 60
     },
     "1.6.4": {
       "minecraft": "1.6.4",
@@ -7240,7 +7370,131 @@
         "real_user_worlds": "PENDING",
         "installed_optional_mods": "PENDING",
         "client_visuals": "PENDING"
-      }
+      },
+      "retained_file_sha256": {
+        "source-SHA256SUMS.txt": "7be3d5cf5dc03f63e8dd69d580e7df34c608ff99ea3b692655f7515edd28c677",
+        "production-smoke.log": "5595a8ae46b219ecce8b3025184c4b1a0b57d91a854f735edf0f3315ea1952cc",
+        "production-smoke.json": "1935e9e39651e4833c364510e0625f055728841512e1509d2abe1b3c198b5ec6",
+        "preupgrade-item-fault-world.zip": "39906a9d34ab883bc5eb656b0d07d929c628e3fa87ff53c73b4b3b8ad727601e",
+        "preupgrade-item-fault-summary.json": "5dbcc835d4c83faaa70a4a55891423cd02beecd43298b5780c648176dbf163c0",
+        "preupgrade-fault-write.log": "c705ee1f2cfb48b9677a996f5dfe240b9e84a0f197bfb8e16bb30f475721de3f",
+        "preupgrade-fault-write.json": "7cf385cd204bbb96db89d77c089fd8cb08359b02ba8e7cd00973337980197504",
+        "preupgrade-fault-verify.log": "85ce6596f81304216d1b5e94e1369225fdf86e0a89c7b6f5b613cd0e6581f6b7",
+        "preupgrade-fault-verify.json": "af572efc95ef7abc35935bf8e5ab1cf7dd1f8a27f128a5d7943b64284664bbd2",
+        "preupgrade-fault-upgrade.log": "02e4c4a2aaa08c26d99b825159c857743dfbb13039f277da04112077e07b4f8a",
+        "preupgrade-fault-upgrade.json": "550249da2e697fd1ed848f78b6c65979393761a5862f85f332f5626eb0424550",
+        "preupgrade-baseline-runtime.jar": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+        "preupgrade-baseline-origin.json": "779cb640e382f24e6c7c20e950fef3efd8958c6d52de7668e684fd0d1a62998a",
+        "preupgrade-baseline-native.json": "6e5f64597525a813a4c0e1341605ac0ea0085023537dc98c514c5ab61e7545f9",
+        "migration-write.log": "7c8909e469c49321c132393ca4886f98536066b8f90d1be7a66a9125f112b3c8",
+        "native.log": "8d83104be073afa9300e54fd6327caf7ecb95cd52dba30e5ae902eca6a84708d",
+        "migration-upgrade.log": "63e052e40001430fa0a4d28f4a880b7996b8b29344814d0fe4b969ec123b4762",
+        "legacy-opaque-export-inspection.json": "71f6168b5b8fb24c11dde59470c812aa7bd44b7f171f6cae55faaf1a9460f367",
+        "legacy-migration-summary.json": "d9c710ae5edc4fe0b109f5c38ca5f19e9a0432810553f9d07987a4f599e5bdd1",
+        "legacy-item-restart-summary.json": "371a3a4a4baa4fa69f6ac3189ff68845756241bbcd9cf37776226f214ac813d7",
+        "legacy-item-decode-scope-restart-summary.json": "15e19dbefbf72535acbc27aca7100f049e77a6b5b7363c705a1626dbe0ce3690",
+        "legacy-item-decode-rewrite-restart-summary.json": "12e85f83f0a826caa93956f21f839656b833787184def3426e06cb990b6875ce",
+        "legacy-item-decode-raw-restart-summary.json": "6d0e4cfd0e23c4941ded5a44be0d2ec142deb004d87897fb2176ace75e2ed6b2",
+        "legacy-item-decode-owner-restart-summary.json": "cef34bb90652843f0188b44596cf5fa8bc9476ab995d092d8621911947717dc2",
+        "legacy-item-decode-missing-restart-summary.json": "0b927ad5333e0d5bed7716c243db0c78bfe7717405aec5f216e6623a031ac818",
+        "legacy-item-decode-dimension-restart-summary.json": "f78814d8c1ea40261194f199055dcaa413cf1111cab32dd5901a46b80a2695e7",
+        "legacy-item-decode-compound-restart-summary.json": "7360ed9a42bd3075c14198a5cf0622e1e84db785ff9be516d15d1cee90b4325c",
+        "legacy-decode-world-inspection.json": "ab0ca7e7be80d1f8327a941a8f2175ab22a3b1aa984755f5209f757e2392e55a",
+        "item-restart-write.log": "7cd04d580629b0283cceabe9be6aa291ac34c0c4257a64714317e83f108de424",
+        "item-restart-write.json": "0c9839c47e7b46010992c6695dc93b2e2226f41721bb9ba7981a60d1966036ff",
+        "item-restart-verify.log": "38ff6b9f45b7a15ffb609b2873d7453e77f53d18bd486f8fb8e7dcb957a93b9c",
+        "item-restart-verify.json": "6755915b10bd68e50d1ef8dd0c4b94cb2fe3e7ec2684420cac63da7838f28fa5",
+        "item-restart-crash-write.log": "caa4fb86418f0fbae371db7a0692e6daa5dde26e33a362a742d89aa4c3833191",
+        "item-restart-crash-write.json": "d06f6e44ca51914f08f71552fb449ab4d4f2f775874f0bccccf636125b295d1a",
+        "item-restart-crash-verify.log": "8872f0d0358300c5e67b48a6ff996273b5a68f09dee6c9a7efe1da57d097e8f8",
+        "item-restart-crash-verify.json": "1aa8730680a5d8bff09c20b0b241564db821d81b3de4293901878c9f2e4b60f4",
+        "item-restart-clean-world.zip": "9667ca904496323fba8845170a1776c8009c32f8e03ff748cb389422afed1057",
+        "item-restart-barrier-world.zip": "7e9d4a348017ececa292f184edca2b58b4ec7f7b6f04b80d295c00a873f6922c",
+        "item-decode-scope-restart-write.log": "063f82026bcb4e1ae8618f0eff0b991a80b7ea0cb8202011c3c0caeb201deb51",
+        "item-decode-scope-restart-write.json": "404752e54c2a6de559fcc29a9aebd7796f9cde1970bef3c2c00a84ed14b54d09",
+        "item-decode-scope-restart-verify.log": "d4c69978666a1cf1ad9d35b3ea1d030971e759792a3375c7dd9773eab4d7cdab",
+        "item-decode-scope-restart-verify.json": "da12c26d2e902b747796b17006ec8f6b0afcf117a39f4a594e70a990f114e755",
+        "item-decode-scope-restart-crash-write.log": "266d444ef77f0ac5649f645d55851fc0fd0fb7de018afa1fb684bdbe2293c2e1",
+        "item-decode-scope-restart-crash-write.json": "f3a892b8896a227e582b58b862c85c4440bad92ec8eb507385f8e2e839a9013f",
+        "item-decode-scope-restart-crash-verify.log": "ac97e50c36783bb30bce0727fa26c4894f9516cd7797fb44d49d47f669f61bc0",
+        "item-decode-scope-restart-crash-verify.json": "117d181fa3e229f92a9a8a59c64f1b33af78bcbb11db7e00608f7d2dbf9eb752",
+        "item-decode-scope-restart-clean-world.zip": "e553ab70c14e7726285e4266874f7ebd60084e117219e55f32ae975b1440ca1b",
+        "item-decode-scope-restart-barrier-world.zip": "6e533d557cbb2da5f537c71360dcf8ecbf7db52b5b0fd1636fd5573c7f2ebbc7",
+        "item-decode-rewrite-restart-write.log": "e4ceadab97e0184e932752191af6d6f0d8d4ecf317ec993364afdff52ff08201",
+        "item-decode-rewrite-restart-write.json": "558c3895f0f259062eb920ad0e62ce6f20a2ff580315a16cbf82b085ee26ea57",
+        "item-decode-rewrite-restart-verify.log": "dce4005514ec8491501a252d072ef838df4e237741c600f1ad1bdf81db6f35d8",
+        "item-decode-rewrite-restart-verify.json": "ffd1b0a921f8eefaadea0a5fdabc57bffef8aaa3399f8cc8938cfabd57027973",
+        "item-decode-rewrite-restart-crash-write.log": "25e874af2b1d200cb1cef7e7dae972c9f6848290594fd88d9cb5b093d007ad91",
+        "item-decode-rewrite-restart-crash-write.json": "b179ad8aa3627ccaabe88f373dde0069c13e2ccbe701f83eca714d7196dec95d",
+        "item-decode-rewrite-restart-crash-verify.log": "d3230f45e7c3223c340e9f7b120adbfd215666b7d8bc76b9f756a6cf2234c02b",
+        "item-decode-rewrite-restart-crash-verify.json": "9b4dc6e2a0e0dc71b0daa7466c0b086b19fd6e5bfb2f035787f183e657bce4bb",
+        "item-decode-rewrite-restart-clean-world.zip": "026a7fdf4b6ad589553aaba5558d5ba0182300bf40fd6427127c99edd9085422",
+        "item-decode-raw-restart-write.log": "61974c42a9cf3e4138d1941255725c0f221f89f10fa03aa0ef1e3dd652a107de",
+        "item-decode-rewrite-restart-barrier-world.zip": "4751a1096b86a799731d4cbf67d61f13373980ff17b58d28334731a80f513b81",
+        "item-decode-raw-restart-write.json": "73b19feded026df4e2f2f6c6aee89b23d6038a43386df51d8ada6fb1598344c4",
+        "item-decode-raw-restart-verify.log": "94ca57f65546530ff1a6cb60ef27b80232e30b7cf797115804d64e15fc00475e",
+        "item-decode-raw-restart-verify.json": "63e9e06264c3f56187c877b95ae18306095a0703706ec9b1c3800d156d266e5a",
+        "item-decode-raw-restart-crash-write.json": "5b58086fe993ea954bc8f13f35fec8cacbc024f3a7d0e1fb8a12075b6927b710",
+        "item-decode-raw-restart-crash-write.log": "ced7a0535902cc1555c342c19a75fa4cf967b95e754c4523f7f9e7c24b5379bb",
+        "item-decode-raw-restart-crash-verify.log": "5beb4f1bcfa03ae0b11e2699a6c46f052a92d331858ec1ce9848531e514a8c46",
+        "item-decode-raw-restart-crash-verify.json": "69456c41bdc458b8e647769b87c0c9d48cae00357a68013e5d832d12e474cb0e",
+        "item-decode-raw-restart-clean-world.zip": "6cacd5aa9ea1d88828b03ee8425d9a7eaa128bfc1a09ea5e75befe779b4621bd",
+        "item-decode-raw-restart-barrier-world.zip": "206f9f556dd7b5ed925bd1aeebaeaed87cfa99982d70ab28bf46f7e959fdec8a",
+        "item-decode-owner-restart-write.log": "b4650b4f0717b4bcd9304c3c4be7d6bdde5adf8eb3e6c88f13d0bd3a933fe93d",
+        "item-decode-owner-restart-write.json": "0d94f44f9403c31148ce10b4605d422bd7009f22d76f11a1b506edfa0e44b156",
+        "item-decode-owner-restart-verify.log": "782840324c414ca9c6a1cecbb25f29be8c8c9cc34104e08fc0d8ea8e4c770f9a",
+        "item-decode-owner-restart-verify.json": "178f4ffa3c45fa1269af886f86183e551c5668815bccc8362ef3ce1c89c3c649",
+        "item-decode-owner-restart-crash-write.log": "83c85c112fa8ec15938b24782d40914cfc8744fd938a4ff132dcd67d75f2c884",
+        "item-decode-owner-restart-crash-write.json": "883c79ef0b60aa90d954f0136e1b1cd63f804f66eab8f811c752aabfe196cef1",
+        "item-decode-owner-restart-crash-verify.log": "c3ff4d8ef83d03854ad62888fda24aca812861ca34162c14e378f7ae2a3a64e4",
+        "item-decode-owner-restart-crash-verify.json": "ec8a194bf4e1c544df79dc64d600b823c4f6796dfc60296f2e879b204fb93b7b",
+        "item-decode-owner-restart-clean-world.zip": "bc78b9f09f0f8ab7a21e419f5d6185186807cbeaf57106ec64ff9a2c78ed2b43",
+        "item-decode-owner-restart-barrier-world.zip": "981c46a6b92c7e4c6ec2e4fa2f6b82e50819e70c21d2668ada96540b2b3e927e",
+        "item-decode-missing-restart-write.log": "3bde630f3857055fdf5946251a63bac013a67942f198d3e8903d8ffb81d57a06",
+        "item-decode-missing-restart-write.json": "84729ffdfb199e9cf071eb6d4c65e1f8b3e5f55d798aa9dd22a36775ee467f48",
+        "item-decode-missing-restart-verify.log": "aa49844ed567c1191e2b92d0b82e5a94969db68d7dd609952561bd989e8eb3fc",
+        "item-decode-missing-restart-verify.json": "a7782cffb4faea3d72a0fbdfdd7cd23a3af1ee65f9ba00c531253ddbf730c75d",
+        "item-decode-missing-restart-crash-verify.log": "aafc76c5104a0d102dc0d0c9c033583a25f9d73f3a83d0455a51dd0f6c43f424",
+        "item-decode-missing-restart-crash-write.json": "6a9b6d30ad66184081f29d93c45ebd701b389ebd2ff18093680c63721dfca291",
+        "item-decode-missing-restart-crash-write.log": "d97471289545da909b4de0af325d0ab978c41ab9a4491272fdacf2d4a89f65a0",
+        "item-decode-missing-restart-crash-verify.json": "bcf0126c1354e24e6d0aadc490c410d929169a6f7f1b06f32c31fb26081cd775",
+        "item-decode-missing-restart-clean-world.zip": "75b9a82f2efaf5627fd85c83a98716d8c19ca450546e8bf9d77585603197d382",
+        "item-decode-missing-restart-barrier-world.zip": "b190b72f80b922e612926ba70ef9bed40cf4c942c5ccb9a82113b98ad2de474d",
+        "item-decode-dimension-restart-write.log": "179116d00ef55f5592559745033fcefad4e61936174804c1b564176d4232fe2f",
+        "item-decode-dimension-restart-write.json": "d429c4b1201fac59cb7c62458bdc5f1f10c6376d023195d74c6d890c9153cdb9",
+        "item-decode-dimension-restart-verify.log": "5b427ce0a278006055daa1655c90d42f3d68b4735aa7f66f8caa854c4af434ef",
+        "item-decode-dimension-restart-verify.json": "14345f34c7d37b30e265d15a76220d33f0df206f9f6b20b9de0c2c42fd85cb51",
+        "item-decode-dimension-restart-crash-write.log": "56975907dc0811c6dd0d00ec6ef5c0bdaf3716295961ada467c98b2ca0230bb1",
+        "item-decode-dimension-restart-crash-write.json": "bf5dd5effeb3d7f0197449a362dc56bacb1090f368533bf19f7088849f82bffc",
+        "item-decode-dimension-restart-crash-verify.log": "24424a51c85ccb92ab4a0b54787800190c45442e2dc2085fc9f43c23331091f4",
+        "item-decode-dimension-restart-crash-verify.json": "04c22b8bf06fbc9477e1d73c8dc1755c3a923b9bdc7dd2d1e511285427be14ce",
+        "item-decode-dimension-restart-clean-world.zip": "69662daa90177aa5c35d8adb52335b6558462709899691448e27a2fa6e1fcaf0",
+        "item-decode-dimension-restart-barrier-world.zip": "85d42fdd533e43590337f20b092e48374f55526a584d885024dc5881a528d371",
+        "item-decode-compound-restart-write.log": "c6962364fda30b0b2efb2cf8b5a1966a500c826c31cc49e17a879d8757571eee",
+        "item-decode-compound-restart-write.json": "9fef2e92502d939b470736d3a226e73a11277a41ae010bdc55ce774d91b52d9b",
+        "item-decode-compound-restart-verify.log": "18e5285a4f15da21b99f569aaba1384f93a6937e0662f7b149de498542239337",
+        "item-decode-compound-restart-verify.json": "d3503fc6119db15f9a78924b47623f615595ba81b6178b040c4fd24da11890e7",
+        "item-decode-compound-restart-crash-write.log": "e04c3bc0c2863f6fbf5403c2acb2caac86d6988f40e5298c2c45120dc53c437c",
+        "item-decode-compound-restart-crash-write.json": "eb2291383c9ef39a9c66818810993e2b09e23118c98ef6b18a1a3db52fb941a3",
+        "item-decode-compound-restart-crash-verify.log": "fd87f853ab8e4004309429163a539915321933b1a8ff58233beb64fab1cfc14a",
+        "item-decode-compound-restart-crash-verify.json": "98178cde0a05836f9e68ef0b085e6c095467ce888cea79e623dfdb1576c6908e",
+        "item-decode-compound-restart-clean-world.zip": "eaf956f85c4ede68c90e384c9e092d1c1c48c85658cc44b7e9e5e4aafba19799",
+        "item-decode-compound-restart-barrier-world.zip": "b7f7791ef21084ddb491a8c3aa9dd3c3ee163614c3a1f58d4b0f3800d3241c39",
+        "installer-SHA256.txt": "d06e8ec9d7f72a186bd636a50ba7e1935d17719744fc9378689e04c04fd45a5d",
+        "install.log": "179598327e749bc8fc9bd9827a79de5569f796ff71e470589c986cb7e40f7688",
+        "hourly-native.json": "094d3fa30cd7550da1c792f8a371d3d25b0d3b889dae35db901ef8363c43a04e",
+        "energy-summary.json": "75898e64ad9d539c66a1caf7efa1dab1ad69b0ed4b54e8c2301b56c12f04dab5",
+        "clean-native-summary.json": "b6f05bad5137ae558057cd21a45ff4d04dfd123193b57dd8aac0ac0bfcb72595",
+        "build.log": "0079636a685aac86d8da1e27ce686adf5a24b47e2084e92be33690dd1142e934",
+        "SOURCE_COMMIT.txt": "2de2a8490ee138129c7acc30f3ae175cf66fc218de939c863158dcc0617b6c7f",
+        "checked-source.zip": "d09b61eabd16228a022ccc3170178ff07646c9ad70c58de510ec6ac13d5bbc43"
+      },
+      "source_archive_sha256": "d09b61eabd16228a022ccc3170178ff07646c9ad70c58de510ec6ac13d5bbc43",
+      "new_live_mutation_native_cases": 8,
+      "total_decode_process_assertions": 876,
+      "total_decode_jvms": 28,
+      "provider_restart_assertions": 188,
+      "historical_checks": 60
     },
     "1.21.1": {
       "minecraft": "1.21.1",
@@ -7269,7 +7523,18 @@
         "rc-development-gate.json": "296afe2d84e66a3352a962ddd15fff1d5d9803e411efbdb42aed754d7108ab3f",
         "hourly-native.json": "5268e05bc70d830be7b89295e7b9d35eca1dd2f33d54cfc015d7b02d54368f37"
       },
-      "ordinary_native": 192
+      "ordinary_native": 192,
+      "retained_file_sha256": {
+        "source-SHA256SUMS.txt": "6de0ff738f712e0a539895c1adf9d3f49a867e7f6a682a9514d27c5cc5e1cac2",
+        "rc-development-gate.json": "296afe2d84e66a3352a962ddd15fff1d5d9803e411efbdb42aed754d7108ab3f",
+        "offline.log": "79fd55facb39560a923384e2d506dcaa456d21cf523e5b96c296d6c6d87f334f",
+        "native.log": "2ddf9be597f742f3e449df15bdc3747240b37ba6b42f1c068385ca8696d48eca",
+        "hourly-native.json": "5268e05bc70d830be7b89295e7b9d35eca1dd2f33d54cfc015d7b02d54368f37",
+        "build.log": "6c87c6640515a22275f6d37d942d806101796e2417235f6ad56edc9ed97f5f7f",
+        "checked-source.zip": "79bf583079e262a6608314dc92584dd621244841414049dc91496885da5c4df6",
+        "SOURCE_COMMIT.txt": "799198ead9c21301d2c879346b519e9c07f7e9769392b6a9eb78857f46d5ca0a"
+      },
+      "source_archive_sha256": "79bf583079e262a6608314dc92584dd621244841414049dc91496885da5c4df6"
     }
   },
   "main_native_source": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
@@ -7331,5 +7596,648 @@
         "head_sha": "11932b9b7b0b83523f552fb9bd0d8b7f36f8b76d"
       }
     }
-  }
+  },
+  "red_artifact_inspection": {
+    "112": {
+      "file_sha256": {
+        "run-legacy/legacy-scenarios.json": "b94d856f9f92552c6a8dcb556404db7b9f7203895458b3c7fe8565864efb186f",
+        "verification-logs/native.log": "77a745087bfbf255ce7b721b733aa561ff5ee6e2ceb84dc8ef9a20a31d832297",
+        "verification-logs/install.log": "69f51cd2ee10f82c7b6de5348a56e443b488f70da25a33b3ad1a13f9ee637c88",
+        "verification-logs/installer-SHA256.txt": "bf45d0a005220f14587f3862ac57c6a43b36d9a46dc91b939c1bc27230337bf0",
+        "verification-logs/build.log": "594a5205cc398cb776aa3364b8c6523a2012aa6af6f783a4837a82db29128bec",
+        "build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "ecccf2f136d7dbf6e3630bc4ef6a31376904dad5ff15348c0b93b5be98b701d1",
+        "build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "1c254cd4356541e367319fedeb2be2bf6bbb7d24e46eb56c4de20ffde61684b4",
+        "build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev-restart-scenarios.jar": "e598690610cfba65dcbaa5f805447a0f16f89e77c1f657e817e77d38fc0d0e8b",
+        "build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "31b05f8c8b9dca16c7a4c8aa13268072f38cf9d96c11a3e0bce195d544be8f4b",
+        "build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "9085b6a62e50aa328f9a322c48a89431ba690e31cd874592db79bce5fb878f33"
+      },
+      "native_counters": {
+        "minecraft": "1.12.2",
+        "total": 378,
+        "passed": 370,
+        "failed": 8
+      },
+      "new_case_outcomes": [
+        {
+          "name": "live retained evidence blocks after external fault clearing",
+          "passed": false,
+          "error": "java.lang.AssertionError: retained evidence is an independent quarantine signal"
+        },
+        {
+          "name": "live retained evidence rejects face edit with empty escrow",
+          "passed": false,
+          "error": "java.lang.AssertionError: evidence cannot be routed away by clearing fault or held items"
+        },
+        {
+          "name": "live retained evidence prevents transfer after owner rewrite",
+          "passed": false,
+          "error": "java.lang.AssertionError: rewritten network cannot flush uncertain escrow"
+        },
+        {
+          "name": "live retained evidence reload schedules admission without fault text",
+          "passed": false,
+          "error": "java.lang.AssertionError: valid context and evidence cannot reload healthy"
+        },
+        {
+          "name": "live retained evidence reload preserves wide escrow count",
+          "passed": false,
+          "error": "java.lang.AssertionError: fault text removal cannot truncate a sealed integer count to its NBT byte"
+        },
+        {
+          "name": "live retained evidence rewritten context freezes on reload admission",
+          "passed": false,
+          "error": "java.lang.AssertionError: rejected typed rewrite preserves evidence and freezes dimension"
+        },
+        {
+          "name": "live retained evidence removal seals after fault clearing",
+          "passed": false,
+          "error": "java.lang.AssertionError: actual removal must not release uncertain iron"
+        },
+        {
+          "name": "live retained evidence removal rejects rewritten owner context",
+          "passed": false,
+          "error": "java.lang.AssertionError: rewritten receipt remains sealed"
+        }
+      ],
+      "completed_job_log_sha256": "96ac92eb1432a0de8d43e7d2121f72ab7f6fa67bb5751fa80edbedd33bee7b58"
+    },
+    "164": {
+      "file_sha256": {
+        "run-legacy/legacy-scenarios.json": "f6796243c512c597be1626b55d907f76dba5d8f1b2b610dc44e95f249a75cd0c",
+        "verification-logs/native.log": "569378457c3408973185cefb163534e1b974a335222f113325f706af7c218df0",
+        "verification-logs/installer-SHA256.txt": "d06e8ec9d7f72a186bd636a50ba7e1935d17719744fc9378689e04c04fd45a5d",
+        "verification-logs/install.log": "37f31d4e26ed536fd543fe91556702dd231d2bff280838d8b03581ba7999923c",
+        "verification-logs/build.log": "1ca0501f911d04987fa01e1b93d67ea23119c29ef1b35189807bbfa5c2855bc0",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "00eea0e6aa3c2313fd2f782653245dd83c32eceb77757ed1fb66d413d26d1e5f",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "bd1b129e9739f5129a6c1fe45740d582fe4954f21ab1ebd71326a687e99de99a",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "2d3f9e616d0be83aba9df25447319c139010134c08c3a42bfcfd366e4aca85c9",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios.jar": "da7c772cef70daa7fb5e5f4bb781a4996c644766f2a6c9d50ad98aa30af334aa",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios-restart-scenarios-srg.jar": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "5dedd62d8bf9cba811b6a4e9e8b64c9596bf14cc86d67b24bbdcebccdd5c6ac8",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "4b70b2846ea80c07b734df292760a5a80b14179b7040ddcbd7daeecb7b6ad410",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "db780e3d20bf7bad32194fb2cc7f99b214e9a3a4ac1034d358becd3beb662e8c",
+        "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c"
+      },
+      "native_counters": {
+        "minecraft": "1.6.4",
+        "total": 356,
+        "passed": 348,
+        "failed": 8
+      },
+      "failure_markers": [
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence blocks after external fault clearing: java.lang.AssertionError: retained evidence is an independent quarantine signal",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence rejects face edit with empty escrow: java.lang.AssertionError: evidence cannot be routed away by clearing fault or held items",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence prevents transfer after owner rewrite: java.lang.AssertionError: rewritten network cannot flush uncertain escrow",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence reload schedules admission without fault text: java.lang.AssertionError: valid context and evidence cannot reload healthy",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence reload preserves wide escrow count: java.lang.AssertionError: fault text removal cannot truncate a sealed integer count to its NBT byte",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence rewritten context freezes on reload admission: java.lang.AssertionError: rejected typed rewrite preserves evidence and freezes dimension",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence removal seals after fault clearing: java.lang.AssertionError: actual removal must not release uncertain iron",
+        "2026-10-26 21:15:59 [INFO] [STDOUT] FAILED live retained evidence removal rejects rewritten owner context: java.lang.AssertionError: rewritten receipt remains sealed"
+      ],
+      "completed_job_log_sha256": "03ddc5427703b7f35f41ac3222dbc2d3ca73854183b690935b5daaa4978ff6df"
+    }
+  },
+  "clients": {
+    "1.12.2": {
+      "minecraft": "1.12.2",
+      "source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "runtime_sha256": "763da6dddd4532e887d35dd7456e67dd2ce8beeeb294e292fceb01c1413d47e7",
+      "stock_runtime": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "763da6dddd4532e887d35dd7456e67dd2ce8beeeb294e292fceb01c1413d47e7",
+        "source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+        "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+        "probe_sha256": "17e811fde7ef26c3d381b9691ac56089f3e52a615f0fed1a0b2386da430bd479",
+        "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+        "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "client_report": {
+        "minecraft": "1.12.2",
+        "source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+        "result": "PASS",
+        "opaque_journal_export_round_trip": true,
+        "opaque_journal_export_blocks": [
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 552; sha256 b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+            "Page 1/5 hex 0a00000700104f726967696e616c45766964656e636500000003070809030006536368656d61000000630a000f50726576696f75734a6f75726e616c030006536368656d6100000002090007456e74726965730a000000020800054f776e6572002433373632626136302d313333662d333936342d393135312d303837343534",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 552; sha256 b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+            "Page 2/5 hex 36316661663403000158ffffffff03000159000000c8080005546f6b656e002439666166366230322d343163352d343634352d613336342d3035333062373666303338380300015a00000000000800054f776e6572002433373632626136302d313333662d333936342d393135312d3038373435343631666166340800055363",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 552; sha256 b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+            "Page 3/5 hex 6f7065000e6c65676163792d756e6b6e6f776e030005486f73745a000000000a000845766964656e6365030005486f73745a000000000300114f6273657276656444696d656e73696f6e000000000800054661756c7400384172746966696369616c207361766564206c6567616379206661756c7420666f72206e6174697665",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 552; sha256 b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+            "Page 4/5 hex 206368617420696e7370656374696f6e030005486f73745800000000030005486f737459000000c808000d4f627365727665644f776e6572002433373632626136302d313333662d333936342d393135312d30383734353436316661663400080005546f6b656e002436323633383266642d363163372d346530302d62396635",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 552; sha256 b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+            "Page 5/5 hex 2d626231313762313364316261030005486f73745800000000030005486f737459000000c8000000",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ]
+        ],
+        "opaque_export_capture": "legacy-opaque-journal-export-chat.png",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "9faf6b02-41c5-4645-a364-0530b76f0388",
+        "diagnostic_journal_messages": "[PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only., Token 9faf6b02-41c5-4645-a364-0530b76f0388; inspection required; no automatic replay.]",
+        "diagnostic_chat_messages": "[PL4 item receipt: unresolved token 9faf6b02-41c5-4645-a364-0530b76f0388; recorded phase wireless at -1,200,0; preserve receipt; no replay.]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "626382fd-61c7-4e00-b9f5-bb117b13d1ba",
+        "preupgrade_import_journal_messages": "[PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only., Token 626382fd-61c7-4e00-b9f5-bb117b13d1ba; legacy import: original target/phase unknown; owner-wide fence; no replay., Token 9faf6b02-41c5-4645-a364-0530b76f0388; inspection required; no automatic replay.]",
+        "preupgrade_import_receipt_messages": "[PL4 item receipt: unresolved legacy token 626382fd-61c7-4e00-b9f5-bb117b13d1ba; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+      },
+      "verified_export": {
+        "format": "native-nbt-uncompressed-v1",
+        "dimension": 0,
+        "bytes": 552,
+        "sha256": "b16d0a222d4d892b7a2421ac66032253dc5af00b459ce6ac7b93184d691f0f96",
+        "native_nbt_hex": "0a00000700104f726967696e616c45766964656e636500000003070809030006536368656d61000000630a000f50726576696f75734a6f75726e616c030006536368656d6100000002090007456e74726965730a000000020800054f776e6572002433373632626136302d313333662d333936342d393135312d30383734353436316661663403000158ffffffff03000159000000c8080005546f6b656e002439666166366230322d343163352d343634352d613336342d3035333062373666303338380300015a00000000000800054f776e6572002433373632626136302d313333662d333936342d393135312d30383734353436316661663408000553636f7065000e6c65676163792d756e6b6e6f776e030005486f73745a000000000a000845766964656e6365030005486f73745a000000000300114f6273657276656444696d656e73696f6e000000000800054661756c7400384172746966696369616c207361766564206c6567616379206661756c7420666f72206e6174697665206368617420696e7370656374696f6e030005486f73745800000000030005486f737459000000c808000d4f627365727665644f776e6572002433373632626136302d313333662d333936342d393135312d30383734353436316661663400080005546f6b656e002436323633383266642d363163372d346530302d623966352d626231313762313364316261030005486f73745800000000030005486f737459000000c8000000",
+        "original_target": "unknown",
+        "original_phase": "unknown",
+        "recovery_clearance": false,
+        "scope": "Verified captured bytes only; no provider identity, ownership or outcome authentication"
+      },
+      "report_sha256": {
+        "stock-client-runtime.json": "2dd6e268b3de2de3fe220b87769715d220e29440beb4a53627af6bb5787f95c4",
+        "opaque-journal-export-verified.json": "218388977843b71ac222fa6cfb3644f45899c50b06da36ac367087d72f84d75c",
+        "legacy-wireless-client.json": "a48adb7824bcde5383faa612b81b1c3f14b09ff6d202abe96d0cf37626995b49"
+      },
+      "screenshots": {
+        "legacy-wireless-storage-tooltip.png": {
+          "sha256": "9f54c43c87e5d68aef74a2f6d9d6214b63a00abea932976e40d30979f57927f5",
+          "bytes": 31776
+        },
+        "legacy-wireless-storage-sorted.png": {
+          "sha256": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+          "bytes": 29914
+        },
+        "legacy-wireless-storage-search.png": {
+          "sha256": "1dcdb1f85d996a2ad485252134c79f9bfd57babf51a520d0aa62240312a95099",
+          "bytes": 28237
+        },
+        "legacy-wireless-storage-search-empty.png": {
+          "sha256": "93f1133f19ce0dea32bf9df8ed477b8c370c6fd92b51c43c7163651b6efb5e67",
+          "bytes": 27376
+        },
+        "legacy-wireless-storage-scale-4.png": {
+          "sha256": "5449f9e2ab607cdea45753c36c64f72ace109976be18dccdc5a6401771f4a43a",
+          "bytes": 33041
+        },
+        "legacy-wireless-storage-scale-3.png": {
+          "sha256": "dfd3d489e7226696bc5c63d11473e4fc03e5b7e70cc47b83eb22af9a9d736b0c",
+          "bytes": 39921
+        },
+        "legacy-wireless-storage-scale-2.png": {
+          "sha256": "2c14affda50c9552626bad08826a622bb0e80e5807d59f7d2dfa7edbf4c550ce",
+          "bytes": 48334
+        },
+        "legacy-wireless-storage-scale-1.png": {
+          "sha256": "fa391e7c63bc923b6a04013ac93d99659a3653a2c6b85333ad38edd7ed259070",
+          "bytes": 59728
+        },
+        "legacy-wireless-grouped-withdrawal.png": {
+          "sha256": "79b24268c6522e5c25d3ac45ce846656396192ce0c04eac2d6d6341319a212cc",
+          "bytes": 29176
+        },
+        "legacy-wireless-grouped-variants.png": {
+          "sha256": "acc6921de60ab623e6bbae33c63b48f8ee6b1e8def7c19fec6edb743d27f4477",
+          "bytes": 29088
+        },
+        "legacy-wireless-grouped-scale-4.png": {
+          "sha256": "626e648ca7f553cec6ea932ef720be1d24557d9142b99d9ebcbc71e7907682d1",
+          "bytes": 29037
+        },
+        "legacy-wireless-grouped-scale-3.png": {
+          "sha256": "430be88a8d366bf4b0ce1ded35ec93772559cd0a9ed7af66810264577a186115",
+          "bytes": 31379
+        },
+        "legacy-wireless-grouped-scale-2.png": {
+          "sha256": "13caf4b6499d313926025b15b86214780ef0412a90204f1c58e43f50a5b1cecf",
+          "bytes": 31296
+        },
+        "legacy-wireless-grouped-scale-1.png": {
+          "sha256": "c2daa1930d427581d5cb5296018592cfc5f0d4a486786c04b3a862f068120445",
+          "bytes": 30651
+        },
+        "legacy-public-display.png": {
+          "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+          "bytes": 25722
+        },
+        "legacy-private-display.png": {
+          "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+          "bytes": 25885
+        },
+        "legacy-opaque-journal-export-chat.png": {
+          "sha256": "458baff60c4840129b343de6b9713c2990b3b4847ae731b9b4084c66ad3e0fa3",
+          "bytes": 50600
+        },
+        "legacy-item-receipt-chat.png": {
+          "sha256": "f29055fdaf86f59b024fe05df4162c559f6dfb1e04aef7099f7b4d43e4f8197e",
+          "bytes": 41266
+        },
+        "legacy-item-journal-chat.png": {
+          "sha256": "019e6cfbc42b6eb4b487509fadfb98c86c99fe89857586d1e81fd2d2a0e8aea3",
+          "bytes": 34498
+        },
+        "legacy-item-import-receipt-chat.png": {
+          "sha256": "89b828ba493c6227d56b989c45b32e3b4090c2c46bd535fc3fa8617b390e1312",
+          "bytes": 49660
+        },
+        "legacy-item-import-journal-chat.png": {
+          "sha256": "ebaba2baf9fae4fc17e184cc2f91a0c90097f8832ae9aa3ad9b2579bfb53ba56",
+          "bytes": 41330
+        }
+      },
+      "result": "PASS",
+      "scope": "Exact native-qualified packaged production mod in a stock offline integrated client with isolated probe; full paginated opaque byte/manifest chat round trip and unchanged dimension barrier. Dedicated multiplayer/online identities, installed providers, arbitrary user saves and recovery remain unaccepted.",
+      "workflow_run": 40404057398,
+      "artifact": {
+        "id": 12689738190,
+        "name": "legacy-wireless-real-client-40404057398-1",
+        "size_in_bytes": 623930,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12689738190",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12689738190/zip",
+        "expired": false,
+        "created_at": "2026-10-26T21:29:04Z",
+        "expires_at": "2026-11-09T21:29:03Z",
+        "updated_at": "2026-10-26T21:29:04Z",
+        "digest": "sha256:2b981faddb3e138e65bd28565ddd24d0e7de9581ca46795128846aa25156dc15",
+        "workflow_run": {
+          "id": 40404057398,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "782b46319e65340b532712115eb16055917d8d86"
+        }
+      }
+    },
+    "1.6.4": {
+      "minecraft": "1.6.4",
+      "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+      "stock_runtime": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "probe_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-client-probe-client-probe-srg.jar",
+        "probe_sha256": "2a50ee2853b41867d6cedf20048df44e81ed94660f38a258416386b84985dec3",
+        "client_sha1": "1703704407101cf72bd88e68579e3696ce733ecd",
+        "installer_sha1": "7a57c0febe74260bfdee1a5d4968982d8863a02c",
+        "production_jar_matches_native_gate": true,
+        "development_game_classpath": false,
+        "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+      },
+      "client_report": {
+        "minecraft": "1.6.4",
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "result": "PASS",
+        "opaque_journal_export_round_trip": true,
+        "opaque_export_chat_encoding": "FORGE_1_6_4_NATIVE_JSON_TEXT_DECODED",
+        "opaque_journal_export_blocks": [
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 486; sha256 a707531a488c0b7f5d228ad7628c1b6dce908c076df7ba85cea35d2b6107ca25",
+            "Page 1/4 hex 0a00000a000f50726576696f75734a6f75726e616c030006536368656d6100000002090007456e74726965730a000000020800054f776e6572000e706c346c656761637970726f6265030005486f73745a00000000030005486f737459000000c8030005486f73745800000000080005546f6b656e002438653436303330642d",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 486; sha256 a707531a488c0b7f5d228ad7628c1b6dce908c076df7ba85cea35d2b6107ca25",
+            "Page 2/4 hex 663138392d346132632d383532322d3532336232613166646366320a000845766964656e6365030005486f73745a00000000030005486f737459000000c8030005486f737458000000000300114f6273657276656444696d656e73696f6e000000000800054661756c7400384172746966696369616c207361766564206c6567",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 486; sha256 a707531a488c0b7f5d228ad7628c1b6dce908c076df7ba85cea35d2b6107ca25",
+            "Page 3/4 hex 616379206661756c7420666f72206e6174697665206368617420696e7370656374696f6e08000d4f627365727665644f776e6572000e706c346c656761637970726f62650008000553636f7065000e6c65676163792d756e6b6e6f776e000800054f776e6572000e706c346c656761637970726f6265080005546f6b656e0024",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ],
+          [
+            "PL4 opaque export native-nbt-uncompressed-v1; dimension 0; bytes 486; sha256 a707531a488c0b7f5d228ad7628c1b6dce908c076df7ba85cea35d2b6107ca25",
+            "Page 4/4 hex 66633637623038382d353032362d346539642d396636312d65333562303231376364616203000159000000c803000158ffffffff0300015a000000000000030006536368656d61000000630700104f726967696e616c45766964656e63650000000307080900",
+            "Original target/phase unknown. Read only; all targets remain fenced. No recovery clearance."
+          ]
+        ],
+        "opaque_export_capture": "legacy-opaque-journal-export-chat.png",
+        "native_diagnostic_chat_round_trip": true,
+        "diagnostic_journal_capture": "legacy-item-journal-chat.png",
+        "diagnostic_receipt_capture": "legacy-item-receipt-chat.png",
+        "diagnostic_token": "fc67b088-5026-4e9d-9f61-e35b0217cdab",
+        "diagnostic_journal_messages": "[PL4 item journal: 1 unresolved affecting queried target -1,200,0; page 1/1; capacity 1/4096. Read only., Token fc67b088-5026-4e9d-9f61-e35b0217cdab; inspection required; no automatic replay.]",
+        "diagnostic_chat_messages": "[PL4 item receipt: unresolved token fc67b088-5026-4e9d-9f61-e35b0217cdab; recorded phase wireless at -1,200,0; preserve receipt; no replay.]",
+        "native_preupgrade_import_chat_round_trip": true,
+        "preupgrade_import_token": "8e46030d-f189-4a2c-8522-523b2a1fdcf2",
+        "preupgrade_import_journal_messages": "[PL4 item journal: 2 unresolved affecting queried target -1,200,0; page 1/1; capacity 2/4096. Read only., Token 8e46030d-f189-4a2c-8522-523b2a1fdcf2; legacy import: original target/phase unknown; owner-wide fence; no replay., Token fc67b088-5026-4e9d-9f61-e35b0217cdab; inspection required; no automatic replay.]",
+        "preupgrade_import_receipt_messages": "[PL4 item receipt: unresolved legacy token 8e46030d-f189-4a2c-8522-523b2a1fdcf2; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.]",
+        "preupgrade_import_journal_capture": "legacy-item-import-journal-chat.png",
+        "preupgrade_import_receipt_capture": "legacy-item-import-receipt-chat.png",
+        "native_wireless_withdrawal": true,
+        "stale_replay_rejected": true,
+        "native_wireless_deposit": true,
+        "native_paging": true,
+        "native_grouping_totals_variants_and_conservation": true,
+        "stale_group_replay_rejected": true,
+        "group_variant_capture": "legacy-wireless-grouped-variants.png",
+        "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+        "native_keyboard_repeat_lifecycle": true,
+        "native_search_caret_edit": true,
+        "native_search_typing_clear_no_match": true,
+        "stale_search_replay_rejected": true,
+        "search_capture": "legacy-wireless-storage-search.png",
+        "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+        "native_sorting": true,
+        "stale_sort_replay_rejected": true,
+        "sorted_capture": "legacy-wireless-storage-sorted.png",
+        "signed_byte_revision": 70,
+        "native_packet_codec_round_trip": true,
+        "actual_mouse_withdraw_deposit_page": true,
+        "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+        "native_display_projection_and_hide": true,
+        "display_captures": [
+          "legacy-private-display.png",
+          "legacy-public-display.png"
+        ],
+        "captures": [
+          "legacy-wireless-storage-scale-1.png",
+          "legacy-wireless-storage-scale-2.png",
+          "legacy-wireless-storage-scale-3.png",
+          "legacy-wireless-storage-scale-4.png"
+        ],
+        "grouped_captures": [
+          "legacy-wireless-grouped-scale-1.png",
+          "legacy-wireless-grouped-scale-2.png",
+          "legacy-wireless-grouped-scale-3.png",
+          "legacy-wireless-grouped-scale-4.png"
+        ],
+        "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or other exact Minecraft targets."
+      },
+      "verified_export": {
+        "format": "native-nbt-uncompressed-v1",
+        "dimension": 0,
+        "bytes": 486,
+        "sha256": "a707531a488c0b7f5d228ad7628c1b6dce908c076df7ba85cea35d2b6107ca25",
+        "native_nbt_hex": "0a00000a000f50726576696f75734a6f75726e616c030006536368656d6100000002090007456e74726965730a000000020800054f776e6572000e706c346c656761637970726f6265030005486f73745a00000000030005486f737459000000c8030005486f73745800000000080005546f6b656e002438653436303330642d663138392d346132632d383532322d3532336232613166646366320a000845766964656e6365030005486f73745a00000000030005486f737459000000c8030005486f737458000000000300114f6273657276656444696d656e73696f6e000000000800054661756c7400384172746966696369616c207361766564206c6567616379206661756c7420666f72206e6174697665206368617420696e7370656374696f6e08000d4f627365727665644f776e6572000e706c346c656761637970726f62650008000553636f7065000e6c65676163792d756e6b6e6f776e000800054f776e6572000e706c346c656761637970726f6265080005546f6b656e002466633637623038382d353032362d346539642d396636312d65333562303231376364616203000159000000c803000158ffffffff0300015a000000000000030006536368656d61000000630700104f726967696e616c45766964656e63650000000307080900",
+        "original_target": "unknown",
+        "original_phase": "unknown",
+        "recovery_clearance": false,
+        "scope": "Verified captured bytes only; no provider identity, ownership or outcome authentication"
+      },
+      "report_sha256": {
+        "stock-client-runtime.json": "9445ac28fb580eafee8ffc5f5ef8cb173322ff08d621144b24e5b3365b4ae373",
+        "opaque-journal-export-verified.json": "5a52537d66636de39a6eaa3c318cfba9c09f2e858668642ce14731b7dcfcc187",
+        "legacy-wireless-client.json": "cc256ccb1fff178c4392b5e4381a40b0f8ff89dcf5ff44a5ee5d1e8fc53c1efc"
+      },
+      "screenshots": {
+        "legacy-wireless-storage-tooltip.png": {
+          "sha256": "8df9e7af5f98af4f4a590d6a12727b786cc12304973951e1ba766d7946594477",
+          "bytes": 25559
+        },
+        "legacy-wireless-storage-sorted.png": {
+          "sha256": "9baed9238249dab2f9342d76f5e7e199bc162547826d932e22394315cdbd353b",
+          "bytes": 24868
+        },
+        "legacy-wireless-storage-search.png": {
+          "sha256": "7c98745c063339ab1e9746fa99f6740d3c0282c0875399149538e6a68b27126c",
+          "bytes": 23253
+        },
+        "legacy-wireless-storage-search-empty.png": {
+          "sha256": "facc3ab0d63f2ccae9a1033864ad91d353360e8a9525f656f6cbac6340eec3dd",
+          "bytes": 22352
+        },
+        "legacy-wireless-storage-scale-4.png": {
+          "sha256": "840e90b923d5167454b99110f42be6e6769f30952c456378bac206d089d8615b",
+          "bytes": 24610
+        },
+        "legacy-wireless-storage-scale-3.png": {
+          "sha256": "3e492ca332de5bc26ca2aa724e366336536291cc58736ea2ad500cf3798227c1",
+          "bytes": 25964
+        },
+        "legacy-wireless-storage-scale-2.png": {
+          "sha256": "df4194ab8b25481a52a265f834c7f45ca72fd36f311990150fa4819200b92c54",
+          "bytes": 24622
+        },
+        "legacy-wireless-storage-scale-1.png": {
+          "sha256": "c353bb769e3d702efb79812644065f0500fe1c5e6d1716ceb8af4338b6e8a61f",
+          "bytes": 24018
+        },
+        "legacy-wireless-grouped-withdrawal.png": {
+          "sha256": "aa56461b19efc123a35b0acc1a43f0179f9978d8d6d6454d06a93c82f5a62581",
+          "bytes": 23961
+        },
+        "legacy-wireless-grouped-variants.png": {
+          "sha256": "102fd78c65a956865243aebc4cd59251d87f9ed797fefb48f012298833b49abf",
+          "bytes": 23962
+        },
+        "legacy-wireless-grouped-scale-4.png": {
+          "sha256": "1ad7ff0f8a73ffedd6bd1cba85ed142f880095851a9711b3995f50ca4f66ed50",
+          "bytes": 23903
+        },
+        "legacy-wireless-grouped-scale-3.png": {
+          "sha256": "7e370e8e103804a21fb216bc5d1804b0a14be2ede64be0ceb1c4d8cae7b15ea5",
+          "bytes": 23736
+        },
+        "legacy-wireless-grouped-scale-2.png": {
+          "sha256": "d16fe999256c6ca7a9302f3d98268bde2060d8fb0960f317e3ac739c884184cc",
+          "bytes": 22091
+        },
+        "legacy-wireless-grouped-scale-1.png": {
+          "sha256": "c38378e5ae0cc71b96b9d67c9f301a2c24162442bc214dde437c151d3e5df889",
+          "bytes": 20935
+        },
+        "legacy-public-display.png": {
+          "sha256": "317e488656713c84505db92301e2768f81705bf55e1a8a4a8e4f749ec01acd5e",
+          "bytes": 29287
+        },
+        "legacy-private-display.png": {
+          "sha256": "8a77a1f488b18cca3ce5c9f2942b92d38000d0c4bec627000af7db99ba725dd2",
+          "bytes": 29448
+        },
+        "legacy-opaque-journal-export-chat.png": {
+          "sha256": "ed6b542ea97140f5c8aef6d56a864c4c2aadab1d283553730bd2be9c2b989037",
+          "bytes": 54280
+        },
+        "legacy-item-receipt-chat.png": {
+          "sha256": "0f572c371be0c3da8deb86127f08ccb75a4ceebf086aa4a0247ae0743d78a5ac",
+          "bytes": 44418
+        },
+        "legacy-item-journal-chat.png": {
+          "sha256": "ed6b4a764aed78359adccc2fe482fed9eb905190eb83cf90ee5803943155a420",
+          "bytes": 38146
+        },
+        "legacy-item-import-receipt-chat.png": {
+          "sha256": "70e6322e61eba3163a4389f0b4c172edd36cae9899ab5fc0a903c4d351936358",
+          "bytes": 52897
+        },
+        "legacy-item-import-journal-chat.png": {
+          "sha256": "e31828d1abe1fd12264d85c8de5822b1e24736b501878e66b96d48d93e8a6e7b",
+          "bytes": 45033
+        }
+      },
+      "result": "PASS",
+      "scope": "Exact native-qualified packaged production mod in a stock offline integrated client with isolated probe; full paginated opaque byte/manifest chat round trip and unchanged dimension barrier. Dedicated multiplayer/online identities, installed providers, arbitrary user saves and recovery remain unaccepted.",
+      "workflow_run": 40405023609,
+      "artifact": {
+        "id": 12691441449,
+        "name": "legacy164-wireless-real-client-40405023609-1",
+        "size_in_bytes": 493640,
+        "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12691441449",
+        "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12691441449/zip",
+        "expired": false,
+        "created_at": "2026-10-26T21:34:46Z",
+        "expires_at": "2026-11-09T21:34:46Z",
+        "updated_at": "2026-10-26T21:34:46Z",
+        "digest": "sha256:bcbccc8696cdede2fb89da93b1a0d4c377d415ac1c13ceb888c9f008a62ddde2",
+        "workflow_run": {
+          "id": 40405023609,
+          "repository_id": 1396808859,
+          "head_repository_id": 1396808859,
+          "head_branch": "main",
+          "head_sha": "d762cf872421048633ff3f8650a55e3bb3bf1bb8"
+        }
+      }
+    }
+  },
+  "ci_controller_test_executions": 166,
+  "ci_controller_test_job": 121856343247,
+  "production_blob_proof": [
+    {
+      "minecraft": "1.12.2",
+      "red_source": "3f367e6eb654fe1aeed0061413aae367287e8692",
+      "red_safety_blob": "359d5d16d0b978c7509dfea1d8fc433c4f6c1a33",
+      "fixed_source": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "fixed_safety_blob": "e94a7972ff6667a74c3ca5a381663d8762b586c3"
+    },
+    {
+      "minecraft": "1.6.4",
+      "red_source": "e6675ce889576c441479cd8dbfedf45aa9051af8",
+      "red_safety_blob": "a1ab8d5550e86288e661bb4cb3b0e12294b22e7c",
+      "fixed_source": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "fixed_safety_blob": "d871f8176c9755ee14880dae0e3bf5ac471e7f12"
+    }
+  ],
+  "next_live_mutation_finding": {
+    "source": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+    "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyItemSafety.java",
+    "observation": "importSaved only calls importLegacy while itemImportPending is true; the latch is cleared after first admission. The new blocked predicate directly guards retained nodes, but repeated live owner/context edits with already-cleared admission latch need separate disconnected-network/alias probes.",
+    "scope": "Source observation only; no remaining alias transfer bypass demonstrated. Test same backing native inventory through a disconnected alias after old/new owner rewrites, before and after tick/reload/removal. Preserve original evidence and unknown route scope."
+  },
+  "reviewed_screenshots": [
+    {
+      "path": "docs/acceptance/screenshots/live-evidence-2026-10-26/1.12.2/legacy-opaque-journal-export-chat.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32a51e53a1d1c8b2ce4afda10df65a78b9aee102",
+      "sha256": "458baff60c4840129b343de6b9713c2990b3b4847ae731b9b4084c66ad3e0fa3",
+      "bytes": 50600
+    },
+    {
+      "path": "docs/acceptance/screenshots/live-evidence-2026-10-26/1.12.2/legacy-wireless-grouped-withdrawal.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e44f44c14b4dc1c10421e41263787a92a842ae19",
+      "sha256": "79b24268c6522e5c25d3ac45ce846656396192ce0c04eac2d6d6341319a212cc",
+      "bytes": 29176
+    },
+    {
+      "path": "docs/acceptance/screenshots/live-evidence-2026-10-26/1.6.4/legacy-opaque-journal-export-chat.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c5b3c2559dbf20941621ccb9c75f06aa113d5b9",
+      "sha256": "ed6b542ea97140f5c8aef6d56a864c4c2aadab1d283553730bd2be9c2b989037",
+      "bytes": 54280
+    },
+    {
+      "path": "docs/acceptance/screenshots/live-evidence-2026-10-26/1.6.4/legacy-wireless-grouped-withdrawal.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4cb494495a407cfb1f8a4a59c24536d0e1d544bf",
+      "sha256": "aa56461b19efc123a35b0acc1a43f0179f9978d8d6d6454d06a93c82f5a62581",
+      "bytes": 23961
+    }
+  ],
+  "review_observations": {
+    "1.12.2": "Readable native byte manifest (552 bytes, five pages), current dimension and no-clearance notice; grouped iron737 plus separate variant32, player31 plus64.",
+    "1.6.4": "Readable native byte manifest (466 bytes, four pages), current dimension and no-clearance notice; grouped iron737 plus separate variant32, player31 plus64."
+  },
+  "ordinary_native_counts": {
+    "1.12.2": 378,
+    "1.6.4": 356,
+    "1.21.1": 192
+  },
+  "packaged_hash_counts": {
+    "1.12.2": 5,
+    "1.6.4": 9,
+    "1.21.1": 3,
+    "total": 17
+  },
+  "branch_publishers": {
+    "1.12.2": {
+      "run": 40402734758,
+      "job": 121852561111,
+      "result": "PASS",
+      "publication_step": "SKIPPED"
+    },
+    "1.6.4": {
+      "run": 40402995626,
+      "job": 121853445803,
+      "result": "PASS",
+      "publication_step": "SKIPPED"
+    }
+  },
+  "current_clients_reviewed_captures": 4,
+  "current_clients_hashed_captures": 42
 }
