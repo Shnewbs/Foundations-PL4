@@ -657,7 +657,7 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_5_PAGE_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_HOURLY_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
@@ -694,7 +694,7 @@
         "observed_native_fixtures": 301,
         "client_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json"
       },
-      "item_journal_command_integration": "PASS_11_NATIVE_COMMAND_PHASE_CASES_AND_EXACT_STOCK_CHAT_ROUND_TRIP",
+      "item_journal_command_integration": "PASS_SCOPED_NATIVE_OWNER_AND_OPERATOR_COMMANDS_AND_STOCK_CHAT",
       "previous_process_restart_candidate": {
         "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
         "runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
@@ -717,7 +717,10 @@
         "runtime_sha256": "7388cbd9b3b92b834e8aaa3f486e03c431b98a72aeff945f6e5faf3a8313f5cf",
         "workflow_run": 40385685322,
         "result": "PASS",
-        "scope": "Exact native-qualified packaged production mod in a stock offline integrated client with isolated probe; full paginated opaque byte/manifest chat round trip and unchanged dimension barrier. Dedicated multiplayer/online identities, installed providers, arbitrary user saves and recovery remain unaccepted."
+        "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
+        "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+        "reviewed_captures": 2,
+        "hashed_captures": 21
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -874,8 +877,9 @@
         },
         "client_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json"
       },
-      "opaque_journal_export": "PASS_13_NATIVE_OPERATOR_DIMENSION_HASH_PAGE_CAP_AND_READ_ONLY_CASES",
-      "opaque_journal_export_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
+      "opaque_journal_export": "PASS_13_NATIVE_CASES_AND_SCOPED_EXACT_JAR_REAL_CHAT_BYTE_SHA_ROUND_TRIP",
+      "opaque_journal_export_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "opaque_journal_export_pages": 5
     },
     {
       "minecraft": "1.6.4",
@@ -958,13 +962,13 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PENDING_CHANGED_PROBE_JSON_CHAT_DECODING",
+      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_HOURLY_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
       "acceptance_attribution": "Generic settlement retains uncertainty whenever preserved legacy evidence exists. Rejected compound/int-token+nested payload and original evidence survive retained tile, actual sealed host-removal receipt and opaque dimension barrier across4 JVMs/116 new assertions per port. Total decode348/12 JVMs;provider188/historical60 remain separate. Exact current clients pass,4 reviewed captures overall40 hashed. Other malformed fields, arbitrary external rewrites/worlds, pre-save/power-loss, installed-provider identity/auth/durability, in-game export and reviewed recovery remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
-      "client_workflow_run": 40375932328,
+      "client_workflow_run": 40387058589,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
       "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES",
       "previous_journal_candidate": {
@@ -980,7 +984,7 @@
         "observed_native_fixtures": 279,
         "client_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json"
       },
-      "item_journal_command_integration": "PASS_11_NATIVE_COMMAND_PHASE_CASES_AND_EXACT_STOCK_CHAT_ROUND_TRIP",
+      "item_journal_command_integration": "PASS_SCOPED_NATIVE_OWNER_AND_OPERATOR_COMMANDS_AND_STOCK_CHAT",
       "previous_process_restart_candidate": {
         "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
         "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
@@ -1002,8 +1006,11 @@
         "source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
         "runtime_sha256": "b3536d35409137b44b46dbc2c8940e40268d158a43e72b34ff48e3f56914c4ae",
         "workflow_run": 40387058589,
-        "result": "PENDING_CHANGED_PROBE",
-        "scope": "Changed1.6.4 JSON chat harness pending. Native and prior-client acceptance do not certify this run."
+        "result": "PASS",
+        "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
+        "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+        "reviewed_captures": 2,
+        "hashed_captures": 21
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1167,9 +1174,9 @@
         },
         "client_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json"
       },
-      "opaque_journal_export": "PASS_13_NATIVE_OPERATOR_DIMENSION_HASH_PAGE_CAP_AND_READ_ONLY_CASES",
+      "opaque_journal_export": "PASS_13_NATIVE_CASES_AND_SCOPED_EXACT_JAR_REAL_CHAT_BYTE_SHA_ROUND_TRIP",
       "opaque_journal_export_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-      "pending_client_workflow_run": 40387058589
+      "opaque_journal_export_pages": 4
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
