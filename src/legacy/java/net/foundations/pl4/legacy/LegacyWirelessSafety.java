@@ -46,7 +46,7 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         if(page>pages)throw new IllegalArgumentException("Journal page exceeds "+pages);
         java.util.List<String> lines=new java.util.ArrayList<String>();
         lines.add("PL4 item journal: "+tokens.size()+" unresolved affecting queried target "+target.x+","+target.y+","+target.z+"; page "+page+"/"+pages+"; capacity "+records.size()+"/"+LIMIT+". Read only.");
-        for(int i=(page-1)*4;i<Math.min(page*4,tokens.size());i++){String token=tokens.get(i);lines.add("Token "+token+(records.get(token).legacy()?"; legacy import: original target/phase unknown; owner-wide fence; no replay.":"; inspection required; no automatic replay."));}
+        for(int i=(page-1)*4;i<Math.min(page*4,tokens.size());i++){String token=tokens.get(i);lines.add("Token "+token+(records.get(token).legacy()?"; legacy import: original target/phase unknown; "+(records.get(token).owner.isEmpty()?"dimension-wide":"owner-wide")+" fence; no replay.":"; inspection required; no automatic replay."));}
         return lines.toArray(new String[lines.size()]);
     }
     private static void link(LegacyTile node,String token,Record record,String phase){
@@ -67,12 +67,12 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         if(opaque!=null)return "PL4 item receipt: opaque journal; preserve receipt and saved data.";
         if(record==null)return "PL4 item receipt: token not present in this dimension; this is not recovery clearance.";
         boolean matches=matches(record,context);
-        if(matches&&record.legacy())return "PL4 item receipt: unresolved legacy token "+token+"; original target/phase unknown; observed host only; owner-wide fence; preserve receipt; no replay.";
+        if(matches&&record.legacy())return "PL4 item receipt: unresolved legacy token "+token+"; original target/phase unknown; observed host only; "+(record.owner.isEmpty()?"dimension-wide":"owner-wide")+" fence; preserve receipt; no replay.";
         return matches?"PL4 item receipt: unresolved token "+token+"; recorded phase "+receiptPhase(context)+" at "+record.target.x+","+record.target.y+","+record.target.z+"; preserve receipt; no replay.":"PL4 item receipt: context mismatch; preserve receipt and inspect saved data.";
     }
     public static String receiptDiagnostic(World world,net.minecraft.entity.player.EntityPlayer player,ItemStack receipt){
         if(receipt==null||receipt.itemID!=LegacyPL4.ITEM_CELL.itemID)throw new IllegalArgumentException("Hold a sealed PL4 item receipt");
-        NBTTagCompound tag=receipt.getTagCompound(),context=tag==null?null:tag.getCompoundTag("ItemJournalContext");
+        NBTTagCompound tag=receipt.getTagCompound(),context=tag!=null&&tag.getTag("ItemJournalContext") instanceof NBTTagCompound?tag.getCompoundTag("ItemJournalContext"):null;
         if(context!=null&&!tag.hasKey("ItemJournalContext"))context=null;
         // Unlinked historical receipts have no trustworthy owner; operator inspection only.
         if(player==null||(!(context!=null&&LegacyTile.identity(player).equals(context.getString("Owner")))&&!player.canCommandSenderUseCommand(2,"pl4legacy")))throw new IllegalArgumentException("Receipt inspection requires its recorded owner or an operator");

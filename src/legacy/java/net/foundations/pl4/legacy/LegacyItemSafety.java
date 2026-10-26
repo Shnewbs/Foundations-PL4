@@ -35,7 +35,7 @@ public final class LegacyItemSafety {
     }
     public static ItemStack loadSaved(NBTTagCompound tag){return tag.hasKey("Escrow")?parse(tag.getCompoundTag("Escrow")):null;}
     public static void read(LegacyTile tile,NBTTagCompound tag){
-        tile.itemJournalContext=tag.hasKey("ItemJournalContext")?(NBTTagCompound)tag.getCompoundTag("ItemJournalContext").copy():null;
+        tile.itemJournalContext=tag.getTag("ItemJournalContext") instanceof NBTTagCompound?(NBTTagCompound)tag.getCompoundTag("ItemJournalContext").copy():null;
         tile.itemLegacyEvidence=tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound?(NBTTagCompound)tag.getCompoundTag("ItemLegacyEvidence").copy():null;
         boolean malformedContext=tag.hasKey("ItemJournalContext")&&!(tag.getTag("ItemJournalContext") instanceof NBTTagCompound);
         boolean malformedEvidence=tag.hasKey("ItemLegacyEvidence")&&!(tag.getTag("ItemLegacyEvidence") instanceof NBTTagCompound);
