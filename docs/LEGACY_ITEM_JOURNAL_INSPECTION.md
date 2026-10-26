@@ -67,3 +67,23 @@ The [decode-preservation checkpoint](acceptance/rc-dev-legacy-decode-context-pre
 Both cases retain the prior journal and original evidence behind an opaque, dimension-wide item barrier. No replacement token, guessed original route, replay, redemption, minting or fence-clear operation is created. Valid imported contexts still reload idempotently. First-time malformed evidence retains its prior unknown-route import behavior.
 
 Ten new native cases per exact legacy port cover string/integer raw payloads, missing context, earlier payload preservation, repeated admission, serialized reload, actual sealed removal receipts, valid contexts and the settlement guard. These are in-process native save/removal tests. Existing 188 restart assertions and 60 historical checks are separate regression evidence; no new-path process-crash/power-loss acceptance is inferred. Other malformed fields, arbitrary external rewrites and worlds, installed-provider authorization/durability, multiplayer and reviewed recovery remain open.
+
+## Decode-path process evidence and copied-save collection — October 26, 2026
+
+The dedicated decode fixture now uses separate raw and missing-context worlds, each with four native JVMs: clean write/read and completed native save/storage-save/flush, parent SIGKILL, then read. Per port, 232 assertions (32/26/32/26 per suite) preserve a retained faulted host, an actually removed host's sealed receipt, the complete original evidence including nested byte payload, raw integer/string types or missing context, prior tokens and the opaque dimension barrier. These are separate from the 188 provider restart and 60 historical migration checks. They do not establish pre-save crash, power-loss or arbitrary world atomicity.
+
+Independent region and saved-journal NBT inspection checks all four retained decode worlds per port. The hourly controller requires those checks for future decode-fixture candidates. See [the exact-source process evidence](acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json).
+
+For bounded observations from an **offline copied save ZIP**, use:
+
+```sh
+python3 tools/collect_legacy_item_evidence.py copied-world.zip \
+  --minecraft 1.12.2 --token RECORDED-TOKEN-UUID --owner RECORDED-OWNER \
+  --dimension 0 --inventory 85,200,32 > item-observations.json
+```
+
+Replace the token, owner and explicitly observed inventory coordinates with the saved evidence being reviewed. The Minecraft argument is an operator label, not proof of runtime identity. Up to eight inventory coordinates are accepted. The collector hashes the exact input archive and saved records/tiles/stacks; it reports current context token matches separately from token occurrences in preserved evidence. Already unlinked receipts at an explicitly selected inventory are observations without inferred association or route.
+
+It prioritizes explicit coordinates and matching saved target/observed-host coordinates, then scans within fixed bounds: 128 chunks, 4096 tiles, 32 MiB selected region bytes and 64 results per category. Limits and partial scans are explicit. An observed host never becomes an inferred original mutation target. Unknown journal schemas remain opaque. Report labels are bounded; complete payloads remain identified by hashes.
+
+Missing tokens, an absent journal, a partial scan or equal inventory contents grant **no clearance**. Saved provider identity/owner labels are observations, not proof of authorization, alias identity or durability. Sealed claims are not additional spendable items. The tool does not change the archive, invoke providers, reconcile balances, redeem, replay, mint or clear fences. Fixture-world collector checks do not certify arbitrary user/modpack saves. Reviewed reconciliation, installed-provider acceptance, other malformed fields, copied worlds, multiplayer, sustained performance and broader parity remain open.

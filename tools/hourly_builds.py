@@ -266,11 +266,22 @@ def record(root, expected_mc, expected_sha):
             gate_files.append("legacy-item-restart-summary.json")
         if status.get("item_decode_restart_fixture") is True:
             counts = {"write": status["item_decode_restart_write_assertions"], "verify": status["item_decode_restart_verify_assertions"]}
+            inspections = {}
+            pids = [p['pid'] for p in restart['processes']] if status.get('item_restart_fixture') is True else []
             for suite in ["decode-raw", "decode-missing"]:
                 name = "legacy-item-" + suite + "-restart-summary.json"
                 decode = json.loads((logs / name).read_text())
                 validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"], counts, suite)
+                pids.extend(p['pid'] for p in decode['processes'])
+                from inspect_legacy_decode_world import inspect
+                inspections[suite] = {mode: inspect(logs / decode['world_archives'][mode]['file'], decode['phase_reports'][phase], expected_mc, suite)
+                                      for mode, phase in [('clean', 'verify'), ('barrier', 'crash-verify')]}
                 gate_files.append(name)
+            if len(set(pids)) != len(pids):
+                raise ValueError('Decode/provider suites reused a native process identity')
+            name = 'legacy-decode-world-inspection.json'
+            (logs / name).write_text(json.dumps(inspections, indent=2) + '\n')
+            gate_files.append(name)
         if status.get("preupgrade_item_fault_fixture") is True:
             fault_import = json.loads((logs / "preupgrade-item-fault-summary.json").read_text())
             validate_preupgrade(root, fault_import, expected_mc, actual, native["runtime_sha256"], status.get('historical_provider_fixture') is True)

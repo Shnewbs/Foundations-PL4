@@ -34,6 +34,10 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_legacy_restart_gate.py'
       - name: Check raw and missing decode process evidence regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_decode_restart_gate.py'
+      - name: Check saved decode-world NBT regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_decode_world.py'
+      - name: Check bounded read-only evidence collector regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_evidence_collector.py'
       - name: Check persisted provider outcome regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_provider_outcomes.py'
       - name: Check historical provider outcome regressions
