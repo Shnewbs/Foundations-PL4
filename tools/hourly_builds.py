@@ -259,6 +259,19 @@ def validate_live_evidence_cases(root, minecraft):
         raise ValueError("Live evidence cases require an exact legacy target")
 
 
+def validate_live_decode_assertions(report):
+    prefixes = ["live cleared fault retains evidence quarantine ",
+                "live cleared fault rejects empty escrow face edit ",
+                "live cleared fault NBT reload preserves evidence and count "]
+    for phase in ["write", "verify", "crash-write", "crash-verify"]:
+        names = report["phase_reports"][phase]["assertions"]
+        stages = ["retained 64"] + (["seed 64", "seed 80"] if phase.endswith("write") else [])
+        for prefix in prefixes:
+            for stage in stages:
+                if names.count(prefix + stage) != 1:
+                    raise ValueError("Missing unique native live decode assertion: " + phase + " " + prefix + stage)
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -297,6 +310,8 @@ def record(root, expected_mc, expected_sha):
             gate_files.append("legacy-item-restart-summary.json")
         if status.get("item_decode_restart_fixture") is True:
             counts = {"write": status["item_decode_restart_write_assertions"], "verify": status["item_decode_restart_verify_assertions"]}
+            if status.get("item_live_decode_restart_fixture") is True:
+                counts = {"write": counts["write"] + 9, "verify": counts["verify"] + 3}
             inspections = {}
             pids = [p['pid'] for p in restart['processes']] if status.get('item_restart_fixture') is True else []
             for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []) + (["decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"] if status.get("item_field_restart_fixture") is True else []):
@@ -304,6 +319,8 @@ def record(root, expected_mc, expected_sha):
                 decode = json.loads((logs / name).read_text())
                 validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"],
                                         {"write": counts["write"]+4, "verify": counts["verify"]+4} if status.get("item_receipt_auth_restart_fixture") is True and suite in {"decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} else counts, suite)
+                if status.get('item_live_decode_restart_fixture') is True:
+                    validate_live_decode_assertions(decode)
                 pids.extend(p['pid'] for p in decode['processes'])
                 from inspect_legacy_decode_world import inspect
                 inspections[suite] = {mode: inspect(logs / decode['world_archives'][mode]['file'], decode['phase_reports'][phase], expected_mc, suite)
