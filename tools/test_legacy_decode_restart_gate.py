@@ -3,6 +3,21 @@ import hourly_builds as builds
 import test_legacy_restart_gate as common
 
 class DecodeRestartTests(unittest.TestCase):
+    def compound(self):
+        self.suite='decode-compound';self.report['suite']=self.suite
+        logs=self.root/'verification-logs'
+        for p in list(logs.iterdir()):p.rename(logs/p.name.replace('decode-raw','decode-compound'))
+        for row in self.report['world_archives'].values():row['file']=row['file'].replace('decode-raw','decode-compound')
+        for r in self.report['phase_reports'].values():
+            r['suite']=self.suite
+            for row in r['decode_outcomes']:row.update(context_kind='compound',context_value='rejected-token-int71')
+    def test_compound_coherent(self):self.compound();self.validate()
+    def test_compound_cannot_be_reported_as_string(self):
+        self.compound();self.change_all('context_kind','string')
+        with self.assertRaises(ValueError):self.validate()
+    def test_compound_lost_payload_report_rejected(self):
+        self.compound();self.change_all('context_value','')
+        with self.assertRaises(ValueError):self.validate()
     def setUp(self):
         common.RestartProofTests.setUp(self)
         self.suite='decode-raw'

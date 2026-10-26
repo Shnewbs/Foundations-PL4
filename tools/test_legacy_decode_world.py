@@ -2,6 +2,15 @@ import copy,unittest
 from inspect_legacy_decode_world import validate
 
 class DecodeWorldTests(unittest.TestCase):
+    def compound(self):
+        owner='fae1b877-c6b4-4538-a26a-630190b54205'
+        def rejected(x):return dict(Token=71,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
+        self.tiles[0]['ItemJournalContext']=rejected(64);self.tiles[1]['Items'][0]['tag']['ItemJournalContext']=rejected(80);self.journal['RejectedContext']=rejected(64)
+    def test_compound_world_coherent(self):
+        self.compound();self.assertEqual(self.validate('decode-compound')['result'],'PASS')
+    def test_compound_nested_payload_changed_rejected(self):
+        self.compound();self.tiles[1]['Items'][0]['tag']['ItemJournalContext']['RejectedPayload']['Bytes']=bytes([4,5,7])
+        with self.assertRaises(ValueError):self.validate('decode-compound')
     def setUp(self):
         owner='fae1b877-c6b4-4538-a26a-630190b54205';tokens=['00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002']
         def tag(x,token):
