@@ -4,13 +4,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 /** Persist uncertainty before every foreign mutation; uncertain items are never replayed or dropped as spendable stacks. */
 public final class LegacyItemSafety {
-    public static boolean blocked(LegacyTile tile){return tile.itemOpaque!=null||!tile.itemFault.isEmpty();}
+    public static boolean blocked(LegacyTile tile){return tile.itemOpaque!=null||tile.itemRawJournalContext!=null||tile.itemMissingJournalContext||!tile.itemFault.isEmpty();}
     public static ConservingItems.Escrow<ItemStack> escrow(final LegacyTile tile){return new ConservingItems.Escrow<ItemStack>(){
         public ItemStack get(){return tile.pending;}
         public void set(ItemStack value){tile.pending=value==null?null:value;tile.fluidDirty();}
         public boolean blocked(){return LegacyItemSafety.blocked(tile);}
         public void block(String reason){tile.itemFault=reason;tile.fluidDirty();}
-        public void clearBlock(){if(tile.itemOpaque==null)tile.itemFault="";tile.fluidDirty();}
+        public void clearBlock(){if(tile.itemOpaque==null&&tile.itemRawJournalContext==null&&!tile.itemMissingJournalContext)tile.itemFault="";tile.fluidDirty();}
     };}
     /** Refuse route edits while held items or unresolved foreign mutations fence this endpoint. */
     public static boolean selectFace(LegacyTile tile,int face){
