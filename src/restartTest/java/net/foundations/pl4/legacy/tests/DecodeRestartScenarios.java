@@ -1,0 +1,108 @@
+package net.foundations.pl4.legacy.tests;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import net.foundations.pl4.legacy.*;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.entity.item.EntityItem;
+import java.io.FileWriter;
+import java.util.*;
+/** Separate disposable decode worlds; never packaged into production. */
+@Mod(modid="foundations_pl4_decodetests",name="PL4 decode restart acceptance",version="1",dependencies="required-after:foundations_pl4")
+public final class DecodeRestartScenarios {
+    private WorldServer world;private final List<String> cases=new ArrayList<String>(),tokens=new ArrayList<String>();
+    private final List<Map<String,Object>> outcomes=new ArrayList<Map<String,Object>>();
+    private static final String OWNER="pl4owner";
+    private String suite;
+    @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
+        suite=System.getProperty("foundations_pl4.decodeRestart","");if(suite.isEmpty())return;
+        if(!Arrays.asList("raw","missing").contains(suite))throw new IllegalStateException("Explicit decode suite required");
+        String phase=System.getProperty("foundations_pl4.itemRestart","");
+        if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Explicit restart phase required");
+        MinecraftServer server=MinecraftServer.getServer();
+        if(!"pl4-item-restart-world".equals(server.getFolderName()))throw new IllegalStateException("Refusing non-fixture world");
+        if(phase.equals("crash-write")&&!Boolean.getBoolean("foundations_pl4.restartHalt"))throw new IllegalStateException("Explicit halt opt-in required");
+        world=server.worldServerForDimension(0);LegacyPL4.enabled=false;boolean passed=false;
+        try{
+            if(phase.endsWith("write"))prepare();
+            verify(64,false);verify(80,true);verifyJournal();
+            if(phase.endsWith("write")){world.saveAllChunks(true,null);world.perWorldStorage.saveAllData();world.getSaveHandler().flush();}
+            passed=true;System.out.println("PL4 ITEM RESTART "+phase+": PASS");
+        }finally{
+            Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.6.4");report.put("suite","decode-"+suite);report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("decode_outcomes",outcomes);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
+            FileWriter out=new FileWriter("item-decode-"+suite+"-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
+            if(passed&&phase.equals("crash-write")){System.out.println("PL4 ITEM RESTART KILL READY");System.out.flush();System.err.flush();while(true)Thread.sleep(1000);}
+            server.initiateShutdown();
+        }
+    }
+    private void prepare(){
+        for(int x:new int[]{64,80}){
+            load(x);load(x+5);air(x);air(x+5);place(x);chestBlock(x+5);
+            LegacyTile n=node(x);n.owner=OWNER;n.pending=new ItemStack(Item.ingotIron,8);n.itemFault="Original decode fixture uncertainty";n.itemImportPending=true;LegacyItemSafety.importSaved(n);
+            check(n.itemJournalContext!=null,"seed unknown context "+x);
+            String token=n.itemJournalContext.getString("Token");n.itemLegacyEvidence=evidence(x,token);n.fluidDirty();
+        }
+        for(int x:new int[]{64,80}){
+            LegacyTile n=node(x);NBTTagCompound tag=save(n);
+            if(suite.equals("missing")){tag.removeTag("ItemJournalContext");tag.setString("ItemTransferFault","");}
+            else if(x==64)tag.setInteger("ItemJournalContext",71);else tag.setString("ItemJournalContext","current-raw-context");
+            n.readFromNBT(tag);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();
+            check(LegacyItemSafety.blocked(n),"generic settlement retains uncertainty "+x);n.fluidDirty();
+        }
+        air(80);ItemStack receipt=null;
+        for(Object raw:world.getEntitiesWithinAABB(EntityItem.class,AxisAlignedBB.getBoundingBox(78,199,31,84,203,34))){EntityItem e=(EntityItem)raw; if(!e.isDead&&e.getEntityItem().getItem()==LegacyPL4.ITEM_CELL){check(receipt==null,"single sealed removal receipt");receipt=e.getEntityItem().copy();e.setDead();}}
+        check(receipt!=null,"actual sealed removal receipt");chest(85).setInventorySlotContents(0,receipt);chest(85).onInventoryChanged();
+    }
+    private void verify(int x,boolean removed){
+        load(x);load(x+5);NBTTagCompound tag;
+        if(removed){check(node(x)==null,"removed host stays absent "+x);ItemStack receipt=chest(x+5).getStackInSlot(0);check(receipt!=null&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt persists in native chest "+x);tag=receipt.getTagCompound();}
+        else{LegacyTile n=node(x);check(n!=null,"retained host reloads "+x);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();check(LegacyItemSafety.blocked(n),"reloaded uncertainty cannot settle "+x);tag=save(n);}
+        NBTTagCompound original=tag.getCompoundTag("ItemLegacyEvidence");String token=original.getString("OriginalToken");tokens.add(token);
+        check(UUID.fromString(token).toString().equals(token),"original token preserved "+x);
+        check(sameTagPayload(original,evidence(x,token)),"complete original evidence unchanged "+x);
+        check(tag.getInteger("ItemEscrowCount")==8,"eight units remain sealed "+x);
+        check(!tag.getString("ItemTransferFault").isEmpty(),"missing fault text cannot erase uncertainty "+x);
+        if(suite.equals("missing"))check(!tag.hasKey("ItemJournalContext"),"missing context never synthesized "+x);
+        else if(x==64)check(tag.getTag("ItemJournalContext") instanceof net.minecraft.nbt.NBTTagInt&&tag.getInteger("ItemJournalContext")==71,"raw integer type and value retained");
+        else check(tag.getTag("ItemJournalContext") instanceof net.minecraft.nbt.NBTTagString&&tag.getString("ItemJournalContext").equals("current-raw-context"),"raw string type and value retained");
+        check(!original.hasKey("X")&&!original.hasKey("Phase"),"no original route or phase invented "+x);
+        LegacyWirelessSafety journal=LegacyWirelessSafety.data(world);
+        check(journal.blocked(OWNER,pos(200))&&journal.blocked("unrelated-owner",pos(240)),"all owners and targets remain fenced "+x);
+        Map<String,Object> row=new LinkedHashMap<String,Object>();row.put("host_x",x);row.put("host_removed",removed);row.put("original_token",token);row.put("owner",OWNER);row.put("dimension",0);row.put("context_kind",suite.equals("missing")?"absent":x==64?"int":"string");row.put("context_value",suite.equals("missing")?"":x==64?"71":"current-raw-context");row.put("sealed_units",8);row.put("evidence_marker","first-raw-payload");row.put("original_route_known",false);outcomes.add(row);
+    }
+    private void verifyJournal(){
+        NBTTagCompound saved=journalTag(),opaque=saved.getCompoundTag("Opaque");
+        check(sameTagPayload(opaque.getCompoundTag("ExistingLegacyEvidence"),evidence(64,tokens.get(0))),"first rejection original evidence retained");
+        if(suite.equals("missing"))check(opaque.getBoolean("MissingContext")&&!opaque.hasKey("RejectedContext"),"missing opaque barrier preserved");
+        else check(opaque.getTag("RejectedContext") instanceof net.minecraft.nbt.NBTTagInt&&opaque.getInteger("RejectedContext")==71,"raw opaque rejection type preserved");
+        net.minecraft.nbt.NBTTagList entries=opaque.getCompoundTag("PreviousJournal").getTagList("Entries");Set<String> prior=new HashSet<String>();
+        for(int i=0;i<entries.tagCount();i++){NBTTagCompound row=(NBTTagCompound)entries.tagAt(i);prior.add(row.getString("Token"));check(!row.hasKey("X")&&!row.hasKey("Phase"),"prior journal remains unknown-route "+i);}
+        check(prior.equals(new HashSet<String>(tokens))&&entries.tagCount()==2,"all prior tokens retained without replacement");
+        for(int i=0;i<5;i++)LegacyItemSafety.importSaved(node(64));
+        check(journalTag().equals(saved),"repeated admission does not grow opaque history");
+        boolean enabled=LegacyPL4.enabled;LegacyPL4.enabled=true;
+        try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
+        check(journalTag().equals(saved),"inspection and replacement never clear journal");
+    }
+    private NBTTagCompound evidence(int x,String token){NBTTagCompound e=new NBTTagCompound();e.setString("Fault","Original decode fixture uncertainty");e.setString("ObservedOwner",OWNER);e.setInteger("ObservedDimension",0);e.setInteger("HostX",x);e.setInteger("HostY",200);e.setInteger("HostZ",32);e.setString("OriginalToken",token);e.setString("MalformedContext","first-raw-payload");NBTTagCompound nested=new NBTTagCompound();nested.setInteger("Sentinel",12345);nested.setByteArray("Bytes",new byte[]{1,2,3});e.setTag("OriginalPayload",nested);return e;}
+    private NBTTagCompound save(LegacyTile n){NBTTagCompound tag=new NBTTagCompound();n.writeToNBT(tag);return tag;}
+    private NBTTagCompound journalTag(){NBTTagCompound tag=new NBTTagCompound();LegacyWirelessSafety.data(world).writeToNBT(tag);return tag;}
+    private void check(boolean ok,String name){if(!ok)throw new AssertionError(name);cases.add(name);}
+    private boolean sameTagPayload(NBTTagCompound a,NBTTagCompound b){NBTTagCompound left=new NBTTagCompound(),right=new NBTTagCompound();left.setTag("Payload",a.copy());right.setTag("Payload",b.copy());return left.equals(right);}
+        private BoundedNetwork.Point pos(int x){return new BoundedNetwork.Point(x,200,32);}
+    private void place(int x){world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);node(x).owner=OWNER;node(x).fluidDirty();}
+    private void chestBlock(int x){world.setBlock(x,200,32,Block.chest.blockID,0,3);}
+    private LegacyTile node(int x){return (LegacyTile)world.getBlockTileEntity(x,200,32);}
+    private TileEntityChest chest(int x){return (TileEntityChest)world.getBlockTileEntity(x,200,32);}
+
+    private void load(int x){world.getChunkFromBlockCoords(x,32);}
+    private void air(int x){world.setBlockToAir(x,200,32);}
+}

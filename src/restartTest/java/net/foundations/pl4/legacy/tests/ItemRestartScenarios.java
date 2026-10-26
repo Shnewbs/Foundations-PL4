@@ -25,6 +25,7 @@ public final class ItemRestartScenarios {
         GameRegistry.registerTileEntity(FaultyChest.class,"foundations_pl4_restarttests:persisted_provider");
     }
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
+        if(!System.getProperty("foundations_pl4.decodeRestart","").isEmpty())return;
         String phase=System.getProperty("foundations_pl4.itemRestart","");
         if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Disposable restart phase required");
         MinecraftServer server=MinecraftServer.getServer();
