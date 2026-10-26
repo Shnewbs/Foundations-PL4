@@ -103,6 +103,31 @@ def validate_restart(root, report, mc, sha, runtime, counts):
             raise ValueError("Restart world archive changed")
 
 
+def validate_provider_outcomes(report, mc):
+    """Do not treat a sealed uncertain claim as spendable provider inventory."""
+    owner = "fae1b877-c6b4-4538-a26a-630190b54205" if mc == "1.12.2" else "pl4owner"
+    details = report["phase_reports"]
+    for first, second in [("write", "verify"), ("crash-write", "crash-verify")]:
+        rows = details[first].get("provider_outcomes")
+        if not isinstance(rows, list) or len(rows) != 2 or rows != details[second].get("provider_outcomes"):
+            raise ValueError("Provider private state changed across JVMs")
+        identities = set()
+        for index, outcome in enumerate(["insert", "extract"]):
+            row = rows[index]
+            ident = row.get("provider_id", "")
+            if (not isinstance(ident, str) or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", ident)
+                    or ident in identities or row.get("owner") != owner or row.get("outcome") != outcome
+                    or row.get("token") != details[first]["tokens"][index]):
+                raise ValueError("Provider ownership/operation identity disagrees")
+            identities.add(ident)
+            extraction = outcome == "extract"
+            expected = dict(source_units=32, destination_units=0 if extraction else 8,
+                            unaccounted_units=8 if extraction else 0, sealed_uncertain_claim=0 if extraction else 8,
+                            mutation_calls=1, removed_units=8 if extraction else 0, accepted_units=0 if extraction else 8)
+            if any(type(row.get(k)) is not int or row[k] != v for k, v in expected.items()):
+                raise ValueError("Provider conservation/mutation proof disagrees")
+
+
 def validate_preupgrade(root, report, mc, sha, runtime):
     logs = root / "verification-logs"
     if (report.get("minecraft") != mc or report.get("source_commit") != sha or report.get("runtime_sha256") != runtime
@@ -180,6 +205,8 @@ def record(root, expected_mc, expected_sha):
         if status.get("item_restart_fixture") is True:
             restart = json.loads((logs / "legacy-item-restart-summary.json").read_text())
             validate_restart(root, restart, expected_mc, actual, native["runtime_sha256"], {"write": status["item_restart_write_assertions"], "verify": status["item_restart_verify_assertions"]})
+            if status.get("item_provider_fixture") is True:
+                validate_provider_outcomes(restart, expected_mc)
             gate_files.append("legacy-item-restart-summary.json")
         if status.get("preupgrade_item_fault_fixture") is True:
             fault_import = json.loads((logs / "preupgrade-item-fault-summary.json").read_text())
@@ -241,3 +268,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
