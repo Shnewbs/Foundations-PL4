@@ -5,24 +5,18 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-context-fields-2026-10-26T19-37",
-    "claimed_at": "2026-10-26T19:55:08Z",
-    "expires_at": "2026-10-26T20:10:08.000Z",
-    "purpose": "Record completed malformed-field native/client acceptance and resumable next work"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
   "last_verified_legacy_native_run": 40389033557,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40385685322,
+    "1.12.2": 40390184776,
     "1.6.4": 40387058589
   },
-  "current_checkpoint": "Four new native suites for malformed Owner, Dimension, Scope and typed serialized context rewrites pass 464 assertions across 16 JVMs per legacy port. Total decode 812/28 JVMs is separate from provider 188 and historical 60. Ordinary native 370/348 and main 192 pass; 149 local test executions pass. Verified all 17 packaged hashes, source archives, all 28 saved decode worlds and 32 distinct provider/decode process identities per port. The 1.6.4 production hash is unchanged and retained exact-client evidence verified. Fresh exact-JAR 1.12.2 client is pending. All 24 RC flags false; no new release/upload.",
-  "local_validation": "PASS: 149 local executions, ordinary native 370/348/main 192, four new suites 464/16 JVMs per port, total decode 812/28 JVMs; independently checked all raw saved decode worlds. Registered provider 188/4 JVMs and historical 60/3 JVMs stay separate. Fresh 1.12.2 client pending; byte-identical 1.6.4 prior client proof verified without claiming a new run/review.",
+  "current_checkpoint": "Malformed saved Owner, Dimension and Scope fields plus typed serialized context rewrites now pass four new native suites: 464 assertions across 16 JVMs per legacy port. Total decode 812/28 JVMs remains separate from provider 188 and historical 60. Ordinary native 370/348 and main 192 pass; 149 local test executions pass. All 17 packaged hashes, source archives, all 28 raw saved decode worlds and 32 distinct provider/decode process identities per port were independently verified. Fresh exact-JAR 1.12.2 client passes all five export pages and normal regressions; two captures reviewed and 21 hashed. Byte-identical 1.6.4 production retains prior verified client evidence, with no fresh run/review claimed. All 24 RC flags remain false; no new release or upload.",
+  "local_validation": "PASS: 149 local executions; ordinary native 370/348/main 192; new field suites 464/16 JVMs per port; total decode 812/28 JVMs and independent raw NBT verification of 14 decode worlds per port. Registered provider 188/4 JVMs and historical 60/3 JVMs remain separate. Fresh 1.12.2 exact runtime client and complete chat transcript pass; 1.6.4 prior exact-byte client/report/capture hashes revalidated. All current gates passed without a retry.",
   "next_work": [
-    "Consume pinned exact 1.12.2 client 40390184776; verify source/runtime hashes, complete export transcript and actual captures before claiming new client acceptance.",
     "Add separate-process owner/operator receipt diagnostic authorization after malformed Owner/Dimension/Scope or typed serialized rewrite, including another profile and current-dimension boundaries. Extend to live field rewrites and bounded owner-authorized linked-host/receipt export without exposing unrelated records. Actual installed-provider identity/API/auth/durability, copied user/modpack worlds and reviewed reconciliation remain open.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
@@ -43,15 +37,15 @@
     "1.6.4": 40389033557
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "53b87f80a3de41263c435b91a9f961975a034f1e",
   "last_writer_release": {
     "owner": "pl4-context-fields-2026-10-26T19-37",
-    "released_at": "2026-10-26T19:50:24Z",
-    "checkpoint": "Malformed-field source/native qualification recorded; isolated exact client build continues without a writer lease."
+    "released_at": "2026-10-26T19:56:24Z",
+    "checkpoint": "Qualified malformed-field native process suites and exact runtime client attribution recorded. Post-restart receipt authorization, live rewrites, installed providers and broader RC acceptance remain resumable."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -60,14 +54,7 @@
       "1.12.2": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
       "1.6.4": "d664301cd0d2e0d3acab0aed2ee7c44b86be874c"
     },
-    "publication_steps": "Pending final success-step readback"
+    "publication_steps": "SKIPPED"
   },
-  "previous_checkpoint": "Implemented and qualified bounded, operator-only opaque journal export in the current dimension on 1.12.2 and 1.6.4. Thirteen new native cases per port pass at 370/348; main passes 192 and all 133 local test executions pass. Verified all 17 packaged hashes, source archives, original exported NBT and provider/decode/historical evidence. Both exact-JAR stock clients pass complete five/four-page export and storage/search/grouping/replay/codec/display regressions; four captures reviewed and 42 hashed. Initial fixture syntax/API errors and the 1.6.4 JSON chat probe timeout are preserved and corrected. CurseForge reconciliation skips 24 existing submissions. All 24 RC flags remain false; no new release or upload.",
-  "pending_legacy_client": {
-    "minecraft": "1.12.2",
-    "run": 40390184776,
-    "source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
-    "runtime_sha256": "4ace8c65680bdb612e573ca9c94cd4def8aeb35f3b2d87b4c889b076a2bcfbdc",
-    "reason": "Changed packaged production JAR hash requires fresh exact client proof; prior client evidence remains scoped to its old bytes."
-  }
+  "previous_checkpoint": "Implemented and qualified bounded, operator-only opaque journal export in the current dimension on 1.12.2 and 1.6.4. Thirteen new native cases per port pass at 370/348; main passes 192 and all 133 local test executions pass. Verified all 17 packaged hashes, source archives, original exported NBT and provider/decode/historical evidence. Both exact-JAR stock clients pass complete five/four-page export and storage/search/grouping/replay/codec/display regressions; four captures reviewed and 42 hashed. Initial fixture syntax/API errors and the 1.6.4 JSON chat probe timeout are preserved and corrected. CurseForge reconciliation skips 24 existing submissions. All 24 RC flags remain false; no new release or upload."
 }

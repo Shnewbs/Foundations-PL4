@@ -586,7 +586,7 @@
       "candidate_source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -654,7 +654,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40385685322,
+      "client_workflow_run": 40390184776,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -662,7 +662,7 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PENDING_FRESH_EXACT_CURRENT_JAR",
+      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
@@ -721,8 +721,11 @@
         "source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
         "runtime_sha256": "4ace8c65680bdb612e573ca9c94cd4def8aeb35f3b2d87b4c889b076a2bcfbdc",
         "workflow_run": 40390184776,
-        "result": "PENDING",
-        "scope": "Fresh exact-JAR client run not complete; no transfer of old-client acceptance."
+        "result": "PASS",
+        "fresh_client_run": true,
+        "reviewed_captures": 2,
+        "hashed_captures": 21,
+        "scope": "Fresh exact current hourly production JAR; five-page opaque export real-chat reconstruction and storage/search/grouping/replay/codec/display regression. Malformed-field persistence is separate native process evidence; no graphical malformed-field, dedicated multiplayer, installed-provider or recovery clearance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -902,7 +905,12 @@
       "malformed_fields_process_assertions": 464,
       "malformed_fields_process_jvms": 16,
       "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
-      "pending_client_workflow_run": 40390184776
+      "malformed_fields_process_suites": [
+        "decode-owner",
+        "decode-dimension",
+        "decode-scope",
+        "decode-rewrite"
+      ]
     },
     {
       "minecraft": "1.6.4",
@@ -929,7 +937,7 @@
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -1217,7 +1225,13 @@
       "malformed_fields_process_restart": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
       "malformed_fields_process_assertions": 464,
       "malformed_fields_process_jvms": 16,
-      "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json"
+      "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
+      "malformed_fields_process_suites": [
+        "decode-owner",
+        "decode-dimension",
+        "decode-scope",
+        "decode-rewrite"
+      ]
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
