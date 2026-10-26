@@ -161,7 +161,7 @@ def collect(path,mc,token,owner,dimension=0,inventories=(),limits=None):
             if len(tiles)+len(rows)>limits['tiles']:complete=False;reason='tile bound';break
             tiles.extend(rows)
     result=observe(tiles,journal,token,owner,dimension,inventories,limits)
-    result.update(minecraft_label=mc,minecraft_identity_proven_by_save=False,source_archive_sha256=source_hash,selected_dimension_scan_complete=complete and not result['result_limit_reached'],scan_stop_reason=reason,scanned_chunks=chunks,scanned_tiles=len(tiles),selected_region_bytes=selected,limits=limits)
+    result.update(minecraft_label=mc,minecraft_identity_proven_by_save=False,source_archive_sha256=source_hash,journal_value_sha256=digest_value(journal) if journal is not None else None,selected_dimension_scan_complete=complete and not result['result_limit_reached'],scan_stop_reason=reason,scanned_chunks=chunks,scanned_tiles=len(tiles),selected_region_bytes=selected,limits=limits)
     return result
 
 if __name__=='__main__':
