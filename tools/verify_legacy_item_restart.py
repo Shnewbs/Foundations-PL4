@@ -1,6 +1,6 @@
 """Exercise candidate item uncertainty through separate native JVMs in disposable worlds."""
 from pathlib import Path
-import hashlib,json,os,re,shutil,subprocess,zipfile
+import hashlib,json,os,re,shutil,subprocess,zipfile,time
 ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def verify():
@@ -35,11 +35,21 @@ def verify():
             cmd+=['-jar',str(launchers[0]),'nogui'];logfile=logs/('item-restart-'+phase+'.log')
             with logfile.open('w') as out:
                 with subprocess.Popen(cmd,cwd=work,stdout=out,stderr=subprocess.STDOUT) as proc:
-                    try:code=proc.wait(timeout=420)
+                    try:
+                        if phase=='crash-write':
+                            deadline=time.monotonic()+420
+                            while proc.poll() is None and time.monotonic()<deadline:
+                                ready=work/('item-restart-'+phase+'.json')
+                                if ready.is_file() and 'PL4 ITEM RESTART KILL READY' in logfile.read_text(errors='replace'):
+                                    proof=json.loads(ready.read_text())
+                                    if proof.get('passed') is True and proof.get('process','').startswith(str(proc.pid)+'@'):
+                                        proc.kill();break
+                                time.sleep(.1)
+                        code=proc.wait(timeout=60 if phase=='crash-write' else 420)
                     finally:
                         if proc.poll() is None:proc.kill();proc.wait()
                     pid=proc.pid
-            text=logfile.read_text(errors='replace');expected=73 if phase=='crash-write' else 0
+            text=logfile.read_text(errors='replace');expected=-9 if phase=='crash-write' else 0
             report=json.loads((work/('item-restart-'+phase+'.json')).read_text())
             if code!=expected or report['minecraft']!=mc or report['phase']!=phase or report['passed'] is not True or not report['assertions']:raise ValueError('Restart phase failed: '+phase+'; inspect '+str(logfile))
             if not report['process'].startswith(str(pid)+'@') or 'PL4 ITEM RESTART '+phase+': PASS' not in text or not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I):raise ValueError('Missing process/native identity')
@@ -57,7 +67,7 @@ def verify():
                 if p.is_file() and not p.is_symlink():z.write(p,p.relative_to(work).as_posix())
         archives[mode]=dict(file=archive.name,sha256=digest(archive))
     if len({p['pid'] for p in processes})!=4:raise ValueError('Processes were not distinct')
-    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Runtime.halt(73) after completed native world save/storage save/flush. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
+    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
     (logs/'legacy-item-restart-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print('PASS '+mc+' separate JVM item/receipt restart and controlled post-save halt',flush=True)
 if __name__=='__main__':verify()
