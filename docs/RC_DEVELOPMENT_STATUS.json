@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c850f00a314f12723bc81c6c85d514229a5848ae",
-      "workflow_run": "40350289583",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
+      "source_commit": "421981c8a8e32927d4b06705f2758975d7da3f3f",
+      "workflow_run": "40360147997",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40360147997",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -564,19 +564,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40350289583",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
-      "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
-      "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+      "workflow_run": "40357554810",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40357554810",
+      "source_commit": "e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
+      "runtime_sha256": "ddff2a58b8b9456a2a3fb29b0dd284a6130b730b356f3c175283e3d2cd752f3e",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
-      "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
+      "candidate_source_commit": "e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
+      "client_visual_acceptance": "PARTIAL_2_FRESH_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -588,7 +588,7 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
       "observed_native_fixtures": 357,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -644,7 +644,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40351177405,
+      "client_workflow_run": 40358548914,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -652,11 +652,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_IMPORTED_UNKNOWN_CHAT",
+      "current_source_stock_client_regression": "PASS_EXACT_HOURLY_PRODUCTION_ARCHIVE_NORMAL_ACTIONS_AND_IMPORTED_UNKNOWN_CHAT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Saved compound legacy evidence remains unchanged when current context is malformed or missing. Raw current string/integer tag type survives native save and actual sealed host-removal receipts. Missing recorded context never receives a replacement token, forces uncertainty even with cleared fault text, and raw/missing flags cannot be cleared by generic settlement. Dimension-wide opaque barrier persists across serialized reload. Valid contexts remain idempotent; initial malformed imports retain compatibility. Existing188 restart/60 historical assertions pass, but no dedicated crash/JVM fixture exercises the new decode path; other malformed fields, installed providers/access control, arbitrary worlds and reviewed recovery remain open.",
+      "acceptance_attribution": "Current raw integer/string and missing contexts, full original nested evidence, retained host, sealed removal receipt, prior tokens and opaque dimension barrier pass232 dedicated assertions across8 JVMs per port. Independent region/journal NBT matches all4 decode worlds per port. Existing188 provider restart and60 historical checks pass separately. Bounded copied-save collection passed fixture token/provider/receipt queries and a repaired cross-region priority regression. Partial scans, unknown schemas and unlinked evidence grant no clearance. Dedicated rejected-compound/other malformed-field process cases, arbitrary worlds, installed-provider identity/auth/durability and reviewed reconciliation remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -708,10 +708,10 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
-        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
-        "workflow_run": 40351177405,
-        "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
+        "source_commit": "e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
+        "runtime_sha256": "ddff2a58b8b9456a2a3fb29b0dd284a6130b730b356f3c175283e3d2cd752f3e",
+        "workflow_run": 40358548914,
+        "scope": "Fresh hourly production archive ddff2a58; two current captures reviewed andtwenty hashed. Same-source branch1806c541 archive does not inherit this exact-JAR claim. Decode/recovery/collector behavior are separate evidence."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -797,7 +797,40 @@
         }
       },
       "context_decode_preservation": "PASS_10_NATIVE_MISSING_RAW_SAVE_REMOVAL_SERIALIZATION_VALID_CONTEXT_AND_SETTLEMENT_CASES",
-      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json"
+      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "previous_decode_process_candidate": {
+        "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+        "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+        "workflow_run": "40350289583",
+        "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+        "stock_client_attribution": {
+          "source_commit": "98836a5c9da4ab611f57bfc3ebff6f96587a4215",
+          "runtime_sha256": "72f4646b40b5be34e2eaaa18c592308c7f60cd4154473ef5830ae9dafa122547",
+          "workflow_run": 40351177405,
+          "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
+        }
+      },
+      "context_decode_process_restart": "PASS_232_ASSERTIONS_8_JVMS_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+      "context_decode_process_assertions": {
+        "raw": {
+          "write": 32,
+          "verify": 26,
+          "crash_write": 32,
+          "crash_verify": 26
+        },
+        "missing": {
+          "write": 32,
+          "verify": 26,
+          "crash_write": 32,
+          "crash_verify": 26
+        },
+        "total": 232,
+        "distinct_jvms": 8,
+        "separate_from_ordinary_native_provider_restart_and_historical_counts": true
+      },
+      "context_decode_process_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
+      "bounded_read_only_collection": "PASS_24_COPIED_FIXTURE_QUERIES_ACROSS_PORTS_PARTIAL_SCANS_NO_RECONCILIATION_CLEARANCE",
+      "bounded_read_only_collection_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json"
     },
     {
       "minecraft": "1.6.4",
@@ -812,19 +845,19 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40350289583",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40350289583",
-      "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+      "workflow_run": "40357554810",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40357554810",
+      "source_commit": "16947d862e3f4599d801137502ae2fd1600657fb",
       "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
-      "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
+      "candidate_source_commit": "16947d862e3f4599d801137502ae2fd1600657fb",
+      "client_visual_acceptance": "RETAINED_PRIOR_TWO_REVIEWED_CAPTURES_SAME_PRODUCTION_JAR",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -835,7 +868,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 335,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -880,11 +913,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_IMPORTED_UNKNOWN_CHAT",
+      "current_source_stock_client_regression": "RETAINED_IDENTICAL_PRODUCTION_JAR_PRIOR_EXACT_CLIENT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Saved compound legacy evidence remains unchanged when current context is malformed or missing. Raw current string/integer tag type survives native save and actual sealed host-removal receipts. Missing recorded context never receives a replacement token, forces uncertainty even with cleared fault text, and raw/missing flags cannot be cleared by generic settlement. Dimension-wide opaque barrier persists across serialized reload. Valid contexts remain idempotent; initial malformed imports retain compatibility. Existing188 restart/60 historical assertions pass, but no dedicated crash/JVM fixture exercises the new decode path; other malformed fields, installed providers/access control, arbitrary worlds and reviewed recovery remain open.",
+      "acceptance_attribution": "Current raw integer/string and missing contexts, full original nested evidence, retained host, sealed removal receipt, prior tokens and opaque dimension barrier pass232 dedicated assertions across8 JVMs per port. Independent region/journal NBT matches all4 decode worlds per port. Existing188 provider restart and60 historical checks pass separately. Bounded copied-save collection passed fixture token/provider/receipt queries and a repaired cross-region priority regression. Partial scans, unknown schemas and unlinked evidence grant no clearance. Dedicated rejected-compound/other malformed-field process cases, arbitrary worlds, installed-provider identity/auth/durability and reviewed reconciliation remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40351177054,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -922,9 +955,11 @@
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
         "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "current_candidate_source_commit": "16947d862e3f4599d801137502ae2fd1600657fb",
         "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
         "workflow_run": 40351177054,
-        "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
+        "scope": "Retained prior exact-source client proof for byte-identical current production JAR; no fresh1.6.4 client or screenshot review claimed.",
+        "byte_identity_verified_against_decode_process_candidate": true
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1015,7 +1050,40 @@
         }
       },
       "context_decode_preservation": "PASS_10_NATIVE_MISSING_RAW_SAVE_REMOVAL_SERIALIZATION_VALID_CONTEXT_AND_SETTLEMENT_CASES",
-      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json"
+      "context_decode_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+      "previous_decode_process_candidate": {
+        "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+        "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+        "workflow_run": "40350289583",
+        "client_evidence": "acceptance/rc-dev-legacy-decode-context-preservation-2026-10-26.json",
+        "stock_client_attribution": {
+          "source_commit": "7004a71105283b3270249945c8c665bc10c65e83",
+          "runtime_sha256": "7d44508abd08a175d613f70d2a3dbc6909ab984a8c58165263deb2fc4b7c4662",
+          "workflow_run": 40351177054,
+          "scope": "Fresh exact current production archive; normal actions and imported-unknown chat. Two current captures reviewed and twenty hashed per port; decode cases are separate native evidence."
+        }
+      },
+      "context_decode_process_restart": "PASS_232_ASSERTIONS_8_JVMS_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+      "context_decode_process_assertions": {
+        "raw": {
+          "write": 32,
+          "verify": 26,
+          "crash_write": 32,
+          "crash_verify": 26
+        },
+        "missing": {
+          "write": 32,
+          "verify": 26,
+          "crash_write": 32,
+          "crash_verify": 26
+        },
+        "total": 232,
+        "distinct_jvms": 8,
+        "separate_from_ordinary_native_provider_restart_and_historical_counts": true
+      },
+      "context_decode_process_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
+      "bounded_read_only_collection": "PASS_24_COPIED_FIXTURE_QUERIES_ACROSS_PORTS_PARTIAL_SCANS_NO_RECONCILIATION_CLEARANCE",
+      "bounded_read_only_collection_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json"
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
