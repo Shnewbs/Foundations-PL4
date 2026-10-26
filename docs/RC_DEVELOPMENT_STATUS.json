@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-25",
+  "recorded_date": "2026-10-26",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -518,7 +518,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 287,
+      "expected_native_fixtures": 301,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -528,20 +528,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40258799935",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40258799935",
-      "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
-      "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
+      "workflow_run": "40285128584",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40285128584",
+      "source_commit": "2ae21d754605d6dc912e8a7088e5639d42bb014f",
+      "runtime_sha256": "6dacd331376772f7462919801b52f18ac67b380a73f8c3a1f024d70b22588916",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
-      "build_status_blob_sha": "0dc99042420e82db9a972c3c69d4371404f1977a",
+      "candidate_source_commit": "2ae21d754605d6dc912e8a7088e5639d42bb014f",
       "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
+      "client_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -553,9 +552,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 287,
+      "observed_native_fixtures": 301,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -609,7 +608,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40259078319,
+      "client_workflow_run": 40285435756,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -621,7 +620,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Automatic source/destination uncertainty and journal recovery behavior is scoped native evidence. Current exact-JAR stock regression covers ordinary manual storage flows with autonomous transport disabled; no dedicated multiplayer/installed-provider/crash/full-server acceptance is inferred.",
+      "acceptance_attribution": "Diagnostic helper/receipt/phase/permission/pagination coverage is scoped native evidence. Exact-JAR ordinary stock GUI regression passed with autonomous transport disabled; no diagnostic command chat-rendering, installed-provider, full-process/crash or dedicated multiplayer acceptance inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -640,12 +639,19 @@
         "observed_native_fixtures": 269
       },
       "automatic_target_journal_native_validation": "PASS_18_EXACT_112_CASES",
-      "automatic_target_journal_acceptance": "PASS_18_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION"
+      "automatic_target_journal_acceptance": "PASS_18_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
+      "previous_journal_candidate": {
+        "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
+        "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
+        "observed_native_fixtures": 287,
+        "client_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json"
+      },
+      "item_journal_diagnostics": "PASS_14_EXACT_NATIVE_HELPER_RECEIPT_PHASE_PERMISSION_PAGINATION_CASES"
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 265,
+      "expected_native_fixtures": 279,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -655,19 +661,19 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40278499771",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40278499771",
-      "source_commit": "87efd5cfce40ca78cdbb150a34276b7271a9ea43",
-      "runtime_sha256": "ff8d53b7e2162d7fba4ae01d44361511db67881bf65d9ff7246f8ffe5c0ab961",
+      "workflow_run": "40284538598",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40284538598",
+      "source_commit": "c429041b1bec03190f2c63a183c0ea933a5852d3",
+      "runtime_sha256": "0fba1bb819a990a821b4d0972ef253a1081f5668705aac875406b56208f3fdcc",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "87efd5cfce40ca78cdbb150a34276b7271a9ea43",
+      "candidate_source_commit": "c429041b1bec03190f2c63a183c0ea933a5852d3",
       "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-164-item-journal-2026-10-25.json",
+      "client_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -678,9 +684,9 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-164-item-journal-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "observed_native_fixtures": 265,
+      "observed_native_fixtures": 279,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -727,14 +733,21 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Persistent journal fault behavior is scoped native evidence. Ordinary exact-JAR stock-client regression disables autonomous transport; no installed-provider, full-process/crash or dedicated-multiplayer acceptance inferred.",
+      "acceptance_attribution": "Diagnostic helper/receipt/phase/permission/pagination coverage is scoped native evidence. Exact-JAR ordinary stock GUI regression passed with autonomous transport disabled; no diagnostic command chat-rendering, installed-provider, full-process/crash or dedicated multiplayer acceptance inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
-      "client_workflow_run": 40278752978,
+      "client_workflow_run": 40284893571,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
-      "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES"
+      "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES",
+      "previous_journal_candidate": {
+        "source_commit": "87efd5cfce40ca78cdbb150a34276b7271a9ea43",
+        "runtime_sha256": "ff8d53b7e2162d7fba4ae01d44361511db67881bf65d9ff7246f8ffe5c0ab961",
+        "observed_native_fixtures": 265,
+        "client_evidence": "acceptance/rc-dev-164-item-journal-2026-10-25.json"
+      },
+      "item_journal_diagnostics": "PASS_14_EXACT_NATIVE_HELPER_RECEIPT_PHASE_PERMISSION_PAGINATION_CASES"
     }
   ],
-  "latest_work": "1.6.4 persistent normalized-owner/dimension/target journal now covers wireless and automatic item handoffs with separate mutation phases, bounded records, opaque payload preservation and route-discovery snapshots. Final source 87efd5cf passed 265/265 native cases (17 wireless journal and 18 automatic journal), production-only startup and generated preview.3 migration. Exact-JAR stock-client 40278752978 passed ordinary manual regression; four current captures reviewed and sixteen hashed. Main source 28cf3ca1 passed 192; 22 other exact tracks retain evidence. Operator recovery, pre-upgrade fault import, hidden provider aliases and broader acceptance remain open. No RC cleared or published.",
+  "latest_work": "Both legacy ports now persist active item journal token/owner/dimension/target/phase into tiles and sealed removal receipts, with bounded read-only journal and owner/operator receipt diagnostics. Exact 1.12.2 source 2ae21d75 passed 301/301 native tests; 1.6.4 c429041b passed 279/279, fourteen new diagnostic cases per port. Production startup/generated preview.3 migration and exact-JAR ordinary stock-client regressions passed independently; eight current captures reviewed and all 32 hashed. Main ef0cd3a8 passed 192; 22 other targets retain exact evidence. Recovery/replay/redemption remains unavailable. Native diagnostic helpers are tested; actual command/chat rendering, pre-upgrade fault import, full-process/crash and broader provider/multiplayer/performance acceptance remain open. No RC cleared or published.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -745,17 +758,17 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
-    "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
-    "workflow_run": "40259078319",
-    "stock_wireless_client": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
+    "source_commit": "2ae21d754605d6dc912e8a7088e5639d42bb014f",
+    "runtime_sha256": "6dacd331376772f7462919801b52f18ac67b380a73f8c3a1f024d70b22588916",
+    "workflow_run": 40285435756,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
-    "source_commit": "87efd5cfce40ca78cdbb150a34276b7271a9ea43",
-    "runtime_sha256": "ff8d53b7e2162d7fba4ae01d44361511db67881bf65d9ff7246f8ffe5c0ab961",
-    "workflow_run": 40278752978,
-    "stock_wireless_client": "acceptance/rc-dev-164-item-journal-2026-10-25.json",
+    "source_commit": "c429041b1bec03190f2c63a183c0ea933a5852d3",
+    "runtime_sha256": "0fba1bb819a990a821b4d0972ef253a1081f5668705aac875406b56208f3fdcc",
+    "workflow_run": 40284893571,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-receipt-diagnostics-2026-10-26.json",
     "closes_all_acceptance": false
   },
   "hourly_native_revalidation": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
@@ -803,6 +816,20 @@
     "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
     "workflow_run": "40253076749",
     "stock_wireless_client": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+    "closes_all_acceptance": false
+  },
+  "previous_diagnostic_partial_164_acceptance": {
+    "source_commit": "87efd5cfce40ca78cdbb150a34276b7271a9ea43",
+    "runtime_sha256": "ff8d53b7e2162d7fba4ae01d44361511db67881bf65d9ff7246f8ffe5c0ab961",
+    "workflow_run": 40278752978,
+    "stock_wireless_client": "acceptance/rc-dev-164-item-journal-2026-10-25.json",
+    "closes_all_acceptance": false
+  },
+  "previous_diagnostic_partial_1122_acceptance": {
+    "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
+    "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
+    "workflow_run": "40259078319",
+    "stock_wireless_client": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
     "closes_all_acceptance": false
   }
 }
