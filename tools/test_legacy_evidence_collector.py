@@ -1,9 +1,35 @@
 import copy,io,json,struct,tempfile,unittest,zipfile,zlib
 from pathlib import Path
-from collect_legacy_item_evidence import LIMITS,collect,inflate,journal_records,observe
+from collect_legacy_item_evidence import LIMITS,collect,inflate,journal_records,observe,digest_value
 
 class EvidenceCollectorTests(unittest.TestCase):
     token='00000000-0000-0000-0000-000000000001'
+    def current(self,**changes):
+        row=dict(Token=self.token,Owner='owner',X=3,Y=200,Z=32);row.update(changes)
+        return dict(Schema=2,Entries=[row])
+    def test_valid_current_target_remains_saved_observation(self):
+        r=self.scan(journal=self.current());self.assertEqual(r['matching_saved_records'][0]['original_target'],[3,200,32]);self.assertFalse(r['reconciliation_cleared'])
+    def test_malformed_scope_with_coordinates_never_gives_target(self):
+        for scope in [7,'future-scope']:
+            r=self.scan(journal=self.current(Scope=scope));self.assertTrue(r['opaque_journal']);self.assertIsNone(r['matching_saved_records'][0]['original_target'])
+    def test_duplicate_token_with_conflicting_targets_is_ambiguous(self):
+        j=self.current();j['Entries'].append(dict(j['Entries'][0],X=99));r=self.scan(journal=j)
+        self.assertTrue(r['opaque_journal']);self.assertTrue(all(row['duplicate_token_observation'] and row['original_target'] is None for row in r['matching_saved_records']))
+    def test_other_invalid_record_freezes_target_attribution(self):
+        j=self.current();j['Entries'].append(dict(Token='bad',Owner='owner',X=1,Y=1,Z=1));r=self.scan(journal=j);self.assertTrue(r['opaque_journal']);self.assertIsNone(r['matching_saved_records'][0]['original_target'])
+    def test_bad_owner_height_and_coordinate_types_withhold_target(self):
+        for change in [dict(Owner=7),dict(Y=256),dict(X=True)]:
+            r=self.scan(journal=self.current(**change));self.assertIsNone(r['matching_saved_records'][0]['original_target']);self.assertTrue(r['matching_saved_records'][0]['record_validation_errors'])
+    def test_malformed_container_is_not_silently_discarded(self):
+        for j in [7,dict(Schema=2),dict(Schema=2,Entries=[7]),dict(PreviousJournal='lost')]:
+            with self.assertRaises(ValueError):journal_records(j,4096)
+    def test_legacy_schema_one_remains_opaque(self):
+        j=dict(Schema=1,Entries=[dict(Token=self.token,Owner='owner',Scope='legacy-unknown',HostX=64,HostY=200,HostZ=32,Evidence={})]);self.assertTrue(self.scan(journal=j)['opaque_journal'])
+    def test_bytes_and_lookalike_compound_hashes_differ(self):
+        self.assertNotEqual(digest_value(bytes([1,2])),digest_value(dict(nbt_byte_array_hex='0102')))
+    def test_typed_hash_order_and_domain(self):
+        self.assertEqual(digest_value(dict(a=1,b=2)),digest_value(dict(b=2,a=1)))
+        self.assertNotEqual(digest_value(True),digest_value(1));self.assertNotEqual(digest_value([1,2]),digest_value([2,1]))
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.path=Path(self.temp.name)/'copied-save.zip'
         self.journal=dict(PreviousJournal=dict(Schema=2,Entries=[dict(Token=self.token,Owner='owner',Scope='legacy-unknown',HostX=64,HostY=200,HostZ=32)]),MissingContext=1)

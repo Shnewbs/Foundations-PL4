@@ -8,14 +8,30 @@ from pathlib import Path,PurePosixPath
 from inspect_legacy_provider_world import nbt
 
 LIMITS=dict(archive_bytes=128*1024*1024,selected_bytes=32*1024*1024,chunk_bytes=2*1024*1024,chunks=128,tiles=4096,results=64,inventory_slots=256,journal_records=4096)
+HASH_FORMAT='pl4-parsed-value-v2'
 
 def digest_value(value):
     def safe(v):
-        if isinstance(v,bytes):return {'nbt_byte_array_hex':v.hex()}
-        if isinstance(v,dict):return {k:safe(x) for k,x in v.items()}
-        if isinstance(v,list):return [safe(x) for x in v]
-        return v
-    return hashlib.sha256(json.dumps(safe(value),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        if isinstance(v,bytes):return ['bytes',v.hex()]
+        if isinstance(v,dict):return ['compound',[[k,safe(x)] for k,x in sorted(v.items())]]
+        if isinstance(v,list):return ['list',[safe(x) for x in v]]
+        if type(v) is float:return ['float',v.hex()]
+        if type(v) in {str,int,bool,type(None)}:return [type(v).__name__,v]
+        raise ValueError('Unsupported observed value type')
+    return hashlib.sha256(json.dumps([HASH_FORMAT,safe(value)],separators=(',',':')).encode()).hexdigest()
+
+def record_errors(row,schema=2):
+    errors=[];scope=row.get('Scope','');legacy=scope=='legacy-unknown'
+    token=row.get('Token')
+    if not isinstance(token,str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',token):errors.append('invalid token')
+    if not isinstance(scope,str) or scope not in {'','legacy-unknown'}:errors.append('invalid scope')
+    owner=row.get('Owner')
+    if not isinstance(owner,str) or len(owner)>128 or not legacy and not owner:errors.append('invalid owner')
+    if legacy and (schema!=2 or not isinstance(row.get('Evidence'),dict)):errors.append('invalid legacy evidence/schema')
+    keys=('HostX','HostY','HostZ') if legacy else ('X','Y','Z')
+    if any(type(row.get(k)) is not int or not -2147483648<=row[k]<=2147483647 for k in keys):errors.append('invalid coordinates')
+    elif not 0<=row[keys[1]]<=255:errors.append('invalid height')
+    return errors
 
 def inflate(raw,kind,limit):
     if kind not in {1,2}:raise ValueError('Unsupported region compression')
@@ -26,17 +42,24 @@ def inflate(raw,kind,limit):
 
 def journal_records(journal,limit):
     records=[];opaque=False;depth=0
+    if journal is not None and not isinstance(journal,dict):raise ValueError('Malformed journal compound')
     while isinstance(journal,dict):
         if depth>=8:raise ValueError('Journal envelope depth exceeds bound')
         if journal.get('Schema')==-1 and isinstance(journal.get('Opaque'),dict):
             opaque=True;journal=journal['Opaque'];depth+=1;continue
         known=type(journal.get('Schema')) is int and journal['Schema'] in {1,2}
         if not known:opaque=True
+        if known and 'Entries' not in journal:raise ValueError('Missing saved journal entries')
         entries=journal.get('Entries',[]) if known else []
         if not isinstance(entries,list) or len(records)+len(entries)>limit:raise ValueError('Journal record bound exceeded')
-        records.extend(r for r in entries if isinstance(r,dict))
+        if any(not isinstance(r,dict) for r in entries):raise ValueError('Noncompound journal entry')
+        if any(record_errors(r,journal['Schema']) for r in entries):opaque=True
+        records.extend(entries)
         if 'PreviousJournal' not in journal:break
+        if not isinstance(journal['PreviousJournal'],dict):raise ValueError('Malformed previous journal')
         opaque=True;journal=journal['PreviousJournal'];depth+=1
+    tokens=[r.get('Token') for r in records if isinstance(r.get('Token'),str)]
+    if len(set(tokens))!=len(tokens):opaque=True
     return records,opaque
 
 def observe(tiles,journal,token,owner,dimension,inventories,limits):
@@ -49,8 +72,9 @@ def observe(tiles,journal,token,owner,dimension,inventories,limits):
     def label(value):return value[:128] if isinstance(value,str) else value if type(value) is int else None
     for r in records:
         if r.get('Token')!=token:continue
-        known=r.get('Scope','')!='legacy-unknown' and all(type(r.get(k)) is int for k in ['X','Y','Z'])
-        add(matches,dict(token=token,saved_owner=label(r.get('Owner')),owner_label_matches_query=r.get('Owner')==owner,original_target=[r[k] for k in ['X','Y','Z']] if known else None,observed_host=[r.get(k) if type(r.get(k)) is int else None for k in ['HostX','HostY','HostZ']] if not known else None,record_sha256=digest_value(r),route_claim='saved record only; no reconciliation clearance'))
+        errors=record_errors(r);ambiguous=sum(row.get('Token')==token for row in records)>1
+        known=not opaque and not errors and not ambiguous and r.get('Scope','')==''
+        add(matches,dict(token=token,saved_owner=label(r.get('Owner')),owner_label_matches_query=r.get('Owner')==owner,original_target=[r[k] for k in ['X','Y','Z']] if known else None,observed_host=[r.get(k) if type(r.get(k)) is int else None for k in ['HostX','HostY','HostZ']] if r.get('Scope')=='legacy-unknown' else None,record_validation_errors=errors,duplicate_token_observation=ambiguous,original_target_withheld=not known,record_sha256=digest_value(r),route_claim='saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance'))
     for tile in tiles:
         position=[label(tile.get(k)) for k in ['x','y','z']]
         if 'ItemTransferFault' in tile or 'ItemLegacyEvidence' in tile:
@@ -72,7 +96,7 @@ def observe(tiles,journal,token,owner,dimension,inventories,limits):
                 add(receipt_rows,dict(container=position,slot=label(item.get('Slot')),saved_item_id=label(item.get('id')),saved_stack_count=label(item.get('Count')),sealed_claim_count=label(tag.get('ItemEscrowCount')),current_context_token_matches=isinstance(ctx,dict) and ctx.get('Token')==token,preserved_evidence_token_occurrence=occurrence,receipt_sha256=digest_value(item),spendable_claim=False,original_route_inferred=False))
         if tuple(position) in inventories:
             add(inventory_rows,dict(position=position,saved_tile_id=label(tile.get('id')),saved_provider_id=label(tile.get('ProviderId')),saved_provider_owner_label=label(tile.get('ProviderOwner')),tile_sha256=digest_value(tile),slots=[dict(slot=label(i.get('Slot')),saved_item_id=label(i.get('id')),saved_count=label(i.get('Count')),saved_stack_sha256=digest_value(i)) for i in items if isinstance(i,dict)],identity_or_alias_proven=False,authorization_proven=False,spendable_total_inferred=False))
-    return dict(query=dict(token=token,owner_label=owner,dimension=dimension),journal_present=journal is not None,opaque_journal=opaque,matching_saved_records=matches,observed_fault_tiles=faults,observed_receipts=receipt_rows,explicit_inventory_observations=inventory_rows,result_limit_reached=truncated,reconciliation_cleared=False,original_route_inferred=False,scope='Offline saved observations only; missing tokens are not clearance. No replay, redemption, minting, inferred conservation or fence clearing. Provider labels are not identity, alias, authorization or durability proof.')
+    return dict(query=dict(token=token,owner_label=owner,dimension=dimension),value_hash_format=HASH_FORMAT,journal_present=journal is not None,opaque_journal=opaque,matching_saved_records=matches,observed_fault_tiles=faults,observed_receipts=receipt_rows,explicit_inventory_observations=inventory_rows,result_limit_reached=truncated,reconciliation_cleared=False,original_route_inferred=False,scope='Offline saved observations only; missing tokens are not clearance. No replay, redemption, minting, inferred conservation or fence clearing. Provider labels are not identity, alias, authorization or durability proof. Value hashes describe parsed values, not original encoded NBT tag widths; compare only matching hash formats.')
 
 def collect(path,mc,token,owner,dimension=0,inventories=(),limits=None):
     limits=dict(LIMITS if limits is None else limits)
