@@ -75,7 +75,7 @@ public final class LegacyWirelessStorage {
         Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
         Set<Object> seenHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
         for(LegacyTile node:candidates){net.minecraftforge.items.IItemHandler handler=handlers.get(node);
-            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget()))continue;
+            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget())||LegacyWirelessSafety.data(root.getWorld()).blocked(root.owner,node.target()))continue;
             boolean blocked=false;if(handler!=null)for(Object id:backing(handler))if(blockedHandlers.contains(id)){blocked=true;break;}if(blocked)continue;
             if((!Boolean.TRUE.equals(allOwnedSided.get(node.fluidTarget()))&&seen.contains(node.fluidTarget()))||(handler!=null&&seenHandlers.contains(handler)))continue;
             seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
@@ -200,19 +200,20 @@ public final class LegacyWirelessStorage {
         return withdrawEntry(player,selected,amount,inventory(selected.node),new ConservingItems.Work(WORK_LIMIT),false);
     }
     private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
+        final ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(entry.node);
         if(source==null||!ready(entry.node)||entry.slot<0||!work.take()||entry.slot>=Math.min(source.slots(),LegacyPL4.slotLimit)||!work.take())return 0;
         if(!entry.physical.equals(physical(source.nativeInventory,entry.slot,entry.node)))return 0;
         ItemStack current=source.peek(entry.slot);if(exact?!ItemStack.areItemStacksEqual(current,entry.snapshot):!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
-        try{return ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(entry.node),one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
+        try{return ConservingItems.move(LegacyTile.STACKS,escrow,one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
         finally{retain(entry.node);player.inventory.markDirty();}
     }
     public static int deposit(EntityPlayer player,ItemStack tool,int slot,int amount){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||slot<0||slot>=36||amount<1||amount>64)return 0;
         ItemStack offered=player.inventory.getStackInSlot(slot);if(LegacyTile.STACKS.empty(offered)||tool(offered))return 0;
         ConservingItems.Work work=new ConservingItems.Work(WORK_LIMIT);int moved=0;
-        for(LegacyTile node:endpoints(root)){ConservingItems.Inventory<ItemStack> destination=inventory(node);if(destination==null)continue;
-            try{moved+=ConservingItems.move(LegacyTile.STACKS,LegacyItemSafety.escrow(node),playerInventory(player,slot),destination,amount-moved,LegacyPL4.slotLimit,work);}
+        for(LegacyTile node:endpoints(root)){ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(node);ConservingItems.Inventory<ItemStack> destination=inventory(node);if(destination==null)continue;
+            try{moved+=ConservingItems.move(LegacyTile.STACKS,escrow,playerInventory(player,slot),destination,amount-moved,LegacyPL4.slotLimit,work);}
             finally{retain(node);player.inventory.markDirty();}
             if(!ready(node)||moved>=amount||!work.available())break;
         }return moved;

@@ -65,6 +65,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public int transferOnce(){
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
+        if(fluidServer()&&role()==1&&LegacyWirelessSafety.data(world).blocked(owner,target())){status="Item target fenced by unresolved wireless handoff";return 0;}
         if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(world==null||world.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||world.isBlockPowered(pos))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network exceeds configured host limit";return 0;}
@@ -72,7 +73,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
         ConservingItems.Work work=new ConservingItems.Work(1024);int moved=0;Set<BlockPos> seenTargets=new HashSet<BlockPos>();seenTargets.add(target());
         for(BoundedNetwork.Point p:plan.nodes){
             TileEntity raw=world.getTileEntity(new BlockPos(p.x,p.y,p.z));if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
-            if(sink.role()!=2||!owner.equals(sink.owner)||!seenTargets.add(sink.target())||world.isBlockPowered(sink.pos))continue;
+            if(sink.role()!=2||!owner.equals(sink.owner)||LegacyWirelessSafety.data(world).blocked(owner,sink.target())||!seenTargets.add(sink.target())||world.isBlockPowered(sink.pos))continue;
             IItemHandler destination=sink.inventory();if(destination==null||destination==source)continue;
             ConservingItems.Escrow<ItemStack> escrow=LegacyItemSafety.escrow(this);
             int budget=LegacyPL4.itemRate-moved;
