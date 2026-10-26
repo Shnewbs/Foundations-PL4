@@ -4,7 +4,7 @@ import hashlib,json,os,re,shutil,subprocess,zipfile,time
 ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def verify(suite="item"):
-    decode=suite in {"decode-raw","decode-missing","decode-compound"}
+    decode=suite in {"decode-raw","decode-missing","decode-compound","decode-owner","decode-dimension","decode-scope","decode-rewrite"}
     if suite!="item" and not decode:raise ValueError("Unknown restart suite")
     prefix="item-"+suite+"-restart" if decode else "item-restart"
     status=json.loads((ROOT/'BUILD_STATUS.json').read_text());mc=status['minecraft']
@@ -77,7 +77,7 @@ def verify(suite="item"):
         archives[mode]=dict(file=archive.name,sha256=digest(archive))
     if len({p['pid'] for p in processes})!=4:raise ValueError('Processes were not distinct')
     summary=dict(suite=suite,minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
-    if decode:summary['scope']='Exact raw/missing context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.'
+    if decode:summary['scope']='Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.'
     (logs/('legacy-'+prefix+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
     print('PASS '+mc+' separate JVM item/receipt restart and controlled post-save halt',flush=True)
 if __name__=='__main__':
@@ -85,3 +85,6 @@ if __name__=='__main__':
     if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_decode_restart_fixture') is True:
         verify('decode-raw');verify('decode-missing')
     if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_compound_restart_fixture') is True:verify('decode-compound')
+
+    if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_field_restart_fixture') is True:
+        for suite in ['decode-owner','decode-dimension','decode-scope','decode-rewrite']:verify(suite)
