@@ -45,4 +45,16 @@ class EvidenceCollectorTests(unittest.TestCase):
         r=collect(self.path,'1.12.2',self.token,'owner');self.assertEqual(r['scanned_chunks'],1)
     def test_result_bound_does_not_hide_truncation(self):
         journal=dict(Schema=2,Entries=[dict(Token=self.token,Owner='owner')]*3);r=observe([],journal,self.token,'owner',0,set(),dict(LIMITS,results=1));self.assertEqual(len(r['matching_saved_records']),1);self.assertTrue(r['result_limit_reached']);self.assertFalse(r['reconciliation_cleared'])
+    def test_explicit_inventory_priority_crosses_region_boundary(self):
+        def text(s):return struct.pack('>H',len(s))+s.encode()
+        def region(base):
+            value=bytearray(16384)
+            for slot in [0,1]:
+                tile=b''.join(b'\x03'+text(k)+struct.pack('>i',v) for k,v in [('x',base+slot*16),('y',200),('z',0)])+b'\x08'+text('id')+text('fixture:inventory')+b'\x09'+text('Items')+b'\x0a'+struct.pack('>i',0)+b'\x00'
+                raw=b'\x0a\x00\x00\x0a'+text('Level')+b'\x09'+text('TileEntities')+b'\x0a'+struct.pack('>i',1)+tile+b'\x00\x00';compressed=zlib.compress(raw);off=(2+slot)*4096
+                value[slot*4:slot*4+4]=struct.pack('>I',(2+slot)<<8|1);value[off:off+5]=struct.pack('>I',len(compressed)+1)+b'\x02';value[off+5:off+5+len(compressed)]=compressed
+            return value
+        self.archive({'world/region/r.0.0.mca':region(0),'world/region/r.1.0.mca':region(512)})
+        r=collect(self.path,'1.12.2',self.token,'owner',inventories=[(0,200,0),(512,200,0)],limits=dict(LIMITS,chunks=2))
+        self.assertEqual(sorted(row['position'] for row in r['explicit_inventory_observations']),[[0,200,0],[512,200,0]]);self.assertFalse(r['selected_dimension_scan_complete']);self.assertEqual(r['scanned_chunks'],2)
 if __name__=='__main__':unittest.main()

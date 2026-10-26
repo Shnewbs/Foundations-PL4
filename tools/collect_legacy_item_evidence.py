@@ -113,26 +113,29 @@ def collect(path,mc,token,owner,dimension=0,inventories=(),limits=None):
             if not m:raise ValueError('Unexpected region filename')
             return tuple(map(int,m.groups()))
         regions.sort(key=lambda name:(region_coords(name) not in preferred_regions,name))
+        preferred_records=[];other_records=[];available_chunks=0
         for name in regions:
             info=saved.getinfo(name)
             if selected+info.file_size>limits['selected_bytes']:complete=False;reason='selected region byte bound';break
             selected+=info.file_size;region=saved.read(info)
             if len(region)<8192:raise ValueError('Truncated region')
             rx,rz=region_coords(name)
-            slots=sorted(range(1024),key=lambda slot:((rx*32+slot%32,rz*32+slot//32) not in preferred_chunks,slot))
-            for slot in slots:
+            for slot in range(1024):
                 loc=int.from_bytes(region[slot*4:slot*4+4],'big');off=(loc>>8)*4096
                 if not off:continue
-                if chunks>=limits['chunks']:complete=False;reason='chunk bound';break
-                if off<8192 or off+5>len(region):raise ValueError('Invalid region offset')
-                size=int.from_bytes(region[off:off+4],'big')
-                if size<1 or off+size+4>len(region):raise ValueError('Invalid region record')
-                chunk=nbt(inflate(region[off+5:off+4+size],region[off+4],limits['chunk_bytes']));chunks+=1
-                rows=chunk.get('Level',{}).get('TileEntities',[])
-                if not isinstance(rows,list):raise ValueError('Malformed saved tiles')
-                if len(tiles)+len(rows)>limits['tiles']:complete=False;reason='tile bound';break
-                tiles.extend(rows)
-            if not complete:break
+                available_chunks+=1
+                queue=preferred_records if (rx*32+slot%32,rz*32+slot//32) in preferred_chunks else other_records
+                if len(queue)<=limits['chunks']:queue.append((region,off))
+        if available_chunks>limits['chunks']:complete=False;reason=reason or 'chunk bound'
+        for region,off in (preferred_records+other_records)[:limits['chunks']]:
+            if off<8192 or off+5>len(region):raise ValueError('Invalid region offset')
+            size=int.from_bytes(region[off:off+4],'big')
+            if size<1 or off+size+4>len(region):raise ValueError('Invalid region record')
+            chunk=nbt(inflate(region[off+5:off+4+size],region[off+4],limits['chunk_bytes']));chunks+=1
+            rows=chunk.get('Level',{}).get('TileEntities',[])
+            if not isinstance(rows,list):raise ValueError('Malformed saved tiles')
+            if len(tiles)+len(rows)>limits['tiles']:complete=False;reason='tile bound';break
+            tiles.extend(rows)
     result=observe(tiles,journal,token,owner,dimension,inventories,limits)
     result.update(minecraft_label=mc,minecraft_identity_proven_by_save=False,source_archive_sha256=source_hash,selected_dimension_scan_complete=complete and not result['result_limit_reached'],scan_stop_reason=reason,scanned_chunks=chunks,scanned_tiles=len(tiles),selected_region_bytes=selected,limits=limits)
     return result
