@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "40256017c4abe9c25dc7562bd3df555b3a9870ba",
-      "workflow_run": 40384710854,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40384710854",
+      "source_commit": "53b87f80a3de41263c435b91a9f961975a034f1e",
+      "workflow_run": 40389033557,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40389033557",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -498,6 +498,11 @@
         "source_commit": "c57a17cbb25d90e6734088427feff67f059411e8",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": "40374749926"
+      },
+      "previous_field_process_candidate": {
+        "source_commit": "40256017c4abe9c25dc7562bd3df555b3a9870ba",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "workflow_run": 40384710854
       }
     },
     {
@@ -569,16 +574,16 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40384710854,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40384710854",
-      "source_commit": "bd3db5956bcbc32386b53f3c7e83131131e75ffc",
-      "runtime_sha256": "7388cbd9b3b92b834e8aaa3f486e03c431b98a72aeff945f6e5faf3a8313f5cf",
+      "workflow_run": 40389033557,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40389033557",
+      "source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
+      "runtime_sha256": "4ace8c65680bdb612e573ca9c94cd4def8aeb35f3b2d87b4c889b076a2bcfbdc",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "bd3db5956bcbc32386b53f3c7e83131131e75ffc",
+      "candidate_source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
@@ -593,7 +598,7 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
       "observed_native_fixtures": 370,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -657,7 +662,7 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_HOURLY_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PENDING_FRESH_EXACT_CURRENT_JAR",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
@@ -713,14 +718,11 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "bd3db5956bcbc32386b53f3c7e83131131e75ffc",
-        "runtime_sha256": "7388cbd9b3b92b834e8aaa3f486e03c431b98a72aeff945f6e5faf3a8313f5cf",
-        "workflow_run": 40385685322,
-        "result": "PASS",
-        "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
-        "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-        "reviewed_captures": 2,
-        "hashed_captures": 21
+        "source_commit": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
+        "runtime_sha256": "4ace8c65680bdb612e573ca9c94cd4def8aeb35f3b2d87b4c889b076a2bcfbdc",
+        "workflow_run": 40390184776,
+        "result": "PENDING",
+        "scope": "Fresh exact-JAR client run not complete; no transfer of old-client acceptance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -863,8 +865,8 @@
         "scope": "Clean and completed-save/storage-save/flush parent SIGKILL only; integer Token rejected compound with nested payload and original evidence preserved."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 348,
-      "total_decode_process_jvms": 12,
+      "total_decode_process_assertions": 812,
+      "total_decode_process_jvms": 28,
       "previous_opaque_export_candidate": {
         "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
         "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
@@ -879,7 +881,28 @@
       },
       "opaque_journal_export": "PASS_13_NATIVE_CASES_AND_SCOPED_EXACT_JAR_REAL_CHAT_BYTE_SHA_ROUND_TRIP",
       "opaque_journal_export_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-      "opaque_journal_export_pages": 5
+      "opaque_journal_export_pages": 5,
+      "previous_field_process_candidate": {
+        "source_commit": "bd3db5956bcbc32386b53f3c7e83131131e75ffc",
+        "runtime_sha256": "7388cbd9b3b92b834e8aaa3f486e03c431b98a72aeff945f6e5faf3a8313f5cf",
+        "workflow_run": 40384710854,
+        "stock_client_attribution": {
+          "source_commit": "bd3db5956bcbc32386b53f3c7e83131131e75ffc",
+          "runtime_sha256": "7388cbd9b3b92b834e8aaa3f486e03c431b98a72aeff945f6e5faf3a8313f5cf",
+          "workflow_run": 40385685322,
+          "result": "PASS",
+          "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
+          "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+          "reviewed_captures": 2,
+          "hashed_captures": 21
+        },
+        "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
+      },
+      "malformed_fields_process_restart": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+      "malformed_fields_process_assertions": 464,
+      "malformed_fields_process_jvms": 16,
+      "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
+      "pending_client_workflow_run": 40390184776
     },
     {
       "minecraft": "1.6.4",
@@ -894,15 +917,15 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40384710854,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40384710854",
-      "source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
+      "workflow_run": 40389033557,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40389033557",
+      "source_commit": "d664301cd0d2e0d3acab0aed2ee7c44b86be874c",
       "runtime_sha256": "b3536d35409137b44b46dbc2c8940e40268d158a43e72b34ff48e3f56914c4ae",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
+      "candidate_source_commit": "d664301cd0d2e0d3acab0aed2ee7c44b86be874c",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -917,7 +940,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 348,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -962,7 +985,7 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_EXACT_CURRENT_HOURLY_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_RETAINED_EXACT_PRODUCTION_BYTES_NO_FRESH_RUN_OR_REVIEW",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
@@ -1004,13 +1027,11 @@
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
         "source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
+        "current_candidate_source_commit": "d664301cd0d2e0d3acab0aed2ee7c44b86be874c",
         "runtime_sha256": "b3536d35409137b44b46dbc2c8940e40268d158a43e72b34ff48e3f56914c4ae",
         "workflow_run": 40387058589,
-        "result": "PASS",
-        "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
-        "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-        "reviewed_captures": 2,
-        "hashed_captures": 21
+        "byte_identity_verified": true,
+        "scope": "Prior exact-source stock client/export proof for byte-identical current production JAR. New malformed-field process acceptance is separate; no fresh1.6.4 graphical/malformed-context/authorization clearance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1160,8 +1181,8 @@
         "scope": "Clean and completed-save/storage-save/flush parent SIGKILL only; integer Token rejected compound with nested payload and original evidence preserved."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 348,
-      "total_decode_process_jvms": 12,
+      "total_decode_process_assertions": 812,
+      "total_decode_process_jvms": 28,
       "previous_opaque_export_candidate": {
         "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
         "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
@@ -1176,7 +1197,27 @@
       },
       "opaque_journal_export": "PASS_13_NATIVE_CASES_AND_SCOPED_EXACT_JAR_REAL_CHAT_BYTE_SHA_ROUND_TRIP",
       "opaque_journal_export_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
-      "opaque_journal_export_pages": 4
+      "opaque_journal_export_pages": 4,
+      "previous_field_process_candidate": {
+        "source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
+        "runtime_sha256": "b3536d35409137b44b46dbc2c8940e40268d158a43e72b34ff48e3f56914c4ae",
+        "workflow_run": 40384710854,
+        "stock_client_attribution": {
+          "source_commit": "541f89cc8bbaf5f05257cfd3d36a93aec87c36af",
+          "runtime_sha256": "b3536d35409137b44b46dbc2c8940e40268d158a43e72b34ff48e3f56914c4ae",
+          "workflow_run": 40387058589,
+          "result": "PASS",
+          "scope": "Fresh current exact hourly-qualified production JAR; full5-page1.12.2 /4-page1.6.4 opaque export real-chat reconstruction, all storage/search/grouping/replay/codecs/display regressions.2 current captures reviewed and21 hashed per port.1.6.4 probe-only JSON text decoding repair preserves production bytes. No installed-provider, dedicated multiplayer, arbitrary-save or recovery clearance.",
+          "evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json",
+          "reviewed_captures": 2,
+          "hashed_captures": 21
+        },
+        "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
+      },
+      "malformed_fields_process_restart": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+      "malformed_fields_process_assertions": 464,
+      "malformed_fields_process_jvms": 16,
+      "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json"
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",
