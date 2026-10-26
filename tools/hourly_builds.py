@@ -128,7 +128,22 @@ def validate_provider_outcomes(report, mc):
                 raise ValueError("Provider conservation/mutation proof disagrees")
 
 
-def validate_preupgrade(root, report, mc, sha, runtime):
+def validate_historical_providers(report, mc):
+    snapshots=[p['report'].get('provider_outcomes') for p in report['processes']]
+    if not snapshots or not isinstance(snapshots[0],list) or len(snapshots[0])!=2 or any(s!=snapshots[0] for s in snapshots):
+        raise ValueError('Historical provider state changed across native runtimes')
+    owner='fae1b877-c6b4-4538-a26a-630190b54205' if mc=='1.12.2' else 'pl4owner'
+    ids=set()
+    for row,outcome in zip(snapshots[0],['insert','extract']):
+        ident=row.get('provider_id','');extraction=outcome=='extract'
+        if not isinstance(ident,str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',ident) or ident in ids or row.get('owner')!=owner or row.get('outcome')!=outcome:
+            raise ValueError('Historical provider identity/ownership disagrees')
+        ids.add(ident)
+        expected=dict(source_units=32,destination_units=0 if extraction else 8,unaccounted_units=8 if extraction else 0,sealed_uncertain_claim=0 if extraction else 8,mutation_calls=1,removed_units=8 if extraction else 0,accepted_units=0 if extraction else 8)
+        if any(type(row.get(k)) is not int or row[k]!=v for k,v in expected.items()):raise ValueError('Historical provider conservation disagrees')
+
+
+def validate_preupgrade(root, report, mc, sha, runtime, provider=False):
     logs = root / "verification-logs"
     if (report.get("minecraft") != mc or report.get("source_commit") != sha or report.get("runtime_sha256") != runtime
             or report.get("preupgrade_unlocated_fault_import") != "PASS" or report.get("candidate_restart") != "PASS"):
@@ -140,7 +155,7 @@ def validate_preupgrade(root, report, mc, sha, runtime):
             or hashlib.sha256((logs / "preupgrade-baseline-runtime.jar").read_bytes()).hexdigest() != baseline["runtime_sha256"]):
         raise ValueError("Pre-upgrade historical runtime identity disagrees")
     rows = report.get("processes", [])
-    phases = [("fault-write", 4, baseline["runtime_sha256"]), ("fault-upgrade", 10, runtime), ("fault-verify", 10, runtime)]
+    phases = [("fault-write", 16 if provider else 4, baseline["runtime_sha256"]), ("fault-upgrade", 22 if provider else 10, runtime), ("fault-verify", 22 if provider else 10, runtime)]
     if len(rows) != 3 or any(type(p.get("pid")) is not int or p["pid"] <= 0 for p in rows) or len({p["pid"] for p in rows}) != 3:
         raise ValueError("Pre-upgrade processes are not independent")
     for row, (phase, count, selected) in zip(rows, phases):
@@ -161,6 +176,8 @@ def validate_preupgrade(root, report, mc, sha, runtime):
             or rows[2]["report"].get("tokens") != tokens or rows[0]["report"].get("tokens") != []):
         raise ValueError("Historical unknown-route token proof disagrees")
     archive = report["world_archive"]
+    if provider:
+        validate_historical_providers(report, mc)
     if archive["file"] != "preupgrade-item-fault-world.zip" or hashlib.sha256((logs / archive["file"]).read_bytes()).hexdigest() != archive["sha256"]:
         raise ValueError("Pre-upgrade saved world changed")
 
@@ -210,7 +227,7 @@ def record(root, expected_mc, expected_sha):
             gate_files.append("legacy-item-restart-summary.json")
         if status.get("preupgrade_item_fault_fixture") is True:
             fault_import = json.loads((logs / "preupgrade-item-fault-summary.json").read_text())
-            validate_preupgrade(root, fault_import, expected_mc, actual, native["runtime_sha256"])
+            validate_preupgrade(root, fault_import, expected_mc, actual, native["runtime_sha256"], status.get('historical_provider_fixture') is True)
             gate_files.append("preupgrade-item-fault-summary.json")
     else:
         native = json.loads((logs / "rc-development-gate.json").read_text())
