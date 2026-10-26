@@ -5,24 +5,20 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-receipt-auth-2026-10-26T20",
-    "claimed_at": "2026-10-26T20:26:11Z",
-    "expires_at": "2026-10-26T20:41:11.000Z",
-    "purpose": "Record completed native receipt authorization and both exact client proofs"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40389033557,
+  "last_verified_legacy_native_run": 40393563833,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40390184776,
-    "1.6.4": 40387058589
+    "1.12.2": 40394588419,
+    "1.6.4": 40394588431
   },
-  "current_checkpoint": "Current-world receipt diagnostic guard and native post-restart authorization pass on both legacy ports. Added 64 owner/unrelated/operator/foreign-world assertions per port inside field suites; total decode 876/28 JVMs, separate from provider188 and historical60. Ordinary native370/348/main192 and149 local test executions pass; all17 packaged hashes and28 decode worlds independently checked. Both changed production JARs now await fresh pinned stock clients. All24 RC flags remainfalse; no release/upload.",
-  "local_validation": "PASS: 149 local executions; ordinary native 370/348/main 192; new field suites 464/16 JVMs per port; total decode 812/28 JVMs and independent raw NBT verification of 14 decode worlds per port. Registered provider 188/4 JVMs and historical 60/3 JVMs remain separate. Fresh 1.12.2 exact runtime client and complete chat transcript pass; 1.6.4 prior exact-byte client/report/capture hashes revalidated. All current gates passed without a retry.",
+  "current_checkpoint": "Receipt diagnostic API now rejects foreign player-world, remote and null world queries before inspecting context or journal. Both legacy ports pass 64 new owner/unrelated/operator/foreign-world authorization assertions across clean and completed-save/flush parent-SIGKILL JVMs. These are included in field-suite 528 and total decode 876/28 JVMs per port; provider188 and historical60 stay separate. Ordinary native370/348/main192 and149 local test executions pass. All17 packaged hashes, source archives,28 decode worlds and32 provider/decode process identities per port verified. Both changed production JARs pass fresh stock clients and complete5/4-page export regressions;4 captures reviewed and42 hashed. All24 RC flagsfalse; no release/upload.",
+  "local_validation": "PASS: 149 local executions, ordinary native370/348/main192, 64 receipt authorization checks per port (subset of field528 and total decode876). Four exact native role/world assertions are present in every field-suite phase report (36 write/30 verify). All raw saved decode/provider/historical NBT checked independently. Both fresh exact-JAR stock clients pass. No dedicated multiplayer, online identity, live mutation, installed-provider or recovery clearance.",
   "next_work": [
-    "Add separate-process owner/operator receipt diagnostic authorization after malformed Owner/Dimension/Scope or typed serialized rewrite, including another profile and current-dimension boundaries. Extend to live field rewrites and bounded owner-authorized linked-host/receipt export without exposing unrelated records. Actual installed-provider identity/API/auth/durability, copied user/modpack worlds and reviewed reconciliation remain open.",
+    "Test live public field mutations: LegacyItemSafety.blocked currently checks opaque/raw/missing context or nonempty itemFault, without directly checking retained ItemLegacyEvidence. Exercise external itemFault clearing plus owner/context rewrites before admission, after reload and before removal; fix any demonstrated bypass while preserving all evidence and sealed claims. No live transfer bypass is claimed from source inspection alone.",
+    "Continue bounded owner-authorized linked-host/receipt export and dedicated multiplayer/online profile/dimension travel authorization. Current native fake-player receipt checks do not certify online identity, provider permissions or actual dimension travel.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -30,43 +26,42 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json",
-  "main_native_validation_run": 40389033557,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json",
+  "main_native_validation_run": 40393563833,
   "curseforge_reconciliation_run": 40385322437,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40389033557
+    40393563833
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40389033557,
-    "1.6.4": 40389033557
+    "1.12.2": 40393563833,
+    "1.6.4": 40393563833
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "53b87f80a3de41263c435b91a9f961975a034f1e",
+  "native_main_source_commit": "212cb56f501ff22bef8bdf9610323b76022813de",
   "last_writer_release": {
     "owner": "pl4-receipt-auth-2026-10-26T20",
-    "released_at": "2026-10-26T20:19:16Z",
-    "checkpoint": "Native receipt authorization qualified; isolated stock clients await completion."
+    "released_at": "2026-10-26T20:27:34Z",
+    "checkpoint": "Current-world receipt authorization and both exact clients qualified; live mutation, provider, multiplayer, migration and reconciliation work remain resumable."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-field-process-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "f9ff3a6affefbf3c94b133a080e1b9a3972a7880",
-      "1.6.4": "d664301cd0d2e0d3acab0aed2ee7c44b86be874c"
+      "1.12.2": "997edb3c94da9696b0029fe80e375cdc76cd5102",
+      "1.6.4": "39230c85baa37c077e4eb0eb79adba469abb23f2"
     },
     "publication_steps": "SKIPPED"
   },
   "previous_checkpoint": "Malformed saved Owner, Dimension and Scope fields plus typed serialized context rewrites now pass four new native suites: 464 assertions across 16 JVMs per legacy port. Total decode 812/28 JVMs remains separate from provider 188 and historical 60. Ordinary native 370/348 and main 192 pass; 149 local test executions pass. All 17 packaged hashes, source archives, all 28 raw saved decode worlds and 32 distinct provider/decode process identities per port were independently verified. Fresh exact-JAR 1.12.2 client passes all five export pages and normal regressions; two captures reviewed and 21 hashed. Byte-identical 1.6.4 production retains prior verified client evidence, with no fresh run/review claimed. All 24 RC flags remain false; no new release or upload.",
-  "pending_receipt_clients": {
-    "source_commits": {
-      "1.12.2": "997edb3c94da9696b0029fe80e375cdc76cd5102",
-      "1.6.4": "39230c85baa37c077e4eb0eb79adba469abb23f2"
-    },
-    "state": "Fresh client workflows pinned in this checkpoint; await actual run results."
+  "pending_live_mutation_finding": {
+    "source": "997edb3c94da9696b0029fe80e375cdc76cd5102",
+    "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyItemSafety.java",
+    "observation": "    public static boolean blocked(LegacyTile tile){return tile.itemOpaque!=null||tile.itemRawJournalContext!=null||tile.itemMissingJournalContext||!tile.itemFault.isEmpty();}",
+    "scope": "Live mutation audit pending; not a demonstrated transfer bypass. Add exact native tests for external itemFault clearing with retained evidence and owner/context changes."
   }
 }
