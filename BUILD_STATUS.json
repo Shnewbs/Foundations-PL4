@@ -109,5 +109,6 @@
   "item_live_evidence_fixture": true,
   "item_live_decode_restart_fixture": true,
   "item_live_decode_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_FAULT_CLEAR_FACE_AND_NBT_RELOAD",
-  "item_live_admission_acceptance": "PENDING_EXACT_NATIVE_READMISSION_AND_OBSERVED_ALIAS_CASES"
+  "item_live_admission_acceptance": "PENDING_EXACT_NATIVE_READMISSION_AND_OBSERVED_ALIAS_CASES",
+  "item_live_admission_fixture": true
 }

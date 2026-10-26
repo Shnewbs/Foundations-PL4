@@ -18,7 +18,7 @@ public final class LegacyItemSafety {
         tile.side=face;tile.fluidDirty();return true;
     }
     public static void importSaved(LegacyTile tile){
-        if(!tile.itemImportPending||!tile.fluidServer())return;
+        if(!tile.fluidServer()||(!tile.itemImportPending&&tile.itemLegacyEvidence==null))return;
         LegacyWirelessSafety.data(tile.getWorld()).importLegacy(tile);tile.itemImportPending=false;
     }
     private static void writeContext(LegacyTile tile,NBTTagCompound tag){
