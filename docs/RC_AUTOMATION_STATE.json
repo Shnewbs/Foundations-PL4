@@ -7,9 +7,10 @@
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
   "writer_lease": {
     "owner": "pl4-wireless-journal-2026-10-26T01",
-    "claimed_at": "2026-10-26T01:06:00Z",
+    "claimed_at": "2026-10-26T01:04:53Z",
     "expires_at": "2026-10-26T01:48:00Z",
-    "purpose": "Implement bounded per-world persistent target uncertainty for 1.12.2 wireless handoffs"
+    "purpose": "Implement bounded per-world persistent target uncertainty for 1.12.2 wireless handoffs",
+    "renewed_at": "2026-10-26T01:08:30Z"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
@@ -19,7 +20,7 @@
     "1.12.2": 40247971424,
     "1.6.4": 40247971395
   },
-  "current_checkpoint": "Closed ordinary exact-JAR stock-client regression for the unchanged native-qualified item-route-edit sources: 1.12.2 cc6a7b2a/a16797ab and 1.6.4 0dc2f124/52b34855. Both stock Forge clients passed actual mouse withdraw/deposit/paging, grouping/full-NBT variants and 64-item conservation, search/sort/stale replay, keyboard lifecycle, native codecs and private/public display probes. Eight current captures manually reviewed and all 32 hashed; production runtime hashes match their qualified native archives. Existing native results remain 253/253 and 230/230; no fresh native or production implementation change is claimed. Cross-network/removal/rebind uncertainty, opaque providers, advanced legacy parity and broader acceptance remain open. No RC cleared or published.",
+  "current_checkpoint": "Implementing 1.12.2 bounded world-saved wireless target uncertainty; initial source 91487241 adds 15 native fixtures, not qualified yet. Automatic-origin uncertainty, different-coordinate hidden aliases and broader acceptance remain open.",
   "local_validation": "Current 1.12.2 stock client 40247971424 and 1.6.4 stock client 40247971395 PASS with archive SHA256 verified and exact production/source hashes equal their retained hourly-native qualification. Separate probe hashes and native codec/mouse/group/search/sort/display flags retained. Four current captures per target manually reviewed; all sixteen per target hashed. Native 253/253 and 230/230, production startup and generated migration remain the prior exact-source results; no duplicate native build started. Controller release publication step observed skipped.",
   "next_work": [
     "Continue cross-network and removed/rebound endpoint uncertainty on both legacy ports. Owner face edits are now pinned while the node retains fault/opaque/pending state. Current backing/target fences still collect only nodes in one loaded same-owner network; removing/unloading/replacing that node can outlive the fence. Add explicit persisted owner/world/target uncertainty before foreign mutation and preserve it through sealed-receipt removal, without scanning the entire loaded world or guessing hidden backing identity. Add adversarial native cross-network/removal/reload/rebind cases before treating this gap as closed.",
