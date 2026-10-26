@@ -34,7 +34,7 @@ public final class ItemRestartScenarios {
         }finally{
             Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.12.2");report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
             FileWriter out=new FileWriter("item-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
-            if(passed&&phase.equals("crash-write")){System.out.flush();System.err.flush();Runtime.getRuntime().halt(73);}
+            if(passed&&phase.equals("crash-write")){System.out.println("PL4 ITEM RESTART KILL READY");System.out.flush();System.err.flush();while(true)Thread.sleep(1000);}
             server.initiateShutdown();
         }
     }
