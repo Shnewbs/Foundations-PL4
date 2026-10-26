@@ -62,7 +62,7 @@ def verify():
     forge='9.11.1.1345' if mc=='1.6.4' else '14.23.5.2864';launchers=list(work.glob('*forge*'+forge+'*.jar'))
     if len(launchers)!=1:raise ValueError('Expected exact native Forge launcher')
     java=Path(os.environ['JAVA_HOME_7_X64' if mc=='1.6.4' else 'JAVA_HOME_8_X64'])/'bin/java';rows=[]
-    for phase,selected,count in [('fault-write',logs/'preupgrade-baseline-runtime.jar',4),('fault-upgrade',runtime,10),('fault-verify',runtime,10)]:
+    for phase,selected,count in [('fault-write',logs/'preupgrade-baseline-runtime.jar',16),('fault-upgrade',runtime,22),('fault-verify',runtime,22)]:
         shutil.copyfile(selected,work/'mods/FoundationsPL4-runtime.jar')
         if digest(work/'mods/FoundationsPL4-runtime.jar')!=digest(selected):raise ValueError('Installed runtime changed')
         logfile=logs/('preupgrade-'+phase+'.log')
@@ -80,10 +80,12 @@ def verify():
         rows.append(dict(phase=phase,pid=pid,exit_code=code,runtime_sha256=digest(selected),log_sha256=digest(logfile),report=report))
         (logs/('preupgrade-'+phase+'.json')).write_text(json.dumps(report,indent=2)+'\n')
     if len({r['pid'] for r in rows})!=3 or len(set(rows[1]['report']['tokens']))!=2 or rows[1]['report']['tokens']!=rows[2]['report']['tokens']:raise ValueError('Independent process/token proof failed')
+    if any(r['report'].get('provider_outcomes')!=rows[0]['report'].get('provider_outcomes') for r in rows) or len(rows[0]['report'].get('provider_outcomes',[]))!=2:raise ValueError('Historical private provider state changed')
     archive=logs/'preupgrade-item-fault-world.zip'
     with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
         for p in sorted((work/'pl4-preupgrade-fault-world').rglob('*')):
             if p.is_file() and not p.is_symlink():z.write(p,p.relative_to(work).as_posix())
-    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),baseline=origin,processes=rows,preupgrade_unlocated_fault_import='PASS',candidate_restart='PASS',world_archive=dict(file=archive.name,sha256=digest(archive)),scope='Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Not arbitrary user/modpack migration, provider-private outcomes or crash atomicity. No recovery/replay/mint/clear API.')
+    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),baseline=origin,processes=rows,preupgrade_unlocated_fault_import='PASS',candidate_restart='PASS',world_archive=dict(file=archive.name,sha256=digest(archive)),scope='Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API.')
     (logs/'preupgrade-item-fault-summary.json').write_text(json.dumps(summary,indent=2)+'\n');print('PASS '+mc+' pre-journal native world import and candidate process restart',flush=True)
 if __name__=='__main__':verify()
+
