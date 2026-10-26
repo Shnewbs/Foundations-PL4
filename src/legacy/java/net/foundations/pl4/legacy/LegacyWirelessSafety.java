@@ -97,6 +97,7 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         return matches?"PL4 item receipt: unresolved token "+token+"; recorded phase "+receiptPhase(context)+" at "+record.target.x+","+record.target.y+","+record.target.z+"; preserve receipt; no replay.":"PL4 item receipt: context mismatch; preserve receipt and inspect saved data.";
     }
     public static String receiptDiagnostic(World world,net.minecraft.entity.player.EntityPlayer player,ItemStack receipt){
+        if(world==null||world.isRemote||player==null||player.worldObj!=world)throw new IllegalArgumentException("Receipt inspection requires the player current server world");
         if(receipt==null||receipt.itemID!=LegacyPL4.ITEM_CELL.itemID)throw new IllegalArgumentException("Hold a sealed PL4 item receipt");
         NBTTagCompound tag=receipt.getTagCompound(),context=tag!=null&&tag.getTag("ItemJournalContext") instanceof NBTTagCompound?tag.getCompoundTag("ItemJournalContext"):null;
         if(context!=null&&!tag.hasKey("ItemJournalContext"))context=null;
