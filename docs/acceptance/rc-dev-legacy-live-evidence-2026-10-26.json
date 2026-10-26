@@ -8239,5 +8239,13 @@
     }
   },
   "current_clients_reviewed_captures": 4,
-  "current_clients_hashed_captures": 42
+  "current_clients_hashed_captures": 42,
+  "source_commits": {
+    "1.12.2": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+    "1.6.4": "6797ecc0bd09a7808f2059f34cb255af9d570ed2"
+  },
+  "hourly_runs": [
+    40403001650,
+    40403201527
+  ]
 }
