@@ -749,3 +749,13 @@ Info Readers now use a provider registry. Add-on developers can register read-on
 ### AVOID DOUBLE COUNTS
 
 Repeated links, shared item/fluid handler objects and vanilla chest, barrel and shulker inventories are deduplicated per sample. Both halves of a vanilla double chest count as one combined inventory. Separate modded sided wrappers may expose overlapping or independent storage; PL4 does not guess from equal contents. Pin a single endpoint when a mod exposes ambiguous overlapping storage.
+
+## Opaque item-journal export on legacy targets
+
+On Minecraft 1.12.2 and experimental 1.6.4, `/pl4legacy journal-export [page]` lets an operator inspect original opaque journal bytes from their current server dimension. Ordinary owners keep `/pl4legacy journal x y z [page]` for scoped records; ownership cannot authenticate an opaque journal containing unrelated or malformed records. Export requires an in-dimension player with command permission level 2. The 1.6.4 identity model remains normalized legacy player names.
+
+Each response has three lines: a format/dimension/byte-count/SHA-256 manifest, one numbered hexadecimal page, and an explicit uncertainty notice. There are at most 128 pages of 128 bytes, with a 16,384-byte uncompressed snapshot cap. Oversized or unencodable journals refuse the whole response; preserve an offline save copy for inspection instead. The command reads only already-loaded saved data and does not load inventories, invoke providers, write export files or settle operations.
+
+Capture every three-line response as a JSON array of blocks, each block containing those three exact strings. Run `python tools/verify_legacy_journal_export.py captured-chat-blocks.json` against the copied transcript. The verifier reconstructs the byte sequence and rejects missing, duplicate, changed, mixed-dimension or checksum-mismatched pages. If a journal changes between requests, preserve the separate snapshots and collect a complete current one.
+
+The `native-nbt-uncompressed-v1` hash identifies the exact exported native serialization, including native tag names and scalar widths. It is separate from offline collector `pl4-parsed-value-v2` hashes; neither cross-format nor cross-version digest equality is assumed. The export represents the opaque journal payload, not a whole-save archive or authenticated provider history. Preserve the full original save alongside it. Original target/phase and provider outcomes remain unknown; all fences and sealed receipts remain in place. There is no recovery, redemption, replay or mint action.

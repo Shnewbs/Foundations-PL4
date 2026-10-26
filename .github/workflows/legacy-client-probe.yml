@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 35
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
-      PL4_NATIVE_ARCHIVE_SHA256: '76884ba29e0cfa554f64a23c3a6e79ca8d579d92e9699377205f760351ae8b17'
+      PL4_NATIVE_ARCHIVE_SHA256: '083d6dc492d53450937f8dc6e9486c9dfa2001e1a499d26f90e89b3e9c9c3ff6'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: e84fefc44ed8e54adb8e550a0a99cee8e7a11a95
+          ref: bd3db5956bcbc32386b53f3c7e83131131e75ffc
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12674142237/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12680421150/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -100,6 +100,13 @@ jobs:
           root=Path('results');r=json.loads((root/'legacy-wireless-client.json').read_text())
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
+          import sys
+          sys.path.insert(0,'control/tools')
+          from verify_legacy_journal_export import verify
+          assert r.get('opaque_journal_export_round_trip') is True
+          export=verify(r['opaque_journal_export_blocks'])
+          (root/'opaque-journal-export-verified.json').write_text(json.dumps(export,indent=2)+'\n')
+          assert (root/r['opaque_export_capture']).stat().st_size>1000
           assert r.get('native_diagnostic_chat_round_trip') is True
           assert r.get('native_preupgrade_import_chat_round_trip') is True
           assert len(r['preupgrade_import_token'])==36
