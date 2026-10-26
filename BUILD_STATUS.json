@@ -106,5 +106,7 @@
   "item_receipt_auth_restart_fixture": true,
   "item_receipt_auth_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_AUTHORIZATION",
   "item_live_evidence_acceptance": "PENDING_EXACT_NATIVE_LIVE_FAULT_OWNER_CONTEXT_REMOVAL_TESTS",
-  "item_live_evidence_fixture": true
+  "item_live_evidence_fixture": true,
+  "item_live_decode_restart_fixture": true,
+  "item_live_decode_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_FAULT_CLEAR_FACE_AND_NBT_RELOAD"
 }

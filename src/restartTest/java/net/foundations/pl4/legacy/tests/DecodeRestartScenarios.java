@@ -50,7 +50,7 @@ public final class DecodeRestartScenarios {
             load(x);load(x+5);air(x);air(x+5);place(x);chestBlock(x+5);
             LegacyTile n=node(x);n.owner=OWNER;n.pending=new ItemStack(Items.IRON_INGOT,8);n.itemFault="Original decode fixture uncertainty";n.itemImportPending=true;LegacyItemSafety.importSaved(n);
             check(n.itemJournalContext!=null,"seed unknown context "+x);
-            String token=n.itemJournalContext.getString("Token");n.itemLegacyEvidence=evidence(x,token);n.fluidDirty();
+            String token=n.itemJournalContext.getString("Token");n.itemLegacyEvidence=evidence(x,token);n.fluidDirty();liveGuards(n,"seed "+x);
         }
         for(int x:new int[]{64,80}){
             LegacyTile n=node(x);NBTTagCompound tag=save(n);
@@ -67,7 +67,7 @@ public final class DecodeRestartScenarios {
     private void verify(int x,boolean removed){
         load(x);load(x+5);NBTTagCompound tag;
         if(removed){check(node(x)==null,"removed host stays absent "+x);ItemStack receipt=chest(x+5).getStackInSlot(0);check(receipt!=null&&!receipt.isEmpty()&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt persists in native chest "+x);tag=receipt.getTagCompound();if(fieldSuite())authorize(receipt);}
-        else{LegacyTile n=node(x);check(n!=null,"retained host reloads "+x);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();check(LegacyItemSafety.blocked(n),"reloaded uncertainty cannot settle "+x);tag=save(n);}
+        else{LegacyTile n=node(x);check(n!=null,"retained host reloads "+x);liveGuards(n,"retained "+x);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();check(LegacyItemSafety.blocked(n),"reloaded uncertainty cannot settle "+x);tag=save(n);}
         NBTTagCompound original=tag.getCompoundTag("ItemLegacyEvidence");String token=original.getString("OriginalToken");tokens.add(token);
         check(UUID.fromString(token).toString().equals(token),"original token preserved "+x);
         check(original.equals(evidence(x,token)),"complete original evidence unchanged "+x);
@@ -96,6 +96,16 @@ public final class DecodeRestartScenarios {
         boolean enabled=LegacyPL4.enabled;LegacyPL4.enabled=true;
         try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
         check(journalTag().equals(saved),"inspection and replacement never clear journal");
+    }
+    private void liveGuards(LegacyTile n,String stage){
+        n.itemFault="";
+        check(n.itemLegacyEvidence!=null&&LegacyItemSafety.blocked(n),"live cleared fault retains evidence quarantine "+stage);
+        ItemStack held=n.pending;int face=n.side;n.pending=ItemStack.EMPTY;
+        check(!LegacyItemSafety.selectFace(n,(face+1)%6)&&n.side==face,"live cleared fault rejects empty escrow face edit "+stage);
+        n.pending=held;NBTTagCompound original=(NBTTagCompound)n.itemLegacyEvidence.copy();
+        n.readFromNBT(save(n));
+        check(LegacyItemSafety.blocked(n)&&n.itemImportPending&&LegacyTile.STACKS.count(n.pending)==8&&n.itemLegacyEvidence.equals(original),"live cleared fault NBT reload preserves evidence and count "+stage);
+        n.fluidDirty();
     }
     private boolean fieldSuite(){return Arrays.asList("owner","dimension","scope","rewrite").contains(suite);}
     private void authorize(ItemStack receipt){
