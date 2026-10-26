@@ -44,7 +44,7 @@ public final class Legacy164WirelessClientProbe implements ITickHandler {
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(this);TickRegistry.registerTickHandler(this,Side.CLIENT);TickRegistry.registerTickHandler(this,Side.SERVER);}
 
     @net.minecraftforge.event.ForgeSubscribe public void diagnosticMessage(net.minecraftforge.client.event.ClientChatReceivedEvent event){
-        String text=event.message;if(text.contains("PL4 item "))diagnosticChat.add(text);
+        String text=event.message;if(text.contains("PL4 item ")||text.contains("Token "))diagnosticChat.add(text);
     }
     private boolean diagnosticContains(String text){for(String line:diagnosticChat)if(line.contains(text))return true;return false;}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}

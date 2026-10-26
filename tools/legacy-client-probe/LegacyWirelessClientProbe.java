@@ -39,7 +39,7 @@ public final class LegacyWirelessClientProbe {
     @Mod.EventHandler public void init(FMLPreInitializationEvent event){MinecraftForge.EVENT_BUS.register(this);}
 
     @SubscribeEvent public void diagnosticMessage(net.minecraftforge.client.event.ClientChatReceivedEvent event){
-        String text=event.getMessage().getUnformattedText();if(text.contains("PL4 item "))diagnosticChat.add(text);
+        String text=event.getMessage().getUnformattedText();if(text.contains("PL4 item ")||text.contains("Token "))diagnosticChat.add(text);
     }
     private boolean diagnosticContains(String text){for(String line:diagnosticChat)if(line.contains(text))return true;return false;}
     private File output(){File out=new File(System.getenv("PL4_CLIENT_OUTPUT"));out.mkdirs();return out;}
