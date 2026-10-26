@@ -86,9 +86,11 @@
   "item_journal_command_integration": "NATIVE_COMMAND_HANDLER_AND_STOCK_CHAT_PENDING",
   "item_restart_fixture": true,
   "item_restart_acceptance": "PENDING_EXACT_SEPARATE_PROCESS_VALIDATION",
-  "item_restart_write_assertions": 36,
-  "item_restart_verify_assertions": 26,
+  "item_restart_write_assertions": 52,
+  "item_restart_verify_assertions": 42,
   "preupgrade_item_fault_import": "PENDING_EXACT_NATIVE_AND_MIGRATION_VALIDATION",
   "item_journal_schema": 2,
-  "preupgrade_item_fault_fixture": true
+  "preupgrade_item_fault_fixture": true,
+  "item_provider_fixture": true,
+  "item_provider_acceptance": "PENDING_EXACT_REGISTERED_PROVIDER_RESTART_VALIDATION"
 }

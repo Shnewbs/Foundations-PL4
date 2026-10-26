@@ -1,5 +1,7 @@
 package net.foundations.pl4.legacy.tests;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.foundations.pl4.legacy.*;
@@ -20,6 +22,10 @@ import java.util.*;
 public final class ItemRestartScenarios {
     private WorldServer world;private final List<String> cases=new ArrayList<String>(),tokens=new ArrayList<String>();
     private static final String OWNER="fae1b877-c6b4-4538-a26a-630190b54205";
+    private final List<Map<String,Object>> providers=new ArrayList<Map<String,Object>>();
+    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event){
+        GameRegistry.registerTileEntity(FaultyChest.class,new net.minecraft.util.ResourceLocation("foundations_pl4_restarttests","persisted_provider"));
+    }
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
         String phase=System.getProperty("foundations_pl4.itemRestart","");
         if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Disposable restart phase required");
@@ -32,7 +38,7 @@ public final class ItemRestartScenarios {
             else {verify(0,false);verify(16,true);}
             passed=true;System.out.println("PL4 ITEM RESTART "+phase+": PASS");
         }finally{
-            Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.12.2");report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
+            Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.12.2");report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("provider_outcomes",providers);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
             FileWriter out=new FileWriter("item-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
             if(passed&&phase.equals("crash-write")){System.out.println("PL4 ITEM RESTART KILL READY");System.out.flush();System.err.flush();while(true)Thread.sleep(1000);}
             server.initiateShutdown();
@@ -43,12 +49,11 @@ public final class ItemRestartScenarios {
         place(x,LegacyPL4.EXPORT);place(x+1,LegacyPL4.CABLE);place(x+2,LegacyPL4.IMPORT);node(x).side=4;node(x+2).side=5;
         chestBlock(x-1);chestBlock(x+3);chestBlock(x+5);
         FaultyChest fault=new FaultyChest();world.setTileEntity(pos(extraction?x-1:x+3),fault);
-        chest(x-1).setInventorySlotContents(0,new ItemStack(Items.IRON_INGOT,40));fault.extract=extraction;fault.insert=!extraction;
+        chest(x-1).setInventorySlotContents(0,new ItemStack(Items.IRON_INGOT,40));fault.providerId=UUID.randomUUID().toString();fault.providerOwner=OWNER;fault.extract=extraction;fault.insert=!extraction;
         LegacyPL4.enabled=true;LegacyPL4.itemRate=8;boolean threw=false;try{node(x).transferOnce();}catch(RuntimeException expected){threw=true;}finally{LegacyPL4.enabled=false;}
         check(threw,"foreign post-mutation fault "+x);check(LegacyItemSafety.blocked(node(x)),"local uncertainty "+x);
         String phase=extraction?"extract":"insert";check(phase.equals(node(x).itemJournalContext.getString("Phase")),"executed phase "+x);
-        // Replace the deliberately unregistered fault injector before saving; preserve its observed vanilla contents.
-        TileEntityChest clean=new TileEntityChest();for(int i=0;i<fault.getSizeInventory();i++){ItemStack s=fault.getStackInSlot(i);clean.setInventorySlotContents(i,s.isEmpty()?ItemStack.EMPTY:s.copy());}world.setTileEntity(pos(extraction?x-1:x+3),clean);clean.markDirty();
+        // Keep the registered provider itself: its private counters and inventory must reload together.
         world.setBlockToAir(pos(x));ItemStack receipt=ItemStack.EMPTY;
         for(EntityItem e:world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(x-2,199,31,x+6,203,34)))if(!e.isDead&&e.getItem().getItem()==LegacyPL4.ITEM_CELL){check(receipt.isEmpty(),"one receipt "+x);receipt=e.getItem().copy();e.setDead();}
         check(!receipt.isEmpty(),"sealed removal receipt "+x);chest(x+5).setInventorySlotContents(0,receipt);chest(x+5).markDirty();chest(x-1).markDirty();chest(x+3).markDirty();
@@ -59,6 +64,14 @@ public final class ItemRestartScenarios {
         check(!(world.getTileEntity(pos(x)) instanceof LegacyTile),"removed original host "+x);
         check(count(chest(x-1).getStackInSlot(0))==32,"observed source after mutation "+x);
         check(count(chest(x+3).getStackInSlot(0))==(extraction?0:8),"observed destination after mutation "+x);
+        check(chest(extraction?x-1:x+3) instanceof FaultyChest,"registered provider persistence "+x);
+        FaultyChest provider=(FaultyChest)chest(extraction?x-1:x+3);
+        check(UUID.fromString(provider.providerId).toString().equals(provider.providerId),"provider private identity "+x);
+        check(OWNER.equals(provider.providerOwner),"provider saved ownership "+x);
+        check(provider.extract==extraction&&provider.insert!=extraction,"provider saved fault mode "+x);
+        check(provider.mutationCalls==1,"provider mutation executed once "+x);
+        check(provider.removedUnits==(extraction?8:0)&&provider.acceptedUnits==(extraction?0:8),"provider private mutation counters "+x);
+        check(count(chest(x-1).getStackInSlot(0))+count(chest(x+3).getStackInSlot(0))==(extraction?32:40),"spendable conservation excludes sealed claim "+x);
         ItemStack receipt=chest(x+5).getStackInSlot(0);check(!receipt.isEmpty()&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt inventory persistence "+x);
         NBTTagCompound tag=receipt.getTagCompound(),ctx=tag.getCompoundTag("ItemJournalContext");String token=ctx.getString("Token");tokens.add(token);
         check(java.util.UUID.fromString(token).toString().equals(token),"canonical token "+x);check(OWNER.equals(ctx.getString("Owner"))&&ctx.getInteger("Dimension")==0,"owner and dimension "+x);
@@ -73,6 +86,13 @@ public final class ItemRestartScenarios {
         check(alias.transferOnce()==0&&alias.status.contains("fenced"),"new host cannot bypass saved target fence "+x);
         world.setBlockToAir(new BlockPos(target,201,32));
         check(count(chest(x-1).getStackInSlot(0))==32&&count(chest(x+3).getStackInSlot(0))==(extraction?0:8),"inspection never replays or mints "+x);
+        check(provider.mutationCalls==1,"fenced alias never invokes provider again "+x);
+        Map<String,Object> outcome=new LinkedHashMap<String,Object>();
+        outcome.put("provider_id",provider.providerId);outcome.put("owner",provider.providerOwner);outcome.put("outcome",phase);outcome.put("token",token);
+        outcome.put("source_units",count(chest(x-1).getStackInSlot(0)));outcome.put("destination_units",count(chest(x+3).getStackInSlot(0)));
+        outcome.put("unaccounted_units",extraction?8:0);outcome.put("sealed_uncertain_claim",tag.getInteger("ItemEscrowCount"));
+        outcome.put("mutation_calls",provider.mutationCalls);outcome.put("removed_units",provider.removedUnits);outcome.put("accepted_units",provider.acceptedUnits);
+        providers.add(outcome);
     }
     private BlockPos pos(int x){return new BlockPos(x,200,32);}
     private void place(int x,LegacyBlock b){world.setBlockState(pos(x),b.getDefaultState(),3);node(x).owner=OWNER;node(x).fluidDirty();}
@@ -81,9 +101,18 @@ public final class ItemRestartScenarios {
     private TileEntityChest chest(int x){return (TileEntityChest)world.getTileEntity(pos(x));}
     private int count(ItemStack s){return s==null||s.isEmpty()?0:s.getCount();}
     private void check(boolean value,String name){if(!value)throw new AssertionError(name);cases.add(name);}
+    /** Adversarial provider with its own native saved inventory and private mutation state. */
     public static final class FaultyChest extends TileEntityChest {
-        boolean extract,insert;
-        @Override public ItemStack decrStackSize(int slot,int amount){ItemStack s=super.decrStackSize(slot,amount);if(extract)throw new IllegalStateException("fixture failure after extraction");return s;}
-        @Override public void setInventorySlotContents(int slot,ItemStack value){super.setInventorySlotContents(slot,value);if(insert)throw new IllegalStateException("fixture failure after insertion");}
+        boolean extract,insert;String providerId="",providerOwner="";int mutationCalls,removedUnits,acceptedUnits;
+        @Override public ItemStack decrStackSize(int slot,int amount){
+            ItemStack s=super.decrStackSize(slot,amount);
+            if(extract){mutationCalls++;removedUnits+=(s==null||s.isEmpty()?0:s.getCount());markDirty();throw new IllegalStateException("fixture failure after extraction");}return s;
+        }
+        @Override public void setInventorySlotContents(int slot,ItemStack value){
+            super.setInventorySlotContents(slot,value);
+            if(insert){mutationCalls++;acceptedUnits+=(value==null||value.isEmpty()?0:value.getCount());markDirty();throw new IllegalStateException("fixture failure after insertion");}
+        }
+        @Override public void readFromNBT(NBTTagCompound tag){super.readFromNBT(tag);providerId=tag.getString("ProviderId");providerOwner=tag.getString("ProviderOwner");extract=tag.getBoolean("FaultExtract");insert=tag.getBoolean("FaultInsert");mutationCalls=tag.getInteger("MutationCalls");removedUnits=tag.getInteger("RemovedUnits");acceptedUnits=tag.getInteger("AcceptedUnits");}
+        @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setString("ProviderId",providerId);tag.setString("ProviderOwner",providerOwner);tag.setBoolean("FaultExtract",extract);tag.setBoolean("FaultInsert",insert);tag.setInteger("MutationCalls",mutationCalls);tag.setInteger("RemovedUnits",removedUnits);tag.setInteger("AcceptedUnits",acceptedUnits);return tag;}
     }
 }

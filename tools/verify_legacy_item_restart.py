@@ -61,13 +61,15 @@ def verify():
             reports[phase]=report
             (logs/('item-restart-'+phase+'.json')).write_text(json.dumps(report,indent=2)+'\n')
         if reports[phases[0]]['tokens']!=reports[phases[1]]['tokens'] or len(set(reports[phases[0]]['tokens']))!=2:raise ValueError('Tokens changed across JVMs')
+        if status.get('item_provider_fixture') is True:
+            if reports[phases[0]].get('provider_outcomes')!=reports[phases[1]].get('provider_outcomes') or len(reports[phases[0]].get('provider_outcomes',[]))!=2:raise ValueError('Provider private state changed across JVMs')
         archive=logs/('item-restart-'+mode+'-world.zip')
         with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
             for p in sorted((work/'pl4-item-restart-world').rglob('*')):
                 if p.is_file() and not p.is_symlink():z.write(p,p.relative_to(work).as_posix())
         archives[mode]=dict(file=archive.name,sha256=digest(archive))
     if len({p['pid'] for p in processes})!=4:raise ValueError('Processes were not distinct')
-    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
+    summary=dict(minecraft=mc,source_commit=source,runtime_sha256=digest(runtime),fixture_sha256=digest(fixtures[0]),clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=processes,phase_reports=reports,world_archives=archives,scope='Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting.')
     (logs/'legacy-item-restart-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print('PASS '+mc+' separate JVM item/receipt restart and controlled post-save halt',flush=True)
 if __name__=='__main__':verify()
