@@ -12,14 +12,22 @@ def validate(tiles,journal,phase,mc,suite):
     if len(items)!=1 or items[0].get('Count')!=1:raise ValueError('Missing unique sealed receipt')
     if mc=='1.12.2' and items[0].get('id')!='foundations_pl4:legacy_item_cell':raise ValueError('Wrong saved receipt item')
     rows=phase['decode_outcomes'];tokens=[]
-    def rejected(x):return dict(Token=71,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
+    compounds={'decode-compound','decode-owner','decode-dimension','decode-scope','decode-rewrite'}
+    if suite not in compounds|{'decode-raw','decode-missing'}:raise ValueError('Unknown decode world suite')
+    def rejected(x,token):
+        result=dict(Token=71 if suite=='decode-compound' else token,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
+        if suite=='decode-owner':result['Owner']=71
+        if suite=='decode-dimension':result['Dimension']='0'
+        if suite=='decode-scope':result['Scope']=dict(Marker=71,Bytes=bytes([7,8,9]))
+        if suite=='decode-rewrite':result.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
+        return result
     for x,tag,row in [(64,live,rows[0]),(80,items[0]['tag'],rows[1])]:
         evidence=tag['ItemLegacyEvidence'];token=evidence['OriginalToken'];tokens.append(token)
         expected=dict(Fault='Original decode fixture uncertainty',ObservedOwner=owner,ObservedDimension=0,HostX=x,HostY=200,HostZ=32,OriginalToken=token,MalformedContext='first-raw-payload',OriginalPayload=dict(Sentinel=12345,Bytes=bytes([1,2,3])))
         if evidence!=expected or token!=row['original_token']:raise ValueError('Raw original evidence or token changed')
         if type(tag.get('ItemEscrowCount')) is not int or tag['ItemEscrowCount']!=8 or not tag.get('ItemTransferFault'):raise ValueError('Raw uncertainty/claim missing')
-        if suite=='decode-compound':
-            if tag.get('ItemJournalContext')!=rejected(x):raise ValueError('Rejected compound changed')
+        if suite in compounds:
+            if tag.get('ItemJournalContext')!=rejected(x,token):raise ValueError('Rejected compound changed')
         elif suite=='decode-missing':
             if 'ItemJournalContext' in tag:raise ValueError('Missing context was synthesized')
         elif x==64:
@@ -27,8 +35,8 @@ def validate(tiles,journal,phase,mc,suite):
         elif type(tag.get('ItemJournalContext')) is not str or tag['ItemJournalContext']!='current-raw-context':raise ValueError('Raw string context changed')
     opaque=journal['Opaque'] if mc=='1.6.4' else journal
     if opaque.get('ExistingLegacyEvidence')!=live['ItemLegacyEvidence']:raise ValueError('Opaque original evidence changed')
-    if suite=='decode-compound':
-        if opaque.get('RejectedContext')!=rejected(64):raise ValueError('Opaque compound rejection changed')
+    if suite in compounds:
+        if opaque.get('RejectedContext')!=rejected(64,tokens[0]):raise ValueError('Opaque compound rejection changed')
     elif suite=='decode-missing':
         if opaque.get('MissingContext')!=1 or 'RejectedContext' in opaque:raise ValueError('Raw missing-context barrier changed')
     elif type(opaque.get('RejectedContext')) is not int or opaque['RejectedContext']!=71:raise ValueError('Raw rejection barrier changed')

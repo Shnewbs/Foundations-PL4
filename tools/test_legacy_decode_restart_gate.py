@@ -3,6 +3,23 @@ import hourly_builds as builds
 import test_legacy_restart_gate as common
 
 class DecodeRestartTests(unittest.TestCase):
+    def field_suite(self,suite,label):
+        self.suite=suite;self.report['suite']=suite;logs=self.root/'verification-logs'
+        for p in list(logs.iterdir()):p.rename(logs/p.name.replace('decode-raw',suite))
+        for row in self.report['world_archives'].values():row['file']=row['file'].replace('decode-raw',suite)
+        for r in self.report['phase_reports'].values():
+            r['suite']=suite
+            for row in r['decode_outcomes']:row.update(context_kind='compound',context_value=label)
+    def test_owner_field_coherent(self):self.field_suite('decode-owner','rejected-owner-int71');self.validate()
+    def test_dimension_field_coherent(self):self.field_suite('decode-dimension','rejected-dimension-string0');self.validate()
+    def test_scope_field_coherent(self):self.field_suite('decode-scope','rejected-scope-compound');self.validate()
+    def test_rewritten_context_coherent(self):self.field_suite('decode-rewrite','rewritten-owner-dimension-host');self.validate()
+    def test_field_suite_cannot_claim_old_compound_payload(self):
+        self.field_suite('decode-owner','rejected-owner-int71');self.change_all('context_value','rejected-token-int71')
+        with self.assertRaises(ValueError):self.validate()
+    def test_field_suite_cannot_claim_raw_type(self):
+        self.field_suite('decode-dimension','rejected-dimension-string0');self.change_all('context_kind','int')
+        with self.assertRaises(ValueError):self.validate()
     def compound(self):
         self.suite='decode-compound';self.report['suite']=self.suite
         logs=self.root/'verification-logs'

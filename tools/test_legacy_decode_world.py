@@ -2,6 +2,45 @@ import copy,unittest
 from inspect_legacy_decode_world import validate
 
 class DecodeWorldTests(unittest.TestCase):
+    def field_suite(self,suite,mc='1.12.2'):
+        owner='fae1b877-c6b4-4538-a26a-630190b54205' if mc=='1.12.2' else 'pl4owner'
+        for x,tag,row in [(64,self.tiles[0],self.phase['decode_outcomes'][0]),(80,self.tiles[1]['Items'][0]['tag'],self.phase['decode_outcomes'][1])]:
+            tag['ItemLegacyEvidence']['ObservedOwner']=owner
+            r=dict(Token=row['original_token'],Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
+            if suite=='decode-owner':r['Owner']=71
+            if suite=='decode-dimension':r['Dimension']='0'
+            if suite=='decode-scope':r['Scope']=dict(Marker=71,Bytes=bytes([7,8,9]))
+            if suite=='decode-rewrite':r.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
+            tag['ItemJournalContext']=r
+        self.journal['ExistingLegacyEvidence']=copy.deepcopy(self.tiles[0]['ItemLegacyEvidence'])
+        self.journal['RejectedContext']=copy.deepcopy(self.tiles[0]['ItemJournalContext'])
+        for row in self.journal['PreviousJournal']['Entries']:row['Owner']=owner
+        if mc=='1.6.4':self.journal=dict(Schema=-1,Opaque=self.journal)
+    def assert_field_ports(self,suite):
+        for mc in ['1.12.2','1.6.4']:
+            self.setUp();self.field_suite(suite,mc)
+            self.assertEqual(self.validate(suite,mc)['result'],'PASS')
+    def test_owner_field_worlds_coherent(self):self.assert_field_ports('decode-owner')
+    def test_dimension_field_worlds_coherent(self):self.assert_field_ports('decode-dimension')
+    def test_scope_field_worlds_coherent(self):self.assert_field_ports('decode-scope')
+    def test_rewritten_context_worlds_coherent(self):self.assert_field_ports('decode-rewrite')
+    def test_owner_scalar_coercion_rejected(self):
+        self.field_suite('decode-owner');self.tiles[0]['ItemJournalContext']['Owner']='71'
+        with self.assertRaises(ValueError):self.validate('decode-owner')
+    def test_dimension_string_coercion_rejected(self):
+        self.field_suite('decode-dimension');self.tiles[1]['Items'][0]['tag']['ItemJournalContext']['Dimension']=0
+        with self.assertRaises(ValueError):self.validate('decode-dimension')
+    def test_scope_nested_bytes_replacement_rejected(self):
+        self.field_suite('decode-scope');self.tiles[0]['ItemJournalContext']['Scope']['Bytes']=bytes([7,8,0])
+        with self.assertRaises(ValueError):self.validate('decode-scope')
+    def test_rewritten_route_omission_rejected(self):
+        self.field_suite('decode-rewrite');self.tiles[0]['ItemJournalContext']['HostX']=64
+        with self.assertRaises(ValueError):self.validate('decode-rewrite')
+    def test_field_cannot_be_reported_as_prior_compound(self):
+        self.field_suite('decode-owner')
+        with self.assertRaises(ValueError):self.validate('decode-compound')
+    def test_unknown_world_suite_rejected(self):
+        with self.assertRaises(ValueError):self.validate('decode-unknown')
     def compound(self):
         owner='fae1b877-c6b4-4538-a26a-630190b54205'
         def rejected(x):return dict(Token=71,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))

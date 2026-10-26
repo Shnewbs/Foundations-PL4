@@ -117,10 +117,13 @@ def validate_restart(root, report, mc, sha, runtime, counts, prefix="item-restar
 
 def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
     """Qualify decode persistence separately from provider and historical scenarios."""
-    if suite not in {"decode-raw", "decode-missing", "decode-compound"} or report.get("suite") != suite:
+    if suite not in {"decode-raw", "decode-missing", "decode-compound", "decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} or report.get("suite") != suite:
         raise ValueError("Decode suite identity disagrees")
     validate_restart(root, report, mc, sha, runtime, counts, "item-" + suite + "-restart")
     owner = "fae1b877-c6b4-4538-a26a-630190b54205" if mc == "1.12.2" else "pl4owner"
+    labels = {"decode-compound": "rejected-token-int71", "decode-owner": "rejected-owner-int71",
+              "decode-dimension": "rejected-dimension-string0", "decode-scope": "rejected-scope-compound",
+              "decode-rewrite": "rewritten-owner-dimension-host"}
     details = report["phase_reports"]
     for first, second in [("write", "verify"), ("crash-write", "crash-verify")]:
         rows = details[first].get("decode_outcomes")
@@ -131,8 +134,8 @@ def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
         for i, row in enumerate(rows):
             expected = dict(host_x=64 if i == 0 else 80, host_removed=i == 1,
                             original_token=details[first]["tokens"][i], owner=owner, dimension=0,
-                            context_kind="compound" if suite == "decode-compound" else "absent" if suite == "decode-missing" else "int" if i == 0 else "string",
-                            context_value="rejected-token-int71" if suite == "decode-compound" else "" if suite == "decode-missing" else "71" if i == 0 else "current-raw-context",
+                            context_kind="compound" if suite in labels else "absent" if suite == "decode-missing" else "int" if i == 0 else "string",
+                            context_value=labels[suite] if suite in labels else "" if suite == "decode-missing" else "71" if i == 0 else "current-raw-context",
                             sealed_units=8, evidence_marker="first-raw-payload", original_route_known=False)
             if row != expected or any(type(row.get(k)) is not type(v) for k, v in expected.items()):
                 raise ValueError("Decode type, evidence, receipt or original identity disagrees")
@@ -274,7 +277,7 @@ def record(root, expected_mc, expected_sha):
             counts = {"write": status["item_decode_restart_write_assertions"], "verify": status["item_decode_restart_verify_assertions"]}
             inspections = {}
             pids = [p['pid'] for p in restart['processes']] if status.get('item_restart_fixture') is True else []
-            for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []):
+            for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []) + (["decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"] if status.get("item_field_restart_fixture") is True else []):
                 name = "legacy-item-" + suite + "-restart-summary.json"
                 decode = json.loads((logs / name).read_text())
                 validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"], counts, suite)
