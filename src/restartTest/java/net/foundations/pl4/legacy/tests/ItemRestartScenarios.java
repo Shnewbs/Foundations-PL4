@@ -1,0 +1,89 @@
+package net.foundations.pl4.legacy.tests;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.foundations.pl4.legacy.*;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.entity.item.EntityItem;
+import java.io.FileWriter;
+import java.util.*;
+/** Installed only in disposable, explicitly named acceptance worlds. Never part of production. */
+@Mod(modid="foundations_pl4_restarttests",name="PL4 item restart acceptance",version="1",dependencies="required-after:foundations_pl4")
+public final class ItemRestartScenarios {
+    private WorldServer world;private final List<String> cases=new ArrayList<String>(),tokens=new ArrayList<String>();
+    private static final String OWNER="fae1b877-c6b4-4538-a26a-630190b54205";
+    @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
+        String phase=System.getProperty("foundations_pl4.itemRestart","");
+        if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Disposable restart phase required");
+        MinecraftServer server=FMLCommonHandler.instance().getMinecraftServerInstance();
+        if(!"pl4-item-restart-world".equals(server.getFolderName()))throw new IllegalStateException("Refusing non-restart world");
+        if(phase.equals("crash-write")&&!Boolean.getBoolean("foundations_pl4.restartHalt"))throw new IllegalStateException("Explicit halt fixture opt-in required");
+        world=server.getWorld(0);LegacyPL4.enabled=false;boolean passed=false;
+        try{
+            if(phase.endsWith("write")){prepare(0,false);prepare(16,true);world.saveAllChunks(true,null);world.getPerWorldStorage().saveAllData();world.getSaveHandler().flush();}
+            else {verify(0,false);verify(16,true);}
+            passed=true;System.out.println("PL4 ITEM RESTART "+phase+": PASS");
+        }finally{
+            Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.12.2");report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
+            FileWriter out=new FileWriter("item-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
+            if(passed&&phase.equals("crash-write")){System.out.flush();System.err.flush();Runtime.getRuntime().halt(73);}
+            server.initiateShutdown();
+        }
+    }
+    private void prepare(int x,boolean extraction){
+        for(int a=x-1;a<=x+5;a++){world.getChunkFromBlockCoords(pos(a));world.setBlockToAir(pos(a));}
+        place(x,LegacyPL4.EXPORT);place(x+1,LegacyPL4.CABLE);place(x+2,LegacyPL4.IMPORT);node(x).side=4;node(x+2).side=5;
+        chestBlock(x-1);chestBlock(x+3);chestBlock(x+5);
+        FaultyChest fault=new FaultyChest();world.setTileEntity(pos(extraction?x-1:x+3),fault);
+        chest(x-1).setInventorySlotContents(0,new ItemStack(Items.IRON_INGOT,40));fault.extract=extraction;fault.insert=!extraction;
+        LegacyPL4.enabled=true;LegacyPL4.itemRate=8;boolean threw=false;try{node(x).transferOnce();}catch(RuntimeException expected){threw=true;}finally{LegacyPL4.enabled=false;}
+        check(threw,"foreign post-mutation fault "+x);check(LegacyItemSafety.blocked(node(x)),"local uncertainty "+x);
+        String phase=extraction?"extract":"insert";check(phase.equals(node(x).itemJournalContext.getString("Phase")),"executed phase "+x);
+        // Replace the deliberately unregistered fault injector before saving; preserve its observed vanilla contents.
+        TileEntityChest clean=new TileEntityChest();for(int i=0;i<fault.getSizeInventory();i++){ItemStack s=fault.getStackInSlot(i);clean.setInventorySlotContents(i,s.isEmpty()?ItemStack.EMPTY:s.copy());}world.setTileEntity(pos(extraction?x-1:x+3),clean);clean.markDirty();
+        world.setBlockToAir(pos(x));ItemStack receipt=ItemStack.EMPTY;
+        for(EntityItem e:world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(x-2,199,31,x+6,203,34)))if(!e.isDead&&e.getItem().getItem()==LegacyPL4.ITEM_CELL){check(receipt.isEmpty(),"one receipt "+x);receipt=e.getItem().copy();e.setDead();}
+        check(!receipt.isEmpty(),"sealed removal receipt "+x);chest(x+5).setInventorySlotContents(0,receipt);chest(x+5).markDirty();chest(x-1).markDirty();chest(x+3).markDirty();
+        verify(x,extraction);
+    }
+    private void verify(int x,boolean extraction){
+        world.getChunkFromBlockCoords(pos(x-1));world.getChunkFromBlockCoords(pos(x+5));
+        check(!(world.getTileEntity(pos(x)) instanceof LegacyTile),"removed original host "+x);
+        check(count(chest(x-1).getStackInSlot(0))==32,"observed source after mutation "+x);
+        check(count(chest(x+3).getStackInSlot(0))==(extraction?0:8),"observed destination after mutation "+x);
+        ItemStack receipt=chest(x+5).getStackInSlot(0);check(!receipt.isEmpty()&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt inventory persistence "+x);
+        NBTTagCompound tag=receipt.getTagCompound(),ctx=tag.getCompoundTag("ItemJournalContext");String token=ctx.getString("Token");tokens.add(token);
+        check(java.util.UUID.fromString(token).toString().equals(token),"canonical token "+x);check(OWNER.equals(ctx.getString("Owner"))&&ctx.getInteger("Dimension")==0,"owner and dimension "+x);
+        int target=extraction?x-1:x+3;String phase=extraction?"extract":"insert";
+        check(ctx.getInteger("X")==target&&ctx.getInteger("Y")==200&&ctx.getInteger("Z")==32&&phase.equals(ctx.getString("Phase")),"captured endpoint and phase "+x);
+        check(tag.getInteger("ItemEscrowCount")== (extraction?0:8),"uncertain receipt claim remains sealed "+x);
+        LegacyWirelessSafety journal=LegacyWirelessSafety.data(world);
+        check(journal.blocked(OWNER,pos(target))&&!journal.blocked("unrelated-owner",pos(target)),"persistent owner-scoped fence "+x);
+        check(!journal.blocked(OWNER,pos(extraction?x+3:x-1)),"other endpoint not misattributed "+x);
+        check(journal.receiptStatus(ctx).contains("unresolved token "+token)&&journal.receiptStatus(ctx).contains("recorded phase "+phase),"linked diagnostic "+x);
+        world.setBlockState(new BlockPos(target,201,32),LegacyPL4.EXPORT.getDefaultState(),3);LegacyTile alias=(LegacyTile)world.getTileEntity(new BlockPos(target,201,32));alias.owner=OWNER;alias.side=0;
+        check(alias.transferOnce()==0&&alias.status.contains("fenced"),"new host cannot bypass saved target fence "+x);
+        world.setBlockToAir(new BlockPos(target,201,32));
+        check(count(chest(x-1).getStackInSlot(0))==32&&count(chest(x+3).getStackInSlot(0))==(extraction?0:8),"inspection never replays or mints "+x);
+    }
+    private BlockPos pos(int x){return new BlockPos(x,200,32);}
+    private void place(int x,LegacyBlock b){world.setBlockState(pos(x),b.getDefaultState(),3);node(x).owner=OWNER;node(x).fluidDirty();}
+    private void chestBlock(int x){world.setBlockState(pos(x),Blocks.CHEST.getDefaultState(),3);}
+    private LegacyTile node(int x){return (LegacyTile)world.getTileEntity(pos(x));}
+    private TileEntityChest chest(int x){return (TileEntityChest)world.getTileEntity(pos(x));}
+    private int count(ItemStack s){return s==null||s.isEmpty()?0:s.getCount();}
+    private void check(boolean value,String name){if(!value)throw new AssertionError(name);cases.add(name);}
+    public static final class FaultyChest extends TileEntityChest {
+        boolean extract,insert;
+        @Override public ItemStack decrStackSize(int slot,int amount){ItemStack s=super.decrStackSize(slot,amount);if(extract)throw new IllegalStateException("fixture failure after extraction");return s;}
+        @Override public void setInventorySlotContents(int slot,ItemStack value){super.setInventorySlotContents(slot,value);if(insert)throw new IllegalStateException("fixture failure after insertion");}
+    }
+}

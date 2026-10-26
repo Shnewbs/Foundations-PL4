@@ -74,6 +74,8 @@ jobs:
       - name: Native build, portable rules, server scenarios and cleanup guard
         shell: bash
         run: bash tools/validate_legacy_fluids.sh
+      - name: Verify item receipt and journal across native processes
+        run: python3 tools/verify_legacy_item_restart.py
       - name: Publish a new tested version without rewriting existing releases
         if: env.PL4_ALLOW_PUBLICATION == 'true'
         shell: bash
