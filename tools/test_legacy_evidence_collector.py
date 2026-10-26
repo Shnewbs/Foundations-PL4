@@ -61,7 +61,7 @@ class EvidenceCollectorTests(unittest.TestCase):
         self.archive({'../other':b'x'})
         with self.assertRaises(ValueError):collect(self.path,'1.12.2',self.token,'owner')
     def test_unchanged_input_and_no_false_clearance_without_journal(self):
-        self.archive();before=self.path.read_bytes();r=collect(self.path,'1.6.4',self.token,'owner');self.assertEqual(before,self.path.read_bytes());self.assertFalse(r['journal_present']);self.assertFalse(r['reconciliation_cleared']);self.assertFalse(r['minecraft_identity_proven_by_save'])
+        self.archive();before=self.path.read_bytes();r=collect(self.path,'1.6.4',self.token,'owner');self.assertEqual(before,self.path.read_bytes());self.assertFalse(r['journal_present']);self.assertIsNone(r['journal_value_sha256']);self.assertEqual(r['value_hash_format'],'pl4-parsed-value-v2');self.assertFalse(r['reconciliation_cleared']);self.assertFalse(r['minecraft_identity_proven_by_save'])
     def test_chunk_bound_is_reported_as_partial(self):
         # Minimal native compound with no tile entities, wrapped in a real region record.
         raw=b'\x0a\x00\x00\x0a\x00\x05Level\x09\x00\x0cTileEntities\x0a\x00\x00\x00\x00\x00\x00'
