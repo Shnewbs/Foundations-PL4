@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-admission-2026-10-26T23",
-    "claimed_at": "2026-10-26T23:04:22Z",
-    "expires_at": "2026-10-26T23:44:22Z",
-    "scope": "Demonstrate and repair admission latch after retained evidence owner/context edits"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -49,9 +44,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
   "last_writer_release": {
-    "owner": "pl4-live-process-2026-10-26T22",
-    "released_at": "2026-10-26T22:20:35Z",
-    "checkpoint": "Qualified live process and exact-payload client checkpoint; remaining owner/context/removal/alias and broader acceptance work preserved."
+    "owner": "pl4-live-admission-2026-10-26T23",
+    "released_at": "2026-10-26T23:11:52Z",
+    "checkpoint": "Corrected native reproductions show4 failures per port; admission fix committed and pinned native qualification pending."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-process-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -94,5 +89,17 @@
     "workflow_run": 40409934243,
     "new_assertions_per_port": 168,
     "total_decode_assertions_per_port": 1044
+  },
+  "pending_live_admission_candidate": {
+    "sources": {
+      "1.12.2": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
+      "1.6.4": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4"
+    },
+    "reproduction_runs": {
+      "1.12.2": 40417237824,
+      "1.6.4": 40417692788
+    },
+    "status": "SOURCE_FIX_COMMITTED_NATIVE_AND_CLIENT_PENDING",
+    "limits": "Observed host tick or explicit admission only; before-observation/unloaded edits and broad alias/provider/recovery acceptance remain open."
   }
 }
