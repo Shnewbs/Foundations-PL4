@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import java.util.Locale;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.world.WorldSavedData;
 /** Per-dimension target fences for item handoffs; independent of tile/network lifetime. */
 public final class LegacyWirelessSafety extends WorldSavedData {
     public static final String DATA_NAME="foundations_pl4_wireless_uncertainty";
