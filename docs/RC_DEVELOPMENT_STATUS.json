@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "421981c8a8e32927d4b06705f2758975d7da3f3f",
-      "workflow_run": "40360147997",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40360147997",
+      "source_commit": "a0b450e23646cbfeea16a0a78003b7c8611a513e",
+      "workflow_run": "40365518434",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40365518434",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-copied-save-record-validation-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -829,8 +829,8 @@
         "separate_from_ordinary_native_provider_restart_and_historical_counts": true
       },
       "context_decode_process_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
-      "bounded_read_only_collection": "PASS_24_COPIED_FIXTURE_QUERIES_ACROSS_PORTS_PARTIAL_SCANS_NO_RECONCILIATION_CLEARANCE",
-      "bounded_read_only_collection_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json"
+      "bounded_read_only_collection": "PASS_COPIED_FIXTURE_RECORD_VALIDATION_TYPED_HASHES_24_VALID_10_MUTATED_OFFLINE_NO_RECOVERY_CLEARANCE",
+      "bounded_read_only_collection_evidence": "acceptance/rc-dev-copied-save-record-validation-2026-10-26.json"
     },
     {
       "minecraft": "1.6.4",
@@ -1082,8 +1082,8 @@
         "separate_from_ordinary_native_provider_restart_and_historical_counts": true
       },
       "context_decode_process_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
-      "bounded_read_only_collection": "PASS_24_COPIED_FIXTURE_QUERIES_ACROSS_PORTS_PARTIAL_SCANS_NO_RECONCILIATION_CLEARANCE",
-      "bounded_read_only_collection_evidence": "acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json"
+      "bounded_read_only_collection": "PASS_COPIED_FIXTURE_RECORD_VALIDATION_TYPED_HASHES_24_VALID_10_MUTATED_OFFLINE_NO_RECOVERY_CLEARANCE",
+      "bounded_read_only_collection_evidence": "acceptance/rc-dev-copied-save-record-validation-2026-10-26.json"
     }
   ],
   "latest_work": "Hardened nested token/owner/scope/phase NBT reads and typed receipt owner/dimension authentication on both legacy ports. Invalid phase remains unknown; malformed receipt identity requires operator inspection and grants no clearance. Six new exact native cases per port passed: 1.12.2 048f70b3 341/341, 1.6.4 64893263 319/319. Both passed production startup, preview.3 migration,124 current-runtime restart assertions and24 historical-world migration checks. Exact new stock clients passed normal storage and imported-unknown chat; four current captures reviewed/preserved and40 hashed. Main3f2009dd passed192;21 other tracks retain exact native evidence. Native qualification now cross-checks raw scenario counters/per-case outcomes/native log markers;38 targeted controller regressions passed. All24 RC clearances remainfalse;no release/upload. Provider-outcome/recovery, installed providers, dedicated multiplayer, copied worlds, crash atomicity, performance and broader parity remain open.",

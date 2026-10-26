@@ -1,0 +1,982 @@
+{
+  "fixture_queries": [
+    {
+      "mc": "1.12.2",
+      "suite": "decode-raw",
+      "mode": "clean",
+      "token": "580eea32-987b-4678-9790-d314a24782c5",
+      "source_archive_sha256": "e4b4a1c8ee6612a3c1804bbf4b79c1fc90f97aa7cdda5550a4e3b3df99977018",
+      "journal_value_sha256": "7380114cbafce9fad9f8698d552cabbd4984f52a437541c600818d82cf32a488",
+      "matching_records": [
+        {
+          "token": "580eea32-987b-4678-9790-d314a24782c5",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "315dd5a2a256d3e40f1635ee3da3f4ba1b7f2e6bb7dfbbfb55a78da4a539dc0d",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-raw",
+      "mode": "clean",
+      "token": "e50380ea-4b95-49ea-8c93-4af64326d6eb",
+      "source_archive_sha256": "e4b4a1c8ee6612a3c1804bbf4b79c1fc90f97aa7cdda5550a4e3b3df99977018",
+      "journal_value_sha256": "7380114cbafce9fad9f8698d552cabbd4984f52a437541c600818d82cf32a488",
+      "matching_records": [
+        {
+          "token": "e50380ea-4b95-49ea-8c93-4af64326d6eb",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "a01e16dc75e312183ebce89630ed39d70a173aab527c43150f78c699deed7c50",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-raw",
+      "mode": "barrier",
+      "token": "ceea99c0-41b0-4189-ac9b-45ffd9f1f493",
+      "source_archive_sha256": "b1a905676375c9e49805e703d6699b28a82d5c39099413e595cc892f64c78218",
+      "journal_value_sha256": "7325fcc8e9ca22d596df0ffc2a38f03c118bacdcfe8115e48cd51a8f089e9ee3",
+      "matching_records": [
+        {
+          "token": "ceea99c0-41b0-4189-ac9b-45ffd9f1f493",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "abb9108043d6793cadaf5394a86b6335330c5563942beaa4a41b32a28454fefa",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-raw",
+      "mode": "barrier",
+      "token": "38bffa59-53ad-4d81-a1a2-d384cfdcef39",
+      "source_archive_sha256": "b1a905676375c9e49805e703d6699b28a82d5c39099413e595cc892f64c78218",
+      "journal_value_sha256": "7325fcc8e9ca22d596df0ffc2a38f03c118bacdcfe8115e48cd51a8f089e9ee3",
+      "matching_records": [
+        {
+          "token": "38bffa59-53ad-4d81-a1a2-d384cfdcef39",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "e9f2a05dd8c0eaac99f694a245ff6503ada2d358b52ea9215e0a89a0cae4c531",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-missing",
+      "mode": "clean",
+      "token": "0b4aaed8-1ade-456a-bba2-11d9292a5602",
+      "source_archive_sha256": "e7010388e53cb8d199af9530e10a1bf380d8fcccb34333ede568120f934abdb9",
+      "journal_value_sha256": "f78d2c30660471167a642fc4696ba6f0b525d6e6ff474100638528d6c723b6b6",
+      "matching_records": [
+        {
+          "token": "0b4aaed8-1ade-456a-bba2-11d9292a5602",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "e14f7541af3adbec35ab824f100f5fe41615c60fa979ecb024004fac956edf6e",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-missing",
+      "mode": "clean",
+      "token": "0bfeb70a-82af-429a-81a2-c0b8fe866eb3",
+      "source_archive_sha256": "e7010388e53cb8d199af9530e10a1bf380d8fcccb34333ede568120f934abdb9",
+      "journal_value_sha256": "f78d2c30660471167a642fc4696ba6f0b525d6e6ff474100638528d6c723b6b6",
+      "matching_records": [
+        {
+          "token": "0bfeb70a-82af-429a-81a2-c0b8fe866eb3",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "918540bc768291dd10ed8e9e3c9f5cf4771b270db25521cb6761fd859ea4470e",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-missing",
+      "mode": "barrier",
+      "token": "0c2b0441-1a9c-489f-a956-d2d2cfb33769",
+      "source_archive_sha256": "a006b99651eb4b3c43729e5bfeaba78197a2a8745d680e0fd44518173783ee54",
+      "journal_value_sha256": "a9512a0c710ceb3f8fd38f42d87cdc30413f759ed88b19c4f9fb20d90179792c",
+      "matching_records": [
+        {
+          "token": "0c2b0441-1a9c-489f-a956-d2d2cfb33769",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "89662e7b7db810544cd3de2719e3a71fa6034704d5e03d4fdc666966350f19a0",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "decode-missing",
+      "mode": "barrier",
+      "token": "7108de80-8f51-40a8-8077-a57a6d3e9e50",
+      "source_archive_sha256": "a006b99651eb4b3c43729e5bfeaba78197a2a8745d680e0fd44518173783ee54",
+      "journal_value_sha256": "a9512a0c710ceb3f8fd38f42d87cdc30413f759ed88b19c4f9fb20d90179792c",
+      "matching_records": [
+        {
+          "token": "7108de80-8f51-40a8-8077-a57a6d3e9e50",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "8243684e2dfb9665819ffa9d33d0482f9c14024838277f10e4089f7052384e4e",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "provider",
+      "mode": "clean",
+      "token": "285835ad-fa68-4dd5-813d-d9550682d41a",
+      "source_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "journal_value_sha256": "6ed7aebb45e2ba20b9855f69bd9c6a256ae70416c76fcde28253ade6964852fe",
+      "matching_records": [
+        {
+          "token": "285835ad-fa68-4dd5-813d-d9550682d41a",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": [
+            3,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "8642ecd031e519f5b73d514dc23f755db5e373431281623a5483edad9411249b",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "provider",
+      "mode": "clean",
+      "token": "9c17936b-8819-43a0-9a89-c7388d662f5c",
+      "source_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "journal_value_sha256": "6ed7aebb45e2ba20b9855f69bd9c6a256ae70416c76fcde28253ade6964852fe",
+      "matching_records": [
+        {
+          "token": "9c17936b-8819-43a0-9a89-c7388d662f5c",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": [
+            15,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "c92c727294a574048f6cca3bf385b019af3b5cb39de7849663a1f31997507a8c",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "provider",
+      "mode": "barrier",
+      "token": "38c70077-7b52-40b4-89ee-03c19bd871ad",
+      "source_archive_sha256": "af95adf702c3ac44ba5eae8a5f1407504924869576d6a05b9924fef2dea69550",
+      "journal_value_sha256": "aa74ff1211ab3c8cf587e550ec5c8b0ada202dfeafab6b709ffcc75ff80a2e09",
+      "matching_records": [
+        {
+          "token": "38c70077-7b52-40b4-89ee-03c19bd871ad",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": [
+            3,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "e765beee48169847ff21ee2df814d60520bf5f0df8ec9da740cb07a47878df0e",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.12.2",
+      "suite": "provider",
+      "mode": "barrier",
+      "token": "b0caabcb-457f-481f-8525-5b09c2d079f4",
+      "source_archive_sha256": "af95adf702c3ac44ba5eae8a5f1407504924869576d6a05b9924fef2dea69550",
+      "journal_value_sha256": "aa74ff1211ab3c8cf587e550ec5c8b0ada202dfeafab6b709ffcc75ff80a2e09",
+      "matching_records": [
+        {
+          "token": "b0caabcb-457f-481f-8525-5b09c2d079f4",
+          "saved_owner": "fae1b877-c6b4-4538-a26a-630190b54205",
+          "owner_label_matches_query": true,
+          "original_target": [
+            15,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "703767249558eacc4355b0f6cb5c210696a787c2fb535cfc3f71ac21d9f6a69b",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-raw",
+      "mode": "clean",
+      "token": "92f66f0e-d13e-4eb8-8363-cab2754c66a5",
+      "source_archive_sha256": "c4c81b7734f8d7eb183da2c188cedf0473eaf894de3aae2caa0464b44d25b6ce",
+      "journal_value_sha256": "dfa0e9f133e31180cb2c89a3889d7e2cb1e273182ca5ab877e265e01aa66cafb",
+      "matching_records": [
+        {
+          "token": "92f66f0e-d13e-4eb8-8363-cab2754c66a5",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "4087770534c61d27cf3ae7b2b5f9818191e4ccd5952b5acfbddeca1d36f1724e",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-raw",
+      "mode": "clean",
+      "token": "b6b2598b-1a06-4492-9392-ec3eb02490b9",
+      "source_archive_sha256": "c4c81b7734f8d7eb183da2c188cedf0473eaf894de3aae2caa0464b44d25b6ce",
+      "journal_value_sha256": "dfa0e9f133e31180cb2c89a3889d7e2cb1e273182ca5ab877e265e01aa66cafb",
+      "matching_records": [
+        {
+          "token": "b6b2598b-1a06-4492-9392-ec3eb02490b9",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "889e7f7625d71212de6f8344caf137c235d33174dcdddc59f296830f49a972c6",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-raw",
+      "mode": "barrier",
+      "token": "f5729c66-1bf0-4fcf-836e-7d1ba22db281",
+      "source_archive_sha256": "7ea3274a73eec51c5f1a95c5b457c113251f1261490929a91158c82d061957b3",
+      "journal_value_sha256": "0efab877f608aa3dfaea87caf78e60d92958f6e7ed066c061867bb797990f2d5",
+      "matching_records": [
+        {
+          "token": "f5729c66-1bf0-4fcf-836e-7d1ba22db281",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "0ab5e4f90184b8662175b26a9b8b693fd2afe7c4957dc8a249f9c4f7fd436bdf",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-raw",
+      "mode": "barrier",
+      "token": "46f2d51c-723e-4bc5-8aed-b60402c28644",
+      "source_archive_sha256": "7ea3274a73eec51c5f1a95c5b457c113251f1261490929a91158c82d061957b3",
+      "journal_value_sha256": "0efab877f608aa3dfaea87caf78e60d92958f6e7ed066c061867bb797990f2d5",
+      "matching_records": [
+        {
+          "token": "46f2d51c-723e-4bc5-8aed-b60402c28644",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "b8c2ef86490c4f3a09670c83f543022ada32b1a7a470f8e345ddf7948202b658",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-missing",
+      "mode": "clean",
+      "token": "97acdb28-4cde-428c-a77b-4c4a504b275c",
+      "source_archive_sha256": "5768cd2f8119c05dcd1087061fa0f891e5f2864747df7d59aa50a30d257aa65f",
+      "journal_value_sha256": "49cee6fa31baa30a76200ebe4236ee7c9e056edaa12196fcfe9f6baf9036b236",
+      "matching_records": [
+        {
+          "token": "97acdb28-4cde-428c-a77b-4c4a504b275c",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "8ebfd24ac78a403bd25663d48bf855bb1024ed4acbc59f5fa2187922867a44e8",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-missing",
+      "mode": "clean",
+      "token": "12b4b951-db3c-48a7-94df-a8f31c4f52d8",
+      "source_archive_sha256": "5768cd2f8119c05dcd1087061fa0f891e5f2864747df7d59aa50a30d257aa65f",
+      "journal_value_sha256": "49cee6fa31baa30a76200ebe4236ee7c9e056edaa12196fcfe9f6baf9036b236",
+      "matching_records": [
+        {
+          "token": "12b4b951-db3c-48a7-94df-a8f31c4f52d8",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "a7ade8bc43de8dc0bb5728f213aeb02c9561085696a13a94f9e364e01738d5f2",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-missing",
+      "mode": "barrier",
+      "token": "ac3239f8-6c7d-407c-a6c7-2b2526793eaf",
+      "source_archive_sha256": "299853ebc7600c873e5284b2b99984436f728bef4c6c000a8b0d9d4aae0221a3",
+      "journal_value_sha256": "ffb694591b35996f384f992af4819c712ccf92fb69b1150a5c206aba169d855f",
+      "matching_records": [
+        {
+          "token": "ac3239f8-6c7d-407c-a6c7-2b2526793eaf",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            64,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "682d76680a7ef7a12cfe4cca419ba1402ea7b4b5ca4e320a3c4814da3f7be404",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 1,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "decode-missing",
+      "mode": "barrier",
+      "token": "654014d8-ebc1-46e1-a106-c4dc3e5821a9",
+      "source_archive_sha256": "299853ebc7600c873e5284b2b99984436f728bef4c6c000a8b0d9d4aae0221a3",
+      "journal_value_sha256": "ffb694591b35996f384f992af4819c712ccf92fb69b1150a5c206aba169d855f",
+      "matching_records": [
+        {
+          "token": "654014d8-ebc1-46e1-a106-c4dc3e5821a9",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": null,
+          "observed_host": [
+            80,
+            200,
+            32
+          ],
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": true,
+          "record_sha256": "b6cda1b29c4469a32d59248eec39fd30af224f1f05c6f10f13c328035e7bc777",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 1,
+      "inventory_observations": 1,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "provider",
+      "mode": "clean",
+      "token": "c9f7d37b-9dc7-4fd3-90a7-d98387d6568e",
+      "source_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "journal_value_sha256": "8415a535869967586408e2d37dabfe6355f8b812cebeeed436c8efdfa92ec7aa",
+      "matching_records": [
+        {
+          "token": "c9f7d37b-9dc7-4fd3-90a7-d98387d6568e",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": [
+            3,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "05f7485577d52f12f38057dea8fe91439b2ed0257ba57fc71f570a4ab11c18fa",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "provider",
+      "mode": "clean",
+      "token": "d77332c9-f8bf-4160-9c24-ba176d7e1678",
+      "source_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "journal_value_sha256": "8415a535869967586408e2d37dabfe6355f8b812cebeeed436c8efdfa92ec7aa",
+      "matching_records": [
+        {
+          "token": "d77332c9-f8bf-4160-9c24-ba176d7e1678",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": [
+            15,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "d84912777ae3b62456e6ee3a79908cde8a3d0ae8509fea84782c1b5a1bfe3772",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "provider",
+      "mode": "barrier",
+      "token": "806c2651-5cd8-46cb-9a96-5cad771cc540",
+      "source_archive_sha256": "6a767c009267e80412fa80c85fbfa20117b9b3dcf73a0ea5dc139c0f4d1b40e1",
+      "journal_value_sha256": "eb3c0d0c44ffd07ab83b4fd4087773fcb78b5ef4cf317879ad8d17297c828274",
+      "matching_records": [
+        {
+          "token": "806c2651-5cd8-46cb-9a96-5cad771cc540",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": [
+            3,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "46237f2c07b103c3493db9e88266d52e62beafeccea1499c0fd98b8f276a47b2",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    },
+    {
+      "mc": "1.6.4",
+      "suite": "provider",
+      "mode": "barrier",
+      "token": "2fe3bcc2-7e24-4291-b1c8-8ceeddd66ca8",
+      "source_archive_sha256": "6a767c009267e80412fa80c85fbfa20117b9b3dcf73a0ea5dc139c0f4d1b40e1",
+      "journal_value_sha256": "eb3c0d0c44ffd07ab83b4fd4087773fcb78b5ef4cf317879ad8d17297c828274",
+      "matching_records": [
+        {
+          "token": "2fe3bcc2-7e24-4291-b1c8-8ceeddd66ca8",
+          "saved_owner": "pl4owner",
+          "owner_label_matches_query": true,
+          "original_target": [
+            15,
+            200,
+            32
+          ],
+          "observed_host": null,
+          "record_validation_errors": [],
+          "duplicate_token_observation": false,
+          "original_target_withheld": false,
+          "record_sha256": "1786b3134ab819d809b3e5448e36220e9e13a5c5bfa230ebfbf843a8e627eac9",
+          "route_claim": "saved observation only; opaque/invalid/duplicate records grant no original target or reconciliation clearance"
+        }
+      ],
+      "fault_tiles": 0,
+      "receipts": 2,
+      "inventory_observations": 6,
+      "partial": true,
+      "reconciliation_cleared": false
+    }
+  ],
+  "query_count": 24,
+  "hash_format": "pl4-parsed-value-v2",
+  "parsed_bytes_sha256": "0d8639f55317d9b97847db1b40c419dedc6f2cf7f754e918718d5c8356493284",
+  "lookalike_compound_sha256": "b2dea66e727e51ab0c2157bd1766c8af9268958e3b9d76ecafee3a496f0b53c3",
+  "recorded_date": "2026-10-26",
+  "repository": "Shnewbs/Foundations-PL4",
+  "version": "0.2.0-rc.1-dev",
+  "release_channel": "development",
+  "local_test_executions": 115,
+  "new_regression_cases": 9,
+  "offline_mutation_cases": [
+    {
+      "minecraft": "1.12.2",
+      "scenario": "scalar-scope",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "mutated_offline_copy_sha256": "17d88baa4c903eb4551eaf484055a1b35b770db09967e0e84108d151e4b4193c",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.12.2",
+      "scenario": "duplicate-token",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "mutated_offline_copy_sha256": "959298920f8a2462cd501690ac75b5a4840c8d650dbf8bbbe4644b9066bde9e8",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.12.2",
+      "scenario": "scalar-owner",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "mutated_offline_copy_sha256": "80e20419d99f1344723181dfb4817fe50a4d11c59ee595aca72838d12ead4173",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.12.2",
+      "scenario": "unknown-schema",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "mutated_offline_copy_sha256": "540980bcaafc2178d8e01ce4e1026d12b2f67c39de53336e1f26b7b2573fdadd",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.12.2",
+      "scenario": "scalar-entries",
+      "result": "REJECTED_MALFORMED_INPUT",
+      "original_archive_sha256": "948d907315ed5c5b794a52d829522c39f37697a566af0cff4dd20c9d1576092f",
+      "mutated_offline_copy_sha256": "e67b9cffc43ec550753962033d21e62e3eab9c023282473af9bafe2fff39d97d",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.6.4",
+      "scenario": "scalar-scope",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "mutated_offline_copy_sha256": "4898b3a3740a33402c77be5ea818422969e3aa9ab5ca28d50496f4c555fc2a18",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.6.4",
+      "scenario": "duplicate-token",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "mutated_offline_copy_sha256": "da67540b825b3fe9729b61b63b34db083967504d92644eeea93a58c69e85335c",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.6.4",
+      "scenario": "scalar-owner",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "mutated_offline_copy_sha256": "d8706413753c308fd435856a68e88174573e60971e84c9fe73f155f8fbb7e29a",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.6.4",
+      "scenario": "unknown-schema",
+      "result": "OPAQUE_ORIGINAL_TARGET_WITHHELD",
+      "original_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "mutated_offline_copy_sha256": "afc37350d30c5fda38dc79a6aefe0337056440c5b0ead878e0095aedb27287c3",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    },
+    {
+      "minecraft": "1.6.4",
+      "scenario": "scalar-entries",
+      "result": "REJECTED_MALFORMED_INPUT",
+      "original_archive_sha256": "5cafdaa11abcd394deb00a8963a783d5141508a81c426f4614100fe3ccc990b3",
+      "mutated_offline_copy_sha256": "13d03443e629b2dfb82387544de48d2931ad29e5b29eff2d718d758db70f16c0",
+      "scope": "Generated offline NBT mutation only; no native JVM acceptance inferred"
+    }
+  ],
+  "native_gameplay_scope": "No production Minecraft source or version branch was changed. Legacy native357/335,decode232,provider188 andhistorical60 remain prior exact-source acceptance, not new native checks in this collector-only checkpoint.",
+  "prior_evidence": "docs/acceptance/rc-dev-legacy-decode-process-restart-2026-10-26.json",
+  "limitations": [
+    "Fixture/offline copied-save observations only; no arbitrary user/modpack world acceptance.",
+    "Hashes describe parsed values and do not preserve original encoded NBT numeric tag widths. Historical unversioned value hashes must not be compared directly with v2 hashes.",
+    "In-game opaque export, rejected-compound native process coverage, installed-provider identity/access-control/durability and reviewed reconciliation remain unfinished.",
+    "No replay, redemption, minting, inferred balances or fence clearing."
+  ],
+  "source_file_sha256": {
+    "collect_legacy_item_evidence.py": "4696bea8f82c9d59f9fc756a97aab032a4fd9838608cf5e0c1be30ce4497ef1a",
+    "test_legacy_evidence_collector.py": "8fd287d8c353c61fbaa1b14ec5bd04a913a6d8ae2e9757fc84603fcc2f084057"
+  },
+  "rc_publication_cleared": false,
+  "new_github_release": null,
+  "new_curseforge_upload_id": null,
+  "curseforge_moderation": null,
+  "curseforge_public_visibility": null,
+  "prior_byte_array_lookalike_collision_sha256": "12bc776d2adf028c43fe0121f6ed641cb55a53c7091df38c2e12095e95d45d63",
+  "fixed_domain_hashes_differ": true,
+  "record_examples": [
+    {
+      "case": "valid",
+      "opaque": false,
+      "original_target": [
+        3,
+        200,
+        32
+      ],
+      "errors": [],
+      "reconciliation_cleared": false
+    },
+    {
+      "case": "scalar-scope",
+      "opaque": true,
+      "original_target": null,
+      "errors": [
+        "invalid scope"
+      ],
+      "reconciliation_cleared": false
+    },
+    {
+      "case": "unknown-scope",
+      "opaque": true,
+      "original_target": null,
+      "errors": [
+        "invalid scope"
+      ],
+      "reconciliation_cleared": false
+    },
+    {
+      "case": "scalar-owner",
+      "opaque": true,
+      "original_target": null,
+      "errors": [
+        "invalid owner"
+      ],
+      "reconciliation_cleared": false
+    }
+  ],
+  "source_commit": "a0b450e23646cbfeea16a0a78003b7c8611a513e",
+  "main_native": {
+    "minecraft": "1.21.1",
+    "version": "0.2.0-rc.1-dev",
+    "source_commit": "a0b450e23646cbfeea16a0a78003b7c8611a513e",
+    "native_gate": "PASS",
+    "expected_fixtures": 192,
+    "gate_reports": [
+      "rc-development-gate.json"
+    ],
+    "artifact_sha256": {
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+    },
+    "workflow_run": "40365518434",
+    "publication_performed": false,
+    "rc_publication_cleared": false,
+    "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+  },
+  "workflow_run": 40365518434,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40365518434",
+  "native_report_sha256": "12b76142ffec667c70f7c6602f00b56f420c410c2526e169580670957fc2d28e",
+  "source_archive_sha256": "de8a152557acfcb585e1953eb17e9a6546a036cac4206bf41a6b99649f5dc51b",
+  "artifact": {
+    "id": 12670291184,
+    "name": "hourly-native-1.21.1-a0b450e23646cbfeea16a0a78003b7c8611a513e",
+    "size_in_bytes": 7041985,
+    "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12670291184",
+    "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12670291184/zip",
+    "expired": false,
+    "created_at": "2026-10-26T17:08:34Z",
+    "expires_at": "2026-11-09T17:08:33Z",
+    "updated_at": "2026-10-26T17:08:34Z",
+    "digest": "sha256:462d5f14a55dc4c091c0d2b73f8ee1976eadeaf7b92ca88dbb28eda65dd9b2b8",
+    "workflow_run": {
+      "id": 40365518434,
+      "repository_id": 1396808859,
+      "head_repository_id": 1396808859,
+      "head_branch": "main",
+      "head_sha": "a0b450e23646cbfeea16a0a78003b7c8611a513e"
+    }
+  },
+  "retained_legacy_artifacts": [
+    {
+      "id": 12666631517,
+      "name": "hourly-native-1.12.2-e6d1c698e9327615fb023a5e6ee4ccc948c082b1",
+      "size_in_bytes": 3349039,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12666631517",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12666631517/zip",
+      "expired": false,
+      "created_at": "2026-10-26T16:20:20Z",
+      "expires_at": "2026-11-09T16:20:18Z",
+      "updated_at": "2026-10-26T16:20:20Z",
+      "digest": "sha256:4edf01be7f18ca203f1355eb6208aa8ae078a8aeb37bd8653367574eae633b42",
+      "workflow_run": {
+        "id": 40357554810,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "cb7890c6d32938b04bb56a6b6e1f8604aba3f6ff"
+      }
+    },
+    {
+      "id": 12666238180,
+      "name": "hourly-native-1.6.4-16947d862e3f4599d801137502ae2fd1600657fb",
+      "size_in_bytes": 3881967,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12666238180",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12666238180/zip",
+      "expired": false,
+      "created_at": "2026-10-26T16:20:03Z",
+      "expires_at": "2026-11-09T16:20:02Z",
+      "updated_at": "2026-10-26T16:20:03Z",
+      "digest": "sha256:c74c75f1c597012016793bbacccff54dbcf8de158a97aed7a8bd30c01dab6905",
+      "workflow_run": {
+        "id": 40357554810,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "cb7890c6d32938b04bb56a6b6e1f8604aba3f6ff"
+      }
+    }
+  ]
+}
