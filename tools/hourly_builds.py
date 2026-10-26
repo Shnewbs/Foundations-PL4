@@ -69,7 +69,7 @@ def discover(ledger, repo, force=False, lookup=api):
 
 
 def validate_restart(root, report, mc, sha, runtime, counts):
-    phases = {"write": 0, "verify": 0, "crash-write": 73, "crash-verify": 0}
+    phases = {"write": 0, "verify": 0, "crash-write": -9, "crash-verify": 0}
     if (report.get("minecraft") != mc or report.get("source_commit") != sha
             or report.get("runtime_sha256") != runtime
             or report.get("clean_restart") != "PASS" or report.get("save_barrier_abrupt_restart") != "PASS"):

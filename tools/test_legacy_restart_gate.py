@@ -6,7 +6,7 @@ class RestartProofTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name);logs=self.root/'verification-logs';logs.mkdir()
         self.mc='1.12.2';self.sha='a'*40;self.runtime='b'*64
         self.report=dict(minecraft=self.mc,source_commit=self.sha,runtime_sha256=self.runtime,clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=[],phase_reports={},world_archives={})
-        for i,(phase,code) in enumerate([('write',0),('verify',0),('crash-write',73),('crash-verify',0)]):
+        for i,(phase,code) in enumerate([('write',0),('verify',0),('crash-write',-9),('crash-verify',0)]):
             pid=100+i;log=logs/('item-restart-'+phase+'.log');log.write_text(phase)
             self.report['processes'].append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest()))
             tokens=['00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002']
