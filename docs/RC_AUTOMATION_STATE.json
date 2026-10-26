@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-historical-provider-2026-10-26T13",
-    "claimed_at": "2026-10-26T13:16:00Z",
-    "expires_at": "2026-10-26T14:00:00Z",
-    "scope": "Historical provider-private outcomes in actual pre-journal/native candidate migration fixture"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40322886387,
+  "last_verified_legacy_native_run": 40329550159,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40323580625,
+    "1.12.2": 40330081200,
     "1.6.4": 40313555488
   },
-  "current_checkpoint": "Registered adversarial provider inventories remain installed across both legacy restart fixtures instead of replacement by vanilla chests. Private UUID, owner, armed fault mode and mutation counters match across four fresh JVMs: 188 assertions per port. Direct saved-region NBT validates both retained worlds per port. 1.12.2 fb95ce6e passed 341/341, 1.6.4 405885e2 passed 319/319; production startup, preview.3 migration and 24 historical import checks pass. Main a050185c passed 192; 21 other tracks retain exact evidence. 48 targeted controller regressions passed. New 1.12.2 archive passed an exact-JAR stock client, with 2 current captures reviewed and 20 hashed. 1.6.4 production hash is unchanged and retains precisely attributed prior client evidence. All 24 RC clearances remain false; no release/upload. Historical unknown-route provider outcomes, reviewed recovery and broader acceptance remain unfinished.",
-  "local_validation": "Every native archive/JAR hash verified; restart fixture hashes and raw phase JSON/log/world hashes cross-checked. 188 separate-JVM assertions per legacy port. Independent NBT inspection of 4 saved worlds confirms 8 registered provider instances, with one mutation each and preserved ownership labels. Eight raw owner/counter mismatch rejection checks, four malformed-NBT rejection checks and 48 controller regressions pass. Exact new 1.12.2 client passed, 2 captures reviewed and 20 hashed. Branch publishers observed skipped.",
+  "current_checkpoint": "Actual old native JARs execute registered provider callbacks that mutate then throw. Provider-private identity, ownership label, inventory and mutation counters survive candidate unknown-route import, host removal and clean restart. Both legacy ports passed 60 historical checks across three JVMs, 188 current-runtime restart assertions, native totals 341/319, production startup and preview.3 migration. Direct region NBT matches both retained historical worlds. Main 3d6404a0 passed 192; 21 other tracks retain evidence. Ten new historical-controller cases passed. All 24 RC flags remain false; no release/upload. Installed providers/access control, reviewed recovery, arbitrary crash/world/multiplayer/performance and broader parity remain open. Fresh 1.12.2 exact-JAR stock-client regression passed; two current screenshots reviewed and twenty hashed. 1.6.4 retains its original client-source attribution for the identical production JAR.",
+  "local_validation": "Trusted hourly run 40329550159 passed all three changed exact sources. Native/raw counts, all packaged JARs, immutable source ZIP hashes/commit comments, both migration and restart fixture hashes, process/log/phase/world identities and provider private-state snapshots verified. Two historical world archives independently inspected; altered counters rejected. Branch-native publication steps observed skipped. Fresh exact 1.12.2 client passed; two screenshots reviewed and twenty hashed.",
   "next_work": [
-    "Continue provider-outcome reconciliation for historical unknown-route receipts before any recovery operation. The current target-linked registered fixture provider now retains its own private identity, ownership label, inventory and mutation counters across clean and post-save SIGKILL restarts (188 assertions per port plus independent raw-world checks). Next add equivalent historical unknown-route provider-private conservation/ownership fixtures using the pinned pre-journal runtime; keep original target/phase unknown and extraction losses unaccounted. This does not certify installed optional providers, arbitrary pre-save/OS/power-loss atomicity, full-process capacity overflow or recovery actions. No automatic replay/redemption/minting, blanket fence clear or inference from missing tokens.",
+    "Historical unknown-route registered provider-private conservation fixtures now pass actual old-JAR mutation, candidate import/host removal and candidate restart (60 checks per port plus raw saved-world inspection). Continue reviewed reconciliation before any recovery operation: collect bounded token/owner/dimension/provider and observed inventory evidence for current and historical receipts, including source-removal losses and nonspendable insertion claims. Keep unknown routes unknown. Validate installed providers and real ownership/access control separately; no automatic replay/redemption/minting, blanket fence clear or inference from missing tokens. Repeated-corruption evidence history and arbitrary pre-save/OS/power-loss semantics remain open.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -30,34 +25,34 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
-  "main_native_validation_run": 40322886387,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-historical-provider-outcomes-2026-10-26.json",
+  "main_native_validation_run": 40329550159,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40322886387
+    40329550159
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40322886387,
-    "1.6.4": 40322886387
+    "1.12.2": 40329550159,
+    "1.6.4": 40329550159
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
+    "1.12.2": "docs/acceptance/rc-dev-legacy-historical-provider-outcomes-2026-10-26.json",
     "1.6.4": "docs/acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "a050185cb4fa5eef3edcc326a102d561a3d7ea0e",
+  "native_main_source_commit": "3d6404a03205ea573aab029a0399e58552768b7a",
   "last_writer_release": {
-    "owner": "pl4-provider-persistence-2026-10-26T12",
-    "released_at": "2026-10-26T12:40:30Z",
-    "checkpoint": "Registered provider private-state persistence accepted at the clean/completed-save boundary; historical unknown-route provider conservation and all-version RC acceptance remain unfinished."
+    "owner": "pl4-historical-provider-2026-10-26T13",
+    "released_at": "2026-10-26T13:27:14Z",
+    "checkpoint": "Actual old-runtime provider-private outcomes accepted through generated clean migration; reviewed recovery and all-version RC acceptance remain unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-historical-provider-outcomes-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-historical-provider-outcomes-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "fb95ce6e60b0b235797b91a47efdd76f0e78ea3b",
-      "1.6.4": "405885e2069cf9898f4787a1a3d4869c56eef2ce"
+      "1.12.2": "beeaaece3eadc106343a477fbcf923018317025f",
+      "1.6.4": "455bd78112b95b5a44faecd5eed0a1552bb2ce9d"
     },
     "publication_steps": "SKIPPED"
   }
