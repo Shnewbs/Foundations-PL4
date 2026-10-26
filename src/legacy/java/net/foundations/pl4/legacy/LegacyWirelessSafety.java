@@ -53,13 +53,17 @@ public final class LegacyWirelessSafety extends WorldSavedData {
     private static void unlink(LegacyTile node,String token){
         if(node.itemJournalContext!=null&&token.equals(node.itemJournalContext.getString("Token"))){node.itemJournalContext=null;node.fluidDirty();}
     }
+    private static String receiptPhase(NBTTagCompound context){
+        String phase=context.getString("Phase");
+        return "wireless".equals(phase)||"extract".equals(phase)||"insert".equals(phase)?phase:"unknown";
+    }
     public String receiptStatus(NBTTagCompound context){
         if(context==null)return "PL4 item receipt: unlinked legacy fault; original target/outcome unknown. Preserve receipt.";
         String token=context.getString("Token");Record record=records.get(token);
         if(opaque!=null)return "PL4 item receipt: opaque journal; preserve receipt and saved data.";
         if(record==null)return "PL4 item receipt: token not present in this dimension; this is not recovery clearance.";
         boolean matches=record.owner.equals(context.getString("Owner"))&&record.target.x==context.getInteger("X")&&record.target.y==context.getInteger("Y")&&record.target.z==context.getInteger("Z");
-        return matches?"PL4 item receipt: unresolved token "+token+" at "+record.target.x+","+record.target.y+","+record.target.z+"; preserve receipt; no replay.":"PL4 item receipt: context mismatch; preserve receipt and inspect saved data.";
+        return matches?"PL4 item receipt: unresolved token "+token+"; recorded phase "+receiptPhase(context)+" at "+record.target.x+","+record.target.y+","+record.target.z+"; preserve receipt; no replay.":"PL4 item receipt: context mismatch; preserve receipt and inspect saved data.";
     }
     public static String receiptDiagnostic(World world,net.minecraft.entity.player.EntityPlayer player,ItemStack receipt){
         if(receipt==null||receipt.itemID!=LegacyPL4.ITEM_CELL.itemID)throw new IllegalArgumentException("Hold a sealed PL4 item receipt");

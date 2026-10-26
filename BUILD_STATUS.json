@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 279,
+  "expected_native_scenarios": 289,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -86,5 +86,6 @@
   "wireless_same_target_alias_acceptance": "PENDING_EXACT_NATIVE_AND_CLIENT_REGRESSION",
   "item_route_retargeting": "Capture source and destination before inventory discovery; abort changed owner/route; phase-specific persistent journal; native validation pending.",
   "item_uncertainty_journal": "PERSISTENT_PER_DIMENSION_TARGET_FENCES_EXACT_NATIVE_PENDING",
-  "item_journal_diagnostics": "READ_ONLY_TOKEN_CONTEXT_AND_REMOVAL_RECEIPTS_NATIVE_PENDING"
+  "item_journal_diagnostics": "READ_ONLY_TOKEN_CONTEXT_AND_REMOVAL_RECEIPTS_NATIVE_PENDING",
+  "item_journal_command_integration": "NATIVE_COMMAND_HANDLER_AND_STOCK_CHAT_PENDING"
 }
