@@ -102,5 +102,7 @@
   "item_compound_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_VALIDATION",
   "item_opaque_journal_export": "OPERATOR_ONLY_CURRENT_DIMENSION_BOUNDED_NATIVE_NBT_HEX_SHA256_NATIVE_ACCEPTANCE_PENDING",
   "item_field_restart_fixture": true,
-  "item_field_restart_acceptance": "PENDING_EXACT_NATIVE_CLEAN_AND_POST_SAVE_KILL_OWNER_DIMENSION_SCOPE_REWRITE"
+  "item_field_restart_acceptance": "PENDING_EXACT_NATIVE_CLEAN_AND_POST_SAVE_KILL_OWNER_DIMENSION_SCOPE_REWRITE",
+  "item_receipt_auth_restart_fixture": true,
+  "item_receipt_auth_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_AUTHORIZATION"
 }

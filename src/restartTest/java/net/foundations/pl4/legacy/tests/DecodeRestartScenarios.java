@@ -66,7 +66,7 @@ public final class DecodeRestartScenarios {
     }
     private void verify(int x,boolean removed){
         load(x);load(x+5);NBTTagCompound tag;
-        if(removed){check(node(x)==null,"removed host stays absent "+x);ItemStack receipt=chest(x+5).getStackInSlot(0);check(receipt!=null&&!receipt.isEmpty()&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt persists in native chest "+x);tag=receipt.getTagCompound();}
+        if(removed){check(node(x)==null,"removed host stays absent "+x);ItemStack receipt=chest(x+5).getStackInSlot(0);check(receipt!=null&&!receipt.isEmpty()&&receipt.getItem()==LegacyPL4.ITEM_CELL,"receipt persists in native chest "+x);tag=receipt.getTagCompound();if(fieldSuite())authorize(receipt);}
         else{LegacyTile n=node(x);check(n!=null,"retained host reloads "+x);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();check(LegacyItemSafety.blocked(n),"reloaded uncertainty cannot settle "+x);tag=save(n);}
         NBTTagCompound original=tag.getCompoundTag("ItemLegacyEvidence");String token=original.getString("OriginalToken");tokens.add(token);
         check(UUID.fromString(token).toString().equals(token),"original token preserved "+x);
@@ -96,6 +96,24 @@ public final class DecodeRestartScenarios {
         boolean enabled=LegacyPL4.enabled;LegacyPL4.enabled=true;
         try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
         check(journalTag().equals(saved),"inspection and replacement never clear journal");
+    }
+    private boolean fieldSuite(){return Arrays.asList("owner","dimension","scope","rewrite").contains(suite);}
+    private void authorize(ItemStack receipt){
+        net.minecraft.entity.player.EntityPlayer owner=actor(true,false),other=actor(false,false),operator=actor(false,true);
+        boolean allowed=!denied(world,owner,receipt);
+        check(allowed==suite.equals("scope"),"reloaded receipt owner authorization is typed and scoped");
+        check(denied(world,other,receipt),"reloaded receipt rejects unrelated profile");
+        String expected=suite.equals("owner")||suite.equals("dimension")?"malformed owner/dimension":suite.equals("rewrite")?"different dimension":"opaque journal";
+        check(LegacyWirelessSafety.receiptDiagnostic(world,operator,receipt).contains(expected),"reloaded receipt operator diagnostic preserves uncertainty");
+        WorldServer foreign=world.getMinecraftServer().getWorld(-1);
+        check(foreign!=null&&foreign!=world&&denied(foreign,operator,receipt),"receipt diagnostic rejects foreign world argument");
+    }
+    private boolean denied(net.minecraft.world.World query,net.minecraft.entity.player.EntityPlayer player,ItemStack receipt){try{LegacyWirelessSafety.receiptDiagnostic(query,player,receipt);return false;}catch(IllegalArgumentException expected){return true;}}
+    private net.minecraft.entity.player.EntityPlayer actor(boolean own,boolean op){return new DiagnosticPlayer(world,own,op);}
+    private static final class DiagnosticPlayer extends net.minecraftforge.common.util.FakePlayer {
+        final boolean operator;
+        DiagnosticPlayer(WorldServer world,boolean own,boolean op){super(world,new com.mojang.authlib.GameProfile(java.util.UUID.fromString(own?OWNER:"00000000-0000-0000-0000-000000000009"),own?"Owner":"Other"));operator=op;}
+        @Override public boolean canUseCommand(int level,String name){return operator;}
     }
     private boolean compoundSuite(){return !suite.equals("raw")&&!suite.equals("missing");}
     private String contextValue(){
