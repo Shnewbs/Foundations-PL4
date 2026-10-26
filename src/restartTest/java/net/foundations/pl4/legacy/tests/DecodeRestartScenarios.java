@@ -26,7 +26,7 @@ public final class DecodeRestartScenarios {
     private String suite;
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
         suite=System.getProperty("foundations_pl4.decodeRestart","");if(suite.isEmpty())return;
-        if(!Arrays.asList("raw","missing").contains(suite))throw new IllegalStateException("Explicit decode suite required");
+        if(!Arrays.asList("raw","missing","compound").contains(suite))throw new IllegalStateException("Explicit decode suite required");
         String phase=System.getProperty("foundations_pl4.itemRestart","");
         if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Explicit restart phase required");
         MinecraftServer server=FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -54,7 +54,8 @@ public final class DecodeRestartScenarios {
         }
         for(int x:new int[]{64,80}){
             LegacyTile n=node(x);NBTTagCompound tag=save(n);
-            if(suite.equals("missing")){tag.removeTag("ItemJournalContext");tag.setString("ItemTransferFault","");}
+            if(suite.equals("compound"))tag.setTag("ItemJournalContext",rejected(x));
+            else if(suite.equals("missing")){tag.removeTag("ItemJournalContext");tag.setString("ItemTransferFault","");}
             else if(x==64)tag.setInteger("ItemJournalContext",71);else tag.setString("ItemJournalContext","current-raw-context");
             n.readFromNBT(tag);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();
             check(LegacyItemSafety.blocked(n),"generic settlement retains uncertainty "+x);n.fluidDirty();
@@ -72,18 +73,20 @@ public final class DecodeRestartScenarios {
         check(original.equals(evidence(x,token)),"complete original evidence unchanged "+x);
         check(tag.getInteger("ItemEscrowCount")==8,"eight units remain sealed "+x);
         check(!tag.getString("ItemTransferFault").isEmpty(),"missing fault text cannot erase uncertainty "+x);
-        if(suite.equals("missing"))check(!tag.hasKey("ItemJournalContext"),"missing context never synthesized "+x);
+        if(suite.equals("compound"))check(tag.getTag("ItemJournalContext") instanceof NBTTagCompound&&tag.getCompoundTag("ItemJournalContext").equals(rejected(x)),"rejected compound and nested payload retained "+x);
+        else if(suite.equals("missing"))check(!tag.hasKey("ItemJournalContext"),"missing context never synthesized "+x);
         else if(x==64)check(tag.getTag("ItemJournalContext") instanceof net.minecraft.nbt.NBTTagInt&&tag.getInteger("ItemJournalContext")==71,"raw integer type and value retained");
         else check(tag.getTag("ItemJournalContext") instanceof net.minecraft.nbt.NBTTagString&&tag.getString("ItemJournalContext").equals("current-raw-context"),"raw string type and value retained");
         check(!original.hasKey("X")&&!original.hasKey("Phase"),"no original route or phase invented "+x);
         LegacyWirelessSafety journal=LegacyWirelessSafety.data(world);
         check(journal.blocked(OWNER,pos(200))&&journal.blocked("unrelated-owner",pos(240)),"all owners and targets remain fenced "+x);
-        Map<String,Object> row=new LinkedHashMap<String,Object>();row.put("host_x",x);row.put("host_removed",removed);row.put("original_token",token);row.put("owner",OWNER);row.put("dimension",0);row.put("context_kind",suite.equals("missing")?"absent":x==64?"int":"string");row.put("context_value",suite.equals("missing")?"":x==64?"71":"current-raw-context");row.put("sealed_units",8);row.put("evidence_marker","first-raw-payload");row.put("original_route_known",false);outcomes.add(row);
+        Map<String,Object> row=new LinkedHashMap<String,Object>();row.put("host_x",x);row.put("host_removed",removed);row.put("original_token",token);row.put("owner",OWNER);row.put("dimension",0);row.put("context_kind",suite.equals("compound")?"compound":suite.equals("missing")?"absent":x==64?"int":"string");row.put("context_value",suite.equals("compound")?"rejected-token-int71":suite.equals("missing")?"":x==64?"71":"current-raw-context");row.put("sealed_units",8);row.put("evidence_marker","first-raw-payload");row.put("original_route_known",false);outcomes.add(row);
     }
     private void verifyJournal(){
         NBTTagCompound saved=journalTag(),opaque=saved;
         check(opaque.getCompoundTag("ExistingLegacyEvidence").equals(evidence(64,tokens.get(0))),"first rejection original evidence retained");
-        if(suite.equals("missing"))check(opaque.getBoolean("MissingContext")&&!opaque.hasKey("RejectedContext"),"missing opaque barrier preserved");
+        if(suite.equals("compound"))check(opaque.getCompoundTag("RejectedContext").equals(rejected(64)),"rejected compound opaque barrier preserved");
+        else if(suite.equals("missing"))check(opaque.getBoolean("MissingContext")&&!opaque.hasKey("RejectedContext"),"missing opaque barrier preserved");
         else check(opaque.getTag("RejectedContext") instanceof net.minecraft.nbt.NBTTagInt&&opaque.getInteger("RejectedContext")==71,"raw opaque rejection type preserved");
         net.minecraft.nbt.NBTTagList entries=opaque.getCompoundTag("PreviousJournal").getTagList("Entries",10);Set<String> prior=new HashSet<String>();
         for(int i=0;i<entries.tagCount();i++){NBTTagCompound row=entries.getCompoundTagAt(i);prior.add(row.getString("Token"));check(!row.hasKey("X")&&!row.hasKey("Phase"),"prior journal remains unknown-route "+i);}
@@ -94,6 +97,7 @@ public final class DecodeRestartScenarios {
         try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
         check(journalTag().equals(saved),"inspection and replacement never clear journal");
     }
+    private NBTTagCompound rejected(int x){NBTTagCompound r=new NBTTagCompound();r.setInteger("Token",71);r.setString("Owner",OWNER);r.setInteger("Dimension",0);r.setString("Scope","legacy-unknown");r.setInteger("HostX",x);r.setInteger("HostY",200);r.setInteger("HostZ",32);NBTTagCompound p=new NBTTagCompound();p.setByteArray("Bytes",new byte[]{4,5,6});r.setTag("RejectedPayload",p);return r;}
     private NBTTagCompound evidence(int x,String token){NBTTagCompound e=new NBTTagCompound();e.setString("Fault","Original decode fixture uncertainty");e.setString("ObservedOwner",OWNER);e.setInteger("ObservedDimension",0);e.setInteger("HostX",x);e.setInteger("HostY",200);e.setInteger("HostZ",32);e.setString("OriginalToken",token);e.setString("MalformedContext","first-raw-payload");NBTTagCompound nested=new NBTTagCompound();nested.setInteger("Sentinel",12345);nested.setByteArray("Bytes",new byte[]{1,2,3});e.setTag("OriginalPayload",nested);return e;}
     private NBTTagCompound save(LegacyTile n){NBTTagCompound tag=new NBTTagCompound();n.writeToNBT(tag);return tag;}
     private NBTTagCompound journalTag(){NBTTagCompound tag=new NBTTagCompound();tag=LegacyWirelessSafety.data(world).writeToNBT(tag);return tag;}

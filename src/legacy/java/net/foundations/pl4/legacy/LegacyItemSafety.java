@@ -10,7 +10,7 @@ public final class LegacyItemSafety {
         public void set(ItemStack value){tile.pending=value==null?ItemStack.EMPTY:value;tile.fluidDirty();}
         public boolean blocked(){return LegacyItemSafety.blocked(tile);}
         public void block(String reason){tile.itemFault=reason;tile.fluidDirty();}
-        public void clearBlock(){if(tile.itemOpaque==null&&tile.itemRawJournalContext==null&&!tile.itemMissingJournalContext)tile.itemFault="";tile.fluidDirty();}
+        public void clearBlock(){if(tile.itemOpaque==null&&tile.itemRawJournalContext==null&&!tile.itemMissingJournalContext&&tile.itemLegacyEvidence==null)tile.itemFault="";tile.fluidDirty();}
     };}
     /** Refuse route edits while held items or unresolved foreign mutations fence this endpoint. */
     public static boolean selectFace(LegacyTile tile,int face){
