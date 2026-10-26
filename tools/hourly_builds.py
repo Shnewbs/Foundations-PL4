@@ -258,6 +258,12 @@ def record(root, expected_mc, expected_sha):
             raise ValueError("Legacy native/production/migration evidence disagrees")
         validate_legacy_counts(root, native, expected)
         gate_files = ["clean-native-summary.json", "production-smoke.json", "legacy-migration-summary.json"]
+        if status.get("item_opaque_journal_export"):
+            from verify_legacy_journal_export import verify_native_log
+            export = verify_native_log((logs / "native.log").read_text(errors="replace"))
+            name = "legacy-opaque-export-inspection.json"
+            (logs / name).write_text(json.dumps(export, indent=2) + "\n")
+            gate_files.append(name)
         if status.get("item_restart_fixture") is True:
             restart = json.loads((logs / "legacy-item-restart-summary.json").read_text())
             validate_restart(root, restart, expected_mc, actual, native["runtime_sha256"], {"write": status["item_restart_write_assertions"], "verify": status["item_restart_verify_assertions"]})

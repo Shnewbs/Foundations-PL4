@@ -49,6 +49,28 @@ def verify(blocks):
                 recovery_clearance=False,
                 scope="Verified captured bytes only; no provider identity, ownership or outcome authentication")
 
+
+def verify_native_log(text):
+    """Collect only fixture-marked three-line blocks from a native completion log."""
+    if not isinstance(text, str) or len(text) > 32 * 1024 * 1024:
+        raise ValueError("Native log exceeds bound")
+    grouped = {}
+    for line in text.splitlines():
+        marker = "PL4 OPAQUE EXPORT BLOCK "
+        if marker not in line:
+            continue
+        suffix = line.split(marker, 1)[1]
+        match = re.fullmatch(r"(\d+) (.*)", suffix)
+        if not match or not 1 <= int(match[1]) <= 128:
+            raise ValueError("Malformed native export marker")
+        lines = grouped.setdefault(int(match[1]), [])
+        lines.append(match[2])
+        if len(lines) > 3:
+            raise ValueError("Duplicate native export block")
+    if not grouped:
+        raise ValueError("Missing native export transcript")
+    return verify([grouped[n] for n in sorted(grouped)])
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("Usage: python tools/verify_legacy_journal_export.py captured-chat-blocks.json")

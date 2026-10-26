@@ -1,7 +1,7 @@
 import copy
 import hashlib
 import unittest
-from verify_legacy_journal_export import verify, NOTICE
+from verify_legacy_journal_export import verify, NOTICE, verify_native_log
 
 def fixture(size=300, dimension=0):
     raw = bytes(n % 251 for n in range(size))
@@ -43,3 +43,10 @@ class ExportTests(unittest.TestCase):
     def test_line_and_manifest_bounds(self):
         for blocks in ([[["x"*513,"",""]]], [fixture()[0][:2]], "bad", []):
             with self.assertRaises(ValueError): verify(blocks)
+
+    def test_native_log_reconstruction(self):
+        text="\n".join("INFO fixture PL4 OPAQUE EXPORT BLOCK "+str(n+1)+" "+line for n, block in enumerate(fixture()) for line in block)
+        self.assertEqual(verify_native_log(text)["bytes"],300)
+    def test_native_log_requires_complete_unique_blocks(self):
+        for text in ["no export", "PL4 OPAQUE EXPORT BLOCK 0 bad", "PL4 OPAQUE EXPORT BLOCK 1 bad"]:
+            with self.assertRaises(ValueError): verify_native_log(text)
