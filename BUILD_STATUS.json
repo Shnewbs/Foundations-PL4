@@ -109,5 +109,6 @@
   "item_field_restart_acceptance": "PENDING_EXACT_NATIVE_CLEAN_AND_POST_SAVE_KILL_OWNER_DIMENSION_SCOPE_REWRITE",
   "item_receipt_auth_restart_fixture": true,
   "item_receipt_auth_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_AUTHORIZATION",
-  "item_live_evidence_acceptance": "PENDING_EXACT_NATIVE_LIVE_FAULT_OWNER_CONTEXT_REMOVAL_TESTS"
+  "item_live_evidence_acceptance": "PENDING_EXACT_NATIVE_LIVE_FAULT_OWNER_CONTEXT_REMOVAL_TESTS",
+  "item_live_evidence_fixture": true
 }
