@@ -4,7 +4,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 /** Persist uncertainty before every foreign mutation; uncertain items are never replayed or dropped as spendable stacks. */
 public final class LegacyItemSafety {
-    public static boolean blocked(LegacyTile tile){return tile.itemOpaque!=null||tile.itemRawJournalContext!=null||tile.itemMissingJournalContext||!tile.itemFault.isEmpty();}
+    public static boolean blocked(LegacyTile tile){return tile.itemLegacyEvidence!=null||tile.itemOpaque!=null||tile.itemRawJournalContext!=null||tile.itemMissingJournalContext||!tile.itemFault.isEmpty();}
     public static ConservingItems.Escrow<ItemStack> escrow(final LegacyTile tile){return new ConservingItems.Escrow<ItemStack>(){
         public ItemStack get(){return tile.pending;}
         public void set(ItemStack value){tile.pending=value==null?ItemStack.EMPTY:value;tile.fluidDirty();}
@@ -52,6 +52,7 @@ public final class LegacyItemSafety {
             if(malformedEvidence)tile.itemLegacyEvidence.setTag("MalformedEvidence",tag.getTag("ItemLegacyEvidence").copy());
         }
         tile.itemOpaque=null;tile.itemFault=malformedContext||malformedEvidence||tile.itemMissingJournalContext?"Unresolved saved item context; manual inspection required":tag.getString("ItemTransferFault");
+        if(tile.itemLegacyEvidence!=null&&tile.itemFault.isEmpty())tile.itemFault="Unresolved saved item evidence; manual inspection required";
         if(tile.itemFault.length()>512)tile.itemFault=tile.itemFault.substring(0,512);
         int count=tag.getInteger("ItemEscrowCount");tile.itemOpaqueCount=Math.max(0,count);
         if(tag.hasKey("Escrow")&&LegacyTile.STACKS.empty(tile.pending)&&count>0&&!tile.itemFault.isEmpty()){
