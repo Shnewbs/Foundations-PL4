@@ -51,15 +51,17 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public int transferOnce(){
         if(role()==6)return LegacyEnergy.transfer(this);
         if(role()==3)return LegacyFluids.transfer(this);
+        if(fluidServer()&&role()==1&&LegacyWirelessSafety.data(worldObj).blocked(owner,target())){status="Item target fenced by unresolved item handoff";return 0;}
         if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||worldObj.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord))return 0;
-        BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}NativeInventory source=inventory();if(source==null&&pending==null)return 0;
+        BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}BoundedNetwork.Point sourceTarget=target();String transferOwner=owner;NativeInventory source=inventory();if(source==null&&pending==null)return 0;
         ConservingItems.Work work=new ConservingItems.Work(1024);Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();seen.add(target());int moved=0;
         for(BoundedNetwork.Point p:plan.nodes){
             TileEntity raw=worldObj.getBlockTileEntity(p.x,p.y,p.z);if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
-            if(sink.role()!=2||!owner.equals(sink.owner)||worldObj.isBlockIndirectlyGettingPowered(p.x,p.y,p.z)||!seen.add(sink.target()))continue;
-            NativeInventory dest=sink.inventory();if(dest==null||(source!=null&&source.inventory==dest.inventory))continue;
-            ConservingItems.Escrow<ItemStack> e=LegacyItemSafety.escrow(this);
+            if(sink.role()!=2||!owner.equals(sink.owner)||LegacyWirelessSafety.data(worldObj).blocked(owner,sink.target())||worldObj.isBlockIndirectlyGettingPowered(p.x,p.y,p.z)||!seen.add(sink.target()))continue;
+            BoundedNetwork.Point destinationTarget=sink.target();NativeInventory dest=sink.inventory();if(dest==null||(source!=null&&source.inventory==dest.inventory))continue;
+            if(!transferOwner.equals(owner)||!transferOwner.equals(sink.owner)||!sourceTarget.equals(target())||!destinationTarget.equals(sink.target())){status="Item route changed during native inventory discovery";continue;}
+            ConservingItems.Escrow<ItemStack> e=LegacyWirelessSafety.automaticEscrow(this,sourceTarget,destinationTarget);
             int budget=LegacyPL4.itemRate-moved;if(pending!=null)moved+=ConservingItems.flush(STACKS,e,dest,budget,LegacyPL4.slotLimit,work);else if(source!=null)moved+=ConservingItems.move(STACKS,e,source,dest,budget,LegacyPL4.slotLimit,work);
             if(moved>=LegacyPL4.itemRate||!work.available())break;
         }
