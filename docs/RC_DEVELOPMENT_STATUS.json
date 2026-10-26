@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
-      "workflow_run": 40403201527,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40403201527",
+      "source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
+      "workflow_run": 40409934243,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40409934243",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -509,7 +509,7 @@
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40389033557
       },
-      "candidate_source_commit": "86627f03fd86e196afe1ef3d12b6b51d163f813b"
+      "candidate_source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d"
     },
     {
       "minecraft": "26.1.2",
@@ -580,19 +580,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40403001650,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40403001650",
-      "source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
-      "runtime_sha256": "763da6dddd4532e887d35dd7456e67dd2ce8beeeb294e292fceb01c1413d47e7",
+      "workflow_run": 40409934243,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40409934243",
+      "source_commit": "d9679803b394b67bd55cf643f5a371bb1136322f",
+      "runtime_sha256": "ab10d0cd328134829493c60b3502370977d7d3ce96a440393a46c6dda54d7414",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "candidate_source_commit": "d9679803b394b67bd55cf643f5a371bb1136322f",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -604,7 +604,7 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
       "observed_native_fixtures": 378,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -660,7 +660,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40404057398,
+      "client_workflow_run": 40410933793,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -672,7 +672,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Eight live retained-evidence native cases passed after demonstrated failure; evidence itself now quarantines despite fault text clearing. Saved evidence restores an uncertainty marker and integer escrow count on reload. Existing decode876/provider188/historical60 and fresh clients separately pass. No new separate-process live mutation or recovery/alias/provider acceptance.",
+      "acceptance_attribution": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -724,14 +724,14 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
-        "runtime_sha256": "763da6dddd4532e887d35dd7456e67dd2ce8beeeb294e292fceb01c1413d47e7",
-        "workflow_run": 40404057398,
+        "source_commit": "d9679803b394b67bd55cf643f5a371bb1136322f",
+        "runtime_sha256": "ab10d0cd328134829493c60b3502370977d7d3ce96a440393a46c6dda54d7414",
+        "workflow_run": 40410933793,
         "result": "PASS",
         "fresh_client_run": true,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Exact hourly-qualified production JAR; all opaque export pages and storage/search/grouping/replay/codec/display regressions. Eight live mutation cases are separate native in-process evidence. No dedicated multiplayer, online identity, installed-provider or recovery clearance."
+        "scope": "Exact current hourly production JAR; ordinary stock actions and full export. New live-process cases are native fixtures, not graphical mutation acceptance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -833,18 +833,18 @@
       "context_decode_process_restart": "PASS_232_ASSERTIONS_8_JVMS_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
       "context_decode_process_assertions": {
         "raw": {
-          "write": 32,
-          "verify": 26,
-          "crash_write": 32,
-          "crash_verify": 26
+          "write": 41,
+          "verify": 29,
+          "crash_write": 41,
+          "crash_verify": 29
         },
         "missing": {
-          "write": 32,
-          "verify": 26,
-          "crash_write": 32,
-          "crash_verify": 26
+          "write": 41,
+          "verify": 29,
+          "crash_write": 41,
+          "crash_verify": 29
         },
-        "total": 232,
+        "total": 280,
         "distinct_jvms": 8,
         "separate_from_ordinary_native_provider_restart_and_historical_counts": true
       },
@@ -865,16 +865,16 @@
       },
       "legacy_evidence_settlement_guard": "PASS_NATIVE_JVM_GENERIC_SETTLEMENT_CANNOT_CLEAR_PRESERVED_LEGACY_EVIDENCE",
       "compound_context_process_restart": {
-        "native_assertions": 116,
+        "native_assertions": 140,
         "distinct_jvms": 4,
-        "write": 32,
-        "verify": 26,
-        "crash_write": 32,
-        "crash_verify": 26,
-        "scope": "Clean and completed-save/storage-save/flush parent SIGKILL only; integer Token rejected compound with nested payload and original evidence preserved."
+        "write": 41,
+        "verify": 29,
+        "crash_write": 41,
+        "crash_verify": 29,
+        "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 876,
+      "total_decode_process_assertions": 1044,
       "total_decode_process_jvms": 28,
       "previous_opaque_export_candidate": {
         "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
@@ -908,7 +908,7 @@
         "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
       },
       "malformed_fields_process_restart": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
-      "malformed_fields_process_assertions": 528,
+      "malformed_fields_process_assertions": 624,
       "malformed_fields_process_jvms": 16,
       "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "malformed_fields_process_suites": [
@@ -954,7 +954,9 @@
       },
       "live_retained_evidence_quarantine": "PASS_8_EXACT_NATIVE_CASES",
       "live_retained_evidence_report": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
-      "live_mutation_process_restart": "PENDING_SEPARATE_NATIVE_JVM_NEW_MUTATIONS"
+      "live_mutation_process_restart": "PARTIAL_168_FAULT_CLEAR_EMPTY_ESCROW_FACE_AND_NBT_GUARDS",
+      "live_process_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
+      "live_mutation_process_assertions": 168
     },
     {
       "minecraft": "1.6.4",
@@ -969,15 +971,15 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40403201527,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40403201527",
-      "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "workflow_run": 40409934243,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40409934243",
+      "source_commit": "86dd76fb02b942cd1206b4ccdf4c8094eff4ace6",
       "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "candidate_source_commit": "86dd76fb02b942cd1206b4ccdf4c8094eff4ace6",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -992,7 +994,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 356,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1037,11 +1039,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_RETAINED_BYTE_IDENTICAL_PRODUCTION_PAYLOAD",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Eight live retained-evidence native cases passed after demonstrated failure; evidence itself now quarantines despite fault text clearing. Saved evidence restores an uncertainty marker and integer escrow count on reload. Existing decode876/provider188/historical60 and fresh clients separately pass. No new separate-process live mutation or recovery/alias/provider acceptance.",
+      "acceptance_attribution": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40405023609,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1082,10 +1084,11 @@
         "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
         "workflow_run": 40405023609,
         "result": "PASS",
-        "fresh_client_run": true,
+        "fresh_client_run": false,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Exact hourly-qualified production JAR; all opaque export pages and storage/search/grouping/replay/codec/display regressions. Eight live mutation cases are separate native in-process evidence. No dedicated multiplayer, online identity, installed-provider or recovery clearance."
+        "scope": "Retained exact production payload5074b085 from prior source6797ecc0; candidate86dd76fb changes fixture/status only. No new client run or screenshot review.",
+        "candidate_source_commit": "86dd76fb02b942cd1206b4ccdf4c8094eff4ace6"
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1192,18 +1195,18 @@
       "context_decode_process_restart": "PASS_232_ASSERTIONS_8_JVMS_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
       "context_decode_process_assertions": {
         "raw": {
-          "write": 32,
-          "verify": 26,
-          "crash_write": 32,
-          "crash_verify": 26
+          "write": 41,
+          "verify": 29,
+          "crash_write": 41,
+          "crash_verify": 29
         },
         "missing": {
-          "write": 32,
-          "verify": 26,
-          "crash_write": 32,
-          "crash_verify": 26
+          "write": 41,
+          "verify": 29,
+          "crash_write": 41,
+          "crash_verify": 29
         },
-        "total": 232,
+        "total": 280,
         "distinct_jvms": 8,
         "separate_from_ordinary_native_provider_restart_and_historical_counts": true
       },
@@ -1226,16 +1229,16 @@
       },
       "legacy_evidence_settlement_guard": "PASS_NATIVE_JVM_GENERIC_SETTLEMENT_CANNOT_CLEAR_PRESERVED_LEGACY_EVIDENCE",
       "compound_context_process_restart": {
-        "native_assertions": 116,
+        "native_assertions": 140,
         "distinct_jvms": 4,
-        "write": 32,
-        "verify": 26,
-        "crash_write": 32,
-        "crash_verify": 26,
-        "scope": "Clean and completed-save/storage-save/flush parent SIGKILL only; integer Token rejected compound with nested payload and original evidence preserved."
+        "write": 41,
+        "verify": 29,
+        "crash_write": 41,
+        "crash_verify": 29,
+        "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 876,
+      "total_decode_process_assertions": 1044,
       "total_decode_process_jvms": 28,
       "previous_opaque_export_candidate": {
         "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
@@ -1269,7 +1272,7 @@
         "client_evidence": "acceptance/rc-dev-legacy-opaque-journal-export-2026-10-26.json"
       },
       "malformed_fields_process_restart": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
-      "malformed_fields_process_assertions": 528,
+      "malformed_fields_process_assertions": 624,
       "malformed_fields_process_jvms": 16,
       "malformed_fields_process_evidence": "acceptance/rc-dev-legacy-field-process-2026-10-26.json",
       "malformed_fields_process_suites": [
@@ -1313,10 +1316,12 @@
       },
       "live_retained_evidence_quarantine": "PASS_8_EXACT_NATIVE_CASES",
       "live_retained_evidence_report": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
-      "live_mutation_process_restart": "PENDING_SEPARATE_NATIVE_JVM_NEW_MUTATIONS"
+      "live_mutation_process_restart": "PARTIAL_168_FAULT_CLEAR_EMPTY_ESCROW_FACE_AND_NBT_GUARDS",
+      "live_process_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
+      "live_mutation_process_assertions": 168
     }
   ],
-  "latest_work": "Fixed retained-evidence quarantine bypasses caused by external fault text clearing and owner/context edits on both legacy ports. All8 new native cases first failed on unchanged production (370/378 and348/356), then passed after the fix:378/378 and356/356. Main192 passes with unchanged production bytes.160 local and166 CI controller executions pass. Existing decode876/28 JVMs, provider188/4 JVMs and historical60/3 JVMs per port are separately requalified, including raw saved NBT and all17 packaged hashes. Both fresh exact-JAR stock clients pass full5/4-page export and ordinary storage regressions;4 captures reviewed,42 hashed. Initial fixture compile error and first1.6.4 controller timestamp-marker failure are preserved and repaired. All24 RC flags remainfalse;no new release/upload.",
+  "latest_work": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
