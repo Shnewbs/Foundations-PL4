@@ -5,54 +5,48 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-wireless-journal-2026-10-26T01",
-    "claimed_at": "2026-10-26T01:04:53Z",
-    "expires_at": "2026-10-26T01:48:00Z",
-    "purpose": "Implement bounded per-world persistent target uncertainty for 1.12.2 wireless handoffs",
-    "renewed_at": "2026-10-26T01:08:30Z"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40243930980,
+  "last_verified_legacy_native_run": 40252849551,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40247971424,
+    "1.12.2": 40253076749,
     "1.6.4": 40247971395
   },
-  "current_checkpoint": "Implementing 1.12.2 bounded world-saved wireless target uncertainty; initial source 91487241 adds 15 native fixtures, not qualified yet. Automatic-origin uncertainty, different-coordinate hidden aliases and broader acceptance remain open.",
-  "local_validation": "Current 1.12.2 stock client 40247971424 and 1.6.4 stock client 40247971395 PASS with archive SHA256 verified and exact production/source hashes equal their retained hourly-native qualification. Separate probe hashes and native codec/mouse/group/search/sort/display flags retained. Four current captures per target manually reviewed; all sixteen per target hashed. Native 253/253 and 230/230, production startup and generated migration remain the prior exact-source results; no duplicate native build started. Controller release publication step observed skipped.",
+  "current_checkpoint": "1.12.2 now reserves bounded per-dimension owner/target wireless handoff tokens before executed mutations, retaining uncertain targets independently of tile removal and network membership. Wireless and autonomous item admission honor these fences; validated empty settlement removes only its own token. Capacity/malformed journal data fail closed without dropping records. Exact source 833d31cb passed 269/269 native cases including 16 new journal cases, real compressed world-data save/load within one process, production-only startup and generated preview.3 migration. Exact-JAR ordinary stock client 40253076749 passed; 4 current captures reviewed, all 16 hashed. Main passed 192; 22 other targets retain evidence. Automatic-origin/pre-upgrade faults, 1.6.4 journal port, hidden different-target aliases, operator recovery tooling, full process/crash and broader RC acceptance remain open. No RC cleared/published.",
+  "local_validation": "Hosted 1.12.2 native 269/269, including 16 new journal cases, compressed world-data file save/load within one process, production-only startup and generated preview.3 migration PASS. Main pinned 55cb680c native 192 PASS. Native archive and all packaged JAR hashes verified. Exact stock-client runtime source/hash matches native-qualified JAR; actual normal mouse/group/search/sort/replay/codec/display probes PASS. Four current captures reviewed and all sixteen hashed. Four publisher and seven qualified-archive regressions PASS. Automatic branch publication observed skipped. This does not certify full-process/crash, installed providers, arbitrary worlds, dedicated multiplayer or sustained performance.",
   "next_work": [
-    "Continue cross-network and removed/rebound endpoint uncertainty on both legacy ports. Owner face edits are now pinned while the node retains fault/opaque/pending state. Current backing/target fences still collect only nodes in one loaded same-owner network; removing/unloading/replacing that node can outlive the fence. Add explicit persisted owner/world/target uncertainty before foreign mutation and preserve it through sealed-receipt removal, without scanning the entire loaded world or guessing hidden backing identity. Add adversarial native cross-network/removal/reload/rebind cases before treating this gap as closed.",
-    "General provider SidedInvWrapper/CombinedInvWrapper and opaque composites still hide backing mappings. PL4-owned ISidedInventory fallback now has scoped native mapping/permissions acceptance. Add provider-specific explicit identity only where its exact native contract is validated; retain original capability handlers and avoid reflection/heuristic alias inference.",
-    "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 stock launcher profiles, installed optional providers/fallbacks, dedicated multiplayer, copied user worlds and sustained active-provider/full-server performance. Keep exact-source RC clearance false until applicable gates pass.",
-    "The current route-edit production JARs now have scoped normal stock-client regression. Next source work should address persisted cross-network/removal/rebind uncertainty rather than rerunning unchanged client checks; preserve the separate provider/face-edit native versus ordinary integrated-client evidence boundaries."
+    "Extend persistent target uncertainty to automatic-origin 1.12.2 item handoffs with explicit source AND destination context before each executed mutation. The new LegacyWirelessSafety journal only originates tokens for wireless operations; autonomous paths honor existing tokens. Do not blindly reuse the single-target wireless wrapper for automatic transfers touching two foreign endpoints. Add native post-mutation fault/cross-network/removal/disk-load cases and preserve all uncertain escrow/receipts.",
+    "Port the bounded per-dimension journal to 1.6.4 only after checking its exact native WorldSavedData/MapStorage API and branch-local publication guards. Current 1.6.4 0dc2f124 remains exact-native/client-qualified route-edit source without the journal. No frozen alignment/publisher controller may rewrite it.",
+    "Add receipt-linked operator diagnostics and an explicitly inspected recovery path for unresolved owner/target tokens, capacity exhaustion and opaque journal data. Existing tokens intentionally outlive removed nodes; do not automatically clear them or mint/replay uncertain items. Pre-upgrade/automatic tile faults still need migration/import acceptance.",
+    "General provider/composite wrappers and different-coordinate backing aliases remain separate from exact owner/dimension/target fences. Keep original capabilities, explicit validated provider identity contracts and adversarial fixtures; no reflection/equal-content identity inference.",
+    "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 stock launcher profiles, installed optional providers/fallbacks, dedicated multiplayer, copied user worlds, full-process/crash recovery and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable gates pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
-  "main_native_validation_run": 40243447575,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+  "main_native_validation_run": 40252849551,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40243447575,
-    40243930980
+    40252849551
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40243447575,
+    "1.12.2": 40252849551,
     "1.6.4": 40243930980
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
+    "1.12.2": "docs/acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
     "1.6.4": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "8ac28500a070962136a24143b6556d3c77e63d62",
+  "native_main_source_commit": "55cb680c1a326538078cfb8a9d018cb29d6ab12d",
   "last_writer_release": {
-    "owner": "pl4-route-clients-2026-10-26T00",
-    "released_at": "2026-10-26T00:15:49Z",
-    "checkpoint": "Both unchanged route-edit JAR stock-client regressions qualified; 8 current screenshots reviewed, 32 hashed. Cross-network implementation and broader RC goal remain open."
+    "owner": "pl4-wireless-journal-2026-10-26T01",
+    "released_at": "2026-10-26T01:19:02Z",
+    "checkpoint": "1.12.2 bounded world target journal, 269 native cases and exact-JAR ordinary stock-client regression preserved. All-version RC goal remains open."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json"
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-112-wireless-journal-2026-10-25.json"
 }

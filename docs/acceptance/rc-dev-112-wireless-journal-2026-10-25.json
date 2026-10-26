@@ -1,0 +1,471 @@
+{
+  "recorded_date": "2026-10-25",
+  "minecraft": "1.12.2",
+  "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+  "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+  "result": "PASS_269_NATIVE_AND_SCOPED_EXACT_JAR_STOCK_CLIENT",
+  "scope": "New 1.12.2 wireless handoff uncertainty for an exact owner, dimension and target coordinate. The fence outlives the driving tile/network and is consulted by wireless endpoint admission and autonomous item source/sink admission.",
+  "contract": {
+    "storage": "Per-dimension WorldSavedData; one random token per wireless handoff and an owner/target reference-count index. No loaded-world scan.",
+    "ordering": "The escrow block hook marks the tile and reserves the captured target token before an executed foreign mutation. Invalid results/exceptions retain the token. Only validated settlement with empty, unblocked escrow removes that operation's token.",
+    "bounds": "At most 4096 unresolved tokens per dimension. A full journal rejects a new reservation before that operation's provider mutation; no old entries are dropped.",
+    "corrupt_data": "Malformed/unknown journal NBT is retained opaquely and denies target admission rather than silently losing uncertainty.",
+    "removal": "Breaking/removing a quarantined tile can still produce the existing sealed receipt, but does not delete the independent world target fence.",
+    "persistence_boundary": "Native fixtures round-trip NBT and save/reload the real compressed world-data file using a fresh MapStorage in the same server process. This is not a crash/restart or arbitrary user-world acceptance claim."
+  },
+  "native_run": {
+    "id": 40252849551,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40252849551",
+    "evidence": {
+      "verification-logs/clean-native-summary.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "total": 269,
+        "passed": 269,
+        "failed": 0,
+        "fixture_cleanup": "PASS",
+        "fixture_save_mapping_error": false,
+        "published_runtime_used": false,
+        "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+        "rebuilt_archive_entries_match": true,
+        "verification_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+        "runtime_forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "build_api_forge": "14.23.5.2864",
+        "further_api_testing_required": true,
+        "scope": "Isolated native scenarios; not installed third-party mod, real-client or multiplayer acceptance"
+      },
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.12.2",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+        "native_gate": "PASS",
+        "expected_fixtures": 269,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "e4af7ecacd0f9c3002bf00e1f087a58354c229c00b600d83c8b374087f83a048",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "93ad6fd6d1bda6a30878447c17f5aac2d5fab46d8831856f25fb639af0249c64",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "4b5ac28aa74fb0829edd4fc2aea04db5d99f945035222a64ffaf0d10d305efbb",
+          "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9"
+        },
+        "workflow_run": "40252849551",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/legacy-migration-summary.json": {
+        "minecraft": "1.12.2",
+        "baseline_tag": "mc1.12.2-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "ec42f6d9541428502cf3c187bcea501586c250350b8a17461cee5a6fc9623cf5",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+        "migration_fixture_sha256": "e4af7ecacd0f9c3002bf00e1f087a58354c229c00b600d83c8b374087f83a048",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      },
+      "verification-logs/production-smoke.json": {
+        "minecraft": "1.12.2",
+        "forge": "14.23.5.2864",
+        "runtime_java": 8,
+        "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "observed_wireless_cases": 143,
+      "artifact_id": 12621303709,
+      "archive_sha256": "c9dee0a4389664de82a26a7f204c5e1c7d24a5eb64ae47059236e2c3acd43adc",
+      "packaged_jar_hashes_verified": true,
+      "journal_cases": {
+        "wireless journal cross-network target fence survives disconnected alias": true,
+        "wireless journal removal keeps target fenced and receipt sealed": true,
+        "wireless journal saved reload retains target fence": true,
+        "wireless journal owner partition leaves unrelated owner available": true,
+        "wireless journal independent target remains usable": true,
+        "wireless journal successful withdrawal clears transient target entry": true,
+        "wireless journal successful deposit clears transient target entry": true,
+        "wireless journal actual post-mutation extraction fault persists": true,
+        "wireless journal malformed saved data is retained fail closed": true,
+        "wireless journal automatic source cannot bypass wireless fence": true,
+        "wireless journal automatic sink cannot bypass wireless fence": true,
+        "wireless journal post-mutation deposit fault retains world fence": true,
+        "wireless journal capacity refuses new reservation without dropping entries": true,
+        "wireless journal overlapping tokens settle independently": true,
+        "wireless journal captures target before route callback changes": true,
+        "wireless journal compressed world data survives storage reload": true
+      },
+      "native_log_sha256": "15e6aab85eff30723fdb81a2db1ede25601a1c53edea8f5641f557f7f7a008b9",
+      "markers": [
+        "[01:10:55] [Server thread/INFO] [STDOUT]: [net.foundations.pl4.legacy.tests.NativeScenarios:started:314]: PL4 LEGACY SCENARIOS: 269/269"
+      ]
+    }
+  },
+  "main_native": {
+    "id": 40252849551,
+    "evidence": {
+      "verification-logs/hourly-native.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "55cb680c1a326538078cfb8a9d018cb29d6ab12d",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40252849551",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "verification-logs/rc-development-gate.json": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "validated_loader_profiles": [
+          null
+        ],
+        "native_coverage": {},
+        "source_parent": "55cb680c1a326538078cfb8a9d018cb29d6ab12d",
+        "workflow_run": "40252849551",
+        "artifact_sha256": {
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+          "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182"
+        },
+        "performance_source_sha256": {
+          "NetworkEngine.java": "72f667ffd97e5522876a0a77f62acc886dcf80d861c14c8399649b3241e1c9e6",
+          "TransferEngine.java": "aaa7e4b190a37f6260fb10f1a192c98f0fb459e5de4e51ba316480cb495fada7"
+        },
+        "rc_publication_cleared": false,
+        "remaining_acceptance": [
+          "installed optional providers",
+          "actual client UI",
+          "live multiplayer",
+          "world migration",
+          "measured large-network performance",
+          "cross-port feature parity"
+        ]
+      },
+      "artifact_id": 12621297381,
+      "archive_sha256": "6e532a9a335459f7c9433c55c4de5a16405cf52c2dd5675bbc7e59b0c8920bff",
+      "packaged_jar_hashes_verified": true,
+      "journal_cases": {},
+      "native_log_sha256": "3e0f4796dc2d76ead418b06359c268d35a6e4bfb90847355396e8a725bc1ffa6",
+      "markers": [
+        "[01:12:04] [Server thread/INFO] [minecraft/GameTestServer]: All 192 required tests passed :)"
+      ]
+    }
+  },
+  "retained_targets": {
+    "count": 22,
+    "note": "Unchanged 1.6.4 and 21 other modern tracks retain their exact ledger artifacts; not 24 fresh builds."
+  },
+  "publication_guard_review": {
+    "branch": "mc/1.12.2",
+    "inspected_parent": "cc6a7b2aefda7362215848a348b93b9a2950764d",
+    "publishers": [
+      ".github/workflows/release.yml",
+      ".github/workflows/legacy112-native.yml"
+    ],
+    "guards_preserved": true,
+    "automatic_branch_run": 40252787968,
+    "automatic_job": 121348247141,
+    "publication_step": "skipped",
+    "publisher_regression_passes": 4,
+    "archive_qualification_regression_passes": 7
+  },
+  "source_history": [
+    {
+      "source_commit": "91487241b19037668e46874f7c2af83c8d037ddf",
+      "automatic_run": 40252701225,
+      "native_result": "PASS_268_AUTOMATIC_ONLY",
+      "superseded": "Added compressed world-data reload coverage and isolated fixture journal reset before final pinned qualification."
+    },
+    {
+      "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+      "native_result": "PASS_269_PINNED"
+    }
+  ],
+  "limitations": [
+    "1.6.4 has not received the world journal; its current exact native/client qualification remains separate.",
+    "Automatic-origin item faults and pre-upgrade tile faults do not yet create world tokens. The autonomous transfer path honors fences that wireless handoffs create.",
+    "Different target coordinates exposing one hidden backing inventory, opaque provider identities and cross-owner access are not certified by this exact owner/target journal.",
+    "Persistent unresolved entries currently need operator inspection; receipt-linked diagnostic/recovery tooling remains open. No automatic recovery mints or releases uncertain items.",
+    "Full process/crash recovery, installed providers, dedicated multiplayer, arbitrary copied user worlds, advanced legacy editor/multipart parity and sustained save/active-provider/full-server performance remain open."
+  ],
+  "failed_native_cases": 0,
+  "rc_publication_cleared": false,
+  "new_github_releases": [],
+  "new_curseforge_uploads": [],
+  "stock_client": {
+    "report": {
+      "minecraft": "1.12.2",
+      "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+      "result": "PASS",
+      "native_wireless_withdrawal": true,
+      "stale_replay_rejected": true,
+      "native_wireless_deposit": true,
+      "native_paging": true,
+      "native_grouping_totals_variants_and_conservation": true,
+      "stale_group_replay_rejected": true,
+      "group_variant_capture": "legacy-wireless-grouped-variants.png",
+      "group_withdrawal_capture": "legacy-wireless-grouped-withdrawal.png",
+      "native_keyboard_repeat_lifecycle": true,
+      "native_search_caret_edit": true,
+      "native_search_typing_clear_no_match": true,
+      "stale_search_replay_rejected": true,
+      "search_capture": "legacy-wireless-storage-search.png",
+      "search_empty_capture": "legacy-wireless-storage-search-empty.png",
+      "native_sorting": true,
+      "stale_sort_replay_rejected": true,
+      "sorted_capture": "legacy-wireless-storage-sorted.png",
+      "signed_byte_revision": 70,
+      "native_packet_codec_round_trip": true,
+      "actual_mouse_withdraw_deposit_page": true,
+      "tooltip_capture": "legacy-wireless-storage-tooltip.png",
+      "native_display_projection_and_hide": true,
+      "display_captures": [
+        "legacy-private-display.png",
+        "legacy-public-display.png"
+      ],
+      "captures": [
+        "legacy-wireless-storage-scale-1.png",
+        "legacy-wireless-storage-scale-2.png",
+        "legacy-wireless-storage-scale-3.png",
+        "legacy-wireless-storage-scale-4.png"
+      ],
+      "grouped_captures": [
+        "legacy-wireless-grouped-scale-1.png",
+        "legacy-wireless-grouped-scale-2.png",
+        "legacy-wireless-grouped-scale-3.png",
+        "legacy-wireless-grouped-scale-4.png"
+      ],
+      "scope": "Actual stock Forge client with autonomous item transport disabled to isolate manual storage actions, the native-qualified packaged mod, a separate test mod, private generated integrated world, four GUI scales, real mouse actions, native window handlers/packet codecs and a private/public network-reader world display; not dedicated multiplayer, installed third-party providers or 1.6.4 client acceptance."
+    },
+    "runtime": {
+      "minecraft": "1.12.2",
+      "forge": "14.23.5.2864",
+      "runtime_java": 8,
+      "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+      "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+      "probe_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-client-probe.jar",
+      "probe_sha256": "24941a8db955a8f9085a93fe0f1879383779c9b233e18d2d97168459eaaebab9",
+      "client_sha1": "0f275bc1547d01fa5f56ba34bdc87d981ee12daf",
+      "installer_sha1": "b5ec0016c292830f2325e39417d1ec4d9e166cab",
+      "production_jar_matches_native_gate": true,
+      "development_game_classpath": false,
+      "scope": "Stock client plus exact native-qualified production mod and a separate isolated test mod; private offline integrated world."
+    },
+    "captures": [
+      {
+        "file": "legacy-private-display.png",
+        "sha256": "c09e3b173dd1f5790effc16ca94ac69e3d04e35b2ae078af88ec73beae8168b7",
+        "git_blob_sha": "68ada934c75b8065e74bdb95d1c7f35e66d6a09c",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-public-display.png",
+        "sha256": "1503aa6336cfad8443137591acb71a578f8e276660f923f77e06bee2ab5525ef",
+        "git_blob_sha": "2e8cb8d77f05cc1dfa20a85173fe0ef450d49268",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-grouped-scale-1.png",
+        "sha256": "06af5c40ecaf118e59ef2244c4afb381562c35f3b54985636fac135db40b0bcf",
+        "git_blob_sha": "2104a96c32d4b55bd5ee5d141a79f4e34d244ea8",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-grouped-scale-2.png",
+        "sha256": "8d6573ee5970d172fe2b6b9e41395ddeb7ef6a9ebece2b89cbbe8b597c953dcf",
+        "git_blob_sha": "f91b534476ff96b8d9a9cf8a5ea25fb8621cc935",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-grouped-scale-3.png",
+        "sha256": "f832aadb19e0313be9fa4c42d1842d85b9b9d30f4d48819dbe93a259212bf2f6",
+        "git_blob_sha": "b0cd032e26bf0c035438369a8d2d58fbc13b6481",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-grouped-scale-4.png",
+        "sha256": "a7db61609096d4ae7521bce69376497c04367ecbbe1bf6f597c2b5734df2786d",
+        "git_blob_sha": "ed9eeefc32872613ffc31cd997904a6360b1809d",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "PASS: gold 864, iron 833 and diamonds 63 readable; hovered total 864 fits.",
+        "repository_path": "docs/acceptance/screenshots/rc-112-wireless-journal-2026-10-25/legacy-wireless-grouped-scale-4.png"
+      },
+      {
+        "file": "legacy-wireless-grouped-variants.png",
+        "sha256": "a0fc5447c023dc81b59e734df3b5b9fb7bce5a7b075009a6c6cc3469f80ce397",
+        "git_blob_sha": "1f52b02501c53fbebfb5800e05c5b86aae5dd4ff",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "PASS: plain iron 801 and tagged iron 32 remain separate.",
+        "repository_path": "docs/acceptance/screenshots/rc-112-wireless-journal-2026-10-25/legacy-wireless-grouped-variants.png"
+      },
+      {
+        "file": "legacy-wireless-grouped-withdrawal.png",
+        "sha256": "e7bbe4fdf50ce3c208ab342f9ea1e29d555b0b8401b4c49a0dc55de4d8bcd8f4",
+        "git_blob_sha": "ed51ed64849e00cef205559f1f13b4c4b9b1be7e",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "PASS: search iron leaves plain 737 and tagged 32 after 64-item withdrawal; player stack and hovered total agree.",
+        "repository_path": "docs/acceptance/screenshots/rc-112-wireless-journal-2026-10-25/legacy-wireless-grouped-withdrawal.png"
+      },
+      {
+        "file": "legacy-wireless-storage-scale-1.png",
+        "sha256": "2185b3b84fa145575736907422158fbc05d8b442be438000e041976d7dd64f83",
+        "git_blob_sha": "9aefa8d6c84f7dc978a22bca458d6fe64ac0d2ca",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-scale-2.png",
+        "sha256": "6cc50803c46150e889d017991f992e4976c6f4fec576186b9cba40681820f778",
+        "git_blob_sha": "6713b5f34dd2d3679532acaf7501b6066da6edb5",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-scale-3.png",
+        "sha256": "630dd0614ae038d79944606c564aa988e58bc4b1d51fe61dd23394a4a243d852",
+        "git_blob_sha": "9671e4bd2e9d987e211e3a85cfc0993674aa9af1",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-scale-4.png",
+        "sha256": "4218bc005dbed3a2c46b18c6852790f4c9c7fb8343020f71f46f788439f85799",
+        "git_blob_sha": "9923acd1f353389d0c35bd94166c35a9395a4540",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-search-empty.png",
+        "sha256": "93f1133f19ce0dea32bf9df8ed477b8c370c6fd92b51c43c7163651b6efb5e67",
+        "git_blob_sha": "53af94c50bf5d83bdecbf4883a2059e043ec15e4",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "PASS: xyz no-match view has no stale rows.",
+        "repository_path": "docs/acceptance/screenshots/rc-112-wireless-journal-2026-10-25/legacy-wireless-storage-search-empty.png"
+      },
+      {
+        "file": "legacy-wireless-storage-search.png",
+        "sha256": "1dcdb1f85d996a2ad485252134c79f9bfd57babf51a520d0aa62240312a95099",
+        "git_blob_sha": "cbd3d9fbe0e9c6ba6e998815747b46cf5ce4c789",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-sorted.png",
+        "sha256": "b943f0bc5aaea4210cd42fa728971ed125b07bb9c1c735fa8f4be7cb25242c6e",
+        "git_blob_sha": "b2aee4c0e7a4eea4d3eefd3bedba64e8c0eb5b93",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      },
+      {
+        "file": "legacy-wireless-storage-tooltip.png",
+        "sha256": "6577b7d59c5e60fd64153293736233ff24aaa664d70c83973d3241e5635677fe",
+        "git_blob_sha": "9c6d3dae38d1040a2598d4eab109776a0fe1260e",
+        "width": 1280,
+        "height": 960,
+        "manual_review": "NOT_REVIEWED_THIS_CHECKPOINT",
+        "repository_path": null
+      }
+    ],
+    "captures_generated": 16,
+    "captures_manually_reviewed": 4,
+    "log_sha256": {
+      "client.log": "77d256c1ba1a2524c304c3c199b0ca5fa5f2ae2e7d043c714bf4a43e8f1592f6",
+      "build.log": "a43d258be4b134847c2ea5b1ab16e0a56cbbbc0526f42dde82374ddb9a5ff15f"
+    },
+    "workflow_run": 40253076749,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40253076749",
+    "job_id": 121348977469,
+    "job_conclusion": "success",
+    "controller_commit": "0689ab3763c4973e4e75e5561abeea17ed5ea3cb",
+    "artifact_receipt": {
+      "id": 12621895036,
+      "name": "legacy-wireless-real-client-40253076749-1",
+      "size_in_bytes": 467885,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12621895036",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12621895036/zip",
+      "expired": false,
+      "created_at": "2026-10-26T01:15:53Z",
+      "expires_at": "2026-11-09T01:15:52Z",
+      "updated_at": "2026-10-26T01:15:53Z",
+      "digest": "sha256:061149c06f4372792bb866222d9fe7da8ba82e7af86e92336d6e3983cd003db9",
+      "workflow_run": {
+        "id": 40253076749,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "0689ab3763c4973e4e75e5561abeea17ed5ea3cb"
+      }
+    },
+    "archive_sha256": "061149c06f4372792bb866222d9fe7da8ba82e7af86e92336d6e3983cd003db9",
+    "archive_sha256_verified_before_extraction": true,
+    "acceptance_boundary": "Ordinary generated offline integrated-world regression of the exact native-qualified production JAR. Journal uncertainty/removal/disk-load behavior is covered by the sixteen native fixtures, not an installed-provider, dedicated multiplayer, full-process restart or crash client test."
+  }
+}
