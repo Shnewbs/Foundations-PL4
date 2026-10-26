@@ -5,25 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-164-repair-2026-10-26T06",
-    "claimed_at": "2026-10-26T06:11:30Z",
-    "expires_at": "2026-10-26T07:00:00Z",
-    "purpose": "Repair native journal fixtures and qualify exact 1.6.4 source"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
   "last_verified_legacy_native_run": 40258799935,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40259078319,
-    "1.6.4": 40247971395
+    "1.6.4": 40278752978
   },
-  "current_checkpoint": "1.12.2 automatic item transfers now select persistent source/destination uncertainty by executed mutation phase, reject route/owner changes during capability discovery, and release validated phase tokens while preserving known escrow retries after healthy refusals. Idle and simulated-refusal routes allocate no automatic UUID tokens. Final exact source 0f16b688 passed 287/287 native cases including 18 new automatic and 16 retained wireless journal cases, compressed world-data reload, production-only startup and generated preview.3 migration. Exact-JAR ordinary stock client 40259078319 passed; four current captures reviewed and all sixteen hashed. Main passed 192; 22 other tracks retain exact evidence. Pre-upgrade fault import, 1.6.4 journal port, operator recovery tooling, hidden different-target aliases and broader acceptance remain open. No RC cleared/published.",
-  "local_validation": "Final 1.12.2 source 0f16b688 native 287/287: 18 new automatic and 16 retained wireless journal cases, compressed world-data file reload within one process, production startup and generated preview.3 migration PASS. Main pinned 7c5bccbc native 192 PASS. Native archive and all packaged JAR hashes verified. Exact stock-client runtime source/hash matches final native-qualified JAR; ordinary manual mouse/group/search/sort/replay/codec/display probes PASS with autonomous transport disabled. Four current captures reviewed and all sixteen hashed. Four publisher and seven qualified-archive regressions PASS. Final automatic branch publication observed skipped. Initial fa1eb16d source passed native/client before lazy token allocation superseded it. Scratch source was recovered from GitHub after pruning; no code/evidence was lost.",
+  "current_checkpoint": "1.6.4 persistent normalized-owner/dimension/target journal now covers wireless and automatic item handoffs with separate mutation phases, bounded records, opaque payload preservation and route-discovery snapshots. Final source 87efd5cf passed 265/265 native cases (17 wireless journal and 18 automatic journal), production-only startup and generated preview.3 migration. Exact-JAR stock-client 40278752978 passed ordinary manual regression; four current captures reviewed and sixteen hashed. Main source 28cf3ca1 passed 192; 22 other exact tracks retain evidence. Operator recovery, pre-upgrade fault import, hidden provider aliases and broader acceptance remain open. No RC cleared or published.",
+  "local_validation": "Native archive and all packaged JAR hashes verified; production ff8d53b7e2162d7fba4ae01d44361511db67881bf65d9ff7246f8ffe5c0ab961 matches stock runtime/source. 265/265 including real compressed per-world file reload (same process). Four publication, thirteen scheduler, seven qualified-artifact regressions PASS. Prior 262/265 fixture failures repaired; branch publication skipped.",
   "next_work": [
-    "Port the bounded owner/dimension/target journal and separate automatic extraction/insertion phases to 1.6.4. First inspect exact native WorldSavedData/MapStorage APIs, Java 7 constraints and branch-local push publishers. Its current 0dc2f124 source remains qualified for prior route-edit native/client scope without a world journal. Add independent exact 1.6.4 fault/cross-network/removal/file-load/known-escrow-refusal fixtures; do not use frozen alignment/publisher controllers.",
-    "Add receipt-linked operator diagnostics and a reviewed recovery path for unresolved tokens, full capacity and opaque journal data. Tokens intentionally outlive nodes. Preserve uncertain escrow/receipts and reconcile the actual target/outcome before any explicit release; no automatic mint/replay or blind journal clearing.",
+    "Implement bounded read-only receipt-linked journal diagnostics and a reviewed recovery path on both legacy ports. Record operation token linkage to receipts before exposing any release operation; preserve uncertain inventory and opaque payloads. Reconcile actual target/outcome; no automatic replay/minting or blind clearing.",
     "Plan migration/import acceptance for unresolved pre-upgrade tile faults. Older automatic faults lack reliable destination-phase route context; do not invent an original target. Preserve opaque/unknown uncertainty and require appropriate inspection rather than silently treating it as a newly instrumented handoff.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
@@ -31,27 +25,27 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
-  "main_native_validation_run": 40258799935,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-164-item-journal-2026-10-25.json",
+  "main_native_validation_run": 40278499771,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40258799935
+    40278499771
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40258799935,
-    "1.6.4": 40243930980
+    "1.6.4": 40278499771
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json"
+    "1.6.4": "docs/acceptance/rc-dev-164-item-journal-2026-10-25.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
+  "native_main_source_commit": "28cf3ca1fe12d8b44a239c062542e7654f13cb9b",
   "last_writer_release": {
-    "owner": "pl4-auto-journal-2026-10-26T02",
-    "released_at": "2026-10-26T02:37:39Z",
-    "checkpoint": "1.12.2 automatic source/destination journal, 287 native cases and exact-JAR ordinary stock-client regression preserved. All-version RC goal remains open."
+    "owner": "pl4-164-repair-2026-10-26T06",
+    "released_at": "2026-10-26T06:21:02Z",
+    "checkpoint": "1.6.4 journal/native/exact-JAR client evidence safely preserved; all-version RC goal remains open."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-112-automatic-journal-2026-10-25.json"
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-164-item-journal-2026-10-25.json"
 }
