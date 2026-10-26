@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-/** Per-dimension target fences for wireless handoffs; independent of tile/network lifetime. */
+/** Per-dimension target fences for item handoffs; independent of tile/network lifetime. */
 public final class LegacyWirelessSafety extends WorldSavedData {
     public static final String DATA_NAME="foundations_pl4_wireless_uncertainty";
     public static final int LIMIT=4096;
@@ -62,12 +62,12 @@ public final class LegacyWirelessSafety extends WorldSavedData {
     public static ConservingItems.PhasedEscrow<ItemStack> automaticEscrow(final LegacyTile node,BlockPos source,BlockPos destination){
         final LegacyWirelessSafety journal=data(node.getWorld());
         final Record sourceRecord=new Record(node.owner,source),destinationRecord=new Record(node.owner,destination);
-        final String sourceToken=UUID.randomUUID().toString(),destinationToken=UUID.randomUUID().toString();
+        // Mutation tokens are allocated lazily; idle and simulated-refusal routes need none.
         final ConservingItems.Escrow<ItemStack> delegate=LegacyItemSafety.escrow(node);
         return new ConservingItems.PhasedEscrow<ItemStack>(){
-            private Record active;private String token;
-            public void extracting(){active=sourceRecord;token=sourceToken;}
-            public void inserting(){active=destinationRecord;token=destinationToken;}
+            private Record active;private String token,sourceToken,destinationToken;
+            public void extracting(){active=sourceRecord;if(sourceToken==null)sourceToken=UUID.randomUUID().toString();token=sourceToken;}
+            public void inserting(){active=destinationRecord;if(destinationToken==null)destinationToken=UUID.randomUUID().toString();token=destinationToken;}
             public ItemStack get(){return delegate.get();}
             public void set(ItemStack value){delegate.set(value);}
             public boolean blocked(){return delegate.blocked();}
