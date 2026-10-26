@@ -38,6 +38,8 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_legacy_decode_world.py'
       - name: Check bounded read-only evidence collector regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_evidence_collector.py'
+      - name: Check bounded opaque export transcript regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_journal_export.py'
       - name: Check persisted provider outcome regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_provider_outcomes.py'
       - name: Check historical provider outcome regressions
