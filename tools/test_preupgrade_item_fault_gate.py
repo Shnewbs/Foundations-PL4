@@ -9,6 +9,8 @@ class PreupgradeProofTests(unittest.TestCase):
         old=hashlib.sha256(b'old-runtime').hexdigest();(self.logs/'preupgrade-baseline-runtime.jar').write_bytes(b'old-runtime')
         (self.logs/'preupgrade-baseline-native.json').write_text(json.dumps(dict(minecraft=self.mc,source_commit='c'*40,native_gate='PASS',artifact_sha256={'old.jar':old})))
         self.report=dict(minecraft=self.mc,source_commit=self.source,runtime_sha256=self.runtime,baseline=dict(source_commit='c'*40,runtime_sha256=old),preupgrade_unlocated_fault_import='PASS',candidate_restart='PASS',processes=[],world_archive={})
+        fixtures=self.root/'build/libs';fixtures.mkdir(parents=True);self.fixture=fixtures/'candidate-migration-scenarios.jar';self.fixture.write_bytes(b'fixture')
+        self.report['fixture_sha256']=hashlib.sha256(self.fixture.read_bytes()).hexdigest()
         for i,(phase,count,runtime) in enumerate([('fault-write',4,old),('fault-upgrade',10,self.runtime),('fault-verify',10,self.runtime)]):
             pid=100+i;proof=dict(minecraft=self.mc,phase=phase,passed=True,checks=count,process=str(pid)+'@runner',tokens=[] if not i else ['00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002'])
             p=self.logs/('preupgrade-'+phase+'.log');p.write_text('Starting minecraft server version '+self.mc+'\nPL4 LEGACY MIGRATION '+phase+': PASS\nStopping server\n');(self.logs/('preupgrade-'+phase+'.json')).write_text(json.dumps(proof))
@@ -16,6 +18,12 @@ class PreupgradeProofTests(unittest.TestCase):
         p=self.logs/'preupgrade-item-fault-world.zip';p.write_bytes(b'world');self.report['world_archive']=dict(file=p.name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
     def validate(self):builds.validate_preupgrade(self.root,self.report,self.mc,self.source,self.runtime)
     def test_coherent(self):self.validate()
+    def test_changed_migration_fixture(self):
+        self.fixture.write_bytes(b'changed')
+        with self.assertRaises(ValueError):self.validate()
+    def test_missing_migration_fixture(self):
+        self.fixture.unlink()
+        with self.assertRaises(ValueError):self.validate()
     def test_wrong_candidate(self):
         self.report['source_commit']='d'*40
         with self.assertRaises(ValueError):self.validate()
@@ -47,3 +55,4 @@ class PreupgradeProofTests(unittest.TestCase):
         self.changed_log('Starting minecraft server version 1.12.2\nStopping server\n')
         with self.assertRaises(ValueError):self.validate()
 if __name__=='__main__':unittest.main()
+

@@ -151,6 +151,10 @@ def validate_historical_providers(report, mc):
 
 def validate_preupgrade(root, report, mc, sha, runtime, provider=False):
     logs = root / "verification-logs"
+    suffix = '-srg.jar' if mc == '1.6.4' else '.jar'
+    fixtures = list((root / 'build/libs').glob('*-migration-scenarios' + suffix))
+    if len(fixtures) != 1 or hashlib.sha256(fixtures[0].read_bytes()).hexdigest() != report.get('fixture_sha256'):
+        raise ValueError('Historical migration fixture does not match packaged artifact')
     if (report.get("minecraft") != mc or report.get("source_commit") != sha or report.get("runtime_sha256") != runtime
             or report.get("preupgrade_unlocated_fault_import") != "PASS" or report.get("candidate_restart") != "PASS"):
         raise ValueError("Pre-upgrade candidate identity/status disagrees")
@@ -291,5 +295,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
