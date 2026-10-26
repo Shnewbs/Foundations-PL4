@@ -6,6 +6,8 @@ class RestartProofTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name);logs=self.root/'verification-logs';logs.mkdir()
         self.mc='1.12.2';self.sha='a'*40;self.runtime='b'*64
         self.report=dict(minecraft=self.mc,source_commit=self.sha,runtime_sha256=self.runtime,clean_restart='PASS',save_barrier_abrupt_restart='PASS',processes=[],phase_reports={},world_archives={})
+        fixtures=self.root/'build/libs';fixtures.mkdir(parents=True);self.fixture=fixtures/'candidate-restart-scenarios.jar';self.fixture.write_bytes(b'fixture')
+        self.report['fixture_sha256']=hashlib.sha256(self.fixture.read_bytes()).hexdigest()
         for i,(phase,code) in enumerate([('write',0),('verify',0),('crash-write',-9),('crash-verify',0)]):
             pid=100+i;log=logs/('item-restart-'+phase+'.log');log.write_text(phase)
             self.report['processes'].append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest()))
@@ -17,6 +19,12 @@ class RestartProofTests(unittest.TestCase):
             self.report['world_archives'][mode]=dict(file=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
     def validate(self):builds.validate_restart(self.root,self.report,self.mc,self.sha,self.runtime,dict(write=36,verify=26))
     def test_coherent(self):self.validate()
+    def test_changed_fixture_jar(self):
+        self.fixture.write_bytes(b'changed')
+        with self.assertRaises(ValueError):self.validate()
+    def test_missing_fixture_jar(self):
+        self.fixture.unlink()
+        with self.assertRaises(ValueError):self.validate()
     def test_raw_phase_report_disagrees(self):
         (self.root/'verification-logs/item-restart-verify.json').write_text('{}')
         with self.assertRaises(ValueError):self.validate()

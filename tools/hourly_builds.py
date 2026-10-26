@@ -83,6 +83,10 @@ def validate_restart(root, report, mc, sha, runtime, counts):
     if any(type(pid) is not int or pid <= 0 for pid in ids) or len(set(ids)) != 4:
         raise ValueError("Restart PIDs are not distinct")
     logs = root / "verification-logs"
+    suffix = '-srg.jar' if mc == '1.6.4' else '.jar'
+    fixtures = list((root / 'build/libs').glob('*-restart-scenarios' + suffix))
+    if len(fixtures) != 1 or hashlib.sha256(fixtures[0].read_bytes()).hexdigest() != report.get('fixture_sha256'):
+        raise ValueError('Restart fixture does not match packaged artifact')
     for phase, code in phases.items():
         p, r = rows[phase], details[phase]
         expected = counts["write" if phase.endswith("write") else "verify"]
