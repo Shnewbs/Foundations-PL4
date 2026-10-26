@@ -20,6 +20,7 @@ public final class LegacyItemSafety {
     private static int count(ItemStack stack){return LegacyTile.STACKS.empty(stack)?0:stack.stackSize;}
     public static void write(LegacyTile tile,NBTTagCompound tag){
         tag.setString("ItemTransferFault",tile.itemFault);
+        if(tile.itemJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemJournalContext.copy());else tag.removeTag("ItemJournalContext");
         if(tile.itemOpaque!=null)tag.setTag("Escrow",tile.itemOpaque.copy());
         tag.setInteger("ItemEscrowCount",tile.itemOpaque!=null?tile.itemOpaqueCount:count(tile.pending));
     }
@@ -29,6 +30,7 @@ public final class LegacyItemSafety {
     }
     public static ItemStack loadSaved(NBTTagCompound tag){return tag.hasKey("Escrow")?parse(tag.getCompoundTag("Escrow")):null;}
     public static void read(LegacyTile tile,NBTTagCompound tag){
+        tile.itemJournalContext=tag.hasKey("ItemJournalContext")?(NBTTagCompound)tag.getCompoundTag("ItemJournalContext").copy():null;
         tile.itemOpaque=null;tile.itemFault=tag.getString("ItemTransferFault");
         if(tile.itemFault.length()>512)tile.itemFault=tile.itemFault.substring(0,512);
         int count=tag.getInteger("ItemEscrowCount");tile.itemOpaqueCount=Math.max(0,count);
@@ -43,10 +45,11 @@ public final class LegacyItemSafety {
         if(!tile.fluidServer()||!blocked(tile))return;
         ItemStack receipt=new ItemStack(LegacyPL4.ITEM_CELL);NBTTagCompound tag=new NBTTagCompound();
         tag.setString("ItemTransferFault",tile.itemFault);
+        if(tile.itemJournalContext!=null)tag.setTag("ItemJournalContext",tile.itemJournalContext.copy());
         if(tile.itemOpaque!=null)tag.setTag("Escrow",tile.itemOpaque.copy());
         else if(!LegacyTile.STACKS.empty(tile.pending))tag.setTag("Escrow",tile.pending.writeToNBT(new NBTTagCompound()));
         tag.setInteger("ItemEscrowCount",tile.itemOpaque!=null?tile.itemOpaqueCount:count(tile.pending));receipt.setTagCompound(tag);
-        tile.pending=null;tile.itemFault="";tile.itemOpaque=null;tile.itemOpaqueCount=0;tile.fluidDirty();tile.worldObj.spawnEntityInWorld(new EntityItem(tile.worldObj,tile.xCoord+.5,tile.yCoord+.5,tile.zCoord+.5,receipt));
+        tile.itemJournalContext=null;tile.pending=null;tile.itemFault="";tile.itemOpaque=null;tile.itemOpaqueCount=0;tile.fluidDirty();tile.worldObj.spawnEntityInWorld(new EntityItem(tile.worldObj,tile.xCoord+.5,tile.yCoord+.5,tile.zCoord+.5,receipt));
     }
     private LegacyItemSafety(){}
 }

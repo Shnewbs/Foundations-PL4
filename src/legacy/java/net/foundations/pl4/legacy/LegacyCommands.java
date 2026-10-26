@@ -15,10 +15,21 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 public final class LegacyCommands extends CommandBase {
     public String getCommandName(){return "pl4legacy";}
-    public String getCommandUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | status";}
+    public String getCommandUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | journal <x> <y> <z> [page] | receipt | status";}
     @Override public int getRequiredPermissionLevel(){return 0;}
     public void processCommand(ICommandSender sender,String[] args){
         if(args.length==0||"status".equals(args[0])){send(sender,"PL4 1.6.4 experimental native item/fluid/energy transport preview. Name-based legacy ownership, sided inventories, escrow and built-in recipe/inspection fallbacks. Modern displays, wireless, third-party energy and scripting parity pending. Further API testing is still required.");return;}
+        if("receipt".equals(args[0])&&args.length==1){
+            if(!(sender instanceof EntityPlayer))throw new WrongUsageException("Hold a sealed receipt as its owner or an operator");
+            try{send(sender,LegacyWirelessSafety.receiptDiagnostic(sender.getEntityWorld(),(EntityPlayer)sender,((EntityPlayer)sender).getCurrentEquippedItem()));}catch(IllegalArgumentException invalid){throw new WrongUsageException(invalid.getMessage());}return;
+        }
+        if("journal".equals(args[0])&&(args.length==4||args.length==5)){
+            int x=parseInt(sender,args[1]),y=parseInt(sender,args[2]),z=parseInt(sender,args[3]);ChunkCoordinates at=sender.getPlayerCoordinates();double dx=(double)x-at.posX,dy=(double)y-at.posY,dz=(double)z-at.posZ;
+            if(!(sender instanceof EntityPlayer)||dx*dx+dy*dy+dz*dz>64||!sender.getEntityWorld().blockExists(x,y,z))throw new WrongUsageException("Stand within 8 blocks of a loaded PL4 host");
+            TileEntity raw=sender.getEntityWorld().getBlockTileEntity(x,y,z);if(!(raw instanceof LegacyTile)||!((LegacyTile)raw).canEdit((EntityPlayer)sender))throw new WrongUsageException("No accessible PL4 host");
+            LegacyTile node=(LegacyTile)raw;int page=args.length==5?parseIntBounded(sender,args[4],1,1024):1;
+            try{for(String line:LegacyWirelessSafety.data(sender.getEntityWorld()).describe(node.owner,node.target(),page))send(sender,line);}catch(IllegalArgumentException invalid){throw new WrongUsageException(invalid.getMessage());}return;
+        }
         if("recipes".equals(args[0])){
             int page=args.length>1?parseIntBounded(sender,args[1],1,10000):1;List<IRecipe> recipes=new ArrayList<IRecipe>();
             for(Object value:CraftingManager.getInstance().getRecipeList())if(value instanceof IRecipe){IRecipe recipe=(IRecipe)value;ItemStack result=recipe.getRecipeOutput();if(result!=null&&(result.itemID==LegacyPL4.CABLE.blockID||result.itemID==LegacyPL4.EXPORT.blockID||result.itemID==LegacyPL4.IMPORT.blockID||result.itemID==LegacyPL4.FLUID_EXPORT.blockID||result.itemID==LegacyPL4.FLUID_IMPORT.blockID||result.itemID==LegacyPL4.TANK.blockID||result.itemID==LegacyPL4.ENERGY_EXPORT.blockID||result.itemID==LegacyPL4.ENERGY_IMPORT.blockID||result.itemID==LegacyPL4.ENERGY_BUFFER.blockID||result.itemID==LegacyPL4.ITEM_READER.blockID||result.itemID==LegacyPL4.FLUID_READER.blockID||result.itemID==LegacyPL4.ENERGY_READER.blockID||result.itemID==LegacyPL4.NETWORK_READER.blockID||result.itemID==LegacyPL4.DISPLAY.blockID))recipes.add(recipe);}
