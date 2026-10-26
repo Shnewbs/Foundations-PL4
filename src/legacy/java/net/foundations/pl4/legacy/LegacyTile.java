@@ -16,6 +16,8 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public String owner="";public int side=2;public ItemStack pending;public String status="Idle";
     public String itemFault="";
     public NBTTagCompound itemJournalContext,itemLegacyEvidence;
+    public net.minecraft.nbt.NBTBase itemRawJournalContext;
+    public boolean itemMissingJournalContext;
     public boolean itemImportPending;
     public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
@@ -120,3 +122,4 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     @Override public net.minecraft.network.packet.Packet getDescriptionPacket(){return new net.minecraft.network.packet.Packet132TileEntityData(xCoord,yCoord,zCoord,0,LegacyReadings.clientTag(this));}
     @Override public void onDataPacket(net.minecraft.network.INetworkManager net,net.minecraft.network.packet.Packet132TileEntityData packet){LegacyReadings.readClientTag(this,packet.data);}
 }
+

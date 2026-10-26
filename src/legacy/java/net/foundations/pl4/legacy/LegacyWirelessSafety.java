@@ -97,10 +97,13 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         if(known!=null&&matches(known,previous)&&known.owner.equals(node.owner)&&previous.getTag("Dimension") instanceof net.minecraft.nbt.NBTTagInt&&previous.getInteger("Dimension")==node.worldObj.provider.dimensionId)return;
         // Never replace another rejected context once original legacy evidence exists.
         // Preserve the first rejection and freeze this dimension for reviewed reconciliation.
-        if(node.itemLegacyEvidence!=null&&previous!=null){
+        if(node.itemRawJournalContext!=null||node.itemMissingJournalContext||(node.itemLegacyEvidence!=null&&previous!=null)){
             if(opaque==null){
                 NBTTagCompound saved=new NBTTagCompound();writeToNBT(saved);NBTTagCompound retained=new NBTTagCompound();retained.setTag("PreviousJournal",saved);
-                retained.setTag("RejectedContext",previous.copy());retained.setTag("ExistingLegacyEvidence",node.itemLegacyEvidence.copy());
+                if(node.itemRawJournalContext!=null)retained.setTag("RejectedContext",node.itemRawJournalContext.copy());
+                else if(previous!=null)retained.setTag("RejectedContext",previous.copy());
+                else retained.setBoolean("MissingContext",true);
+                if(node.itemLegacyEvidence!=null)retained.setTag("ExistingLegacyEvidence",node.itemLegacyEvidence.copy());
                 opaque=retained;markDirty();
             }
             node.fluidDirty();return;
@@ -199,4 +202,5 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         tag.setTag("Entries",list);
     }
 }
+
 
