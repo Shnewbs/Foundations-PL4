@@ -19,6 +19,7 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public final LegacyEnergy.State energy=new LegacyEnergy.State(this);
     public String owner="";public int side=2;public ItemStack pending=ItemStack.EMPTY;public String status="Idle";
     public String itemFault="";
+    public NBTTagCompound itemJournalContext;
     public String wirelessIdentity=java.util.UUID.randomUUID().toString();
     public NBTTagCompound itemOpaque;
     public int itemOpaqueCount;
