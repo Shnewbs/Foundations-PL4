@@ -45,7 +45,7 @@ public final class MigrationScenarios {
 
     private int faultChecks;private final java.util.List<String> faultTokens=new java.util.ArrayList<String>();
     private void faultCheck(boolean value,String reason){check(value,reason);faultChecks++;}
-    private TileEntityChest faultChest(int x){return (TileEntityChest)world.getTileEntity(new BlockPos(x,200,32));}
+    private TileEntityChest faultChest(int x){world.getChunkFromBlockCoords(new BlockPos(x,200,32));return (TileEntityChest)world.getTileEntity(new BlockPos(x,200,32));}
     private void writeFaults(){
         prepareProviderFault(8,false);prepareProviderFault(32,true);
         world.setBlockState(new BlockPos(12,200,32),Blocks.CHEST.getDefaultState(),3);world.setBlockState(new BlockPos(13,200,32),Blocks.CHEST.getDefaultState(),3);world.setBlockState(new BlockPos(14,200,32),Blocks.CHEST.getDefaultState(),3);
@@ -107,15 +107,15 @@ public final class MigrationScenarios {
         check(!node(7).publishReadings&&LegacyReadings.clientTag(node(7)).getString("Line1").equals("Private"),"new display defaults private");
         check(count(node(0).pending)==7&&node(1).fluid.storedAmount()==4321&&node(2).energy.stored()==4567&&count(chest().getStackInSlot(0))==13,"upgrade monitoring conserves all stored resources");
     }
-    private void place(int x,LegacyBlock block){world.setBlockState(new BlockPos(x,200,32),block.getDefaultState(),3);node(x).owner=OWNER;node(x).side=4;node(x).fluidDirty();}
-    private LegacyTile node(int x){return (LegacyTile)world.getTileEntity(new BlockPos(x,200,32));}
+    private void place(int x,LegacyBlock block){world.getChunkFromBlockCoords(new BlockPos(x,200,32));world.setBlockState(new BlockPos(x,200,32),block.getDefaultState(),3);node(x).owner=OWNER;node(x).side=4;node(x).fluidDirty();}
+    private LegacyTile node(int x){world.getChunkFromBlockCoords(new BlockPos(x,200,32));return (LegacyTile)world.getTileEntity(new BlockPos(x,200,32));}
     private TileEntityChest chest(){return (TileEntityChest)world.getTileEntity(new BlockPos(5,200,32));}
     private ItemStack diamond(int n){return new ItemStack(Items.DIAMOND,n);}
     private int count(ItemStack s){return s==null||s.isEmpty()?0:s.getCount();}
     private static void check(boolean value,String reason){if(!value)throw new AssertionError(reason);}
 
     private final java.util.List<java.util.Map<String,Object>> providerOutcomes=new java.util.ArrayList<java.util.Map<String,Object>>();
-    private void providerChest(int x){world.setBlockState(new BlockPos(x,200,32),Blocks.CHEST.getDefaultState(),3);}
+    private void providerChest(int x){world.getChunkFromBlockCoords(new BlockPos(x,200,32));world.setBlockState(new BlockPos(x,200,32),Blocks.CHEST.getDefaultState(),3);}
     private void prepareProviderFault(int x,boolean extraction){
         place(x,LegacyPL4.EXPORT);place(x+1,LegacyPL4.CABLE);place(x+2,LegacyPL4.IMPORT);node(x).side=4;node(x+2).side=5;
         providerChest(x-1);providerChest(x+3);int target=extraction?x-1:x+3;
@@ -152,3 +152,4 @@ public final class MigrationScenarios {
         @Override public NBTTagCompound writeToNBT(NBTTagCompound tag){super.writeToNBT(tag);tag.setString("ProviderId",providerId);tag.setString("ProviderOwner",providerOwner);tag.setBoolean("FaultExtract",extract);tag.setBoolean("FaultInsert",insert);tag.setInteger("MutationCalls",mutationCalls);tag.setInteger("RemovedUnits",removedUnits);tag.setInteger("AcceptedUnits",acceptedUnits);return tag;}
     }
 }
+
