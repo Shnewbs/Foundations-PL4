@@ -100,7 +100,7 @@
     "description": "Exact 1.6.4 native log lines carry the dated INFO STDOUT prefix; normalize only that anchored prefix before checking unique whole PASS markers. Original controller run may fail its marker check; no native failure inferred.",
     "regression_test": "test_164_native_timestamp_prefix"
   },
-  "status": "112_EXACT_NATIVE_QUALIFIED_CLIENT_PENDING_164_CORRECTED_HOURLY_PENDING",
+  "status": "BOTH_LEGACY_NATIVE_QUALIFIED_112_CLIENT_PASS_164_CLIENT_PENDING",
   "targets": {
     "1.12.2": {
       "minecraft": "1.12.2",
@@ -3668,6 +3668,3667 @@
         "real_user_worlds": "PENDING",
         "installed_optional_mods": "PENDING",
         "client_visuals": "PENDING"
+      }
+    },
+    "1.6.4": {
+      "minecraft": "1.6.4",
+      "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+      "hourly": {
+        "minecraft": "1.6.4",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "native_gate": "PASS",
+        "expected_fixtures": 356,
+        "gate_reports": [
+          "clean-native-summary.json",
+          "production-smoke.json",
+          "legacy-migration-summary.json",
+          "legacy-opaque-export-inspection.json",
+          "legacy-item-restart-summary.json",
+          "legacy-item-decode-raw-restart-summary.json",
+          "legacy-item-decode-missing-restart-summary.json",
+          "legacy-item-decode-compound-restart-summary.json",
+          "legacy-item-decode-owner-restart-summary.json",
+          "legacy-item-decode-dimension-restart-summary.json",
+          "legacy-item-decode-scope-restart-summary.json",
+          "legacy-item-decode-rewrite-restart-summary.json",
+          "legacy-decode-world-inspection.json",
+          "preupgrade-item-fault-summary.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios-migration-scenarios-srg.jar": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-migration-scenarios.jar": "db780e3d20bf7bad32194fb2cc7f99b214e9a3a4ac1034d358becd3beb662e8c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios-native-scenarios-srg.jar": "4b70b2846ea80c07b734df292760a5a80b14179b7040ddcbd7daeecb7b6ad410",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-native-scenarios.jar": "5dedd62d8bf9cba811b6a4e9e8b64c9596bf14cc86d67b24bbdcebccdd5c6ac8",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios-restart-scenarios-srg.jar": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-restart-scenarios.jar": "da7c772cef70daa7fb5e5f4bb781a4996c644766f2a6c9d50ad98aa30af334aa",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-sources.jar": "88c59021130ddf0a6ef102ef893a265d8034f325c6f45c4e84e1cddd967f7153",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "FoundationsPL4-1.6.4-0.2.0-rc.1-dev.jar": "ae7227f0fb764310879aa049da5263f8a9ccd76c816234e890529bad3efa4f41"
+        },
+        "workflow_run": "40403201527",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "production-smoke.json": "1935e9e39651e4833c364510e0625f055728841512e1509d2abe1b3c198b5ec6",
+        "preupgrade-item-fault-summary.json": "5dbcc835d4c83faaa70a4a55891423cd02beecd43298b5780c648176dbf163c0",
+        "preupgrade-fault-write.json": "7cf385cd204bbb96db89d77c089fd8cb08359b02ba8e7cd00973337980197504",
+        "preupgrade-fault-verify.json": "af572efc95ef7abc35935bf8e5ab1cf7dd1f8a27f128a5d7943b64284664bbd2",
+        "preupgrade-fault-upgrade.json": "550249da2e697fd1ed848f78b6c65979393761a5862f85f332f5626eb0424550",
+        "preupgrade-baseline-origin.json": "779cb640e382f24e6c7c20e950fef3efd8958c6d52de7668e684fd0d1a62998a",
+        "preupgrade-baseline-native.json": "6e5f64597525a813a4c0e1341605ac0ea0085023537dc98c514c5ab61e7545f9",
+        "legacy-opaque-export-inspection.json": "71f6168b5b8fb24c11dde59470c812aa7bd44b7f171f6cae55faaf1a9460f367",
+        "legacy-migration-summary.json": "d9c710ae5edc4fe0b109f5c38ca5f19e9a0432810553f9d07987a4f599e5bdd1",
+        "legacy-item-restart-summary.json": "371a3a4a4baa4fa69f6ac3189ff68845756241bbcd9cf37776226f214ac813d7",
+        "legacy-item-decode-scope-restart-summary.json": "15e19dbefbf72535acbc27aca7100f049e77a6b5b7363c705a1626dbe0ce3690",
+        "legacy-item-decode-rewrite-restart-summary.json": "12e85f83f0a826caa93956f21f839656b833787184def3426e06cb990b6875ce",
+        "legacy-item-decode-raw-restart-summary.json": "6d0e4cfd0e23c4941ded5a44be0d2ec142deb004d87897fb2176ace75e2ed6b2",
+        "legacy-item-decode-owner-restart-summary.json": "cef34bb90652843f0188b44596cf5fa8bc9476ab995d092d8621911947717dc2",
+        "legacy-item-decode-missing-restart-summary.json": "0b927ad5333e0d5bed7716c243db0c78bfe7717405aec5f216e6623a031ac818",
+        "legacy-item-decode-dimension-restart-summary.json": "f78814d8c1ea40261194f199055dcaa413cf1111cab32dd5901a46b80a2695e7",
+        "legacy-item-decode-compound-restart-summary.json": "7360ed9a42bd3075c14198a5cf0622e1e84db785ff9be516d15d1cee90b4325c",
+        "legacy-decode-world-inspection.json": "ab0ca7e7be80d1f8327a941a8f2175ab22a3b1aa984755f5209f757e2392e55a",
+        "item-restart-write.json": "0c9839c47e7b46010992c6695dc93b2e2226f41721bb9ba7981a60d1966036ff",
+        "item-restart-verify.json": "6755915b10bd68e50d1ef8dd0c4b94cb2fe3e7ec2684420cac63da7838f28fa5",
+        "item-restart-crash-write.json": "d06f6e44ca51914f08f71552fb449ab4d4f2f775874f0bccccf636125b295d1a",
+        "item-restart-crash-verify.json": "1aa8730680a5d8bff09c20b0b241564db821d81b3de4293901878c9f2e4b60f4",
+        "item-decode-scope-restart-write.json": "404752e54c2a6de559fcc29a9aebd7796f9cde1970bef3c2c00a84ed14b54d09",
+        "item-decode-scope-restart-verify.json": "da12c26d2e902b747796b17006ec8f6b0afcf117a39f4a594e70a990f114e755",
+        "item-decode-scope-restart-crash-write.json": "f3a892b8896a227e582b58b862c85c4440bad92ec8eb507385f8e2e839a9013f",
+        "item-decode-scope-restart-crash-verify.json": "117d181fa3e229f92a9a8a59c64f1b33af78bcbb11db7e00608f7d2dbf9eb752",
+        "item-decode-rewrite-restart-write.json": "558c3895f0f259062eb920ad0e62ce6f20a2ff580315a16cbf82b085ee26ea57",
+        "item-decode-rewrite-restart-verify.json": "ffd1b0a921f8eefaadea0a5fdabc57bffef8aaa3399f8cc8938cfabd57027973",
+        "item-decode-rewrite-restart-crash-write.json": "b179ad8aa3627ccaabe88f373dde0069c13e2ccbe701f83eca714d7196dec95d",
+        "item-decode-rewrite-restart-crash-verify.json": "9b4dc6e2a0e0dc71b0daa7466c0b086b19fd6e5bfb2f035787f183e657bce4bb",
+        "item-decode-raw-restart-write.json": "73b19feded026df4e2f2f6c6aee89b23d6038a43386df51d8ada6fb1598344c4",
+        "item-decode-raw-restart-verify.json": "63e9e06264c3f56187c877b95ae18306095a0703706ec9b1c3800d156d266e5a",
+        "item-decode-raw-restart-crash-write.json": "5b58086fe993ea954bc8f13f35fec8cacbc024f3a7d0e1fb8a12075b6927b710",
+        "item-decode-raw-restart-crash-verify.json": "69456c41bdc458b8e647769b87c0c9d48cae00357a68013e5d832d12e474cb0e",
+        "item-decode-owner-restart-write.json": "0d94f44f9403c31148ce10b4605d422bd7009f22d76f11a1b506edfa0e44b156",
+        "item-decode-owner-restart-verify.json": "178f4ffa3c45fa1269af886f86183e551c5668815bccc8362ef3ce1c89c3c649",
+        "item-decode-owner-restart-crash-write.json": "883c79ef0b60aa90d954f0136e1b1cd63f804f66eab8f811c752aabfe196cef1",
+        "item-decode-owner-restart-crash-verify.json": "ec8a194bf4e1c544df79dc64d600b823c4f6796dfc60296f2e879b204fb93b7b",
+        "item-decode-missing-restart-write.json": "84729ffdfb199e9cf071eb6d4c65e1f8b3e5f55d798aa9dd22a36775ee467f48",
+        "item-decode-missing-restart-verify.json": "a7782cffb4faea3d72a0fbdfdd7cd23a3af1ee65f9ba00c531253ddbf730c75d",
+        "item-decode-missing-restart-crash-write.json": "6a9b6d30ad66184081f29d93c45ebd701b389ebd2ff18093680c63721dfca291",
+        "item-decode-missing-restart-crash-verify.json": "bcf0126c1354e24e6d0aadc490c410d929169a6f7f1b06f32c31fb26081cd775",
+        "item-decode-dimension-restart-write.json": "d429c4b1201fac59cb7c62458bdc5f1f10c6376d023195d74c6d890c9153cdb9",
+        "item-decode-dimension-restart-verify.json": "14345f34c7d37b30e265d15a76220d33f0df206f9f6b20b9de0c2c42fd85cb51",
+        "item-decode-dimension-restart-crash-write.json": "bf5dd5effeb3d7f0197449a362dc56bacb1090f368533bf19f7088849f82bffc",
+        "item-decode-dimension-restart-crash-verify.json": "04c22b8bf06fbc9477e1d73c8dc1755c3a923b9bdc7dd2d1e511285427be14ce",
+        "item-decode-compound-restart-write.json": "9fef2e92502d939b470736d3a226e73a11277a41ae010bdc55ce774d91b52d9b",
+        "item-decode-compound-restart-verify.json": "d3503fc6119db15f9a78924b47623f615595ba81b6178b040c4fd24da11890e7",
+        "item-decode-compound-restart-crash-write.json": "eb2291383c9ef39a9c66818810993e2b09e23118c98ef6b18a1a3db52fb941a3",
+        "item-decode-compound-restart-crash-verify.json": "98178cde0a05836f9e68ef0b085e6c095467ce888cea79e623dfdb1576c6908e",
+        "hourly-native.json": "094d3fa30cd7550da1c792f8a371d3d25b0d3b889dae35db901ef8363c43a04e",
+        "energy-summary.json": "75898e64ad9d539c66a1caf7efa1dab1ad69b0ed4b54e8c2301b56c12f04dab5",
+        "clean-native-summary.json": "b6f05bad5137ae558057cd21a45ff4d04dfd123193b57dd8aac0ac0bfcb72595"
+      },
+      "ordinary_native": 356,
+      "opaque_export": {
+        "format": "native-nbt-uncompressed-v1",
+        "dimension": 0,
+        "bytes": 383,
+        "sha256": "74ac99473dd4b63ab11deb8a588c1b99bdbf6171b9111fca8869dfb84b2817e7",
+        "native_nbt_hex": "0a0000030006536368656d610000006308000e4f726967696e616c5461726765740007756e6b6e6f776e0a00104f726967696e616c45766964656e636507000d4f726967696e616c42797465730000012c000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fa000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f300000",
+        "original_target": "unknown",
+        "original_phase": "unknown",
+        "recovery_clearance": false,
+        "scope": "Verified captured bytes only; no provider identity, ownership or outcome authentication"
+      },
+      "provider_restart": {
+        "suite": "item",
+        "minecraft": "1.6.4",
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+        "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+        "clean_restart": "PASS",
+        "save_barrier_abrupt_restart": "PASS",
+        "processes": [
+          {
+            "phase": "write",
+            "pid": 2997,
+            "exit_code": 0,
+            "log_sha256": "7cd04d580629b0283cceabe9be6aa291ac34c0c4257a64714317e83f108de424"
+          },
+          {
+            "phase": "verify",
+            "pid": 3024,
+            "exit_code": 0,
+            "log_sha256": "38ff6b9f45b7a15ffb609b2873d7453e77f53d18bd486f8fb8e7dcb957a93b9c"
+          },
+          {
+            "phase": "crash-write",
+            "pid": 3047,
+            "exit_code": -9,
+            "log_sha256": "caa4fb86418f0fbae371db7a0692e6daa5dde26e33a362a742d89aa4c3833191"
+          },
+          {
+            "phase": "crash-verify",
+            "pid": 3070,
+            "exit_code": 0,
+            "log_sha256": "8872f0d0358300c5e67b48a6ff996273b5a68f09dee6c9a7efe1da57d097e8f8"
+          }
+        ],
+        "phase_reports": {
+          "write": {
+            "minecraft": "1.6.4",
+            "phase": "write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "ab61c668-df6f-4ca3-885e-b1db40eff2eb",
+              "1d7bc023-ca2f-471b-adc2-cc9cce0319f6"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "a6288690-4f6a-45d7-9af2-368b6f23c8a5",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "ab61c668-df6f-4ca3-885e-b1db40eff2eb",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "a045e186-8726-4125-a747-f1161459082a",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "1d7bc023-ca2f-471b-adc2-cc9cce0319f6",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "2997@runnervmtai0g"
+          },
+          "verify": {
+            "minecraft": "1.6.4",
+            "phase": "verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "ab61c668-df6f-4ca3-885e-b1db40eff2eb",
+              "1d7bc023-ca2f-471b-adc2-cc9cce0319f6"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "a6288690-4f6a-45d7-9af2-368b6f23c8a5",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "ab61c668-df6f-4ca3-885e-b1db40eff2eb",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "a045e186-8726-4125-a747-f1161459082a",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "1d7bc023-ca2f-471b-adc2-cc9cce0319f6",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3024@runnervmtai0g"
+          },
+          "crash-write": {
+            "minecraft": "1.6.4",
+            "phase": "crash-write",
+            "passed": true,
+            "assertions": [
+              "foreign post-mutation fault 0",
+              "local uncertainty 0",
+              "executed phase 0",
+              "one receipt 0",
+              "sealed removal receipt 0",
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "foreign post-mutation fault 16",
+              "local uncertainty 16",
+              "executed phase 16",
+              "one receipt 16",
+              "sealed removal receipt 16",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "d4ac0054-84f4-40d9-9460-7438660995df",
+              "5361f0b7-ce48-42d3-8288-3321e9cef265"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "842a0074-026c-48fa-ac86-79e7ec3c8d7c",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "d4ac0054-84f4-40d9-9460-7438660995df",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "c141bd7c-39d1-4206-ad34-9f98acd77013",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "5361f0b7-ce48-42d3-8288-3321e9cef265",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3047@runnervmtai0g"
+          },
+          "crash-verify": {
+            "minecraft": "1.6.4",
+            "phase": "crash-verify",
+            "passed": true,
+            "assertions": [
+              "removed original host 0",
+              "observed source after mutation 0",
+              "observed destination after mutation 0",
+              "registered provider persistence 0",
+              "provider private identity 0",
+              "provider saved ownership 0",
+              "provider saved fault mode 0",
+              "provider mutation executed once 0",
+              "provider private mutation counters 0",
+              "spendable conservation excludes sealed claim 0",
+              "receipt inventory persistence 0",
+              "canonical token 0",
+              "owner and dimension 0",
+              "captured endpoint and phase 0",
+              "uncertain receipt claim remains sealed 0",
+              "persistent owner-scoped fence 0",
+              "other endpoint not misattributed 0",
+              "linked diagnostic 0",
+              "new host cannot bypass saved target fence 0",
+              "inspection never replays or mints 0",
+              "fenced alias never invokes provider again 0",
+              "removed original host 16",
+              "observed source after mutation 16",
+              "observed destination after mutation 16",
+              "registered provider persistence 16",
+              "provider private identity 16",
+              "provider saved ownership 16",
+              "provider saved fault mode 16",
+              "provider mutation executed once 16",
+              "provider private mutation counters 16",
+              "spendable conservation excludes sealed claim 16",
+              "receipt inventory persistence 16",
+              "canonical token 16",
+              "owner and dimension 16",
+              "captured endpoint and phase 16",
+              "uncertain receipt claim remains sealed 16",
+              "persistent owner-scoped fence 16",
+              "other endpoint not misattributed 16",
+              "linked diagnostic 16",
+              "new host cannot bypass saved target fence 16",
+              "inspection never replays or mints 16",
+              "fenced alias never invokes provider again 16"
+            ],
+            "tokens": [
+              "d4ac0054-84f4-40d9-9460-7438660995df",
+              "5361f0b7-ce48-42d3-8288-3321e9cef265"
+            ],
+            "provider_outcomes": [
+              {
+                "provider_id": "842a0074-026c-48fa-ac86-79e7ec3c8d7c",
+                "owner": "pl4owner",
+                "outcome": "insert",
+                "token": "d4ac0054-84f4-40d9-9460-7438660995df",
+                "source_units": 32,
+                "destination_units": 8,
+                "unaccounted_units": 0,
+                "sealed_uncertain_claim": 8,
+                "mutation_calls": 1,
+                "removed_units": 0,
+                "accepted_units": 8
+              },
+              {
+                "provider_id": "c141bd7c-39d1-4206-ad34-9f98acd77013",
+                "owner": "pl4owner",
+                "outcome": "extract",
+                "token": "5361f0b7-ce48-42d3-8288-3321e9cef265",
+                "source_units": 32,
+                "destination_units": 0,
+                "unaccounted_units": 8,
+                "sealed_uncertain_claim": 0,
+                "mutation_calls": 1,
+                "removed_units": 8,
+                "accepted_units": 0
+              }
+            ],
+            "process": "3070@runnervmtai0g"
+          }
+        },
+        "world_archives": {
+          "clean": {
+            "file": "item-restart-clean-world.zip",
+            "sha256": "9667ca904496323fba8845170a1776c8009c32f8e03ff748cb389422afed1057"
+          },
+          "barrier": {
+            "file": "item-restart-barrier-world.zip",
+            "sha256": "7e9d4a348017ececa292f184edca2b58b4ec7f7b6f04b80d295c00a873f6922c"
+          }
+        },
+        "scope": "Separate candidate JVMs; clean stop and Parent SIGKILL after completed native world save/storage save/flush and explicit ready marker. Not arbitrary pre-save crashes, power loss, pre-upgrade faults, user worlds, installed providers, client or multiplayer acceptance. Registered fixture provider and its own private identity/owner/counters remain installed across all four JVMs. This is not third-party provider acceptance. Source post-removal exception leaves 8 units unaccounted for and fenced; insertion exception leaves 32+8 observed spendable units plus a sealed uncertain 8-unit claim. No recovery/replay/minting."
+      },
+      "raw_provider_worlds": {
+        "clean": {
+          "world_archive_sha256": "9667ca904496323fba8845170a1776c8009c32f8e03ff748cb389422afed1057",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "a045e186-8726-4125-a747-f1161459082a",
+              "owner": "pl4owner",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "a6288690-4f6a-45d7-9af2-368b6f23c8a5",
+              "owner": "pl4owner",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        },
+        "barrier": {
+          "world_archive_sha256": "7e9d4a348017ececa292f184edca2b58b4ec7f7b6f04b80d295c00a873f6922c",
+          "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+          "providers": [
+            {
+              "provider_id": "c141bd7c-39d1-4206-ad34-9f98acd77013",
+              "owner": "pl4owner",
+              "outcome": "extract",
+              "mutation_calls": 1,
+              "removed_units": 8,
+              "accepted_units": 0,
+              "inventory_units": 32,
+              "fault_extract": 1,
+              "fault_insert": 0,
+              "position": [
+                15,
+                200,
+                32
+              ]
+            },
+            {
+              "provider_id": "842a0074-026c-48fa-ac86-79e7ec3c8d7c",
+              "owner": "pl4owner",
+              "outcome": "insert",
+              "mutation_calls": 1,
+              "removed_units": 0,
+              "accepted_units": 8,
+              "inventory_units": 8,
+              "fault_extract": 0,
+              "fault_insert": 1,
+              "position": [
+                3,
+                200,
+                32
+              ]
+            }
+          ],
+          "result": "PASS"
+        }
+      },
+      "decode_restart": {
+        "decode-raw": {
+          "suite": "decode-raw",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3095,
+              "exit_code": 0,
+              "log_sha256": "61974c42a9cf3e4138d1941255725c0f221f89f10fa03aa0ef1e3dd652a107de"
+            },
+            {
+              "phase": "verify",
+              "pid": 3123,
+              "exit_code": 0,
+              "log_sha256": "94ca57f65546530ff1a6cb60ef27b80232e30b7cf797115804d64e15fc00475e"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3146,
+              "exit_code": -9,
+              "log_sha256": "ced7a0535902cc1555c342c19a75fa4cf967b95e754c4523f7f9e7c24b5379bb"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3168,
+              "exit_code": 0,
+              "log_sha256": "5beb4f1bcfa03ae0b11e2699a6c46f052a92d331858ec1ce9848531e514a8c46"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "raw integer type and value retained",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "raw string type and value retained",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "raw opaque rejection type preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "eb3085a8-75f8-485e-af58-a13af4295a8c",
+                "15fce5e6-d91c-422a-9622-c5ac02965591"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "eb3085a8-75f8-485e-af58-a13af4295a8c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "15fce5e6-d91c-422a-9622-c5ac02965591",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3095@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "raw integer type and value retained",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "raw string type and value retained",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "raw opaque rejection type preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "eb3085a8-75f8-485e-af58-a13af4295a8c",
+                "15fce5e6-d91c-422a-9622-c5ac02965591"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "eb3085a8-75f8-485e-af58-a13af4295a8c",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "15fce5e6-d91c-422a-9622-c5ac02965591",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3123@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "raw integer type and value retained",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "raw string type and value retained",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "raw opaque rejection type preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "2e9f41e2-151b-42a5-b4f1-c8d6aedd2465",
+                "56bd9178-5881-46c5-b668-864b2e3fb9e4"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2e9f41e2-151b-42a5-b4f1-c8d6aedd2465",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "56bd9178-5881-46c5-b668-864b2e3fb9e4",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3146@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-raw",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "raw integer type and value retained",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "raw string type and value retained",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "raw opaque rejection type preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "2e9f41e2-151b-42a5-b4f1-c8d6aedd2465",
+                "56bd9178-5881-46c5-b668-864b2e3fb9e4"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2e9f41e2-151b-42a5-b4f1-c8d6aedd2465",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "int",
+                  "context_value": "71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "56bd9178-5881-46c5-b668-864b2e3fb9e4",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "string",
+                  "context_value": "current-raw-context",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3168@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-raw-restart-clean-world.zip",
+              "sha256": "6cacd5aa9ea1d88828b03ee8425d9a7eaa128bfc1a09ea5e75befe779b4621bd"
+            },
+            "barrier": {
+              "file": "item-decode-raw-restart-barrier-world.zip",
+              "sha256": "206f9f556dd7b5ed925bd1aeebaeaed87cfa99982d70ab28bf46f7e959fdec8a"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "eb3085a8-75f8-485e-af58-a13af4295a8c",
+                "15fce5e6-d91c-422a-9622-c5ac02965591"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "6cacd5aa9ea1d88828b03ee8425d9a7eaa128bfc1a09ea5e75befe779b4621bd"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-raw",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "2e9f41e2-151b-42a5-b4f1-c8d6aedd2465",
+                "56bd9178-5881-46c5-b668-864b2e3fb9e4"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "206f9f556dd7b5ed925bd1aeebaeaed87cfa99982d70ab28bf46f7e959fdec8a"
+            }
+          }
+        },
+        "decode-missing": {
+          "suite": "decode-missing",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3192,
+              "exit_code": 0,
+              "log_sha256": "3bde630f3857055fdf5946251a63bac013a67942f198d3e8903d8ffb81d57a06"
+            },
+            {
+              "phase": "verify",
+              "pid": 3217,
+              "exit_code": 0,
+              "log_sha256": "aa49844ed567c1191e2b92d0b82e5a94969db68d7dd609952561bd989e8eb3fc"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3240,
+              "exit_code": -9,
+              "log_sha256": "d97471289545da909b4de0af325d0ab978c41ab9a4491272fdacf2d4a89f65a0"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3262,
+              "exit_code": 0,
+              "log_sha256": "aafc76c5104a0d102dc0d0c9c033583a25f9d73f3a83d0455a51dd0f6c43f424"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "missing context never synthesized 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "missing context never synthesized 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "missing opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "e8e9e232-d8d5-469f-a145-0ba1386df097",
+                "54b4c146-2de3-47e3-adc5-c89b2cee03d0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "e8e9e232-d8d5-469f-a145-0ba1386df097",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "54b4c146-2de3-47e3-adc5-c89b2cee03d0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3192@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "missing context never synthesized 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "missing context never synthesized 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "missing opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "e8e9e232-d8d5-469f-a145-0ba1386df097",
+                "54b4c146-2de3-47e3-adc5-c89b2cee03d0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "e8e9e232-d8d5-469f-a145-0ba1386df097",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "54b4c146-2de3-47e3-adc5-c89b2cee03d0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3217@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "missing context never synthesized 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "missing context never synthesized 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "missing opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "c4dceb1c-cf3d-4359-aa15-ccdee573f6e2",
+                "6cf3b7de-efd9-4d3d-ac47-7f75c472723d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "c4dceb1c-cf3d-4359-aa15-ccdee573f6e2",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "6cf3b7de-efd9-4d3d-ac47-7f75c472723d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3240@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-missing",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "missing context never synthesized 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "missing context never synthesized 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "missing opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "c4dceb1c-cf3d-4359-aa15-ccdee573f6e2",
+                "6cf3b7de-efd9-4d3d-ac47-7f75c472723d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "c4dceb1c-cf3d-4359-aa15-ccdee573f6e2",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "6cf3b7de-efd9-4d3d-ac47-7f75c472723d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "absent",
+                  "context_value": "",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3262@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-missing-restart-clean-world.zip",
+              "sha256": "75b9a82f2efaf5627fd85c83a98716d8c19ca450546e8bf9d77585603197d382"
+            },
+            "barrier": {
+              "file": "item-decode-missing-restart-barrier-world.zip",
+              "sha256": "b190b72f80b922e612926ba70ef9bed40cf4c942c5ccb9a82113b98ad2de474d"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "e8e9e232-d8d5-469f-a145-0ba1386df097",
+                "54b4c146-2de3-47e3-adc5-c89b2cee03d0"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "75b9a82f2efaf5627fd85c83a98716d8c19ca450546e8bf9d77585603197d382"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-missing",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "c4dceb1c-cf3d-4359-aa15-ccdee573f6e2",
+                "6cf3b7de-efd9-4d3d-ac47-7f75c472723d"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "b190b72f80b922e612926ba70ef9bed40cf4c942c5ccb9a82113b98ad2de474d"
+            }
+          }
+        },
+        "decode-compound": {
+          "suite": "decode-compound",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3286,
+              "exit_code": 0,
+              "log_sha256": "c6962364fda30b0b2efb2cf8b5a1966a500c826c31cc49e17a879d8757571eee"
+            },
+            {
+              "phase": "verify",
+              "pid": 3310,
+              "exit_code": 0,
+              "log_sha256": "18e5285a4f15da21b99f569aaba1384f93a6937e0662f7b149de498542239337"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3334,
+              "exit_code": -9,
+              "log_sha256": "e04c3bc0c2863f6fbf5403c2acb2caac86d6988f40e5298c2c45120dc53c437c"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3356,
+              "exit_code": 0,
+              "log_sha256": "fd87f853ab8e4004309429163a539915321933b1a8ff58233beb64fab1cfc14a"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "cdf8cdd3-1e29-498c-a625-bee8999881c9",
+                "abf9a4fd-95f1-46f7-a313-548c91931f9b"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "cdf8cdd3-1e29-498c-a625-bee8999881c9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "abf9a4fd-95f1-46f7-a313-548c91931f9b",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3286@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "cdf8cdd3-1e29-498c-a625-bee8999881c9",
+                "abf9a4fd-95f1-46f7-a313-548c91931f9b"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "cdf8cdd3-1e29-498c-a625-bee8999881c9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "abf9a4fd-95f1-46f7-a313-548c91931f9b",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3310@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "9cefe483-e363-4553-b1ca-d914ac76c8f5",
+                "5c6babab-a182-4ac8-8c57-b6e82f6accea"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "9cefe483-e363-4553-b1ca-d914ac76c8f5",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "5c6babab-a182-4ac8-8c57-b6e82f6accea",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3334@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-compound",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "9cefe483-e363-4553-b1ca-d914ac76c8f5",
+                "5c6babab-a182-4ac8-8c57-b6e82f6accea"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "9cefe483-e363-4553-b1ca-d914ac76c8f5",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "5c6babab-a182-4ac8-8c57-b6e82f6accea",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-token-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3356@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-compound-restart-clean-world.zip",
+              "sha256": "eaf956f85c4ede68c90e384c9e092d1c1c48c85658cc44b7e9e5e4aafba19799"
+            },
+            "barrier": {
+              "file": "item-decode-compound-restart-barrier-world.zip",
+              "sha256": "b7f7791ef21084ddb491a8c3aa9dd3c3ee163614c3a1f58d4b0f3800d3241c39"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "cdf8cdd3-1e29-498c-a625-bee8999881c9",
+                "abf9a4fd-95f1-46f7-a313-548c91931f9b"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "eaf956f85c4ede68c90e384c9e092d1c1c48c85658cc44b7e9e5e4aafba19799"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-compound",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "9cefe483-e363-4553-b1ca-d914ac76c8f5",
+                "5c6babab-a182-4ac8-8c57-b6e82f6accea"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "b7f7791ef21084ddb491a8c3aa9dd3c3ee163614c3a1f58d4b0f3800d3241c39"
+            }
+          }
+        },
+        "decode-owner": {
+          "suite": "decode-owner",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3380,
+              "exit_code": 0,
+              "log_sha256": "b4650b4f0717b4bcd9304c3c4be7d6bdde5adf8eb3e6c88f13d0bd3a933fe93d"
+            },
+            {
+              "phase": "verify",
+              "pid": 3404,
+              "exit_code": 0,
+              "log_sha256": "782840324c414ca9c6a1cecbb25f29be8c8c9cc34104e08fc0d8ea8e4c770f9a"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3428,
+              "exit_code": -9,
+              "log_sha256": "83c85c112fa8ec15938b24782d40914cfc8744fd938a4ff132dcd67d75f2c884"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3450,
+              "exit_code": 0,
+              "log_sha256": "c3ff4d8ef83d03854ad62888fda24aca812861ca34162c14e378f7ae2a3a64e4"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-owner",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "2c902f12-3873-4d35-9803-084a20ae92a1",
+                "52c13bf0-e24b-4ffd-b78e-91aec51d76c0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2c902f12-3873-4d35-9803-084a20ae92a1",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "52c13bf0-e24b-4ffd-b78e-91aec51d76c0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3380@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-owner",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "2c902f12-3873-4d35-9803-084a20ae92a1",
+                "52c13bf0-e24b-4ffd-b78e-91aec51d76c0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "2c902f12-3873-4d35-9803-084a20ae92a1",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "52c13bf0-e24b-4ffd-b78e-91aec51d76c0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3404@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-owner",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "229a3162-42c1-4898-bbd9-e73b4a443b2d",
+                "903e871b-8f0d-486a-bd55-ffed5dd9c982"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "229a3162-42c1-4898-bbd9-e73b4a443b2d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "903e871b-8f0d-486a-bd55-ffed5dd9c982",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3428@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-owner",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "229a3162-42c1-4898-bbd9-e73b4a443b2d",
+                "903e871b-8f0d-486a-bd55-ffed5dd9c982"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "229a3162-42c1-4898-bbd9-e73b4a443b2d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "903e871b-8f0d-486a-bd55-ffed5dd9c982",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-owner-int71",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3450@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-owner-restart-clean-world.zip",
+              "sha256": "bc78b9f09f0f8ab7a21e419f5d6185186807cbeaf57106ec64ff9a2c78ed2b43"
+            },
+            "barrier": {
+              "file": "item-decode-owner-restart-barrier-world.zip",
+              "sha256": "981c46a6b92c7e4c6ec2e4fa2f6b82e50819e70c21d2668ada96540b2b3e927e"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-owner",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "2c902f12-3873-4d35-9803-084a20ae92a1",
+                "52c13bf0-e24b-4ffd-b78e-91aec51d76c0"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "bc78b9f09f0f8ab7a21e419f5d6185186807cbeaf57106ec64ff9a2c78ed2b43"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-owner",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "229a3162-42c1-4898-bbd9-e73b4a443b2d",
+                "903e871b-8f0d-486a-bd55-ffed5dd9c982"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "981c46a6b92c7e4c6ec2e4fa2f6b82e50819e70c21d2668ada96540b2b3e927e"
+            }
+          }
+        },
+        "decode-dimension": {
+          "suite": "decode-dimension",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3475,
+              "exit_code": 0,
+              "log_sha256": "179116d00ef55f5592559745033fcefad4e61936174804c1b564176d4232fe2f"
+            },
+            {
+              "phase": "verify",
+              "pid": 3498,
+              "exit_code": 0,
+              "log_sha256": "5b427ce0a278006055daa1655c90d42f3d68b4735aa7f66f8caa854c4af434ef"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3523,
+              "exit_code": -9,
+              "log_sha256": "56975907dc0811c6dd0d00ec6ef5c0bdaf3716295961ada467c98b2ca0230bb1"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3546,
+              "exit_code": 0,
+              "log_sha256": "24424a51c85ccb92ab4a0b54787800190c45442e2dc2085fc9f43c23331091f4"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-dimension",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "f3e91ecd-6dbf-47f3-b536-145f7396a768",
+                "657ae839-8741-41e0-a3c9-085b59aafbd9"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f3e91ecd-6dbf-47f3-b536-145f7396a768",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "657ae839-8741-41e0-a3c9-085b59aafbd9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3475@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-dimension",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "f3e91ecd-6dbf-47f3-b536-145f7396a768",
+                "657ae839-8741-41e0-a3c9-085b59aafbd9"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "f3e91ecd-6dbf-47f3-b536-145f7396a768",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "657ae839-8741-41e0-a3c9-085b59aafbd9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3498@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-dimension",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "8c6b7917-7078-42a3-bbfa-5e5e9ae43ebd",
+                "23c19aac-469d-4aaa-af11-aad494fd6bf6"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "8c6b7917-7078-42a3-bbfa-5e5e9ae43ebd",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "23c19aac-469d-4aaa-af11-aad494fd6bf6",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3523@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-dimension",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "8c6b7917-7078-42a3-bbfa-5e5e9ae43ebd",
+                "23c19aac-469d-4aaa-af11-aad494fd6bf6"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "8c6b7917-7078-42a3-bbfa-5e5e9ae43ebd",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "23c19aac-469d-4aaa-af11-aad494fd6bf6",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-dimension-string0",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3546@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-dimension-restart-clean-world.zip",
+              "sha256": "69662daa90177aa5c35d8adb52335b6558462709899691448e27a2fa6e1fcaf0"
+            },
+            "barrier": {
+              "file": "item-decode-dimension-restart-barrier-world.zip",
+              "sha256": "85d42fdd533e43590337f20b092e48374f55526a584d885024dc5881a528d371"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-dimension",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "f3e91ecd-6dbf-47f3-b536-145f7396a768",
+                "657ae839-8741-41e0-a3c9-085b59aafbd9"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "69662daa90177aa5c35d8adb52335b6558462709899691448e27a2fa6e1fcaf0"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-dimension",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "8c6b7917-7078-42a3-bbfa-5e5e9ae43ebd",
+                "23c19aac-469d-4aaa-af11-aad494fd6bf6"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "85d42fdd533e43590337f20b092e48374f55526a584d885024dc5881a528d371"
+            }
+          }
+        },
+        "decode-scope": {
+          "suite": "decode-scope",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3571,
+              "exit_code": 0,
+              "log_sha256": "063f82026bcb4e1ae8618f0eff0b991a80b7ea0cb8202011c3c0caeb201deb51"
+            },
+            {
+              "phase": "verify",
+              "pid": 3595,
+              "exit_code": 0,
+              "log_sha256": "d4c69978666a1cf1ad9d35b3ea1d030971e759792a3375c7dd9773eab4d7cdab"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3618,
+              "exit_code": -9,
+              "log_sha256": "266d444ef77f0ac5649f645d55851fc0fd0fb7de018afa1fb684bdbe2293c2e1"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3643,
+              "exit_code": 0,
+              "log_sha256": "ac97e50c36783bb30bce0727fa26c4894f9516cd7797fb44d49d47f669f61bc0"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-scope",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "de926ec8-5097-43dc-a722-7cd322add561",
+                "e53e825f-96af-4c05-8def-0333bfceb710"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "de926ec8-5097-43dc-a722-7cd322add561",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "e53e825f-96af-4c05-8def-0333bfceb710",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3571@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-scope",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "de926ec8-5097-43dc-a722-7cd322add561",
+                "e53e825f-96af-4c05-8def-0333bfceb710"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "de926ec8-5097-43dc-a722-7cd322add561",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "e53e825f-96af-4c05-8def-0333bfceb710",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3595@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-scope",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "02b64257-8c50-4093-aad0-adcfecd8d598",
+                "4cc906ab-16ce-4f9f-b6c2-d726e136b7fb"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "02b64257-8c50-4093-aad0-adcfecd8d598",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "4cc906ab-16ce-4f9f-b6c2-d726e136b7fb",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3618@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-scope",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "02b64257-8c50-4093-aad0-adcfecd8d598",
+                "4cc906ab-16ce-4f9f-b6c2-d726e136b7fb"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "02b64257-8c50-4093-aad0-adcfecd8d598",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "4cc906ab-16ce-4f9f-b6c2-d726e136b7fb",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rejected-scope-compound",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3643@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-scope-restart-clean-world.zip",
+              "sha256": "e553ab70c14e7726285e4266874f7ebd60084e117219e55f32ae975b1440ca1b"
+            },
+            "barrier": {
+              "file": "item-decode-scope-restart-barrier-world.zip",
+              "sha256": "6e533d557cbb2da5f537c71360dcf8ecbf7db52b5b0fd1636fd5573c7f2ebbc7"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-scope",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "de926ec8-5097-43dc-a722-7cd322add561",
+                "e53e825f-96af-4c05-8def-0333bfceb710"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "e553ab70c14e7726285e4266874f7ebd60084e117219e55f32ae975b1440ca1b"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-scope",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "02b64257-8c50-4093-aad0-adcfecd8d598",
+                "4cc906ab-16ce-4f9f-b6c2-d726e136b7fb"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "6e533d557cbb2da5f537c71360dcf8ecbf7db52b5b0fd1636fd5573c7f2ebbc7"
+            }
+          }
+        },
+        "decode-rewrite": {
+          "suite": "decode-rewrite",
+          "minecraft": "1.6.4",
+          "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+          "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+          "fixture_sha256": "fc67945bd31df1e22384aa22a90cc8f845681c3f96e15bc1c60ebc0abce16a6c",
+          "clean_restart": "PASS",
+          "save_barrier_abrupt_restart": "PASS",
+          "processes": [
+            {
+              "phase": "write",
+              "pid": 3673,
+              "exit_code": 0,
+              "log_sha256": "e4ceadab97e0184e932752191af6d6f0d8d4ecf317ec993364afdff52ff08201"
+            },
+            {
+              "phase": "verify",
+              "pid": 3717,
+              "exit_code": 0,
+              "log_sha256": "dce4005514ec8491501a252d072ef838df4e237741c600f1ad1bdf81db6f35d8"
+            },
+            {
+              "phase": "crash-write",
+              "pid": 3742,
+              "exit_code": -9,
+              "log_sha256": "25e874af2b1d200cb1cef7e7dae972c9f6848290594fd88d9cb5b093d007ad91"
+            },
+            {
+              "phase": "crash-verify",
+              "pid": 3764,
+              "exit_code": 0,
+              "log_sha256": "d3230f45e7c3223c340e9f7b120adbfd215666b7d8bc76b9f756a6cf2234c02b"
+            }
+          ],
+          "phase_reports": {
+            "write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-rewrite",
+              "phase": "write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "cba6567b-5dce-4005-b52b-9d51fefc9f6b",
+                "75d465a7-9b98-4349-8275-efe716d0e3c0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "cba6567b-5dce-4005-b52b-9d51fefc9f6b",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "75d465a7-9b98-4349-8275-efe716d0e3c0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3673@runnervmtai0g"
+            },
+            "verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-rewrite",
+              "phase": "verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "cba6567b-5dce-4005-b52b-9d51fefc9f6b",
+                "75d465a7-9b98-4349-8275-efe716d0e3c0"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "cba6567b-5dce-4005-b52b-9d51fefc9f6b",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "75d465a7-9b98-4349-8275-efe716d0e3c0",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3717@runnervmtai0g"
+            },
+            "crash-write": {
+              "minecraft": "1.6.4",
+              "suite": "decode-rewrite",
+              "phase": "crash-write",
+              "passed": true,
+              "assertions": [
+                "seed unknown context 64",
+                "seed unknown context 80",
+                "generic settlement retains uncertainty 64",
+                "generic settlement retains uncertainty 80",
+                "single sealed removal receipt",
+                "actual sealed removal receipt",
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "95625484-8216-4d79-8da5-71a68b700dc9",
+                "5149c8ee-38f1-4c22-a9d6-6467f89d616d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "95625484-8216-4d79-8da5-71a68b700dc9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "5149c8ee-38f1-4c22-a9d6-6467f89d616d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3742@runnervmtai0g"
+            },
+            "crash-verify": {
+              "minecraft": "1.6.4",
+              "suite": "decode-rewrite",
+              "phase": "crash-verify",
+              "passed": true,
+              "assertions": [
+                "retained host reloads 64",
+                "reloaded uncertainty cannot settle 64",
+                "original token preserved 64",
+                "complete original evidence unchanged 64",
+                "eight units remain sealed 64",
+                "missing fault text cannot erase uncertainty 64",
+                "rejected compound and nested payload retained 64",
+                "no original route or phase invented 64",
+                "all owners and targets remain fenced 64",
+                "removed host stays absent 80",
+                "receipt persists in native chest 80",
+                "reloaded receipt owner authorization is typed and scoped",
+                "reloaded receipt rejects unrelated profile",
+                "reloaded receipt operator diagnostic preserves uncertainty",
+                "receipt diagnostic rejects foreign world argument",
+                "original token preserved 80",
+                "complete original evidence unchanged 80",
+                "eight units remain sealed 80",
+                "missing fault text cannot erase uncertainty 80",
+                "rejected compound and nested payload retained 80",
+                "no original route or phase invented 80",
+                "all owners and targets remain fenced 80",
+                "first rejection original evidence retained",
+                "rejected compound opaque barrier preserved",
+                "prior journal remains unknown-route 0",
+                "prior journal remains unknown-route 1",
+                "all prior tokens retained without replacement",
+                "repeated admission does not grow opaque history",
+                "replacement host cannot bypass dimension barrier",
+                "inspection and replacement never clear journal"
+              ],
+              "tokens": [
+                "95625484-8216-4d79-8da5-71a68b700dc9",
+                "5149c8ee-38f1-4c22-a9d6-6467f89d616d"
+              ],
+              "decode_outcomes": [
+                {
+                  "host_x": 64,
+                  "host_removed": false,
+                  "original_token": "95625484-8216-4d79-8da5-71a68b700dc9",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                },
+                {
+                  "host_x": 80,
+                  "host_removed": true,
+                  "original_token": "5149c8ee-38f1-4c22-a9d6-6467f89d616d",
+                  "owner": "pl4owner",
+                  "dimension": 0,
+                  "context_kind": "compound",
+                  "context_value": "rewritten-owner-dimension-host",
+                  "sealed_units": 8,
+                  "evidence_marker": "first-raw-payload",
+                  "original_route_known": false
+                }
+              ],
+              "process": "3764@runnervmtai0g"
+            }
+          },
+          "world_archives": {
+            "clean": {
+              "file": "item-decode-rewrite-restart-clean-world.zip",
+              "sha256": "026a7fdf4b6ad589553aaba5558d5ba0182300bf40fd6427127c99edd9085422"
+            },
+            "barrier": {
+              "file": "item-decode-rewrite-restart-barrier-world.zip",
+              "sha256": "4751a1096b86a799731d4cbf67d61f13373980ff17b58d28334731a80f513b81"
+            }
+          },
+          "scope": "Exact suite-selected malformed or rewritten context, original evidence, sealed removal receipt and opaque dimension barrier across separate clean and completed-save/flush parent-SIGKILL JVMs. No pre-save crash, power-loss, installed-provider, recovery, multiplayer or RC clearance.",
+          "raw_world_inspection": {
+            "clean": {
+              "result": "PASS",
+              "suite": "decode-rewrite",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "cba6567b-5dce-4005-b52b-9d51fefc9f6b",
+                "75d465a7-9b98-4349-8275-efe716d0e3c0"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "026a7fdf4b6ad589553aaba5558d5ba0182300bf40fd6427127c99edd9085422"
+            },
+            "barrier": {
+              "result": "PASS",
+              "suite": "decode-rewrite",
+              "retained_host": [
+                64,
+                200,
+                32
+              ],
+              "removed_host": [
+                80,
+                200,
+                32
+              ],
+              "receipt_chest": [
+                85,
+                200,
+                32
+              ],
+              "original_tokens": [
+                "95625484-8216-4d79-8da5-71a68b700dc9",
+                "5149c8ee-38f1-4c22-a9d6-6467f89d616d"
+              ],
+              "sealed_claims": [
+                8,
+                8
+              ],
+              "prior_journal_entries": 2,
+              "original_evidence_and_raw_context": "UNCHANGED",
+              "barrier": "OPAQUE_DIMENSION_WIDE",
+              "world_archive_sha256": "4751a1096b86a799731d4cbf67d61f13373980ff17b58d28334731a80f513b81"
+            }
+          }
+        }
+      },
+      "historical": {
+        "minecraft": "1.6.4",
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+        "fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "baseline": {
+          "original_artifact_id": 12617856905,
+          "original_archive_sha256": "1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "retrieved_artifact_id": 12617856905,
+          "retrieved_archive_sha256": "sha256:1cbec90d178d08b6123fb4c07f3a2be862bcc6ef753550dfb176aec1b7a3bd94",
+          "source_commit": "0dc2f1242308ccf5c062b1b1659011923589c0aa",
+          "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282"
+        },
+        "processes": [
+          {
+            "phase": "fault-write",
+            "pid": 3809,
+            "exit_code": 0,
+            "runtime_sha256": "52b34855549eca1a64e85b39cf92f6bf59cf9613aecd2e65ddca4758990bf282",
+            "log_sha256": "c705ee1f2cfb48b9677a996f5dfe240b9e84a0f197bfb8e16bb30f475721de3f",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-write",
+              "passed": true,
+              "checks": 16,
+              "tokens": [],
+              "provider_outcomes": [
+                {
+                  "provider_id": "442dfea4-0d26-4853-98dd-01cdc1ccb5fc",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "dab157cf-94cb-4f38-aca0-d281f84221e4",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3809@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-upgrade",
+            "pid": 3832,
+            "exit_code": 0,
+            "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+            "log_sha256": "02e4c4a2aaa08c26d99b825159c857743dfbb13039f277da04112077e07b4f8a",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-upgrade",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "e768dbf5-332a-4f9b-8a68-e30d36e0a9d6",
+                "cb5b3fb0-e3df-4914-bc44-939d4fa5ce42"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "442dfea4-0d26-4853-98dd-01cdc1ccb5fc",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "dab157cf-94cb-4f38-aca0-d281f84221e4",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3832@runnervmtai0g"
+            }
+          },
+          {
+            "phase": "fault-verify",
+            "pid": 3856,
+            "exit_code": 0,
+            "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+            "log_sha256": "85ce6596f81304216d1b5e94e1369225fdf86e0a89c7b6f5b613cd0e6581f6b7",
+            "report": {
+              "minecraft": "1.6.4",
+              "phase": "fault-verify",
+              "passed": true,
+              "checks": 22,
+              "tokens": [
+                "e768dbf5-332a-4f9b-8a68-e30d36e0a9d6",
+                "cb5b3fb0-e3df-4914-bc44-939d4fa5ce42"
+              ],
+              "provider_outcomes": [
+                {
+                  "provider_id": "442dfea4-0d26-4853-98dd-01cdc1ccb5fc",
+                  "owner": "pl4owner",
+                  "outcome": "insert",
+                  "source_units": 32,
+                  "destination_units": 8,
+                  "unaccounted_units": 0,
+                  "sealed_uncertain_claim": 8,
+                  "mutation_calls": 1,
+                  "removed_units": 0,
+                  "accepted_units": 8
+                },
+                {
+                  "provider_id": "dab157cf-94cb-4f38-aca0-d281f84221e4",
+                  "owner": "pl4owner",
+                  "outcome": "extract",
+                  "source_units": 32,
+                  "destination_units": 0,
+                  "unaccounted_units": 8,
+                  "sealed_uncertain_claim": 0,
+                  "mutation_calls": 1,
+                  "removed_units": 8,
+                  "accepted_units": 0
+                }
+              ],
+              "process": "3856@runnervmtai0g"
+            }
+          }
+        ],
+        "preupgrade_unlocated_fault_import": "PASS",
+        "candidate_restart": "PASS",
+        "world_archive": {
+          "file": "preupgrade-item-fault-world.zip",
+          "sha256": "39906a9d34ab883bc5eb656b0d07d929c628e3fa87ff53c73b4b3b8ad727601e"
+        },
+        "scope": "Generated faults saved by actual pre-journal native runtime, candidate chunk import and clean candidate restart after host removal. Unknown original targets/phases remain unknown. Loaded observed owner fenced dimension-wide; unowned faults fail closed for all owners. Pre-existing loose unlinked receipts remain unauthenticated. Registered fixture provider private state only; not installed optional providers, arbitrary user/modpack migration or crash atomicity. No recovery/replay/mint/clear API."
+      },
+      "raw_historical_world": {
+        "world_archive_sha256": "39906a9d34ab883bc5eb656b0d07d929c628e3fa87ff53c73b4b3b8ad727601e",
+        "registered_provider_id": "foundations_pl4_restarttests:persisted_provider",
+        "providers": [
+          {
+            "provider_id": "dab157cf-94cb-4f38-aca0-d281f84221e4",
+            "owner": "pl4owner",
+            "outcome": "extract",
+            "mutation_calls": 1,
+            "removed_units": 8,
+            "accepted_units": 0,
+            "inventory_units": 32,
+            "fault_extract": 1,
+            "fault_insert": 0,
+            "position": [
+              31,
+              200,
+              32
+            ]
+          },
+          {
+            "provider_id": "442dfea4-0d26-4853-98dd-01cdc1ccb5fc",
+            "owner": "pl4owner",
+            "outcome": "insert",
+            "mutation_calls": 1,
+            "removed_units": 0,
+            "accepted_units": 8,
+            "inventory_units": 8,
+            "fault_extract": 0,
+            "fault_insert": 1,
+            "position": [
+              11,
+              200,
+              32
+            ]
+          }
+        ],
+        "result": "PASS"
+      },
+      "production": {
+        "minecraft": "1.6.4",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+        "production_only_startup": "PASS",
+        "clean_stop": "PASS",
+        "scenario_mod_installed": false,
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "client_visuals": "PENDING",
+        "installed_optional_apis": "PENDING",
+        "multiplayer": "PENDING",
+        "further_api_testing_required": true
+      },
+      "migration": {
+        "minecraft": "1.6.4",
+        "baseline_tag": "mc1.6.4-v0.2a-legacy-preview.3",
+        "baseline_runtime_sha256": "fa5bf8fbb6a99ebc60e1d82f0ab75c1c02f5c751afc7083efc0b4dfdec841fb1",
+        "candidate_version": "0.2.0-rc.1-dev",
+        "candidate_runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+        "migration_fixture_sha256": "014522e0db69aecc1efcf152632a5af507e55a55d3dc8521d2acbdfe21f6449c",
+        "forge": "9.11.1.1345",
+        "runtime_java": 7,
+        "source_commit": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+        "generated_preview3_world_upgrade": "PASS",
+        "preserved": [
+          "owner",
+          "facing",
+          "item escrow",
+          "fluid tank",
+          "fluid escrow",
+          "energy storage",
+          "energy escrow",
+          "vanilla inventory"
+        ],
+        "new_monitoring_on_existing_inventory": "PASS",
+        "old_hosts_default_private": "PASS",
+        "real_user_worlds": "PENDING",
+        "installed_optional_mods": "PENDING",
+        "client_visuals": "PENDING"
+      }
+    },
+    "1.21.1": {
+      "minecraft": "1.21.1",
+      "source_commit": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "hourly": {
+        "minecraft": "1.21.1",
+        "version": "0.2.0-rc.1-dev",
+        "source_commit": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
+        "native_gate": "PASS",
+        "expected_fixtures": 192,
+        "gate_reports": [
+          "rc-development-gate.json"
+        ],
+        "artifact_sha256": {
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182",
+          "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+        },
+        "workflow_run": "40403201527",
+        "publication_performed": false,
+        "rc_publication_cleared": false,
+        "scope": "Exact-source native revalidation only; client/provider/multiplayer/performance acceptance remains separate"
+      },
+      "report_sha256": {
+        "rc-development-gate.json": "296afe2d84e66a3352a962ddd15fff1d5d9803e411efbdb42aed754d7108ab3f",
+        "hourly-native.json": "5268e05bc70d830be7b89295e7b9d35eca1dd2f33d54cfc015d7b02d54368f37"
+      },
+      "ordinary_native": 192
+    }
+  },
+  "main_native_source": "86627f03fd86e196afe1ef3d12b6b51d163f813b",
+  "native_artifacts": {
+    "1.12.2": {
+      "id": 12690670055,
+      "name": "hourly-native-1.12.2-327b65e5898fac50795a7b77b2cb77b0cbc26f60",
+      "size_in_bytes": 5484800,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12690670055",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12690670055/zip",
+      "expired": false,
+      "created_at": "2026-10-26T21:22:02Z",
+      "expires_at": "2026-11-09T21:22:00Z",
+      "updated_at": "2026-10-26T21:22:02Z",
+      "digest": "sha256:bdfd3a968c39ce1856042ae068114af313b003dae1b318db3c8a150f7ef0b368",
+      "workflow_run": {
+        "id": 40403001650,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "ddbf8b6f141f6146f1b262102b040a696b9e4164"
+      }
+    },
+    "1.6.4": {
+      "id": 12691555488,
+      "name": "hourly-native-1.6.4-6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "size_in_bytes": 5609743,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12691555488",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12691555488/zip",
+      "expired": false,
+      "created_at": "2026-10-26T21:28:58Z",
+      "expires_at": "2026-11-09T21:28:56Z",
+      "updated_at": "2026-10-26T21:28:58Z",
+      "digest": "sha256:1bfac39334214f37ebf8df94b163aa9af4a273b99f001e9a77121c80cba0ea31",
+      "workflow_run": {
+        "id": 40403201527,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "11932b9b7b0b83523f552fb9bd0d8b7f36f8b76d"
+      }
+    },
+    "1.21.1": {
+      "id": 12689149932,
+      "name": "hourly-native-1.21.1-86627f03fd86e196afe1ef3d12b6b51d163f813b",
+      "size_in_bytes": 7670345,
+      "url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12689149932",
+      "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12689149932/zip",
+      "expired": false,
+      "created_at": "2026-10-26T21:25:00Z",
+      "expires_at": "2026-11-09T21:24:59Z",
+      "updated_at": "2026-10-26T21:25:00Z",
+      "digest": "sha256:a9a92317a362e2e8fb8383a358fa193b5f185374cbae27655f88112ab92b934a",
+      "workflow_run": {
+        "id": 40403201527,
+        "repository_id": 1396808859,
+        "head_repository_id": 1396808859,
+        "head_branch": "main",
+        "head_sha": "11932b9b7b0b83523f552fb9bd0d8b7f36f8b76d"
       }
     }
   }

@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-evidence-2026-10-26T21",
-    "claimed_at": "2026-10-26T21:30:40Z",
-    "expires_at": "2026-10-26T21:45:40Z",
-    "scope": "Pin qualified 1.6.4 production stock client"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -50,8 +45,8 @@
   "native_main_source_commit": "212cb56f501ff22bef8bdf9610323b76022813de",
   "last_writer_release": {
     "owner": "pl4-live-evidence-2026-10-26T21",
-    "released_at": "2026-10-26T21:24:14Z",
-    "checkpoint": "1.12.2 exact hourly source/JAR/native/process/world evidence independently qualified; pinned fresh client started. Corrected 1.6.4 hourly qualification pending."
+    "released_at": "2026-10-26T21:31:01Z",
+    "checkpoint": "Both legacy exact hourly source/JAR/native/process/raw-NBT gates qualified. Fresh 1.12.2 client passed; isolated 1.6.4 client pinned and pending."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-receipt-authorization-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -90,6 +85,13 @@
       "source": "327b65e5898fac50795a7b77b2cb77b0cbc26f60",
       "runtime_sha256": "763da6dddd4532e887d35dd7456e67dd2ce8beeeb294e292fceb01c1413d47e7",
       "run": 40403001650,
+      "client": "PASS_FRESH_EXACT_CURRENT_JAR"
+    },
+    "1.6.4": {
+      "native": "PASS",
+      "source": "6797ecc0bd09a7808f2059f34cb255af9d570ed2",
+      "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
+      "run": 40403201527,
       "client": "PENDING_PINNED_CURRENT_JAR"
     }
   }
