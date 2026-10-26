@@ -14,7 +14,7 @@ jobs:
     env:
       LIBGL_ALWAYS_SOFTWARE: 'true'
       PL4_CLIENT_MC: '1.6.4'
-      PL4_NATIVE_ARCHIVE_SHA256: '53c3680e0aeabd9fc1168ed84dbd1e9d6e04c778d6ebdc24e122784e978d211e'
+      PL4_NATIVE_ARCHIVE_SHA256: '940ecab32075dd39eff006c8011cbeeb10b4b2f5e9ca706aed627c22cbc4ba5a'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           # Frozen native-qualified source and artifact; refresh both for a new candidate.
-          ref: bf9a49a8c46501ea56d30f5b3da4a1b3191462ae
+          ref: bb163a5ea21dd56907a4e29a56ca1ef888050b4e
           path: candidate
       - uses: actions/setup-java@v4
         with:
@@ -64,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/actions/artifacts/12638322157/zip" > candidate/qualified-native.zip
+        run: gh api "repos/$GH_REPO/actions/artifacts/12644415642/zip" > candidate/qualified-native.zip
       - name: Run client, integrated world and native window actions
         working-directory: candidate
         env:
@@ -112,6 +112,11 @@ jobs:
           stock=json.loads((root/'stock-client-runtime.json').read_text())
           assert stock['production_jar_matches_native_gate'] and not stock['development_game_classpath']
           assert r.get('native_diagnostic_chat_round_trip') is True
+          assert r.get('native_preupgrade_import_chat_round_trip') is True
+          assert len(r['preupgrade_import_token'])==36
+          for key in ['preupgrade_import_journal_messages','preupgrade_import_receipt_messages']:
+              assert r['preupgrade_import_token'] in r[key] and 'original target/phase unknown' in r[key] and 'owner-wide fence' in r[key]
+          for key in ['preupgrade_import_journal_capture','preupgrade_import_receipt_capture']:assert (root/r[key]).stat().st_size>1000
           assert len(r['diagnostic_token'])==36 and r['diagnostic_token'] in r['diagnostic_journal_messages'] and r['diagnostic_token'] in r['diagnostic_chat_messages']
           for key in ['diagnostic_journal_capture','diagnostic_receipt_capture']:assert (root/r[key]).stat().st_size>1000
           assert r['result']=='PASS' and r['signed_byte_revision']==70
