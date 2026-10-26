@@ -17,6 +17,8 @@ public final class LegacyCommands extends CommandBase {
     public String getCommandName(){return "pl4legacy";}
     public String getCommandUsage(ICommandSender sender){return "/pl4legacy recipes [page] | inspect <x> <y> <z> | display <x> <y> <z> show|hide | journal <x> <y> <z> [page] | receipt | status";}
     @Override public int getRequiredPermissionLevel(){return 0;}
+    // Public entry point: individual host/receipt handlers still enforce ownership and proximity.
+    @Override public boolean canCommandSenderUseCommand(ICommandSender sender){return true;}
     public void processCommand(ICommandSender sender,String[] args){
         if(args.length==0||"status".equals(args[0])){send(sender,"PL4 1.6.4 experimental native item/fluid/energy transport preview. Name-based legacy ownership, sided inventories, escrow and built-in recipe/inspection fallbacks. Modern displays, wireless, third-party energy and scripting parity pending. Further API testing is still required.");return;}
         if("receipt".equals(args[0])&&args.length==1){
