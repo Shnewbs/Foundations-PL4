@@ -450,11 +450,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "55cb680c1a326538078cfb8a9d018cb29d6ab12d",
-      "workflow_run": "40252849551",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40252849551",
+      "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
+      "workflow_run": "40258799935",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40258799935",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
@@ -518,7 +518,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 269,
+      "expected_native_fixtures": 287,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -528,20 +528,20 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40252849551",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40252849551",
-      "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
-      "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+      "workflow_run": "40258799935",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40258799935",
+      "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
+      "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
-      "build_status_blob_sha": "8c9f5e071f57a76710f2d607ffcaf96e95c74b90",
+      "candidate_source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
+      "build_status_blob_sha": "0dc99042420e82db9a972c3c69d4371404f1977a",
       "client_visual_acceptance": "PARTIAL_4_CURRENT_CAPTURES_REVIEWED_16_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+      "client_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -553,9 +553,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+      "hourly_native_evidence": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 269,
+      "observed_native_fixtures": 287,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -609,7 +609,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40253076749,
+      "client_workflow_run": 40259078319,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -621,7 +621,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Current stock regression covers ordinary exact-JAR integrated-world flows. Journal/cross-network/removal/file-load behavior remains scoped native evidence. No full-process/crash/provider/dedicated multiplayer acceptance inferred.",
+      "acceptance_attribution": "Automatic source/destination uncertainty and journal recovery behavior is scoped native evidence. Current exact-JAR stock regression covers ordinary manual storage flows with autonomous transport disabled; no dedicated multiplayer/installed-provider/crash/full-server acceptance is inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -631,7 +631,16 @@
         "observed_native_fixtures": 253
       },
       "wireless_target_journal_native_validation": "PASS_16_EXACT_112_CASES",
-      "wireless_target_journal_acceptance": "PASS_16_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION"
+      "wireless_target_journal_acceptance": "PASS_16_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
+      "previous_automatic_journal_candidate": {
+        "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+        "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+        "client_evidence": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+        "client_workflow_run": 40253076749,
+        "observed_native_fixtures": 269
+      },
+      "automatic_target_journal_native_validation": "PASS_18_EXACT_112_CASES",
+      "automatic_target_journal_acceptance": "PASS_18_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION"
     },
     {
       "minecraft": "1.6.4",
@@ -726,7 +735,7 @@
       "wireless_target_journal": "NOT_IMPLEMENTED; retain existing exact native/client source qualification separately"
     }
   ],
-  "latest_work": "1.12.2 now reserves bounded per-dimension owner/target wireless handoff tokens before executed mutations, retaining uncertain targets independently of tile removal and network membership. Wireless and autonomous item admission honor these fences; validated empty settlement removes only its own token. Capacity/malformed journal data fail closed without dropping records. Exact source 833d31cb passed 269/269 native cases including 16 new journal cases, real compressed world-data save/load within one process, production-only startup and generated preview.3 migration. Exact-JAR ordinary stock client 40253076749 passed; 4 current captures reviewed, all 16 hashed. Main passed 192; 22 other targets retain evidence. Automatic-origin/pre-upgrade faults, 1.6.4 journal port, hidden different-target aliases, operator recovery tooling, full process/crash and broader RC acceptance remain open. No RC cleared/published.",
+  "latest_work": "1.12.2 automatic item transfers now select persistent source/destination uncertainty by executed mutation phase, reject route/owner changes during capability discovery, and release validated phase tokens while preserving known escrow retries after healthy refusals. Idle and simulated-refusal routes allocate no automatic UUID tokens. Final exact source 0f16b688 passed 287/287 native cases including 18 new automatic and 16 retained wireless journal cases, compressed world-data reload, production-only startup and generated preview.3 migration. Exact-JAR ordinary stock client 40259078319 passed; four current captures reviewed and all sixteen hashed. Main passed 192; 22 other tracks retain exact evidence. Pre-upgrade fault import, 1.6.4 journal port, operator recovery tooling, hidden different-target aliases and broader acceptance remain open. No RC cleared/published.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -737,10 +746,10 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
-    "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
-    "workflow_run": "40253076749",
-    "stock_wireless_client": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+    "source_commit": "0f16b688eb3bcc6bcadbcd9f69c8fbaf154f6394",
+    "runtime_sha256": "feef4acc34baf805df6b9f7f1eae6f502cf1951a6b15dfc3b64495c590f6e931",
+    "workflow_run": "40259078319",
+    "stock_wireless_client": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
@@ -750,7 +759,7 @@
     "stock_wireless_client": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-112-automatic-journal-2026-10-25.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
@@ -788,6 +797,13 @@
     "runtime_sha256": "a16797ab3f1ac367578057725976f5818ae3a7a56ca5d242a4e1d2e3c0f243ff",
     "workflow_run": "40247971424",
     "stock_wireless_client": "acceptance/rc-dev-legacy-item-route-stock-clients-2026-10-25.json",
+    "closes_all_acceptance": false
+  },
+  "previous_automatic_partial_1122_acceptance": {
+    "source_commit": "833d31cbf2ae93c383638b9a706a34fd736de1b5",
+    "runtime_sha256": "1855fd4f93c6bb860ce7a7035dae14cf71c490711eb4f76bd872f529bae505a9",
+    "workflow_run": "40253076749",
+    "stock_wireless_client": "acceptance/rc-dev-112-wireless-journal-2026-10-25.json",
     "closes_all_acceptance": false
   }
 }
