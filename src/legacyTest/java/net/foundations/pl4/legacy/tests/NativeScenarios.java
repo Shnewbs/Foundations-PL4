@@ -406,6 +406,7 @@ public final class NativeScenarios {
     public static final class CapturePlayer extends net.minecraftforge.common.FakePlayer {
         final java.util.List<String> lines=new java.util.ArrayList<String>();final boolean operator;
         CapturePlayer(WorldServer world,String name,boolean operator){super(world,name);this.operator=operator;}
+        @Override public net.minecraft.util.ChunkCoordinates getPlayerCoordinates(){return new net.minecraft.util.ChunkCoordinates((int)Math.floor(posX),(int)Math.floor(posY),(int)Math.floor(posZ));}
         @Override public boolean canCommandSenderUseCommand(int level,String command){return operator;}
         @Override public void sendChatToPlayer(net.minecraft.util.ChatMessageComponent message){if(lines!=null)lines.add(message.toStringWithFormatting(false));}
     }
