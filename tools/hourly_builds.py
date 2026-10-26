@@ -280,7 +280,8 @@ def record(root, expected_mc, expected_sha):
             for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []) + (["decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"] if status.get("item_field_restart_fixture") is True else []):
                 name = "legacy-item-" + suite + "-restart-summary.json"
                 decode = json.loads((logs / name).read_text())
-                validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"], counts, suite)
+                validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"],
+                                        {"write": counts["write"]+4, "verify": counts["verify"]+4} if status.get("item_receipt_auth_restart_fixture") is True and suite in {"decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} else counts, suite)
                 pids.extend(p['pid'] for p in decode['processes'])
                 from inspect_legacy_decode_world import inspect
                 inspections[suite] = {mode: inspect(logs / decode['world_archives'][mode]['file'], decode['phase_reports'][phase], expected_mc, suite)
