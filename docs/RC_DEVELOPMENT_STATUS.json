@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "5f9a13fce7862f2dda9dc6b0c26c51b983a89ef1",
-      "workflow_run": "40302204768",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40302204768",
+      "source_commit": "e8b1b0e3f3578453339ae8ed4ca8fffec896101d",
+      "workflow_run": "40309048557",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -463,6 +463,11 @@
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "native_run": "40258799935"
+      },
+      "previous_preupgrade_candidate": {
+        "source_commit": "5f9a13fce7862f2dda9dc6b0c26c51b983a89ef1",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "workflow_run": "40302204768"
       }
     },
     {
@@ -524,7 +529,7 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 312,
+      "expected_native_fixtures": 335,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -534,19 +539,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": "40302204768",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40302204768",
-      "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
-      "runtime_sha256": "92a727cf198c72bda70c20559dad1fad9456858b8e08116e025a13058c38c354",
+      "workflow_run": "40309048557",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
+      "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+      "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
-      "client_visual_acceptance": "PARTIAL_3_CURRENT_CAPTURES_REVIEWED_18_HASHED",
+      "candidate_source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+      "client_visual_acceptance": "PARTIAL_3_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -558,9 +563,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 312,
+      "observed_native_fixtures": 335,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -614,7 +619,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40303623981,
+      "client_workflow_run": 40309781841,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -622,11 +627,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PASS_EXACT_NEW_ARCHIVE_NORMAL_GENERATED_INTEGRATED_WORLD",
+      "current_source_stock_client_regression": "PASS_EXACT_JAR_NORMAL_ACTIONS_AND_IMPORTED_FAULT_NATIVE_CHAT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Actual native automatic source/destination post-mutation faults retain observed quantities, receipts, tokens and endpoint fences in fresh JVMs after clean stop or parent SIGKILL after a completed save/flush boundary. Fault injectors are replaced by observed-content vanilla chests before save. Not third-party provider-private persistence, arbitrary pre-save crash, crash atomicity, loss-free source-fault recovery or a recovery operation. Stock-client acceptance is attributed separately to its exact source and production hash.",
+      "acceptance_attribution": "Historical unlinked/mismatched/malformed saved tile faults import as unknown-route owner/dimension barriers, with observed host only and preserved sealed evidence. Full-capacity opaque fallback survives native serialized reload. Actual pinned pre-journal JVM writes faults; candidate imports/removes hosts and a third JVM reloads linked receipts/barriers. Exact current stock chat renders unknown route and no replay; inspection preserves barrier. No arbitrary copied modpack migration, full-process capacity crash, pre-save/power-loss atomicity, installed-provider outcome, loss-free extraction or recovery API inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -676,18 +681,36 @@
         "distinct_jvms": 4,
         "separate_from_ordinary_native_count": true
       },
-      "item_process_restart_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "item_process_restart_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "stock_client_attribution": {
+        "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+        "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
+        "workflow_run": 40309781841,
+        "scope": "Current exact production JAR and artificial imported-fault client fixture; actual pre-journal saved-world import proven separately."
+      },
+      "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
         "runtime_sha256": "92a727cf198c72bda70c20559dad1fad9456858b8e08116e025a13058c38c354",
-        "workflow_run": 40303623981,
-        "scope": "Exact new production archive in ordinary integrated-world regression; diagnostic token fixture is artificial, not crash recovery"
+        "workflow_run": "40302204768",
+        "client_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+        "client_workflow_run": 40303623981
+      },
+      "item_journal_schema": 2,
+      "preupgrade_item_fault_import": "PASS_SCOPED_23_NATIVE_CASES_24_THREE_PROCESS_CHECKS_AND_EXACT_CLIENT_CHAT",
+      "preupgrade_item_fault_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "preupgrade_item_fault_checks": {
+        "new_native_cases": 23,
+        "historical_processes": 3,
+        "historical_checks": 24,
+        "current_restart_processes": 4,
+        "current_restart_assertions": 124,
+        "counts_are_separate": true
       }
     },
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 290,
+      "expected_native_fixtures": 313,
       "native_gate": "PASS",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
@@ -697,19 +720,19 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": "40302204768",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40302204768",
-      "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
-      "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+      "workflow_run": "40309048557",
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40309048557",
+      "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+      "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
-      "client_visual_acceptance": "PARTIAL_2_COMMAND_CHAT_AND_GROUP_WITHDRAWAL_CAPTURES_REVIEWED_18_HASHED",
+      "candidate_source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+      "client_visual_acceptance": "PARTIAL_3_CURRENT_CAPTURES_REVIEWED_20_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
-      "client_evidence": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "sorting_candidate": {
         "source_commit": "c817a61e494c7a70c4fb2752f01292c2a408692a",
         "expected_native_fixtures": 170,
@@ -720,9 +743,9 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "observed_native_fixtures": 290,
+      "observed_native_fixtures": 313,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -765,13 +788,13 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "RETAINED_IDENTICAL_RUNTIME_HASH_PRIOR_SCOPED_CLIENT_SOURCE",
+      "current_source_stock_client_regression": "PASS_EXACT_JAR_NORMAL_ACTIONS_AND_IMPORTED_FAULT_NATIVE_CHAT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Actual native automatic source/destination post-mutation faults retain observed quantities, receipts, tokens and endpoint fences in fresh JVMs after clean stop or parent SIGKILL after a completed save/flush boundary. Fault injectors are replaced by observed-content vanilla chests before save. Not third-party provider-private persistence, arbitrary pre-save crash, crash atomicity, loss-free source-fault recovery or a recovery operation. Stock-client acceptance is attributed separately to its exact source and production hash.",
+      "acceptance_attribution": "Historical unlinked/mismatched/malformed saved tile faults import as unknown-route owner/dimension barriers, with observed host only and preserved sealed evidence. Full-capacity opaque fallback survives native serialized reload. Actual pinned pre-journal JVM writes faults; candidate imports/removes hosts and a third JVM reloads linked receipts/barriers. Exact current stock chat renders unknown route and no replay; inspection preserves barrier. No arbitrary copied modpack migration, full-process capacity crash, pre-save/power-loss atomicity, installed-provider outcome, loss-free extraction or recovery API inferred.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
-      "client_workflow_run": 40297680275,
+      "client_workflow_run": 40309781699,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
       "automatic_target_journal": "PASS_18_EXACT_NATIVE_PHASE_CASES",
       "previous_journal_candidate": {
@@ -804,17 +827,34 @@
         "distinct_jvms": 4,
         "separate_from_ordinary_native_count": true
       },
-      "item_process_restart_evidence": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+      "item_process_restart_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+        "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+        "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
+        "workflow_run": 40309781699,
+        "scope": "Current exact production JAR and artificial imported-fault client fixture; actual pre-journal saved-world import proven separately."
+      },
+      "previous_preupgrade_candidate": {
+        "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
         "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
-        "workflow_run": 40297680275,
-        "evidence": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
-        "scope": "Prior exact runtime bytes; no fresh source checkout or screenshot claimed"
+        "workflow_run": "40302204768",
+        "client_evidence": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+        "client_workflow_run": 40297680275
+      },
+      "item_journal_schema": 2,
+      "preupgrade_item_fault_import": "PASS_SCOPED_23_NATIVE_CASES_24_THREE_PROCESS_CHECKS_AND_EXACT_CLIENT_CHAT",
+      "preupgrade_item_fault_evidence": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+      "preupgrade_item_fault_checks": {
+        "new_native_cases": 23,
+        "historical_processes": 3,
+        "historical_checks": 24,
+        "current_restart_processes": 4,
+        "current_restart_assertions": 124,
+        "counts_are_separate": true
       }
     }
   ],
-  "latest_work": "Added isolated item receipt/journal process-restart fixtures on 1.12.2 c4d0f9e and 1.6.4 10e0b27a. Both exact native builds passed 312/312 and 290/290 ordinary tests, production startup and generated preview.3 migration, plus 124 separate lifecycle assertions per target across four fresh JVMs (clean write/read and parent SIGKILL after completed world/journal save/flush, then read). Tokens, linked sealed receipts, observed vanilla quantities and failed-endpoint fences persisted after original host removal; no replay/minting. Controlled post-save process termination is accepted; arbitrary pre-save crash, power loss, provider-private durability and recovery remain unqualified. Main 5f9a13fc passed 192; 21 other tracks retain exact evidence. All 24 RC flags remain false; no release/upload. The exact new 1.12.2 archive also passed fresh stock-client regression (40303623981); three current diagnostic/group-withdrawal captures reviewed and eighteen hashed. 1.6.4 retains its identical-hash prior stock-client evidence with original source attribution.",
+  "latest_work": "Implemented explicit legacy-unknown import for observed saved item faults without trustworthy route context. Observed owner is fenced dimension-wide; unowned faults fence all owners. Original target/phase are not invented, malformed context/evidence remain sealed, and full-capacity fallback stays opaque after native NBT reload. Exact 1.12.2 5689ab3d passed 335/335 and 1.6.4 bb163a5e passed 313/313 native cases, 23 new each. Both passed production-only startup, generated preview.3 migration, 124 current-runtime clean/post-save-kill restart assertions and 24 actual pre-journal-world migration checks across three JVMs. Both exact-JAR stock clients rendered imported token/unknown target/phase/observed-host/owner-wide no-replay text through native chat; inspection preserved barriers. Six current captures reviewed, forty hashed and six preserved in the repository. Main e8b1b0e3 passed192; 21 other tracks retain exact native evidence. All24 RC flags remain false; no release/upload. Installed-provider outcomes, reviewed recovery, arbitrary pre-save crash/power-loss, copied worlds, dedicated multiplayer, performance and broader parity remain open.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -825,20 +865,20 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
-    "runtime_sha256": "92a727cf198c72bda70c20559dad1fad9456858b8e08116e025a13058c38c354",
-    "workflow_run": 40303623981,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+    "source_commit": "5689ab3de614a83cd617693385bb91ba207d3b9b",
+    "runtime_sha256": "f73ddde0ee59367e93eea4db5d6c976c7c4c439b5f6e72a929955636e9eadd42",
+    "workflow_run": 40309781841,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
     "closes_all_acceptance": false
   },
   "partial_164_acceptance": {
-    "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
-    "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
-    "workflow_run": 40297680275,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+    "source_commit": "bb163a5ea21dd56907a4e29a56ca1ef888050b4e",
+    "runtime_sha256": "4431fed0f786f1250e68ec3a90f56c379a1dfc48bda68e2543513d9c88b117f4",
+    "workflow_run": 40309781699,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
     "closes_all_acceptance": false
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
@@ -918,6 +958,21 @@
     "source_commit": "a35e98e3907290ee307562ad377174ce2f1fd229",
     "runtime_sha256": "03166ce889126e8e9af8c80fef0e6abed51fa6d1fd2b8224c217eff31c505c1f",
     "workflow_run": 40297680200,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
+    "closes_all_acceptance": false
+  },
+  "preupgrade_item_fault_import_acceptance": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+  "previous_preupgrade_partial_1122_acceptance": {
+    "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
+    "runtime_sha256": "92a727cf198c72bda70c20559dad1fad9456858b8e08116e025a13058c38c354",
+    "workflow_run": 40303623981,
+    "stock_wireless_client": "acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
+    "closes_all_acceptance": false
+  },
+  "previous_preupgrade_partial_164_acceptance": {
+    "source_commit": "bf9a49a8c46501ea56d30f5b3da4a1b3191462ae",
+    "runtime_sha256": "fa6683ac189af8cd8a3d1d7891240824229497c9eda37287b0610304a31ac08b",
+    "workflow_run": 40297680275,
     "stock_wireless_client": "acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
     "closes_all_acceptance": false
   }

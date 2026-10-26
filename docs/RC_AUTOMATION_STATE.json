@@ -5,52 +5,47 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-preupgrade-2026-10-26T10",
-    "claimed_at": "2026-10-26T10:07:00Z",
-    "expires_at": "2026-10-26T11:00:00Z",
-    "purpose": "Implement conservative pre-upgrade item-fault import and exact-version migration tests without inventing route history"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40302204768,
+  "last_verified_legacy_native_run": 40309048557,
   "last_verified_legacy_client_runs": {
-    "1.6.4": 40297680275,
-    "1.12.2": 40303623981
+    "1.12.2": 40309781841,
+    "1.6.4": 40309781699
   },
-  "current_checkpoint": "Added isolated item receipt/journal process-restart fixtures on 1.12.2 c4d0f9e and 1.6.4 10e0b27a. Both exact native builds passed 312/312 and 290/290 ordinary tests, production startup and generated preview.3 migration, plus 124 separate lifecycle assertions per target across four fresh JVMs (clean write/read and parent SIGKILL after completed world/journal save/flush, then read). Tokens, linked sealed receipts, observed vanilla quantities and failed-endpoint fences persisted after original host removal; no replay/minting. Controlled post-save process termination is accepted; arbitrary pre-save crash, power loss, provider-private durability and recovery remain unqualified. Main 5f9a13fc passed 192; 21 other tracks retain exact evidence. All 24 RC flags remain false; no release/upload. The exact new 1.12.2 archive also passed fresh stock-client regression (40303623981); three current diagnostic/group-withdrawal captures reviewed and eighteen hashed. 1.6.4 retains its identical-hash prior stock-client evidence with original source attribution.",
-  "local_validation": "Eight restart-evidence and thirteen scheduler regressions PASS. Pinned hourly native/production/migration gates PASS; all 17 packaged JAR hashes and artifact ZIP digests verified. Four unique PIDs per target, expected 0/0/-9/0 exit codes, phase JSON/log hashes, stable per-world token pairs and saved world archive hashes checked independently. 124 restart assertions per port are separate from ordinary native totals 312/290. Both branch publication steps observed skipped. Initial 1.12.2 Forge-trapped Runtime.halt failure preserved, fixed using explicit save-ready marker and parent-owned SIGKILL. The exact new 1.12.2 archive also passed fresh stock-client regression (40303623981); three current diagnostic/group-withdrawal captures reviewed and eighteen hashed. 1.6.4 retains its identical-hash prior stock-client evidence with original source attribution.",
+  "current_checkpoint": "Implemented explicit legacy-unknown import for observed saved item faults without trustworthy route context. Observed owner is fenced dimension-wide; unowned faults fence all owners. Original target/phase are not invented, malformed context/evidence remain sealed, and full-capacity fallback stays opaque after native NBT reload. Exact 1.12.2 5689ab3d passed 335/335 and 1.6.4 bb163a5e passed 313/313 native cases, 23 new each. Both passed production-only startup, generated preview.3 migration, 124 current-runtime clean/post-save-kill restart assertions and 24 actual pre-journal-world migration checks across three JVMs. Both exact-JAR stock clients rendered imported token/unknown target/phase/observed-host/owner-wide no-replay text through native chat; inspection preserved barriers. Six current captures reviewed, forty hashed and six preserved in the repository. Main e8b1b0e3 passed192; 21 other tracks retain exact native evidence. All24 RC flags remain false; no release/upload. Installed-provider outcomes, reviewed recovery, arbitrary pre-save crash/power-loss, copied worlds, dedicated multiplayer, performance and broader parity remain open.",
+  "local_validation": "10 pre-upgrade proof, 8 restart proof and 13 scheduler regressions PASS. Final native335/313 and main192 with exact source/run/JAR/archive/log/world/token/PID coherence independently verified. All17 packaged JAR digests match hourly reports; copied historical baseline bytes re-qualified against fixed old source/JAR hashes. Final branch publishers observed skipped. Both exact stock JARs passed normal actions and native imported-fault chat, six captures reviewed, all40 hashed. Initial fixture cleanup contamination, 1.6 named-NBT equality and native malformed-tag cast failures plus capacity fallback review finding are preserved with runs/artifacts and repairs.",
   "next_work": [
-    "Continue recovery work from the accepted clean and post-save-boundary separate-process persistence checkpoint. Next implement explicit unresolved pre-upgrade tile-fault migration fixtures without fabricating original destination/phase, then design reviewed provider-outcome reconciliation. Arbitrary pre-save crash/power-loss atomicity, copied worlds and provider-private persistence remain unqualified. Source post-removal faults leave 8 unaccounted units fenced; sealed destination receipts are uncertain claims, never additional spendable items. No replay, redemption, minting or fence-clear API.",
-    "Plan migration/import acceptance for unresolved pre-upgrade tile faults. Older automatic faults lack reliable destination-phase route context; do not invent an original target. Preserve opaque/unknown uncertainty and require appropriate inspection rather than silently treating it as a newly instrumented handoff.",
+    "Continue reviewed provider-outcome reconciliation before any recovery operation. Implement persisting provider/ownership/conservation fixtures for unknown historical and current receipts, keeping source-removal losses unaccounted rather than fabricating items. Loaded historical faults, clean pre-journal world import/restart and actual imported-fault chat now have scoped evidence; arbitrary pre-save/OS/power-loss atomicity, full-process capacity-overflow faults and provider-private persistence remain unqualified. No automatic replay/redemption/minting, blanket fence clear or inference from missing tokens.",
+    "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
     "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json",
-  "main_native_validation_run": 40302204768,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+  "main_native_validation_run": 40309048557,
   "curseforge_reconciliation_run": 40195961622,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40302204768
+    40309048557
   ],
   "last_verified_legacy_native_runs": {
-    "1.6.4": 40302204768,
-    "1.12.2": 40302204768
+    "1.12.2": 40309048557,
+    "1.6.4": 40309048557
   },
   "latest_stock_client_evidence": {
-    "1.6.4": "docs/acceptance/rc-dev-legacy-diagnostic-chat-2026-10-26.json",
-    "1.12.2": "docs/acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "5f9a13fce7862f2dda9dc6b0c26c51b983a89ef1",
+  "native_main_source_commit": "e8b1b0e3f3578453339ae8ed4ca8fffec896101d",
   "last_writer_release": {
-    "owner": "pl4-restart-2026-10-26T09",
-    "released_at": "2026-10-26T10:03:00Z",
-    "checkpoint": "Native four-process item receipt/journal acceptance recorded on both legacy ports; exact-new-JAR 1.12.2 stock regression and three captures reviewed. Clean and post-save-boundary process persistence accepted only. All-version RC acceptance/publication remains unfinished."
+    "owner": "pl4-preupgrade-2026-10-26T10",
+    "released_at": "2026-10-26T10:55:51Z",
+    "checkpoint": "Historical unknown-route import, schema2 persistence, exact native and both exact-JAR client chat/capture acceptance preserved. All-version RC acceptance/publication remains unfinished."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-item-process-restart-2026-10-26.json"
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json"
 }

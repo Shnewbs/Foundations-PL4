@@ -21,3 +21,15 @@ The [exact-source process checkpoint](acceptance/rc-dev-legacy-item-process-rest
 An insertion callback accepting eight then throwing leaves 32 source + 8 destination items and an **uncertain sealed eight-item claim**. That claim is not eight additional spendable items. An extraction callback removing eight then throwing leaves 32 observed source items and no destination items; eight are unaccounted for, the source remains fenced, and nothing is fabricated. Neither case grants automatic replay, redemption or fence clearing.
 
 This proves clean restart and process termination only **after the completed save boundary**. Arbitrary pre-save crashes, power loss, filesystem atomicity, external provider durability, pre-upgrade faults, copied user worlds and reviewed recovery remain open. Ordinary native totals are 312 and 290; the additional 124 lifecycle assertions per port are recorded separately.
+
+## Historical faults with unknown routes — October 26, 2026
+
+The [pre-upgrade import checkpoint](acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json) imports an observed loaded tile that is already faulted but has no trustworthy matching operation context. It records `Scope: legacy-unknown` with the observed host position. That position is **not** the original inventory target. Original target and phase stay unknown; malformed original context/evidence remains preserved.
+
+The imported record fences that observed owner's item transfers throughout the current dimension because the historical mutation target cannot be reconstructed. An unowned fault fences all owners in that dimension. This is visible in target/receipt inspection. A valid existing target-linked record keeps its original narrower scope. No loaded-world scan, foreign provider callback, replay, redemption, minting or fence clearing is performed. Faults in unloaded chunks have not yet been observed or imported.
+
+Removing the imported host preserves the world barrier and drops a sealed linked receipt. A pre-existing loose unlinked receipt has no trustworthy owner/target and stays unauthenticated; operator inspection cannot manufacture its missing history. Preserve the complete save, original receipts and observed source/destination contents for reviewed recovery.
+
+The journal now writes schema 2 and reads schema 1. Capacity exhaustion retains the previous journal and unlocated fault together as opaque data, which stays fenced after reload. Older journal-aware schema-1 readers reject schema 2 and fail closed; **pre-journal JARs do not enforce this index**. Do not open an upgraded save in an older JAR. Revert only using a complete pre-upgrade backup; no safe downgrade or arbitrary modpack migration is certified.
+
+The generated migration test uses a verified pre-journal JAR to save faulted tiles, a fresh candidate JVM to import/remove the hosts and seal receipts, and another fresh candidate JVM to reload those receipts and barriers. Those 24 checks per port are separate from the ordinary native counts and the existing 124 current-runtime restart assertions. No generic recovery operation is exposed.
