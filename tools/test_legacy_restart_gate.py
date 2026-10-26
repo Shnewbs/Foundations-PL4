@@ -9,7 +9,7 @@ class RestartProofTests(unittest.TestCase):
         fixtures=self.root/'build/libs';fixtures.mkdir(parents=True);self.fixture=fixtures/'candidate-restart-scenarios.jar';self.fixture.write_bytes(b'fixture')
         self.report['fixture_sha256']=hashlib.sha256(self.fixture.read_bytes()).hexdigest()
         for i,(phase,code) in enumerate([('write',0),('verify',0),('crash-write',-9),('crash-verify',0)]):
-            pid=100+i;log=logs/('item-restart-'+phase+'.log');log.write_text(phase)
+            pid=100+i;log=logs/('item-restart-'+phase+'.log');log.write_text('Starting minecraft server version '+self.mc+'\nPL4 ITEM RESTART '+phase+': PASS\n'+('PL4 ITEM RESTART KILL READY\n' if phase=='crash-write' else 'Stopping server\n'))
             self.report['processes'].append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest()))
             tokens=['00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002']
             self.report['phase_reports'][phase]=dict(minecraft=self.mc,phase=phase,passed=True,assertions=['check']*(36 if phase.endswith('write') else 26),process=str(pid)+'@runner',tokens=tokens)
@@ -19,6 +19,22 @@ class RestartProofTests(unittest.TestCase):
             self.report['world_archives'][mode]=dict(file=name,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
     def validate(self):builds.validate_restart(self.root,self.report,self.mc,self.sha,self.runtime,dict(write=36,verify=26))
     def test_coherent(self):self.validate()
+    def change_log(self,phase,text):
+        p=self.root/'verification-logs'/('item-restart-'+phase+'.log');p.write_text(text)
+        for row in self.report['processes']:
+            if row['phase']==phase:row['log_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+    def test_wrong_native_minecraft_with_matching_digest(self):
+        self.change_log('verify','Starting minecraft server version 1.6.4\nPL4 ITEM RESTART verify: PASS\nStopping server\n')
+        with self.assertRaises(ValueError):self.validate()
+    def test_missing_native_pass_with_matching_digest(self):
+        self.change_log('verify','Starting minecraft server version 1.12.2\nStopping server\n')
+        with self.assertRaises(ValueError):self.validate()
+    def test_missing_clean_shutdown_with_matching_digest(self):
+        self.change_log('verify','Starting minecraft server version 1.12.2\nPL4 ITEM RESTART verify: PASS\n')
+        with self.assertRaises(ValueError):self.validate()
+    def test_missing_kill_readiness_with_matching_digest(self):
+        self.change_log('crash-write','Starting minecraft server version 1.12.2\nPL4 ITEM RESTART crash-write: PASS\n')
+        with self.assertRaises(ValueError):self.validate()
     def test_changed_fixture_jar(self):
         self.fixture.write_bytes(b'changed')
         with self.assertRaises(ValueError):self.validate()

@@ -97,6 +97,12 @@ def validate_restart(root, report, mc, sha, runtime, counts):
             raise ValueError("Restart phase proof disagrees: " + phase)
         if json.loads((logs / ("item-restart-" + phase + ".json")).read_text()) != r:
             raise ValueError("Raw restart phase report disagrees: " + phase)
+        text = (logs / ("item-restart-" + phase + ".log")).read_text(errors='replace')
+        if (not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I)
+                or 'PL4 ITEM RESTART '+phase+': PASS' not in text
+                or ('Stopping server' in text) == (phase == 'crash-write')
+                or (phase == 'crash-write' and 'PL4 ITEM RESTART KILL READY' not in text)):
+            raise ValueError('Missing native restart phase/shutdown markers: '+phase)
     for a, b in [("write", "verify"), ("crash-write", "crash-verify")]:
         tokens = details[a].get("tokens", [])
         if not isinstance(tokens, list) or not all(isinstance(t, str) and re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", t) for t in tokens) or len(set(tokens)) != 2 or tokens != details[b].get("tokens"):
