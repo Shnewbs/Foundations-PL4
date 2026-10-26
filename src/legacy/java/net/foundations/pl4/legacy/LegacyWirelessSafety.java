@@ -95,6 +95,16 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         NBTTagCompound previous=node.itemJournalContext;
         Record known=previous==null?null:records.get(text(previous,"Token"));
         if(known!=null&&matches(known,previous)&&known.owner.equals(node.owner)&&previous.getTag("Dimension") instanceof net.minecraft.nbt.NBTTagInt&&previous.getInteger("Dimension")==node.worldObj.provider.dimensionId)return;
+        // Never replace another rejected context once original legacy evidence exists.
+        // Preserve the first rejection and freeze this dimension for reviewed reconciliation.
+        if(node.itemLegacyEvidence!=null&&previous!=null){
+            if(opaque==null){
+                NBTTagCompound retained=new NBTTagCompound();retained.setTag("PreviousJournal",writeToNBT(new NBTTagCompound()));
+                retained.setTag("RejectedContext",previous.copy());retained.setTag("ExistingLegacyEvidence",node.itemLegacyEvidence.copy());
+                opaque=retained;markDirty();
+            }
+            node.fluidDirty();return;
+        }
         if(node.itemLegacyEvidence==null){
             node.itemLegacyEvidence=new NBTTagCompound();node.itemLegacyEvidence.setString("Fault",node.itemFault);node.itemLegacyEvidence.setString("ObservedOwner",node.owner);node.itemLegacyEvidence.setInteger("ObservedDimension",node.worldObj.provider.dimensionId);node.itemLegacyEvidence.setInteger("HostX",node.xCoord);node.itemLegacyEvidence.setInteger("HostY",node.yCoord);node.itemLegacyEvidence.setInteger("HostZ",node.zCoord);
             if(previous!=null)node.itemLegacyEvidence.setTag("PreviousContext",previous.copy());
@@ -189,3 +199,4 @@ public final class LegacyWirelessSafety extends WorldSavedData {
         tag.setTag("Entries",list);
     }
 }
+
