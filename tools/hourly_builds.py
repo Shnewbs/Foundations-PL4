@@ -115,6 +115,20 @@ def validate_restart(root, report, mc, sha, runtime, counts, prefix="item-restar
             raise ValueError("Restart world archive changed")
 
 
+def validate_decode_placements(report):
+    for phase in ('write','verify','crash-write','crash-verify'):
+        rows=report['phase_reports'][phase].get('placements')
+        expected=[64,80,200] if phase.endswith('write') else [200]
+        if not isinstance(rows,list) or [r.get('x') for r in rows]!=expected:
+            raise ValueError('Missing/duplicate/out-of-order native decode placements: '+phase)
+        for row in rows:
+            if (type(row.get('expected_block')) is not int or row['expected_block']<=0 or
+                type(row.get('actual_block')) is not int or row['actual_block']!=row['expected_block'] or
+                row.get('before_block')!=0 or row.get('set_block_changed') is not True or
+                row.get('y')!=200 or row.get('z')!=32 or row.get('metadata')!=0 or
+                row.get('tile_class')!='net.foundations.pl4.legacy.LegacyTile' or row.get('tile_invalid') is not False):
+                raise ValueError('Invalid native decode placement observation: '+phase)
+
 def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
     """Qualify decode persistence separately from provider and historical scenarios."""
     if suite not in {"decode-raw", "decode-missing", "decode-compound", "decode-owner", "decode-dimension", "decode-scope", "decode-rewrite", "decode-live", "decode-live-context", "decode-live-owner"} or report.get("suite") != suite:
@@ -345,6 +359,8 @@ def record(root, expected_mc, expected_sha):
                                         {"write": counts["write"]+9, "verify": counts["verify"]+3} if suite in {"decode-live", "decode-live-context", "decode-live-owner"} else {"write": counts["write"]+4, "verify": counts["verify"]+4} if status.get("item_receipt_auth_restart_fixture") is True and suite in {"decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} else counts, suite)
                 if status.get('item_live_decode_restart_fixture') is True:
                     validate_live_decode_assertions(decode)
+                if status.get('decode_placement_observation_fixture') is True:
+                    validate_decode_placements(decode)
                 if suite in {"decode-live", "decode-live-context", "decode-live-owner"}:
                     validate_live_mutation_assertions(decode)
                 pids.extend(p['pid'] for p in decode['processes'])

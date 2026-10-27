@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-placement-2026-10-27T04",
-    "acquired_at": "2026-10-27T04:07:00Z",
-    "expires_at": "2026-10-27T04:37:00Z",
-    "purpose": "Diagnose native1.6.4 decode fixture placement and retain failed phase evidence; source/publisher guards remain mandatory"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -55,9 +50,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "648a71eff28d3cb27b18df693e94a55b26691da1",
   "last_writer_release": {
-    "owner": "pl4-handheld-2026-10-27T03",
-    "released_at": "2026-10-27T03:29:44Z",
-    "checkpoint": "Readiness source fix and exact native/client evidence preserved together with unresolved parallel164 fixture placement failure."
+    "owner": "pl4-placement-2026-10-27T04",
+    "released_at": "2026-10-27T04:09:00Z",
+    "checkpoint": "Diagnostic fixture and failed-phase retention checkpoint; pinned native builds do not hold writer lease."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -225,6 +220,8 @@
     "phase": "decode-missing/write",
     "error": "NullPointerException in DecodeRestartScenarios.place during write preparation; underlying native placement/lifecycle cause unresolved.",
     "same_source_hourly_result": "PASS independently in40442846030",
-    "retry_attempted": false
+    "retry_attempted": false,
+    "instrumented_source": "829ceafa6614010b5dc685fd8200425fd180e39c",
+    "next_step": "Inspect instrumented native placement records from changed source; failed phase raw JSON/process facts now retained before acceptance checks. Root cause remains unresolved; no blind retry of old source."
   }
 }
