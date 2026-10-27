@@ -1,0 +1,92 @@
+{
+  "recorded_date": "2026-10-27",
+  "run_owner": "pl4-chat-hourly-20261027T1704Z",
+  "intent": "Preserve actionable stage of intermittent 1.6.4 native placement failure; bind newly emitted stage diagnostics to exact-source hourly controller gates without changing production item/inventory semantics.",
+  "branch": "mc/1.6.4",
+  "branch_parent": "f4e6c5fc4498c83d319f268b8817930e97a2b915",
+  "branch_candidate": "f7973d776fdbaf06300b7ffcc537e7b82e18bc4b",
+  "main_parent": "387da1fc4d4e72df28ac28777e8e60980e77d5da",
+  "main_controller_commit": "64f9e58e12843cc6822e82adb8b3e49f292cfeb6",
+  "modified_files": [
+    "mc/1.6.4:src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+    "main:tools/hourly_builds.py",
+    "main:tools/test_legacy_decode_placements.py"
+  ],
+  "behavior": [
+    "Stage-specific placement diagnostics record chunk coordinates, loaded-block observations and lookup phase before each native API call.",
+    "finally logs every placement observation to stdout and raw per-phase JSON, including incomplete native phases; no automatic tile or chunk retry.",
+    "Hourly parser requires coherent complete stages and loaded block observations in all four phases whenever staged receipts are present.",
+    "Two new Python tests verify fully staged receipts and reject incomplete, changed and mixed receipt matrices."
+  ],
+  "controls": [
+    "Native production classes, release status, published artifact names, legacy NBT and game behavior remain unmodified.",
+    "No source-alignment transforms, branch creation, force-push, fixture imputation, synthetic tile installation or RC clearance.",
+    "Prior null-tile failure 40442840965 remains unexplained; new instrumentation cannot retroactively recover lost raw phase or assign root cause."
+  ],
+  "exact_verified_previous_runs": [
+    {
+      "run": 40539444677,
+      "ref": "mc/1.12.2",
+      "sha": "19da12598eece763190d3e1353763ce5dc1fc173",
+      "conclusion": "success"
+    },
+    {
+      "run": 40539611218,
+      "ref": "mc/1.6.4",
+      "sha": "f4e6c5fc4498c83d319f268b8817930e97a2b915",
+      "conclusion": "success"
+    },
+    {
+      "run": 40544765953,
+      "ref": "main",
+      "sha": "0a90378d4b3b717476c5ace3056a3102145ea689",
+      "conclusion": "success",
+      "native_matrix_executed": [
+        "1.21.1",
+        "1.12.2",
+        "1.6.4"
+      ],
+      "other_targets": "retained source artifacts were deduplicated; not 24 fresh JVMs"
+    }
+  ],
+  "current_validation": {
+    "new_164_native": {
+      "run": 40548145769,
+      "status_at_checkpoint": "in_progress",
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40548145769"
+    },
+    "main_verify": {
+      "run": 40548545101,
+      "status_at_checkpoint": "in_progress",
+      "offline_regression_step": "success",
+      "native_game_tests": "in_progress",
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40548545101"
+    },
+    "hourly": {
+      "run": 40548542573,
+      "status_at_checkpoint": "in_progress",
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40548542573"
+    },
+    "main_build_release": {
+      "run": 40548542712,
+      "status_at_checkpoint": "completed",
+      "conclusion": "success",
+      "version_publication": "not eligible; development RC clearance false"
+    }
+  },
+  "tests_not_yet_claimed": [
+    "New 1.6.4 native restart/process qualification at f7973d7",
+    "New main native full GameTest completion at 64f9e58",
+    "Current fresh stock-client/screenshots or installed provider/multiplayer/performance acceptance"
+  ],
+  "release": {
+    "new_eligible_releases": 0,
+    "curseforge_uploads": 0,
+    "rc_clearance": false
+  },
+  "next": [
+    "Consume actual completion and retained raw placement stage records from 40548145769 and main offline/native results.",
+    "If placement intermittency reappears, identify exact failing lookup stage and native loaded-chunk context without retries or synthetic tiles.",
+    "Probe endpoint provider-discovery order, skipped-owner hosts, disconnected/unloaded aliases, installed providers and online multiplayer in subsequent focused acceptance."
+  ]
+}
