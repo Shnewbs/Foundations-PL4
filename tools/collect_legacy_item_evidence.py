@@ -62,7 +62,7 @@ def journal_records(journal,limit):
     if len(set(tokens))!=len(tokens):opaque=True
     return records,opaque
 
-def observe(tiles,journal,token,owner,dimension,inventories,limits):
+def observe(tiles,journal,token,owner,dimension,inventories,limits,mc='1.12.2'):
     records,opaque=journal_records(journal,limits['journal_records'])
     matches=[];faults=[];inventory_rows=[];receipt_rows=[];truncated=False
     def add(rows,row):
@@ -83,7 +83,7 @@ def observe(tiles,journal,token,owner,dimension,inventories,limits):
             # An occurrence in opaque evidence is preserved as an observation, never upgraded into a trusted route.
             occurrence=isinstance(evidence,dict) and (evidence.get('OriginalToken')==token or isinstance(evidence.get('PreviousContext'),dict) and evidence['PreviousContext'].get('Token')==token)
             if linked or occurrence:
-                add(faults,dict(position=position,saved_owner=label(tile.get('Owner')),current_context_token_matches=linked,preserved_evidence_token_occurrence=occurrence,context_state='absent' if 'ItemJournalContext' not in tile else 'compound' if isinstance(context,dict) else 'raw-scalar',sealed_claim_count=label(tile.get('ItemEscrowCount')),tile_sha256=digest_value(tile),original_route_inferred=False))
+                add(faults,dict(position=position,saved_owner=label(tile.get('OwnerName' if mc=='1.6.4' else 'Owner')),current_context_token_matches=linked,preserved_evidence_token_occurrence=occurrence,context_state='absent' if 'ItemJournalContext' not in tile else 'compound' if isinstance(context,dict) else 'raw-scalar',sealed_claim_count=label(tile.get('ItemEscrowCount')),tile_sha256=digest_value(tile),original_route_inferred=False))
         items=tile.get('Items',[])
         if not isinstance(items,list):continue
         if len(items)>limits['inventory_slots']:raise ValueError('Saved inventory slot bound exceeded')
@@ -160,7 +160,7 @@ def collect(path,mc,token,owner,dimension=0,inventories=(),limits=None):
             if not isinstance(rows,list):raise ValueError('Malformed saved tiles')
             if len(tiles)+len(rows)>limits['tiles']:complete=False;reason='tile bound';break
             tiles.extend(rows)
-    result=observe(tiles,journal,token,owner,dimension,inventories,limits)
+    result=observe(tiles,journal,token,owner,dimension,inventories,limits,mc)
     result.update(minecraft_label=mc,minecraft_identity_proven_by_save=False,source_archive_sha256=source_hash,journal_value_sha256=digest_value(journal) if journal is not None else None,selected_dimension_scan_complete=complete and not result['result_limit_reached'],scan_stop_reason=reason,scanned_chunks=chunks,scanned_tiles=len(tiles),selected_region_bytes=selected,limits=limits)
     return result
 

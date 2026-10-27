@@ -4,6 +4,17 @@ from collect_legacy_item_evidence import LIMITS,collect,inflate,journal_records,
 
 class EvidenceCollectorTests(unittest.TestCase):
     token='00000000-0000-0000-0000-000000000001'
+    def test_exact_native_fault_owner_label(self):
+        tile=dict(x=64,y=200,z=32,Owner='uuid-label',OwnerName='legacy-name',ItemLegacyEvidence=dict(OriginalToken=self.token))
+        for mc,expected in [('1.12.2','uuid-label'),('1.6.4','legacy-name')]:
+            r=observe([tile],None,self.token,'owner',0,set(),LIMITS,mc)
+            self.assertEqual(r['observed_fault_tiles'][0]['saved_owner'],expected)
+            self.assertFalse(r['reconciliation_cleared']);self.assertFalse(r['original_route_inferred'])
+    def test_neighboring_fault_owner_key_is_not_a_fallback(self):
+        for mc,key in [('1.12.2','OwnerName'),('1.6.4','Owner')]:
+            tile=dict(x=64,y=200,z=32,ItemLegacyEvidence=dict(OriginalToken=self.token));tile[key]='foreign-schema-label'
+            r=observe([tile],None,self.token,'owner',0,set(),LIMITS,mc)
+            self.assertIsNone(r['observed_fault_tiles'][0]['saved_owner'])
     def current(self,**changes):
         row=dict(Token=self.token,Owner='owner',X=3,Y=200,Z=32);row.update(changes)
         return dict(Schema=2,Entries=[row])
