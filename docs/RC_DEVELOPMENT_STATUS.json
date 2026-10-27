@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07",
-      "workflow_run": 40430311512,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40430311512",
+      "source_commit": "fab682f9c24d4b3c45b164ddf1d4bb0b09232da0",
+      "workflow_run": 40436915385,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40436915385",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -509,7 +509,7 @@
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40389033557
       },
-      "candidate_source_commit": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07",
+      "candidate_source_commit": "fab682f9c24d4b3c45b164ddf1d4bb0b09232da0",
       "previous_admission_candidate": {
         "source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -524,6 +524,11 @@
         "source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40426593938
+      },
+      "previous_owner_only_candidate": {
+        "source_commit": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "workflow_run": 40430311512
       }
     },
     {
@@ -595,19 +600,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40430311512,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40430311512",
-      "source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
-      "runtime_sha256": "65f785ae84c48127dbb31c8228fd45cec7b9c2d97c43253e8f11c429eabac24a",
+      "workflow_run": 40436915385,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40436915385",
+      "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+      "runtime_sha256": "4e325d8808f46472fe49bcee008632d8917a999c0498fcd5de270fd283461cfe",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
+      "candidate_source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -619,7 +624,7 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
       "observed_native_fixtures": 383,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -675,7 +680,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40430918409,
+      "client_workflow_run": 40437795680,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -687,7 +692,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Context-only native process variant keeps host owner unchanged while rewriting owner/dimension/host context. Transfer readmission, observed alias, original evidence/tokens, sealed actual removal receipt and32-item physical stocks survive clean and completed-save/flush parent-SIGKILL. Owner-only process, unobserved/unloaded aliases, provider/multiplayer/recovery/performance and RC remain open.",
+      "acceptance_attribution": "Owner-only host edit retains original journal context; transfer readmission and observed alias are fenced. Original tokens/evidence, sealed actual-removal receipt and32-item physical source stocks survive clean and completed-save/flush parent-SIGKILL. Eight bounded native-copy queries retain changed-host versus original-journal owner observations without authorization/reconciliation clearance. Unobserved/unloaded aliases, providers, dedicated multiplayer, recovery and sustained performance remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -739,14 +744,14 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
-        "runtime_sha256": "65f785ae84c48127dbb31c8228fd45cec7b9c2d97c43253e8f11c429eabac24a",
-        "workflow_run": 40430918409,
+        "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+        "runtime_sha256": "4e325d8808f46472fe49bcee008632d8917a999c0498fcd5de270fd283461cfe",
+        "workflow_run": 40437795680,
         "result": "PASS",
         "fresh_client_run": true,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Fresh exact changed packaged production JAR; normal storage/search/grouping/replay/codecs/display and complete5-page export. New context-only mutations are native process fixtures, not graphical mutation acceptance."
+        "scope": "Fresh exact changed packaged production JAR; normal storage/search/grouping/replay/codecs/display and complete5-page export. Owner-only mutations are separate native process fixtures, not graphical mutation acceptance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -889,8 +894,8 @@
         "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 1372,
-      "total_decode_process_jvms": 36,
+      "total_decode_process_assertions": 1536,
+      "total_decode_process_jvms": 40,
       "previous_opaque_export_candidate": {
         "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
         "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
@@ -1014,7 +1019,7 @@
           "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
         }
       },
-      "build_status_blob_sha": "9fccc165888d78d05e7d421f979a5e720c0a4f79",
+      "build_status_blob_sha": "b42dd9d1982fe1bf87eda3eeb6fa7cdb514cc73f",
       "previous_live_fault_guard_process_assertions": 168,
       "previous_context_only_candidate": {
         "source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
@@ -1031,6 +1036,22 @@
         "jvms": 4,
         "evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
         "owner_unchanged": true
+      },
+      "previous_owner_only_candidate": {
+        "source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
+        "runtime_sha256": "65f785ae84c48127dbb31c8228fd45cec7b9c2d97c43253e8f11c429eabac24a",
+        "workflow_run": 40430311512
+      },
+      "owner_only_process_acceptance": {
+        "result": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+        "new_suite_assertions": 164,
+        "write": 50,
+        "verify": 32,
+        "crash_write": 50,
+        "crash_verify": 32,
+        "jvms": 4,
+        "evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
+        "original_context_unchanged": true
       }
     },
     {
@@ -1046,15 +1067,15 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40430311512,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40430311512",
-      "source_commit": "45137943612a482b3d051ffb93069f6e79aa25bd",
+      "workflow_run": 40436915385,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40436915385",
+      "source_commit": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37",
       "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "45137943612a482b3d051ffb93069f6e79aa25bd",
+      "candidate_source_commit": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37",
       "client_visual_acceptance": "PARTIAL_PRIOR_IDENTICAL_PAYLOAD_CAPTURES_NO_NEW_REVIEW",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -1069,7 +1090,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 361,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1118,7 +1139,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Context-only native process variant keeps host owner unchanged while rewriting owner/dimension/host context. Transfer readmission, observed alias, original evidence/tokens, sealed actual removal receipt and32-item physical stocks survive clean and completed-save/flush parent-SIGKILL. Owner-only process, unobserved/unloaded aliases, provider/multiplayer/recovery/performance and RC remain open.",
+      "acceptance_attribution": "Owner-only host edit retains original journal context; transfer readmission and observed alias are fenced. Original tokens/evidence, sealed actual-removal receipt and32-item physical source stocks survive clean and completed-save/flush parent-SIGKILL. Eight bounded native-copy queries retain changed-host versus original-journal owner observations without authorization/reconciliation clearance. Unobserved/unloaded aliases, providers, dedicated multiplayer, recovery and sustained performance remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40419011289,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1313,8 +1334,8 @@
         "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 1372,
-      "total_decode_process_jvms": 36,
+      "total_decode_process_assertions": 1536,
+      "total_decode_process_jvms": 40,
       "previous_opaque_export_candidate": {
         "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
         "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
@@ -1437,7 +1458,7 @@
           "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
         }
       },
-      "build_status_blob_sha": "c9a40b228ae77419e6ef763a35b94f8afd8d6e94",
+      "build_status_blob_sha": "08043cd91bc3d26c7784e9fcd3a36932a10d14d5",
       "previous_live_fault_guard_process_assertions": 168,
       "previous_context_only_candidate": {
         "source_commit": "f381691f13a94666da71ae1b6430cfee85d373ab",
@@ -1454,10 +1475,26 @@
         "jvms": 4,
         "evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
         "owner_unchanged": true
+      },
+      "previous_owner_only_candidate": {
+        "source_commit": "45137943612a482b3d051ffb93069f6e79aa25bd",
+        "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
+        "workflow_run": 40430311512
+      },
+      "owner_only_process_acceptance": {
+        "result": "PASS_SCOPED_NATIVE_CLEAN_AND_COMPLETED_SAVE_FLUSH_PARENT_SIGKILL",
+        "new_suite_assertions": 164,
+        "write": 50,
+        "verify": 32,
+        "crash_write": 50,
+        "crash_verify": 32,
+        "jvms": 4,
+        "evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
+        "original_context_unchanged": true
       }
     }
   ],
-  "latest_work": "Added context-only live mutation acceptance with unchanged host owner on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1372/36 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass.138 targeted local and189 CI executions pass. All17 packaged hashes,18 raw decode worlds per port and40 distinct decode/provider JVM identities qualify. Fresh112 exact-JAR client passes complete5-page export and normal regressions;2 captures reviewed/21 hashed.164 production hash unchanged, retaining prior exact-payload client evidence. Owner-only process, unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
+  "latest_work": "Added owner-only native process coverage retaining the original journal context on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1536/40 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass;140 local and191 CI controller executions pass. All17 packaged hashes,20 raw decode worlds per port and44 distinct decode/provider process identities qualify. Eight bounded native-copy queries preserve changed host versus original journal owner labels and unchanged archives without clearance. Fresh112 exact-JAR client passes full5-page export and normal regressions;2 captures reviewed/21 hashed.164 retains prior identical production-payload client evidence. Fresh CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads/0 failures. Unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1468,26 +1505,26 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
-    "runtime_sha256": "65f785ae84c48127dbb31c8228fd45cec7b9c2d97c43253e8f11c429eabac24a",
-    "workflow_run": 40430311512,
+    "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+    "runtime_sha256": "4e325d8808f46472fe49bcee008632d8917a999c0498fcd5de270fd283461cfe",
+    "workflow_run": 40436915385,
     "stock_wireless_client": {
-      "source_commit": "61ee93c43e571ae6454d7f64b4dc5100df634954",
-      "runtime_sha256": "65f785ae84c48127dbb31c8228fd45cec7b9c2d97c43253e8f11c429eabac24a",
-      "workflow_run": 40430918409,
+      "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+      "runtime_sha256": "4e325d8808f46472fe49bcee008632d8917a999c0498fcd5de270fd283461cfe",
+      "workflow_run": 40437795680,
       "result": "PASS",
       "fresh_client_run": true,
       "reviewed_captures": 2,
       "hashed_captures": 21,
-      "scope": "Fresh exact changed packaged production JAR; normal storage/search/grouping/replay/codecs/display and complete5-page export. New context-only mutations are native process fixtures, not graphical mutation acceptance."
+      "scope": "Fresh exact changed packaged production JAR; normal storage/search/grouping/replay/codecs/display and complete5-page export. Owner-only mutations are separate native process fixtures, not graphical mutation acceptance."
     },
     "closes_all_acceptance": false,
-    "evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json"
+    "evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json"
   },
   "partial_164_acceptance": {
-    "source_commit": "45137943612a482b3d051ffb93069f6e79aa25bd",
+    "source_commit": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37",
     "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
-    "workflow_run": 40430311512,
+    "workflow_run": 40436915385,
     "stock_wireless_client": {
       "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
       "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
@@ -1500,9 +1537,9 @@
       "reviewed_captures_this_checkpoint": 0
     },
     "closes_all_acceptance": false,
-    "evidence": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json"
+    "evidence": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json"
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {

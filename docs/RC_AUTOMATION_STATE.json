@@ -5,25 +5,20 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-owner-process-2026-10-27T02",
-    "claimed_at": "2026-10-27T02:22:00Z",
-    "expires_at": "2026-10-27T02:42:00Z",
-    "scope": "Preserve qualified owner-only native/saved-world and exact client acceptance",
-    "expected_parent": "745817deb5aa9b01990e2643610b1fb024b0028b"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40430311512,
+  "last_verified_legacy_native_run": 40436915385,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40430918409,
+    "1.12.2": 40437795680,
     "1.6.4": 40419011289
   },
-  "current_checkpoint": "Added context-only live mutation acceptance with unchanged host owner on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1372/36 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass.138 targeted local and189 CI executions pass. All17 packaged hashes,18 raw decode worlds per port and40 distinct decode/provider JVM identities qualify. Fresh112 exact-JAR client passes complete5-page export and normal regressions;2 captures reviewed/21 hashed.164 production hash unchanged, retaining prior exact-payload client evidence. Owner-only process, unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
-  "local_validation": "PASS:138 local/189 CI;native383/361/main192;decode1372/36 JVMs,provider188/historical60 separately;17 packaged hashes,18 raw decode worlds per port,40 distinct decode/provider processes;fresh112 client and prior identical164 payload client.",
+  "current_checkpoint": "Added owner-only native process coverage retaining the original journal context on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1536/40 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass;140 local and191 CI controller executions pass. All17 packaged hashes,20 raw decode worlds per port and44 distinct decode/provider process identities qualify. Eight bounded native-copy queries preserve changed host versus original journal owner labels and unchanged archives without clearance. Fresh112 exact-JAR client passes full5-page export and normal regressions;2 captures reviewed/21 hashed.164 retains prior identical production-payload client evidence. Fresh CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads/0 failures. Unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse.",
+  "local_validation": "PASS:140 local/191 CI;native383/361/main192;decode1536/40 JVMs,provider188/historical60 separately;17 packaged hashes/20 raw decode worlds per port/44 distinct decode-provider process IDs;8 bounded copied-save queries;fresh112 exact-JAR client and prior identical164 payload client.",
   "next_work": [
-    "Add owner-only process variant, unobserved disconnected aliases and loaded/unloaded boundaries without global scanning or force-load.",
+    "Probe actual handheld endpoint discovery and native disconnected aliases before/after host admission/tick, plus loaded/unloaded boundaries without global scans or force-load.",
+    "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
     "Continue linked-host/receipt diagnostics, installed providers, multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, dedicated multiplayer/online identity/actual dimension travel, installed providers and copied user/modpack saves with observed evidence.",
     "Continue reviewed reconciliation, broader legacy editor/multipart, Forge1.16.1–1.16.4 launcher profiles and sustained active-provider/full-server performance. All24 RC flags remainfalse.",
@@ -35,38 +30,38 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
-  "main_native_validation_run": 40430311512,
-  "curseforge_reconciliation_run": 40417802166,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
+  "main_native_validation_run": 40436915385,
+  "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40430311512
+    40436915385
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40430311512,
-    "1.6.4": 40430311512
+    "1.12.2": 40436915385,
+    "1.6.4": 40436915385
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+    "1.12.2": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
     "1.6.4": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07",
+  "native_main_source_commit": "fab682f9c24d4b3c45b164ddf1d4bb0b09232da0",
   "last_writer_release": {
     "owner": "pl4-owner-process-2026-10-27T02",
-    "released_at": "2026-10-27T02:20:00Z",
-    "checkpoint": "Pinned changed exact112 native-qualified archive for independent stock client; no publication."
+    "released_at": "2026-10-27T02:26:57Z",
+    "checkpoint": "Qualified owner-only native/saved-world/client evidence preserved; next handheld pre-observation alias and unloaded boundary probes remain explicit."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "61ee93c43e571ae6454d7f64b4dc5100df634954",
-      "1.6.4": "45137943612a482b3d051ffb93069f6e79aa25bd"
+      "1.12.2": "921d17d53ea633bbcf065c7936198681a88b2962",
+      "1.6.4": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37"
     },
     "publication_steps": "SKIPPED"
   },
-  "previous_checkpoint": "Added a separate live-mutation native suite on both legacy ports: combined owner/context edits after cleared scoped admission, transfer entry, observed disconnected alias and actual sealed removal survive clean and completed-save/flush parent-SIGKILL restarts. Each passes164 new-suite assertions across4 JVMs; total decode1208/32 JVMs, provider188 and historical60 remain separate. Ordinary native383/361 and main192 pass. Fixed copied-save1.6.4 OwnerName omission;2 actual native-copy omissions reproduced and fixed,16 bounded queries preserve archives.136 local and187 final CI controller executions pass. Initial exact-schema controller rejection is preserved and repaired. All17 packaged hashes and16 decode worlds per port qualify. Fresh changed-archive1.12.2 client passes,2 captures reviewed/21 hashed;1.6.4 retains prior identical production-payload client evidence. All24 RC flagsfalse;no new release/upload.",
+  "previous_checkpoint": "Added context-only live mutation acceptance with unchanged host owner on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1372/36 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass.138 targeted local and189 CI executions pass. All17 packaged hashes,18 raw decode worlds per port and40 distinct decode/provider JVM identities qualify. Fresh112 exact-JAR client passes complete5-page export and normal regressions;2 captures reviewed/21 hashed.164 production hash unchanged, retaining prior exact-payload client evidence. Owner-only process, unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -114,9 +109,10 @@
     "reproduced_failures_per_port": 4
   },
   "latest_curseforge_reconciliation": {
-    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
     "already_submitted": 24,
     "new_uploads": 0,
+    "failed": 0,
     "moderation_and_public_visibility_reverified": false
   },
   "completed_live_mutation_process_checkpoint": {
@@ -171,13 +167,21 @@
     "total_decode_assertions_per_port": 1372,
     "decode_jvms_per_port": 36
   },
-  "pending_owner_process": {
+  "completed_owner_only_process": {
+    "evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
     "sources": {
       "1.12.2": "921d17d53ea633bbcf065c7936198681a88b2962",
       "1.6.4": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37"
     },
-    "local_controller_tests": 140,
-    "production_source_changed": false,
-    "acceptance": "PENDING_EXACT_NATIVE_ARTIFACT_QUALIFICATION"
+    "native_run": 40436915385,
+    "new_suite_assertions_per_port": 164,
+    "total_decode_assertions_per_port": 1536,
+    "decode_jvms_per_port": 40
+  },
+  "pending_handheld_observation": {
+    "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+    "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+    "observation": "ready(tile) checks retained-node quarantine/empty escrow without calling importSaved. Endpoint discovery filters owner and collects handlers before ready and target-fence checks. Retained evidence blocks the host itself, but admission timing and disconnected backing aliases need separate native handheld probes.",
+    "scope": "Source observation only. No new transfer bypass demonstrated. Probe observed connected endpoint/root versus disconnected alias before/after host admission/tick and across unloaded boundaries; no global scan or force-load."
   }
 }
