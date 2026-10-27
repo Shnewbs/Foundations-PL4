@@ -195,7 +195,12 @@ public final class DecodeRestartScenarios {
             row.put("block_exists_before",world.blockExists(x,200,32));
             row.put("before_block",world.getBlockId(x,200,32));
             row.put("stage","set_block");
-            boolean changed=world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);
+            // This creates a disposable restart fixture, not a player-placed block.
+            // Full neighbor notification may disturb a fixture while unrelated
+            // falling-block updates run. Production placement is tested separately.
+            // Keep the immediate native readback strict; never retry or synthesize a tile.
+            row.put("placement_flags",2);
+            boolean changed=world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,2);
             row.put("set_block_changed",changed);
             row.put("stage","post_block_lookup");
             row.put("expected_block",LegacyPL4.EXPORT.blockID);

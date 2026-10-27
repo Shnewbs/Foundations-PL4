@@ -11,6 +11,23 @@ def retain_phase_report(work,logs,prefix,phase,pid,code,logfile):
     (logs/(prefix+'-'+phase+'-process.json')).write_text(json.dumps(observation,indent=2)+'\n')
     if not source.is_file():raise ValueError('Missing restart phase report: '+phase+'; inspect '+str(logfile))
     return json.loads(target.read_text())
+def require_legacy_decode_placements(report,phase,minecraft):
+    """Bind 1.6.4 decode admission to two real native host placements."""
+    if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
+        return
+    rows=report.get('placements')
+    if not isinstance(rows,list):raise ValueError('Missing native decode placement observations')
+    hosts=[row for row in rows if isinstance(row,dict) and row.get('x') in (64,80)]
+    if len(hosts)!=2 or {row['x'] for row in hosts}!={64,80}:
+        raise ValueError('Missing or duplicated exact native decode host placements')
+    for row in hosts:
+        if (row.get('y')!=200 or row.get('z')!=32 or row.get('stage')!='complete'
+            or row.get('placement_flags')!=2 or row.get('set_block_changed') is not True
+            or row.get('expected_block')!=3501 or row.get('actual_block')!=3501
+            or row.get('tile_class')!='net.foundations.pl4.legacy.LegacyTile'
+            or row.get('tile_invalid') is not False or row.get('block_exists_after') is not True):
+            raise ValueError('Unqualified native decode host placement at x='+str(row.get('x')))
+
 def verify(suite="item"):
     decode=suite in {"decode-raw","decode-missing","decode-compound","decode-owner","decode-dimension","decode-scope","decode-rewrite","decode-live","decode-live-context","decode-live-owner"}
     if suite!="item" and not decode:raise ValueError("Unknown restart suite")
@@ -63,6 +80,7 @@ def verify(suite="item"):
                     pid=proc.pid
             text=logfile.read_text(errors='replace');expected=-9 if phase=='crash-write' else 0
             report=retain_phase_report(work,logs,prefix,phase,pid,code,logfile)
+            require_legacy_decode_placements(report,phase,mc)
             if code!=expected or report['minecraft']!=mc or report['phase']!=phase or report['passed'] is not True or not report['assertions']:raise ValueError('Restart phase failed: '+phase+'; inspect '+str(logfile))
             if not report['process'].startswith(str(pid)+'@') or 'PL4 ITEM RESTART '+phase+': PASS' not in text or not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I):raise ValueError('Missing process/native identity')
             if ('Stopping server' in text)==(phase=='crash-write'):raise ValueError('Unexpected shutdown path')
