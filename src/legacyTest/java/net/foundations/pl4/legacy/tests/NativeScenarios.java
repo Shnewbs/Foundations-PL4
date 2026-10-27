@@ -194,6 +194,18 @@ public final class NativeScenarios {
                 check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),prior,17)==0
                         &&readerCount(replacement.getStackInSlot(0))==32&&wirelessIron(p)==0,
                         "stale native backing denied even with identical item and coordinates");
+                // A provider can replace its tile while constructing size/slot metadata:
+                // the returned adapter then still holds identical indices on the old tile.
+                FaultyChest metadata=faultyChest(true);metadata.replaceOnSizeAfter=2;
+                for(int i=0;i<27;i++)destination().setInventorySlotContents(i,readerStack(64));
+                p.inventory.setInventorySlotContents(9,readerStack(32));
+                check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0,
+                        "metadata replacement cannot authorize detached insertion");
+                check(source()!=metadata&&readerCount(source().getStackInSlot(0))==0
+                        &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==0,
+                        "metadata replacement conserves player items without world drops");
+                check(LegacyWirelessStorage.ready(fluidNode(0)),
+                        "read-only metadata replacement does not falsely quarantine host");
             }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
@@ -505,21 +517,25 @@ public final class NativeScenarios {
     private int itemReceipts(){int n=0;for(Object raw:world.getEntitiesWithinAABB(EntityItem.class,area())){EntityItem e=(EntityItem)raw;if(!e.isDead&&e.getEntityItem().itemID==LegacyPL4.ITEM_CELL.itemID)n++;}return n;}
     private int looseIron(){int n=0;for(Object raw:world.getEntitiesWithinAABB(EntityItem.class,area())){EntityItem e=(EntityItem)raw;if(!e.isDead&&e.getEntityItem().itemID==Item.ingotIron.itemID)n+=e.getEntityItem().stackSize;}return n;}
     public static final class FaultyChest extends TileEntityChest {
-        boolean failInsert,failExtract,replaceOnRead;
+        boolean failInsert,failExtract,replaceOnRead;int replaceOnSizeAfter;
+        private void replaceBacking(int slot,ItemStack value){
+            net.minecraft.world.World current=worldObj;int x=xCoord,y=yCoord,z=zCoord;
+            // Change only the tile, not the block: breaking a chest would spill drops.
+            TileEntityChest fresh=new TileEntityChest();
+            fresh.setInventorySlotContents(slot,value==null?null:value.copy());
+            current.setBlockTileEntity(x,y,z,fresh);
+            if(current.getBlockTileEntity(x,y,z)!=fresh)
+                throw new IllegalStateException("Provider backing replacement failed");
+        }
+        @Override public int getSizeInventory(){
+            int count=super.getSizeInventory();
+            if(replaceOnSizeAfter>0&&--replaceOnSizeAfter==0)
+                replaceBacking(0,super.getStackInSlot(0));
+            return count;
+        }
         @Override public ItemStack getStackInSlot(int slot){
             ItemStack value=super.getStackInSlot(slot);
-            if(replaceOnRead){
-                replaceOnRead=false;
-                net.minecraft.world.World current=worldObj;int x=xCoord,y=yCoord,z=zCoord;
-                // Change the backing tile without destroying the containing block.
-                // Breaking a chest invokes vanilla item drops and mutates stacks,
-                // which invalidates the conservation control for this provider test.
-                TileEntityChest fresh=new TileEntityChest();
-                fresh.setInventorySlotContents(slot,value==null?null:value.copy());
-                current.setBlockTileEntity(x,y,z,fresh);
-                if(current.getBlockTileEntity(x,y,z)!=fresh)
-                    throw new IllegalStateException("Provider backing replacement failed");
-            }
+            if(replaceOnRead){replaceOnRead=false;replaceBacking(slot,value);}
             return value;
         }
         @Override public void setInventorySlotContents(int slot,ItemStack value){super.setInventorySlotContents(slot,value);if(failInsert)throw new IllegalStateException("provider failed after insertion");}

@@ -74,8 +74,14 @@ public final class LegacyWirelessStorage {
                     ||!node.worldObj.blockExists(node.xCoord,node.yCoord,node.zCoord)
                     ||node.worldObj.getBlockTileEntity(node.xCoord,node.yCoord,node.zCoord)!=node)return false;
             LegacyTile.NativeInventory now=node.inventory();
+            // Metadata callbacks can replace the live tile during NativeInventory construction.
+            // Identical old adapter indices do not establish an installed physical backing.
             return now!=null&&now.inventory==nativeInventory.inventory
-                    &&java.util.Arrays.equals(now.indices,nativeInventory.indices);
+                    &&java.util.Arrays.equals(now.indices,nativeInventory.indices)
+                    &&node.fluidServer()&&owner.equals(node.owner)&&target.equals(node.target())
+                    &&node.worldObj.blockExists(target.x,target.y,target.z)
+                    &&node.worldObj.getBlockTileEntity(target.x,target.y,target.z)==nativeInventory.inventory
+                    &&node.worldObj.getBlockTileEntity(node.xCoord,node.yCoord,node.zCoord)==node;
         }
         public int slots(){return nativeInventory.slots();}
         public ItemStack extract(int slot,int amount,boolean simulate){
