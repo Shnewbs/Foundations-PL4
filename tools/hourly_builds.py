@@ -239,6 +239,8 @@ def validate_legacy_counts(root, native, expected):
         raise ValueError("Missing actual native scenario completion marker")
 
 
+HANDHELD_ADMISSION_CASES = ['handheld readiness owner readmission', 'handheld readiness context readmission', 'handheld readiness observed disconnected alias fence', 'handheld readiness valid scoped context']
+
 LIVE_ADMISSION_CASES = ["live admission owner rewrite rechecks cleared latch","live admission tick catches context rewrite","live admission disconnected alias remains fenced after owner edit tick","live admission valid context remains scoped and idempotent","live admission raw context rewrite preserves rejected payload"]
 
 
@@ -311,6 +313,8 @@ def record(root, expected_mc, expected_sha):
                 and migration["generated_preview3_world_upgrade"] == "PASS"):
             raise ValueError("Legacy native/production/migration evidence disagrees")
         validate_legacy_counts(root, native, expected)
+        if status.get("item_handheld_admission_fixture") is True:
+            validate_live_evidence_cases(root, expected_mc, HANDHELD_ADMISSION_CASES)
         if status.get("item_live_admission_fixture") is True:
             validate_live_evidence_cases(root, expected_mc, LIVE_ADMISSION_CASES)
         if status.get("item_live_evidence_fixture") is True:
