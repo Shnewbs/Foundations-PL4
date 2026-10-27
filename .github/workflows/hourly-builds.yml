@@ -36,6 +36,8 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_legacy_live_decode.py'
       - name: Check native decode placement observations
         run: python3 -m unittest discover -s tools -p 'test_legacy_decode_placements.py'
+      - name: Check handheld provider discovery ordering regressions
+        run: python3 -m unittest discover -s tools -p 'test_legacy_endpoint_discovery.py'
       - name: Check handheld readiness admission regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_handheld_admission.py'
       - name: Check retained evidence readmission regressions

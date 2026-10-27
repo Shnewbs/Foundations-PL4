@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-endpoints-2026-10-27T05",
-    "acquired_at": "2026-10-27T05:04:00Z",
-    "expires_at": "2026-10-27T05:34:00Z",
-    "purpose": "Native handheld endpoint observation ordering regression work; original placement failure retained unresolved"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -55,9 +50,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-placement-2026-10-27T04",
-    "released_at": "2026-10-27T04:17:44Z",
-    "checkpoint": "Diagnostic source, pinned native/raw-world/hash evidence and original unresolved failure preserved; no release eligibility."
+    "owner": "pl4-endpoints-2026-10-27T05",
+    "released_at": "2026-10-27T05:07:30Z",
+    "checkpoint": "Two native callback-order failures reproduced; production admission prepass and strict controller checkpoint, pinned builds underway."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -189,7 +184,9 @@
     "source_commit": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
     "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
     "observation": "Endpoint discovery still filters owner and calls inventory() before readiness. Probe actual handheld provider callbacks, skipped hosts and disconnected aliases before observation; no additional bypass demonstrated.",
-    "scope": "No global scan or force-load; explicit readiness case is resolved separately."
+    "scope": "No global scan or force-load; explicit readiness case is resolved separately.",
+    "instrumented_source": "035fd376476d004e7e5231d0a297b19a5dbd060d",
+    "next_step": "Qualify actual root/later endpoint discovery ordering regressions and fresh changed production-JAR client. Owner-filtered/unloaded/disconnected before observation remains open."
   },
   "completed_handheld_readiness": {
     "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
