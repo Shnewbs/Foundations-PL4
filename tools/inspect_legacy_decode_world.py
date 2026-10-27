@@ -12,14 +12,15 @@ def validate(tiles,journal,phase,mc,suite):
     if len(items)!=1 or items[0].get('Count')!=1:raise ValueError('Missing unique sealed receipt')
     if mc=='1.12.2' and items[0].get('id')!='foundations_pl4:legacy_item_cell':raise ValueError('Wrong saved receipt item')
     rows=phase['decode_outcomes'];tokens=[]
-    compounds={'decode-compound','decode-owner','decode-dimension','decode-scope','decode-rewrite','decode-live','decode-live-context'}
+    compounds={'decode-compound','decode-owner','decode-dimension','decode-scope','decode-rewrite','decode-live','decode-live-context','decode-live-owner'}
     if suite not in compounds|{'decode-raw','decode-missing'}:raise ValueError('Unknown decode world suite')
     def rejected(x,token):
         result=dict(Token=71 if suite=='decode-compound' else token,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
+        if suite=='decode-live-owner':result.pop('RejectedPayload');return result
         if suite=='decode-owner':result['Owner']=71
         if suite=='decode-dimension':result['Dimension']='0'
         if suite=='decode-scope':result['Scope']=dict(Marker=71,Bytes=bytes([7,8,9]))
-        if suite in {'decode-rewrite','decode-live','decode-live-context'}:result.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
+        if suite in {'decode-rewrite','decode-live','decode-live-context','decode-live-owner'}:result.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
         return result
     for x,tag,row in [(64,live,rows[0]),(80,items[0]['tag'],rows[1])]:
         evidence=tag['ItemLegacyEvidence'];token=evidence['OriginalToken'];tokens.append(token)
@@ -43,7 +44,7 @@ def validate(tiles,journal,phase,mc,suite):
     prior=opaque['PreviousJournal'];entries=prior['Entries']
     if prior.get('Schema')!=2 or len(entries)!=2 or sorted(r['Token'] for r in entries)!=sorted(tokens):raise ValueError('Raw prior journal tokens changed')
     if any(r.get('Owner')!=owner or r.get('Scope')!='legacy-unknown' or 'X' in r or 'Phase' in r for r in entries):raise ValueError('Raw prior route was invented')
-    if suite in {'decode-live','decode-live-context'}:
+    if suite in {'decode-live','decode-live-context','decode-live-owner'}:
         if live.get('Owner' if mc=='1.12.2' else 'OwnerName') != (owner if suite=='decode-live-context' else 'live-owner') or (64,198,32) in at:
             raise ValueError('Live owner rewrite or disposable alias removal changed')
         for x in [64,80]:

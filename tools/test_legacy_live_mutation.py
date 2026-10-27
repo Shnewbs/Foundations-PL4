@@ -36,6 +36,18 @@ class LiveMutationTests(unittest.TestCase):
  def test_context_only_cannot_claim_changed_owner(self):
   f=self.fixture('1.12.2')
   with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live-context')
+ def owner_only_fixture(self,mc):
+  f=self.fixture(mc);owner='fae1b877-c6b4-4538-a26a-630190b54205' if mc=='1.12.2' else 'pl4owner'
+  for x,tag,row in [(64,f.tiles[0],f.phase['decode_outcomes'][0]),(80,f.tiles[1]['Items'][0]['tag'],f.phase['decode_outcomes'][1])]:
+   tag['ItemJournalContext']=dict(Token=row['original_token'],Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32)
+  opaque=f.journal if mc=='1.12.2' else f.journal['Opaque'];opaque['RejectedContext']=copy.deepcopy(f.tiles[0]['ItemJournalContext'])
+  return f
+ def test_owner_only_original_context_ports(self):
+  for mc in ['1.12.2','1.6.4']:
+   f=self.owner_only_fixture(mc);self.assertEqual(validate(f.tiles,f.journal,f.phase,mc,'decode-live-owner')['result'],'PASS')
+ def test_owner_only_cannot_replace_original_context(self):
+  f=self.fixture('1.12.2')
+  with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live-owner')
  def test_source_loss_rejected(self):
   f=self.fixture('1.12.2');f.tiles[-1]['Items'][0]['Count']=31
   with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live')

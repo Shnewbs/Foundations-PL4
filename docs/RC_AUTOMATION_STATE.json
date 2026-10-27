@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-owner-process-2026-10-27T02",
-    "claimed_at": "2026-10-27T02:10:00Z",
-    "expires_at": "2026-10-27T02:35:00Z",
-    "scope": "Owner-only native process mutation preserving original context",
-    "expected_parent": "fb906bc99895f9f71d3818f10518eebfe49dee0c"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -53,9 +47,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07",
   "last_writer_release": {
-    "owner": "pl4-context-process-2026-10-27T01",
-    "released_at": "2026-10-27T01:16:03Z",
-    "checkpoint": "Context-only native/process/saved-world and exact-client evidence qualified; next owner-only and unobserved boundary work preserved."
+    "owner": "pl4-owner-process-2026-10-27T02",
+    "released_at": "2026-10-27T02:12:00Z",
+    "checkpoint": "Owner-only candidates and controller pinned; isolated native qualification pending."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-context-only-process-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -170,5 +164,14 @@
     "new_assertions_per_port": 164,
     "total_decode_assertions_per_port": 1372,
     "decode_jvms_per_port": 36
+  },
+  "pending_owner_process": {
+    "sources": {
+      "1.12.2": "921d17d53ea633bbcf065c7936198681a88b2962",
+      "1.6.4": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37"
+    },
+    "local_controller_tests": 140,
+    "production_source_changed": false,
+    "acceptance": "PENDING_EXACT_NATIVE_ARTIFACT_QUALIFICATION"
   }
 }
