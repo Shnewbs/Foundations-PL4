@@ -61,14 +61,32 @@ public final class LegacyWirelessStorage {
             if(seen.add(node.fluidTarget()))result.add(node);
         }return result;
     }
+    /** Revalidate the loaded host, route and native backing at EACH provider call.
+     * An inventory can be replaced after an earlier snapshot or during simulation. */
     private static final class StorageInventory implements ConservingItems.Inventory<ItemStack>{
-        final LegacyTile.NativeInventory nativeInventory;StorageInventory(LegacyTile.NativeInventory inventory){nativeInventory=inventory;}
+        final LegacyTile node;final LegacyTile.NativeInventory nativeInventory;
+        final String owner;final BoundedNetwork.Point target;
+        StorageInventory(LegacyTile host,LegacyTile.NativeInventory inventory){
+            node=host;nativeInventory=inventory;owner=host.owner;target=host.target();
+        }
+        private boolean current(){
+            if(!node.fluidServer()||!owner.equals(node.owner)||!target.equals(node.target())
+                    ||!node.worldObj.blockExists(node.xCoord,node.yCoord,node.zCoord)
+                    ||node.worldObj.getBlockTileEntity(node.xCoord,node.yCoord,node.zCoord)!=node)return false;
+            LegacyTile.NativeInventory now=node.inventory();
+            return now!=null&&now.inventory==nativeInventory.inventory
+                    &&java.util.Arrays.equals(now.indices,nativeInventory.indices);
+        }
         public int slots(){return nativeInventory.slots();}
-        public ItemStack extract(int slot,int amount,boolean simulate){return nativeInventory.extract(slot,amount,simulate);}
-        public ItemStack insert(int slot,ItemStack value,boolean simulate){return nativeInventory.insert(slot,value,simulate);}
+        public ItemStack extract(int slot,int amount,boolean simulate){
+            return current()?nativeInventory.extract(slot,amount,simulate):null;
+        }
+        public ItemStack insert(int slot,ItemStack value,boolean simulate){
+            return current()?nativeInventory.insert(slot,value,simulate):value;
+        }
         ItemStack peek(int slot){return nativeInventory.inventory.getStackInSlot(nativeInventory.indices[slot]);}
     }
-    private static StorageInventory inventory(LegacyTile node){LegacyTile.NativeInventory handler=node.inventory();return handler==null?null:new StorageInventory(handler);}
+    private static StorageInventory inventory(LegacyTile node){LegacyTile.NativeInventory handler=node.inventory();return handler==null?null:new StorageInventory(node,handler);}
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;
         Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();

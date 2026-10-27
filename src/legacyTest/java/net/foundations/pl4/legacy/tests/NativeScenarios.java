@@ -171,6 +171,15 @@ public final class NativeScenarios {
                 ItemStack changed=readerStack(32);changed.setItemName("Different");
                 source().setInventorySlotContents(0,changed);
                 check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&wirelessIron(p)==0,"NBT variant changed");
+                // A provider can replace its native backing during the last pre-extraction read.
+                // The simulated and executed callbacks must re-check the live host, not the old adapter.
+                FaultyChest reentrant=faultyChest(true);reentrant.setInventorySlotContents(0,readerStack(32));
+                LegacyWirelessStorage.Entry selected=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);
+                reentrant.replaceOnRead=true;
+                check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),selected,17)==0
+                        &&readerCount(source().getStackInSlot(0))==32&&wirelessIron(p)==0
+                        &&LegacyWirelessStorage.ready(fluidNode(0)),
+                        "reentrant inventory replacement during provider read is not spendable");
                 // Same block coordinates and identical stack must not authorize a different chest.
                 source().setInventorySlotContents(0,readerStack(32));
                 LegacyWirelessStorage.Entry prior=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);
@@ -493,7 +502,21 @@ public final class NativeScenarios {
     private int itemReceipts(){int n=0;for(Object raw:world.getEntitiesWithinAABB(EntityItem.class,area())){EntityItem e=(EntityItem)raw;if(!e.isDead&&e.getEntityItem().itemID==LegacyPL4.ITEM_CELL.itemID)n++;}return n;}
     private int looseIron(){int n=0;for(Object raw:world.getEntitiesWithinAABB(EntityItem.class,area())){EntityItem e=(EntityItem)raw;if(!e.isDead&&e.getEntityItem().itemID==Item.ingotIron.itemID)n+=e.getEntityItem().stackSize;}return n;}
     public static final class FaultyChest extends TileEntityChest {
-        boolean failInsert,failExtract;
+        boolean failInsert,failExtract,replaceOnRead;
+        @Override public ItemStack getStackInSlot(int slot){
+            ItemStack value=super.getStackInSlot(slot);
+            if(replaceOnRead){
+                replaceOnRead=false;
+                net.minecraft.world.World current=worldObj;int x=xCoord,y=yCoord,z=zCoord;
+                current.setBlockToAir(x,y,z);
+                if(!current.setBlock(x,y,z,Block.chest.blockID,0,2))
+                    throw new IllegalStateException("Provider reentrant replacement failed");
+                TileEntityChest fresh=(TileEntityChest)current.getBlockTileEntity(x,y,z);
+                if(fresh==null)throw new IllegalStateException("Replacement chest missing");
+                fresh.setInventorySlotContents(slot,value==null?null:value.copy());
+            }
+            return value;
+        }
         @Override public void setInventorySlotContents(int slot,ItemStack value){super.setInventorySlotContents(slot,value);if(failInsert)throw new IllegalStateException("provider failed after insertion");}
         @Override public ItemStack decrStackSize(int slot,int amount){ItemStack result=super.decrStackSize(slot,amount);if(failExtract)throw new IllegalStateException("provider failed after extraction");return result;}
     }
