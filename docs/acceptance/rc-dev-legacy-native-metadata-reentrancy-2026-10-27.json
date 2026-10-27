@@ -1,0 +1,58 @@
+{
+  "recorded_date": "2026-10-27",
+  "scope": "1.6.4 exact-source native result plus next metadata-reentrancy hardening",
+  "run_owner": "pl4-hourly-chat-20261027T2308Z-native-followup",
+  "validated_prior": {
+    "source_commit": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
+    "workflow_run": 40594656761,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40594656761",
+    "artifact_id": 12774974877,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40594656761/artifacts/12774974877",
+    "artifact_zip_sha256": "01ed61a604cf9a05013658244179ee1f7c85f7e69ff53b5836e5c646b2e1a6ff",
+    "scenario_count": "365/365",
+    "result": "success",
+    "runtime": "Forge 1345 Minecraft 1.6.4; Java 7 game, Java 8 compiler, Java 21 build tool",
+    "additional_gates": "Native production packaging, separate item/receipt JVM restart, controlled completed-save halt, pre-journal import and restart passed in run logs; provider/historical/decode individual count and contents not re-audited in this run",
+    "native_windows_and_installed_provider": "NOT RUN",
+    "public_release_eligible": false
+  },
+  "candidate": {
+    "parent": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
+    "source_commit": "db4e49bdb9cef327cad5f7601cce3259d967ab54",
+    "changed": [
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+    ],
+    "runtime_blob_sha": "fec63b42f707ecd5f468002b0e09f15f4520dcd8",
+    "fixture_blob_sha": "19e9d3385c9466c29f7cb3fcd6865d8b43711ed4",
+    "defect": "NativeInventory metadata construction calls provider getSizeInventory/getAccessibleSlotsFromSide; a synchronous callback can replace attached TileEntity after current() checks host but before checking returned cached backing, creating a detached adapter with identical indices.",
+    "repair": "After the metadata call, current() requires unchanged route/owner/host and exact live target TileEntity identity, while retaining prior native adapter/indices checks and loaded-only semantics.",
+    "new_native_controls": "Existing wireless stale variant selection scenario now also replaces only the physical tile on the second metadata size callback; asserts no detached insertion, player item preservation, no world drops and no false escrow quarantine.",
+    "static_checks": "PASS exact code anchors, target tile binding check, reentrant fixture stage and unchanged 365 scenario declarations; not a native acceptance substitute",
+    "exact_native_run": 40600693646,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40600693646",
+    "native_status_at_checkpoint": "in_progress",
+    "native_conclusion_at_checkpoint": null,
+    "qualified": false,
+    "limitations": [
+      "Installed optional providers not tested",
+      "No multiplayer/full modpack test",
+      "No arbitrary copied worlds or pre-save power-loss acceptance",
+      "Full RC parity/acceptance incomplete"
+    ]
+  },
+  "publisher_policy": {
+    "inspected": ".github/workflows/legacy164-native.yml at 51d7614",
+    "development_guard": true,
+    "rc_publication_cleared": false,
+    "new_github_release": null,
+    "new_curseforge_upload": null,
+    "note": "Branch workflow enforces development/maturity/explicit RC clearance; publication skipped on passing 51d run."
+  },
+  "next": [
+    "Inspect 40600693646 exact candidate native logs and artifact after completion; do not inherit 51d qualification if candidate fails.",
+    "If pass, bind source/JAR/artifact hashes and native restart/decode/provider/historical counts to candidate.",
+    "Extend metadata-callback identity test and fix to 1.12.2 only after publisher guard/lease checks; investigate installed providers, unloaded alias and multiplayer acceptance.",
+    "Keep all 24 RC flags false until exact-target end-to-end acceptance and explicit clearance."
+  ]
+}

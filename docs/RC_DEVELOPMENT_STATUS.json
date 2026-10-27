@@ -1784,5 +1784,17 @@
     "qualified_164": false,
     "rc_publication_cleared": false,
     "development_only": true
+  },
+  "latest_164_metadata_callback_checkpoint": {
+    "recorded_date": "2026-10-27",
+    "qualified_prior_source": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
+    "prior_native_run": 40594656761,
+    "prior_native_result": "success",
+    "candidate_source": "db4e49bdb9cef327cad5f7601cce3259d967ab54",
+    "candidate_native_run": 40600693646,
+    "candidate_state_at_checkpoint": "in_progress",
+    "candidate_qualified": false,
+    "rc_clearance": false,
+    "evidence_path": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json"
   }
 }

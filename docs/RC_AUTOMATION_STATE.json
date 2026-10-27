@@ -5,30 +5,22 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261027T2308Z-native-followup",
-    "task": "PL4 builds and releases (Chat)",
-    "started_at": "2026-10-27T23:08:34Z",
-    "expires_at": "2026-10-27T23:38:34Z",
-    "scope": "main and exact mc/1.6.4 only; no overlapping active writers",
-    "parent_sha": "c6c133f8e84012694c01d41350e3e7cb52035bb3",
-    "focus": "qualify exact 1.6.4 native result, implement next endpoint alias safety increment"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40576343833,
+  "last_verified_legacy_native_run": 40594656761,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: 1.12.2 exact b60b008 pinned native hourly success 390/390 with retained artifact 12775313262. 1.6.4 postcallback 4108fed still failed 364/365 on destructive block-swap fixture physical stock. Corrected tile-only provider replacement fixture 51d7614; native run 40594656761 pending. No 164 qualification, no RC clearance or publication.",
-  "local_validation": "Prior 6262acb exact-source production JAR/restart evidence verified. New 97da source has guarded reentrant native regression test; native workflow pending; NO new source native/JAR qualification. No installed-provider/stock-client/multiplayer evidence.",
+  "current_checkpoint": "2026-10-27 16:18 PT: 1.6.4 51d7614 successfully passed 365/365 native, production packaging/restarts/migration, with artifact 12774974877. New metadata callback detachment guard+native fixture db4e49b committed to mc/1.6.4; run 40600693646 in_progress at checkpoint, not yet qualified. Existing 1.12.2 b60b008 native artifact 12775313262 retained. Zero RC clearances or new releases.",
+  "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
   "next_work": [
-    "Verify 51d7614 branch native run 40594656761 and subsequent pinned hourly source artifact. Do not inherit older 4108/97da failing source or 6262acb passing source qualification. Require 365 native, decode1536/40 JVM, provider188, historical60, exact JAR and artifact SHA/CRCs.",
-    "If corrected fixture still fails, inspect tile-replacement callback stage, new native backing and physical stock before changing production guard or attempting a duplicate unchanged run.",
-    "1.12.2 b60b008 job 122504340231 has new retained successful source artifact 12775313262; preserve exact proof; client and installed-provider scopes remain open.",
-    "Continue provider sink replacement during simulation/execution, disconnected/unloaded aliases, multiplayer, migration, sustained performance, installed mod providers; no RC clearance."
+    "Inspect 40600693646 exact candidate native logs and artifact after completion; do not inherit 51d qualification if candidate fails.",
+    "If pass, bind source/JAR/artifact hashes and native restart/decode/provider/historical counts to candidate.",
+    "Extend metadata-callback identity test and fix to 1.12.2 only after publisher guard/lease checks; investigate installed providers, unloaded alias and multiplayer acceptance.",
+    "Keep all 24 RC flags false until exact-target end-to-end acceptance and explicit clearance."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -44,7 +36,7 @@
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40567666803,
-    "1.6.4": 40571895345
+    "1.6.4": 40594656761
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
@@ -53,11 +45,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261027T2225Z-reentrant-fixture",
-    "released_at": "2026-10-27T22:30:00Z",
-    "checkpoint": "1.6.4 tile replacement fixture 51d761456 native 40594656761 pending; 1.12.2 b60b008 hourly native passed; zero RC clearance."
+    "owner": "pl4-hourly-chat-20261027T2308Z-native-followup",
+    "released_at": "2026-10-27T23:18:30Z",
+    "checkpoint": "Qualified exact 51d 1.6.4 365 native; new db4e49b metadata-reentrancy fix awaits native run 40600693646; no RC releases."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-postcallback-2026-10-27.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
