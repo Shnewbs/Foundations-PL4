@@ -114,5 +114,7 @@
   "item_live_mutation_restart_fixture": true,
   "item_live_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_LIVE_OWNER_CONTEXT_TRANSFER_REMOVAL_AND_OBSERVED_ALIAS",
   "item_context_mutation_restart_fixture": true,
-  "item_context_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_CONTEXT_ONLY_UNCHANGED_HOST_OWNER_PROCESS_VALIDATION"
+  "item_context_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_CONTEXT_ONLY_UNCHANGED_HOST_OWNER_PROCESS_VALIDATION",
+  "item_owner_mutation_restart_fixture": true,
+  "item_owner_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_OWNER_ONLY_ORIGINAL_CONTEXT_PROCESS_VALIDATION"
 }
