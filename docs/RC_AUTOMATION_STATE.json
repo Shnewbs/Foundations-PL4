@@ -5,7 +5,15 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261027T2308Z-native-followup",
+    "task": "PL4 builds and releases (Chat)",
+    "started_at": "2026-10-27T23:08:34Z",
+    "expires_at": "2026-10-27T23:38:34Z",
+    "scope": "main and exact mc/1.6.4 only; no overlapping active writers",
+    "parent_sha": "c6c133f8e84012694c01d41350e3e7cb52035bb3",
+    "focus": "qualify exact 1.6.4 native result, implement next endpoint alias safety increment"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
