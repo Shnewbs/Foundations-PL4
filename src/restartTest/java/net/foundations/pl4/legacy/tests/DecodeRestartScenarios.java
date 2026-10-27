@@ -47,7 +47,11 @@ public final class DecodeRestartScenarios {
     }
     private void prepare(){
         for(int x:new int[]{64,80}){
-            load(x);load(x+5);air(x);air(x+5);place(x);chestBlock(x+5);
+            load(x);load(x+5);
+            // Native disposable terrain can contain falling gravel/sand above an opened cell.
+            // Remove only the loaded fixture column's falling blocks before placement.
+            clearFallingBlocksAbove(x);clearFallingBlocksAbove(x+5);
+            air(x);air(x+5);place(x);chestBlock(x+5);
             LegacyTile n=node(x);n.owner=OWNER;n.pending=new ItemStack(Item.ingotIron,8);n.itemFault="Original decode fixture uncertainty";n.itemImportPending=true;LegacyItemSafety.importSaved(n);
             check(n.itemJournalContext!=null,"seed unknown context "+x);
             String token=n.itemJournalContext.getString("Token");n.itemLegacyEvidence=evidence(x,token);n.fluidDirty();liveGuards(n,"seed "+x);
@@ -216,6 +220,19 @@ public final class DecodeRestartScenarios {
             placements.add(row);
             System.out.println("PL4 DECODE PLACEMENT "+new com.google.gson.Gson().toJson(row));
         }
+    }
+    private void clearFallingBlocksAbove(int x){
+        int removed=0;
+        // Only the explicitly named disposable fixture world reaches this path.
+        // Both columns were loaded by prepare(); no global scanning or chunk loads.
+        for(int y=201;y<256;y++){
+            int block=world.getBlockId(x,y,32);
+            if(block==Block.gravel.blockID||block==Block.sand.blockID){
+                world.setBlockToAir(x,y,32);
+                removed++;
+            }
+        }
+        System.out.println("PL4 DECODE GRAVITY GUARD x="+x+" removed="+removed);
     }
     private void chestBlock(int x){world.setBlock(x,200,32,Block.chest.blockID,0,3);}
     private LegacyTile node(int x){return (LegacyTile)world.getBlockTileEntity(x,200,32);}
