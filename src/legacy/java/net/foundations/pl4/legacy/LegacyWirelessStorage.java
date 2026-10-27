@@ -31,7 +31,11 @@ public final class LegacyWirelessStorage {
         private Entry(LegacyTile node,int slot,ItemStack stack){this.node=node;this.slot=slot;this.snapshot=stack.copy();}
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
-        List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
+        List<LegacyTile> result=new ArrayList<LegacyTile>();
+        // Readmission of retained root evidence precedes all network/provider discovery.
+        // A controller with unresolved escrow cannot enumerate healthy downstream aliases.
+        if(!ready(root))return result;
+        BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
         List<LegacyTile> candidates=new ArrayList<LegacyTile>();Set<BoundedNetwork.Point> blocked=new HashSet<BoundedNetwork.Point>();
         // Collect uncertainty before selecting ready routes: another face must not bypass the same target's escrow fence.
         for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
