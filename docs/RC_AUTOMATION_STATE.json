@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "claimed_at": "2026-10-27T00:12:00Z",
-    "expires_at": "2026-10-27T00:42:00Z",
-    "scope": "Native process live owner/context/transfer/removal acceptance; exact legacy branches and main controller/evidence",
-    "expected_parent": "11bd7aa9f5febce3991f2a5b40dc93d82fd21a96"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -50,9 +44,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
   "last_writer_release": {
-    "owner": "pl4-live-admission-2026-10-26T23",
-    "released_at": "2026-10-26T23:27:26Z",
-    "checkpoint": "Exact admission-fix native/client evidence qualified and preserved; unobserved edits, mutation-process and broader acceptance remain resumable."
+    "owner": "pl4-live-mutation-process-2026-10-27T00",
+    "released_at": "2026-10-27T00:15:00Z",
+    "checkpoint": "Pinned live mutation source/controller committed; isolated exact native builds can proceed without writer lease."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -115,5 +109,16 @@
     "already_submitted": 24,
     "new_uploads": 0,
     "moderation_and_public_visibility_reverified": false
+  },
+  "pending_live_process_checkpoint": {
+    "sources": {
+      "1.12.2": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+      "1.6.4": "f381691f13a94666da71ae1b6430cfee85d373ab"
+    },
+    "controller": "a33543f898ade47559f6c9acb582be74569bfc17",
+    "local_controller_executions": 133,
+    "new_controller_cases": 8,
+    "production_source_changed": false,
+    "scope": "New decode-live native process suite edits owner/context after cleared scoped admission, transfer and observed alias, retains actual sealed removal receipt and physical source chests. Qualification pending; no new acceptance granted."
   }
 }
