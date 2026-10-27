@@ -178,7 +178,9 @@ public final class NativeScenarios {
                 reentrant.replaceOnRead=true;
                 int reentrantMoved=LegacyWirelessStorage.withdraw(p,wirelessTool(p),selected,17);
                 check(reentrantMoved==0,"reentrant native read never authorizes a detached extraction");
-                check(readerCount(source().getStackInSlot(0))==32,"reentrant replacement retains physical inventory");
+                check(source()!=reentrant&&readerCount(source().getStackInSlot(0))==32,
+                        "reentrant replacement retains 32 units in the new native backing");
+                check(looseIron()==0,"provider backing replacement creates no world item drops");
                 check(wirelessIron(p)==0,"reentrant replacement never credits player inventory");
                 check(LegacyWirelessStorage.ready(fluidNode(0)),"read-only replacement does not falsely quarantine host");
                 // Same block coordinates and identical stack must not authorize a different chest.
@@ -509,12 +511,14 @@ public final class NativeScenarios {
             if(replaceOnRead){
                 replaceOnRead=false;
                 net.minecraft.world.World current=worldObj;int x=xCoord,y=yCoord,z=zCoord;
-                current.setBlockToAir(x,y,z);
-                if(!current.setBlock(x,y,z,Block.chest.blockID,0,2))
-                    throw new IllegalStateException("Provider reentrant replacement failed");
-                TileEntityChest fresh=(TileEntityChest)current.getBlockTileEntity(x,y,z);
-                if(fresh==null)throw new IllegalStateException("Replacement chest missing");
+                // Change the backing tile without destroying the containing block.
+                // Breaking a chest invokes vanilla item drops and mutates stacks,
+                // which invalidates the conservation control for this provider test.
+                TileEntityChest fresh=new TileEntityChest();
                 fresh.setInventorySlotContents(slot,value==null?null:value.copy());
+                current.setBlockTileEntity(x,y,z,fresh);
+                if(current.getBlockTileEntity(x,y,z)!=fresh)
+                    throw new IllegalStateException("Provider backing replacement failed");
             }
             return value;
         }
