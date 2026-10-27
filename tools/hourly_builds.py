@@ -121,6 +121,11 @@ def validate_decode_placements(report):
         expected=[64,80,200] if phase.endswith('write') else [200]
         if not isinstance(rows,list) or [r.get('x') for r in rows]!=expected:
             raise ValueError('Missing/duplicate/out-of-order native decode placements: '+phase)
+        # When a native fixture supplies stage-specific diagnostics, require the
+        # entire four-phase native matrix to supply coherent complete observations.
+        # Older pinned sources without stages retain their original exact gate.
+        staged=any('stage' in r for p in ('write','verify','crash-write','crash-verify')
+                   for r in report['phase_reports'][p].get('placements',[]) if isinstance(r,dict))
         for row in rows:
             if (type(row.get('expected_block')) is not int or row['expected_block']<=0 or
                 type(row.get('actual_block')) is not int or row['actual_block']!=row['expected_block'] or
@@ -128,6 +133,11 @@ def validate_decode_placements(report):
                 row.get('y')!=200 or row.get('z')!=32 or row.get('metadata')!=0 or
                 row.get('tile_class')!='net.foundations.pl4.legacy.LegacyTile' or row.get('tile_invalid') is not False):
                 raise ValueError('Invalid native decode placement observation: '+phase)
+            if staged and (row.get('stage')!='complete' or
+                    type(row.get('chunk_x')) is not int or row['chunk_x']!=row['x']//16 or
+                    type(row.get('chunk_z')) is not int or row['chunk_z']!=2 or
+                    row.get('block_exists_before') is not True or row.get('block_exists_after') is not True):
+                raise ValueError('Incomplete/stale native decode placement stage: '+phase)
 
 def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
     """Qualify decode persistence separately from provider and historical scenarios."""

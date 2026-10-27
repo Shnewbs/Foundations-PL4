@@ -15,6 +15,18 @@ class PlacementTests(unittest.TestCase):
             with self.subTest(key=key):
                 report=copy.deepcopy(self.report);report['phase_reports']['write']['placements'][0][key]=value
                 with self.assertRaises(ValueError):validate_decode_placements(report)
+    def test_staged_observations_complete(self):
+        for report in self.report['phase_reports'].values():
+            for row in report['placements']:
+                row.update(stage='complete',chunk_x=row['x']//16,chunk_z=2,block_exists_before=True,block_exists_after=True)
+        self.check()
+        for key,value in (('stage','tile_lookup'),('chunk_x',99),('chunk_z',0),('block_exists_before',False),('block_exists_after',None)):
+            with self.subTest(key=key):
+                report=copy.deepcopy(self.report);report['phase_reports']['write']['placements'][0][key]=value
+                with self.assertRaises(ValueError):validate_decode_placements(report)
+    def test_staged_observations_mixed_or_missing(self):
+        self.report['phase_reports']['write']['placements'][0].update(stage='complete',chunk_x=4,chunk_z=2,block_exists_before=True,block_exists_after=True)
+        with self.assertRaises(ValueError):self.check()
     def test_omitted_diagnostic_not_silent_pass(self):
         del self.report['phase_reports']['verify']['placements']
         with self.assertRaises(ValueError):self.check()
