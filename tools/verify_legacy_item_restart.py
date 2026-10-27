@@ -3,6 +3,14 @@ from pathlib import Path
 import hashlib,json,os,re,shutil,subprocess,zipfile,time
 ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def retain_phase_report(work,logs,prefix,phase,pid,code,logfile):
+    """Preserve exact raw phase bytes and process facts before any acceptance check."""
+    source=work/(prefix+'-'+phase+'.json');target=logs/source.name
+    if source.is_file():shutil.copyfile(source,target)
+    observation=dict(phase=phase,pid=pid,exit_code=code,log_sha256=digest(logfile),report_present=source.is_file(),report_sha256=digest(target) if source.is_file() else None)
+    (logs/(prefix+'-'+phase+'-process.json')).write_text(json.dumps(observation,indent=2)+'\n')
+    if not source.is_file():raise ValueError('Missing restart phase report: '+phase+'; inspect '+str(logfile))
+    return json.loads(target.read_text())
 def verify(suite="item"):
     decode=suite in {"decode-raw","decode-missing","decode-compound","decode-owner","decode-dimension","decode-scope","decode-rewrite","decode-live","decode-live-context","decode-live-owner"}
     if suite!="item" and not decode:raise ValueError("Unknown restart suite")
@@ -54,7 +62,7 @@ def verify(suite="item"):
                         if proc.poll() is None:proc.kill();proc.wait()
                     pid=proc.pid
             text=logfile.read_text(errors='replace');expected=-9 if phase=='crash-write' else 0
-            report=json.loads((work/(prefix+'-'+phase+'.json')).read_text())
+            report=retain_phase_report(work,logs,prefix,phase,pid,code,logfile)
             if code!=expected or report['minecraft']!=mc or report['phase']!=phase or report['passed'] is not True or not report['assertions']:raise ValueError('Restart phase failed: '+phase+'; inspect '+str(logfile))
             if not report['process'].startswith(str(pid)+'@') or 'PL4 ITEM RESTART '+phase+': PASS' not in text or not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I):raise ValueError('Missing process/native identity')
             if ('Stopping server' in text)==(phase=='crash-write'):raise ValueError('Unexpected shutdown path')
@@ -63,7 +71,6 @@ def verify(suite="item"):
             if not (work/'pl4-item-restart-world/level.dat').is_file():raise ValueError('No saved level')
             processes.append(dict(phase=phase,pid=pid,exit_code=code,log_sha256=digest(logfile)))
             reports[phase]=report
-            (logs/(prefix+'-'+phase+'.json')).write_text(json.dumps(report,indent=2)+'\n')
         if reports[phases[0]]['tokens']!=reports[phases[1]]['tokens'] or len(set(reports[phases[0]]['tokens']))!=2:raise ValueError('Tokens changed across JVMs')
         if decode:
             if reports[phases[0]].get('decode_outcomes')!=reports[phases[1]].get('decode_outcomes') or len(reports[phases[0]].get('decode_outcomes',[]))!=2:raise ValueError('Decode evidence changed across JVMs')

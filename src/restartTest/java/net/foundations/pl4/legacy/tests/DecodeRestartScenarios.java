@@ -20,6 +20,7 @@ import java.util.*;
 public final class DecodeRestartScenarios {
     private WorldServer world;private final List<String> cases=new ArrayList<String>(),tokens=new ArrayList<String>();
     private final List<Map<String,Object>> outcomes=new ArrayList<Map<String,Object>>();
+    private final List<Map<String,Object>> placements=new ArrayList<Map<String,Object>>();
     private static final String OWNER="pl4owner";
     private String suite;
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
@@ -38,6 +39,7 @@ public final class DecodeRestartScenarios {
             passed=true;System.out.println("PL4 ITEM RESTART "+phase+": PASS");
         }finally{
             Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.6.4");report.put("suite","decode-"+suite);report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("decode_outcomes",outcomes);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
+            report.put("placements",placements);
             FileWriter out=new FileWriter("item-decode-"+suite+"-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
             if(passed&&phase.equals("crash-write")){System.out.println("PL4 ITEM RESTART KILL READY");System.out.flush();System.err.flush();while(true)Thread.sleep(1000);}
             server.initiateShutdown();
@@ -177,7 +179,18 @@ public final class DecodeRestartScenarios {
     private void check(boolean ok,String name){if(!ok)throw new AssertionError(name);cases.add(name);}
     private boolean sameTagPayload(NBTTagCompound a,NBTTagCompound b){NBTTagCompound left=new NBTTagCompound(),right=new NBTTagCompound();left.setTag("Payload",a.copy());right.setTag("Payload",b.copy());return left.equals(right);}
         private BoundedNetwork.Point pos(int x){return new BoundedNetwork.Point(x,200,32);}
-    private void place(int x){world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);node(x).owner=OWNER;node(x).fluidDirty();}
+    private void place(int x){
+        int before=world.getBlockId(x,200,32);
+        boolean changed=world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);
+        net.minecraft.tileentity.TileEntity tile=world.getBlockTileEntity(x,200,32);
+        Map<String,Object> row=new LinkedHashMap<String,Object>();
+        row.put("x",x);row.put("y",200);row.put("z",32);row.put("before_block",before);row.put("set_block_changed",changed);
+        row.put("expected_block",LegacyPL4.EXPORT.blockID);row.put("actual_block",world.getBlockId(x,200,32));row.put("metadata",world.getBlockMetadata(x,200,32));
+        row.put("tile_class",tile==null?null:tile.getClass().getName());row.put("tile_invalid",tile==null?null:tile.isInvalid());placements.add(row);
+        System.out.println("PL4 DECODE PLACEMENT "+new com.google.gson.Gson().toJson(row));
+        if(world.getBlockId(x,200,32)!=LegacyPL4.EXPORT.blockID||!(tile instanceof LegacyTile)||tile.isInvalid())throw new AssertionError("Native fixture placement failed: "+row);
+        LegacyTile n=(LegacyTile)tile;n.owner=OWNER;n.fluidDirty();
+    }
     private void chestBlock(int x){world.setBlock(x,200,32,Block.chest.blockID,0,3);}
     private LegacyTile node(int x){return (LegacyTile)world.getBlockTileEntity(x,200,32);}
     private TileEntityChest chest(int x){return (TileEntityChest)world.getBlockTileEntity(x,200,32);}

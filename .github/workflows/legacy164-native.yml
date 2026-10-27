@@ -83,7 +83,9 @@ jobs:
         shell: bash
         run: bash tools/validate_legacy_fluids.sh
       - name: Verify item receipt and journal across native processes
-        run: python3 tools/verify_legacy_item_restart.py
+        run: |
+          python3 -m unittest discover -s tools -p test_restart_phase_retention.py
+          python3 tools/verify_legacy_item_restart.py
       - name: Verify actual pre-journal fault world import and restart
         env:
           GH_TOKEN: ${{ github.token }}

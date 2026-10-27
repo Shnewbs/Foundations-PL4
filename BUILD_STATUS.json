@@ -122,5 +122,6 @@
   "item_owner_mutation_restart_fixture": true,
   "item_owner_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_OWNER_ONLY_ORIGINAL_CONTEXT_PROCESS_VALIDATION",
   "item_handheld_admission_fixture": true,
-  "item_handheld_admission_acceptance": "PENDING_EXACT_NATIVE_READINESS_OBSERVATION_AND_ALIAS_REGRESSION"
+  "item_handheld_admission_acceptance": "PENDING_EXACT_NATIVE_READINESS_OBSERVATION_AND_ALIAS_REGRESSION",
+  "decode_placement_observation_fixture": true
 }
