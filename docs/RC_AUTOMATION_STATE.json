@@ -5,25 +5,21 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-handheld-2026-10-27T03",
-    "claimed_at": "2026-10-27T03:26:00Z",
-    "expires_at": "2026-10-27T03:46:00Z",
-    "scope": "Preserve readiness fix qualification, exact clients and unresolved native placement evidence",
-    "expected_parent": "ac8c77a0c362b14832b45358e8c559d801ca7f33"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40436915385,
+  "last_verified_legacy_native_run": 40442846030,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40437795680,
-    "1.6.4": 40419011289
+    "1.12.2": 40443746091,
+    "1.6.4": 40443746113
   },
-  "current_checkpoint": "Added owner-only native process coverage retaining the original journal context on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1536/40 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass;140 local and191 CI controller executions pass. All17 packaged hashes,20 raw decode worlds per port and44 distinct decode/provider process identities qualify. Eight bounded native-copy queries preserve changed host versus original journal owner labels and unchanged archives without clearance. Fresh112 exact-JAR client passes full5-page export and normal regressions;2 captures reviewed/21 hashed.164 retains prior identical production-payload client evidence. Fresh CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads/0 failures. Unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse.",
-  "local_validation": "PASS:140 local/191 CI;native383/361/main192;decode1536/40 JVMs,provider188/historical60 separately;17 packaged hashes/20 raw decode worlds per port/44 distinct decode-provider process IDs;8 bounded copied-save queries;fresh112 exact-JAR client and prior identical164 payload client.",
+  "current_checkpoint": "Fixed explicit handheld readiness admission: ready(tile) invokes existing saved-context validation before quarantine/escrow checks. Each legacy port reproduced3 failures plus1 passing valid-context control; all4 cases now pass at native387/387 and365/365. Main192,146 local and197 CI controller tests pass. Pinned hourly exact-source gates independently qualify decode1536/40 JVMs,provider188/historical60,all17 packaged hashes and20 raw decode worlds per port. Both fresh exact-JAR clients pass full5/4-page export and normal regressions;4 captures reviewed/42 hashed. A parallel164 branch run failed native fixture placement with null tile during decode-missing/write preparation; same phase passed hourly, underlying placement/lifecycle cause unresolved and preserved. Local extraction space failure was repaired with hash-verified prior duplicate cleanup. Unobserved/unloaded aliases, placement failure and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
+  "local_validation": "PASS scoped pinned hourly:387/365/main192;146 local/197 CI;decode1536/provider188/historical60 separate;17 packaged hashes/20 raw decode worlds per port;both fresh exact clients. Separate164 branch fixture placement FAIL before decode-missing/write; unresolved, not erased by hourly pass.",
   "next_work": [
-    "Probe actual handheld endpoint discovery and native disconnected aliases before/after host admission/tick, plus loaded/unloaded boundaries without global scans or force-load.",
+    "Diagnose and repair1.6.4 native fixture placement/lifecycle failure: DecodeRestartScenarios.place returned null tile during decode-missing/write preparation in parallel branch run; same phase passed in pinned hourly run. Do not hide or blindly retry it.",
+    "Probe actual handheld endpoint/provider-discovery order, owner-filtered/skipped hosts, disconnected aliases before readiness and loaded/unloaded boundaries without global scans or force-load.",
+    "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
     "Continue linked-host/receipt diagnostics, installed providers, multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, dedicated multiplayer/online identity/actual dimension travel, installed providers and copied user/modpack saves with observed evidence.",
@@ -36,38 +32,39 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
-  "main_native_validation_run": 40436915385,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+  "main_native_validation_run": 40442846030,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40436915385
+    40442846030
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40436915385,
-    "1.6.4": 40436915385
+    "1.12.2": 40442846030,
+    "1.6.4": 40442846030
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
-    "1.6.4": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
+    "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+    "1.6.4": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "fab682f9c24d4b3c45b164ddf1d4bb0b09232da0",
+  "native_main_source_commit": "648a71eff28d3cb27b18df693e94a55b26691da1",
   "last_writer_release": {
     "owner": "pl4-handheld-2026-10-27T03",
-    "released_at": "2026-10-27T03:22:00Z",
-    "checkpoint": "Both fixed-source exact production JARs native-qualified and pinned for fresh stock clients; no publication."
+    "released_at": "2026-10-27T03:29:44Z",
+    "checkpoint": "Readiness source fix and exact native/client evidence preserved together with unresolved parallel164 fixture placement failure."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-owner-only-process-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "921d17d53ea633bbcf065c7936198681a88b2962",
-      "1.6.4": "9f67a197d1b6f9a3ce7ff7c610811128a4c32e37"
+      "1.12.2": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
+      "1.6.4": "a0da0a383971f93771f1d2d5e78e9917c6a28a76"
     },
-    "publication_steps": "SKIPPED"
+    "publication_steps": "SKIPPED",
+    "native_branch_164": "FAIL_NATIVE_FIXTURE_PLACEMENT"
   },
-  "previous_checkpoint": "Added context-only live mutation acceptance with unchanged host owner on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1372/36 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass.138 targeted local and189 CI executions pass. All17 packaged hashes,18 raw decode worlds per port and40 distinct decode/provider JVM identities qualify. Fresh112 exact-JAR client passes complete5-page export and normal regressions;2 captures reviewed/21 hashed.164 production hash unchanged, retaining prior exact-payload client evidence. Owner-only process, unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
+  "previous_checkpoint": "Added owner-only native process coverage retaining the original journal context on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1536/40 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass;140 local and191 CI controller executions pass. All17 packaged hashes,20 raw decode worlds per port and44 distinct decode/provider process identities qualify. Eight bounded native-copy queries preserve changed host versus original journal owner labels and unchanged archives without clearance. Fresh112 exact-JAR client passes full5-page export and normal regressions;2 captures reviewed/21 hashed.164 retains prior identical production-payload client evidence. Fresh CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads/0 failures. Unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -185,26 +182,44 @@
     "decode_jvms_per_port": 40
   },
   "pending_handheld_observation": {
-    "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+    "source_commit": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
     "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
-    "observation": "ready(tile) checks retained-node quarantine/empty escrow without calling importSaved. Endpoint discovery filters owner and collects handlers before ready and target-fence checks. Retained evidence blocks the host itself, but admission timing and disconnected backing aliases need separate native handheld probes.",
-    "scope": "Source observation only. No new transfer bypass demonstrated. Probe observed connected endpoint/root versus disconnected alias before/after host admission/tick and across unloaded boundaries; no global scan or force-load."
+    "observation": "Endpoint discovery still filters owner and calls inventory() before readiness. Probe actual handheld provider callbacks, skipped hosts and disconnected aliases before observation; no additional bypass demonstrated.",
+    "scope": "No global scan or force-load; explicit readiness case is resolved separately."
   },
-  "pending_handheld_checkpoint": {
+  "completed_handheld_readiness": {
+    "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
     "sources": {
       "1.12.2": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
       "1.6.4": "a0da0a383971f93771f1d2d5e78e9917c6a28a76"
     },
-    "red_sources": {
-      "1.12.2": "57172367d3a9759178d118a037130a1e3c68b4a2",
-      "1.6.4": "7e9274fde8acea7caf15f28fcc90919e113f8bea"
-    },
+    "native_run": 40442846030,
     "red_runs": [
       40442386316,
       40442401955
     ],
-    "local_controller_tests": 146,
-    "acceptance": "PENDING_EXACT_FIXED_SOURCE_NATIVE_AND_CLIENT_QUALIFICATION",
-    "scope": "Explicit readiness observation only; no unobserved/unloaded alias clearance."
+    "native_cases_per_port": 4,
+    "reproduced_failures_per_port": 3,
+    "scope": "Explicit readiness observation only. No pre-observation/unloaded or general backing-alias clearance."
+  },
+  "resolved_handheld_readiness_observation": {
+    "prior": {
+      "source_commit": "921d17d53ea633bbcf065c7936198681a88b2962",
+      "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "observation": "ready(tile) checks retained-node quarantine/empty escrow without calling importSaved. Endpoint discovery filters owner and collects handlers before ready and target-fence checks. Retained evidence blocks the host itself, but admission timing and disconnected backing aliases need separate native handheld probes.",
+      "scope": "Source observation only. No new transfer bypass demonstrated. Probe observed connected endpoint/root versus disconnected alias before/after host admission/tick and across unloaded boundaries; no global scan or force-load."
+    },
+    "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+    "resolution": "Explicit ready(tile) now calls importSaved before the predicate. Endpoint/provider-discovery order, owner-filtered/skipped hosts and unobserved/unloaded aliases remain separate."
+  },
+  "pending_native_placement_failure": {
+    "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+    "run": 40442840965,
+    "job": 121986997317,
+    "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+    "phase": "decode-missing/write",
+    "error": "NullPointerException in DecodeRestartScenarios.place during write preparation; underlying native placement/lifecycle cause unresolved.",
+    "same_source_hourly_result": "PASS independently in40442846030",
+    "retry_attempted": false
   }
 }
