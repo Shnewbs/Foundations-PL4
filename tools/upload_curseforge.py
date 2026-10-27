@@ -79,11 +79,21 @@ def main():
     version, tag, repo = (os.environ[k] for k in ("VERSION", "RELEASE_TAG", "GITHUB_REPOSITORY"))
     if not re.fullmatch(r"[A-Za-z0-9._-]+", version) or tag != "v" + version:
         raise RuntimeError("Invalid release version/tag.")
-    jar = Path(f"build/libs/FoundationsPL4-1.21.1-{version}.jar")
+    status = json.loads(Path("BUILD_STATUS.json").read_text(encoding="utf-8"))
+    if status.get("minecraft") != "1.6.4" or status.get("loader") != "Forge" or status.get("version") != version:
+        raise RuntimeError("Tagged build status disagrees with the exact Forge target/version.")
+    channel = str(status.get("release_channel", "")).lower()
+    if channel not in ("alpha", "beta", "release") or re.search(r"(?:^|[._-])(?:dev|snapshot|nightly)(?:[._-]|$)", version, re.I):
+        raise RuntimeError("Development, snapshot and unclassified versions cannot upload.")
+    if re.search(r"(?:^|[._-])rc\d*(?:[._-]|$)", version, re.I) and (channel != "beta" or status.get("rc_publication_cleared") is not True):
+        raise RuntimeError("RC publication requires beta maturity and exact tagged-source clearance.")
+    jar = Path(f"build/libs/FoundationsPL4-1.6.4-{version}-srg.jar")
     if not jar.is_file():
         raise RuntimeError("The tested runtime JAR is missing.")
     digest = hashlib.sha256(jar.read_bytes()).hexdigest()
-    release = json.loads(gh("release", "view", tag, "--repo", repo, "--json", "assets"))
+    release = json.loads(gh("release", "view", tag, "--repo", repo, "--json", "assets,isDraft,isPrerelease"))
+    if release.get("isDraft") or (channel in ("alpha", "beta") and release.get("isPrerelease") is not True):
+        raise RuntimeError("Release is draft or its prerelease maturity disagrees with tagged status.")
     with tempfile.TemporaryDirectory() as directory:
         marker = Path(directory) / MARKER
         if any(a["name"] == MARKER for a in release["assets"]):
@@ -96,7 +106,7 @@ def main():
         # The official upload API resolves supported version names directly.
         notes = Path(f"docs/releases/{version}.md")
         changelog = notes.read_text(encoding="utf-8") if notes.is_file() else f"Foundations PL4 {version}. See the matching GitHub Release for changes."
-        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.21.1", "NeoForge", "Client", "Server"], "releaseType": release_type(version)}
+        metadata = {"changelog": changelog, "changelogType": "markdown", "displayName": f"Foundations PL4 {version}", "gameVersionNames": ["1.6.4", "Forge", "Client", "Server"], "releaseType": release_type(version)}
         data, content_type = multipart(metadata, jar)
         response = request_json(f"/projects/{project}/upload-file", token, data, content_type)
         file_id = response.get("id")

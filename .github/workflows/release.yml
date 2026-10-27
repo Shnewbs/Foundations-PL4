@@ -103,7 +103,7 @@ jobs:
           if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_TYPE -eq "tag" -and $env:GITHUB_REF_NAME -ne $expectedTag) {
             throw "Tag '$env:GITHUB_REF_NAME' does not match project version '$version' (expected '$expectedTag')."
           }
-          $publish = "true"
+          $publish = if ($env:PL4_ALLOW_PUBLICATION -eq "true") { "true" } else { "false" }
           if ($env:GITHUB_EVENT_NAME -eq "push" -and $env:GITHUB_REF_TYPE -eq "branch") {
             $existing = git ls-remote --tags origin "refs/tags/$expectedTag"
             if ($LASTEXITCODE -ne 0) { throw "Could not check whether this version was already released." }
@@ -132,8 +132,8 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          $jar = "build/libs/FoundationsPL4-1.21.1-$env:VERSION.jar"
-          $sources = "build/libs/FoundationsPL4-1.21.1-$env:VERSION-sources.jar"
+          $jar = "build/libs/FoundationsPL4-1.6.4-$env:VERSION-srg.jar"
+          $sources = "build/libs/FoundationsPL4-1.6.4-$env:VERSION-sources.jar"
           foreach ($file in @($jar, $sources)) {
             if (-not (Test-Path $file -PathType Leaf)) {
               throw "Expected release artifact was not produced: $file"
@@ -174,7 +174,7 @@ jobs:
           $notes = "docs/releases/$env:VERSION.md"
           $title = "Foundations PL4 $env:VERSION"
           $prerelease = if ($env:VERSION -match "(alpha|beta|rc|\d[ab](\.|$))") { "true" } else { "false" }
-          $artifacts = @("build/libs/FoundationsPL4-1.21.1-$env:VERSION.jar", "build/libs/FoundationsPL4-1.21.1-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
+          $artifacts = @("build/libs/FoundationsPL4-1.6.4-$env:VERSION.jar", "build/libs/FoundationsPL4-1.6.4-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
           gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
           $exists = $LASTEXITCODE -eq 0
           if ($exists) {
