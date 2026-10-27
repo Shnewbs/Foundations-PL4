@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261027T1911Z",
+    "claimed_at": "2026-10-27T19:11:00Z",
+    "expires_at": "2026-10-27T19:41:00Z",
+    "scope": "global-source-main-and-version-branch-RC-work",
+    "purpose": "repair two exact legacy native scenario regressions and validate policy, preserve others",
+    "base_main_sha": "588766e48b1c0d7e0abc282e0d52cc839ced4dba"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
