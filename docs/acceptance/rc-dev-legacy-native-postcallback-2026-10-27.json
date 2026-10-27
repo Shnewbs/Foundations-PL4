@@ -99,9 +99,46 @@
     "old_development_draft": "preserved; unpublished"
   },
   "next": [
-    "Check 4108fed independent native workflow 40593588805. Require365 ordinary,1536 decode/40 JVMs,188 provider/4 JVMs,60 historical/3 JVMs, actual package/outer+nested ZIP/hash integrity before any native qualification. If red, inspect four separated reentrant predicates and raw native logs; do not hammer unchanged failures.",
-    "Check main workflow 40593703572 after exact-name controller repair for pinned1.12.2 b60b008. Require the retained runtime/native/process/artifact hashes; do not relabel old failed evidence.",
-    "Add separately scoped provider replacement during sink simulation/insertion and loaded/unloaded disconnected backing aliases, then installed-provider, multiplayer, copied-save, sustained-load, stock-client exact-payload gates.",
-    "Investigate unrelated intermittent x80 gravel placement overwrite from raw stage records on recurrence; previous passing fixture does not establish root cause."
-  ]
+    "Verify 51d7614 branch native run 40594656761 and subsequent pinned hourly source artifact. Do not inherit older 4108/97da failing source or 6262acb passing source qualification. Require 365 native, decode1536/40 JVM, provider188, historical60, exact JAR and artifact SHA/CRCs.",
+    "If corrected fixture still fails, inspect tile-replacement callback stage, new native backing and physical stock before changing production guard or attempting a duplicate unchanged run.",
+    "1.12.2 b60b008 job 122504340231 has new retained successful source artifact 12775313262; preserve exact proof; client and installed-provider scopes remain open.",
+    "Continue provider sink replacement during simulation/execution, disconnected/unloaded aliases, multiplayer, migration, sustained performance, installed mod providers; no RC clearance."
+  ],
+  "followup_native": {
+    "failing_intermediate": {
+      "source": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
+      "branch_run": 40593588805,
+      "hourly_run": 40593703572,
+      "ordinary": "364/365",
+      "failing_named_case": "wireless stale variant selection rejected",
+      "failing_individual_assertion": "reentrant replacement retains physical inventory",
+      "meaning": "Post-read authorization now refuses transfer but physical-stock fixture control still fails; never treat 4108 as qualified."
+    },
+    "diagnosed_fixture_hazard": "The fixture's reentrant chest replacement destroyed the original block, invoking vanilla break/drop behavior and changing physical item state. This did not isolate an inventory-backing change. Replace only the tile instance on the existing chest block and explicitly check zero world iron drops.",
+    "correction": {
+      "source": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
+      "parent": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
+      "changed_files": [
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+      ],
+      "production_files_unchanged": true,
+      "branch_publisher_guard": "verified prior to push; development publication excluded",
+      "native_run": 40594656761,
+      "result_at_checkpoint": "IN_PROGRESS",
+      "qualified": false
+    },
+    "separately_qualified_1122": {
+      "source": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+      "native_run": 40593703572,
+      "job_id": 122504340231,
+      "ordinary": "390/390",
+      "production_boot": "PASS",
+      "generated_preview3_migration": "PASS",
+      "native_restart_workflow_job": "PASS",
+      "retained_artifact_id": 12775313262,
+      "retained_artifact_sha256": "c83dc801c88d779ec999477742d4ccfd915bded910e97a8bb9054d47dcba87e7",
+      "artifact_size_bytes": 7025527,
+      "scope": "Exact pinned 1.12.2 hourly native source; does not clear installed providers, stock-client for changed payload, recovery, performance, multiplayer or RC publication."
+    }
+  }
 }

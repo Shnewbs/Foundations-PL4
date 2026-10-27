@@ -1773,12 +1773,15 @@
   "latest_unqualified_native_repair": {
     "recorded_date": "2026-10-27",
     "evidence": "docs/acceptance/rc-dev-legacy-native-postcallback-2026-10-27.json",
-    "source_164": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
+    "source_164": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
+    "production_fix_source_164": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
     "controller_main": "1018b6c0a1ac98cba5a71cb57d119a4c13f7a157",
-    "source_1122_unchanged": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
-    "native_164_workflow": 40593588805,
+    "native_164_workflow": 40594656761,
     "controller_1122_workflow": 40593703572,
-    "qualified": false,
+    "source_1122_unchanged": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+    "native_1122_qualified": true,
+    "artifact_1122": 12775313262,
+    "qualified_164": false,
     "rc_publication_cleared": false,
     "development_only": true
   }
