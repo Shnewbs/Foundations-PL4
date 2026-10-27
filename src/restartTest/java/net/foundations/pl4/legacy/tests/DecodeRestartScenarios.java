@@ -24,7 +24,7 @@ public final class DecodeRestartScenarios {
     private String suite;
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
         suite=System.getProperty("foundations_pl4.decodeRestart","");if(suite.isEmpty())return;
-        if(!Arrays.asList("raw","missing","compound","owner","dimension","scope","rewrite","live","live-context").contains(suite))throw new IllegalStateException("Explicit decode suite required");
+        if(!Arrays.asList("raw","missing","compound","owner","dimension","scope","rewrite","live","live-context","live-owner").contains(suite))throw new IllegalStateException("Explicit decode suite required");
         String phase=System.getProperty("foundations_pl4.itemRestart","");
         if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Explicit restart phase required");
         MinecraftServer server=MinecraftServer.getServer();
@@ -97,7 +97,7 @@ public final class DecodeRestartScenarios {
         try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
         check(journalTag().equals(saved),"inspection and replacement never clear journal");
     }
-    private boolean liveSuite(){return suite.equals("live")||suite.equals("live-context");}
+    private boolean liveSuite(){return suite.equals("live")||suite.equals("live-context")||suite.equals("live-owner");}
     private String liveOwner(){return suite.equals("live-context")?OWNER:"live-owner";}
     private void mutateLive(LegacyTile n,int x){
         LegacyItemSafety.importSaved(n);
@@ -105,7 +105,7 @@ public final class DecodeRestartScenarios {
         NBTTagCompound original=(NBTTagCompound)n.itemLegacyEvidence.copy();
         world.setBlock(x,199,32,Block.chest.blockID,0,3);TileEntityChest stock=(TileEntityChest)world.getBlockTileEntity(x,199,32);
         stock.setInventorySlotContents(0,new ItemStack(Item.ingotIron,32));stock.onInventoryChanged();
-        n.side=0;n.owner=liveOwner();n.itemFault="";n.itemJournalContext=rejected(x,original.getString("OriginalToken"));
+        n.side=0;n.owner=liveOwner();n.itemFault="";if(!suite.equals("live-owner"))n.itemJournalContext=rejected(x,original.getString("OriginalToken"));
         check(n.transferOnce()==0&&LegacyTile.STACKS.count(n.pending)==8&&sameTagPayload(n.itemLegacyEvidence,original),"live mutation transfer preserves evidence and escrow "+x);
         check(!n.itemImportPending&&LegacyWirelessSafety.data(world).blocked("unrelated-owner",pos(240)),"live mutation readmission freezes changed identity "+x);
         n.fluidDirty();
@@ -151,6 +151,7 @@ public final class DecodeRestartScenarios {
     }
     private boolean compoundSuite(){return !suite.equals("raw")&&!suite.equals("missing");}
     private String contextValue(){
+        if(suite.equals("live-owner"))return "original-context-host-owner-rewrite";
         if(suite.equals("owner"))return "rejected-owner-int71";
         if(suite.equals("dimension"))return "rejected-dimension-string0";
         if(suite.equals("scope"))return "rejected-scope-compound";
@@ -162,6 +163,7 @@ public final class DecodeRestartScenarios {
         if(suite.equals("compound"))r.setInteger("Token",71);else r.setString("Token",token);
         r.setString("Owner",OWNER);r.setInteger("Dimension",0);r.setString("Scope","legacy-unknown");
         r.setInteger("HostX",x);r.setInteger("HostY",200);r.setInteger("HostZ",32);
+        if(suite.equals("live-owner"))return r;
         NBTTagCompound p=new NBTTagCompound();p.setByteArray("Bytes",new byte[]{4,5,6});r.setTag("RejectedPayload",p);
         if(suite.equals("owner"))r.setInteger("Owner",71);
         if(suite.equals("dimension"))r.setString("Dimension","0");

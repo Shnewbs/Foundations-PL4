@@ -4,7 +4,7 @@ import hashlib,json,os,re,shutil,subprocess,zipfile,time
 ROOT=Path(__file__).resolve().parents[1]
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def verify(suite="item"):
-    decode=suite in {"decode-raw","decode-missing","decode-compound","decode-owner","decode-dimension","decode-scope","decode-rewrite","decode-live","decode-live-context"}
+    decode=suite in {"decode-raw","decode-missing","decode-compound","decode-owner","decode-dimension","decode-scope","decode-rewrite","decode-live","decode-live-context","decode-live-owner"}
     if suite!="item" and not decode:raise ValueError("Unknown restart suite")
     prefix="item-"+suite+"-restart" if decode else "item-restart"
     status=json.loads((ROOT/'BUILD_STATUS.json').read_text());mc=status['minecraft']
@@ -92,3 +92,5 @@ if __name__=='__main__':
     if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_live_mutation_restart_fixture') is True:verify('decode-live')
 
     if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_context_mutation_restart_fixture') is True:verify('decode-live-context')
+
+    if json.loads((ROOT/'BUILD_STATUS.json').read_text()).get('item_owner_mutation_restart_fixture') is True:verify('decode-live-owner')
