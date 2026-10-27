@@ -1,16 +1,11 @@
 {
-  "recorded_date": "2026-10-26",
+  "recorded_date": "2026-10-27",
   "timezone": "America/Los_Angeles",
   "repository": "Shnewbs/Foundations-PL4",
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-publisher-guard-2026-10-27T16",
-    "started_at": "2026-10-27T16:12:00Z",
-    "expires_at": "2026-10-27T17:05:00Z",
-    "scope": "Protect exact-version legacy publication workflows from development/uncleared RC resource builds; guarded main and version refs"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -19,7 +14,7 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
+  "current_checkpoint": "2026-10-27: Guarded exact-tag source and Forge-only publishing on legacy 1.12.2 and 1.6.4 refs; six scoped workflow/uploader changes; native branch jobs pending. No gameplay runtime changes, RC clearance or release uploads. Placement NPE and broader acceptance remain unresolved.",
   "local_validation": "PASS150 targeted local controller +4 retention unit tests;201 CI discovery +4 trusted native retention executions;164365/main192;1536 decode/40 JVMs +provider188/historical60 separate;80 placements/44 raw process manifests/20 raw decode worlds/12 newly packaged hashes. Original intermittent placement NPE remains unresolved.",
   "next_work": [
     "Continue diagnosis of unresolved164 placement NPE with newly preserved raw phase/process/block/tile facts; capture native chunk residency/load/population and individual lookup stages if needed. Lost old phase cannot establish failed dereference or seeded assertion count.",
@@ -40,7 +35,7 @@
   "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
-  "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
+  "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
   "latest_native_runs": [
     40448042043
   ],
@@ -55,18 +50,33 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-endpoints-2026-10-27T05",
-    "released_at": "2026-10-27T05:07:30Z",
-    "checkpoint": "Two native callback-order failures reproduced; production admission prepass and strict controller checkpoint, pinned builds underway."
+    "owner": "pl4-publisher-guard-2026-10-27T16",
+    "released_at": "2026-10-27T16:20:40.684Z",
+    "checkpoint": "Guarded both legacy workflow upload routes, verified exact branch-only diffs, preserved RC gates; native CI in progress."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
-    "source": "829ceafa6614010b5dc685fd8200425fd180e39c",
-    "native_branch_run": 40448018062,
-    "result": "PASS",
-    "publication_steps": "SKIPPED",
-    "prior_failure_preserved": 40442840965
+    "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
+    "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
+    "source_commits": {
+      "1.12.2": "19da12598eece763190d3e1353763ce5dc1fc173",
+      "1.6.4": "f4e6c5fc4498c83d319f268b8817930e97a2b915"
+    },
+    "static_validation": "PASS",
+    "native_actions": [
+      "40539444677",
+      "40539611218"
+    ],
+    "native_validation": "PENDING",
+    "publication_steps": "NOT EXECUTED; DEVELOPMENT SOURCE INELIGIBLE",
+    "prior_review": {
+      "evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+      "source": "829ceafa6614010b5dc685fd8200425fd180e39c",
+      "native_branch_run": 40448018062,
+      "result": "PASS",
+      "publication_steps": "SKIPPED",
+      "prior_failure_preserved": 40442840965
+    }
   },
   "previous_checkpoint": "Fixed explicit handheld readiness admission: ready(tile) invokes existing saved-context validation before quarantine/escrow checks. Each legacy port reproduced3 failures plus1 passing valid-context control; all4 cases now pass at native387/387 and365/365. Main192,146 local and197 CI controller tests pass. Pinned hourly exact-source gates independently qualify decode1536/40 JVMs,provider188/historical60,all17 packaged hashes and20 raw decode worlds per port. Both fresh exact-JAR clients pass full5/4-page export and normal regressions;4 captures reviewed/42 hashed. A parallel164 branch run failed native fixture placement with null tile during decode-missing/write preparation; same phase passed hourly, underlying placement/lifecycle cause unresolved and preserved. Local extraction space failure was repaired with hash-verified prior duplicate cleanup. Unobserved/unloaded aliases, placement failure and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
   "completed_live_mutation_checkpoint": {
@@ -239,5 +249,6 @@
     "native_placements": 80,
     "retained_raw_phase_manifests": 44,
     "root_cause_resolved": false
-  }
+  },
+  "publisher_guard_previous_checkpoint": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload."
 }

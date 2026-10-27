@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-10-27T16:20:40.684Z",
+  "scope": "Legacy branch publication safety, exact tagged source and CurseForge 1.12.2/1.6.4 metadata; no gameplay/runtime source changes",
+  "branch_commits": {
+    "mc/1.12.2": {
+      "parent": "035fd376476d004e7e5231d0a297b19a5dbd060d",
+      "commit": "19da12598eece763190d3e1353763ce5dc1fc173",
+      "files": [
+        ".github/workflows/release.yml",
+        ".github/workflows/curseforge.yml",
+        "tools/upload_curseforge.py"
+      ],
+      "jar": "FoundationsPL4-1.12.2-<version>.jar"
+    },
+    "mc/1.6.4": {
+      "parent": "829ceafa6614010b5dc685fd8200425fd180e39c",
+      "commit": "f4e6c5fc4498c83d319f268b8817930e97a2b915",
+      "files": [
+        ".github/workflows/release.yml",
+        ".github/workflows/curseforge.yml",
+        "tools/upload_curseforge.py"
+      ],
+      "jar": "FoundationsPL4-1.6.4-<version>-srg.jar"
+    }
+  },
+  "repairs": [
+    "Branch release.yml now turns false exact-source PL4_ALLOW_PUBLICATION into publish=false before native release work; final GitHub and CurseForge steps remain gated.",
+    "Manual branch CurseForge jobs check out the requested tag commit, verify release status/draft/prerelease and exact target/version/Forge/channel/RC clearance before downloading or uploading.",
+    "Each branch checks exact JAR SHA256SUMS with unique entry and publishes only target-correct Forge game version metadata; 1.6.4 uses native SRG JAR rather than old 1.21.1 NeoForge name.",
+    "The uploader independently rejects development/unclassified source, uncleared RC, mismatched tag/status and draft/wrong maturity releases, retaining upload-receipt duplicate protection."
+  ],
+  "validation": {
+    "remote_code_diff": "PASS; exactly three intended files per branch",
+    "static_policy_checks": "PASS; checked actual committed workflow/action guards, tagged checkout, exact expected JAR and Forge metadata on both refs",
+    "native_source_code": "UNCHANGED; existing last completed production and exact native evidence retains original source SHA; new branch native validation runs started and are not yet counted as passing",
+    "branch_action_runs": {
+      "mc/1.12.2": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40539444677",
+      "mc/1.6.4": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40539611218"
+    },
+    "new_release_eligible": false,
+    "new_published_releases": 0,
+    "new_curseforge_uploads": 0
+  },
+  "remaining": [
+    "Run/inspect both new branch native workflows to completion without treating their pending status as a pass.",
+    "Release-builder Windows/legacy-native toolchains and exact-tagged RC publication paths still require true end-to-end tests on qualified source before any release.",
+    "Existing 1.6.4 intermittent native placement NPE and owner-filtered/unloaded alias, provider, multiplayer, migration, recovery and sustained performance acceptance remain unresolved."
+  ],
+  "rc_publication_cleared": false,
+  "stable_rc_published": false
+}
