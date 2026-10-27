@@ -5,29 +5,22 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-hourly-chat-20261027T2108Z-guarded164","claimed_at":"2026-10-27T21:08:00Z","expires_at":"2026-10-27T21:25:00Z","scope":"mc/1.6.4 guarded handheld native inventory bindings + main acceptance evidence","base_main_sha":"c48cfc68755a2b55ea6e6d5e4c9a5c1abafce935"},
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40571895345,
+  "last_verified_legacy_native_run": 40576343833,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: 1.6.4 source 6262acb binds handheld selection to IInventory identity + native slot and rejects same-coordinate, same-item replacement; preserves 365 scenario count with stronger negative control. Native CI 40576343833 started and unqualified pending full run. Prior passing 290b9e58/40571895345 remains last qualified source; no RC clearance/release.",
-  "local_validation": "1.6.4 6262acb code and strengthened fixture passed 8 source-level structural checks. Java7/Forge compile and native world behavior are NOT yet verified; workflow 40576343833 running. No fresh packaged production or client evidence.",
+  "current_checkpoint": "2026-10-27: Prior mc/1.6.4 6262acb native workflow 40576343833 PASS with 365/365 and 1536 decode/188 provider/60 historical, exact artifact CRCs and hashes. New reentrant native provider identity guard source 97da344f8 pushed; workflow 40584590058 still in progress. No current client/RC clearance or release.",
+  "local_validation": "Prior 6262acb exact-source production JAR/restart evidence verified. New 97da source has guarded reentrant native regression test; native workflow pending; NO new source native/JAR qualification. No installed-provider/stock-client/multiplayer evidence.",
   "next_work": [
-    "Inspect 1.6.4 native run 40576343833 for 6262acb: verify complete 365 ordinary + all decode/provider/historical/restart gates and compiled/package source hashes before credit; investigate any failure without repeating unchanged infra retries.",
-    "Extend bounded, loaded-only owner-observation and same-backing escrow fences across handheld aliases (esp. unloaded/disconnected cases) with native negative-control scenarios; native physical-slot identity on 6262acb alone does NOT establish quarantine/failover acceptance.",
-    "Investigate historical x80 gravel placement race only with new stage/source-bound native evidence; flag2 success is not full terrain root-cause resolution.",
-    "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
-    "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
-    "Continue linked-host/receipt diagnostics, installed providers, multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
-    "Continue owner-authorized linked-host/receipt export, dedicated multiplayer/online identity/actual dimension travel, installed providers and copied user/modpack saves with observed evidence.",
-    "Continue reviewed reconciliation, broader legacy editor/multipart, Forge1.16.1–1.16.4 launcher profiles and sustained active-provider/full-server performance. All24 RC flags remainfalse.",
-    "Continue bounded owner-authorized linked-host/receipt export and dedicated multiplayer/online profile/dimension travel authorization. Current native fake-player receipt checks do not certify online identity, provider permissions or actual dimension travel.",
-    "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
-    "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference."
+    "Verify new 1.6.4 candidate 97da344 workflow 40584590058: 365 ordinary, all 1536 decode/188 provider/60 historical process checks, exact source/JAR/hash/CRC, retained artifacts; no stock-client inheritance across new runtime bytes.",
+    "Probe native provider replacement during actual sink simulation/insertion, unloaded/disconnected aliases and hidden backing mappings without chunk force loading; keep quarantine and exact item conservation.",
+    "Investigate historical x80 gravel placement race only with fresh raw same-source diagnostics; do not mistake fixture-level pass for terrain root cause.",
+    "Complete installed optional providers, dedicated multiplayer/online identity/dimension travel, arbitrary copied saves, reviewed recovery and sustained performance across exact targets."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -52,11 +45,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T2007Z-alias164",
-    "released_at": "2026-10-27T20:17:00Z",
-    "checkpoint": "New 1.6.4 production native physical-slot selection guard committed 6262acb; 8 source checks PASS; triggered native validation 40576343833 pending; no JAR/RC clearance."
+    "owner": "pl4-hourly-chat-20261027T2108Z-guarded164",
+    "released_at": "2026-10-27T21:17:00Z",
+    "checkpoint": "Scoped new mc/1.6.4 handheld provider reentrant identity guard 97da344f819efd8fe9d41dcb23685da8d3a7d52d; native workflow 40584590058 pending; prior 6262acb native qualification verified; acceptance/report docs/acceptance/rc-dev-legacy-reentrant-provider-2026-10-27.json. No JAR/RC publication cleared."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-stale-physical-slot-2026-10-27.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-reentrant-provider-2026-10-27.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -315,5 +308,11 @@
     "expected_native_scenarios": 365,
     "scope": "native same-position replacement backing fail-closed",
     "qualified": false
+  },
+  "latest_164_candidate": {
+    "source_commit": "97da344f819efd8fe9d41dcb23685da8d3a7d52d",
+    "workflow_run": 40584590058,
+    "qualification": "PENDING_NATIVE_AND_ARTIFACT",
+    "release_cleared": false
   }
 }

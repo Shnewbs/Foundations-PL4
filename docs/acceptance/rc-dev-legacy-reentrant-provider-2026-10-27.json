@@ -1,0 +1,60 @@
+{
+  "recorded_date": "2026-10-27",
+  "role": "hourly PL4 implementation",
+  "repository": "Shnewbs/Foundations-PL4",
+  "tested_prior_candidate": {
+    "minecraft": "1.6.4",
+    "source_commit": "6262acb640b731ff4100d67e2447af0980f3e9c5",
+    "workflow_run": 40576343833,
+    "status": "PASS",
+    "ordinary_native_scenarios": {
+      "passed": 365,
+      "total": 365
+    },
+    "decode_restart_assertions": 1536,
+    "decode_processes": 40,
+    "provider_restart_assertions": 188,
+    "historical_provider_assertions": 60,
+    "runtime_sha256": "7b0a9766754da0fe2a8a6cc7e781c5b49a5a548361195dc7a1e69d109f0057d7",
+    "artifact_id": 12768136621,
+    "artifact_sha256": "3c3a73cb581eb11061c964bbc58d5eb4b0c4316f6b9e14f015d3ab712faa471f",
+    "artifact_size_bytes": 7022774,
+    "outer_and_nested_archive_crc": "PASS",
+    "notes": "Production/fixture exact-source artifacts checked; no new stock-client or installed-provider acceptance"
+  },
+  "new_implementation": {
+    "minecraft": "1.6.4",
+    "parent_source_commit": "6262acb640b731ff4100d67e2447af0980f3e9c5",
+    "candidate_source_commit": "97da344f819efd8fe9d41dcb23685da8d3a7d52d",
+    "changed_files": [
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+    ],
+    "behavior": "Loaded-only StorageInventory adapters revalidate same host instance, owner, target, underlying IInventory identity and exact native slot mapping before each simulation or mutation callback. Reentrant chest replacement during provider read is a native negative-control within the existing 365 scenarios.",
+    "native_validation_run": 40584590058,
+    "native_result": "PENDING",
+    "native_qualification": "PENDING_FULL_NATIVE_RESTART_AND_ARTIFACT_HASH",
+    "stock_client_for_new_payload": "NOT_RUN",
+    "installed_mod_provider_for_new_payload": "NOT_RUN",
+    "publication_cleared": false
+  },
+  "unresolved": [
+    "Global/hidden or unobserved backing aliases, unloaded/disconnected routes and provider discovery order",
+    "Installed optional inventory providers, multiplayer identities, dimension travel, copied save reconciliation, recovery and sustained performance",
+    "Native exact-JAR real stock client screenshots and behavior for this newly changed production payload",
+    "Historical x80 gravel placement root cause remains unknown despite prior fixture qualification"
+  ],
+  "publication": {
+    "rc_flags_cleared": 0,
+    "rc_targets": 24,
+    "new_github_release": null,
+    "new_curseforge_upload": null,
+    "development_publisher_step": "GUARDED_AND_INELIGIBLE"
+  },
+  "next": [
+    "Complete new native workflow 40584590058 and verify new exact source/fixture/runtime/JAR hashes, all raw phase/process counts and stored artifacts",
+    "If native failed, diagnose exact stage and repair without repeated infrastructure retries",
+    "Probe provider replacement during destination insertion, loaded/unloaded aliases, and handoff quarantine with exact native negative-control fixtures",
+    "Seek installed-provider, multiplayer, migration and sustained performance acceptance before any RC clearance"
+  ]
+}
