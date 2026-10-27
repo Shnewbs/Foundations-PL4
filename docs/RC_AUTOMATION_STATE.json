@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "claimed_at": "2026-10-27T00:24:10Z",
-    "expires_at": "2026-10-27T00:39:10Z",
-    "scope": "Pin independently qualified changed 1.12.2 production archive for fresh exact-JAR stock-client regression",
-    "expected_parent": "71be683f71b6f318531e18f10e9dc9f9281d6f85"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -51,8 +45,8 @@
   "native_main_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
   "last_writer_release": {
     "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "released_at": "2026-10-27T00:22:10Z",
-    "checkpoint": "Corrected exact 1.6.4 OwnerName schema and added neighboring-schema rejection regression; pinned legacy candidates unchanged."
+    "released_at": "2026-10-27T00:24:10Z",
+    "checkpoint": "Pinned qualified changed 1.12.2 production payload for independent stock client; process candidates unchanged and retry active."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -133,6 +127,14 @@
       "artifact_sha256": "9c0ddd8ff1d42b5858978097d837ce60586aed8203e26d0627a24227c3944603",
       "reason": "New independent controller incorrectly expected 1.12.2 Owner key for 1.6.4 native OwnerName. Native live suite passed50/32/50/32; retained raw worlds pass corrected exact-schema check.",
       "production_or_fixture_failure": false
+    },
+    "qualified_112": {
+      "source": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+      "native_run": 40425177328,
+      "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
+      "decode_assertions": 1208,
+      "live_suite_assertions": 164,
+      "client": "PENDING_FRESH_CHANGED_PACKAGED_BYTES"
     }
   }
 }
