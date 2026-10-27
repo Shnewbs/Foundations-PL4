@@ -91,6 +91,30 @@ class HourlyBuildTests(unittest.TestCase):
             save('rc-development-gate.json',dict(minecraft=mc,version='0.2.0-rc.1-dev',source_parent=SHA,native_gate='PASS',expected_fixtures=156,artifact_sha256={'build/libs/runtime.jar':digest}))
         return mc,jar
 
+    def test_endpoint_discovery_proof_uses_112_native_case_names(self):
+        expected = ['handheld blocked root refuses provider discovery',
+                    'handheld discovery observes later endpoint before provider',
+                    'handheld discovery healthy provider remains scoped']
+        self.assertEqual(builds.ENDPOINT_DISCOVERY_CASES['1.12.2'], expected)
+        self.assertNotIn('1.6.4', builds.ENDPOINT_DISCOVERY_CASES)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'run-legacy').mkdir()
+            report = root / 'run-legacy/legacy-scenarios.json'
+            accepted = [{'name': name, 'passed': True} for name in expected]
+            report.write_text(json.dumps({'minecraft': '1.12.2', 'results': accepted}))
+            builds.validate_live_evidence_cases(root, '1.12.2', expected)
+            # Old invented label, false, and duplicate proof must each fail.
+            variants = [
+                [{'name': 'handheld discovery observes root before provider', 'passed': True}] + accepted[1:],
+                [dict(accepted[0], passed=False)] + accepted[1:],
+                accepted + [accepted[0]],
+            ]
+            for rows in variants:
+                report.write_text(json.dumps({'minecraft': '1.12.2', 'results': rows}))
+                with self.assertRaisesRegex(ValueError, 'Missing unique passing'):
+                    builds.validate_live_evidence_cases(root, '1.12.2', expected)
+
     def test_native_proof_stays_unpublished_for_both_runtime_kinds(self):
         for legacy in (False,True):
             with tempfile.TemporaryDirectory() as directory:
