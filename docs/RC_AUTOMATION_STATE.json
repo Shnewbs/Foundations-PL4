@@ -5,24 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-placement-2026-10-27T04",
-    "acquired_at": "2026-10-27T04:16:00Z",
-    "expires_at": "2026-10-27T04:31:00Z",
-    "purpose": "Preserve qualified native placement/phase evidence and unresolved original failure; no RC clearance"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40442846030,
+  "last_verified_legacy_native_run": 40448042043,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "Fixed explicit handheld readiness admission: ready(tile) invokes existing saved-context validation before quarantine/escrow checks. Each legacy port reproduced3 failures plus1 passing valid-context control; all4 cases now pass at native387/387 and365/365. Main192,146 local and197 CI controller tests pass. Pinned hourly exact-source gates independently qualify decode1536/40 JVMs,provider188/historical60,all17 packaged hashes and20 raw decode worlds per port. Both fresh exact-JAR clients pass full5/4-page export and normal regressions;4 captures reviewed/42 hashed. A parallel164 branch run failed native fixture placement with null tile during decode-missing/write preparation; same phase passed hourly, underlying placement/lifecycle cause unresolved and preserved. Local extraction space failure was repaired with hash-verified prior duplicate cleanup. Unobserved/unloaded aliases, placement failure and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
-  "local_validation": "PASS scoped pinned hourly:387/365/main192;146 local/197 CI;decode1536/provider188/historical60 separate;17 packaged hashes/20 raw decode worlds per port;both fresh exact clients. Separate164 branch fixture placement FAIL before decode-missing/write; unresolved, not erased by hourly pass.",
+  "current_checkpoint": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
+  "local_validation": "PASS150 targeted local controller +4 retention unit tests;201 CI discovery +4 trusted native retention executions;164365/main192;1536 decode/40 JVMs +provider188/historical60 separate;80 placements/44 raw process manifests/20 raw decode worlds/12 newly packaged hashes. Original intermittent placement NPE remains unresolved.",
   "next_work": [
-    "Diagnose and repair1.6.4 native fixture placement/lifecycle failure: DecodeRestartScenarios.place returned null tile during decode-missing/write preparation in parallel branch run; same phase passed in pinned hourly run. Do not hide or blindly retry it.",
+    "Continue diagnosis of unresolved164 placement NPE with newly preserved raw phase/process/block/tile facts; capture native chunk residency/load/population and individual lookup stages if needed. Lost old phase cannot establish failed dereference or seeded assertion count.",
     "Probe actual handheld endpoint/provider-discovery order, owner-filtered/skipped hosts, disconnected aliases before readiness and loaded/unloaded boundaries without global scans or force-load.",
     "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
@@ -37,39 +32,38 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
-  "main_native_validation_run": 40442846030,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+  "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40442846030
+    40448042043
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40442846030,
-    "1.6.4": 40442846030
+    "1.6.4": 40448042043
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
     "1.6.4": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "648a71eff28d3cb27b18df693e94a55b26691da1",
+  "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
     "owner": "pl4-placement-2026-10-27T04",
-    "released_at": "2026-10-27T04:09:00Z",
-    "checkpoint": "Diagnostic fixture and failed-phase retention checkpoint; pinned native builds do not hold writer lease."
+    "released_at": "2026-10-27T04:17:44Z",
+    "checkpoint": "Diagnostic source, pinned native/raw-world/hash evidence and original unresolved failure preserved; no release eligibility."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
-    "version_sources": {
-      "1.12.2": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
-      "1.6.4": "a0da0a383971f93771f1d2d5e78e9917c6a28a76"
-    },
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+    "source": "829ceafa6614010b5dc685fd8200425fd180e39c",
+    "native_branch_run": 40448018062,
+    "result": "PASS",
     "publication_steps": "SKIPPED",
-    "native_branch_164": "FAIL_NATIVE_FIXTURE_PLACEMENT"
+    "prior_failure_preserved": 40442840965
   },
-  "previous_checkpoint": "Added owner-only native process coverage retaining the original journal context on both legacy ports. Each new suite passes164 assertions/4 JVMs; totaldecode1536/40 JVMs, separate provider188/historical60. Ordinary native383/361/main192 pass;140 local and191 CI controller executions pass. All17 packaged hashes,20 raw decode worlds per port and44 distinct decode/provider process identities qualify. Eight bounded native-copy queries preserve changed host versus original journal owner labels and unchanged archives without clearance. Fresh112 exact-JAR client passes full5-page export and normal regressions;2 captures reviewed/21 hashed.164 retains prior identical production-payload client evidence. Fresh CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads/0 failures. Unobserved/unloaded aliases and broader acceptance remain open;all24 RC flagsfalse.",
+  "previous_checkpoint": "Fixed explicit handheld readiness admission: ready(tile) invokes existing saved-context validation before quarantine/escrow checks. Each legacy port reproduced3 failures plus1 passing valid-context control; all4 cases now pass at native387/387 and365/365. Main192,146 local and197 CI controller tests pass. Pinned hourly exact-source gates independently qualify decode1536/40 JVMs,provider188/historical60,all17 packaged hashes and20 raw decode worlds per port. Both fresh exact-JAR clients pass full5/4-page export and normal regressions;4 captures reviewed/42 hashed. A parallel164 branch run failed native fixture placement with null tile during decode-missing/write preparation; same phase passed hourly, underlying placement/lifecycle cause unresolved and preserved. Local extraction space failure was repaired with hash-verified prior duplicate cleanup. Unobserved/unloaded aliases, placement failure and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -223,10 +217,20 @@
     "job": 121986997317,
     "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
     "phase": "decode-missing/write",
-    "error": "NullPointerException in DecodeRestartScenarios.place during write preparation; underlying native placement/lifecycle cause unresolved.",
+    "error": "NullPointerException at compound place source line during decode-missing/write preparation; exact x/dereference unknown because raw phase report was lost. Underlying native placement/lifecycle cause unresolved.",
     "same_source_hourly_result": "PASS independently in40442846030",
     "retry_attempted": false,
     "instrumented_source": "829ceafa6614010b5dc685fd8200425fd180e39c",
-    "next_step": "Inspect instrumented native placement records from changed source; failed phase raw JSON/process facts now retained before acceptance checks. Root cause remains unresolved; no blind retry of old source."
+    "next_step": "On recurrence inspect retained native block/tile observations and raw phase/process records; extend chunk-provider residency/load/population and individual lookup-stage diagnostics to identify cause. Never synthesize a tile or label the old failure resolved from passing runs.",
+    "instrumented_result": "PASS365 and80 placement observations in40448042043; independent branch40448018062 PASS; this does not explain prior failure."
+  },
+  "completed_native_placement_diagnostics": {
+    "source": "829ceafa6614010b5dc685fd8200425fd180e39c",
+    "controller": "6e900045dea09da16fb12c028ced039ba70c4b8f",
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+    "hourly_run": 40448042043,
+    "native_placements": 80,
+    "retained_raw_phase_manifests": 44,
+    "root_cause_resolved": false
   }
 }

@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "648a71eff28d3cb27b18df693e94a55b26691da1",
-      "workflow_run": 40442846030,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40442846030",
+      "source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
+      "workflow_run": 40448042043,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40448042043",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -1083,15 +1083,15 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40442846030,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40442846030",
-      "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+      "workflow_run": 40448042043,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40448042043",
+      "source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
       "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+      "candidate_source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -1106,7 +1106,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 365,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1151,11 +1151,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_RETAINED_IDENTICAL_PRODUCTION_BYTES_NO_NEW_CLIENT_OR_CAPTURE_REVIEW",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Explicit ready(tile) revalidates saved context before quarantine checks;3 reproduced readiness failures and valid-context control pass. Observed alias is queried after readiness. Existing1536 decode/provider188/historical60 and raw worlds qualify in pinned hourly run. Unobserved/unloaded aliases, endpoint/provider-discovery order, providers/multiplayer/recovery/performance remain open. Separate parallel branch placement failure is preserved and remains open; hourly pass does not resolve it.",
+      "acceptance_attribution": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40443746113,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1196,10 +1196,14 @@
         "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
         "workflow_run": 40443746113,
         "result": "PASS",
-        "fresh_client_run": true,
+        "fresh_client_run": false,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Fresh exact current native-qualified changed production JAR; normal storage/search/grouping/replay/codecs/display and complete opaque export. New readiness edit cases are native fixtures, not graphical mutation acceptance."
+        "scope": "Prior source a0da0a38 client40443746113 retained for identical246afad2 production bytes; fixture/runner/controller changes only. No new client run or capture review.",
+        "current_candidate_source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
+        "byte_identity_verified": true,
+        "new_reviewed_captures": 0,
+        "new_hashed_captures": 0
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1473,7 +1477,7 @@
           "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
         }
       },
-      "build_status_blob_sha": "9b6f65456586ebf7c64f125edfc04714c9cc93ee",
+      "build_status_blob_sha": "929f4b1a3e722c27dbb5b045f4675c11cfbd35c0",
       "previous_live_fault_guard_process_assertions": 168,
       "previous_context_only_candidate": {
         "source_commit": "f381691f13a94666da71ae1b6430cfee85d373ab",
@@ -1522,12 +1526,38 @@
         "result": "FAIL_NATIVE_FIXTURE_PLACEMENT",
         "run": 40442840965,
         "phase": "decode-missing/write",
-        "error": "Null tile at DecodeRestartScenarios.place during preparation; cause unresolved.",
+        "error": "NullPointerException at compound place source line during decode-missing/write preparation; exact x/dereference unknown because raw phase report was lost. Underlying native placement/lifecycle cause unresolved.",
         "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
+      },
+      "previous_placement_diagnostic_candidate": {
+        "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+        "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
+        "workflow_run": 40442846030
+      },
+      "native_placement_diagnostics": {
+        "result": "PASS_80_OBSERVATIONS_40_DECODE_JVMS",
+        "retained_process_manifests": 44,
+        "evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+        "root_cause_resolved": false
+      },
+      "latest_branch_native_validation": {
+        "result": "PASS",
+        "run": 40448018062,
+        "publisher": "SKIPPED"
+      },
+      "previous_stock_client_attribution": {
+        "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+        "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
+        "workflow_run": 40443746113,
+        "result": "PASS",
+        "fresh_client_run": true,
+        "reviewed_captures": 2,
+        "hashed_captures": 21,
+        "scope": "Fresh exact current native-qualified changed production JAR; normal storage/search/grouping/replay/codecs/display and complete opaque export. New readiness edit cases are native fixtures, not graphical mutation acceptance."
       }
     }
   ],
-  "latest_work": "Fixed explicit handheld readiness admission: ready(tile) invokes existing saved-context validation before quarantine/escrow checks. Each legacy port reproduced3 failures plus1 passing valid-context control; all4 cases now pass at native387/387 and365/365. Main192,146 local and197 CI controller tests pass. Pinned hourly exact-source gates independently qualify decode1536/40 JVMs,provider188/historical60,all17 packaged hashes and20 raw decode worlds per port. Both fresh exact-JAR clients pass full5/4-page export and normal regressions;4 captures reviewed/42 hashed. A parallel164 branch run failed native fixture placement with null tile during decode-missing/write preparation; same phase passed hourly, underlying placement/lifecycle cause unresolved and preserved. Local extraction space failure was repaired with hash-verified prior duplicate cleanup. Unobserved/unloaded aliases, placement failure and broader acceptance remain open;all24 RC flagsfalse;no release/upload.",
+  "latest_work": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1555,23 +1585,27 @@
     "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
   },
   "partial_164_acceptance": {
-    "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+    "source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
     "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
-    "workflow_run": 40442846030,
+    "workflow_run": 40448042043,
     "stock_wireless_client": {
       "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
       "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
       "workflow_run": 40443746113,
       "result": "PASS",
-      "fresh_client_run": true,
+      "fresh_client_run": false,
       "reviewed_captures": 2,
       "hashed_captures": 21,
-      "scope": "Fresh exact current native-qualified changed production JAR; normal storage/search/grouping/replay/codecs/display and complete opaque export. New readiness edit cases are native fixtures, not graphical mutation acceptance."
+      "scope": "Prior exact production payload retained; no new client or screenshot review.",
+      "current_candidate_source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
+      "byte_identity_verified": true,
+      "new_reviewed_captures": 0,
+      "new_hashed_captures": 0
     },
     "closes_all_acceptance": false,
-    "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
+    "evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json"
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
@@ -1683,5 +1717,22 @@
     "workflow_run": 40309781699,
     "stock_wireless_client": "acceptance/rc-dev-legacy-preupgrade-fault-import-2026-10-26.json",
     "closes_all_acceptance": false
+  },
+  "previous_partial_164_placement_acceptance": {
+    "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+    "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
+    "workflow_run": 40442846030,
+    "stock_wireless_client": {
+      "source_commit": "a0da0a383971f93771f1d2d5e78e9917c6a28a76",
+      "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
+      "workflow_run": 40443746113,
+      "result": "PASS",
+      "fresh_client_run": true,
+      "reviewed_captures": 2,
+      "hashed_captures": 21,
+      "scope": "Fresh exact current native-qualified changed production JAR; normal storage/search/grouping/replay/codecs/display and complete opaque export. New readiness edit cases are native fixtures, not graphical mutation acceptance."
+    },
+    "closes_all_acceptance": false,
+    "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
   }
 }
