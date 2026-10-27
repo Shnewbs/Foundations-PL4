@@ -165,7 +165,24 @@ public final class NativeScenarios {
             test("wireless deposit conserves native items",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();p.inventory.setInventorySlotContents(9,readerStack(32));check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==17,"deposited amount");check(wirelessIron(p)==15&&readerCount(source().getStackInSlot(0))==17&&LegacyWirelessStorage.ready(fluidNode(0)),"deducted before provider");}});
             test("wireless full player inventory prevents extraction",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();for(int i=1;i<36;i++)p.inventory.setInventorySlotContents(i,readerStack(64));source().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0),17)==0&&readerCount(source().getStackInSlot(0))==32,"no space no extract");}});
             test("wireless full network prevents deposit",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();for(int i=0;i<27;i++){source().setInventorySlotContents(i,readerStack(64));destination().setInventorySlotContents(i,readerStack(64));}p.inventory.setInventorySlotContents(9,readerStack(32));check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0&&wirelessIron(p)==32,"no space no deduction");}});
-            test("wireless stale variant selection rejected",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);ItemStack changed=readerStack(32);changed.setItemName("Different");source().setInventorySlotContents(0,changed);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&wirelessIron(p)==0,"NBT variant changed");}});
+            test("wireless stale variant selection rejected",new Runnable(){public void run(){
+                EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));
+                LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);
+                ItemStack changed=readerStack(32);changed.setItemName("Different");
+                source().setInventorySlotContents(0,changed);
+                check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&wirelessIron(p)==0,"NBT variant changed");
+                // Same block coordinates and identical stack must not authorize a different chest.
+                source().setInventorySlotContents(0,readerStack(32));
+                LegacyWirelessStorage.Entry prior=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);
+                world.setBlockToAir(-1,200,0);
+                check(world.setBlock(-1,200,0,Block.chest.blockID,0,2),"replacement chest placement");
+                TileEntityChest replacement=(TileEntityChest)world.getBlockTileEntity(-1,200,0);
+                check(replacement!=null,"replacement native inventory");
+                replacement.setInventorySlotContents(0,readerStack(32));
+                check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),prior,17)==0
+                        &&readerCount(replacement.getStackInSlot(0))==32&&wirelessIron(p)==0,
+                        "stale native backing denied even with identical item and coordinates");
+            }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
             test("wireless oversized graph fails closed",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyPL4.nodeLimit=2;check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"bounded graph");}});

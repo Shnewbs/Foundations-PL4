@@ -1,5 +1,6 @@
 package net.foundations.pl4.legacy;
 import java.util.ArrayList;
+import net.minecraft.inventory.IInventory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +27,22 @@ public final class LegacyWirelessStorage {
         if(!root.fluidServer()||!root.canEdit(player)||root.owner.isEmpty()||!root.owner.equals(tag.getString("Owner"))||!root.wirelessIdentity.equals(tag.getString("Anchor"))||root.role()==5||root.role()==8)return null;
         return root;
     }
+    /** Identity of a native inventory instance and its actual slot, not a visible item or coordinate. */
+    private static final class PhysicalSlot {
+        final IInventory backing;final int slot;
+        PhysicalSlot(IInventory backing,int slot){this.backing=backing;this.slot=slot;}
+        @Override public int hashCode(){return 31*System.identityHashCode(backing)+slot;}
+        @Override public boolean equals(Object other){return other instanceof PhysicalSlot&&backing==((PhysicalSlot)other).backing&&slot==((PhysicalSlot)other).slot;}
+    }
+    private static PhysicalSlot physical(LegacyTile.NativeInventory inventory,int slot){
+        return new PhysicalSlot(inventory.inventory,inventory.indices[slot]);
+    }
     public static final class Entry {
         public final LegacyTile node;public final int slot;public final ItemStack snapshot;
-        private Entry(LegacyTile node,int slot,ItemStack stack){this.node=node;this.slot=slot;this.snapshot=stack.copy();}
+        private final PhysicalSlot physical;
+        private Entry(LegacyTile node,int slot,ItemStack stack,PhysicalSlot physical){
+            this.node=node;this.slot=slot;this.snapshot=stack.copy();this.physical=physical;
+        }
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();
@@ -57,8 +71,16 @@ public final class LegacyWirelessStorage {
     private static StorageInventory inventory(LegacyTile node){LegacyTile.NativeInventory handler=node.inventory();return handler==null?null:new StorageInventory(handler);}
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;
+        Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();
         try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
-            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack))result.add(new Entry(node,i,stack));}
+            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){
+                if(--left<0)return result;
+                ItemStack stack=inventory.peek(i);
+                if(!LegacyTile.STACKS.empty(stack)){
+                    PhysicalSlot id=physical(inventory.nativeInventory,i);
+                    if(seen.add(id))result.add(new Entry(node,i,stack,id));
+                }
+            }
         }}catch(RuntimeException provider){result.clear();}return result;
     }
     public static final int MAX_SEARCH=32;
@@ -168,6 +190,8 @@ public final class LegacyWirelessStorage {
     private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
         final ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(entry.node);
         if(source==null||!ready(entry.node)||entry.slot<0||!work.take()||entry.slot>=Math.min(source.slots(),LegacyPL4.slotLimit)||!work.take())return 0;
+        // A same-item chest replacement or route flip is not the physical slot the player selected.
+        if(!entry.physical.equals(physical(source.nativeInventory,entry.slot)))return 0;
         ItemStack current=source.peek(entry.slot);if(exact?!ItemStack.areItemStacksEqual(current,entry.snapshot):!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
         try{return ConservingItems.move(LegacyTile.STACKS,escrow,one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
