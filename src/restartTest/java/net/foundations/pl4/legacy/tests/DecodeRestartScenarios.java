@@ -24,7 +24,7 @@ public final class DecodeRestartScenarios {
     private String suite;
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
         suite=System.getProperty("foundations_pl4.decodeRestart","");if(suite.isEmpty())return;
-        if(!Arrays.asList("raw","missing","compound","owner","dimension","scope","rewrite").contains(suite))throw new IllegalStateException("Explicit decode suite required");
+        if(!Arrays.asList("raw","missing","compound","owner","dimension","scope","rewrite","live").contains(suite))throw new IllegalStateException("Explicit decode suite required");
         String phase=System.getProperty("foundations_pl4.itemRestart","");
         if(!Arrays.asList("write","verify","crash-write","crash-verify").contains(phase))throw new IllegalStateException("Explicit restart phase required");
         MinecraftServer server=MinecraftServer.getServer();
@@ -52,7 +52,8 @@ public final class DecodeRestartScenarios {
         }
         for(int x:new int[]{64,80}){
             LegacyTile n=node(x);NBTTagCompound tag=save(n);
-            if(compoundSuite())tag.setTag("ItemJournalContext",rejected(x,n.itemLegacyEvidence.getString("OriginalToken")));
+            if(suite.equals("live")){mutateLive(n,x);tag=save(n);}
+            else if(compoundSuite())tag.setTag("ItemJournalContext",rejected(x,n.itemLegacyEvidence.getString("OriginalToken")));
             else if(suite.equals("missing")){tag.removeTag("ItemJournalContext");tag.setString("ItemTransferFault","");}
             else if(x==64)tag.setInteger("ItemJournalContext",71);else tag.setString("ItemJournalContext","current-raw-context");
             n.readFromNBT(tag);LegacyItemSafety.importSaved(n);LegacyItemSafety.escrow(n).clearBlock();
@@ -79,6 +80,7 @@ public final class DecodeRestartScenarios {
         LegacyWirelessSafety journal=LegacyWirelessSafety.data(world);
         check(journal.blocked(OWNER,pos(200))&&journal.blocked("unrelated-owner",pos(240)),"all owners and targets remain fenced "+x);
         Map<String,Object> row=new LinkedHashMap<String,Object>();row.put("host_x",x);row.put("host_removed",removed);row.put("original_token",token);row.put("owner",OWNER);row.put("dimension",0);row.put("context_kind",compoundSuite()?"compound":suite.equals("missing")?"absent":x==64?"int":"string");row.put("context_value",compoundSuite()?contextValue():suite.equals("missing")?"":x==64?"71":"current-raw-context");row.put("sealed_units",8);row.put("evidence_marker","first-raw-payload");row.put("original_route_known",false);outcomes.add(row);
+        if(suite.equals("live")&&!removed)verifyLive(node(x));
     }
     private void verifyJournal(){
         NBTTagCompound saved=journalTag(),opaque=saved.getCompoundTag("Opaque");
@@ -94,6 +96,28 @@ public final class DecodeRestartScenarios {
         boolean enabled=LegacyPL4.enabled;LegacyPL4.enabled=true;
         try{load(200);place(200);node(200).owner="unrelated-owner";check(node(200).transferOnce()==0&&node(200).status.contains("fenced"),"replacement host cannot bypass dimension barrier");air(200);}finally{LegacyPL4.enabled=enabled;}
         check(journalTag().equals(saved),"inspection and replacement never clear journal");
+    }
+    private void mutateLive(LegacyTile n,int x){
+        LegacyItemSafety.importSaved(n);
+        check(!n.itemImportPending&&(x!=64||!LegacyWirelessSafety.data(world).blocked("unrelated-owner",pos(240))),"live mutation starts after scoped admission latch cleared "+x);
+        NBTTagCompound original=(NBTTagCompound)n.itemLegacyEvidence.copy();
+        world.setBlock(x,199,32,Block.chest.blockID,0,3);TileEntityChest stock=(TileEntityChest)world.getBlockTileEntity(x,199,32);
+        stock.setInventorySlotContents(0,new ItemStack(Item.ingotIron,32));stock.onInventoryChanged();
+        n.side=0;n.owner="live-owner";n.itemFault="";n.itemJournalContext=rejected(x,original.getString("OriginalToken"));
+        check(n.transferOnce()==0&&LegacyTile.STACKS.count(n.pending)==8&&sameTagPayload(n.itemLegacyEvidence,original),"live mutation transfer preserves evidence and escrow "+x);
+        check(!n.itemImportPending&&LegacyWirelessSafety.data(world).blocked("unrelated-owner",pos(240)),"live mutation readmission freezes changed identity "+x);
+        n.fluidDirty();
+    }
+    private void verifyLive(LegacyTile n){
+        TileEntityChest stock=(TileEntityChest)world.getBlockTileEntity(64,199,32);
+        check(n.owner.equals("live-owner")&&stock!=null&&stock.getStackInSlot(0)!=null&&stock.getStackInSlot(0).stackSize==32,"live mutation persisted owner and physical source");
+        NBTTagCompound original=(NBTTagCompound)n.itemLegacyEvidence.copy();
+        boolean enabled=LegacyPL4.enabled;LegacyPL4.enabled=true;
+        try{world.setBlock(64,198,32,LegacyPL4.EXPORT.blockID,0,3);LegacyTile alias=(LegacyTile)world.getBlockTileEntity(64,198,32);
+            alias.owner="live-owner";alias.side=1;
+            check(alias.transferOnce()==0&&alias.status.contains("fenced")&&stock.getStackInSlot(0).stackSize==32,"live mutation disconnected alias stays fenced after restart");
+        }finally{world.setBlockToAir(64,198,32); LegacyPL4.enabled=enabled;}
+        check(LegacyTile.STACKS.count(n.pending)==8&&sameTagPayload(n.itemLegacyEvidence,original),"live mutation alias leaves retained sealed claim unchanged");
     }
     private void liveGuards(LegacyTile n,String stage){
         n.itemFault="";
@@ -128,7 +152,7 @@ public final class DecodeRestartScenarios {
         if(suite.equals("owner"))return "rejected-owner-int71";
         if(suite.equals("dimension"))return "rejected-dimension-string0";
         if(suite.equals("scope"))return "rejected-scope-compound";
-        if(suite.equals("rewrite"))return "rewritten-owner-dimension-host";
+        if(suite.equals("rewrite")||suite.equals("live"))return "rewritten-owner-dimension-host";
         return "rejected-token-int71";
     }
     private NBTTagCompound rejected(int x,String token){
@@ -140,7 +164,7 @@ public final class DecodeRestartScenarios {
         if(suite.equals("owner"))r.setInteger("Owner",71);
         if(suite.equals("dimension"))r.setString("Dimension","0");
         if(suite.equals("scope")){NBTTagCompound scope=new NBTTagCompound();scope.setInteger("Marker",71);scope.setByteArray("Bytes",new byte[]{7,8,9});r.setTag("Scope",scope);}
-        if(suite.equals("rewrite")){r.setString("Owner","rewritten-owner");r.setInteger("Dimension",7);r.setInteger("HostX",x+128);}
+        if(suite.equals("rewrite")||suite.equals("live")){r.setString("Owner","rewritten-owner");r.setInteger("Dimension",7);r.setInteger("HostX",x+128);}
         return r;
     }
     private NBTTagCompound evidence(int x,String token){NBTTagCompound e=new NBTTagCompound();e.setString("Fault","Original decode fixture uncertainty");e.setString("ObservedOwner",OWNER);e.setInteger("ObservedDimension",0);e.setInteger("HostX",x);e.setInteger("HostY",200);e.setInteger("HostZ",32);e.setString("OriginalToken",token);e.setString("MalformedContext","first-raw-payload");NBTTagCompound nested=new NBTTagCompound();nested.setInteger("Sentinel",12345);nested.setByteArray("Bytes",new byte[]{1,2,3});e.setTag("OriginalPayload",nested);return e;}
