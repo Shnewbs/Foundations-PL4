@@ -10,7 +10,7 @@
     "task": "PL4 builds and releases (Chat)",
     "started_at": "2026-10-27T18:11:00Z",
     "expires_at": "2026-10-27T18:41:00Z",
-    "scope": "main controller and acceptance ledger; no legacy runtime or branch writer",
+    "scope": "main acceptance ledger plus scoped legacy root-readiness hardening on mc/1.12.2 and mc/1.6.4; no unrelated files",
     "base_head": "da6ed96f7f55000b785b0b6749d9826aec7efe71"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
