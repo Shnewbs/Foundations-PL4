@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 /** Loaded-only handheld storage. Snapshots are copies; only validated server actions mutate inventories. */
 public final class LegacyWirelessStorage {
     public static final int RANGE=64,ROWS=45,WORK_LIMIT=4096;
-    public static boolean ready(LegacyTile tile){return tile!=null&&!LegacyItemSafety.blocked(tile)&&LegacyTile.STACKS.empty(tile.pending);}
+    public static boolean ready(LegacyTile tile){if(tile==null)return false;LegacyItemSafety.importSaved(tile);return !LegacyItemSafety.blocked(tile)&&LegacyTile.STACKS.empty(tile.pending);}
     public static boolean tool(ItemStack stack){return !LegacyTile.STACKS.empty(stack)&&stack.getItem()==LegacyPL4.WIRELESS_STORAGE;}
     public static boolean bind(EntityPlayer player,ItemStack tool,LegacyTile root){
         if(!tool(tool)||root==null||!root.fluidServer()||!root.canEdit(player)||root.owner.isEmpty()||root.role()==5||root.role()==8)return false;
