@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261027T2225Z-reentrant-fixture",
+    "claimed_at": "2026-10-27T22:25:00Z",
+    "expires_at": "2026-10-27T22:50:00Z",
+    "scope": "mc/1.6.4 native fixture plus main evidence",
+    "purpose": "repair native reentrant provider fixture's destructive block removal; record failed observation",
+    "expected_parent": "ec25be6f3b5a95f286d0d79b2adb356736a10b29"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
