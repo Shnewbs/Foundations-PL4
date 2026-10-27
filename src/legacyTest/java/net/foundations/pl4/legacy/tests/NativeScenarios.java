@@ -176,10 +176,11 @@ public final class NativeScenarios {
                 FaultyChest reentrant=faultyChest(true);reentrant.setInventorySlotContents(0,readerStack(32));
                 LegacyWirelessStorage.Entry selected=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);
                 reentrant.replaceOnRead=true;
-                check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),selected,17)==0
-                        &&readerCount(source().getStackInSlot(0))==32&&wirelessIron(p)==0
-                        &&LegacyWirelessStorage.ready(fluidNode(0)),
-                        "reentrant inventory replacement during provider read is not spendable");
+                int reentrantMoved=LegacyWirelessStorage.withdraw(p,wirelessTool(p),selected,17);
+                check(reentrantMoved==0,"reentrant native read never authorizes a detached extraction");
+                check(readerCount(source().getStackInSlot(0))==32,"reentrant replacement retains physical inventory");
+                check(wirelessIron(p)==0,"reentrant replacement never credits player inventory");
+                check(LegacyWirelessStorage.ready(fluidNode(0)),"read-only replacement does not falsely quarantine host");
                 // Same block coordinates and identical stack must not authorize a different chest.
                 source().setInventorySlotContents(0,readerStack(32));
                 LegacyWirelessStorage.Entry prior=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);

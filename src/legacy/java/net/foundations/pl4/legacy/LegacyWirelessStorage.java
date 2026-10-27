@@ -79,12 +79,32 @@ public final class LegacyWirelessStorage {
         }
         public int slots(){return nativeInventory.slots();}
         public ItemStack extract(int slot,int amount,boolean simulate){
-            return current()?nativeInventory.extract(slot,amount,simulate):null;
+            if(!current())return null;
+            ItemStack result=nativeInventory.extract(slot,amount,simulate);
+            // A provider may replace its chest INSIDE getStackInSlot/decrStackSize.
+            // Simulations never authorize a detached inventory; executed mutations
+            // throw while ConservingItems still owns its uncertainty fence.
+            if(!current()){
+                if(!simulate)throw new IllegalStateException("Native storage backing changed during extraction");
+                return null;
+            }
+            return result;
         }
         public ItemStack insert(int slot,ItemStack value,boolean simulate){
-            return current()?nativeInventory.insert(slot,value,simulate):value;
+            if(!current())return value;
+            ItemStack remaining=nativeInventory.insert(slot,value,simulate);
+            if(!current()){
+                if(!simulate)throw new IllegalStateException("Native storage backing changed during insertion");
+                return value;
+            }
+            return remaining;
         }
-        ItemStack peek(int slot){return nativeInventory.inventory.getStackInSlot(nativeInventory.indices[slot]);}
+        ItemStack peek(int slot){
+            if(!current())return null;
+            ItemStack observed=nativeInventory.inventory.getStackInSlot(nativeInventory.indices[slot]);
+            // The pre-transfer display read is an untrusted provider callback too.
+            return current()?observed:null;
+        }
     }
     private static StorageInventory inventory(LegacyTile node){LegacyTile.NativeInventory handler=node.inventory();return handler==null?null:new StorageInventory(node,handler);}
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
