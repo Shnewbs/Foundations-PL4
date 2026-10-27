@@ -112,5 +112,7 @@
   "item_live_admission_acceptance": "PENDING_EXACT_NATIVE_READMISSION_AND_OBSERVED_ALIAS_CASES",
   "item_live_admission_fixture": true,
   "item_live_mutation_restart_fixture": true,
-  "item_live_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_LIVE_OWNER_CONTEXT_TRANSFER_REMOVAL_AND_OBSERVED_ALIAS"
+  "item_live_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_PROCESS_LIVE_OWNER_CONTEXT_TRANSFER_REMOVAL_AND_OBSERVED_ALIAS",
+  "item_context_mutation_restart_fixture": true,
+  "item_context_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_CONTEXT_ONLY_UNCHANGED_HOST_OWNER_PROCESS_VALIDATION"
 }
