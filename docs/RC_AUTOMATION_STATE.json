@@ -5,27 +5,20 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1940Z",
-    "claimed_at": "2026-10-27T19:40:00Z",
-    "expires_at": "2026-10-27T20:10:00Z",
-    "scope": "legacy 1.6.4 placement fixture repair and exact acceptance; main ledger",
-    "base_main_sha": "e9a5e323daa7e352115fbe98eb9c34966eb47d99"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40448042043,
+  "last_verified_legacy_native_run": 40571895345,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: Corrected both exact legacy native acceptance scenarios after root admission. 1.12.2 b60b008: native workflow 40567666803 PASS (390/390 ordinary plus process/restart and migration steps), source+artifact hashed; development publication skipped. 1.6.4 daf6451: ordinary 365/365 PASS but decode-live-owner crash-write failed because host x80 was overwritten by block13 (gravel) after native setBlock; 804f1ec adds bounded disposable falling-column guard, run 40569349989 pending. No production changes, RC flags or releases.",
-  "local_validation": "1.12.2 exact source PASS CI 40567666803, 390/390, native restart/migration PASS, ZIP CRC+SHA and packed production SHA verified. 1.6.4 previous 40567302466 ordinary 365/365 PASS, restart FAILED on observed block13; followup 40569349989 PENDING. Scoped source test/fixture diff invariants PASS; no new client, multiplayer, installed-provider or sustained-performance test.",
+  "current_checkpoint": "2026-10-27: 1.6.4 exact native repair 290b9e58 passed workflow 40571895345: ordinary365/365, decode1536 across40 JVMs, provider188, historical60, unit7/7; preserved ZIP CRC/SHA and byte-identical production JAR relative to failed 804f1ec. Prior native gravel block13 x80 failure preserved. No current-client/multiplayer/installed-provider clearance; all24 RC publication flags remain false.",
+  "local_validation": "Exact 1.6.4 CI 40571895345 PASS, source290b9e58, artifact SHA256 37288f57009b5d1f62a071b2f3d074adb368dff56245303eb31f1fb9d0371100, runtime SHA256 852f08e6d962a2c5f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98; 365/365 ordinary + 1536 decode/40 JVMs +188 provider +60 historical and 7/7 unit. No fresh exact-current client or installed-provider/multiplayer/perf proof.",
   "next_work": [
-    "Read exact 1.6.4 fresh run 40569349989 and its raw phase JSON before claiming restart acceptance or changing the source again; further targeted fixture repair only from fresh evidence.",
-    "Continue actual handheld provider and alias integration, including disconnected and unloaded hosts, with source-bound tests; no force-load or speculative global scans.",
-    "Probe actual handheld endpoint/provider-discovery order, owner-filtered/skipped hosts, disconnected aliases before readiness and loaded/unloaded boundaries without global scans or force-load.",
+    "Native 1.6.4 290b9e58 qualifies scoped fixture; now reproduce actual handheld endpoint/provider-discovery order and loaded/unloaded/disconnected aliases, without force-loading or unbounded scanning.",
+    "Investigate historical x80 gravel placement race only with new stage/source-bound native evidence; flag2 success is not full terrain root-cause resolution.",
     "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
     "Continue linked-host/receipt diagnostics, installed providers, multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
@@ -33,23 +26,23 @@
     "Continue reviewed reconciliation, broader legacy editor/multipart, Forge1.16.1–1.16.4 launcher profiles and sustained active-provider/full-server performance. All24 RC flags remainfalse.",
     "Continue bounded owner-authorized linked-host/receipt export and dedicated multiplayer/online profile/dimension travel authorization. Current native fake-player receipt checks do not certify online identity, provider permissions or actual dimension travel.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
-    "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
-    "Continue advanced legacy editor/multipart, Forge 1.16.1–1.16.4 launcher profiles, installed providers/fallbacks, dedicated multiplayer, copied worlds, full-process recovery/bounded crash semantics and sustained active-provider/save/full-server performance. Keep exact-source RC clearance false until applicable requirements pass."
+    "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-decoder-placement-admission-2026-10-27.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
   "latest_native_runs": [
     40448042043,
-    40567666803
+    40567666803,
+    40571895345
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40567666803,
-    "1.6.4": 40448042043
+    "1.6.4": 40571895345
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
@@ -58,9 +51,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1911Z",
-    "released_at": "2026-10-27T19:30:00Z",
-    "checkpoint": "Guarded native scenario commits 1.12.2 b60b008 and 1.6.4 804f1ec; complete exact 1.12.2 PASS, 1.6.4 latest pending; no publication."
+    "owner": "pl4-chat-hourly-20261027T1940Z",
+    "released_at": "2026-10-27T19:53:00Z",
+    "checkpoint": "1.6.4 290b9e58 scoped native fixture passed 40571895345; 365/365 plus all retained restart/migration, no production or RC release. Independent source review continues."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-root-admission-native-2026-10-27.json",
   "latest_branch_publisher_review": {
@@ -251,7 +244,21 @@
     "retry_attempted": false,
     "instrumented_source": "829ceafa6614010b5dc685fd8200425fd180e39c",
     "next_step": "On recurrence inspect retained native block/tile observations and raw phase/process records; extend chunk-provider residency/load/population and individual lookup-stage diagnostics to identify cause. Never synthesize a tile or label the old failure resolved from passing runs.",
-    "instrumented_result": "PASS365 and80 placement observations in40448042043; independent branch40448018062 PASS; this does not explain prior failure."
+    "instrumented_result": "PASS365 and80 placement observations in40448042043; independent branch40448018062 PASS; this does not explain prior failure.",
+    "later_reproduction": {
+      "run_id": 40569349989,
+      "source_commit": "804f1ec6254351f2e791171080632ece4470cf58",
+      "raw_phase_sha256": "74af34097577f8c17850ef5c29c684ac26b998b3a9cb4d593177ee70aacf5f1e",
+      "x": 80,
+      "block_after": 13,
+      "reported_setBlock_success": true
+    },
+    "latest_scoped_fix": {
+      "source_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+      "run_id": 40571895345,
+      "status": "PASS",
+      "interpretation": "Fixture admission qualified; historical terrain event cause remains unresolved."
+    }
   },
   "completed_native_placement_diagnostics": {
     "source": "829ceafa6614010b5dc685fd8200425fd180e39c",
@@ -286,5 +293,18 @@
     "fixture_guard_run": 40569349989,
     "result_at_checkpoint": "IN_PROGRESS",
     "old_intermittent_placement_failure": "Unresolved; observed new gravel overwrite alone does not prove original NPE cause"
+  },
+  "latest_164_native_acceptance": {
+    "source_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+    "workflow_run": 40571895345,
+    "artifact_sha256": "37288f57009b5d1f62a071b2f3d074adb368dff56245303eb31f1fb9d0371100",
+    "production_jar_sha256": "852f08e6d962a2c5f4f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98",
+    "ordinary_native": "365/365",
+    "decode": "1536/40 JVMs",
+    "provider": "188/4 JVMs",
+    "historical": "60/3 JVMs",
+    "stock_client_current_payload": "NOT VERIFIED",
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-decoder-placement-admission-2026-10-27.json"
   }
 }

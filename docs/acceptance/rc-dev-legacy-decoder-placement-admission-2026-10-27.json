@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-27",
+  "description": "Native 1.6.4 disposable decode restart placement stabilization and strict exact-host admission, without production payload changes or RC clearance.",
+  "failed_precursor": {
+    "source_commit": "804f1ec6254351f2e791171080632ece4470cf58",
+    "run_id": 40569349989,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40569349989",
+    "artifact_id": 12765296254,
+    "artifact_sha256": "498d13bfa963e0a1df26bb25219c86142a9304a06b4cbb958b54609d76b4573f",
+    "raw_phase": "verification-logs/item-decode-raw-restart-write.json",
+    "raw_phase_sha256": "74af34097577f8c17850ef5c29c684ac26b998b3a9cb4d593177ee70aacf5f1e",
+    "process_exit_code": 0,
+    "report_passed": false,
+    "block_position": {
+      "x": 80,
+      "y": 200,
+      "z": 32
+    },
+    "setBlock_returned_true": true,
+    "expected_block": 3501,
+    "observed_block": 13,
+    "observed_tile": null,
+    "prior_falling_column_removed": 0,
+    "ordinary_native": "365/365 PASS",
+    "decode_restart": "FAILED at raw/write; no acceptance",
+    "interpretation": "A disposable fixture location was overwritten with gravel; earlier column scan removed zero gravel above. Root physics/population cause not proven."
+  },
+  "repair": {
+    "source_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+    "branch": "mc/1.6.4",
+    "files": [
+      "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+      "tools/verify_legacy_item_restart.py",
+      "tools/test_restart_phase_retention.py"
+    ],
+    "behavior": "Fixture-only world.setBlock uses flag 2 instead of flag 3; strict immediate block/tile readback, stage diagnostic and no retry or synthetic tile retained. Native controller requires unique real x64/x80 exact tiles with flag 2 and matching block IDs in each decode write phase.",
+    "protected": "No src/legacy production edit, no BUILD_STATUS change, no main game/energy/item behavior edit, no publisher modification."
+  },
+  "qualification": {
+    "run_id": 40571895345,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40571895345",
+    "status": "SUCCESS",
+    "source_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+    "artifact_id": 12766860420,
+    "artifact_name": "legacy164-40571895345-1",
+    "artifact_zip_size": 6703847,
+    "artifact_zip_sha256": "37288f57009b5d1f62a071b2f3d074adb368dff56245303eb31f1fb9d0371100",
+    "archive_crc": "PASS",
+    "archive_entries": 193,
+    "production_jar": "build/libs/FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+    "production_jar_size": 144608,
+    "production_jar_sha256": "852f08e6d962a2c5f4f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98",
+    "production_jar_identical_to_failed_precursor": true,
+    "ordinary_native": {
+      "passed": 365,
+      "total": 365
+    },
+    "decoder_restart": {
+      "assertions": 1536,
+      "distinct_jvms": 40,
+      "clean": "PASS",
+      "completed_save_flush_parent_sigkill": "PASS",
+      "actual_host64_and_80_placement": "PASS"
+    },
+    "registered_provider_restart": {
+      "assertions": 188,
+      "distinct_jvms": 4,
+      "status": "PASS"
+    },
+    "preupgrade_migration": {
+      "assertions": 60,
+      "distinct_jvms": 3,
+      "status": "PASS"
+    },
+    "source_controller_unit_tests": {
+      "passed": 7,
+      "total": 7
+    },
+    "publisher_step": "SKIPPED",
+    "publication_eligible": false
+  },
+  "remaining": [
+    "One passing native run does not explain all historic block13/placement timing failures or prove general terrain/loading root cause.",
+    "New production payload differs from older 246afad2 client-reviewed payload; no fresh exact-current client screenshots or production client acceptance.",
+    "Installed optional providers and fallbacks, direct multiplayer identity/travel, arbitrary copied user/modpack worlds and reviewed reconciliation, recovery, sustained full-server performance remain open.",
+    "No RC target was cleared, no new GitHub release or CurseForge upload authorized or created."
+  ],
+  "next": "Probe actual handheld inventory/provider callbacks before readiness, unloaded/disconnected aliases and host observation without force-loading or unbounded scanning. Reproduce native placement only on fresh evidence; do not repetitively rerun unchanged failures."
+}

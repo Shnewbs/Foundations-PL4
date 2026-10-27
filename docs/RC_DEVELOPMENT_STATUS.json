@@ -1577,7 +1577,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-27 19:30Z: Exact 1.12.2 b60b008 fixes native root/provider assertion and healthy alternate-anchor independent-target case; native 40567666803 SUCCESS 390/390 plus required restart and pre-journal steps, exact packaged JAR SHA 76070f42dbfa6c61c2801a30e162b67dd988aaf084c41a394feabbb7c00c6ff0. Exact 1.6.4 daf6451 repairs alternate-anchor case and passed ordinary 365/365 in 40567302466, but decode-live-owner crash-write failed after setBlock 3501 returned gravel block 13, retained raw evidence. 804f1ec guards isolated loaded falling-block fixture columns; 40569349989 pending. No code promotion/RC clearance/releases.",
+  "latest_work": "2026-10-27 19:53Z: 1.6.4 scoped native decode-placement repair 290b9e58 passed 40571895345 (365/365 ordinary,1536 decode/40 JVMs,188 provider,60 historical,7/7 controller tests). Native artifact ZIP SHA37288f57 and exact production SHA852f08e6; product unchanged vs failed predecessor804f1ec, but not the older client-tested246afad2. x80 gravel precursor and unknown root cause retained. No new client, installed-provider, multiplayer/performance acceptance, RC flag or release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1754,5 +1754,20 @@
     },
     "closes_all_acceptance": false,
     "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
+  },
+  "latest_164_native_acceptance": {
+    "source_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+    "native_run": 40571895345,
+    "artifact_sha256": "37288f57009b5d1f62a071b2f3d074adb368dff56245303eb31f1fb9d0371100",
+    "runtime_sha256": "852f08e6d962a2c5f4f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98",
+    "ordinary_scenarios": "365/365",
+    "decode_restart_assertions": 1536,
+    "decode_processes": 40,
+    "provider_assertions": 188,
+    "historical_assertions": 60,
+    "controller_unit_tests": 7,
+    "client_for_this_payload": "PENDING",
+    "publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-decoder-placement-admission-2026-10-27.json"
   }
 }
