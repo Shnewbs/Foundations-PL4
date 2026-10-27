@@ -1,0 +1,107 @@
+{
+  "recorded_date": "2026-10-27",
+  "role": "hourly PL4 implementation",
+  "claim_owner": "pl4-hourly-chat-20261027T2209Z-native-red",
+  "exact_source": {
+    "mc/1.6.4": {
+      "parent": "97da344f819efd8fe9d41dcb23685da8d3a7d52d",
+      "commit": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
+      "changed": [
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+      ],
+      "runtime_blob_sha": "b53efe35616eaf1c0d5720ab952b5175db37c259",
+      "publisher_policy": "Branch .github/workflows/legacy164-native.yml exact tagged source guards reviewed before push; development and uncleared RC steps ineligible"
+    },
+    "main": {
+      "parent": "3e67d3d8e1d77642192cba88330fe66be167486f",
+      "commit": "1018b6c0a1ac98cba5a71cb57d119a4c13f7a157",
+      "changed": [
+        "tools/hourly_builds.py",
+        "tools/test_hourly_builds.py"
+      ],
+      "controller_blob_sha": "99421a26d6100725588eb65bbb222fbef371b535"
+    }
+  },
+  "failure_diagnoses": [
+    {
+      "source_commit": "97da344f819efd8fe9d41dcb23685da8d3a7d52d",
+      "branch_run": 40584590058,
+      "hourly_run": 40586970353,
+      "minecraft": "1.6.4",
+      "native_scenarios": "364/365 PASS",
+      "case": "wireless stale variant selection rejected",
+      "assertion": "reentrant inventory replacement during provider read is not spendable",
+      "restart": "NOT RUN after ordinary native failure",
+      "artifact_ids": [
+        12772190775,
+        12771873608
+      ],
+      "interpretation": "Actual native regression failure, not infrastructure. Provider can replace backing within read callback; post-callback identity checks and individual controls added; new source unqualified."
+    },
+    {
+      "source_commit": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+      "hourly_run": 40586970353,
+      "minecraft": "1.12.2",
+      "native_scenarios": "390/390 PASS",
+      "production_and_migration": "PASS",
+      "separate_native_restart": "PASS",
+      "controller": "FAILED expected nonexistent name 'handheld discovery observes root before provider'; actual native test 'handheld blocked root refuses provider discovery' passed",
+      "artifact_id": 12771429487,
+      "interpretation": "Native code not shown to fail; exact-name evidence controller mismatch corrected without changing branch runtime or acceptance flags. Entire artifact remains FAILED until controller revalidation."
+    }
+  ],
+  "implementation": [
+    "1.6.4 StorageInventory.peek rechecks host/backing immediately after a provider read. Extract/insert now verify identity both before and after provider callbacks; simulated backing changes fail without authorizing mutations, executed backing changes throw within the existing conserving escrow quarantine phase.",
+    "Split 1.6.4 reentrant native fixture into four assertions for movement, physical replacement stock, player credit, and host readiness; native scenario count unchanged.",
+    "Main hourly controller now gates 1.12.2 endpoint discovery with exact native case names, makes the label set exact-target-specific, refuses unregistered future targets, and tests missing, duplicate, failed and historical nonmatching cases."
+  ],
+  "focused_validation": {
+    "pinned_source_static": "PASS 7 relevant production/controller/publisher assertions and case-count unchanged",
+    "java_mock": "PASS 9/9 Java callback-identity model cases using Java21 javac --release 8; does not execute production/Minecraft code",
+    "python_mock": "PASS 5/5 exact-case proof model cases using Python3.13; full repository controller unit tests not executed locally",
+    "java7_compile": "UNRUN; available JDK21 javac rejects -source/-target 7, native CI retains actual Java7 runtime and Java8 compiler",
+    "native_164_new": {
+      "workflow_run": 40593588805,
+      "status_at_checkpoint": "IN_PROGRESS",
+      "qualified": false
+    },
+    "native_112_controller_new": {
+      "workflow_run": 40593703572,
+      "status_at_checkpoint": "IN_PROGRESS",
+      "qualified": false
+    },
+    "main_verify": {
+      "workflow_run": 40593703749,
+      "status_at_checkpoint": "IN_PROGRESS"
+    },
+    "installed_providers": "NOT RUN",
+    "stock_client_for_new_164_payload": "NOT RUN",
+    "multiplayer": "NOT RUN",
+    "migration_164_new": "NOT YET VERIFIED",
+    "performance": "NOT RUN"
+  },
+  "preserved_baseline": {
+    "legacy164_prior_source": "6262acb640b731ff4100d67e2447af0980f3e9c5",
+    "run": 40576343833,
+    "ordinary": "365/365",
+    "decode": 1536,
+    "provider": 188,
+    "historical": 60,
+    "scope": "Only prior pinned source; no inheritance onto 4108fed"
+  },
+  "release": {
+    "targets": 24,
+    "rc_clearances": 0,
+    "latest_sources_eligible": false,
+    "new_github_release": null,
+    "new_curseforge_upload": null,
+    "old_development_draft": "preserved; unpublished"
+  },
+  "next": [
+    "Check 4108fed independent native workflow 40593588805. Require365 ordinary,1536 decode/40 JVMs,188 provider/4 JVMs,60 historical/3 JVMs, actual package/outer+nested ZIP/hash integrity before any native qualification. If red, inspect four separated reentrant predicates and raw native logs; do not hammer unchanged failures.",
+    "Check main workflow 40593703572 after exact-name controller repair for pinned1.12.2 b60b008. Require the retained runtime/native/process/artifact hashes; do not relabel old failed evidence.",
+    "Add separately scoped provider replacement during sink simulation/insertion and loaded/unloaded disconnected backing aliases, then installed-provider, multiplayer, copied-save, sustained-load, stock-client exact-payload gates.",
+    "Investigate unrelated intermittent x80 gravel placement overwrite from raw stage records on recurrence; previous passing fixture does not establish root cause."
+  ]
+}
