@@ -1,0 +1,46 @@
+{
+  "recorded_date": "2026-10-27",
+  "minecraft": "1.6.4",
+  "branch": "mc/1.6.4",
+  "source_commit": "6262acb640b731ff4100d67e2447af0980f3e9c5",
+  "parent_commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+  "version": "0.2.0-rc.1-dev",
+  "release_channel": "development",
+  "rc_publication_cleared": false,
+  "source_changes": [
+    "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+    "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+  ],
+  "scope": "Handheld row entries bind to native IInventory object identity plus exact physical slot. Duplicate visible physical slots are suppressed; withdrawals reject replacement backing at unchanged coordinates with identical NBT/items. Existing 365-scenario count preserved by strengthening stale-variant fixture with a second negative assertion.",
+  "negative_control": "Under previous code a same-coordinate/same-item fresh chest matches stale logical node/slot selection; new physical identity guard rejects it before peeking or withdrawing.",
+  "observed_checks": {
+    "source_structure_assertions": 8,
+    "status": "PASS",
+    "java7_compile": "NOT_RUN_BY_THIS_SESSION",
+    "native_minecraft": "PENDING",
+    "packaged_jar": "NOT_VERIFIED",
+    "stock_client": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "multiplayer": "NOT_RUN",
+    "migration": "NOT_RUN",
+    "performance": "NOT_RUN"
+  },
+  "automated_native_workflow": {
+    "run_id": 40576343833,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40576343833",
+    "status": "in_progress",
+    "conclusion": null,
+    "expected_native_scenarios": 365
+  },
+  "previous_accepted_exact_source": {
+    "commit": "290b9e58c7a966a16c1a700d870be192c9abba21",
+    "run": 40571895345,
+    "ordinary": "365/365",
+    "decode": "1536 assertions/40 JVMs",
+    "provider": "188 assertions",
+    "historical": "60 assertions",
+    "production_jar_sha256": "852f08e6d962a2c5f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98"
+  },
+  "no_new_rc_or_release": true,
+  "remaining": "Native compile/restart/Minecraft validation for this source; loaded-but-quarantined backing aliases, unloaded/disconnected wrappers, installed optional providers and real client/online/migration/performance acceptance remain open."
+}

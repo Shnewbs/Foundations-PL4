@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T2007Z-alias164",
-    "started_at": "2026-10-27T20:07:00Z",
-    "expires_at": "2026-10-27T20:28:00Z",
-    "scope": "Scoped exact-source 1.6.4 loaded handheld alias safety and regression evidence; independent other builds continue",
-    "source_parent": "7cbd92f085dac71cf2e4b859e84a028148f4dd52"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,10 +14,11 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: 1.6.4 exact native repair 290b9e58 passed workflow 40571895345: ordinary365/365, decode1536 across40 JVMs, provider188, historical60, unit7/7; preserved ZIP CRC/SHA and byte-identical production JAR relative to failed 804f1ec. Prior native gravel block13 x80 failure preserved. No current-client/multiplayer/installed-provider clearance; all24 RC publication flags remain false.",
-  "local_validation": "Exact 1.6.4 CI 40571895345 PASS, source290b9e58, artifact SHA256 37288f57009b5d1f62a071b2f3d074adb368dff56245303eb31f1fb9d0371100, runtime SHA256 852f08e6d962a2c5f4f6a91c44c3131e352fb148b02256a2441011ac3c5b98; 365/365 ordinary + 1536 decode/40 JVMs +188 provider +60 historical and 7/7 unit. No fresh exact-current client or installed-provider/multiplayer/perf proof.",
+  "current_checkpoint": "2026-10-27: 1.6.4 source 6262acb binds handheld selection to IInventory identity + native slot and rejects same-coordinate, same-item replacement; preserves 365 scenario count with stronger negative control. Native CI 40576343833 started and unqualified pending full run. Prior passing 290b9e58/40571895345 remains last qualified source; no RC clearance/release.",
+  "local_validation": "1.6.4 6262acb code and strengthened fixture passed 8 source-level structural checks. Java7/Forge compile and native world behavior are NOT yet verified; workflow 40576343833 running. No fresh packaged production or client evidence.",
   "next_work": [
-    "Native 1.6.4 290b9e58 qualifies scoped fixture; now reproduce actual handheld endpoint/provider-discovery order and loaded/unloaded/disconnected aliases, without force-loading or unbounded scanning.",
+    "Inspect 1.6.4 native run 40576343833 for 6262acb: verify complete 365 ordinary + all decode/provider/historical/restart gates and compiled/package source hashes before credit; investigate any failure without repeating unchanged infra retries.",
+    "Extend bounded, loaded-only owner-observation and same-backing escrow fences across handheld aliases (esp. unloaded/disconnected cases) with native negative-control scenarios; native physical-slot identity on 6262acb alone does NOT establish quarantine/failover acceptance.",
     "Investigate historical x80 gravel placement race only with new stage/source-bound native evidence; flag2 success is not full terrain root-cause resolution.",
     "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
@@ -57,11 +52,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1940Z",
-    "released_at": "2026-10-27T19:53:00Z",
-    "checkpoint": "1.6.4 290b9e58 scoped native fixture passed 40571895345; 365/365 plus all retained restart/migration, no production or RC release. Independent source review continues."
+    "owner": "pl4-chat-hourly-20261027T2007Z-alias164",
+    "released_at": "2026-10-27T20:17:00Z",
+    "checkpoint": "New 1.6.4 production native physical-slot selection guard committed 6262acb; 8 source checks PASS; triggered native validation 40576343833 pending; no JAR/RC clearance."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-root-admission-native-2026-10-27.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-stale-physical-slot-2026-10-27.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -312,5 +307,13 @@
     "stock_client_current_payload": "NOT VERIFIED",
     "rc_publication_cleared": false,
     "evidence": "docs/acceptance/rc-dev-legacy-decoder-placement-admission-2026-10-27.json"
+  },
+  "latest_164_native_candidate": {
+    "source_commit": "6262acb640b731ff4100d67e2447af0980f3e9c5",
+    "run_id": 40576343833,
+    "status": "in_progress",
+    "expected_native_scenarios": 365,
+    "scope": "native same-position replacement backing fail-closed",
+    "qualified": false
   }
 }
