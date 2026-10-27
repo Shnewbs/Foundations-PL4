@@ -59,7 +59,11 @@ public final class LegacyWirelessStorage {
         return new PhysicalSlot(node,slot);
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
-        List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
+        List<LegacyTile> result=new ArrayList<LegacyTile>();
+        // Readmission of retained root evidence precedes all network/provider discovery.
+        // A controller with unresolved escrow cannot enumerate healthy downstream aliases.
+        if(!ready(root))return result;
+        BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
         // Observe all loaded authorized item hosts before any native inventory/provider callback.
         // A later endpoint's rejected context must already fence earlier handler discovery.
         for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
