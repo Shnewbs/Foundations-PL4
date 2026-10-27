@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-27",
+  "recorded_at": "2026-10-27T19:30:00Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Native exact-source test/fixture repair after handheld root readmission; no production code, no publication or RC acceptance flag changes",
+  "parent_main_sha": "588766e48b1c0d7e0abc282e0d52cc839ced4dba",
+  "checkpoint_lease_main_sha": "75e28fc6604535efa594e78beb63b1f39bf320b8",
+  "minecraft_1_12_2": {
+    "previous_branch_sha": "f1f460e58336995c5f7dc1f0251917ac8dc1a3c2",
+    "first_test_commit": "3cd9566ff09ac4f890f342530c4f43a7669d4929",
+    "latest_branch_sha": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+    "changed_file": "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+    "fixes": [
+      "Blocked root forbids even first provider callback; later endpoint must be admitted before callbacks",
+      "Independent target remains safely reachable by explicitly binding to healthy alternate anchor, preserving original target uncertainty"
+    ],
+    "failed_intermediate_native_run": {
+      "id": 40567243559,
+      "passed": 389,
+      "total": 390,
+      "failed_case": "wireless journal independent target remains usable"
+    },
+    "qualified_exact_branch_run": {
+      "id": 40567666803,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40567666803",
+      "conclusion": "success",
+      "native_scenarios": {
+        "passed": 390,
+        "total": 390
+      },
+      "native_build": "pass",
+      "native_restart_processes": "workflow pass",
+      "prejournal_migration": "workflow pass",
+      "actual_publish": "skipped",
+      "verification_archive": {
+        "artifact_id": 12763707505,
+        "sha256": "ff8747bd2a2ff016c26dea652dfadce9562b446cb0c12ba6395cf4e04d059c75",
+        "zip_crc": "pass",
+        "packed_production_jar_sha256": "76070f42dbfa6c61c2801a30e162b67dd988aaf084c41a394feabbb7c00c6ff0",
+        "packed_production_jar_size_bytes": 163871
+      }
+    },
+    "rc_publication_cleared": false,
+    "installed_provider_multiplayer_performance_migration_acceptance": "not completed"
+  },
+  "minecraft_1_6_4": {
+    "previous_branch_sha": "d150374be8960db0453d910fc11983ab254e1848",
+    "test_commit": "daf6451a08e546d1edb3c80fa01f705e59e84a9f",
+    "latest_branch_sha": "804f1ec6254351f2e791171080632ece4470cf58",
+    "test_changed_file": "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+    "fixture_changed_file": "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+    "fixes": [
+      "Independent target remains usable via explicitly re-bound healthy anchor; the blocked original root cannot enumerate downstream aliases",
+      "Disposable restart fixture now removes same-column, loaded sand/gravel above y200 in bounded y201..255 prior to native host placement without retry, force-loading, synthetic tile or modified packaged runtime"
+    ],
+    "failed_native_run": {
+      "id": 40567302466,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40567302466",
+      "regular_native_scenarios": {
+        "passed": 365,
+        "total": 365
+      },
+      "failed_step": "Verify item receipt and journal across native processes",
+      "failed_suite": "decode-live-owner",
+      "failed_phase": "crash-write",
+      "exact_failed_native_observation": {
+        "x": 80,
+        "y": 200,
+        "z": 32,
+        "chunk_x": 5,
+        "chunk_z": 2,
+        "before_block": 0,
+        "set_block_changed": true,
+        "expected_block": 3501,
+        "actual_block": 13,
+        "metadata": 0,
+        "tile_class": null,
+        "stage": "placement_assertion"
+      },
+      "assessment": "Observed replacement block 13 is gravel on Minecraft 1.6.4; falling-column interference is plausible but unproven. The prior original intermittent placement NPE remains unresolved.",
+      "failed_artifact": {
+        "id": 12763343629,
+        "sha256": "d17debf9f4c799f75726df5265c84cbaadb11e1d9fbd3ea6067d1291e2377224",
+        "crash_phase_log_sha256": "6f8ee06a72e7d4d28c004c4a7330729b70ada779589c848fec3373dadec2a14d",
+        "process_id": 4162,
+        "process_report_present": true
+      }
+    },
+    "latest_exact_branch_run": {
+      "id": 40569349989,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40569349989",
+      "status_at_checkpoint": "in_progress",
+      "native_scenarios": "pending",
+      "restart": "pending",
+      "publication": "held"
+    },
+    "rc_publication_cleared": false
+  },
+  "source_guards": {
+    "branches": "existing mc/1.12.2 and mc/1.6.4 only",
+    "guarded_expected_parent_updates": true,
+    "publisher_checked_before_each_push": true,
+    "development_versions_not_publishable": true,
+    "branch_publishing_steps": "not invoked on qualified 1.12.2 run; 1.6.4 pending"
+  },
+  "shared_acceptance": {
+    "last_historical_native_exact_targets": 24,
+    "all_24_rc_clearance_flags": false,
+    "new_github_release": false,
+    "new_curseforge_upload": false,
+    "installed_optional_providers": "pending",
+    "dedicated_multiplayer": "pending",
+    "arbitrary_save_recovery": "pending",
+    "sustained_performance": "pending",
+    "exact_new_version_promotion": false
+  },
+  "next": [
+    "Review 1.6.4 run 40569349989 raw placement diagnostics and restart-process pass/fail; do not claim qualification until complete",
+    "Verify installed provider callbacks/physical aliases and unloaded boundaries without force-loading",
+    "Capture native and stock-client evidence, multi-player, migration and sustained performance per exact target; retain prior release guard policy"
+  ]
+}

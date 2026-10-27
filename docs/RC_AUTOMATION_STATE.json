@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1911Z",
-    "claimed_at": "2026-10-27T19:11:00Z",
-    "expires_at": "2026-10-27T19:41:00Z",
-    "scope": "global-source-main-and-version-branch-RC-work",
-    "purpose": "repair two exact legacy native scenario regressions and validate policy, preserve others",
-    "base_main_sha": "588766e48b1c0d7e0abc282e0d52cc839ced4dba"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,10 +14,11 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: Hardened legacy handheld endpoint enumeration against unresolved root escrow/saved evidence on exact 1.6.4 d150374 and 1.12.2 f1f460e. Both guards precede root.network/provider and preserve all other Java code. Earlier CI 40548145769, 40548545101 and hourly 40548542573 finished successfully, but do not qualify newly changed sources. Native tests and JARs for new heads pending; all24 RC flags remain false and no release/upload.",
-  "local_validation": "PASS exact scoped Java source/diff invariants and guarded 1.6.4/1.12.2 publisher policy inspection; earlier 1.6.4 and main CI now confirmed PASS. New changed-branch native/stock-client tests UNRUN.",
+  "current_checkpoint": "2026-10-27: Corrected both exact legacy native acceptance scenarios after root admission. 1.12.2 b60b008: native workflow 40567666803 PASS (390/390 ordinary plus process/restart and migration steps), source+artifact hashed; development publication skipped. 1.6.4 daf6451: ordinary 365/365 PASS but decode-live-owner crash-write failed because host x80 was overwritten by block13 (gravel) after native setBlock; 804f1ec adds bounded disposable falling-column guard, run 40569349989 pending. No production changes, RC flags or releases.",
+  "local_validation": "1.12.2 exact source PASS CI 40567666803, 390/390, native restart/migration PASS, ZIP CRC+SHA and packed production SHA verified. 1.6.4 previous 40567302466 ordinary 365/365 PASS, restart FAILED on observed block13; followup 40569349989 PENDING. Scoped source test/fixture diff invariants PASS; no new client, multiplayer, installed-provider or sustained-performance test.",
   "next_work": [
-    "Continue diagnosis of unresolved164 placement NPE with newly preserved raw phase/process/block/tile facts; capture native chunk residency/load/population and individual lookup stages if needed. Lost old phase cannot establish failed dereference or seeded assertion count.",
+    "Read exact 1.6.4 fresh run 40569349989 and its raw phase JSON before claiming restart acceptance or changing the source again; further targeted fixture repair only from fresh evidence.",
+    "Continue actual handheld provider and alias integration, including disconnected and unloaded hosts, with source-bound tests; no force-load or speculative global scans.",
     "Probe actual handheld endpoint/provider-discovery order, owner-filtered/skipped hosts, disconnected aliases before readiness and loaded/unloaded boundaries without global scans or force-load.",
     "Continue installed providers, dedicated multiplayer/online identity/travel, arbitrary saves, reviewed reconciliation/recovery, sustained performance and remaining parity.",
     "Continue owner-authorized linked-host/receipt export, installed providers, dedicated multiplayer/online identity/travel, arbitrary copied saves, reviewed reconciliation, sustained performance and remaining parity.",
@@ -44,10 +38,11 @@
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
   "latest_native_runs": [
-    40448042043
+    40448042043,
+    40567666803
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40442846030,
+    "1.12.2": 40567666803,
     "1.6.4": 40448042043
   },
   "latest_stock_client_evidence": {
@@ -57,11 +52,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1811Z",
-    "released_at": "2026-10-27T18:18:00Z",
-    "checkpoint": "Guarded commits on mc/1.6.4 and mc/1.12.2; native and current JAR acceptance pending; no new release or clearance."
+    "owner": "pl4-chat-hourly-20261027T1911Z",
+    "released_at": "2026-10-27T19:30:00Z",
+    "checkpoint": "Guarded native scenario commits 1.12.2 b60b008 and 1.6.4 804f1ec; complete exact 1.12.2 PASS, 1.6.4 latest pending; no publication."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-root-readmission-2026-10-27.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-root-admission-native-2026-10-27.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -271,5 +266,19 @@
     "hourly_run": 40548542573,
     "static_and_offline": "main offline step success; full native pending",
     "root_cause_resolved": false
+  },
+  "latest_native_legacy_repair": "docs/acceptance/rc-dev-legacy-root-admission-native-2026-10-27.json",
+  "latest_legacy_fixture_failure": {
+    "source_commit": "daf6451a08e546d1edb3c80fa01f705e59e84a9f",
+    "workflow_run": 40567302466,
+    "suite": "decode-live-owner",
+    "phase": "crash-write",
+    "observed_actual_block": 13,
+    "expected_block": 3501,
+    "at": "80,200,32",
+    "fixture_guard_commit": "804f1ec6254351f2e791171080632ece4470cf58",
+    "fixture_guard_run": 40569349989,
+    "result_at_checkpoint": "IN_PROGRESS",
+    "old_intermittent_placement_failure": "Unresolved; observed new gravel overwrite alone does not prove original NPE cause"
   }
 }

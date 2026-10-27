@@ -1068,6 +1068,16 @@
         "reproduced_failures": 3,
         "valid_scoped_control": true,
         "evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
+      },
+      "latest_test_candidate": {
+        "source_commit": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+        "workflow_run": 40567666803,
+        "native_scenarios": "PASS_390_OF_390",
+        "native_restart": "PASS_IN_BRANCH_WORKFLOW",
+        "prejournal_migration": "PASS_IN_BRANCH_WORKFLOW",
+        "production_sha256": "76070f42dbfa6c61c2801a30e162b67dd988aaf084c41a394feabbb7c00c6ff0",
+        "artifact_id": 12763707505,
+        "rc_publication_cleared": false
       }
     },
     {
@@ -1554,10 +1564,20 @@
         "reviewed_captures": 2,
         "hashed_captures": 21,
         "scope": "Fresh exact current native-qualified changed production JAR; normal storage/search/grouping/replay/codecs/display and complete opaque export. New readiness edit cases are native fixtures, not graphical mutation acceptance."
+      },
+      "latest_test_candidate": {
+        "source_commit": "804f1ec6254351f2e791171080632ece4470cf58",
+        "workflow_run": 40569349989,
+        "native_scenarios": "PENDING",
+        "native_restart": "PENDING",
+        "previous_native_run": 40567302466,
+        "previous_native_scenarios": "PASS_365_OF_365",
+        "previous_restart_failure": "decode-live-owner crash-write native placement x80 expected3501 actual13",
+        "rc_publication_cleared": false
       }
     }
   ],
-  "latest_work": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
+  "latest_work": "2026-10-27 19:30Z: Exact 1.12.2 b60b008 fixes native root/provider assertion and healthy alternate-anchor independent-target case; native 40567666803 SUCCESS 390/390 plus required restart and pre-journal steps, exact packaged JAR SHA 76070f42dbfa6c61c2801a30e162b67dd988aaf084c41a394feabbb7c00c6ff0. Exact 1.6.4 daf6451 repairs alternate-anchor case and passed ordinary 365/365 in 40567302466, but decode-live-owner crash-write failed after setBlock 3501 returned gravel block 13, retained raw evidence. 804f1ec guards isolated loaded falling-block fixture columns; 40569349989 pending. No code promotion/RC clearance/releases.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
