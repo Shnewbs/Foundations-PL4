@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-context-process-2026-10-27T01",
-    "claimed_at": "2026-10-27T01:10:00Z",
-    "expires_at": "2026-10-27T01:30:00Z",
-    "scope": "Pin changed qualified112 archive for exact client and preserve evidence",
-    "expected_parent": "c65d0e3532ad32ec9e37d7d1cf301a6088df6c07"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -55,8 +49,8 @@
   "native_main_source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
   "last_writer_release": {
     "owner": "pl4-context-process-2026-10-27T01",
-    "released_at": "2026-10-27T01:05:00Z",
-    "checkpoint": "Pinned context-only process candidates and controller; isolated validation pending."
+    "released_at": "2026-10-27T01:10:00Z",
+    "checkpoint": "Native-qualified112 changed archive pinned for independent exact client;164 qualification pending."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
   "latest_branch_publisher_review": {
