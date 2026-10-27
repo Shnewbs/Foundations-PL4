@@ -12,14 +12,14 @@ def validate(tiles,journal,phase,mc,suite):
     if len(items)!=1 or items[0].get('Count')!=1:raise ValueError('Missing unique sealed receipt')
     if mc=='1.12.2' and items[0].get('id')!='foundations_pl4:legacy_item_cell':raise ValueError('Wrong saved receipt item')
     rows=phase['decode_outcomes'];tokens=[]
-    compounds={'decode-compound','decode-owner','decode-dimension','decode-scope','decode-rewrite'}
+    compounds={'decode-compound','decode-owner','decode-dimension','decode-scope','decode-rewrite','decode-live'}
     if suite not in compounds|{'decode-raw','decode-missing'}:raise ValueError('Unknown decode world suite')
     def rejected(x,token):
         result=dict(Token=71 if suite=='decode-compound' else token,Owner=owner,Dimension=0,Scope='legacy-unknown',HostX=x,HostY=200,HostZ=32,RejectedPayload=dict(Bytes=bytes([4,5,6])))
         if suite=='decode-owner':result['Owner']=71
         if suite=='decode-dimension':result['Dimension']='0'
         if suite=='decode-scope':result['Scope']=dict(Marker=71,Bytes=bytes([7,8,9]))
-        if suite=='decode-rewrite':result.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
+        if suite in {'decode-rewrite','decode-live'}:result.update(Owner='rewritten-owner',Dimension=7,HostX=x+128)
         return result
     for x,tag,row in [(64,live,rows[0]),(80,items[0]['tag'],rows[1])]:
         evidence=tag['ItemLegacyEvidence'];token=evidence['OriginalToken'];tokens.append(token)
@@ -43,6 +43,15 @@ def validate(tiles,journal,phase,mc,suite):
     prior=opaque['PreviousJournal'];entries=prior['Entries']
     if prior.get('Schema')!=2 or len(entries)!=2 or sorted(r['Token'] for r in entries)!=sorted(tokens):raise ValueError('Raw prior journal tokens changed')
     if any(r.get('Owner')!=owner or r.get('Scope')!='legacy-unknown' or 'X' in r or 'Phase' in r for r in entries):raise ValueError('Raw prior route was invented')
+    if suite == 'decode-live':
+        if live.get('Owner') != 'live-owner' or (64,198,32) in at:
+            raise ValueError('Live owner rewrite or disposable alias removal changed')
+        for x in [64,80]:
+            stock=at[(x,199,32)];items=stock.get('Items',[])
+            if len(items)!=1 or items[0].get('Slot')!=0 or type(items[0].get('Count')) is not int or items[0]['Count']!=32:
+                raise ValueError('Physical native source inventory changed')
+            if items[0].get('id') != ('minecraft:iron_ingot' if mc=='1.12.2' else 265):
+                raise ValueError('Physical native source item changed')
     return dict(result='PASS',suite=suite,retained_host=[64,200,32],removed_host=[80,200,32],receipt_chest=[85,200,32],original_tokens=tokens,sealed_claims=[8,8],prior_journal_entries=2,original_evidence_and_raw_context='UNCHANGED',barrier='OPAQUE_DIMENSION_WIDE')
 
 def inspect(archive,phase,mc,suite):

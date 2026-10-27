@@ -36,6 +36,8 @@ jobs:
         run: python3 -m unittest discover -s tools -p 'test_legacy_live_decode.py'
       - name: Check retained evidence readmission regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_live_admission.py'
+      - name: Check live mutation process coverage regressions
+        run: python3 -m unittest discover -s tools -p "test_legacy_live_mutation.py"
       - name: Check legacy restart evidence regressions
         run: python3 -m unittest discover -s tools -p 'test_legacy_restart_gate.py'
       - name: Check raw and missing decode process evidence regressions

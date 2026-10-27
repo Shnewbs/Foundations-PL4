@@ -117,13 +117,13 @@ def validate_restart(root, report, mc, sha, runtime, counts, prefix="item-restar
 
 def validate_decode_restart(root, report, mc, sha, runtime, counts, suite):
     """Qualify decode persistence separately from provider and historical scenarios."""
-    if suite not in {"decode-raw", "decode-missing", "decode-compound", "decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} or report.get("suite") != suite:
+    if suite not in {"decode-raw", "decode-missing", "decode-compound", "decode-owner", "decode-dimension", "decode-scope", "decode-rewrite", "decode-live"} or report.get("suite") != suite:
         raise ValueError("Decode suite identity disagrees")
     validate_restart(root, report, mc, sha, runtime, counts, "item-" + suite + "-restart")
     owner = "fae1b877-c6b4-4538-a26a-630190b54205" if mc == "1.12.2" else "pl4owner"
     labels = {"decode-compound": "rejected-token-int71", "decode-owner": "rejected-owner-int71",
               "decode-dimension": "rejected-dimension-string0", "decode-scope": "rejected-scope-compound",
-              "decode-rewrite": "rewritten-owner-dimension-host"}
+              "decode-rewrite": "rewritten-owner-dimension-host", "decode-live": "rewritten-owner-dimension-host"}
     details = report["phase_reports"]
     for first, second in [("write", "verify"), ("crash-write", "crash-verify")]:
         rows = details[first].get("decode_outcomes")
@@ -275,6 +275,21 @@ def validate_live_decode_assertions(report):
                     raise ValueError("Missing unique native live decode assertion: " + phase + " " + prefix + stage)
 
 
+def validate_live_mutation_assertions(report):
+    """A new native suite; counts alone do not prove the live path executed."""
+    always = ["live mutation persisted owner and physical source",
+              "live mutation disconnected alias stays fenced after restart",
+              "live mutation alias leaves retained sealed claim unchanged"]
+    seeded = ["live mutation starts after scoped admission latch cleared ",
+              "live mutation transfer preserves evidence and escrow ",
+              "live mutation readmission freezes changed identity "]
+    for phase in ["write", "verify", "crash-write", "crash-verify"]:
+        names = report["phase_reports"][phase]["assertions"]
+        for name in always + ([p + str(x) for p in seeded for x in [64, 80]] if phase.endswith("write") else []):
+            if names.count(name) != 1:
+                raise ValueError("Missing unique native live mutation assertion: " + phase + " " + name)
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -319,13 +334,15 @@ def record(root, expected_mc, expected_sha):
                 counts = {"write": counts["write"] + 9, "verify": counts["verify"] + 3}
             inspections = {}
             pids = [p['pid'] for p in restart['processes']] if status.get('item_restart_fixture') is True else []
-            for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []) + (["decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"] if status.get("item_field_restart_fixture") is True else []):
+            for suite in ["decode-raw", "decode-missing"] + (["decode-compound"] if status.get("item_compound_restart_fixture") is True else []) + (["decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"] if status.get("item_field_restart_fixture") is True else []) + (["decode-live"] if status.get("item_live_mutation_restart_fixture") is True else []):
                 name = "legacy-item-" + suite + "-restart-summary.json"
                 decode = json.loads((logs / name).read_text())
                 validate_decode_restart(root, decode, expected_mc, actual, native["runtime_sha256"],
-                                        {"write": counts["write"]+4, "verify": counts["verify"]+4} if status.get("item_receipt_auth_restart_fixture") is True and suite in {"decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} else counts, suite)
+                                        {"write": counts["write"]+9, "verify": counts["verify"]+3} if suite == "decode-live" else {"write": counts["write"]+4, "verify": counts["verify"]+4} if status.get("item_receipt_auth_restart_fixture") is True and suite in {"decode-owner", "decode-dimension", "decode-scope", "decode-rewrite"} else counts, suite)
                 if status.get('item_live_decode_restart_fixture') is True:
                     validate_live_decode_assertions(decode)
+                if suite == "decode-live":
+                    validate_live_mutation_assertions(decode)
                 pids.extend(p['pid'] for p in decode['processes'])
                 from inspect_legacy_decode_world import inspect
                 inspections[suite] = {mode: inspect(logs / decode['world_archives'][mode]['file'], decode['phase_reports'][phase], expected_mc, suite)
