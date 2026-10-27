@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-context-process-2026-10-27T01",
-    "claimed_at": "2026-10-27T01:03:00Z",
-    "expires_at": "2026-10-27T01:33:00Z",
-    "scope": "Separate context-only native process variant with unchanged host owner",
-    "expected_parent": "95486439a597c9e143468f8023d30efa7eca9c19"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -54,9 +48,9 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
   "last_writer_release": {
-    "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "released_at": "2026-10-27T00:33:51Z",
-    "checkpoint": "Exact native/process/saved-world/controller and client evidence safely checkpointed; combined mutation scope and remaining single-mutation/unobserved/provider acceptance remain explicit."
+    "owner": "pl4-context-process-2026-10-27T01",
+    "released_at": "2026-10-27T01:05:00Z",
+    "checkpoint": "Pinned context-only process candidates and controller; isolated validation pending."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -160,5 +154,14 @@
     "draft": true,
     "action": "Preserved unchanged; development draft is ineligible for publication. No new release/upload created."
   },
-  "environment_note": "fatal: sha1 file .git/objects/pack/tmp_idx_AICGs9 write error. Out of diskspace; fatal:index-pack failed. Continued via GitHub/API and memory-backed scratch; not a total task blocker."
+  "environment_note": "fatal: sha1 file .git/objects/pack/tmp_idx_AICGs9 write error. Out of diskspace; fatal:index-pack failed. Continued via GitHub/API and memory-backed scratch; not a total task blocker.",
+  "pending_context_process": {
+    "sources": {
+      "1.12.2": "61ee93c43e571ae6454d7f64b4dc5100df634954",
+      "1.6.4": "45137943612a482b3d051ffb93069f6e79aa25bd"
+    },
+    "local_tests": 138,
+    "acceptance": "PENDING_NATIVE_ARTIFACT_QUALIFICATION",
+    "production_source_changed": false
+  }
 }

@@ -29,6 +29,13 @@ class LiveMutationTests(unittest.TestCase):
  def test_exact_native_world_ports(self):
   for mc in ['1.12.2','1.6.4']:
    f=self.fixture(mc);self.assertEqual(validate(f.tiles,f.journal,f.phase,mc,'decode-live')['result'],'PASS')
+ def test_context_only_owner_preserved_ports(self):
+  for mc in ['1.12.2','1.6.4']:
+   f=self.fixture(mc);f.tiles[0]['Owner' if mc=='1.12.2' else 'OwnerName']='fae1b877-c6b4-4538-a26a-630190b54205' if mc=='1.12.2' else 'pl4owner'
+   self.assertEqual(validate(f.tiles,f.journal,f.phase,mc,'decode-live-context')['result'],'PASS')
+ def test_context_only_cannot_claim_changed_owner(self):
+  f=self.fixture('1.12.2')
+  with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live-context')
  def test_source_loss_rejected(self):
   f=self.fixture('1.12.2');f.tiles[-1]['Items'][0]['Count']=31
   with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live')
