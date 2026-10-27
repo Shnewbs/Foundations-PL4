@@ -5,25 +5,21 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "claimed_at": "2026-10-27T00:26:00Z",
-    "expires_at": "2026-10-27T00:41:00Z",
-    "scope": "Fix copied-save collector omission of native 1.6.4 OwnerName label and preserve exact source/evidence checkpoint",
-    "expected_parent": "900f02e535c1f1884596147f604fd128a43ec7f5"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40418076575,
+  "last_verified_legacy_native_run": 40425923925,
   "last_verified_legacy_client_runs": {
-    "1.12.2": 40419011296,
+    "1.12.2": 40426189366,
     "1.6.4": 40419011289
   },
-  "current_checkpoint": "Fixed the cleared admission latch on retained legacy evidence: explicit admission/server ticks now revalidate existing owner/context and preserve original evidence, freezing rejected changes and fencing the tested disconnected same-target alias after observation. Both ports reproduced4 failures plus1 passing idempotence control, then pass all5 new cases: native383/383 and361/361; main192 passes.125 local controller and176 CI executions pass. Existing decode1044/28 JVMs,provider188 andhistorical60 per port separately requalify, with raw saved NBT andall17 packaged hashes. Both fresh exact-JAR clients pass complete5/4-page export and normal regressions;4 captures reviewed,42 hashed. Initial1.6.4 fixture-constructor/cascading-cleanup failure is recorded and corrected before accepted reproduction. CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads. All24 RC flagsfalse.",
-  "local_validation": "PASS:125 local controller tests;176 hourly CI executions;ordinary383/361/main192;five named admission cases per port;decode1044/provider188/historical60 separately;raw world/hash/source/fixture evidence;both fresh exact production clients. Observed tick/admission scope only.",
+  "current_checkpoint": "Added a separate live-mutation native suite on both legacy ports: combined owner/context edits after cleared scoped admission, transfer entry, observed disconnected alias and actual sealed removal survive clean and completed-save/flush parent-SIGKILL restarts. Each passes164 new-suite assertions across4 JVMs; total decode1208/32 JVMs, provider188 and historical60 remain separate. Ordinary native383/361 and main192 pass. Fixed copied-save1.6.4 OwnerName omission;2 actual native-copy omissions reproduced and fixed,16 bounded queries preserve archives.136 local and187 final CI controller executions pass. Initial exact-schema controller rejection is preserved and repaired. All17 packaged hashes and16 decode worlds per port qualify. Fresh changed-archive1.12.2 client passes,2 captures reviewed/21 hashed;1.6.4 retains prior identical production-payload client evidence. All24 RC flagsfalse;no new release/upload.",
+  "local_validation": "PASS:136 targeted local controller tests,187 final CI executions;native383/361/main192;decode1208/32 JVMs includingnew164 live-suite checks;provider188/historical60 separately;all17 packaged hashes;16 raw decode worlds per port;16 bounded copied-save queries;fresh112 exact-JAR client and retained identical164 payload client. Combined observed mutation scope only.",
   "next_work": [
-    "Extend live owner/context rewrite, transfer and actual-removal mutations through separate native processes. Probe disconnected alias reads before any host tick/admission observation and loaded/unloaded host boundaries without a global world scan or force-load. Current5 native cases cover explicit admission, observed tick, observed disconnected same-target alias, valid idempotence and raw context edits; they do not grant general alias or mutation-process clearance.",
+    "Add distinct owner-only and context-only process variants, unobserved alias reads and loaded/unloaded boundaries without global scanning/force-loading. Current new164-assertion suite combines owner/context changes before transfer admission and observes the alias afterward.",
+    "Continue owner-authorized linked-host/receipt export, dedicated multiplayer/online identity/actual dimension travel, installed providers and copied user/modpack saves with observed evidence.",
+    "Continue reviewed reconciliation, broader legacy editor/multipart, Forge1.16.1–1.16.4 launcher profiles and sustained active-provider/full-server performance. All24 RC flags remainfalse.",
     "Continue bounded owner-authorized linked-host/receipt export and dedicated multiplayer/online profile/dimension travel authorization. Current native fake-player receipt checks do not certify online identity, provider permissions or actual dimension travel.",
     "Extend historical import acceptance to copied user/modpack worlds and dedicated multiplayer/profile/dimension boundaries. Already-removed loose unlinked receipts have no trustworthy original owner/target and remain operator-inspected; do not synthesize their route. Observe unloaded saved faults only when their chunks load, preserving unknown scope. Keep journal schema2/downgrade guidance and complete pre-upgrade backups.",
     "General provider/composite wrappers and hidden backing aliases at different coordinates remain separate from exact owner/dimension/target fences. Preserve native advertised handlers, use explicit validated identity contracts and adversarial tests; no reflection/equal-content identity inference.",
@@ -32,38 +28,40 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
-  "main_native_validation_run": 40418076575,
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
+  "main_native_validation_run": 40426593938,
   "curseforge_reconciliation_run": 40417802166,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "latest_native_runs": [
-    40418076575
+    40425177328,
+    40425923925,
+    40426593938
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40418076575,
-    "1.6.4": 40418076575
+    "1.12.2": 40425177328,
+    "1.6.4": 40425923925
   },
   "latest_stock_client_evidence": {
-    "1.12.2": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "1.12.2": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
     "1.6.4": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
+  "native_main_source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
   "last_writer_release": {
     "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "released_at": "2026-10-27T00:24:10Z",
-    "checkpoint": "Pinned qualified changed 1.12.2 production payload for independent stock client; process candidates unchanged and retry active."
+    "released_at": "2026-10-27T00:33:51Z",
+    "checkpoint": "Exact native/process/saved-world/controller and client evidence safely checkpointed; combined mutation scope and remaining single-mutation/unobserved/provider acceptance remain explicit."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
   "latest_branch_publisher_review": {
-    "evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+    "evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
     "version_sources": {
-      "1.12.2": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
-      "1.6.4": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4"
+      "1.12.2": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+      "1.6.4": "f381691f13a94666da71ae1b6430cfee85d373ab"
     },
     "publication_steps": "SKIPPED"
   },
-  "previous_checkpoint": "Added168 live fault-clearing/empty-escrow face-edit/native-NBT preservation assertions per legacy port before context rejection and on retained hosts after restart. Total decode1044/28 JVMs per port now passes (raw/missing/compound41/29 per write/read;field45/33), separate from provider188 and historical60. Native378/356/main192 pass;119 targeted local controller tests pass. All17 packaged hashes, all raw decode/provider/historical saved worlds and distinct process identities qualified. Fresh1.12.2 exact-JAR client passes complete5-page export and ordinary regressions;2 captures reviewed,21 hashed.1.6.4 production bytes unchanged5074b085, retaining prior exact-payload client evidence without a new run/review. All24 RC flagsfalse;no new release/upload.",
+  "previous_checkpoint": "Fixed the cleared admission latch on retained legacy evidence: explicit admission/server ticks now revalidate existing owner/context and preserve original evidence, freezing rejected changes and fencing the tested disconnected same-target alias after observation. Both ports reproduced4 failures plus1 passing idempotence control, then pass all5 new cases: native383/383 and361/361; main192 passes.125 local controller and176 CI executions pass. Existing decode1044/28 JVMs,provider188 andhistorical60 per port separately requalify, with raw saved NBT andall17 packaged hashes. Both fresh exact-JAR clients pass complete5/4-page export and normal regressions;4 captures reviewed,42 hashed. Initial1.6.4 fixture-constructor/cascading-cleanup failure is recorded and corrected before accepted reproduction. CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads. All24 RC flagsfalse.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -116,31 +114,45 @@
     "new_uploads": 0,
     "moderation_and_public_visibility_reverified": false
   },
-  "pending_live_process_checkpoint": {
+  "completed_live_mutation_process_checkpoint": {
+    "evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
     "sources": {
       "1.12.2": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
       "1.6.4": "f381691f13a94666da71ae1b6430cfee85d373ab"
     },
-    "controller": "a33543f898ade47559f6c9acb582be74569bfc17",
-    "local_controller_executions": 134,
-    "new_controller_cases": 9,
-    "production_source_changed": false,
-    "scope": "New decode-live native process suite edits owner/context after cleared scoped admission, transfer and observed alias, retains actual sealed removal receipt and physical source chests. Qualification pending; no new acceptance granted.",
-    "controller_failure": {
-      "run": 40425177328,
-      "job": 121929174054,
-      "artifact": 12700070505,
-      "artifact_sha256": "9c0ddd8ff1d42b5858978097d837ce60586aed8203e26d0627a24227c3944603",
-      "reason": "New independent controller incorrectly expected 1.12.2 Owner key for 1.6.4 native OwnerName. Native live suite passed50/32/50/32; retained raw worlds pass corrected exact-schema check.",
-      "production_or_fixture_failure": false
+    "native_runs": {
+      "1.12.2": 40425177328,
+      "1.6.4": 40425923925
     },
-    "qualified_112": {
-      "source": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
-      "native_run": 40425177328,
-      "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
-      "decode_assertions": 1208,
-      "live_suite_assertions": 164,
-      "client": "PENDING_FRESH_CHANGED_PACKAGED_BYTES"
-    }
-  }
+    "new_suite_assertions_per_port": 164,
+    "total_decode_assertions_per_port": 1208,
+    "decode_jvms_per_port": 32,
+    "scope": "Combined owner/context live mutation after cleared scoped admission; transfer entry and alias after host observation. No single-mutation or pre-observation claim."
+  },
+  "completed_copied_save_owner_label_fix": {
+    "source": "ff0c01550c2846f41047955618410dff13db50a4",
+    "evidence": "docs/acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
+    "native_copy_omissions_reproduced": 2,
+    "bounded_native_saved_world_queries": 16,
+    "authorization_or_reconciliation_clearance": false
+  },
+  "completed_live_process_controller_failure": {
+    "run": 40425177328,
+    "job": 121929174054,
+    "artifact": 12700070505,
+    "artifact_sha256": "9c0ddd8ff1d42b5858978097d837ce60586aed8203e26d0627a24227c3944603",
+    "reason": "New independent controller incorrectly expected 1.12.2 Owner key for 1.6.4 native OwnerName. Native live suite passed50/32/50/32; retained raw worlds pass corrected exact-schema check.",
+    "production_or_fixture_failure": false
+  },
+  "observed_existing_development_draft": {
+    "id": 420675853,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/releases/tag/untagged-9ef14136cbc1fe6dd278",
+    "tag": "mc1.12.2-v0.2.0-rc.1-dev",
+    "created_at": "2026-10-22T12:07:57Z",
+    "published_at": "2026-10-22T12:09:30Z",
+    "prerelease": true,
+    "draft": true,
+    "action": "Preserved unchanged; development draft is ineligible for publication. No new release/upload created."
+  },
+  "environment_note": "fatal: sha1 file .git/objects/pack/tmp_idx_AICGs9 write error. Out of diskspace; fatal:index-pack failed. Continued via GitHub/API and memory-backed scratch; not a total task blocker."
 }

@@ -451,11 +451,11 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
-      "workflow_run": 40418076575,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40418076575",
+      "source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
+      "workflow_run": 40426593938,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40426593938",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
       "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
       "observed_native_fixtures": 192,
       "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -509,11 +509,16 @@
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40389033557
       },
-      "candidate_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
+      "candidate_source_commit": "ff0c01550c2846f41047955618410dff13db50a4",
       "previous_admission_candidate": {
         "source_commit": "9ea66db24c72fc9c9be7d3ab50c508a21fd9b86d",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40409934243
+      },
+      "previous_live_mutation_process_candidate": {
+        "source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
+        "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "workflow_run": 40418076575
       }
     },
     {
@@ -585,19 +590,19 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40418076575,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40418076575",
-      "source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
-      "runtime_sha256": "80b399d29837821c46eec46a9e8f2307352d79dac1172665c2b3e5473f5fd543",
+      "workflow_run": 40425177328,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40425177328",
+      "source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+      "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
+      "candidate_source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
-      "client_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "client_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "sorting_candidate": {
         "source_commit": "17c5d54fba81e6d71812b2662a691562037f0f57",
@@ -609,7 +614,7 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
       "observed_native_fixtures": 383,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -665,7 +670,7 @@
       },
       "owned_sided_native_validation": "PASS_15_EXACT_112_CASES",
       "owned_sided_acceptance": "PASS_15_NATIVE_CASES_AND_NORMAL_STOCK_REGRESSION",
-      "client_workflow_run": 40419011296,
+      "client_workflow_run": 40426189366,
       "previous_route_edit_candidate": {
         "source_commit": "78053bd5eb9e89e6d7d101831834638db7fd8c3c",
         "runtime_sha256": "cef7cb80154fe6f51afbf525015b8b5a4bba1988337871d1d042f06fbbd2c296",
@@ -673,11 +678,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 247
       },
-      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_PACKAGED_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-112-owned-sided-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Retained evidence revalidates after initial load latch clears. Five new native cases pass after four reproduced failures, including disconnected same-target alias following observed owner-edit tick; valid context remains scoped/idempotent. Existing decode1044/provider188/historical60 remain separate. Before-observation edits and wider alias/provider/multiplayer/recovery/performance acceptance stay open.",
+      "acceptance_attribution": "New combined live owner/context suite starts after scoped admission clears, revalidates at transfer entry and checks an observed disconnected same-target alias, physical32-item source stocks, original evidence and actual sealed8-unit removal receipt across clean/completed-save-flush parent-SIGKILL JVMs. Totaldecode1208/32 JVMs;provider188/historical60 separate. Single-mutation variants, before-observation aliases/unloaded boundaries, providers, dedicated multiplayer, recovery and sustained performance remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "previous_wireless_journal_candidate": {
         "source_commit": "cc6a7b2aefda7362215848a348b93b9a2950764d",
@@ -729,14 +734,14 @@
       },
       "item_process_restart_evidence": "acceptance/rc-dev-legacy-provider-persistence-2026-10-26.json",
       "stock_client_attribution": {
-        "source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
-        "runtime_sha256": "80b399d29837821c46eec46a9e8f2307352d79dac1172665c2b3e5473f5fd543",
-        "workflow_run": 40419011296,
+        "source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+        "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
+        "workflow_run": 40426189366,
         "result": "PASS",
         "fresh_client_run": true,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
+        "scope": "Fresh exact current packaged production payload; normal storage/search/grouping/replay/codecs/display and complete5-page opaque export. New process mutation cases are native fixtures, not graphical mutation acceptance."
       },
       "previous_preupgrade_candidate": {
         "source_commit": "c4d0f9e1418eab1c6626e8a3a211e7c04e514ba3",
@@ -879,8 +884,8 @@
         "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 1044,
-      "total_decode_process_jvms": 28,
+      "total_decode_process_assertions": 1208,
+      "total_decode_process_jvms": 32,
       "previous_opaque_export_candidate": {
         "source_commit": "e84fefc44ed8e54adb8e550a0a99cee8e7a11a95",
         "runtime_sha256": "cdc88cb06099523b45bb27a6babc3245a1797802957111b221f2523035930314",
@@ -959,9 +964,18 @@
       },
       "live_retained_evidence_quarantine": "PASS_8_EXACT_NATIVE_CASES",
       "live_retained_evidence_report": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
-      "live_mutation_process_restart": "PARTIAL_168_FAULT_CLEAR_EMPTY_ESCROW_FACE_AND_NBT_GUARDS",
-      "live_process_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
-      "live_mutation_process_assertions": 168,
+      "live_mutation_process_restart": "PARTIAL_COMBINED_OWNER_CONTEXT_TRANSFER_ENTRY_SEALED_REMOVAL_AND_OBSERVED_ALIAS_NATIVE_JVMS",
+      "live_process_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
+      "live_mutation_process_assertions": {
+        "combined_suite": 164,
+        "write": 50,
+        "verify": 32,
+        "crash_write": 50,
+        "crash_verify": 32,
+        "distinct_jvms": 4,
+        "counts_overlap_common_fault_guards": true,
+        "separate_from_ordinary_native_provider_and_historical_counts": true
+      },
       "previous_admission_candidate": {
         "source_commit": "d9679803b394b67bd55cf643f5a371bb1136322f",
         "runtime_sha256": "ab10d0cd328134829493c60b3502370977d7d3ce96a440393a46c6dda54d7414",
@@ -979,7 +993,24 @@
       },
       "live_admission_native_cases": 5,
       "live_admission_acceptance": "PASS_SCOPED_EXPLICIT_ADMISSION_AND_OBSERVED_TICK_DISCONNECTED_ALIAS",
-      "live_admission_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
+      "live_admission_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "previous_live_mutation_process_candidate": {
+        "source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
+        "runtime_sha256": "80b399d29837821c46eec46a9e8f2307352d79dac1172665c2b3e5473f5fd543",
+        "workflow_run": 40418076575,
+        "stock_client_attribution": {
+          "source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
+          "runtime_sha256": "80b399d29837821c46eec46a9e8f2307352d79dac1172665c2b3e5473f5fd543",
+          "workflow_run": 40419011296,
+          "result": "PASS",
+          "fresh_client_run": true,
+          "reviewed_captures": 2,
+          "hashed_captures": 21,
+          "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
+        }
+      },
+      "build_status_blob_sha": "17900b9fbe86ddfb866429178fd171d0a7609898",
+      "previous_live_fault_guard_process_assertions": 168
     },
     {
       "minecraft": "1.6.4",
@@ -994,16 +1025,16 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40418076575,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40418076575",
-      "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
+      "workflow_run": 40425923925,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40425923925",
+      "source_commit": "f381691f13a94666da71ae1b6430cfee85d373ab",
       "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
-      "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
+      "candidate_source_commit": "f381691f13a94666da71ae1b6430cfee85d373ab",
+      "client_visual_acceptance": "PARTIAL_PRIOR_IDENTICAL_PAYLOAD_CAPTURES_NO_NEW_REVIEW",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
       "client_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
@@ -1017,7 +1048,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 361,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1062,11 +1093,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_FRESH_EXACT_CURRENT_JAR_NORMAL_ACTIONS_AND_FULL_OPAQUE_EXPORT",
+      "current_source_stock_client_regression": "PASS_PRIOR_IDENTICAL_PRODUCTION_PAYLOAD",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Retained evidence revalidates after initial load latch clears. Five new native cases pass after four reproduced failures, including disconnected same-target alias following observed owner-edit tick; valid context remains scoped/idempotent. Existing decode1044/provider188/historical60 remain separate. Before-observation edits and wider alias/provider/multiplayer/recovery/performance acceptance stay open.",
+      "acceptance_attribution": "New combined live owner/context suite starts after scoped admission clears, revalidates at transfer entry and checks an observed disconnected same-target alias, physical32-item source stocks, original evidence and actual sealed8-unit removal receipt across clean/completed-save-flush parent-SIGKILL JVMs. Totaldecode1208/32 JVMs;provider188/historical60 separate. Single-mutation variants, before-observation aliases/unloaded boundaries, providers, dedicated multiplayer, recovery and sustained performance remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40419011289,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1107,10 +1138,11 @@
         "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
         "workflow_run": 40419011289,
         "result": "PASS",
-        "fresh_client_run": true,
+        "fresh_client_run": false,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
+        "scope": "Prior exact payload stock-client evidence retained because newly native-qualified production SHA is identical. No new1.6.4 client run or visual review claimed.",
+        "reviewed_captures_this_checkpoint": 0
       },
       "previous_preupgrade_candidate": {
         "source_commit": "10e0b27a083437c2e2cb62c77cab8d0ee69e1d29",
@@ -1260,8 +1292,8 @@
         "scope": "Includes live fault/face/NBT guards; clean and completed-save-flush parent SIGKILL only."
       },
       "compound_context_evidence": "acceptance/rc-dev-legacy-compound-process-2026-10-26.json",
-      "total_decode_process_assertions": 1044,
-      "total_decode_process_jvms": 28,
+      "total_decode_process_assertions": 1208,
+      "total_decode_process_jvms": 32,
       "previous_opaque_export_candidate": {
         "source_commit": "cdb5933cfaf79e6000193db4bae3687825e68aa6",
         "runtime_sha256": "e3baad7bb944a3456db30dde5bb897111cb90515f64c736f995f6bf0fab9516e",
@@ -1338,9 +1370,18 @@
       },
       "live_retained_evidence_quarantine": "PASS_8_EXACT_NATIVE_CASES",
       "live_retained_evidence_report": "acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
-      "live_mutation_process_restart": "PARTIAL_168_FAULT_CLEAR_EMPTY_ESCROW_FACE_AND_NBT_GUARDS",
-      "live_process_evidence": "acceptance/rc-dev-legacy-live-process-2026-10-26.json",
-      "live_mutation_process_assertions": 168,
+      "live_mutation_process_restart": "PARTIAL_COMBINED_OWNER_CONTEXT_TRANSFER_ENTRY_SEALED_REMOVAL_AND_OBSERVED_ALIAS_NATIVE_JVMS",
+      "live_process_evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
+      "live_mutation_process_assertions": {
+        "combined_suite": 164,
+        "write": 50,
+        "verify": 32,
+        "crash_write": 50,
+        "crash_verify": 32,
+        "distinct_jvms": 4,
+        "counts_overlap_common_fault_guards": true,
+        "separate_from_ordinary_native_provider_and_historical_counts": true
+      },
       "previous_admission_candidate": {
         "source_commit": "86dd76fb02b942cd1206b4ccdf4c8094eff4ace6",
         "runtime_sha256": "5074b085cde81655da3fef20c100e2d87ef4acd20b3b023b883eeeb806338d66",
@@ -1359,10 +1400,27 @@
       },
       "live_admission_native_cases": 5,
       "live_admission_acceptance": "PASS_SCOPED_EXPLICIT_ADMISSION_AND_OBSERVED_TICK_DISCONNECTED_ALIAS",
-      "live_admission_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json"
+      "live_admission_evidence": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
+      "previous_live_mutation_process_candidate": {
+        "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
+        "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
+        "workflow_run": 40418076575,
+        "stock_client_attribution": {
+          "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
+          "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
+          "workflow_run": 40419011289,
+          "result": "PASS",
+          "fresh_client_run": true,
+          "reviewed_captures": 2,
+          "hashed_captures": 21,
+          "scope": "Fresh current hourly production payload. Normal stock storage/search/grouping/replay/codec/display and complete opaque export regressions. Admission/alias cases are native fixtures, not graphical mutation acceptance."
+        }
+      },
+      "build_status_blob_sha": "7368740b2fd81965217659d1b105f7e4fc8380a2",
+      "previous_live_fault_guard_process_assertions": 168
     }
   ],
-  "latest_work": "Fixed the cleared admission latch on retained legacy evidence: explicit admission/server ticks now revalidate existing owner/context and preserve original evidence, freezing rejected changes and fencing the tested disconnected same-target alias after observation. Both ports reproduced4 failures plus1 passing idempotence control, then pass all5 new cases: native383/383 and361/361; main192 passes.125 local controller and176 CI executions pass. Existing decode1044/28 JVMs,provider188 andhistorical60 per port separately requalify, with raw saved NBT andall17 packaged hashes. Both fresh exact-JAR clients pass complete5/4-page export and normal regressions;4 captures reviewed,42 hashed. Initial1.6.4 fixture-constructor/cascading-cleanup failure is recorded and corrected before accepted reproduction. CurseForge reconciliation confirms24 already-submitted receipts,0 new uploads. All24 RC flagsfalse.",
+  "latest_work": "Added a separate live-mutation native suite on both legacy ports: combined owner/context edits after cleared scoped admission, transfer entry, observed disconnected alias and actual sealed removal survive clean and completed-save/flush parent-SIGKILL restarts. Each passes164 new-suite assertions across4 JVMs; total decode1208/32 JVMs, provider188 and historical60 remain separate. Ordinary native383/361 and main192 pass. Fixed copied-save1.6.4 OwnerName omission;2 actual native-copy omissions reproduced and fixed,16 bounded queries preserve archives.136 local and187 final CI controller executions pass. Initial exact-schema controller rejection is preserved and repaired. All17 packaged hashes and16 decode worlds per port qualify. Fresh changed-archive1.12.2 client passes,2 captures reviewed/21 hashed;1.6.4 retains prior identical production-payload client evidence. All24 RC flagsfalse;no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1373,20 +1431,41 @@
   },
   "modern_source_alignment_audit": "PASS_NO_RUNTIME_FIXTURE_OR_RESOURCE_DRIFT_FOR_ALL_22_AUDITED_COMMITS",
   "partial_1122_acceptance": {
-    "source_commit": "5423c2c2fd2cf6ffbe8ee4e80965eafc9ed1680c",
-    "runtime_sha256": "80b399d29837821c46eec46a9e8f2307352d79dac1172665c2b3e5473f5fd543",
-    "workflow_run": 40419011296,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
-    "closes_all_acceptance": false
+    "source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+    "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
+    "workflow_run": 40425177328,
+    "stock_wireless_client": {
+      "source_commit": "03778d8d98b461801d5e2bd301ab826b7d2506f1",
+      "runtime_sha256": "0a56bb9eae7013f030c416c53f51ebbe9907c4480856780a16ae9c2bc06f1b7d",
+      "workflow_run": 40426189366,
+      "result": "PASS",
+      "fresh_client_run": true,
+      "reviewed_captures": 2,
+      "hashed_captures": 21,
+      "scope": "Fresh exact current packaged production payload; normal storage/search/grouping/replay/codecs/display and complete5-page opaque export. New process mutation cases are native fixtures, not graphical mutation acceptance."
+    },
+    "closes_all_acceptance": false,
+    "evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json"
   },
   "partial_164_acceptance": {
-    "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
+    "source_commit": "f381691f13a94666da71ae1b6430cfee85d373ab",
     "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
-    "workflow_run": 40419011289,
-    "stock_wireless_client": "acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
-    "closes_all_acceptance": false
+    "workflow_run": 40425923925,
+    "stock_wireless_client": {
+      "source_commit": "8ad0d6f7981c5dfa38695bddf414e1f1a05fc7c4",
+      "runtime_sha256": "8bac4138a5c28f6ed1b8217ff6a044ec46fc5b00a9dfc05b875ec4391fd023a2",
+      "workflow_run": 40419011289,
+      "result": "PASS",
+      "fresh_client_run": false,
+      "reviewed_captures": 2,
+      "hashed_captures": 21,
+      "scope": "Prior exact payload stock-client evidence retained because newly native-qualified production SHA is identical. No new1.6.4 client run or visual review claimed.",
+      "reviewed_captures_this_checkpoint": 0
+    },
+    "closes_all_acceptance": false,
+    "evidence": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json"
   },
-  "hourly_native_revalidation": "acceptance/rc-dev-legacy-context-scalar-types-2026-10-26.json",
+  "hourly_native_revalidation": "acceptance/rc-dev-legacy-live-mutation-process-2026-10-26.json",
   "hourly_work_policy": "RC_HOURLY_WORKFLOW.md",
   "publisher_guard_evidence": "acceptance/rc-dev-publisher-guards-2026-10-25.json",
   "previous_partial_1122_acceptance": {
