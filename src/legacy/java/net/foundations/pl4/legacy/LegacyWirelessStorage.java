@@ -60,6 +60,11 @@ public final class LegacyWirelessStorage {
     }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();BoundedNetwork.Plan plan=root.network();if(plan.overflow)return result;
+        // Observe all loaded authorized item hosts before any native inventory/provider callback.
+        // A later endpoint's rejected context must already fence earlier handler discovery.
+        for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
+            int role=node.role();if(role==1||role==2||role==LegacyReadings.ITEMS)LegacyItemSafety.importSaved(node);
+        }
         List<LegacyTile> candidates=new ArrayList<LegacyTile>();
         java.util.Map<LegacyTile,net.minecraftforge.items.IItemHandler> handlers=new java.util.IdentityHashMap<LegacyTile,net.minecraftforge.items.IItemHandler>();
         Set<Object> blockedHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
