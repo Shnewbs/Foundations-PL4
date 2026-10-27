@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "claimed_at": "2026-10-27T00:21:30Z",
-    "expires_at": "2026-10-27T00:41:30Z",
-    "scope": "Correct exact 1.6.4 native saved OwnerName schema in live mutation controller after observed qualification rejection",
-    "expected_parent": "66342563ce576458cc5110961e076ec45f5386fa"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -51,8 +45,8 @@
   "native_main_source_commit": "9c3bb3bba52c4d65309b378184be18a1f989169b",
   "last_writer_release": {
     "owner": "pl4-live-mutation-process-2026-10-27T00",
-    "released_at": "2026-10-27T00:15:00Z",
-    "checkpoint": "Pinned live mutation source/controller committed; isolated exact native builds can proceed without writer lease."
+    "released_at": "2026-10-27T00:22:10Z",
+    "checkpoint": "Corrected exact 1.6.4 OwnerName schema and added neighboring-schema rejection regression; pinned legacy candidates unchanged."
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-live-admission-2026-10-26.json",
   "latest_branch_publisher_review": {
@@ -122,9 +116,17 @@
       "1.6.4": "f381691f13a94666da71ae1b6430cfee85d373ab"
     },
     "controller": "a33543f898ade47559f6c9acb582be74569bfc17",
-    "local_controller_executions": 133,
-    "new_controller_cases": 8,
+    "local_controller_executions": 134,
+    "new_controller_cases": 9,
     "production_source_changed": false,
-    "scope": "New decode-live native process suite edits owner/context after cleared scoped admission, transfer and observed alias, retains actual sealed removal receipt and physical source chests. Qualification pending; no new acceptance granted."
+    "scope": "New decode-live native process suite edits owner/context after cleared scoped admission, transfer and observed alias, retains actual sealed removal receipt and physical source chests. Qualification pending; no new acceptance granted.",
+    "controller_failure": {
+      "run": 40425177328,
+      "job": 121929174054,
+      "artifact": 12700070505,
+      "artifact_sha256": "9c0ddd8ff1d42b5858978097d837ce60586aed8203e26d0627a24227c3944603",
+      "reason": "New independent controller incorrectly expected 1.12.2 Owner key for 1.6.4 native OwnerName. Native live suite passed50/32/50/32; retained raw worlds pass corrected exact-schema check.",
+      "production_or_fixture_failure": false
+    }
   }
 }

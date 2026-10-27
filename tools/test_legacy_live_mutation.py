@@ -23,7 +23,7 @@ class LiveMutationTests(unittest.TestCase):
   with self.assertRaises(ValueError):validate_live_mutation_assertions(self.report)
  def fixture(self,mc):
   f=worlds.DecodeWorldTests();f.setUp();f.field_suite('decode-rewrite',mc)
-  f.tiles[0]['Owner']='live-owner'
+  f.tiles[0]['Owner' if mc=='1.12.2' else 'OwnerName']='live-owner'
   f.tiles += [dict(x=x,y=199,z=32,Items=[dict(Slot=0,Count=32,id='minecraft:iron_ingot' if mc=='1.12.2' else 265)]) for x in [64,80]]
   return f
  def test_exact_native_world_ports(self):
@@ -35,6 +35,9 @@ class LiveMutationTests(unittest.TestCase):
  def test_owner_reversion_rejected(self):
   f=self.fixture('1.12.2');f.tiles[0]['Owner']='other'
   with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.12.2','decode-live')
+ def test_neighboring_owner_schema_rejected(self):
+  f=self.fixture('1.6.4');f.tiles[0]['Owner']=f.tiles[0].pop('OwnerName')
+  with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.6.4','decode-live')
  def test_retained_alias_rejected(self):
   f=self.fixture('1.6.4');f.tiles.append(dict(x=64,y=198,z=32))
   with self.assertRaises(ValueError):validate(f.tiles,f.journal,f.phase,'1.6.4','decode-live')

@@ -44,7 +44,7 @@ def validate(tiles,journal,phase,mc,suite):
     if prior.get('Schema')!=2 or len(entries)!=2 or sorted(r['Token'] for r in entries)!=sorted(tokens):raise ValueError('Raw prior journal tokens changed')
     if any(r.get('Owner')!=owner or r.get('Scope')!='legacy-unknown' or 'X' in r or 'Phase' in r for r in entries):raise ValueError('Raw prior route was invented')
     if suite == 'decode-live':
-        if live.get('Owner') != 'live-owner' or (64,198,32) in at:
+        if live.get('Owner' if mc=='1.12.2' else 'OwnerName') != 'live-owner' or (64,198,32) in at:
             raise ValueError('Live owner rewrite or disposable alias removal changed')
         for x in [64,80]:
             stock=at[(x,199,32)];items=stock.get('Items',[])
