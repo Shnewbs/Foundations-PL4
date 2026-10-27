@@ -1,0 +1,65 @@
+{
+  "recorded_date": "2026-10-27",
+  "run_owner": "pl4-chat-hourly-20261027T1811Z",
+  "objective": "Fail closed before discovery of healthy provider/endpoints when the handheld's authorized network root itself carries retained escrow or saved item evidence.",
+  "main_parent": "30b4e88fb4ffb16e51727d82d625c196dc914302",
+  "changes": [
+    {
+      "exact_target": "1.6.4",
+      "branch": "mc/1.6.4",
+      "old_source_sha": "f7973d776fdbaf06300b7ffcc537e7b82e18bc4b",
+      "new_source_sha": "d150374be8960db0453d910fc11983ab254e1848",
+      "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java"
+    },
+    {
+      "exact_target": "1.12.2",
+      "branch": "mc/1.12.2",
+      "old_source_sha": "19da12598eece763190d3e1353763ce5dc1fc173",
+      "new_source_sha": "f1f460e58336995c5f7dc1f0251917ac8dc1a3c2",
+      "path": "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java"
+    }
+  ],
+  "behavior": "At endpoint discovery entry, call the existing server-side ready(root), which imports retained evidence before querying root.network() or any provider; reject enumeration if root is quarantined or escrow pending. Existing endpoint/fence checks, inventories, models, NBT and packet behavior remain unmodified.",
+  "verification": {
+    "source_identity": "PASS both: exact old-to-new replacement, unchanged prior methods, one guard preceding network discovery; no unrelated changes in affected Java files",
+    "native_compile_and_scenario_for_changed_commits": "NOT RUN/NOT VERIFIED; next source-pinned branch/hourly build required",
+    "existing_publisher_policy": "Both exact branch release.yml and curseforge.yml inspected; dev/snapshot rejection and explicit tagged RC clearance guards preserved",
+    "previous_completed_ci": [
+      {
+        "run": 40548145769,
+        "source": "f7973d776fdbaf06300b7ffcc537e7b82e18bc4b",
+        "scope": "1.6.4 native restart and producer previous source",
+        "result": "success; publish skipped"
+      },
+      {
+        "run": 40548545101,
+        "source": "64f9e58e12843cc6822e82adb8b3e49f292cfeb6",
+        "scope": "main offline checks and native GameTests",
+        "result": "success"
+      },
+      {
+        "run": 40548542573,
+        "scope": "main 1.21.1 and 1.6.4 pinned earlier source matrix",
+        "result": "two native jobs passed"
+      }
+    ]
+  },
+  "limitations": [
+    "Previous passing native source commits do not qualify changed 1.6.4/1.12.2 source or provide new exact-version JAR identity",
+    "No new installed provider, dedicated multiplayer, saved-world migrations, crash power-loss or sustained performance acceptance",
+    "No current new stock-client screenshots or native Windows play test",
+    "An inferred root-bypass risk was blocked conservatively; no demonstrated live exploit or comprehensive alias fix is claimed",
+    "Prior intermittent 1.6.4 placement NPE from 40442840965 remains unexplained"
+  ],
+  "publication": {
+    "rc_clearance": false,
+    "qualifying_new_jar": false,
+    "new_github_release": false,
+    "new_curseforge_upload": false
+  },
+  "next": [
+    "Obtain source-pinned native + packaged tests on d150374 and f1f460e, including root escrow readmission, healthy control, and no provider callback on rejected root",
+    "On native failure, inspect raw process and placement-stage receipts without auto-retry/synthetic tiles",
+    "Continue owner-filtered and disconnected/unloaded alias discovery and installed-provider/multiplayer/migration/performance acceptance"
+  ]
+}

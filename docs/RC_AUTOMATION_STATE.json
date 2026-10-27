@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1811Z",
-    "task": "PL4 builds and releases (Chat)",
-    "started_at": "2026-10-27T18:11:00Z",
-    "expires_at": "2026-10-27T18:41:00Z",
-    "scope": "main acceptance ledger plus scoped legacy root-readiness hardening on mc/1.12.2 and mc/1.6.4; no unrelated files",
-    "base_head": "da6ed96f7f55000b785b0b6749d9826aec7efe71"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,8 +14,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27: Added fail-preserving 1.6.4 native placement stage receipts and main hourly/controller validation with two new regression tests. Prior 1.12.2 and 1.6.4 publisher-guard native runs passed; new exact-source CI remains in progress. No production runtime change, RC clearance or new release.",
-  "local_validation": "PASS150 targeted local controller +4 retention unit tests;201 CI discovery +4 trusted native retention executions;164365/main192;1536 decode/40 JVMs +provider188/historical60 separate;80 placements/44 raw process manifests/20 raw decode worlds/12 newly packaged hashes. Original intermittent placement NPE remains unresolved.",
+  "current_checkpoint": "2026-10-27: Hardened legacy handheld endpoint enumeration against unresolved root escrow/saved evidence on exact 1.6.4 d150374 and 1.12.2 f1f460e. Both guards precede root.network/provider and preserve all other Java code. Earlier CI 40548145769, 40548545101 and hourly 40548542573 finished successfully, but do not qualify newly changed sources. Native tests and JARs for new heads pending; all24 RC flags remain false and no release/upload.",
+  "local_validation": "PASS exact scoped Java source/diff invariants and guarded 1.6.4/1.12.2 publisher policy inspection; earlier 1.6.4 and main CI now confirmed PASS. New changed-branch native/stock-client tests UNRUN.",
   "next_work": [
     "Continue diagnosis of unresolved164 placement NPE with newly preserved raw phase/process/block/tile facts; capture native chunk residency/load/population and individual lookup stages if needed. Lost old phase cannot establish failed dereference or seeded assertion count.",
     "Probe actual handheld endpoint/provider-discovery order, owner-filtered/skipped hosts, disconnected aliases before readiness and loaded/unloaded boundaries without global scans or force-load.",
@@ -57,11 +50,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1704Z",
-    "released_at": "2026-10-27T17:15:00Z",
-    "checkpoint": "Exact branch native placement stage instrumentation and main controller validation pushed; evidence recorded, CI pending, no RC clearance."
+    "owner": "pl4-chat-hourly-20261027T1811Z",
+    "released_at": "2026-10-27T18:18:00Z",
+    "checkpoint": "Guarded commits on mc/1.6.4 and mc/1.12.2; native and current JAR acceptance pending; no new release or clearance."
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-placement-stage-validation-2026-10-27.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-root-readmission-2026-10-27.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -208,7 +201,11 @@
     "observation": "Endpoint discovery still filters owner and calls inventory() before readiness. Probe actual handheld provider callbacks, skipped hosts and disconnected aliases before observation; no additional bypass demonstrated.",
     "scope": "No global scan or force-load; explicit readiness case is resolved separately.",
     "instrumented_source": "035fd376476d004e7e5231d0a297b19a5dbd060d",
-    "next_step": "Qualify actual root/later endpoint discovery ordering regressions and fresh changed production-JAR client. Owner-filtered/unloaded/disconnected before observation remains open."
+    "next_step": "Qualify root guard in native scenarios, then owner-filtered/unloaded/disconnected alias discovery without force-loading or provider mutations.",
+    "root_readmission_commits": {
+      "1.6.4": "d150374be8960db0453d910fc11983ab254e1848",
+      "1.12.2": "f1f460e58336995c5f7dc1f0251917ac8dc1a3c2"
+    }
   },
   "completed_handheld_readiness": {
     "evidence": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
