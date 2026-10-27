@@ -180,16 +180,42 @@ public final class DecodeRestartScenarios {
     private boolean sameTagPayload(NBTTagCompound a,NBTTagCompound b){NBTTagCompound left=new NBTTagCompound(),right=new NBTTagCompound();left.setTag("Payload",a.copy());right.setTag("Payload",b.copy());return left.equals(right);}
         private BoundedNetwork.Point pos(int x){return new BoundedNetwork.Point(x,200,32);}
     private void place(int x){
-        int before=world.getBlockId(x,200,32);
-        boolean changed=world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);
-        net.minecraft.tileentity.TileEntity tile=world.getBlockTileEntity(x,200,32);
+        // Always emit a stage-specific record, even when a native block/chunk lookup throws
+        // before the normal placement assertion. Do not retry, synthesize a tile or load a
+        // chunk here: the separate load(x) call is part of the fixture's lifecycle.
         Map<String,Object> row=new LinkedHashMap<String,Object>();
-        row.put("x",x);row.put("y",200);row.put("z",32);row.put("before_block",before);row.put("set_block_changed",changed);
-        row.put("expected_block",LegacyPL4.EXPORT.blockID);row.put("actual_block",world.getBlockId(x,200,32));row.put("metadata",world.getBlockMetadata(x,200,32));
-        row.put("tile_class",tile==null?null:tile.getClass().getName());row.put("tile_invalid",tile==null?null:tile.isInvalid());placements.add(row);
-        System.out.println("PL4 DECODE PLACEMENT "+new com.google.gson.Gson().toJson(row));
-        if(world.getBlockId(x,200,32)!=LegacyPL4.EXPORT.blockID||!(tile instanceof LegacyTile)||tile.isInvalid())throw new AssertionError("Native fixture placement failed: "+row);
-        LegacyTile n=(LegacyTile)tile;n.owner=OWNER;n.fluidDirty();
+        row.put("x",x);row.put("y",200);row.put("z",32);
+        row.put("chunk_x",x>>4);row.put("chunk_z",32>>4);
+        row.put("stage","pre_block_lookup");
+        try{
+            row.put("block_exists_before",world.blockExists(x,200,32));
+            row.put("before_block",world.getBlockId(x,200,32));
+            row.put("stage","set_block");
+            boolean changed=world.setBlock(x,200,32,LegacyPL4.EXPORT.blockID,0,3);
+            row.put("set_block_changed",changed);
+            row.put("stage","post_block_lookup");
+            row.put("expected_block",LegacyPL4.EXPORT.blockID);
+            int actual=world.getBlockId(x,200,32);
+            row.put("actual_block",actual);
+            row.put("metadata",world.getBlockMetadata(x,200,32));
+            row.put("block_exists_after",world.blockExists(x,200,32));
+            row.put("stage","tile_lookup");
+            net.minecraft.tileentity.TileEntity tile=world.getBlockTileEntity(x,200,32);
+            row.put("tile_class",tile==null?null:tile.getClass().getName());
+            row.put("stage","tile_validity");
+            row.put("tile_invalid",tile==null?null:tile.isInvalid());
+            row.put("stage","placement_assertion");
+            if(actual!=LegacyPL4.EXPORT.blockID||!(tile instanceof LegacyTile)||tile.isInvalid())
+                throw new AssertionError("Native fixture placement failed: "+row);
+            row.put("stage","owner_update");
+            LegacyTile n=(LegacyTile)tile;n.owner=OWNER;n.fluidDirty();
+            row.put("stage","complete");
+        }finally{
+            // The start-event finalizer writes this same row into the raw phase report.
+            // Stdout is an independent recovery path when the phase JSON is lost.
+            placements.add(row);
+            System.out.println("PL4 DECODE PLACEMENT "+new com.google.gson.Gson().toJson(row));
+        }
     }
     private void chestBlock(int x){world.setBlock(x,200,32,Block.chest.blockID,0,3);}
     private LegacyTile node(int x){return (LegacyTile)world.getBlockTileEntity(x,200,32);}
