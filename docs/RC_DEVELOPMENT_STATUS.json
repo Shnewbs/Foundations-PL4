@@ -1577,7 +1577,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-27 PT: Scoped 1.6.4 metadata native fixture repair 5353412 made 365/365 native pass; separate-JVM decode-rewrite physical placement at x80 still FAILS in 40606652228. 1.12.2 ac86a7b adds runtime loaded target/host tile identity checks during metadata and item transfer callbacks, plus native replacement fixture (391 cases); 40607180135 native step passed, restart/migration pending. No RC releases or acceptance clearance.",
+  "latest_work": "2026-10-27 PT: Reconciled exact-source 1.12.2 ac86a7b 391/391 native, 44 separate native process restart JVMs, production-only boot and preview.3 migration (40607180135, hourly 40610348219; runtime SHA 8856b7ae...). Previous 1.6.4 5353412 passed hourly 365/365 +44 JVMs but its independent branch 40606652228 failed native decode-rewrite x80; root cause unresolved. Added bounded fail-closed 1.6.4 placement/falling-block diagnostics at a8b727f, CI running. All 24 RC clearances false; no release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1786,26 +1786,34 @@
     "development_only": true
   },
   "latest_164_metadata_callback_checkpoint": {
-    "recorded_date": "2026-10-27",
-    "qualified_prior_source": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
-    "prior_native_run": 40594656761,
-    "prior_native_result": "success",
-    "candidate_source": "53534128528374c43056e21804a79846968f17ce",
-    "candidate_native_run": 40606652228,
-    "candidate_state_at_checkpoint": "FAILED_DECODE_REWRITE_X80_AFTER_365_NATIVE_PASS",
-    "candidate_qualified": false,
-    "rc_clearance": false,
-    "evidence_path": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json",
-    "previous_failed_native": 40600693646
+    "recorded_date": "2026-10-27 PT",
+    "same_source": "53534128528374c43056e21804a79846968f17ce",
+    "failed_branch_run": 40606652228,
+    "branch_failure": "decode-rewrite x80 placed block not expected; no proven root cause",
+    "passing_hourly_same_source_run": 40610348219,
+    "passed_native_cases": 365,
+    "distinct_restart_processes": 44,
+    "exact_production_srg_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12",
+    "diagnostic_final_source": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
+    "diagnostic_run": 40613343806,
+    "diagnostic_result_at_checkpoint": "pending",
+    "intermittent_failure_resolved": false,
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   },
   "latest_112_metadata_callback_checkpoint": {
-    "recorded_date": "2026-10-27",
+    "recorded_date": "2026-10-27 PT",
     "source": "ac86a7bb14de8f60810c515def14b204d6510591",
     "native_run": 40607180135,
-    "native_step": "success",
-    "full_run": "in_progress_at_checkpoint",
-    "qualified": false,
+    "branch_workflow": "success",
+    "hourly_run": 40610348219,
+    "hourly_workflow": "success",
+    "native_cases": 391,
+    "distinct_restart_processes": 44,
+    "exact_production_sha256": "8856b7ae30bfcffa3f6e6a6457c56272e984fa997f39a228994b2f14eacfac1b",
+    "qualified_native_migration_only": true,
+    "client_provider_multiplayer_perf_accepted": false,
     "rc_publication_cleared": false,
-    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   }
 }

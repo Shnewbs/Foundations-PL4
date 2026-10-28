@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1801PT-placement-diagnostics",
-    "acquired_at": "2026-10-28T01:05:50.773Z",
-    "active_until": "2026-10-28T01:43:50.773Z",
-    "expires_at": "2026-10-28T01:43:50.773Z",
-    "source_commit": "c015b713b2f409e93c4582de89762ef6318b108e",
-    "scope": "1.6.4 native decode-rewrite x80 diagnostic integrity and 1.12.2 exact-source qualification reconciliation"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,25 +14,26 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 PT: 1.6.4 metadata test repaired at 5353412; native 365/365 passes in 40606652228 but decode-rewrite x80 native placement fails, so NOT qualified. 1.12.2 ac86a7b implements real installed-tile identity guards; workflow 40607180135 native step PASS and restart in progress at checkpoint, so NOT fully qualified. All 24 RC clearances false, no new releases.",
+  "current_checkpoint": "2026-10-27 PT: 1.12.2 ac86a7b fully passed exact-source 391/391 native, 44 separate restart JVMs, production boot and preview.3 migration in branch 40607180135 and hourly 40610348219; scoped native qualification only. 1.6.4 5353412 hourly passed 365/365 + restart but its independent branch 40606652228 failed decode-rewrite x80 placement. New 1.6.4 diagnostic-only a8b727f is CI in progress; failure not resolved. No RC clearance or new release.",
   "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
   "next_work": [
-    "Inspect raw retained 1.6.4 decode-rewrite x80 placement row, world/chunk block and tile stages and process logs for concrete terrain-overwrite cause; do not merely rerun unchanged job",
-    "Reconcile 1.12.2 run 40607180135 once completed; inspect native counts and exact production hash, retained process and migration records before qualifying this source",
-    "Probe callback-reentrant capability/slot on live installed 1.12.2 providers, disconnected aliases, multiplayer and loaded/unloaded host boundaries",
-    "Preserve all 24 RC flags false until actual target-by-target acceptance and explicit clearance"
+    "Reconcile exact final 1.6.4 a8b727f native CI run 40613343806; inspect any error row at 80,200,32, bounded gravel/falling entity neighbors and retained phase process/JAR evidence without blind retry",
+    "Trace intermittent native gravel/terrain placement lifecycle before changing fixture or production behavior; preserve both failing branch and passing hourly same-source runs",
+    "Obtain installed-provider, actual-client, multiplayer, arbitrary-migration and sustained-performance acceptance for 1.12.2 native-qualified ac86a7b",
+    "Continue exact-target modernization/parity gaps while keeping 24 RC publication flags false until explicit release clearance"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-decoder-placement-admission-2026-10-27.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
   "latest_native_runs": [
     40448042043,
     40567666803,
-    40571895345
+    40571895345,
+    40610348219
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40567666803,
@@ -52,10 +46,12 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1702PT-metadata-fixture",
-    "released_at": "2026-10-28T00:16:23.627Z",
-    "checkpoint": "1.6.4 5353412 passed native 365/365 but native decode-rewrite placement x80 failed; 1.12.2 ac86a7b tile-identity safety guard reached successful native step, separate-JVM qualification pending. No RC publication.",
-    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
+    "owner": "pl4-chat-hourly-20261027T1801PT-placement-diagnostics",
+    "released_at": "2026-10-28T01:14:33.610Z",
+    "checkpoint": "Native 1.12.2 qualification reconciled; same-source 1.6.4 conflicting x80 placement outcomes retained; diagnostic-only 1.6.4 source pushed under guarded ref, no RC publication",
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
+    "source_commit": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
+    "rc_publication_cleared": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
   "latest_branch_publisher_review": {
@@ -336,23 +332,41 @@
   },
   "latest_164_metadata_callback_repair": {
     "source_commit": "53534128528374c43056e21804a79846968f17ce",
-    "native_run": 40606652228,
-    "native_scenarios_passed": 365,
-    "native_scenarios_total": 365,
-    "full_run_result": "failure",
-    "failed_gate": "decode-rewrite physical host placement at x=80",
-    "artifact_id": 12782150613,
-    "artifact_zip_sha256": "f6fb7823ff9193a5c8d49db1a9212f123f3c48b4488b93d25d9a0b776b321018",
-    "qualified": false,
-    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
+    "failed_branch_run": 40606652228,
+    "branch_result": "FAILED_NATIVE_X80_DECODE_REWRITE",
+    "passing_same_source_hourly_run": 40610348219,
+    "hourly_native_scenarios": "365/365",
+    "hourly_restart_jvms": 44,
+    "intermittent_placement_root_cause_resolved": false,
+    "final_diagnostic_commit": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
+    "final_diagnostic_run": 40613343806,
+    "final_diagnostic_status": "in_progress",
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   },
   "latest_112_metadata_callback_candidate": {
     "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
-    "native_run": 40607180135,
-    "declared_native_scenarios": 391,
-    "native_step": "success",
-    "full_run": "in_progress_at_checkpoint",
-    "qualified": false,
-    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
+    "branch_run": 40607180135,
+    "branch_result": "success",
+    "hourly_run": 40610348219,
+    "hourly_result": "success",
+    "native_scenarios": "391/391",
+    "restart_jvms": 44,
+    "installed_runtime_sha256": "8856b7ae30bfcffa3f6e6a6457c56272e984fa997f39a228994b2f14eacfac1b",
+    "artifact_id": 12783610988,
+    "qualification": "PASS_PINNED_NATIVE_SAVE_REOPEN_MIGRATION_ONLY",
+    "client_installed_provider_multiplayer_performance": "NOT_ACCEPTED",
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
+  },
+  "latest_legacy_placement_reconciliation": {
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
+    "sources": [
+      "ac86a7bb14de8f60810c515def14b204d6510591",
+      "53534128528374c43056e21804a79846968f17ce",
+      "a8b727f96879d5da9df4417d6f10d6b7f8a917fa"
+    ],
+    "native_run": 40610348219,
+    "final_diagnostic_run": 40613343806
   }
 }

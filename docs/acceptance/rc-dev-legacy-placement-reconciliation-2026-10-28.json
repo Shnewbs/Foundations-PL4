@@ -1,0 +1,94 @@
+{
+  "recorded_at": "2026-10-28T01:14:33.610Z",
+  "project": "Shnewbs/Foundations-PL4",
+  "writer": "pl4-chat-hourly-20261027T1801PT-placement-diagnostics",
+  "source_policy": "exact-target pinned source, direct guarded branches only; no historical R16 source",
+  "baseline_main": "c015b713b2f409e93c4582de89762ef6318b108e",
+  "version_specific_publication_guard": {
+    "inspected_branch": "mc/1.6.4",
+    "workflow": ".github/workflows/legacy164-native.yml",
+    "development_release_channel": "development",
+    "version": "0.2.0-rc.1-dev",
+    "rc_publication_cleared": false,
+    "source_publisher_condition": "PL4_ALLOW_PUBLICATION == 'true'; false for development and uncleared RC",
+    "publication_steps_executed": false,
+    "old_main_only_publisher_paths_preserved": true
+  },
+  "native_reconciliation": {
+    "1.12.2": {
+      "source": "ac86a7bb14de8f60810c515def14b204d6510591",
+      "branch_native_run": 40607180135,
+      "branch_conclusion": "success",
+      "hourly_run": 40610348219,
+      "hourly_conclusion": "success",
+      "native_cases": {
+        "passed": 391,
+        "total": 391
+      },
+      "native_restart_summaries": 11,
+      "native_restart_distinct_processes": 44,
+      "installed_runtime_sha256": "8856b7ae30bfcffa3f6e6a6457c56272e984fa997f39a228994b2f14eacfac1b",
+      "hourly_artifact_id": 12783610988,
+      "hourly_artifact_sha256": "7cb4eaa69305acdcadd6e1c748206a9c57256dfdc60dade80b3f278136809fc7",
+      "archive_crc": "PASS",
+      "production_only_server_boot": "PASS",
+      "generated_preview3_migration": "PASS",
+      "separate_process_save_flush_restart": "PASS",
+      "scope": "Native/persistence/migration source qualification only, no current-client installed-provider multiplayer sustained-performance or arbitrary user-save acceptance",
+      "rc_publication_cleared": false
+    },
+    "1.6.4": {
+      "source": "53534128528374c43056e21804a79846968f17ce",
+      "branch_native_run": 40606652228,
+      "branch_conclusion": "failure",
+      "branch_failed_gate": "decode-rewrite/write at native host (80,200,32) failed strict placement despite 365/365 ordinary native cases",
+      "historical_observation": "actual block 13 (gravel) rather than expected block 3501 in another native run; full root cause not established",
+      "hourly_run": 40610348219,
+      "hourly_conclusion": "success",
+      "hourly_native_cases": {
+        "passed": 365,
+        "total": 365
+      },
+      "hourly_restart_summaries": 11,
+      "hourly_restart_distinct_processes": 44,
+      "installed_srg_runtime_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12",
+      "hourly_artifact_id": 12782907141,
+      "hourly_artifact_sha256": "82dc0f3943b264a5e0e5b1b75348e5181150570d6f538f13843190581ce65340",
+      "archive_crc": "PASS",
+      "production_only_server_boot": "PASS",
+      "generated_preview3_migration": "PASS",
+      "intermittent_failure_resolved": false,
+      "scope": "same exact source passed hourly but previously failed branch native placement; do not erase failure or clear RC",
+      "rc_publication_cleared": false
+    }
+  },
+  "new_diagnostic_commits": {
+    "intermediate": "dee9ad5388e23a858e27300e11711409f5467537",
+    "final": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
+    "branch": "mc/1.6.4",
+    "runtime_source_changed": false,
+    "source_files": [
+      "tools/verify_legacy_item_restart.py",
+      "tools/test_restart_phase_retention.py",
+      "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java"
+    ],
+    "scope": "On native placement rejection preserve phase/report/process/log hash and exact failed row, plus bounded read-only neighboring block and falling-entity observations; never synthesize a tile or retry; retain previous failure and strict fail-closed assertion",
+    "intermediate_run": 40613280252,
+    "intermediate_result": "FAILED test-only JSON trailing escaped newline, fixed immediately in final commit",
+    "final_run": 40613343806,
+    "final_result_at_checkpoint": "pending",
+    "production_acceptance_claim": false
+  },
+  "publishing": {
+    "rc_target_clearances": 0,
+    "github_rc_release_created": false,
+    "curseforge_upload_performed": false,
+    "existing_releases_untouched": true
+  },
+  "remaining_gates": [
+    "Determine native 1.6.4 x80 fixture replacement mechanism from actual failure neighborhood/gravity/tile/chunk callback telemetry; do not infer root cause from a passing retry",
+    "Verify final a8b727f CI source and process/native proof before calling its diagnostic qualified",
+    "Exercise 1.12.2 installed-provider mutation and aliases with real client and multiplayer; do not conflate headless server qualification",
+    "Complete provider, multiplayer, arbitrary migration, sustained performance and per-target RC release acceptance; retain all 24 false"
+  ]
+}
