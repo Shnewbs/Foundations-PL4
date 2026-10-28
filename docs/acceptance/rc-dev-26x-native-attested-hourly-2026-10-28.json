@@ -1,0 +1,141 @@
+{
+  "recorded_at": "2026-10-28T20:55:06.294Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "New v2 artifact-generation invalidation of legacy 26.x native evidence, plus exact-source pinned hourly validations; no RC publication",
+  "implementation": {
+    "source_commit_initial": "5853e3e2172171ec1d4b4b665a508c6efd638454",
+    "source_commit_corrected": "781395dc6493a71725da9299671af2cf1372757b",
+    "paths_changed": [
+      "tools/hourly_builds.py",
+      "tools/test_hourly_builds.py",
+      ".github/workflows/hourly-builds.yml"
+    ],
+    "finding": "Historical same-source 26.1.2/26.3 artifacts predate mandatory 26.x native_coverage with log/JAR hashes; old dedup reused them without recent attestation",
+    "fix": "Generation-suffixed native-attestation-v2 names for maintained 26.x builds only, preserved other target names and original source pins; CI regression checks historical artifacts do not qualify",
+    "initial_test_failure_run": 40765939819,
+    "initial_failure": "Test mistakenly expected 26.1 and 26.2, which are not among 24 maintained tracks",
+    "corrected_controller_tests": "22/22 PASS",
+    "corrected_main_verify_run": 40766042140,
+    "publisher_policy_run": 40766042029,
+    "publisher_steps": "GitHub release and CurseForge upload skipped"
+  },
+  "hourly_native_run": 40766042082,
+  "hourly_native_result": "SUCCESS",
+  "selected_native_targets": [
+    "26.1.2",
+    "26.3",
+    "1.12.2",
+    "1.6.4",
+    "1.21.1"
+  ],
+  "modern_26x": {
+    "26.1.2": {
+      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+      "old_artifact_id": 12603509712,
+      "old_artifact_sha256": "437aaecd8dc850949167015ccd5530b398c583a26fdb960a1947912b814da37a",
+      "artifact_id": 12849783549,
+      "artifact_zip_sha256": "492ccbd00ce1dd3d74615b99c1d4c623e1b6f7b766178a3ee7526451b65f78a8",
+      "runtime_jar_sha256": "847bd064c999fb220f926441a6de547ec6bf2a277d4fa2e1df93845ae0cbacf7",
+      "source_jar_sha256": "e5091265a7678e78b685ca5643f4ae811bbbc5da368fb7a6b4290d53c44a20d2",
+      "profiles": {
+        "default": {
+          "pl4_tests": 192,
+          "other_tests": 1,
+          "total_native_passed": 193,
+          "log_sha256": "d95df4472adcdf501f91d47d189041e17d233119f2ef44f3feb208fb9f166abc"
+        }
+      }
+    },
+    "26.3": {
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "old_artifact_id": 12603949042,
+      "old_artifact_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
+      "artifact_id": 12850926212,
+      "artifact_zip_sha256": "91b2ad085dde6ed838030994d312a3908bfa5c7c89ba4484228ba5c3b63336d8",
+      "runtime_jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+      "source_jar_sha256": "3a6f14ab43e947e697f033d3bb89ae3ab24e21368a69ef6d50fb483997d1f68d",
+      "profiles": {
+        "26.3.0.23-beta": {
+          "pl4_tests": 192,
+          "other_tests": 1,
+          "total_native_passed": 193,
+          "log_sha256": "c2ec2f982e2962656d909a2496b82772c325bedbc6061608bb566594531271f2"
+        },
+        "26.3.0.39-beta": {
+          "pl4_tests": 192,
+          "other_tests": 1,
+          "total_native_passed": 193,
+          "log_sha256": "69728903084e7196474f28a3edab03ee9cbae45f2364eaece3374a1dbd62a3a0"
+        }
+      }
+    }
+  },
+  "legacy_exact_source": {
+    "1.12.2": {
+      "source_commit": "d431ca49d0b618cebee5864a7ab50700176103d6",
+      "same_source_independent_runs": [
+        40762858757,
+        40766042082
+      ],
+      "native_cases": 399,
+      "artifact_id": 12850851577,
+      "artifact_zip_sha256": "0f000e6ab448297470a1afdc1461e5c65b67e198677cb388fae85c6ba2049ba9",
+      "runtime_jar_sha256": "e4b9e5441ebd9cb05df42f34c4949828978575647467f1ee67ba154e270a02bb",
+      "jar_entries": 142,
+      "jar_entry_timestamp": "1980-01-01T00:00:00",
+      "runtime_reproducible_between_separate_runs": true,
+      "restart_suites": 11,
+      "restart_processes": 44,
+      "verified_log_sha256": 44,
+      "distinct_pids": 44
+    },
+    "1.6.4": {
+      "source_commit": "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+      "same_source_independent_runs": [
+        40761058763,
+        40766042082
+      ],
+      "native_cases": 372,
+      "artifact_id": 12849264728,
+      "artifact_zip_sha256": "6afebd5cbc6fb1dc08e796409de67acdd62a56c85f98108f8b103a5166504667",
+      "runtime_jar_sha256": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+      "jar_entries": 89,
+      "byte_identical_runtime_between_separate_runs": true,
+      "restart_suites": 11,
+      "restart_processes": 44,
+      "verified_log_sha256": 44,
+      "distinct_pids": 44
+    }
+  },
+  "main_1_21_1": {
+    "source_commit": "781395dc6493a71725da9299671af2cf1372757b",
+    "native_cases": 192,
+    "artifact_id": 12850910577,
+    "artifact_zip_sha256": "bc40eaa44932587ff734ce52e21e3a68df8587f07a4ead3b15e8d60fc42e066a",
+    "runtime_jar_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+  },
+  "independent_evidence_checks": [
+    "Both old 26.x artifacts lacked native_coverage but matched the same current source; new ZIP CRC and artifact SHA verified",
+    "26.1.2 native.log digest and 192 PL4 + 1 other passed markers matched; complete packaged JAR SHA matched declared manifest",
+    "26.3 distinct .23/.39 loader logs and complete staged profile-specific JAR SHA manifests individually verified; 192 PL4 + 1 other passed per profile",
+    "1.12.2 twice-built identical SHA-256 full production JAR with 142 fixed DOS-epoch entries, and 399/399 native",
+    "1.12.2 and 1.6.4 all 44/44 restart log hashes matched unique PIDs across 11 suites each; 1.6.4 native 372/372 and SRG JAR unchanged",
+    "Main current-source 1.21.1 native 192/192 and runtime JAR SHA verified",
+    "Read exact branch-local generic release.yml and native publisher workflows: obsolete generic jobs if:false; current publisher guards require beta RC clearance and fail-closed release preflights"
+  ],
+  "rc_publication_cleared_targets": 0,
+  "maintained_targets": 24,
+  "new_github_releases": 0,
+  "new_curseforge_uploads": 0,
+  "curseforge_public_moderation_not_reverified": true,
+  "remaining_limitations": [
+    "installed optional third-party providers, alias behavior under unloaded/disconnected cases",
+    "client visual screenshots/current UI on exact production JARs",
+    "dedicated multiplayer and online profiles",
+    "arbitrary user/modpack migration, pre-save durability and recovery",
+    "sustained performance at full-server load",
+    "1.6.4 intermittent natural gravel placement root cause",
+    "26.3 dual-loader GameTest coverage is not equivalent to complete RC acceptance"
+  ],
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40766042082"
+}

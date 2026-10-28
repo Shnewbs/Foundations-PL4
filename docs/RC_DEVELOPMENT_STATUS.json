@@ -534,6 +534,16 @@
         "source_commit": "fab682f9c24d4b3c45b164ddf1d4bb0b09232da0",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "workflow_run": 40436915385
+      },
+      "latest_hourly_native": {
+        "source_commit": "781395dc6493a71725da9299671af2cf1372757b",
+        "run_id": 40766042082,
+        "expected_native_scenarios": 192,
+        "observed_native_scenarios": 192,
+        "artifact_id": 12850910577,
+        "artifact_zip_sha256": "bc40eaa44932587ff734ce52e21e3a68df8587f07a4ead3b15e8d60fc42e066a",
+        "production_runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "scope": "GameTest development-source qualification only; docs checkpoint newer than tested source"
       }
     },
     {
@@ -560,7 +570,23 @@
       "observed_pl4_fixtures": 192,
       "observed_other_fixtures": 1,
       "native_count_attribution": "192 PL4 fixtures plus 1 minecraft:default environment test per loader profile",
-      "native_count_evidence": "acceptance/rc-dev-26x-native-count-attribution.json"
+      "native_count_evidence": "acceptance/rc-dev-26x-native-count-attribution.json",
+      "latest_attested_native": {
+        "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+        "run_id": 40766042082,
+        "artifact_id": 12849783549,
+        "artifact_zip_sha256": "492ccbd00ce1dd3d74615b99c1d4c623e1b6f7b766178a3ee7526451b65f78a8",
+        "runtime_jar_sha256": "847bd064c999fb220f926441a6de547ec6bf2a277d4fa2e1df93845ae0cbacf7",
+        "native_profiles": {
+          "default": {
+            "pl4_tests": 192,
+            "other_tests": 1,
+            "total_native_passed": 193,
+            "log_sha256": "d95df4472adcdf501f91d47d189041e17d233119f2ef44f3feb208fb9f166abc"
+          }
+        },
+        "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
+      }
     },
     {
       "minecraft": "26.3",
@@ -590,7 +616,29 @@
       "observed_pl4_fixtures": 192,
       "observed_other_fixtures": 1,
       "native_count_attribution": "192 PL4 fixtures plus 1 minecraft:default environment test per loader profile",
-      "native_count_evidence": "acceptance/rc-dev-26x-native-count-attribution.json"
+      "native_count_evidence": "acceptance/rc-dev-26x-native-count-attribution.json",
+      "latest_attested_native": {
+        "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+        "run_id": 40766042082,
+        "artifact_id": 12850926212,
+        "artifact_zip_sha256": "91b2ad085dde6ed838030994d312a3908bfa5c7c89ba4484228ba5c3b63336d8",
+        "runtime_jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+        "native_profiles": {
+          "26.3.0.23-beta": {
+            "pl4_tests": 192,
+            "other_tests": 1,
+            "total_native_passed": 193,
+            "log_sha256": "c2ec2f982e2962656d909a2496b82772c325bedbc6061608bb566594531271f2"
+          },
+          "26.3.0.39-beta": {
+            "pl4_tests": 192,
+            "other_tests": 1,
+            "total_native_passed": 193,
+            "log_sha256": "69728903084e7196474f28a3edab03ee9cbae45f2364eaece3374a1dbd62a3a0"
+          }
+        },
+        "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
+      }
     },
     {
       "minecraft": "1.12.2",
@@ -1158,6 +1206,17 @@
         "provider_assertions": 188,
         "historical_assertions": 60,
         "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
+      },
+      "latest_hourly_native": {
+        "source_commit": "d431ca49d0b618cebee5864a7ab50700176103d6",
+        "run_id": 40766042082,
+        "expected_native_scenarios": 399,
+        "observed_native_scenarios": 399,
+        "artifact_id": 12850851577,
+        "artifact_zip_sha256": "0f000e6ab448297470a1afdc1461e5c65b67e198677cb388fae85c6ba2049ba9",
+        "production_runtime_sha256": "e4b9e5441ebd9cb05df42f34c4949828978575647467f1ee67ba154e270a02bb",
+        "restart_processes": 44,
+        "scope": "Native/restart/historical/process evidence only, no RC clearance"
       }
     },
     {
@@ -1680,7 +1739,18 @@
         "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
       },
       "latest_native_artifact_id": 12815905181,
-      "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
+      "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63",
+      "latest_hourly_native": {
+        "source_commit": "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+        "run_id": 40766042082,
+        "expected_native_scenarios": 372,
+        "observed_native_scenarios": 372,
+        "artifact_id": 12849264728,
+        "artifact_zip_sha256": "6afebd5cbc6fb1dc08e796409de67acdd62a56c85f98108f8b103a5166504667",
+        "production_runtime_sha256": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+        "restart_processes": 44,
+        "scope": "Native/restart/historical/process evidence only, no RC clearance"
+      }
     }
   ],
   "latest_work": "2026-10-28T20:21:01.607Z: Frozen obsolete generic release.yml on mc/1.12.2 and mc/1.6.4, preserving branch-native publishers, explicit RC clearance and immutable receipt preflights. 1.6.4 f5c79e8 passes native372/372 and restart/historical run40761058763, exact SRG SHA1656e86e..., artifact12849095502 SHA b5020592...; no publication. 1.12 policy first red 40760919935 due escaped regex, corrected 05960aa0 policy PASS run40761009320; full native pending. 1.12 same-source af1feb4 two passing runs 40752206494/40754013917 yielded differing full JAR SHA39edfc.../c495f5..., but all142 ZIP entries have identical ordered payloads and only timestamps differ. Independent Java normalization of both gives identical SHA020e2cd... preserving 142/142 contents. Pushed 1.12 Gradle post-reobf timestamp normalization and native timestamp gate 6b9acb5; run40761899439 queued and unqualified. Previous hourly40754013917 pass 1.12 399/399 + 1.21.1, hourly40757651587 pass 1.21.1 192/192. All24 RC flags false; no GitHub or CurseForge release.",
@@ -2791,5 +2861,23 @@
     "entry_payloads_identical": 142,
     "local_java_normalized_sha256": "020e2cd751f4d4fb5e0820e95e0a2ab15222b01c8276988a91bd68234685d4f4",
     "release_clearances": 0
+  },
+  "latest_26x_native_attestation": {
+    "evidence": "docs/acceptance/rc-dev-26x-native-attested-hourly-2026-10-28.json",
+    "source_commit": "781395dc6493a71725da9299671af2cf1372757b",
+    "run_id": 40766042082,
+    "profiles": {
+      "26.1.2": "default 192/192 PL4, 1 other passed",
+      "26.3": ".23 192/192 PL4 and .39 192/192 PL4, 1 other each"
+    },
+    "artifact_generation": "native-attestation-v2",
+    "rc_publication_cleared": false
+  },
+  "latest_verified_hourly_legacy_reproducibility": {
+    "evidence": "docs/acceptance/rc-dev-26x-native-attested-hourly-2026-10-28.json",
+    "run_id": 40766042082,
+    "forge112_native": "399/399 PASS, identical JAR SHA across independent source builds",
+    "forge164_native": "372/372 PASS, identical SRG JAR SHA across independent source builds",
+    "rc_publication_cleared": false
   }
 }
