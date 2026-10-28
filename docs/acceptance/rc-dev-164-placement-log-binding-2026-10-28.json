@@ -1,0 +1,65 @@
+{
+  "recorded_at": "2026-10-28T14:19:44.896Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "mc/1.6.4",
+  "source_commit": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
+  "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/84d4d035a8bf0ae7436217f7cad94da092d47b65",
+  "initial_candidate": {
+    "source": "cea23cd8b5634f81141f1a15c0ec5ca1e141ad84",
+    "run": 40702626890,
+    "conclusion": "failure",
+    "cause": "New controller fixture assumed two placements; real native phase includes x200 journal host, so unittest failed"
+  },
+  "qualified_native": {
+    "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
+    "workflow_run": 40703299815,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40703299815",
+    "conclusion": "success",
+    "artifact_id": 12823242470,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40703299815/artifacts/12823242470",
+    "artifact_zip_sha256": "25bcf5c53dc700a41b38ddf49973fe9d9f8789475533cf411d6f9217cedef2ab",
+    "zip_members": 193,
+    "zip_crc": "PASS",
+    "native_version": "1.6.4",
+    "forge": "9.11.1.1345",
+    "java": 7,
+    "native_scenarios": "370/370",
+    "python_controller_tests": "18/18",
+    "decode_restart_assertions": 1536,
+    "decode_jvms": 40,
+    "distinct_decode_pids": 40,
+    "registered_provider_assertions": 188,
+    "provider_jvms": 4,
+    "historical_checks": 60,
+    "historical_jvms": 3,
+    "all_write_phases": 20,
+    "native_placements_per_write": [
+      64,
+      80,
+      200
+    ],
+    "independent_placement_log_report_rows": 60,
+    "independent_terrain_log_report_rows": 80,
+    "gravity_guard_rows": 80,
+    "production_srg_sha256": "598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2",
+    "production_bytes_unchanged": true
+  },
+  "branch_publisher": {
+    "checked_before_source_push": true,
+    "workflow": ".github/workflows/legacy164-native.yml",
+    "source_channel": "development",
+    "rc_publication_cleared": false,
+    "publisher_step": "skipped"
+  },
+  "scope": "Exact source native/controller, restart and pre-upgrade fixture qualification only; production JAR unchanged. No real installed optional provider, unloaded alias, current exact-JAR client, dedicated multiplayer, arbitrary saved world, sustained performance or RC acceptance.",
+  "rc_cleared": 0,
+  "total_tracks": 24,
+  "new_github_rc": false,
+  "new_curseforge_upload": false,
+  "remaining": [
+    "Historical x80 spontaneous gravel/block13 placement root cause unproven",
+    "Installed optional providers and unobserved unloaded/disconnected alias",
+    "Fresh client screenshots, dedicated multiplayer, arbitrary user/modpack migration and sustained server/provider performance"
+  ],
+  "next_step": "Run deterministic naturally occurring x80 falling-block/tick/chunk-boundary reproduction with exact logs, then installed provider and disconnected/unloaded alias acceptance; preserve source/JAR/run identities and no release until explicit RC clearance"
+}
