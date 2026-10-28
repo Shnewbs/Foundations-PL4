@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 370,
+  "expected_native_scenarios": 372,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -125,5 +125,6 @@
   "item_handheld_admission_acceptance": "PENDING_EXACT_NATIVE_READINESS_OBSERVATION_AND_ALIAS_REGRESSION",
   "decode_placement_observation_fixture": true,
   "native_provider_callback_continuity_candidate": "Development-only: native item transport pins source/sink/host/world/owner across slots, simulated and executed IInventory callbacks; two adversarial native cases. Native/restart/migration/JAR/client/provider/multiplayer/performance acceptance pending; no release clearance.",
-  "native_handheld_root_revocation_candidate": "Development only: recheck bound controller after downstream inventory enumeration and before/after player inventory debit/credit; two native adversarial tests. New exact-source native, restart, migration, provider/client/multiplayer/performance acceptance pending; RC clearance false."
+  "native_handheld_root_revocation_candidate": "Development only: recheck bound controller after downstream inventory enumeration and before/after player inventory debit/credit; two native adversarial tests. New exact-source native, restart, migration, provider/client/multiplayer/performance acceptance pending; RC clearance false.",
+  "native_foreign_owner_loaded_alias_candidate": "Development only: inspect already-loaded foreign-owner inventory faces adjacent to selected exact physical targets; reject same-target unresolved escrow before handheld withdrawals or deposits. Two new native adversarial cases; unloaded or remote aliases, installed providers, multiplayer, migration, performance and RC acceptance remain pending."
 }

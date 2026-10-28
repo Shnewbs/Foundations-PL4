@@ -50,6 +50,24 @@ public final class LegacyWirelessStorage {
             this.node=node;this.slot=slot;this.snapshot=stack.copy();this.physical=physical;
         }
     }
+    /** The owner-partitioned network walk cannot see a loaded alias with a
+     * changed owner. Check only the six already-loaded faces of each candidate
+     * physical target, without a world scan or chunk loading. A foreign owner's
+     * unacknowledged escrow can still concern the very same chest.
+     * Unloaded/remote aliases remain an unqualified acceptance boundary. */
+    private static boolean loadedAliasUncertain(LegacyTile root,BoundedNetwork.Point target){
+        for(int face=0;face<6;face++){
+            BoundedNetwork.Point neighbor=target.offset(face);
+            if(neighbor.y<0||neighbor.y>255||!root.worldObj.blockExists(neighbor.x,neighbor.y,neighbor.z))continue;
+            net.minecraft.tileentity.TileEntity raw=root.worldObj.getBlockTileEntity(neighbor.x,neighbor.y,neighbor.z);
+            if(!(raw instanceof LegacyTile))continue;
+            LegacyTile alias=(LegacyTile)raw;
+            int role=alias.role();
+            if((role==1||role==2||role==LegacyReadings.ITEMS)
+                    &&target.equals(alias.fluidTarget())&&!ready(alias))return true;
+        }
+        return false;
+    }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();
         // Readmission of retained root evidence precedes all network/provider discovery.
@@ -63,7 +81,7 @@ public final class LegacyWirelessStorage {
             candidates.add(node);if(!ready(node))blocked.add(node.fluidTarget());
         }
         Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
-        for(LegacyTile node:candidates){if(!ready(node)||node.fluidPowered()||blocked.contains(node.fluidTarget())||LegacyWirelessSafety.data(root.worldObj).blocked(root.owner,node.target()))continue;
+        for(LegacyTile node:candidates){if(!ready(node)||node.fluidPowered()||blocked.contains(node.fluidTarget())||loadedAliasUncertain(root,node.fluidTarget())||LegacyWirelessSafety.data(root.worldObj).blocked(root.owner,node.target()))continue;
             if(seen.add(node.fluidTarget()))result.add(node);
         }return result;
     }
