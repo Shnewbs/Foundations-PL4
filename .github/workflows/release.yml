@@ -18,6 +18,11 @@ concurrency:
 
 jobs:
   release:
+    # Obsolete generic tag publisher: kept only for historical workflow provenance.
+    # The current exact-target native validation/publisher is legacy112-native.yml;
+    # it owns RC clearance, checksums, immutable tags and release receipts.
+    # Never revive this frozen path for historical artifacts.
+    if: false
     name: Build and publish version
     runs-on: windows-latest
     steps:

@@ -70,6 +70,15 @@ class ReleasePreflightTests(unittest.TestCase):
         fetch, _ = self.opener()
         self.assertTrue(require_release_absent(self.repo, "mc1.12.2-v0.2.0-rc.2", "test-token", fetch))
 
+    def test_obsolete_generic_release_workflow_is_frozen(self):
+        from pathlib import Path
+        import re
+        workflow = Path(".github/workflows/release.yml").read_text()
+        self.assertRegex(workflow, r"(?m)^  release:\\n(?:    #.*\\n)*    if: false\\n")
+        native = Path(".github/workflows/legacy112-native.yml").read_text()
+        self.assertIn("rc_publication_cleared", native)
+        self.assertIn("verify_legacy_release_absence.py", native)
+
 
 if __name__ == "__main__":
     unittest.main()
