@@ -282,6 +282,18 @@ public final class R16GameTests {
         h.assertTrue(WirelessStorage.authorizedTarget(f.player(),binding,ref),"Original bound root is authorized");
         f.node().owner=UUID.randomUUID();
         h.assertTrue(!WirelessStorage.authorizedTarget(f.player(),binding,ref),"A provider read cannot preserve a revoked controller owner");
+        f.node().owner=OWNER;
+        f.chest().setItem(0,new ItemStack(Items.DIAMOND,9));
+        ItemStack extracted=ItemTransferSafety.extract(ref,new ItemStack(Items.DIAMOND,4),4,()->{
+            f.node().owner=UUID.randomUUID();
+            return f.chest().removeItem(0,4);
+        });
+        boolean sealed=false;
+        try{WirelessStorage.requirePostExtractionAuthority(f.player(),binding,ref,ref.adjacent());}
+        catch(IllegalStateException expected){sealed=true;}
+        h.assertTrue(sealed&&extracted.getCount()==4&&f.node().pendingItem.getCount()==4
+            &&ItemTransferSafety.blocked(f.node())&&f.chest().getItem(0).getCount()==5,
+            "Revocation after actual extraction seals the captured stack without recrediting or losing it");
         f.node().owner=OWNER;f.host().parts.remove(f.node().slot());
         h.assertTrue(!WirelessStorage.authorizedTarget(f.player(),binding,ref),"Removed controller part cannot be authorized by a stale reference");
         h.succeed();

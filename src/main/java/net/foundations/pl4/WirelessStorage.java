@@ -35,6 +35,15 @@ public final class WirelessStorage {
     private static boolean live(ServerPlayer player,Part.Link binding,Target target){
         return authorizedTarget(player,binding,target.ref())&&target.link().equals(target.ref().adjacent());
     }
+    /** Preserve the actual extracted stack and seal it when a provider revokes
+     * access after mutation. This must execute AFTER extract() journals the result,
+     * never from inside the supplier before its result can be recorded. */
+    static void requirePostExtractionAuthority(ServerPlayer player,Part.Link binding,NetworkEngine.Ref ref,Part.Link target){
+        if(authorizedTarget(player,binding,ref)&&target.equals(ref.adjacent()))return;
+        ref.part().itemTransferFault="Wireless extraction authority changed after provider mutation; manual inspection required";
+        ref.host().setChanged();
+        throw new IllegalStateException("Wireless withdrawal authority revoked during provider mutation");
+    }
     private record Slot(UUID node,int slot){}
     static final class Entry {
         final ItemStack item;long count;final List<Slot> sources=new ArrayList<>();
@@ -136,10 +145,9 @@ public final class WirelessStorage {
                 int requested=Math.min(remaining,trial.getCount());
                 ItemStack extracted=ItemTransferSafety.extract(target.ref(),expected.item,requested,()->{
                     if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless withdrawal authority revoked before provider mutation");
-                    ItemStack result=target.inventory().extractItem(source.slot(),requested,false);
-                    if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless withdrawal authority revoked during provider mutation");
-                    return result;
+                    return target.inventory().extractItem(source.slot(),requested,false);
                 });
+                requirePostExtractionAuthority(player,session.binding(),target.ref(),target.link());
                 if(extracted.isEmpty())continue;int count=WirelessItemTransfers.deliver(target.ref(),stackToPlayer->{player.getInventory().add(stackToPlayer);return stackToPlayer;});moved+=count;remaining-=extracted.getCount();
             }
             player.getInventory().setChanged();player.inventoryMenu.broadcastChanges();status=moved==0?"Nothing moved: contents, access, filters or available space changed.":"Withdrew "+moved+" item(s).";
