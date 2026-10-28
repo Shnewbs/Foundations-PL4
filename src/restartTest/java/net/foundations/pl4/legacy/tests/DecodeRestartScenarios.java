@@ -245,17 +245,32 @@ public final class DecodeRestartScenarios {
         return cells;
     }
     private void clearFallingBlocksAbove(int x){
-        int removed=0;
-        // Only the explicitly named disposable fixture world reaches this path.
-        // Both columns were loaded by prepare(); no global scanning or chunk loads.
+        int removedBlocks=0,removedEntities=0;
+        // Native disposable terrain can already have falling entities in flight.
+        // Clearing static gravel alone does not cancel those entities: an in-flight
+        // gravel actor can immediately replace the test host after setBlock succeeds.
+        // Only the explicitly loaded fixture column is touched; no extra chunk loads.
         for(int y=201;y<256;y++){
             int block=world.getBlockId(x,y,32);
             if(block==Block.gravel.blockID||block==Block.sand.blockID){
                 world.setBlockToAir(x,y,32);
-                removed++;
+                removedBlocks++;
             }
         }
-        System.out.println("PL4 DECODE GRAVITY GUARD x="+x+" removed="+removed);
+        for(Object raw:world.getEntitiesWithinAABB(net.minecraft.entity.item.EntityFallingSand.class,
+                AxisAlignedBB.getBoundingBox(x,199,32,x+1,256,33))){
+            net.minecraft.entity.item.EntityFallingSand falling=
+                    (net.minecraft.entity.item.EntityFallingSand)raw;
+            if(!falling.isDead){falling.setDead();removedEntities++;}
+        }
+        // A stable ceiling prevents new falling gravel from entering during the
+        // next synchronous native placement/readback. Never install or retry a tile.
+        world.setBlock(x,201,32,Block.stone.blockID,0,2);
+        boolean ceiling=world.getBlockId(x,201,32)==Block.stone.blockID;
+        System.out.println("PL4 DECODE GRAVITY GUARD x="+x+
+                " removed_blocks="+removedBlocks+" removed_entities="+removedEntities+
+                " ceiling="+ceiling);
+        if(!ceiling)throw new AssertionError("Native fixture ceiling failed at x="+x);
     }
     private void chestBlock(int x){world.setBlock(x,200,32,Block.chest.blockID,0,3);}
     private LegacyTile node(int x){return (LegacyTile)world.getBlockTileEntity(x,200,32);}

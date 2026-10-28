@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,retain_decode_placement_failure
+from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,retain_decode_placement_failure,require_legacy_decode_gravity_guards
 
 class PhaseRetentionTests(unittest.TestCase):
     def setUp(self):
@@ -62,6 +62,18 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
             self.assertEqual(evidence['placements'][1]['falling_entities_near'],1)
             self.assertIn('"actual_block":13',evidence['failure'])
             self.assertEqual(evidence['log_sha256'],digest(log))
+    def test_native_gravity_guard_requirements(self):
+        line=lambda x: 'PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=1 ceiling=true' % x
+        log='\\n'.join(line(x) for x in (64,69,80,85))
+        self.assertIsNone(require_legacy_decode_gravity_guards(log,'write','1.6.4'))
+        self.assertIsNone(require_legacy_decode_gravity_guards('','verify','1.6.4'))
+        self.assertIsNone(require_legacy_decode_gravity_guards('','write','1.12.2'))
+        for broken in (log.replace('ceiling=true','ceiling=false',1),
+                       log.replace('x=85','x=80'),log.replace('x=69','x=68'),
+                       log.replace(' removed_entities=1',' removed_entities=-1',1),
+                       log.split('\\n',1)[0]):
+            with self.subTest(broken=broken),self.assertRaises(ValueError):
+                require_legacy_decode_gravity_guards(broken,'crash-write','1.6.4')
     def test_missing_duplicate_or_wrong_flags_rejected(self):
         for rows in ([self.good(64)],[self.good(64),self.good(64)],
                      [dict(self.good(64),placement_flags=3),self.good(80)],
