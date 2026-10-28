@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T18:23:21.331Z: Main 1.21.1 immutable-publisher fix 7f7876c and 20/20 policy PASS retained. Hourly 40742077744 COMPLETED SUCCESS: native 1.21.1 192/192 and 1.12.2 unchanged f0d75b5 397/397, artifact 12839714684 SHA256 59b95ae9 (1.12.2); prior upstream timeout resolved by bounded auto retry. New 1.6.4 foreign-owner alias candidate 37c02c4 failed 371/372 run40742486566 because it also blocked same-owner independent healthy source; production correction 97ccb4f pushed, 372-case native run40743305276 IN_PROGRESS. Parity 1.12.2 loaded foreign-owner alias fix 4de703f pushed, 399-case native run40743560785 IN_PROGRESS. Both publishers inspected and dev-only. No changed-source candidate JAR/acceptance claimed. All 24 RC flags false; no new GitHub release or CurseForge upload. Released finite writer lease.",
+  "latest_work": "2026-10-28T18:26:48.178Z: Follow-up legacy branch exact-source CI qualified 1.6.4 97ccb4f 372/372 in completed run40743305276 (artifact12840088380 SHA256 562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35), and 1.12.2 4de703f 399/399 in completed run40743560785 (artifact12841370997 SHA256 f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462). Both workflow-native, restart and pre-upgrade checks passed; development publishers skipped. Separate 1.12.2 previous source f0d75b5 native 397/397 passed in pinned hourly run40742077744; main source7f7876c 192/192 and 20/20 publisher policy. Changed legacy source production JAR SHA-256 still needs independent artifact extraction; no installed optional provider/current client/multiplayer/arbitrary migration/sustained performance clearance; historic gravel x80 pending. 0/24 RC clearance, no new Github release/CurseForge upload. Released lease.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2623,5 +2623,62 @@
     "prior_error": "Forge installer timed out downloading log4j-core:2.15.0 before native tests; automatic unchanged-source retry only after three-hour deferral",
     "current_399_candidate_is_different_source": true,
     "rc_clearance": false
+  },
+  "latest_legacy_foreign_owner_alias_native_passes": {
+    "legacy_164": {
+      "branch": "mc/1.6.4",
+      "source_commit": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+      "native_run": 40743305276,
+      "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743305276",
+      "status": "COMPLETED_SUCCESS",
+      "native_cases_passed": 372,
+      "native_cases_expected": 372,
+      "new_foreign_owner_alias_cases": 2,
+      "previous_candidate_run": 40742486566,
+      "previous_candidate_failure": "371/372 from an overbroad alias veto hiding independent same-owner source; original failed log/artifact retained, correction applied",
+      "restart_process_verification": "WORKFLOW_PASS",
+      "historical_fault_import": "WORKFLOW_PASS",
+      "native_artifact": 12840088380,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743305276/artifacts/12840088380",
+      "github_reported_archive_sha256": "562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35",
+      "production_source_blob": "7055b4d829f5e9eacb90f6285f6bff8ed13c6d72",
+      "native_test_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+      "exact_production_jar_sha256": "NOT_INDEPENDENTLY_EXTRACTED_FROM_RETAINED_ARTIFACT_THIS_RUN",
+      "publisher_status": "SKIPPED_DEVELOPMENT",
+      "limitations": [
+        "Dedicated installed third-party providers, unloaded unseen aliases, current exact-JAR client visuals, multiplayer, arbitrary-world migration, sustained performance pending",
+        "Historical intermittent natural x=80 gravel placement cause remains unresolved; current successful validation emitted a deliberate synthetic negative-rejection fixture"
+      ]
+    },
+    "legacy_112": {
+      "branch": "mc/1.12.2",
+      "source_commit": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/4de703f105189d9eebd778c611ea8d68f25be8bc",
+      "native_run": 40743560785,
+      "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743560785",
+      "status": "COMPLETED_SUCCESS",
+      "native_cases_passed": 399,
+      "native_cases_expected": 399,
+      "new_foreign_owner_alias_cases": 2,
+      "restart_process_verification": "WORKFLOW_PASS",
+      "historical_fault_import": "WORKFLOW_PASS",
+      "native_artifact": 12841370997,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743560785/artifacts/12841370997",
+      "github_reported_archive_sha256": "f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462",
+      "production_source_blob": "e3e79ae800e52dccc3d46dd452968c3577c08922",
+      "native_test_blob": "2eace03f8eeb76ae6b9f23bd50f26a8e3b6bea4c",
+      "exact_production_jar_sha256": "NOT_INDEPENDENTLY_EXTRACTED_FROM_RETAINED_ARTIFACT_THIS_RUN",
+      "publisher_status": "SKIPPED_DEVELOPMENT",
+      "prior_same_source_native_run": 40742077744,
+      "prior_same_source_native_tests": 397,
+      "prior_artifact_id": 12839714684,
+      "prior_production_sha256": "59b95ae9f489d251f04c2ccbc585fa2b5314be75ad9cd030d88920b300272e6a",
+      "prior_github_zip_sha256": "e3df228450f9f688b2cb1b105f6a0f319f11c72b7b6d4f259a8036edec71ba45",
+      "limitations": [
+        "New 399-test branch source needs independently extracted production-JAR checksum and modern exact artifact manifest; previous 397-test JAR hash is not transferable",
+        "Installed optional provider, current client, dedicated multiplayer, arbitrary-world migration and sustained performance acceptance still pending"
+      ]
+    }
   }
 }

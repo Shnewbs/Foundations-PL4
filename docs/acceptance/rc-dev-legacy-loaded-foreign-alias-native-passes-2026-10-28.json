@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-28T18:26:48.178Z",
+  "repo": "Shnewbs/Foundations-PL4",
+  "writer_owner": "pl4-chat-hourly-20261028T1826Z",
+  "lease_released": true,
+  "prior_candidates_evidence": "docs/acceptance/rc-dev-legacy-foreign-owner-alias-followup-2026-10-28.json",
+  "native_164": {
+    "branch": "mc/1.6.4",
+    "source_commit": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "native_run": 40743305276,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743305276",
+    "status": "COMPLETED_SUCCESS",
+    "native_cases_passed": 372,
+    "native_cases_expected": 372,
+    "new_foreign_owner_alias_cases": 2,
+    "previous_candidate_run": 40742486566,
+    "previous_candidate_failure": "371/372 from an overbroad alias veto hiding independent same-owner source; original failed log/artifact retained, correction applied",
+    "restart_process_verification": "WORKFLOW_PASS",
+    "historical_fault_import": "WORKFLOW_PASS",
+    "native_artifact": 12840088380,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743305276/artifacts/12840088380",
+    "github_reported_archive_sha256": "562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35",
+    "production_source_blob": "7055b4d829f5e9eacb90f6285f6bff8ed13c6d72",
+    "native_test_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+    "exact_production_jar_sha256": "NOT_INDEPENDENTLY_EXTRACTED_FROM_RETAINED_ARTIFACT_THIS_RUN",
+    "publisher_status": "SKIPPED_DEVELOPMENT",
+    "limitations": [
+      "Dedicated installed third-party providers, unloaded unseen aliases, current exact-JAR client visuals, multiplayer, arbitrary-world migration, sustained performance pending",
+      "Historical intermittent natural x=80 gravel placement cause remains unresolved; current successful validation emitted a deliberate synthetic negative-rejection fixture"
+    ]
+  },
+  "native_112": {
+    "branch": "mc/1.12.2",
+    "source_commit": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "native_run": 40743560785,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743560785",
+    "status": "COMPLETED_SUCCESS",
+    "native_cases_passed": 399,
+    "native_cases_expected": 399,
+    "new_foreign_owner_alias_cases": 2,
+    "restart_process_verification": "WORKFLOW_PASS",
+    "historical_fault_import": "WORKFLOW_PASS",
+    "native_artifact": 12841370997,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40743560785/artifacts/12841370997",
+    "github_reported_archive_sha256": "f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462",
+    "production_source_blob": "e3e79ae800e52dccc3d46dd452968c3577c08922",
+    "native_test_blob": "2eace03f8eeb76ae6b9f23bd50f26a8e3b6bea4c",
+    "exact_production_jar_sha256": "NOT_INDEPENDENTLY_EXTRACTED_FROM_RETAINED_ARTIFACT_THIS_RUN",
+    "publisher_status": "SKIPPED_DEVELOPMENT",
+    "prior_same_source_native_run": 40742077744,
+    "prior_same_source_native_tests": 397,
+    "prior_artifact_id": 12839714684,
+    "prior_production_sha256": "59b95ae9f489d251f04c2ccbc585fa2b5314be75ad9cd030d88920b300272e6a",
+    "prior_github_zip_sha256": "e3df228450f9f688b2cb1b105f6a0f319f11c72b7b6d4f259a8036edec71ba45",
+    "limitations": [
+      "New 399-test branch source needs independently extracted production-JAR checksum and modern exact artifact manifest; previous 397-test JAR hash is not transferable",
+      "Installed optional provider, current client, dedicated multiplayer, arbitrary-world migration and sustained performance acceptance still pending"
+    ]
+  },
+  "main": {
+    "source": "7f7876c987765a47c38d4950a9b4569401504cb6",
+    "publisher_policy_tests": "20/20 PASS",
+    "native_1211": "192/192 PASS",
+    "native_runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+    "main_build_run": 40742077744,
+    "main_native_artifact": 12840810051
+  },
+  "acceptance": {
+    "total_targets": 24,
+    "rc_clearance_true": 0,
+    "new_github_release": false,
+    "new_curseforge_upload": false,
+    "new_curseforge_upload_ids": [],
+    "public_visibility_for_new_rc": "NOT_APPLICABLE",
+    "maturity_if_later_qualified": "beta"
+  },
+  "next_work": [
+    "Use hourly-builds.yml to pin and retain updated exact branch sources 97ccb4f (1.6.4) and 4de703f (1.12.2) when a new pinned build is due. Avoid duplicates with successful branch artifacts 12840088380 and 12841370997, and retain distinct main prior 397/397 and 192/192 artifact hashes.",
+    "Extract and independently validate new branch production runtime JAR SHA-256 from retained native artifact manifests before any release; successful native scenario/restart gates alone are not final release acceptance.",
+    "Continue installed optional third-party provider binary and unloaded/disconnected alias work, current exact-JAR stock GUI screenshot review, multiplayer, arbitrary-world migration and sustained performance acceptance.",
+    "Investigate historical 1.6.4 x=80 natural gravel placement with retained phase reports; a deliberate negative placement-rejection fixture in successful native validation is not proof of the intermittent root cause.",
+    "Collect real 26.3 .23 and .39 native per-loader log and JAR checksum manifests for changed source. Keep 24 RC clearances false until all applicable acceptance and version-specific immutable publisher checks pass."
+  ]
+}
