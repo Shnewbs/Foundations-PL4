@@ -1,0 +1,75 @@
+{
+  "recorded_at": "2026-10-28T15:19:00.374Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "owner": "pl4-chat-hourly-20261028T1511Z",
+  "scope": "Only hourly native controller and release acceptance ledger on main; no exact Minecraft branch source modifications",
+  "control_commit": "f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391",
+  "source_changes": {
+    "tools/hourly_builds.py": "Added source-exact, target-exact, branch-exact bounded environmental failure deferral (<=4h); only for reviewed network/runner/billing causes with immutable failed-run receipt; --force, changed source, expired window, other targets remain eligible",
+    "tools/test_hourly_builds.py": "Two new regression methods covering source/branch scope, expiry, 23/24 scheduled targets, force override, rejection of invalid timestamps, long deferrals and invalid receipt/kind",
+    "docs/RC_DEVELOPMENT_STATUS.json": "Recorded precise Forge 1.12.2 third-party library download failure and finite three-hour retry pause"
+  },
+  "reviewed_failed_source": {
+    "minecraft": "1.12.2",
+    "branch": "mc/1.12.2",
+    "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "workflow_run": 40705534234,
+    "job_id": 122876728559,
+    "failed_artifact_id": 12824385408,
+    "failed_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40705534234/artifacts/12824385408",
+    "failed_artifact_zip_sha256": "d95d0957fb3f4969279d06afc444e1c43308b5952596427d75ae10915fc7f7c6",
+    "stage": "Forge production server installer; before native scenarios",
+    "error": "java.net.SocketTimeoutException: Read timed out",
+    "dependency": "org.apache.logging.log4j:log4j-core:2.15.0",
+    "host": "libraries.minecraft.net",
+    "observed_at": "2026-10-28T14:25:03Z",
+    "retry_after": "2026-10-28T17:25:03Z",
+    "resolution": "Do not hammer unchanged environmental error; automatic eligibility resumes after expiry or branch source change; no native acceptance from failed job"
+  },
+  "same_hour_success": {
+    "minecraft_164": {
+      "source_commit": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
+      "job_result": "success",
+      "artifact_id": 12823997643,
+      "unchanged_native_baseline": "370/370",
+      "runtime_sha256": "598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2"
+    },
+    "minecraft_1211": {
+      "source_commit": "46d789550f0a9c640968e6f4aad4d277c924a7db",
+      "job_result": "success",
+      "artifact_id": 12822754439
+    }
+  },
+  "current_actions_at_checkpoint": {
+    "source_commit": "f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391",
+    "hourly_run": 40714163059,
+    "hourly_discovery": "PASS; selected only changed main Minecraft 1.21.1 source; exact 1.12.2 environmental failure deferred; 1.6.4 and other unchanged successful artifact sources deduplicated",
+    "hourly_discovery_controller_tests": "16/16 including 2 new regression methods",
+    "hourly_other_controller_regressions": "PASS",
+    "minecraft_1211_native": "IN_PROGRESS at checkpoint (separate new exact-source target; do not inherit earlier run hashes)",
+    "main_verification_run": 40714162780,
+    "main_verification_status": "IN_PROGRESS at checkpoint",
+    "main_build_and_release_run": 40714162786,
+    "main_build_and_release_status": "SUCCESS; no RC publication allowed by development policy"
+  },
+  "release": {
+    "rc_clearances": 0,
+    "github_rc_new": 0,
+    "curseforge_uploads_new": 0,
+    "curseforge_visibility_rechecked": false,
+    "all_24_targets_acceptance_complete": false
+  },
+  "limitations": [
+    "External library download failure is not a Minecraft source regression, and the failed run has no accepted new 1.12.2 JAR",
+    "Review is source-scoped; no installed-provider, current client screenshot, dedicated multiplayer, arbitrary migration or sustained performance acceptance",
+    "1.6.4 natural gravel/root cause not resolved by old native placement PASS",
+    "Only a finite three-hour retry deferral; if the upstream outage recurs after expiry record exact new evidence, do not grant extra RC clearance",
+    "No new version-branch source modifications or publication actions during this checkpoint"
+  ],
+  "next": [
+    "Reconcile 1.21.1 pinned native evidence on run40714163059 after completion, preserving exact-source/package hashes; don't reuse old 1.21.1 JAR",
+    "Retry the exact unchanged 1.12.2 source after UTC 17:25:03 only if environmental issue is cleared or let normal hourly scheduler retry; do not repeat existing identical network failure manually",
+    "Continue native installed-provider/unloaded and disconnected alias, current exact-JAR client, multiplayer, migration and sustained performance acceptance; investigate 1.6.4 natural falling-gravel issue",
+    "Release new GitHub and CurseForge RC beta only with tagged exact-source Boolean rc_publication_cleared=true and all applicable gates/receipts"
+  ]
+}

@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28 15:14 UTC: hourly 40705534234 failed 1.12.2 f0d75b5 Forge installer download of log4j-core 2.15.0 with SocketTimeoutException before native test; failure artifact12824385408 retained. 1.6.4 84d4d035 and main1.21.1 jobs passed in the same matrix; no 1.12.2 exact-source new native result. Bounded three-hour unchanged-source external failure defer added to controller with automated negative/expiry tests; no RC clearance or publication.",
+  "latest_work": "2026-10-28T15:19:00.374Z: New main controller source f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391 passed 16/16 targeted hourly discovery tests and complete discovery workflow 40714163059; only changed main 1.21.1 native selected and still in progress. Historical unchanged 1.12.2 f0d75b5 installer job 40705534234 failed upstream log4j-core download with SocketTimeoutException, before native; failed artifact12824385408 retained and exact-source three-hour defer expires 17:25:03Z. Same matrix 1.6.4 and main 1.21.1 target jobs pass separately. No installed providers/client/multiplayer/performance RC gates cleared; 0/24 release flags, no releases or uploads. Lease released at checkpoint.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2455,5 +2455,19 @@
       "evidence_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40705534234",
       "effect": "Defer this unchanged exact source for three hours; changed source and --force unaffected; no RC acceptance"
     }
+  },
+  "latest_environment_retry_controller_checkpoint": {
+    "evidence": "docs/acceptance/rc-dev-hourly-external-network-deferral-2026-10-28.json",
+    "source_commit": "f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391",
+    "regression_run": 40714163059,
+    "target_native_run": 40714163059,
+    "controller_tests": "16/16 passed",
+    "current_main_native_status": "IN_PROGRESS",
+    "blocked_target": "1.12.2",
+    "failed_run": 40705534234,
+    "failed_job": 122876728559,
+    "failed_artifact": 12824385408,
+    "deferred_until": "2026-10-28T17:25:03Z",
+    "rc_publication_cleared": false
   }
 }
