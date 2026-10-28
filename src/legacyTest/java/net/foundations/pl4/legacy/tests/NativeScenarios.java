@@ -204,6 +204,19 @@ public final class NativeScenarios {
                         &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==beforeDrops,
                         "capability callback replacement leaves both inventories, player and drops unchanged");
             }});
+            test("wireless second capability lookup replacement cannot debit player",new Runnable(){public void run(){
+                EntityPlayer p=wirelessPlayer();int beforeDrops=looseIron();
+                SecondLookupSwapChest detached=new SecondLookupSwapChest();world.setTileEntity(export.west(),detached);
+                for(int i=0;i<27;i++)destination().setInventorySlotContents(i,readerStack(64));
+                p.inventory.setInventorySlotContents(9,readerStack(32));
+                check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0,
+                        "a second lookup replacing an already observed target must fail closed");
+                check(detached.capabilityCalls>=2&&source()!=detached
+                        &&readerCount(detached.getStackInSlot(0))==0
+                        &&readerCount(source().getStackInSlot(0))==0
+                        &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==beforeDrops,
+                        "second capability callback preserves detached/new inventory and player stock");
+            }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
             test("wireless oversized graph fails closed",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyPL4.nodeLimit=2;check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"bounded graph");}});
@@ -607,6 +620,26 @@ public final class NativeScenarios {
             return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                     ?net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(backing)
                     :super.getCapability(cap,face);
+        }
+    }
+    /** First capability lookup admits an endpoint; the second replaces its backing.
+     * Endpoints and per-transfer discovery must independently reject the stale handler. */
+    public static final class SecondLookupSwapChest extends TileEntityChest {
+        int capabilityCalls;
+        final net.minecraftforge.items.IItemHandler backing=new net.minecraftforge.items.wrapper.InvWrapper(this);
+        @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,net.minecraft.util.EnumFacing face){
+            return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY||super.hasCapability(cap,face);
+        }
+        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing face){
+            if(cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+                if(++capabilityCalls==2){
+                    net.minecraft.world.World w=getWorld();net.minecraft.util.math.BlockPos at=getPos();
+                    TileEntityChest replacement=new TileEntityChest();w.setTileEntity(at,replacement);
+                    if(w.getTileEntity(at)!=replacement)throw new IllegalStateException("Second native lookup replacement failed");
+                }
+                return net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(backing);
+            }
+            return super.getCapability(cap,face);
         }
     }
     public static final class MetadataSwapChest extends TileEntityChest {

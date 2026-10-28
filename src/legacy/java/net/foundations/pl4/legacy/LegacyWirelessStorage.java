@@ -161,10 +161,12 @@ public final class LegacyWirelessStorage {
         net.minecraft.tileentity.TileEntity installed=world.getTileEntity(target);
         if(installed==null||installed instanceof LegacyTile)return null;
         net.minecraftforge.items.IItemHandler handler=node.inventory();
+        // A capability callback can also unload the host or retarget its tile.
+        // Reject before getTileEntity(host) could inspect a no-longer-loaded chunk.
         if(handler==null||!node.fluidServer()||node.getWorld()!=world
-                ||!owner.equals(node.owner)||!target.equals(node.target())
-                ||!world.isBlockLoaded(target,false)||world.getTileEntity(target)!=installed
-                ||world.getTileEntity(host)!=node)return null;
+                ||!owner.equals(node.owner)||!host.equals(node.getPos())||!target.equals(node.target())
+                ||!world.isBlockLoaded(host,false)||!world.isBlockLoaded(target,false)
+                ||world.getTileEntity(host)!=node||world.getTileEntity(target)!=installed)return null;
         return new StorageInventory(node,handler,world,host,target,installed,owner);
     }
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
