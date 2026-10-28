@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T1610Z",
-    "claimed_at": "2026-10-28T16:10:16Z",
-    "expires_at": "2026-10-28T16:35:16Z",
-    "purpose": "Resolve completed 1.21.1 native artifact and implement next source/acceptance priority; no development publication",
-    "expected_parent": "0ddfc32db51cb0444250f989f9471cbe597da8e0"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,22 +14,24 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-28T15:19:00.374Z: New main controller source f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391 passed 16/16 targeted hourly discovery tests and complete discovery workflow 40714163059; only changed main 1.21.1 native selected and still in progress. Historical unchanged 1.12.2 f0d75b5 installer job 40705534234 failed upstream log4j-core download with SocketTimeoutException, before native; failed artifact12824385408 retained and exact-source three-hour defer expires 17:25:03Z. Same matrix 1.6.4 and main 1.21.1 target jobs pass separately. No installed providers/client/multiplayer/performance RC gates cleared; 0/24 release flags, no releases or uploads. Lease released at checkpoint.",
+  "current_checkpoint": "2026-10-28T16:17:55Z: Corrected main native-JAR manifest source 7799450 passed 17/17 Windows controller/publication policy tests in run40724186346. Initial 0d0df67 Windows separator failure in 40723840668 fixed; 0d0df67 Linux exact-source native passed192/192 in run40723840470 with artifact12832421076. Corrected 7799450 pinned hourly run40724186230 and main verifier40724186575 still pending; no current corrected-JAR acceptance claimed. 1.12.2 installer upstream failure deferred until 17:25:03Z; x80 gravel and broader acceptance still open. 0/24 RC flags, no new release/upload. Global lease released at checkpoint.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Resolve run40714163059 exact source 1.21.1 native target only after artifact/result verification; do not claim success from discovery/controller checks alone.",
-    "Revisit 1.12.2 external library installer download after deferral expires 2026-10-28T17:25:03Z; avoid hammering unchanged outage or inventing native acceptance.",
-    "Investigate intermittent 1.6.4 x80 falling gravel root cause; test loaded/unloaded aliases with real installed third-party providers.",
-    "Complete exact-target client screenshots, multiplayer/identity/dimension, arbitrary migration, sustained performance; keep all 24 RC clearances false and guard immutable release receipts."
+    "Reconcile corrected-source hourly run 40724186230 and verify exact target artifact counts, provenance, hashes before calling its JAR qualified.",
+    "Allow unchanged 1.12.2 external installer retry after UTC 17:25:03Z only; do not hammer current timeout.",
+    "Test real installed provider backing and loaded/unloaded alias boundaries on exact branches, then current client, multiplayer/migration and sustained active-provider performance.",
+    "Keep 24 RC publication flags false until full exact-source acceptance and immutable publication checks."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-automatic-provider-invalidation-2026-10-28.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-modern-native-artifact-manifest-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "latest_native_runs": [
+    40723840470,
+    40714163059,
     40703299815,
     40695140590,
     40685571384,
@@ -60,21 +56,22 @@
     "1.6.4": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json"
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
-  "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
+  "native_main_source_commit": "0d0df6745e495c27497def372c18ad9b7086d733",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261028T1511Z",
-    "released_at": "2026-10-28T15:19:00.374Z",
-    "evidence": "docs/acceptance/rc-dev-hourly-external-network-deferral-2026-10-28.json",
+    "owner": "pl4-chat-hourly-20261028T1610Z",
+    "released_at": "2026-10-28T16:17:55Z",
+    "evidence": "docs/acceptance/rc-dev-modern-native-artifact-manifest-2026-10-28.json",
     "source_commits": [
-      "f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391"
+      "0d0df6745e495c27497def372c18ad9b7086d733",
+      "77994504219253ea2b69b6e63b3a6ecb17705225"
     ],
-    "control_discovery_run": 40714163059,
-    "failed_external_1122_run": 40705534234,
-    "scope": "Bounded three-hour exact-source 1.12.2 environmental retry deferral; all 24 clearances false",
+    "successful_policy_run": 40724186346,
+    "scoped_native_run": 40723840470,
+    "pending_corrected_native_run": 40724186230,
     "lease_bounded": true,
     "rc_publication_cleared": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-hourly-external-network-deferral-2026-10-28.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-modern-native-artifact-manifest-2026-10-28.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -892,7 +889,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "Main scheduler controller now suppresses only source-matched, reviewed, bounded external native runner outages; 16/16 regression tests and discovery CI passed. 1.12.2 exact Forge log4j-core upstream timeout recorded before any native gate; 1.6.4 prior native and 1.21.1 prior source passed same matrix; changed 1.21.1 source run pending. No RC clearance or new releases.",
+  "latest_work": "Main hourly controller now fail-closes missing, partial, extra or corrupted native JAR manifest evidence, with POSIX path identity on Windows/Linux. Corrected 17/17 policy regressions pass; 1.21.1 previous integrity-source native 192/192 passed, latest corrected-source native run pending. No version-branch production edits, no RC clearance or releases.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -928,5 +925,16 @@
     "production_bytes_unchanged": true,
     "evidence": "docs/acceptance/rc-dev-164-placement-log-binding-2026-10-28.json",
     "release_cleared": false
+  },
+  "latest_modern_native_manifest_integrity": {
+    "evidence": "docs/acceptance/rc-dev-modern-native-artifact-manifest-2026-10-28.json",
+    "implementation_commit": "0d0df6745e495c27497def372c18ad9b7086d733",
+    "final_fix_commit": "77994504219253ea2b69b6e63b3a6ecb17705225",
+    "initial_policy_failure": 40723840668,
+    "corrected_policy_pass": 40724186346,
+    "previous_scoped_native_run": 40723840470,
+    "corrected_final_native_run": 40724186230,
+    "final_native_status_at_checkpoint": "PENDING",
+    "rc_publication_cleared": false
   }
 }

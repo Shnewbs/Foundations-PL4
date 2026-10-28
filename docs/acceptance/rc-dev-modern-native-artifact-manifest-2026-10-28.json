@@ -1,0 +1,87 @@
+{
+  "recorded_at": "2026-10-28T16:17:55Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "writer": "pl4-chat-hourly-20261028T1610Z",
+  "scope": "Main hourly pinned native-controller artifact integrity only. No version-branch production changes, no RC publication or new externally installed provider acceptance.",
+  "defect": "Modern hourly recorder accepted a partial or empty rc-development-gate.json artifact_sha256 map and could grant its success receipt while a generated production/sources/scenarios JAR lacked its native-run SHA binding.",
+  "implementation": {
+    "initial_source": "0d0df6745e495c27497def372c18ad9b7086d733",
+    "portability_fix": "77994504219253ea2b69b6e63b3a6ecb17705225",
+    "changes": [
+      "Require exact equality of complete native-run artifact_sha256 keyset to all build/libs/*.jar paths before successful hourly record",
+      "Check every SHA-256 digest is lowercase exact 64-hex and matches actual packaged bytes",
+      "Normalize manifest path keys with pathlib.Path.as_posix() so Windows CI matches Linux native-generated POSIX paths",
+      "New negative and positive regression for untallied extra JAR, missing/extra/empty manifest and malformed or mismatched checksums"
+    ],
+    "files": [
+      "tools/hourly_builds.py",
+      "tools/test_hourly_builds.py"
+    ]
+  },
+  "validation": {
+    "initial_windows_failure": {
+      "run": 40723840668,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40723840668",
+      "test_cases": 17,
+      "errors": 3,
+      "cause": "Pathlib keys rendered Windows separators; manifest keys use forward slashes"
+    },
+    "corrected_windows_policy": {
+      "run": 40724186346,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40724186346",
+      "test_cases": 17,
+      "conclusion": "success",
+      "publication": "SKIPPED: development snapshots are not qualified releases"
+    },
+    "previous_main_exact_native": {
+      "source_commit": "f6ccedf6937a7e6e2f8900d1faff02c6ec4e1391",
+      "run": 40714163059,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40714163059",
+      "minecraft": "1.21.1",
+      "native_game_tests": "192/192",
+      "artifact_id": 12827322929,
+      "artifact_zip_sha256": "0f77a9f80d2d1f0d754c00fdd570d455b23e428686e76403fd59c267d6e99d07"
+    },
+    "new_integrity_source_native": {
+      "source_commit": "0d0df6745e495c27497def372c18ad9b7086d733",
+      "run": 40723840470,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40723840470",
+      "minecraft": "1.21.1",
+      "native_game_tests": "192/192",
+      "artifact_id": 12832421076,
+      "artifact_zip_sha256": "73f28db769389df7789ea4ac90a72657ba5d136acd20c3379a84858a9026f5dc",
+      "production_jar_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+    },
+    "corrected_final_source_native": {
+      "source_commit": "77994504219253ea2b69b6e63b3a6ecb17705225",
+      "run": 40724186230,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40724186230",
+      "status_at_checkpoint": "IN_PROGRESS",
+      "native_qualified_at_checkpoint": false
+    },
+    "corrected_final_source_verification": {
+      "run": 40724186575,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40724186575",
+      "status_at_checkpoint": "IN_PROGRESS"
+    }
+  },
+  "independent_blockers": {
+    "minecraft_112": "External libraries.minecraft.net log4j-core 2.15.0 Forge installer timeout before native; run 40705534234, pinned source f0d75b5; retry deferral expires 2026-10-28T17:25:03Z; no manual duplicate attempted",
+    "minecraft_164": "Intermittent natural x=80 falling-gravel placement remains causally unresolved; no changed branch source in this session",
+    "all_targets": "Installed optional providers, unloaded/disconnected aliases, fresh clients/screenshots, multiplayer, arbitrary migration/reconciliation, sustained active-provider performance remain acceptance-gated"
+  },
+  "publication": {
+    "exact_target_rc_cleared": 0,
+    "total_targets": 24,
+    "github_new_rcs": 0,
+    "curseforge_new_uploads": 0,
+    "moderation_or_public_visibility_rechecked": false,
+    "development_unpublished": true
+  },
+  "next": [
+    "Reconcile corrected-source hourly run 40724186230 and verify exact target artifact counts, provenance, hashes before calling its JAR qualified.",
+    "Allow unchanged 1.12.2 external installer retry after UTC 17:25:03Z only; do not hammer current timeout.",
+    "Test real installed provider backing and loaded/unloaded alias boundaries on exact branches, then current client, multiplayer/migration and sustained active-provider performance.",
+    "Keep 24 RC publication flags false until full exact-source acceptance and immutable publication checks."
+  ]
+}
