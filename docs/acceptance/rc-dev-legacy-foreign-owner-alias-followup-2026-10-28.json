@@ -1,0 +1,97 @@
+{
+  "recorded_at": "2026-10-28T18:23:21.331Z",
+  "repo": "Shnewbs/Foundations-PL4",
+  "writer_owner": "pl4-chat-hourly-20261028T1814Z",
+  "writer_lease_released": true,
+  "scope": "Legacy native regression repair and Forge 1.12.2 parity extension; both follow-up branch native results still in progress at execution checkpoint",
+  "prior_main_evidence": "docs/acceptance/rc-dev-publisher-immutability-loaded-alias-2026-10-28.json",
+  "main_policy": {
+    "source": "7f7876c987765a47c38d4950a9b4569401504cb6",
+    "publisher_tests": "20/20 PASS",
+    "policy_run": 40742077972,
+    "verification_run": 40742077688,
+    "verification": "PASS",
+    "new_release": false,
+    "curseforge_upload": false
+  },
+  "native_112_recovery": {
+    "branch": "mc/1.12.2",
+    "source": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "hourly_run": 40742077744,
+    "hourly_run_status": "COMPLETED_SUCCESS",
+    "native_cases": "397/397",
+    "production_smoke": "PASS",
+    "generated_preview3_migration": "PASS",
+    "artifact_id": 12839714684,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077744/artifacts/12839714684",
+    "github_zip_sha256": "e3df228450f9f688b2cb1b105f6a0f319f11c72b7b6d4f259a8036edec71ba45",
+    "production_jar_sha256": "59b95ae9f489d251f04c2ccbc585fa2b5314be75ad9cd030d88920b300272e6a",
+    "prior_external_failure_run": 40705534234,
+    "prior_error": "Forge installer timed out downloading log4j-core:2.15.0 before native tests; automatic unchanged-source retry only after three-hour deferral",
+    "current_399_candidate_is_different_source": true,
+    "rc_clearance": false
+  },
+  "native_164_initial_red": {
+    "source": "37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "run": 40742486566,
+    "result": "FAILED_371_OF_372",
+    "artifact_id": 12839239807,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742486566/artifacts/12839239807",
+    "github_zip_sha256": "fcd1187f3ad8f1dee39abf842e62b871289a4f775cb0298275a91606b14c624d",
+    "failure": "Native automatic journal destination fault leaves independent source usable: IndexOutOfBoundsException Index 0 Size 0; unexpected zero visible rows because broad loaded-alias predicate rejected same-owner driver with unrelated destination escrow",
+    "new_foreign_owner_cases_passed_in_red_run": true,
+    "scoped_correction": "Check only loaded foreign-owner aliases for same physical target. Same-owner aliases remain under existing route-scoped journal and physical inventory logic.",
+    "corrected_source": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "corrected_url": "https://github.com/Shnewbs/Foundations-PL4/commit/97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "corrected_production_blob": "7055b4d829f5e9eacb90f6285f6bff8ed13c6d72",
+    "corrected_native_test_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+    "branch_native_run": 40743305276,
+    "branch_native_status_at_checkpoint": "IN_PROGRESS",
+    "expected_native_cases": 372,
+    "accepted_native_cases": "NOT_YET_VERIFIED",
+    "runtime_jar_sha256": "NOT_YET_QUALIFIED",
+    "scope_limits": [
+      "Unloaded/unseen foreign aliases not addressed",
+      "Client, installed third-party provider, multiplayer, arbitrary-world migration, sustained performance not qualified",
+      "Historical spontaneous x=80 gravel cause unresolved"
+    ]
+  },
+  "native_112_new_candidate": {
+    "branch": "mc/1.12.2",
+    "source": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "parent_source": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "production_blob": "e3e79ae800e52dccc3d46dd452968c3577c08922",
+    "native_test_blob": "2eace03f8eeb76ae6b9f23bd50f26a8e3b6bea4c",
+    "status_blob": "b935ecb6fec6e8f9bd64250d827bf0d3cf3c271f",
+    "expected_native_cases": 399,
+    "prior_verified_cases": 397,
+    "new_cases": [
+      "wireless owner-filtered loaded foreign alias escrow fences same chest",
+      "wireless owner-filtered loaded foreign alias prevents shared chest deposit"
+    ],
+    "native_run": 40743560785,
+    "native_status_at_checkpoint": "IN_PROGRESS",
+    "runtime_jar_sha256": "NOT_YET_QUALIFIED",
+    "publisher_inspection": "Before source push, branch legacy112-native.yml and release.yml inspected with explicit boolean RC, target and checksum guards; development source ineligible",
+    "scope_limits": [
+      "No physical unloaded or remote alias guarantee",
+      "No current installed optional provider, stock client or dedicated multiplayer acceptance"
+    ]
+  },
+  "release_status": {
+    "rc_cleared": 0,
+    "total_targets": 24,
+    "github_new_releases": 0,
+    "curseforge_new_uploads": 0,
+    "curseforge_ids": [],
+    "moderation_visibility": "NO_NEW_SUBMISSION"
+  },
+  "next_work": [
+    "Inspect Forge 1.6.4 branch run 40743305276 (source 97ccb4f; 372 declared) for exact native, restart and migration results. Initial 37c02c4 run 40742486566 FAILED 371/372 on an independent same-owner source after unrelated destination fault; corrected scope, do not claim new pass until completed.",
+    "Inspect Forge 1.12.2 branch run 40743560785 (source 4de703f; 399 declared), after parity implementation for loaded foreign-owner same-target alias escrow. Earlier unchanged source f0d75b5 independently PASSED 397/397 in hourly run 40742077744 but does not qualify 399.",
+    "Preserve full previous 1.12.2 upstream installer timeout evidence 40705534234 alongside recovered successful retry 40742077744, exact source/JAR hashes and artifacts; no repeated unchanged network troubleshooting.",
+    "Close unloaded/unseen aliases and installed-provider coverage with actual third-party binaries, then native client screenshots, dedicated multiplayer, arbitrary migration worlds and sustained performance acceptance. Historical 1.6.4 spontaneous x=80 gravel cause remains unresolved.",
+    "Recheck both 26.3 loader profiles with real per-loader native JVM logs and JAR hashes on any changed source. Do not clear any of 24 RC flags or publish GitHub/CurseForge release without exact-source RC clearance, immutable tag/asset and upload receipt confirmation."
+  ]
+}

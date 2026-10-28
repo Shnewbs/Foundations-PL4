@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T18:13:12.464Z: Guarded 1.21.1 publisher against overwriting/editing existing GitHub Release assets; main source 7f7876c987765a47c38d4950a9b4569401504cb6, 20/20 Windows publication/controller tests PASS (40742077972), verifier PASS (40742077688), GitHub release/CurseForge steps SKIPPED. Pinned native 1.21.1 192/192 PASS at 7f7876c987765a47c38d4950a9b4569401504cb6 (hourly 40742077744, artifact 12840810051, exact production sha256 4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b). Forge 1.6.4 new loaded foreign-owner same-inventory alias admission guard and two native regressions committed at 37c02c4ff742b4f7fe529d398b328dac6c04985a, declared 372; branch run 40742486566 IN_PROGRESS, not qualified. Same hourly action's 1.12.2 external-download retry still IN_PROGRESS. All 24 RC flags false, no GitHub RC/CurseForge upload. Writer lease released at checkpoint.",
+  "latest_work": "2026-10-28T18:23:21.331Z: Main 1.21.1 immutable-publisher fix 7f7876c and 20/20 policy PASS retained. Hourly 40742077744 COMPLETED SUCCESS: native 1.21.1 192/192 and 1.12.2 unchanged f0d75b5 397/397, artifact 12839714684 SHA256 59b95ae9 (1.12.2); prior upstream timeout resolved by bounded auto retry. New 1.6.4 foreign-owner alias candidate 37c02c4 failed 371/372 run40742486566 because it also blocked same-owner independent healthy source; production correction 97ccb4f pushed, 372-case native run40743305276 IN_PROGRESS. Parity 1.12.2 loaded foreign-owner alias fix 4de703f pushed, 399-case native run40743560785 IN_PROGRESS. Both publishers inspected and dev-only. No changed-source candidate JAR/acceptance claimed. All 24 RC flags false; no new GitHub release or CurseForge upload. Released finite writer lease.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2558,5 +2558,70 @@
       "No physical unloaded/unobserved alias guarantee",
       "No installed external provider, client screenshot, dedicated multiplayer, arbitrary world, sustained performance or recovered gravel root cause acceptance"
     ]
+  },
+  "latest_164_loaded_alias_regression_repair": {
+    "source": "37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "run": 40742486566,
+    "result": "FAILED_371_OF_372",
+    "artifact_id": 12839239807,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742486566/artifacts/12839239807",
+    "github_zip_sha256": "fcd1187f3ad8f1dee39abf842e62b871289a4f775cb0298275a91606b14c624d",
+    "failure": "Native automatic journal destination fault leaves independent source usable: IndexOutOfBoundsException Index 0 Size 0; unexpected zero visible rows because broad loaded-alias predicate rejected same-owner driver with unrelated destination escrow",
+    "new_foreign_owner_cases_passed_in_red_run": true,
+    "scoped_correction": "Check only loaded foreign-owner aliases for same physical target. Same-owner aliases remain under existing route-scoped journal and physical inventory logic.",
+    "corrected_source": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "corrected_url": "https://github.com/Shnewbs/Foundations-PL4/commit/97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+    "corrected_production_blob": "7055b4d829f5e9eacb90f6285f6bff8ed13c6d72",
+    "corrected_native_test_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+    "branch_native_run": 40743305276,
+    "branch_native_status_at_checkpoint": "IN_PROGRESS",
+    "expected_native_cases": 372,
+    "accepted_native_cases": "NOT_YET_VERIFIED",
+    "runtime_jar_sha256": "NOT_YET_QUALIFIED",
+    "scope_limits": [
+      "Unloaded/unseen foreign aliases not addressed",
+      "Client, installed third-party provider, multiplayer, arbitrary-world migration, sustained performance not qualified",
+      "Historical spontaneous x=80 gravel cause unresolved"
+    ]
+  },
+  "latest_112_loaded_foreign_alias_candidate": {
+    "branch": "mc/1.12.2",
+    "source": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/4de703f105189d9eebd778c611ea8d68f25be8bc",
+    "parent_source": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "production_blob": "e3e79ae800e52dccc3d46dd452968c3577c08922",
+    "native_test_blob": "2eace03f8eeb76ae6b9f23bd50f26a8e3b6bea4c",
+    "status_blob": "b935ecb6fec6e8f9bd64250d827bf0d3cf3c271f",
+    "expected_native_cases": 399,
+    "prior_verified_cases": 397,
+    "new_cases": [
+      "wireless owner-filtered loaded foreign alias escrow fences same chest",
+      "wireless owner-filtered loaded foreign alias prevents shared chest deposit"
+    ],
+    "native_run": 40743560785,
+    "native_status_at_checkpoint": "IN_PROGRESS",
+    "runtime_jar_sha256": "NOT_YET_QUALIFIED",
+    "publisher_inspection": "Before source push, branch legacy112-native.yml and release.yml inspected with explicit boolean RC, target and checksum guards; development source ineligible",
+    "scope_limits": [
+      "No physical unloaded or remote alias guarantee",
+      "No current installed optional provider, stock client or dedicated multiplayer acceptance"
+    ]
+  },
+  "latest_112_network_recovery": {
+    "branch": "mc/1.12.2",
+    "source": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "hourly_run": 40742077744,
+    "hourly_run_status": "COMPLETED_SUCCESS",
+    "native_cases": "397/397",
+    "production_smoke": "PASS",
+    "generated_preview3_migration": "PASS",
+    "artifact_id": 12839714684,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077744/artifacts/12839714684",
+    "github_zip_sha256": "e3df228450f9f688b2cb1b105f6a0f319f11c72b7b6d4f259a8036edec71ba45",
+    "production_jar_sha256": "59b95ae9f489d251f04c2ccbc585fa2b5314be75ad9cd030d88920b300272e6a",
+    "prior_external_failure_run": 40705534234,
+    "prior_error": "Forge installer timed out downloading log4j-core:2.15.0 before native tests; automatic unchanged-source retry only after three-hour deferral",
+    "current_399_candidate_is_different_source": true,
+    "rc_clearance": false
   }
 }
