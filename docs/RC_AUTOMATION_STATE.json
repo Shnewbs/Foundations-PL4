@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261027T1904PT-gravel-repro",
+    "started_at": "2026-10-28T02:07:23Z",
+    "expires_at": "2026-10-28T02:40:00Z",
+    "scope": "1.6.4 native decode placement and evidence retention; main ledger reconciliation",
+    "base_commit": "54245eafc2f723b6cb56b1d57386cce297243f2c"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
