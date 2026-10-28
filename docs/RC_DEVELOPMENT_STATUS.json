@@ -2914,4 +2914,18 @@
     "scope": "source-compiled offline fixture only; independent release JAR and arbitrary-world acceptance still open",
     "rc_publication_cleared": false
   }
+,
+  "latest_1211_released_beta_binary_preflight": {
+    "evidence": "docs/acceptance/rc-dev-1211-published-beta-jar-byte-preflight-2026-10-28.json",
+    "source_commit": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "published_beta_release_id": 416116341,
+    "tag_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "release_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "release_binary_verified_step": "PASS",
+    "workflow_run": 40785212768,
+    "full_two_client_run_status": "IN_PROGRESS",
+    "installed_binary_executed": false,
+    "main_verify_run": 40785212711,
+    "rc_publication_cleared": false
+  }
 }
