@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T200922-legacy-tag-workflow",
+    "acquired_at": "2026-10-28T20:09:22.849Z",
+    "expires_at": "2026-10-28T20:37:22.849Z",
+    "purpose": "Guard remaining legacy tag-triggered release.yml publishers and verify exact-source native build receipts",
+    "expected_parent": "715adbbfe3e85f993b541ce210481be2f5f73604"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
