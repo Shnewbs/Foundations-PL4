@@ -464,10 +464,19 @@ def record(root, expected_mc, expected_sha):
                     or row["total_required_passed"] != row["pl4_fixtures"] + row["other_fixtures"]
                     for row in observed.values()):
                 raise ValueError("Missing coherent 26.x per-profile native count attribution")
-        for name, digest in native["artifact_sha256"].items():
-            path = (root / name).resolve()
-            if not path.is_relative_to((root / "build/libs").resolve()) or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
-                raise ValueError("Native-verified JAR changed")
+        # The native runner hashes every packaged JAR. An empty, partial or
+        # surplus manifest is not evidence that the exact runtime was tested.
+        # Compare the complete build/libs/*.jar set, not a caller-selected subset.
+        declared = native.get("artifact_sha256")
+        packaged = {str(p.relative_to(root)): p
+                    for p in sorted((root / "build/libs").glob("*.jar"))}
+        if not isinstance(declared, dict) or not packaged or set(declared) != set(packaged):
+            raise ValueError("Modern native artifact manifest must bind every packaged JAR")
+        for name, path in packaged.items():
+            digest = declared[name]
+            if (not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)
+                    or hashlib.sha256(path.read_bytes()).hexdigest() != digest):
+                raise ValueError("Native-verified JAR changed or digest malformed")
         gate_files = ["rc-development-gate.json"]
     hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((root / "build/libs").glob("*.jar"))}
     if not hashes:

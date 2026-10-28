@@ -174,6 +174,32 @@ class HourlyBuildTests(unittest.TestCase):
                 report=builds.record(root,'26.1.2',SHA)
             self.assertEqual(report['native_coverage'],data['native_coverage'])
 
+    def test_modern_native_manifest_covers_every_packaged_jar(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            mc, jar = self.fixture(root)
+            gate = root / 'verification-logs/rc-development-gate.json'
+            original = json.loads(gate.read_text())
+            second = root / 'build/libs/other.jar'
+            second.write_bytes(b'an additional native build artifact')
+            with patch.object(builds.subprocess, 'check_output', return_value=SHA):
+                with self.assertRaisesRegex(ValueError, 'artifact manifest'):
+                    builds.record(root, mc, SHA)
+            attested = dict(original['artifact_sha256'],
+                            **{'build/libs/other.jar': hashlib.sha256(second.read_bytes()).hexdigest()})
+            gate.write_text(json.dumps(dict(original, artifact_sha256=attested)))
+            with patch.object(builds.subprocess, 'check_output', return_value=SHA):
+                report = builds.record(root, mc, SHA)
+            self.assertEqual(set(report['artifact_sha256']), {'runtime.jar', 'other.jar'})
+            for changed in ({}, {'build/libs/runtime.jar': attested['build/libs/runtime.jar']},
+                            dict(attested, **{'build/libs/unbuilt.jar': 'a' * 64}),
+                            dict(attested, **{'build/libs/other.jar': 'not-a-sha256'}),
+                            dict(attested, **{'build/libs/other.jar': '0' * 64})):
+                gate.write_text(json.dumps(dict(original, artifact_sha256=changed)))
+                with self.subTest(manifest=changed), patch.object(builds.subprocess, 'check_output', return_value=SHA):
+                    with self.assertRaises(ValueError):
+                        builds.record(root, mc, SHA)
+
     def test_changed_runtime_or_wrong_source_never_get_success_receipt(self):
         for legacy in (False,True):
             with tempfile.TemporaryDirectory() as directory:
