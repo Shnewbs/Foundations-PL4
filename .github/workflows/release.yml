@@ -18,6 +18,10 @@ concurrency:
 
 jobs:
   release:
+    # Obsolete generic tag publisher: historical workflow provenance only.
+    # The exact 1.6.4 native validation/qualified RC publisher is legacy164-native.yml.
+    # Do not invoke or revive this frozen path for expired historical artifacts.
+    if: false
     name: Build and publish version
     runs-on: windows-latest
     steps:
