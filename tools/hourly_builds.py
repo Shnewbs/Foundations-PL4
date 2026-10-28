@@ -374,6 +374,47 @@ def validate_live_mutation_assertions(report):
                 raise ValueError("Missing unique native live mutation assertion: " + phase + " " + name)
 
 
+def validate_26_native_profiles(root, minecraft, expected, native):
+    """Bind every claimed 26.x loader profile to an actual JVM log and its JAR bytes."""
+    profiles = {"26.3.0.23-beta", "26.3.0.39-beta"} if minecraft == "26.3" else {"default"}
+    observed = native.get("native_coverage")
+    if not isinstance(observed, dict) or set(observed) != profiles:
+        raise ValueError("Missing coherent 26.x per-profile native count attribution")
+    for profile in sorted(profiles):
+        row = observed[profile]
+        if not isinstance(row, dict):
+            raise ValueError("Malformed 26.x native coverage row")
+        logfile = root / "verification-logs" / (("native-" + profile + ".log") if minecraft == "26.3" else "native.log")
+        transcript = logfile.read_text(errors="replace")
+        digest = hashlib.sha256(transcript.encode()).hexdigest()
+        if row.get("native_log_sha256") != digest:
+            raise ValueError("26.x native log SHA-256 differs from coverage report")
+        matches = re.findall(r"Running test environment '([^']+)' batch (\d+) \((\d+) tests\)", transcript)
+        batches = [dict(environment=env, batch=int(batch), tests=int(count)) for env, batch, count in matches]
+        if len({(b["environment"], b["batch"]) for b in batches}) != len(batches):
+            raise ValueError("Duplicate 26.x native environment batch")
+        pl4 = sum(b["tests"] for b in batches if b["environment"].startswith("foundations_pl4:"))
+        total = sum(b["tests"] for b in batches)
+        passed = re.findall(r"All (\d+) required tests passed", transcript)
+        if (pl4 != expected or not batches or len(passed) != 1 or int(passed[0]) != total
+                or row.get("environment_batches") != batches
+                or type(row.get("pl4_fixtures")) is not int or row["pl4_fixtures"] != pl4
+                or type(row.get("other_fixtures")) is not int or row["other_fixtures"] != total-pl4
+                or type(row.get("total_required_passed")) is not int or row["total_required_passed"] != total):
+            raise ValueError("26.x native count attribution disagrees with actual JVM log")
+        if minecraft == "26.3":
+            staged = root / "verification-logs" / ("artifacts-" + profile)
+            packaged = {p.name: p for p in staged.glob("*.jar")}
+            declared = row.get("packaged_artifact_sha256")
+            if not isinstance(declared, dict) or not packaged or set(declared) != set(packaged):
+                raise ValueError("26.3 loader-profile JAR manifest is incomplete or surplus")
+            for name, path in packaged.items():
+                sha = declared[name]
+                if (not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{64}", sha)
+                        or hashlib.sha256(path.read_bytes()).hexdigest() != sha):
+                    raise ValueError("26.3 loader-profile JAR changed after native qualification")
+
+
 def record(root, expected_mc, expected_sha):
     status = json.loads((root / "BUILD_STATUS.json").read_text())
     actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -458,12 +499,7 @@ def record(root, expected_mc, expected_sha):
                 and native["expected_fixtures"] == expected):
             raise ValueError("Modern exact-source native evidence disagrees")
         if expected_mc.startswith("26."):
-            profiles = {"26.3.0.23-beta", "26.3.0.39-beta"} if expected_mc == "26.3" else {"default"}
-            observed = native.get("native_coverage", {})
-            if set(observed) != profiles or any(row["pl4_fixtures"] != expected
-                    or row["total_required_passed"] != row["pl4_fixtures"] + row["other_fixtures"]
-                    for row in observed.values()):
-                raise ValueError("Missing coherent 26.x per-profile native count attribution")
+            validate_26_native_profiles(root, expected_mc, expected, native)
         # The native runner hashes every packaged JAR. An empty, partial or
         # surplus manifest is not evidence that the exact runtime was tested.
         # Compare the complete build/libs/*.jar set, not a caller-selected subset.
@@ -477,6 +513,12 @@ def record(root, expected_mc, expected_sha):
             if (not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)
                     or hashlib.sha256(path.read_bytes()).hexdigest() != digest):
                 raise ValueError("Native-verified JAR changed or digest malformed")
+        if expected_mc == "26.3":
+            # The last profile is also the final build/libs payload; reject a copy
+            # from a previous profile or a report from a different binary.
+            final = native["native_coverage"]["26.3.0.39-beta"]["packaged_artifact_sha256"]
+            if final != {p.name: declared[name] for name, p in packaged.items()}:
+                raise ValueError("26.3 final loader-profile JAR differs from packaged runtime")
         gate_files = ["rc-development-gate.json"]
     hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((root / "build/libs").glob("*.jar"))}
     if not hashes:

@@ -163,16 +163,80 @@ class HourlyBuildTests(unittest.TestCase):
                 self.assertFalse(report['publication_performed'])
                 self.assertFalse(report['rc_publication_cleared'])
 
-    def test_26_native_receipt_requires_and_preserves_count_attribution(self):
+    def test_26_native_receipt_requires_real_log_and_count_attribution(self):
         with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);self.fixture(root)
-            status=root/'BUILD_STATUS.json';data=json.loads(status.read_text());data['minecraft']='26.1.2';status.write_text(json.dumps(data))
-            gate=root/'verification-logs/rc-development-gate.json';data=json.loads(gate.read_text());data['minecraft']='26.1.2';gate.write_text(json.dumps(data))
-            with patch.object(builds.subprocess,'check_output',return_value=SHA):
-                with self.assertRaisesRegex(ValueError,'count attribution'):builds.record(root,'26.1.2',SHA)
-                data['native_coverage']={'default':dict(pl4_fixtures=156,other_fixtures=1,total_required_passed=157)};gate.write_text(json.dumps(data))
-                report=builds.record(root,'26.1.2',SHA)
-            self.assertEqual(report['native_coverage'],data['native_coverage'])
+            root = Path(directory); self.fixture(root)
+            status = root / "BUILD_STATUS.json"
+            data = json.loads(status.read_text()); data["minecraft"] = "26.1.2"
+            status.write_text(json.dumps(data))
+            gate = root / "verification-logs/rc-development-gate.json"
+            data = json.loads(gate.read_text()); data["minecraft"] = "26.1.2"
+            gate.write_text(json.dumps(data))
+            with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                with self.assertRaisesRegex(ValueError, "count attribution"):
+                    builds.record(root, "26.1.2", SHA)
+            transcript = ("Running test environment 'foundations_pl4:fixtures' batch 0 (156 tests)\n"
+                          "Running test environment 'minecraft:other' batch 1 (2 tests)\n"
+                          "All 158 required tests passed\n")
+            (root / "verification-logs/native.log").write_text(transcript)
+            data["native_coverage"] = {"default": dict(
+                pl4_fixtures=156, other_fixtures=2, total_required_passed=158,
+                environment_batches=[
+                    dict(environment="foundations_pl4:fixtures", batch=0, tests=156),
+                    dict(environment="minecraft:other", batch=1, tests=2)],
+                native_log_sha256=hashlib.sha256(transcript.encode()).hexdigest())}
+            gate.write_text(json.dumps(data))
+            with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                report = builds.record(root, "26.1.2", SHA)
+            self.assertEqual(report["native_coverage"], data["native_coverage"])
+            for bad in ("All 157 required tests passed\n", "All 158 required tests passed\nAll 158 required tests passed\n"):
+                (root / "verification-logs/native.log").write_text(transcript.replace("All 158 required tests passed\n", bad))
+                with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                    with self.assertRaises(ValueError):
+                        builds.record(root, "26.1.2", SHA)
+
+    def test_263_two_native_loader_profiles_require_each_log_and_jar(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); _, jar = self.fixture(root)
+            status = root / "BUILD_STATUS.json"
+            data = json.loads(status.read_text()); data["minecraft"] = "26.3"
+            status.write_text(json.dumps(data))
+            gate = root / "verification-logs/rc-development-gate.json"
+            data = json.loads(gate.read_text()); data["minecraft"] = "26.3"
+            coverage = {}
+            versions = ("26.3.0.23-beta", "26.3.0.39-beta")
+            for index, profile in enumerate(versions):
+                transcript = ("Running test environment 'foundations_pl4:fixtures' batch 0 (156 tests)\n"
+                              "Running test environment 'minecraft:other' batch 1 (2 tests)\n"
+                              "All 158 required tests passed\n")
+                (root / "verification-logs" / ("native-" + profile + ".log")).write_text(transcript)
+                directory = root / "verification-logs" / ("artifacts-" + profile)
+                directory.mkdir()
+                binary = b"profile native runtime " + bytes([index])
+                (directory / "runtime.jar").write_bytes(binary)
+                coverage[profile] = dict(pl4_fixtures=156, other_fixtures=2, total_required_passed=158,
+                    environment_batches=[
+                        dict(environment="foundations_pl4:fixtures", batch=0, tests=156),
+                        dict(environment="minecraft:other", batch=1, tests=2)],
+                    native_log_sha256=hashlib.sha256(transcript.encode()).hexdigest(),
+                    packaged_artifact_sha256={"runtime.jar": hashlib.sha256(binary).hexdigest()})
+            jar.write_bytes(b"profile native runtime " + bytes([1]))
+            data["artifact_sha256"] = {"build/libs/runtime.jar": hashlib.sha256(jar.read_bytes()).hexdigest()}
+            data["native_coverage"] = coverage
+            gate.write_text(json.dumps(data))
+            with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                self.assertEqual(builds.record(root, "26.3", SHA)["native_coverage"], coverage)
+            first = root / "verification-logs" / ("artifacts-" + versions[0]) / "runtime.jar"
+            first.write_bytes(b"replaced after native pass")
+            with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                with self.assertRaisesRegex(ValueError, "loader-profile JAR changed"):
+                    builds.record(root, "26.3", SHA)
+            first.write_bytes(b"profile native runtime " + bytes([0]))
+            data["native_coverage"][versions[1]]["packaged_artifact_sha256"] = {"runtime.jar": hashlib.sha256(b"wrong").hexdigest()}
+            gate.write_text(json.dumps(data))
+            with patch.object(builds.subprocess, "check_output", return_value=SHA):
+                with self.assertRaisesRegex(ValueError, "loader-profile JAR changed"):
+                    builds.record(root, "26.3", SHA)
 
     def test_modern_native_manifest_covers_every_packaged_jar(self):
         with tempfile.TemporaryDirectory() as directory:

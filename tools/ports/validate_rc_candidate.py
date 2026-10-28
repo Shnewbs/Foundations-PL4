@@ -76,8 +76,16 @@ def main():
         if profile:
             saved = logs / ("artifacts-" + profile)
             saved.mkdir()
+            copied = {}
             for path in (root / "build/libs").glob("*.jar"):
-                shutil.copy2(path, saved / path.name)
+                destination = saved / path.name
+                shutil.copy2(path, destination)
+                copied[path.name] = hashlib.sha256(destination.read_bytes()).hexdigest()
+            if not copied:
+                raise ValueError("No packaged JAR for " + profile)
+            # The next clean/build replaces build/libs. Keep each native-tested
+            # loader's binary identity alongside its own GameTest log digest.
+            native_coverage[profile]["packaged_artifact_sha256"] = copied
     hashes = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in (root / "build/libs").glob("*.jar")}
     if not hashes:
