@@ -49,8 +49,22 @@ public final class DecodeRestartScenarios {
         for(int x:new int[]{64,80}){
             load(x);load(x+5);
             // Native disposable terrain can contain falling gravel/sand above an opened cell.
-            // Remove only the loaded fixture column's falling blocks before placement.
+            // A real falling-gravel actor is injected only in the isolated rewrite
+            // fixture, so a zero-actor natural run cannot falsely qualify the
+            // protection. It is never installed in a production game or save.
+            net.minecraft.entity.item.EntityFallingSand adversary=null;
+            if(suite.equals("rewrite")&&x==80){
+                adversary=new net.minecraft.entity.item.EntityFallingSand(world,
+                        x+0.5D,205.5D,32.5D,Block.gravel.blockID);
+                if(!world.spawnEntityInWorld(adversary))
+                    throw new AssertionError("Native falling-gravel adversary did not spawn");
+            }
             clearFallingBlocksAbove(x);clearFallingBlocksAbove(x+5);
+            if(adversary!=null){
+                boolean removed=adversary.isDead;
+                System.out.println("PL4 DECODE GRAVITY ADVERSARY x=80 spawned=true removed="+removed);
+                if(!removed)throw new AssertionError("Native falling-gravel adversary survived fixture cleanup");
+            }
             air(x);air(x+5);place(x);chestBlock(x+5);
             LegacyTile n=node(x);n.owner=OWNER;n.pending=new ItemStack(Item.ingotIron,8);n.itemFault="Original decode fixture uncertainty";n.itemImportPending=true;LegacyItemSafety.importSaved(n);
             check(n.itemJournalContext!=null,"seed unknown context "+x);

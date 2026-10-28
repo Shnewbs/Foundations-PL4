@@ -74,6 +74,19 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
                        log.split('\n',1)[0]):
             with self.subTest(broken=broken),self.assertRaises(ValueError):
                 require_legacy_decode_gravity_guards(broken,'crash-write','1.6.4')
+    def test_rewrite_requires_real_gravel_actor_cleanup(self):
+        guards='\n'.join('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=%d ceiling=true' %
+                         (x,1 if x==80 else 0) for x in (64,69,80,85))
+        marker='PL4 DECODE GRAVITY ADVERSARY x=80 spawned=true removed=true'
+        self.assertIsNone(require_legacy_decode_gravity_guards(guards+'\n'+marker,'write','1.6.4','decode-rewrite'))
+        self.assertIsNone(require_legacy_decode_gravity_guards(guards,'write','1.6.4','decode-raw'))
+        self.assertIsNone(require_legacy_decode_gravity_guards('', 'verify','1.6.4','decode-rewrite'))
+        for bad in (guards,guards+'\n'+marker+'\n'+marker,
+                    guards+'\n'+marker.replace('removed=true','removed=false'),
+                    guards.replace('x=80 removed_blocks=0 removed_entities=1','x=80 removed_blocks=0 removed_entities=0')+'\n'+marker):
+            with self.subTest(bad=bad),self.assertRaisesRegex(ValueError,'native rewrite falling-gravel'):
+                require_legacy_decode_gravity_guards(bad,'crash-write','1.6.4','decode-rewrite')
+
     def test_missing_duplicate_or_wrong_flags_rejected(self):
         for rows in ([self.good(64)],[self.good(64),self.good(64)],
                      [dict(self.good(64),placement_flags=3),self.good(80)],

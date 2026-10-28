@@ -29,12 +29,16 @@ def require_legacy_decode_placements(report,phase,minecraft):
             details={key:row.get(key) for key in ('stage','block_exists_before','before_block','set_block_changed','placement_flags','expected_block','actual_block','metadata','tile_class','tile_invalid','block_exists_after','neighbor_nonair','falling_entities_near')}
             raise ValueError('Unqualified native decode host placement at x='+str(row.get('x'))+' '+json.dumps(details,sort_keys=True,separators=(',',':'))[:3000])
 
-def require_legacy_decode_gravity_guards(native_log,phase,minecraft):
-    """Prove every write phase isolated only its loaded disposable fixture columns."""
+def require_legacy_decode_gravity_guards(native_log,phase,minecraft,suite=None):
+    """Require both native column isolation and a deliberately spawned actor in rewrite."""
     if minecraft!='1.6.4' or not phase.endswith('write'):return
     rows=re.findall(r'PL4 DECODE GRAVITY GUARD x=(\d+) removed_blocks=(\d+) removed_entities=(\d+) ceiling=(true|false)',native_log)
     if len(rows)!=4 or {int(row[0]) for row in rows}!={64,69,80,85} or any(row[3]!='true' for row in rows):
         raise ValueError('Missing, duplicated or failed native fixture gravity guards')
+    if suite=='decode-rewrite':
+        adversary=re.findall(r'PL4 DECODE GRAVITY ADVERSARY x=80 spawned=(true|false) removed=(true|false)',native_log)
+        if adversary!=[('true','true')] or int(next(row[2] for row in rows if row[0]=='80'))<1:
+            raise ValueError('Missing or unremoved real native rewrite falling-gravel adversary')
 
 def retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error):
     """Emit the exact failed placement observation even when the JVM's phase fails."""
@@ -101,7 +105,7 @@ def verify(suite="item"):
             except ValueError as error:
                 retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error)
                 raise
-            if decode:require_legacy_decode_gravity_guards(text,phase,mc)
+            if decode:require_legacy_decode_gravity_guards(text,phase,mc,suite)
             if code!=expected or report['minecraft']!=mc or report['phase']!=phase or report['passed'] is not True or not report['assertions']:raise ValueError('Restart phase failed: '+phase+'; inspect '+str(logfile))
             if not report['process'].startswith(str(pid)+'@') or 'PL4 ITEM RESTART '+phase+': PASS' not in text or not re.search('Starting minecraft server version '+re.escape(mc)+r'\b',text,re.I):raise ValueError('Missing process/native identity')
             if ('Stopping server' in text)==(phase=='crash-write'):raise ValueError('Unexpected shutdown path')
