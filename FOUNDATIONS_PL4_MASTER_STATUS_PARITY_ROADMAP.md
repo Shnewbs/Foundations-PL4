@@ -5,6 +5,10 @@
 **Project acceptance:** performance betas and alpha/experimental legacy previews. Full Practical Logistics 2 parity remains incomplete. Further installed-mod API, client visual, multiplayer, sustained-load and fallback testing is required.
 **Source of truth:** this section is the current execution roadmap. Older R16/R17, `0.0.2a` phase and `0.1b` sections farther down are retained as historical feature/parity evidence, **not current release or port status**.
 
+## Legacy release asset and no-clobber corrections — October 28, 2026
+
+Exact `mc/1.6.4` publisher source originally validated `FoundationsPL4-1.6.4-<version>-srg.jar` but attempted to publish the unsuffixed runtime JAR. The corrected existing-branch workflow at `9e363db9` now publishes the remapped artifact and requires a unique matching SHA256SUMS entry before tag mutation. The `mc/1.12.2` workflow at `92e7435f` now also rehashes its runtime. Both branch publishers reject wrong loader/target, unclassified or uncleared RC channels and existing-release asset overwrites (`--clobber`). Static post-commit readback passes twelve policy checks per branch; no eligible source, new JAR, Windows publisher run, GitHub RC or CurseForge upload. All 24 RC clearances stay false. Preserve previous 1.6.4 gravel failure evidence and continue exact native/provider/multiplayer/real-client/performance acceptance. Evidence: `docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json`.
+
 ## Native fixture placement evidence — October 26, 2026
 
 The [placement diagnostic checkpoint](docs/acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json) repairs1.6.4 restart-runner evidence loss: exact raw phase JSON is retained before parsing or acceptance, with PID/exit/log/report hashes even for missing or malformed reports. The isolated fixture records native setBlock/block/metadata/tile observations and fails explicitly without creating a synthetic tile or retrying placement. Four retention and150 targeted local controller tests pass;201 discovery plus4 retention executions pass in trusted CI.

@@ -1,0 +1,80 @@
+{
+  "recorded_at": "2026-10-28T03:07:30Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Guarded legacy release publication workflow corrections only; no gameplay, test fixture, status/clearance or product artifact changes",
+  "observed_source_defect": {
+    "1.6.4": "The prepare-checksums step verifies FoundationsPL4-1.6.4-<version>-srg.jar; the downstream GitHub release step previously named FoundationsPL4-1.6.4-<version>.jar (non-SRG). Gradle renamer builds the -srg runtime, and the branch CurseForge uploader requires it. An RC could fail after validation without the required exact Forge runtime asset.",
+    "1.12.2": "The previously validated runtime path matches the release asset, but the workflow could overwrite existing release assets via --clobber and did not independently rehash its runtime before tag/release mutation.",
+    "both": "Legacy release workflow's local publication reader did not explicitly enforce Forge loader, exact Minecraft target and beta channel for RC; prior tagged-source CurseForge upload guards were already in place."
+  },
+  "changes": {
+    "mc/1.6.4": {
+      "parent": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+      "commit": "9e363db9fc92ad8f7a17af72c2e116d461e17f40",
+      "file": ".github/workflows/release.yml",
+      "runtime_name": "FoundationsPL4-1.6.4-<version>-srg.jar"
+    },
+    "mc/1.12.2": {
+      "parent": "ac86a7bb14de8f60810c515def14b204d6510591",
+      "commit": "92e7435f84bd0106d24a1a55996cf2091d1eba4b",
+      "file": ".github/workflows/release.yml",
+      "runtime_name": "FoundationsPL4-1.12.2-<version>.jar"
+    }
+  },
+  "corrections": [
+    "Reject non-Forge and wrong exact target in branch-local publication reader, reject unclassified channels and require beta-channel RC with explicit source boolean clearance.",
+    "Rehash the exact runtime JAR and enforce a unique matching SHA256SUMS entry before tag creation or release publication.",
+    "Use the 1.6.4 remapped -srg.jar in the published asset array, rather than the unverified unsuffixed development jar.",
+    "Reject existing GitHub release publication instead of replacing assets or release notes with --clobber; require out-of-band exact-asset/receipt reconciliation.",
+    "Preserve existing version-specific immutable-tag and CurseForge metadata/published-release checks, existing historical release artifacts and push-triggered native validation."
+  ],
+  "validation": {
+    "branch_pushes": "Both fast-forward guarded expected-head GitHub ref updates succeeded; main had an unexpired owner lease during edits.",
+    "readback": "Fetched exact committed workflow and BUILD_STATUS from both branches after push.",
+    "static_policy_contracts": {
+      "mc/1.12.2": "12/12 PASS",
+      "mc/1.6.4": "12/12 PASS"
+    },
+    "policy_cases": [
+      "Exact Forge loader",
+      "exact Minecraft target",
+      "canonical runtime path",
+      "pre-tag checksum against runtime bytes",
+      "unique name binding",
+      "GitHub artifact list equals checked runtime",
+      "existing-release mutation forbidden",
+      "no --clobber",
+      "development channel excluded",
+      "tag checkout pinned for CurseForge",
+      "RC Boolean clearance enforced",
+      "CurseForge exact-target artifact name"
+    ],
+    "workflow_release_validation": "NOT RUN (all 24 RC flags false; no qualifying tag or immutable RC release exists for these development versions).",
+    "native_rebuild_this_checkpoint": "NOT RUN (workflow-only edits; prior 1.12.2 native391/391 at40607180135 and 1.6.4 native365/365 at40619744184 remain evidence for their original source commits, not new commit-source-native claims).",
+    "new_runtime_artifact": false,
+    "new_client_or_provider_test": false,
+    "source_claims": "Static workflow/source readback and policy checks only; no Windows release-publisher, secrets, actual CurseForge POST or end-to-end artifact publication exercise."
+  },
+  "actions_checked": {
+    "latest_successful_main_native": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40621135374",
+    "original_164_native": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40619744184",
+    "last_hourly_all_targets": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40610348219",
+    "active_run_at_initial_check": "none in recent 15 returns; deduplicated hourly-native schedule left enabled",
+    "existing_release": "An existing 1.12.2 0.2.0-rc.1-dev draft was observed; not publishable and not modified",
+    "prior_curseforge_receipts": "24 existing submissions per last verified reconciliation; no API upload performed here"
+  },
+  "current_acceptance": {
+    "qualified_existing_native_target_count": 24,
+    "rc_clearances": 0,
+    "github_rc_created": 0,
+    "curseforge_new_uploads": 0,
+    "moderation_public_visibility_rechecked": false
+  },
+  "remaining": [
+    "No end-to-end Windows legacy release workflow execution on a truly qualified exact-source RC; RC status remains development and false.",
+    "Confirm exact publication receipts and immutable release status before any later upload or retry.",
+    "Original 1.6.4 decode-scope/crash-write x80 gravel replacement remains unproven despite passing scoped isolation (0 actual falling-entity removals).",
+    "Actual installed optional providers, disconnected/unloaded alias, dedicated multiplayer/online identity, real travel, arbitrary migrations, sustained performance and exact client acceptance remain outstanding."
+  ],
+  "next": "Continue physical gravel overwrite reproduction under controlled native physics or independent 1.12.2 optional-provider discovery validation; use trusted hourly native artifacts for newly changed branch commits. Keep all RC flags false."
+}

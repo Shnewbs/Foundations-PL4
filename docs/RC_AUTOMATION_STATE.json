@@ -5,19 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T2003PT-publisher-parity",
-    "source_parent": "b23af9f1ea3680df8774a66b88b7d589e3e5758c",
-    "acquired_at": "2026-10-28T03:03:06Z",
-    "expires_at": "2026-10-28T03:38:06Z",
-    "scope": [
-      "mc/1.6.4 release artifact integrity and publication guards",
-      "docs/RC_AUTOMATION_STATE.json",
-      "docs/acceptance"
-    ],
-    "purpose": "Repair mismatch between 1.6.4 validated -srg artifact and release-upload artifact, expand fail-closed tests; preserve branch native and clearance flags",
-    "status": "active"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -26,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 19:28 PT: mc/1.6.4 fixture-only gravel isolation and exact log guard added at 089135e; final native 40619744184 passes 365/365 + 40 decode/4 provider JVMs, 80 placements and 80 ceiling receipts, production SRG unchanged. Retained 40606652228 raw failure correctly attributed decode-scope/crash-write x80 actual gravel13 versus PL4 3501 (NOT decode-rewrite). Accepted runs removed 0 actual falling entities; mechanism remains unproven. All 24 RC clearances false; no release/upload.",
+  "current_checkpoint": "2026-10-27 20:07 PT: fixed branch-local legacy release integrity. 1.6.4 now publishes exact verified -srg runtime name with unique checksum before any tag; both 1.12.2 and 1.6.4 require exact Forge/target/beta RC, fail closed on existing GitHub assets rather than --clobber. Two guarded branch commits; 12/12 static contract checks each. No new native/build/client/RC/release or upload. 24 RC clearance flags false.",
   "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
   "next_work": [
-    "Reproduce and trace 1.6.4 decode-scope/crash-write x80 falling gravel/block replacement under controlled native physics; current scoped ceiling/actor isolation passes but never encountered a live falling entity in the accepted run, so do not claim original root cause fixed.",
-    "Inspect installed optional provider and disconnected alias behavior in 1.12.2 ac86a7b current production client, multiplayer with online identities/dimension travel, and sustained performance; retain native/migration scope.",
-    "Continue 22 modern exact-target parity and client/provider validation; all 24 explicit RC publication flags remain false.",
-    "Check trusted hourly-builds.yml exact-target artifacts before reruns; no stale legacy publisher replay, no unqualified GitHub/CurseForge RC."
+    "Investigate unresolved 1.6.4 decode-scope/crash-write native x80 gravel13 replacing expected PL4 block3501 under controlled real gravity; scoped fixture isolation never observed falling entities and does not prove causality.",
+    "Obtain appropriately pinned exact-source native artifacts for workflow-only branch commits through trusted hourly-builds.yml (do not duplicate running retained source artifact); before eventual RC publication test eligible Windows legacy release end-to-end with immutable tags, unique runtime checksums and receipt reconciliation.",
+    "Inspect installed optional-provider and unloaded/disconnected alias behavior in 1.12.2, then dedicated multiplayer, online identities/dimension travel, arbitrary migration and sustained performance.",
+    "Continue 22 modern exact-target parity and native/client/provider evidence; all 24 explicit RC publication flags remain false."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -40,7 +28,7 @@
   "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
-  "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
+  "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json",
   "latest_native_runs": [
     40448042043,
     40567666803,
@@ -58,12 +46,14 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1904PT-gravel-repro",
-    "released_at": "2026-10-28T02:28:00Z",
-    "checkpoint": "mc/1.6.4 accepted private native fixture gravity isolation/guard evidence, original x80 native failure suite corrected, global RC uncleared; no publication",
-    "evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
-    "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
-    "branch_run": 40619744184,
+    "owner": "pl4-chat-hourly-20261027T2003PT-publisher-parity",
+    "released_at": "2026-10-28T03:07:30Z",
+    "checkpoint": "Legacy exact-source publisher artifact integrity/immutable release guards on both existing legacy branches; no RC clearance or upload",
+    "evidence": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json",
+    "source_commits": {
+      "1.6.4": "9e363db9fc92ad8f7a17af72c2e116d461e17f40",
+      "1.12.2": "92e7435f84bd0106d24a1a55996cf2091d1eba4b"
+    },
     "rc_publication_cleared": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
@@ -394,5 +384,11 @@
     "gravity_preflight_receipts": 80,
     "actual_falling_entities_removed_in_accepted_runs": 0,
     "scope": "scoped private fixture isolation only; original cause still unproven"
+  },
+  "latest_legacy_release_asset_integrity": {
+    "evidence": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json",
+    "verified": "12/12 static source readback per legacy branch",
+    "release_asset_defect_fixed": "1.6.4 SRG runtime name mismatch; 1.12.2 existing-release overwrite risk",
+    "validated_end_to_end": false
   }
 }

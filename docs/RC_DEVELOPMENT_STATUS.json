@@ -1577,7 +1577,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-27 19:28 PT: Completed 1.6.4 native fixture-only falling-gravel and ceiling isolation plus exact 4-column guard receipt assertions. Pushed 089135e, qualified branch native 40619744184 (365/365 ordinary, 40 decode + 4 provider JVMs, 20 persisted worlds, 80 native placements and 80 valid guard receipts, unchanged production SRG 6530959a). Fixed malformed test-only Python escapes from intermediate failed 40619649369. Original failed 40606652228 was decode-scope/crash-write at x80 (block13 gravel vs expected3501); previous ledger incorrectly named decode-rewrite. No live falling entity in new accepted runs, so original cause remains unproven. All24 RC clearances false, no GitHub/CurseForge RC.",
+  "latest_work": "2026-10-27 20:07 PT: Corrected legacy release publication safety on mc/1.6.4 (9e363db) and mc/1.12.2 (92e7435). The 1.6.4 GitHub upload previously referenced an unsuffixed runtime while checksum and Forge/CurseForge require -srg; corrected to exact pinned remapped jar. Both branches rehash unique matching runtime checksums before any tag, enforce exact target/loader/RC beta and refuse existing release mutation/--clobber. 12/12 static policy checks each pass. Workflow-only changes; no fresh native/release execution, no new RC clearance, release or CurseForge upload. Prior native proofs remain bound to their original source commits; 1.6.4 physical gravel issue and installed-provider/multiplayer/performance acceptance remain open.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1821,5 +1821,6 @@
     "client_provider_multiplayer_perf_accepted": false,
     "rc_publication_cleared": false,
     "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
-  }
+  },
+  "latest_legacy_publisher_checkpoint": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json"
 }
