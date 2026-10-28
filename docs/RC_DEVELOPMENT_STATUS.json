@@ -1681,7 +1681,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-28T10:15:00.829Z: native-verified 1.12.2 f0d75b5 397/397 and current 1.6.4 ef01e15 368/368. Two actual 1.6.4 rewrite gravity actors spawned and removed in native write/crash-write; current production SRG JAR SHA unchanged. 1.6.4 root intermittent terrain cause, client/providers/multiplayer/performance still open. No new eligible RC, all 24 clearance flags false.",
+  "latest_work": "2026-10-28T11:12:03.351Z: Pushed 1.6.4 2c902d6 native pre-cleanup terrain/chunk boundary observations + 3 fail-closed Python controller regression tests; exact-source run 40677792469 in_progress/pending. Prior native 368/368 remains scoped to ef01e15, no new candidate artifact qualified, all 24 RC flags false, no release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2327,5 +2327,39 @@
       "No actual installed third-party provider binaries, broad alias/unload or dedicated multiplayer validation",
       "No arbitrary save recovery, pre-save/power loss or sustained performance"
     ]
+  },
+  "latest_164_terrain_boundary_candidate": {
+    "minecraft": "1.6.4",
+    "branch": "mc/1.6.4",
+    "source_commit": "2c902d64d82925ecccda5207f0cf7db50acc8e65",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/2c902d64d82925ecccda5207f0cf7db50acc8e65",
+    "source_parent": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "source_blobs": {
+      "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java": "1903846d08d52d206d8604071cb18e88467d8948",
+      "tools/verify_legacy_item_restart.py": "dd5deb4aebaa1fc1a51aff7adf41402614b295ec",
+      "tools/test_restart_phase_retention.py": "d274c8c7f9a72071ee3734a4e348e1a4d81df95b"
+    },
+    "native_run": 40677792469,
+    "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40677792469",
+    "native_status_at_checkpoint": "in_progress",
+    "native_conclusion_at_checkpoint": null,
+    "ordinary_native_cases_declaration": 368,
+    "new_controller_tests": 3,
+    "source_scope": "Restart fixture records four truly pre-cleanup terrain/chunk-column observations on two x64/x80 write seeds, before explicit gravel-actor injection; controller rejects missing/duplicate/fabricated chunk, host and gravity counts. No production mod behavior changed.",
+    "test_scope": "all 10 decode suites: 2 write phases each; 4 observed columns per write. No new native case count; additional Python controller regression checks.",
+    "prior_exact_native_qualified": {
+      "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+      "run_id": 40669706429,
+      "native_scenarios": "368/368",
+      "runtime_srg_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472"
+    },
+    "new_exact_source_native_qualified": "NOT_YET_QUALIFIED",
+    "new_runtime_sha256": null,
+    "root_cause_resolved": false,
+    "installed_provider_qualified": false,
+    "current_client_qualified": false,
+    "dedicated_multiplayer_qualified": false,
+    "sustained_performance_qualified": false,
+    "rc_publication_cleared": false
   }
 }

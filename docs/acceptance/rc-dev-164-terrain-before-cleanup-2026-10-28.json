@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-28T11:12:03.351Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "goal": "24 exact-target RC acceptance; this checkpoint is diagnosis and evidence integrity, not release clearance",
+  "minecraft": "1.6.4",
+  "branch": "mc/1.6.4",
+  "source_commit": "2c902d64d82925ecccda5207f0cf7db50acc8e65",
+  "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/2c902d64d82925ecccda5207f0cf7db50acc8e65",
+  "source_parent": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+  "source_blobs": {
+    "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java": "1903846d08d52d206d8604071cb18e88467d8948",
+    "tools/verify_legacy_item_restart.py": "dd5deb4aebaa1fc1a51aff7adf41402614b295ec",
+    "tools/test_restart_phase_retention.py": "d274c8c7f9a72071ee3734a4e348e1a4d81df95b"
+  },
+  "native_run": 40677792469,
+  "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40677792469",
+  "native_status_at_checkpoint": "in_progress",
+  "native_conclusion_at_checkpoint": null,
+  "ordinary_native_cases_declaration": 368,
+  "new_controller_tests": 3,
+  "source_scope": "Restart fixture records four truly pre-cleanup terrain/chunk-column observations on two x64/x80 write seeds, before explicit gravel-actor injection; controller rejects missing/duplicate/fabricated chunk, host and gravity counts. No production mod behavior changed.",
+  "test_scope": "all 10 decode suites: 2 write phases each; 4 observed columns per write. No new native case count; additional Python controller regression checks.",
+  "prior_exact_native_qualified": {
+    "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "run_id": 40669706429,
+    "native_scenarios": "368/368",
+    "runtime_srg_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472"
+  },
+  "new_exact_source_native_qualified": "NOT_YET_QUALIFIED",
+  "new_runtime_sha256": null,
+  "root_cause_resolved": false,
+  "installed_provider_qualified": false,
+  "current_client_qualified": false,
+  "dedicated_multiplayer_qualified": false,
+  "sustained_performance_qualified": false,
+  "rc_publication_cleared": false,
+  "publisher_branch_review": {
+    "files": [
+      ".github/workflows/release.yml",
+      ".github/workflows/legacy164-native.yml",
+      ".github/workflows/curseforge.yml",
+      ".github/workflows/export-release.yml",
+      ".github/workflows/complete-02a-ports.yml",
+      ".github/workflows/prepare-version.yml"
+    ],
+    "result": "Release/native push paths inspected; conditional PL4_ALLOW_PUBLICATION requires exact-source beta RC clearance; export workflows main-only; branch development publishing prevented; no publisher job executed."
+  },
+  "active_actions_checked": true,
+  "duplicate_build_dispatched": false,
+  "retained_prior_artifact": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429/artifacts/12807334156",
+  "unresolved": [
+    "Native CI final scenario and separate restart JAR validation plus retained artifact inspection for candidate",
+    "Naturally generated/intermittently timed gravel overwrite root cause not proven; fixture now captures pre-cleanup natural terrain separately from synthetic actor",
+    "Actual optional-provider binary, disconnected/unloaded backing aliases, multiplayer and sustained load, arbitrary migration/current client",
+    "24 RC clearances remain false; no release or CurseForge upload"
+  ],
+  "next_implementation": "Inspect per-phase terrain_before_cleanup x80/85 chunk=5 against x64/69 chunk=4; follow any spontaneous block13/falling count and read raw failures. If native passes, retain hashed artifact/source identity and add isolated natural BlockFalling tick/alias process proof without force-loading."
+}
