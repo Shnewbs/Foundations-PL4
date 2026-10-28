@@ -468,7 +468,7 @@ def record(root, expected_mc, expected_sha):
         # surplus manifest is not evidence that the exact runtime was tested.
         # Compare the complete build/libs/*.jar set, not a caller-selected subset.
         declared = native.get("artifact_sha256")
-        packaged = {str(p.relative_to(root)): p
+        packaged = {p.relative_to(root).as_posix(): p
                     for p in sorted((root / "build/libs").glob("*.jar"))}
         if not isinstance(declared, dict) or not packaged or set(declared) != set(packaged):
             raise ValueError("Modern native artifact manifest must bind every packaged JAR")
