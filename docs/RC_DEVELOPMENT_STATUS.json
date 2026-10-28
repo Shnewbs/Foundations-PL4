@@ -1078,7 +1078,9 @@
         "production_sha256": "76070f42dbfa6c61c2801a30e162b67dd988aaf084c41a394feabbb7c00c6ff0",
         "artifact_id": 12763707505,
         "rc_publication_cleared": false
-      }
+      },
+      "latest_native_publisher_guard_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+      "latest_native_publisher_static": "22/22 PASS; no new current-source native run; historic 391/391 remains pinned ac86"
     },
     {
       "minecraft": "1.6.4",
@@ -1089,19 +1091,19 @@
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
         "native_gate": "PASS",
-        "workflow_run": "39970232872",
-        "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
-        "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
+        "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+        "workflow_run": 40619744184,
+        "runtime_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12"
       },
-      "workflow_run": 40619744184,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40619744184",
-      "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
-      "runtime_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12",
+      "workflow_run": 40630703237,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40630703237",
+      "source_commit": "01eeced04350c24cb11211838744937f0c067506",
+      "runtime_sha256": "58c2033386e926bf36b743d0b9b7ac982406f5a1c543e022568157b9ca8274d2",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+      "candidate_source_commit": "01eeced04350c24cb11211838744937f0c067506",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -1116,7 +1118,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+      "hourly_native_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 365,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1161,11 +1163,11 @@
         "native_gate": "PASS",
         "observed_native_fixtures": 230
       },
-      "current_source_stock_client_regression": "PASS_RETAINED_IDENTICAL_PRODUCTION_BYTES_NO_NEW_CLIENT_OR_CAPTURE_REVIEW",
+      "current_source_stock_client_regression": "NOT_RUN_RUNTIME_CHANGED_FROM_PRIOR_CLIENT_PROOF",
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Fixture-only 1.6.4 source 089135e completes 365/365 exact native, 40 decode and 4 provider JVMs, 80 native placement observations, 80 gravity guard receipts, 20 retained decode worlds; production SRG bytes unchanged (6530959a). Original 40606652228 failure was decode-scope/crash-write x80 native gravel13, previously mislabeled decode-rewrite. Acceptance run 40619744184 had zero in-flight gravel removed, so original intermittent mechanism remains unproven. Existing stock client evidence is prior byte-identical payload, not a fresh client run. Provider/multiplayer/migration/perf and all RC publication gates remain open.",
+      "acceptance_attribution": "Fresh source 01eeced: 365/365 native; 40 decode +4 provider separate JVMs, 80 exact host placements/gravity receipts, 3 historical import JVMs, exact packaged SRG SHA256 58c2033. Stale captured slot metadata now fails closed on reentrant tile detachment; no new stock-client/installed-provider/multiplayer/performance acceptance. Prior x80 actor observation supports gravity hypothesis but original physics cause unproven.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40443746113,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1209,9 +1211,9 @@
         "fresh_client_run": false,
         "reviewed_captures": 2,
         "hashed_captures": 21,
-        "scope": "Prior source a0da0a38 client40443746113 retained for identical246afad2 production bytes; fixture/runner/controller changes only. No new client run or capture review.",
-        "current_candidate_source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
-        "byte_identity_verified": true,
+        "scope": "Historical stock client evidence retained only for prior runtime; new native product bytes changed and require a fresh client test.",
+        "current_candidate_source_commit": "01eeced04350c24cb11211838744937f0c067506",
+        "byte_identity_verified": false,
         "new_reviewed_captures": 0,
         "new_hashed_captures": 0
       },
@@ -1574,10 +1576,11 @@
         "previous_native_scenarios": "PASS_365_OF_365",
         "previous_restart_failure": "decode-live-owner crash-write native placement x80 expected3501 actual13",
         "rc_publication_cleared": false
-      }
+      },
+      "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
     }
   ],
-  "latest_work": "2026-10-27 20:07 PT: Corrected legacy release publication safety on mc/1.6.4 (9e363db) and mc/1.12.2 (92e7435). The 1.6.4 GitHub upload previously referenced an unsuffixed runtime while checksum and Forge/CurseForge require -srg; corrected to exact pinned remapped jar. Both branches rehash unique matching runtime checksums before any tag, enforce exact target/loader/RC beta and refuse existing release mutation/--clobber. 12/12 static policy checks each pass. Workflow-only changes; no fresh native/release execution, no new RC clearance, release or CurseForge upload. Prior native proofs remain bound to their original source commits; 1.6.4 physical gravel issue and installed-provider/multiplayer/performance acceptance remain open.",
+  "latest_work": "2026-10-27 21:19 PT / 2026-10-28 04:19Z: hardened both legacy push-native publishers (6e385da 1.6.4; 0d370e6 1.12.2), 22/22 static post-push policy readbacks each; 1.6.4 captured-slot stale-backing repair 01eeced passed native 365/365, 40 decode+4 provider JVMs, 80 native host placements, 80 gravity receipts and 3 historical-import JVMs; exact SRG SHA256 58c2033, artifact 12791681550. Independent failed 40619649369 showed one falling gravel entity/gravel at y201 near x80, supporting but not proving root cause. No new clients, multiplayer, RC clearance, GitHub release or CurseForge upload (0/24).",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1822,5 +1825,6 @@
     "rc_publication_cleared": false,
     "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   },
-  "latest_legacy_publisher_checkpoint": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json"
+  "latest_legacy_publisher_checkpoint": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+  "latest_legacy_source_checkpoint": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json"
 }

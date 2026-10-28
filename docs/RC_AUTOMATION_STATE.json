@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261028T0402Z-gravity-investigation",
-    "claimed_at": "2026-10-28T04:02:11Z",
-    "expires_at": "2026-10-28T04:45:00Z",
-    "status": "active",
-    "scope": "1.6.4 native gravity/placement evidence and exact-source controller checks; main state/ledger; preserve branch publisher safeguards",
-    "base_sha": "67c82192050b48f7bcd1414b62675e8f750d06f7"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,22 +14,23 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 20:07 PT: fixed branch-local legacy release integrity. 1.6.4 now publishes exact verified -srg runtime name with unique checksum before any tag; both 1.12.2 and 1.6.4 require exact Forge/target/beta RC, fail closed on existing GitHub assets rather than --clobber. Two guarded branch commits; 12/12 static contract checks each. No new native/build/client/RC/release or upload. 24 RC clearance flags false.",
-  "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
+  "current_checkpoint": "2026-10-27 21:19 PT / 2026-10-28 04:19Z: hardened both legacy push-native publishers (6e385da 1.6.4; 0d370e6 1.12.2), 22/22 static post-push policy readbacks each; 1.6.4 captured-slot stale-backing repair 01eeced passed native 365/365, 40 decode+4 provider JVMs, 80 native host placements, 80 gravity receipts and 3 historical-import JVMs; exact SRG SHA256 58c2033, artifact 12791681550. Independent failed 40619649369 showed one falling gravel entity/gravel at y201 near x80, supporting but not proving root cause. No new clients, multiplayer, RC clearance, GitHub release or CurseForge upload (0/24).",
+  "local_validation": "1.6.4 source 01eeced matches exact native Forge 9.11.1.1345 runtime 58c2033; 365/365 scenarios, 40 decode +4 provider JVMs, 80 valid placements, 80 gravity receipts, 60 historical checks, 193-member CRC artifact 2e28e3. 1.12.2 branch publisher-only guard post-push 22/22 static; older source ac86 remains last 391 native. No Windows/client/multiplayer/RC release.",
   "next_work": [
-    "Investigate unresolved 1.6.4 decode-scope/crash-write native x80 gravel13 replacing expected PL4 block3501 under controlled real gravity; scoped fixture isolation never observed falling entities and does not prove causality.",
-    "Obtain appropriately pinned exact-source native artifacts for workflow-only branch commits through trusted hourly-builds.yml (do not duplicate running retained source artifact); before eventual RC publication test eligible Windows legacy release end-to-end with immutable tags, unique runtime checksums and receipt reconciliation.",
-    "Inspect installed optional-provider and unloaded/disconnected alias behavior in 1.12.2, then dedicated multiplayer, online identities/dimension travel, arbitrary migration and sustained performance.",
-    "Continue 22 modern exact-target parity and native/client/provider evidence; all 24 explicit RC publication flags remain false."
+    "Physically reproduce original 1.6.4 x80 gravel13 overwrite with deterministic native falling-actor injection; earlier followup run40619649369 recorded one falling actor and gravel y201, while accepted run40630703237 removed zero; no source/JAR claim of actor root-cause repair.",
+    "Implement installed native 1.12.2 optional-provider and double-chest/alias backing identity + unloaded/reconnected host tests; preserve ownership and escrow; do not clear RC on isolated JVM proof.",
+    "Obtain fresh exact-source 1.6.4 client screenshots and multiplayer/migration/performance after changed runtime SHA 58c2033, use trusted hourly-builds.yml for 24 exact targets and deduplicate retained source artifacts.",
+    "Next qualified beta RC release only after explicit per-target clearance and artifact/immutable tag/CurseForge receipt reconciliation; 0/24 currently."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
-  "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json",
+  "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "latest_native_runs": [
+    40630703237,
     40448042043,
     40567666803,
     40571895345,
@@ -44,7 +38,7 @@
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40567666803,
-    "1.6.4": 40594656761
+    "1.6.4": 40630703237
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
@@ -53,14 +47,16 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T2003PT-publisher-parity",
-    "released_at": "2026-10-28T03:07:30Z",
-    "checkpoint": "Legacy exact-source publisher artifact integrity/immutable release guards on both existing legacy branches; no RC clearance or upload",
-    "evidence": "docs/acceptance/rc-dev-legacy-release-asset-integrity-2026-10-28.json",
-    "source_commits": {
-      "1.6.4": "9e363db9fc92ad8f7a17af72c2e116d461e17f40",
-      "1.12.2": "92e7435f84bd0106d24a1a55996cf2091d1eba4b"
-    },
+    "owner": "pl4-hourly-chat-20261028T0402Z-gravity-investigation",
+    "released_at": "2026-10-28T04:19:16Z",
+    "checkpoint_commit": "commit_to_follow",
+    "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+    "source_commits": [
+      "01eeced04350c24cb11211838744937f0c067506",
+      "6e385da520589905da9e538ed950d4018e5d3cd3",
+      "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9"
+    ],
+    "lease_bounded": true,
     "rc_publication_cleared": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
@@ -324,12 +320,14 @@
     "scope": "Previous exact source only; no transfer of acceptance to subsequent 4108fed"
   },
   "latest_164_candidate": {
-    "source_commit": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
-    "workflow_run": 40594656761,
-    "qualification": "PENDING_NATIVE_AND_RESTART_AND_PACKAGING",
+    "source_commit": "01eeced04350c24cb11211838744937f0c067506",
+    "workflow_run": 40630703237,
+    "qualification": "PASS_PINNED_NATIVE_SAVE_REOPEN_RESTART_ONLY",
     "release_cleared": false,
-    "prior_failed_source": "4108fedf24a798dd180f5793bc71a59ed7fa6a89",
-    "prior_failed_native": "364/365 due physical inventory stock check"
+    "runtime_sha256": "58c2033386e926bf36b743d0b9b7ac982406f5a1c543e022568157b9ca8274d2",
+    "artifact_id": 12791681550,
+    "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+    "provider_client_multiplayer_performance": "NOT_ACCEPTED"
   },
   "last_verified_recent_112_native": {
     "source_commit": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
@@ -397,5 +395,20 @@
     "verified": "12/12 static source readback per legacy branch",
     "release_asset_defect_fixed": "1.6.4 SRG runtime name mismatch; 1.12.2 existing-release overwrite risk",
     "validated_end_to_end": false
+  },
+  "latest_164_gravity_observation": {
+    "original_failure_run": 40606652228,
+    "followup_failure_run": 40619649369,
+    "followup_falling_entity_count": 1,
+    "followup_overhead_gravel": 13,
+    "causal_confirmation": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json"
+  },
+  "latest_legacy_native_publisher_guards": {
+    "1.6.4": "6e385da520589905da9e538ed950d4018e5d3cd3",
+    "1.12.2": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+    "static_contracts_each": "22/22",
+    "end_to_end_publisher_qualified": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json"
   }
 }

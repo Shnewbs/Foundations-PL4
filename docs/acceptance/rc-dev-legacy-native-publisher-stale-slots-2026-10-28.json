@@ -1,0 +1,136 @@
+{
+  "recorded_at": "2026-10-28T04:19:16Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_policy": "Existing main and mc/<exact-version> only; guarded expected-parent/ref updates; never read R16 historical attachment",
+  "writer": "pl4-hourly-chat-20261028T0402Z-gravity-investigation",
+  "reason": "Close overlooked push-triggered legacy native publishers before touching branch sources; implement and qualify fail-closed captured inventory metadata under live tile replacement; reconcile original gravity evidence",
+  "native_workflows": {
+    "1.6.4": {
+      "path": ".github/workflows/legacy164-native.yml",
+      "parent": "9e363db9fc92ad8f7a17af72c2e116d461e17f40",
+      "guard_commit": "6e385da520589905da9e538ed950d4018e5d3cd3",
+      "publishable_current_source": false,
+      "validated_static_readback": "22/22 PASS",
+      "runtime_filename": "FoundationsPL4-1.6.4-<version>-srg.jar"
+    },
+    "1.12.2": {
+      "path": ".github/workflows/legacy112-native.yml",
+      "parent": "92e7435f84bd0106d24a1a55996cf2091d1eba4b",
+      "guard_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+      "publishable_current_source": false,
+      "validated_static_readback": "22/22 PASS",
+      "runtime_filename": "FoundationsPL4-1.12.2-<version>.jar"
+    }
+  },
+  "native_publish_safety": [
+    "Independent exact-branch push trigger and in-step ref/head SHA preflight",
+    "Require Forge exact Minecraft target, beta maturity, strict RC version without dev/snapshot/nightly, exact Gradle/status version and boolean rc_publication_cleared true",
+    "Require native, separate-restart and preupgrade verification steps complete before publication, and reject existing remote tag or GitHub release",
+    "Match unique SHA256SUMS runtime entry to exact packaged bytes, preserve 1.6.4 SRG filename and exact source commit before atomic immutable GitHub tag creation",
+    "No tag force update, clobber, duplicate upload, or CurseForge POST on current development builds",
+    "Retain all 24 false RC clearance flags; policy checks are static and not an end-to-end qualified publisher exercise"
+  ],
+  "production": {
+    "target": "1.6.4",
+    "fix_commit": "01eeced04350c24cb11211838744937f0c067506",
+    "changed_paths": [
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+    ],
+    "defect": "Captured NativeInventory.slots() returned cached metadata without revalidating current live host and physical backing; metadata callback may have replaced backing after adapter creation",
+    "repair": "StorageInventory.slots() checks current installed identity before exposing slots; detached callback returns zero instead of advertising old indices",
+    "regression": "Native adversarial FaultyChest replaces backing during getSizeInventory; captured adapter goes from 27 slots to zero; replacement retains 32 real iron and no additional world drops",
+    "initial_static": "6/6 source contract checks; ordinary declared native scenario count remains 365",
+    "native_run": 40630703237,
+    "native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40630703237",
+    "run_sha": "01eeced04350c24cb11211838744937f0c067506",
+    "run_conclusion": "success",
+    "ordinary_native": {
+      "total": 365,
+      "passed": 365,
+      "failed": 0
+    },
+    "runtime_sha256": "58c2033386e926bf36b743d0b9b7ac982406f5a1c543e022568157b9ca8274d2",
+    "artifact_id": 12791681550,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40630703237/artifacts/12791681550",
+    "artifact_zip_sha256": "2e28e3d8acaf61b80a8be6827fbbb67b0f7caf72269a5c6aef2982e17cf35d22",
+    "artifact_zip_members": 193,
+    "artifact_zip_crc": "PASS",
+    "runtime_minecraft": "1.6.4",
+    "runtime_forge": "9.11.1.1345",
+    "build_api_forge": "9.11.1.960",
+    "java_runtime": 7,
+    "exact_source_packaging": true,
+    "rebuilt_archive_entries_match": true,
+    "fixture_private_excluded_from_runtime": true,
+    "decoded_restart_jvms": 40,
+    "provider_restart_jvms": 4,
+    "decode_assertions": 1536,
+    "provider_assertions": 188,
+    "preupgrade_historical_processes": 3,
+    "preupgrade_historical_checks": 60,
+    "actual_native_decode_placements": 80,
+    "valid_native_decode_placements": 80,
+    "gravity_guard_receipts": 80,
+    "accepted_run_removed_falling_blocks": 0,
+    "accepted_run_removed_falling_entities": 0,
+    "independent_save_clean_restart": "PASS",
+    "independent_post_save_halt_reopen": "PASS",
+    "release_step": "skipped: development channel",
+    "stock_client_fresh": false,
+    "dedicated_multiplayer_fresh": false
+  },
+  "diagnostic_gravel": {
+    "original_failed_run": 40606652228,
+    "original_suite": "decode-scope",
+    "original_phase": "crash-write",
+    "followup_failed_run": 40619649369,
+    "followup_suite": "decode-rewrite",
+    "followup_phase": "write",
+    "followup_source_sha": "cb8e89fd5156b7ded335fc77e24b02c34762d511",
+    "followup_test_location": [
+      80,
+      200,
+      32
+    ],
+    "observed_native_gravel_block": 13,
+    "expected_pl4_block": 3501,
+    "setBlock_changed": true,
+    "falling_entities_near": 1,
+    "gravel_at_y201": true,
+    "failure_log_sha256": "865c0ff4d5ff71b0095e4c949d2112b91e2783ff393c467e1a0eb92a6daea63f",
+    "scope": "A failing follow-up fixture recorded a falling gravel entity and gravel directly above x80; this supports a physics collision hypothesis, but original failed run lacked entity evidence and actor causality remains unproven. Later accepted guard runs removed zero active entities; do not claim a reproducible physics root fix."
+  },
+  "other_target": {
+    "minecraft": "1.12.2",
+    "last_qualified_native_source": "ac86a7bb14de8f60810c515def14b204d6510591",
+    "native_run": 40607180135,
+    "pass": "391/391",
+    "restart_jvms": 44,
+    "only_publisher_workflow_changed": true,
+    "new_native_or_client_execution": false
+  },
+  "workflow_review": {
+    "last_verified_hourly_all_targets_run": 40610348219,
+    "main_checkout_verify_run": 40630134037,
+    "main_checkout_release_run": 40630133932,
+    "recent_branch_native_duplicate_builds_started": false,
+    "existing_public_github_release_list_checked": true,
+    "existing_112_draft": "mc1.12.2-v0.2.0-rc.1-dev remains an unpublished draft; not modified",
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "curseforge_visibility_reverified": false
+  },
+  "clearance": {
+    "targets": 24,
+    "rc_cleared": 0,
+    "stable_rc_published": false
+  },
+  "remaining": [
+    "Original intermittent 1.6.4 native gravity/placement causality not yet proven under deterministic falling-actor injection",
+    "Installed optional provider and full disconnected/unloaded double-inventory alias revalidation (especially 1.12.2), dedicated multiplayer/online identity/dimension travel",
+    "Fresh client screenshots for changed 1.6.4 runtime, arbitrary migration worlds and sustained performance, all 24 exact-port acceptance",
+    "Qualified end-to-end immutable native publisher and validated CurseForge beta receipts when explicit target RC clearance becomes true"
+  ],
+  "next": "Continue controlled gravity physics reproduction and actual installed-provider/alias native regressions; require fresh full exact-source build/client/long-run evidence before any RC clearance; never inherit historical client byte identity from changed 1.6.4 runtime."
+}
