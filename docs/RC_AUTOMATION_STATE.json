@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T0710Z",
-    "claimed_at": "2026-10-28T07:10:03.331Z",
-    "expires_at": "2026-10-28T07:39:03.331Z",
-    "base_sha": "653779337e9044988472c211b7682f34cb8c2004",
-    "scope": "legacy 1.12.2 exact native evidence reconciliation and scoped source implementation; no duplicate builds",
-    "mode": "exclusive_source_writer"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,18 +14,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 23:18 PT / 2026-10-28T06:18:05Z: confirmed 1.12.2 e567fe3 392/392 native and 1536 decode/40 JVM, 188 provider/4 JVM, 60 historical/3 processes; 5 matched packaged hashes, production boot/preview.3 migration and ZIP CRC pass in hourly 40636974001. Independent branch 40636413380 cancelled at 30 minutes. Implemented host residency/second-capability replacement fix on existing mc/1.12.2 commit 791a94df, new exact 393-case CI 40642756603 pending. All 24 RC clearances false; no new release/upload.",
+  "current_checkpoint": "2026-10-28T07:27:22.417Z: Forge 1.12.2 117df59 exact hourly native PASS 394/394, 1536 decode assertions/40 JVMs and retained pre-upgrade/restart/production/migration, artifact 12798718363 sha4058ab; first de1215b compile failed and 117df corrected one missed call. Original 393/393 791a94d also independently qualified. No installed provider/client/multiplayer/performance RC acceptance; all 24 flags false; no release.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect 791a94d exact-version native run 40642756603 and hourly pinned controller; qualify or fix only against retained exact logs; do not duplicate unchanged runs",
-    "If the 30-minute branch timeout recurs while hourly exact-source succeeds, review branch workflow duplicated validation budget before further reruns",
-    "Implement installed-provider alias/unload/multiplayer and real client acceptance using isolated exact-version tests; preserve other ports",
-    "Diagnose native 1.6.4 x80 gravel collision separately, then sustained performance and RC clearance"
+    "Inspect the independent mc/1.12.2 workflow 40648972109 when it completes, but do not rerun the unchanged already-qualified 117df source; reconcile only actual independent failures.",
+    "Implement and test root-revocation/disconnected alias/unload and installed third-party native provider identity around handheld transfers without force loading; preserve saved evidence and all exact version distinctions.",
+    "Run exact-source stock-client, online multiplayer, travel/owner and sustained performance acceptance before any per-version RC clearance.",
+    "Diagnose 1.6.4 x80 falling gravel/placement event with raw evidence; preserve its prior failures and all modern exact-target development baselines."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-second-lookup-2026-10-28.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-root-revocation-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -54,15 +47,15 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261028T0611Z",
-    "released_at": "2026-10-28T06:18:05Z",
-    "evidence": "docs/acceptance/rc-dev-112-second-lookup-2026-10-28.json",
+    "owner": "pl4-chat-hourly-20261028T0710Z",
+    "released_at": "2026-10-28T07:27:22.417Z",
+    "evidence": "docs/acceptance/rc-dev-112-root-revocation-2026-10-28.json",
     "source_commits": [
-      "791a94df5e1247d5c5cef9a7722784e972b7f0b4"
+      "de1215bfe2db786194a9d842418ad664e38628d8",
+      "117df59bc0f54f05b3385688156e866bf2c575c9"
     ],
     "lease_bounded": true,
-    "rc_publication_cleared": false,
-    "checkpoint_commit": null
+    "rc_publication_cleared": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
   "latest_branch_publisher_review": {
@@ -484,15 +477,42 @@
     "declared_scenarios": 393,
     "source_readback": "PASS",
     "unique_native_declaration": "PASS",
-    "native": "PENDING",
+    "native": "PASS_393_393_EXACT_SOURCE",
     "workflow_run": 40642756603,
     "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
-    "production_jar_sha256": null,
+    "production_jar_sha256": "555965d25f130ce75df6e3a7745a020edaf4df355cf22604f8e2a4d6cf96acb5",
     "client_visual_acceptance": false,
     "installed_provider_acceptance": false,
     "multiplayer_acceptance": false,
     "sustained_performance_acceptance": false,
     "release_channel": "development",
+    "rc_publication_cleared": false,
+    "native_artifact_id": 12796576801,
+    "native_artifact_sha256": "3af93f70be73509aae176786dfd93e82015da55d9f5c6c8b00814609b4541606",
+    "independent_pass_run": 40642756603
+  },
+  "latest_112_root_session_candidate": {
+    "minecraft": "1.12.2",
+    "branch": "mc/1.12.2",
+    "source_commit": "117df59bc0f54f05b3385688156e866bf2c575c9",
+    "native_run": 40649176900,
+    "artifact_id": 12798718363,
+    "artifact_sha256": "4058ab06d2d91d59c8563f38e0c14828691f83c52b4ad8ec82f7d1eeab7198bd",
+    "runtime_sha256": "2701c7a1ba4438a9b8b0c5f3b6d3d21eb746dadc43c01060d40b1e0361d7043a",
+    "native_cases": "394/394",
+    "decode_assertions": 1536,
+    "decode_processes": 40,
+    "exact_source_gate": "PASS_PINNED_HOURLY",
+    "production_smoke": "PASS",
+    "preview3_migration": "PASS",
+    "branch_run": 40648972109,
+    "branch_status_at_checkpoint": "IN_PROGRESS",
+    "initial_compile_failure": 40648730978,
+    "evidence": "docs/acceptance/rc-dev-112-root-revocation-2026-10-28.json",
+    "client_current": false,
+    "installed_provider": false,
+    "multiplayer": false,
+    "performance": false,
     "rc_publication_cleared": false
   }
 }

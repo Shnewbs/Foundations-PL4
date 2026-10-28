@@ -595,8 +595,8 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 393,
-      "native_gate": "PENDING_EXACT_393_NATIVE_RESTART_MIGRATION",
+      "expected_native_fixtures": 394,
+      "native_gate": "PASS_EXACT_394_NATIVE_RESTART_MIGRATION",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
@@ -605,10 +605,10 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40642756603,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
-      "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
-      "runtime_sha256": null,
+      "workflow_run": 40649176900,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40649176900",
+      "source_commit": "117df59bc0f54f05b3385688156e866bf2c575c9",
+      "runtime_sha256": "2701c7a1ba4438a9b8b0c5f3b6d3d21eb746dadc43c01060d40b1e0361d7043a",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
@@ -629,9 +629,9 @@
         "workflow_run": "40205878290",
         "client_evidence": "acceptance/rc-dev-1.12.2-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
+      "hourly_native_evidence": "acceptance/rc-dev-112-root-revocation-2026-10-28.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": null,
+      "observed_native_fixtures": 394,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -1143,7 +1143,11 @@
         "sustained_performance_acceptance": false,
         "release_channel": "development",
         "rc_publication_cleared": false
-      }
+      },
+      "current_native_source_client_visual_acceptance": "NOT_EXECUTED",
+      "current_native_source_installed_provider_acceptance": "NOT_EXECUTED",
+      "current_native_source_dedicated_multiplayer_acceptance": "NOT_EXECUTED",
+      "current_native_source_sustained_performance_acceptance": "NOT_EXECUTED"
     },
     {
       "minecraft": "1.6.4",
@@ -1643,7 +1647,7 @@
       "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
     }
   ],
-  "latest_work": "2026-10-27 23:18 PT / 2026-10-28T06:18:05Z: confirmed 1.12.2 e567fe3 392/392 native and 1536 decode/40 JVM, 188 provider/4 JVM, 60 historical/3 processes; 5 matched packaged hashes, production boot/preview.3 migration and ZIP CRC pass in hourly 40636974001. Independent branch 40636413380 cancelled at 30 minutes. Implemented host residency/second-capability replacement fix on existing mc/1.12.2 commit 791a94df, new exact 393-case CI 40642756603 pending. All 24 RC clearances false; no new release/upload.",
+  "latest_work": "2026-10-28T07:27:22.417Z: Forge 1.12.2 117df59 exact hourly native PASS 394/394, 1536 decode assertions/40 JVMs and retained pre-upgrade/restart/production/migration, artifact 12798718363 sha4058ab; first de1215b compile failed and 117df corrected one missed call. Original 393/393 791a94d also independently qualified. No installed provider/client/multiplayer/performance RC acceptance; all 24 flags false; no release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1953,7 +1957,7 @@
     "declared_scenarios": 393,
     "source_readback": "PASS",
     "unique_native_declaration": "PASS",
-    "native": "PENDING",
+    "native": "PASS_393_393_EXACT_SOURCE",
     "workflow_run": 40642756603,
     "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
     "production_jar_sha256": null,
@@ -1962,6 +1966,33 @@
     "multiplayer_acceptance": false,
     "sustained_performance_acceptance": false,
     "release_channel": "development",
+    "rc_publication_cleared": false,
+    "native_run": 40642756603,
+    "runtime_sha256": "555965d25f130ce75df6e3a7745a020edaf4df355cf22604f8e2a4d6cf96acb5",
+    "artifact_sha256": "3af93f70be73509aae176786dfd93e82015da55d9f5c6c8b00814609b4541606"
+  },
+  "latest_112_root_session_candidate": {
+    "minecraft": "1.12.2",
+    "branch": "mc/1.12.2",
+    "source_commit": "117df59bc0f54f05b3385688156e866bf2c575c9",
+    "native_run": 40649176900,
+    "artifact_id": 12798718363,
+    "artifact_sha256": "4058ab06d2d91d59c8563f38e0c14828691f83c52b4ad8ec82f7d1eeab7198bd",
+    "runtime_sha256": "2701c7a1ba4438a9b8b0c5f3b6d3d21eb746dadc43c01060d40b1e0361d7043a",
+    "native_cases": "394/394",
+    "decode_assertions": 1536,
+    "decode_processes": 40,
+    "exact_source_gate": "PASS_PINNED_HOURLY",
+    "production_smoke": "PASS",
+    "preview3_migration": "PASS",
+    "branch_run": 40648972109,
+    "branch_status_at_checkpoint": "IN_PROGRESS",
+    "initial_compile_failure": 40648730978,
+    "evidence": "docs/acceptance/rc-dev-112-root-revocation-2026-10-28.json",
+    "client_current": false,
+    "installed_provider": false,
+    "multiplayer": false,
+    "performance": false,
     "rc_publication_cleared": false
   }
 }

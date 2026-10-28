@@ -1,0 +1,84 @@
+{
+  "recorded_at_utc": "2026-10-28T07:27:22.417Z",
+  "source_of_truth": "GitHub immutable exact refs and retained Actions artifacts",
+  "scope": "1.12.2 exact Forge native safety, original root owner revocation during provider slot discovery; not all-24 RC acceptance",
+  "root_authorization_fix": {
+    "initial_commit": "de1215bfe2db786194a9d842418ad664e38628d8",
+    "compile_failure": {
+      "run_id": 40648730978,
+      "failed_step": "compileJava",
+      "detail": "One ungrouped withdrawal call retained the pre-change inventory(LegacyTile) signature; no native execution or JAR qualification for this revision"
+    },
+    "correction_commit": "117df59bc0f54f05b3385688156e866bf2c575c9",
+    "branch": "mc/1.12.2",
+    "exact_minecraft": "1.12.2",
+    "loader": "Forge 14.23.5.2864",
+    "java": 8,
+    "actual_change": "StorageInventory checks original bound root/player/tool identity before/after native handler methods, so a separate provider changing the root owner invalidates the source/session even when endpoint host+target remain installed.",
+    "regression": "wireless provider slots revoking root cannot debit player",
+    "expected_native_scenarios": 394
+  },
+  "qualified_previous_source": {
+    "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+    "run_id": 40642756603,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
+    "artifact_id": 12796576801,
+    "artifact_sha256": "3af93f70be73509aae176786dfd93e82015da55d9f5c6c8b00814609b4541606",
+    "native_cases": "393/393",
+    "unique_native_names": 393,
+    "production_jar_sha256": "555965d25f130ce75df6e3a7745a020edaf4df355cf22604f8e2a4d6cf96acb5",
+    "decode_assertions": 1536,
+    "decode_jvms": 40,
+    "legacy_restart": "PASS",
+    "prior_fault_import": "PASS",
+    "artifact_members": 145,
+    "zip_crc": "PASS",
+    "exact_source_identity": "PASS"
+  },
+  "qualified_current_source": {
+    "source_commit": "117df59bc0f54f05b3385688156e866bf2c575c9",
+    "workflow": "hourly-builds.yml",
+    "run_id": 40649176900,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40649176900",
+    "artifact_id": 12798718363,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40649176900/artifacts/12798718363",
+    "artifact_sha256": "4058ab06d2d91d59c8563f38e0c14828691f83c52b4ad8ec82f7d1eeab7198bd",
+    "production_jar_sha256": "2701c7a1ba4438a9b8b0c5f3b6d3d21eb746dadc43c01060d40b1e0361d7043a",
+    "native_cases": 394,
+    "unique_named_native_cases": 394,
+    "passed_native_cases": 394,
+    "provider_root_revocation_regression": true,
+    "decode_assertions": 1536,
+    "decode_jvms": 40,
+    "decode_process_ids_distinct": true,
+    "clean_and_completed_save_flush_restart": "PASS",
+    "preupgrade_fault_import_and_candidate_restart": "PASS",
+    "production_only_smoke": "PASS",
+    "preview3_world_migration": "PASS",
+    "artifact_members": 155,
+    "zip_crc": "PASS",
+    "exact_source_hash_and_production_jar_match": "PASS",
+    "source_artifact_sha256": "c4635e40fb7ed2e9ce8f4ad2d734128808370e8c1e6f5ffa1433ac0e95cdeec2"
+  },
+  "companion_branch_native_run": {
+    "run_id": 40648972109,
+    "status_at_checkpoint": "IN_PROGRESS",
+    "note": "Do not duplicate: same source already qualified by pinned independent hourly run; branch release step remains ineligible"
+  },
+  "publication": {
+    "rc_clearances": "0/24",
+    "development_channel": true,
+    "rc_publication_cleared": false,
+    "new_github_rc_release": false,
+    "new_curseforge_upload": false,
+    "existing_development_draft_preserved": true
+  },
+  "explicit_limitations": [
+    "No installed third-party provider binary or actual disconnected alias compatibility acceptance",
+    "No new stock-client screenshot or user-facing graphic approval for this source",
+    "No dedicated online multiplayer/cross-dimension travel or sustained provider performance qualification",
+    "Legacy 1.6.4 gravel actor x80 intermittent placement cause is unproven",
+    "Remaining 22 modern exact targets have retained historical development evidence; no new RC clearance here"
+  ],
+  "next_implementation": "Extend native installed-provider/alias/load boundary testing under preserved root session and compare actual client/provider behavior; separately investigate 1.6.4 falling-gravel fixture. Preserve recorded source hashes and zero RC clearance."
+}
