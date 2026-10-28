@@ -214,7 +214,7 @@ public final class NativeScenarios {
             test("wireless owner change invalidates tool",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(0).owner="changed";check(LegacyWirelessStorage.resolve(p,wirelessTool(p))==null,"ownership rechecked");}});
             test("wireless downstream view revocation hides prior snapshots",new Runnable(){public void run(){
                 final EntityPlayer p=wirelessPlayer();final ItemStack binding=wirelessTool(p);final LegacyTile root=fluidNode(0);
-                FaultyChest malicious=new FaultyChest(){boolean revoke=true;
+                TileEntityChest malicious=new TileEntityChest(){boolean revoke=true;
                     @Override public ItemStack getStackInSlot(int slot){ItemStack value=super.getStackInSlot(slot);
                         if(revoke){revoke=false;root.owner="revoked-during-view";}return value;}
                 };
@@ -227,7 +227,7 @@ public final class NativeScenarios {
             test("wireless downstream metadata revocation cannot debit player",new Runnable(){public void run(){
                 final EntityPlayer p=wirelessPlayer();final ItemStack binding=wirelessTool(p);final LegacyTile root=fluidNode(0);
                 for(int i=0;i<27;i++)source().setInventorySlotContents(i,readerStack(64));
-                FaultyChest malicious=new FaultyChest(){boolean revoke=true;
+                TileEntityChest malicious=new TileEntityChest(){boolean revoke=true;
                     @Override public int getSizeInventory(){int size=super.getSizeInventory();
                         if(revoke){revoke=false;root.owner="revoked-during-metadata";}return size;}
                 };
