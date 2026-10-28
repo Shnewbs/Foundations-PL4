@@ -143,6 +143,20 @@ public final class NativeScenarios {
             test("monitoring never adds loaded chunks",new Runnable(){public void run(){readerDisplay();int before=world.getChunkProvider().getLoadedChunkCount();LegacyReadings.sample(fluidNode(0));check(before==world.getChunkProvider().getLoadedChunkCount(),"loaded-only scan");}});
             test("monitoring works with transfers disabled",new Runnable(){public void run(){readerDisplay();destination().setInventorySlotContents(0,readerStack(29));LegacyPL4.enabled=false;check(LegacyReadings.sample(fluidNode(0))[1].equals("Items: 29"),"read-only monitoring independent of movement");}});
             test("item insertion after mutation quarantines without retry",new Runnable(){public void run(){source().setInventorySlotContents(0,readerStack(32));FaultyChest dest=faultyChest(false);dest.failInsert=true;try{fluidNode(0).transferOnce();throw new AssertionError("expected provider failure");}catch(IllegalStateException expected){}check(LegacyItemSafety.blocked(fluidNode(0))&&readerCount(dest.getStackInSlot(0))==8&&readerCount(source().getStackInSlot(0))==24,"uncertain insertion captured");dest.failInsert=false;check(fluidNode(0).transferOnce()==0&&readerCount(dest.getStackInSlot(0))==8,"no automatic duplicate");}});
+            test("automatic native source size callback cannot extract detached backing",new Runnable(){public void run(){
+                FaultyChest old=faultyChest(true);
+                old.setInventorySlotContents(0,readerStack(32));
+                int drops=looseIron(),loaded=world.getChunkProvider().getLoadedChunkCount();
+                old.replaceOnSizeAfter=1;
+                check(fluidNode(0).transferOnce()==0,
+                        "automatic IInventory discovery must reject a detached source before any extraction");
+                check(old.replaceOnSizeAfter==0&&source()!=old
+                        &&readerCount(old.getStackInSlot(0))==32
+                        &&readerCount(source().getStackInSlot(0))==32
+                        &&readerCount(destination().getStackInSlot(0))==0
+                        &&looseIron()==drops&&world.getChunkProvider().getLoadedChunkCount()==loaded,
+                        "reentrant size callback preserves both backings and sink without drops or new loads");
+            }});
             test("item extraction after mutation quarantines without repeat",new Runnable(){public void run(){FaultyChest src=faultyChest(true);src.setInventorySlotContents(0,readerStack(32));src.failExtract=true;try{fluidNode(0).transferOnce();throw new AssertionError("expected extraction failure");}catch(IllegalStateException expected){}check(LegacyItemSafety.blocked(fluidNode(0))&&readerCount(src.getStackInSlot(0))==24,"uncertain extraction captured");src.failExtract=false;check(fluidNode(0).transferOnce()==0&&readerCount(src.getStackInSlot(0))==24,"no further source loss");}});
             test("item quarantine survives native save reload",new Runnable(){public void run(){LegacyTile tile=fluidNode(0);tile.pending=readerStack(8);tile.itemFault="uncertain insertion";NBTTagCompound tag=saveFluid(tile);LegacyTile copy=new LegacyTile();copy.readFromNBT(tag);check(LegacyItemSafety.blocked(copy)&&readerCount(copy.pending)==8,"persistent quarantine");}});
             test("breaking uncertain item escrow drops receipt only",new Runnable(){public void run(){LegacyTile tile=fluidNode(0);tile.pending=readerStack(8);tile.itemFault="uncertain insertion";fluidAir(0,200);check(itemReceipts()==1&&looseIron()==0,"no spendable duplicate on break");LegacyItemSafety.drop(tile);check(itemReceipts()==1,"receipt drop idempotent");}});

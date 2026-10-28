@@ -32,7 +32,26 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
     public boolean canEdit(EntityPlayer player){return player!=null&&(owner.equals(identity(player))||player.canCommandSenderUseCommand(2,"pl4legacy"));}
     public BoundedNetwork.Point point(){return new BoundedNetwork.Point(xCoord,yCoord,zCoord);}
     public BoundedNetwork.Point target(){return point().offset(side);}
-    public NativeInventory inventory(){BoundedNetwork.Point p=target();if(worldObj==null||!worldObj.blockExists(p.x,p.y,p.z))return null;TileEntity tile=worldObj.getBlockTileEntity(p.x,p.y,p.z);return tile instanceof IInventory&&!(tile instanceof LegacyTile)?new NativeInventory((IInventory)tile,side^1):null;}
+    public NativeInventory inventory(){
+        // IInventory size/sided metadata can replace a tile or rebind this host.
+        // Snapshot the *installed* route, then reject the resulting adapter if
+        // any provider callback changed the route. Never load a missing chunk.
+        net.minecraft.world.World origin=worldObj;
+        BoundedNetwork.Point host=point(),p=target();
+        int observedSide=side;String observedOwner=owner;
+        if(origin==null||observedSide<0||observedSide>5
+                ||!origin.blockExists(host.x,host.y,host.z)||!origin.blockExists(p.x,p.y,p.z)
+                ||origin.getBlockTileEntity(host.x,host.y,host.z)!=this)return null;
+        TileEntity installed=origin.getBlockTileEntity(p.x,p.y,p.z);
+        if(!(installed instanceof IInventory)||installed instanceof LegacyTile)return null;
+        NativeInventory adapter=new NativeInventory((IInventory)installed,observedSide^1);
+        if(worldObj!=origin||side!=observedSide||!observedOwner.equals(owner)
+                ||!host.equals(point())||!p.equals(target())
+                ||!origin.blockExists(host.x,host.y,host.z)||!origin.blockExists(p.x,p.y,p.z)
+                ||origin.getBlockTileEntity(host.x,host.y,host.z)!=this
+                ||origin.getBlockTileEntity(p.x,p.y,p.z)!=installed)return null;
+        return adapter;
+    }
     public BoundedNetwork.Plan network(){return BoundedNetwork.scan(new BoundedNetwork.Graph(){public boolean connected(BoundedNetwork.Point p){if(worldObj==null||owner.isEmpty()||!worldObj.blockExists(p.x,p.y,p.z))return false;TileEntity tile=worldObj.getBlockTileEntity(p.x,p.y,p.z);return tile instanceof LegacyTile&&((LegacyTile)tile).role()!=5&&((LegacyTile)tile).role()!=8&&owner.equals(((LegacyTile)tile).owner);}},point(),LegacyPL4.nodeLimit);}
     public void refreshDisplay(){
         if(!fluidServer()||role()!=LegacyReadings.DISPLAY)return;
