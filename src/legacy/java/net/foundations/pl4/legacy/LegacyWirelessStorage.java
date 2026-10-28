@@ -83,7 +83,8 @@ public final class LegacyWirelessStorage {
                     &&node.worldObj.getBlockTileEntity(target.x,target.y,target.z)==nativeInventory.inventory
                     &&node.worldObj.getBlockTileEntity(node.xCoord,node.yCoord,node.zCoord)==node;
         }
-        public int slots(){return nativeInventory.slots();}
+        /** A captured adapter may have been detached by a metadata callback. */
+        public int slots(){return current()?nativeInventory.slots():0;}
         public ItemStack extract(int slot,int amount,boolean simulate){
             if(!current())return null;
             ItemStack result=nativeInventory.extract(slot,amount,simulate);

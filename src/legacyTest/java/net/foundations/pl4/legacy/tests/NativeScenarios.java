@@ -212,6 +212,25 @@ public final class NativeScenarios {
                         "metadata callback must detach its old backing without consuming player items or adding drops");
                 check(LegacyWirelessStorage.ready(fluidNode(0)),
                         "read-only metadata replacement does not falsely quarantine host");
+
+                // A previously captured adapter must not advertise slots after the
+                // subsequent native getSizeInventory callback replaces its live tile.
+                // The ordinary entry scan checks peek(), but a transfer also calls
+                // slots() directly; an already detached provider must fail closed.
+                FaultyChest staleSlots=faultyChest(true);
+                staleSlots.setInventorySlotContents(0,readerStack(32));
+                ConservingItems.Inventory<ItemStack> captured;
+                try{
+                    java.lang.reflect.Method grab=LegacyWirelessStorage.class.getDeclaredMethod("inventory",LegacyTile.class);
+                    grab.setAccessible(true);
+                    captured=(ConservingItems.Inventory<ItemStack>)grab.invoke(null,fluidNode(0));
+                }catch(Exception reflective){throw new IllegalStateException("Cannot capture native storage adapter",reflective);}
+                check(captured!=null&&captured.slots()==27,"captured live native adapter exposes its slots");
+                int dropsBeforeSlots=looseIron();
+                staleSlots.replaceOnSizeAfter=1;
+                check(captured.slots()==0&&staleSlots.replaceOnSizeAfter==0&&source()!=staleSlots
+                        &&readerCount(source().getStackInSlot(0))==32&&looseIron()==dropsBeforeSlots,
+                        "detached metadata provider advertises zero slots and conserves native stock");
             }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
