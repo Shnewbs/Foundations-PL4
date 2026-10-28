@@ -68,7 +68,14 @@ jobs:
 
           status = json.loads(Path('BUILD_STATUS.json').read_text())
           try:
-              require_publication(status)
+              if status.get("loader") != "Forge":
+                  raise ValueError("Exact Forge loader required")
+              channel = str(status.get("release_channel", "")).lower()
+              if channel not in ("alpha", "beta", "release"):
+                  raise ValueError("Unclassified publication channel")
+              require_publication(status, minecraft="1.12.2")
+              if is_rc(status["version"]) and channel != "beta":
+                  raise ValueError("RC publication requires beta channel")
               allowed = True
           except ValueError as error:
               allowed = False
@@ -158,6 +165,17 @@ jobs:
           RELEASE_TAG: ${{ steps.version.outputs.tag }}
         run: |
           $tag = $env:RELEASE_TAG
+          # Verify the exact Forge runtime and checksum before creating or inspecting a release tag.
+          $runtimeJar = "build/libs/FoundationsPL4-1.12.2-$env:VERSION.jar"
+          if (-not (Test-Path $runtimeJar -PathType Leaf)) { throw "Missing verified 1.12.2 Forge runtime JAR." }
+          $runtimeName = [System.IO.Path]::GetFileName($runtimeJar)
+          $runtimeHash = (Get-FileHash -Algorithm SHA256 $runtimeJar).Hash.ToLowerInvariant()
+          $checksumLines = @(Get-Content -Path SHA256SUMS.txt)
+          $exact = @($checksumLines | Where-Object { $_ -ceq "$runtimeHash  $runtimeName" })
+          $byName = @($checksumLines | Where-Object { $_ -match ("  " + [regex]::Escape($runtimeName) + "$") })
+          if ($exact.Count -ne 1 -or $byName.Count -ne 1) {
+            throw "Runtime checksum is missing, conflicting or not uniquely bound to the 1.12.2 JAR."
+          }
           $remoteTag = git ls-remote --tags origin "refs/tags/$tag"
           if ($LASTEXITCODE -ne 0) { throw "Could not check the release tag." }
           if ($remoteTag) {
@@ -174,16 +192,12 @@ jobs:
           $notes = "docs/releases/$env:VERSION.md"
           $title = "Foundations PL4 $env:VERSION"
           $prerelease = if ($env:VERSION -match "(alpha|beta|rc|\d[ab](\.|$))") { "true" } else { "false" }
-          $artifacts = @("build/libs/FoundationsPL4-1.12.2-$env:VERSION.jar", "build/libs/FoundationsPL4-1.12.2-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
+          $artifacts = @($runtimeJar, "build/libs/FoundationsPL4-1.12.2-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
           gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
           $exists = $LASTEXITCODE -eq 0
           if ($exists) {
-            gh release upload $tag @artifacts --clobber --repo $env:GITHUB_REPOSITORY
-            if ($LASTEXITCODE -ne 0) { throw "Could not upload release artifacts." }
-            if (Test-Path $notes) {
-              gh release edit $tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
-              if ($LASTEXITCODE -ne 0) { throw "Could not update release notes." }
-            }
+            # Never modify an immutable asset set which may already carry upload receipts.
+            throw "Release already exists: reconcile exact artifacts and receipts before any retry."
           } else {
             if (Test-Path $notes) {
               gh release create $tag @artifacts --verify-tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
