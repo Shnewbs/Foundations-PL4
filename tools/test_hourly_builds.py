@@ -303,6 +303,23 @@ class PublicationTests(unittest.TestCase):
             self.assertIn('ref=v0.2.0-rc.1', gh.call_args.args[1])
             download.assert_not_called()
 
+    def test_main_release_publisher_never_overwrites_or_edits_existing_assets(self):
+        source = (Path(__file__).resolve().parents[1] / ".github/workflows/release.yml").read_text()
+        self.assertNotIn("--clobber", source)
+        self.assertNotIn("gh release upload", source)
+        self.assertNotIn("gh release edit", source)
+        self.assertIn("gh release create", source)
+        self.assertIn("Existing GitHub release $tag", source)
+
+    def test_main_release_preflight_fails_closed_before_tag_creation(self):
+        source = (Path(__file__).resolve().parents[1] / ".github/workflows/release.yml").read_text()
+        release_step = source.split("- name: Publish validated GitHub Release", 1)[1]
+        self.assertIn('gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$tag"', release_step)
+        self.assertIn("if ($releaseCheck -notmatch 'HTTP 404')", release_step)
+        self.assertIn('Cannot prove GitHub release $tag is absent', release_step)
+        self.assertLess(release_step.index('$releaseCheck ='), release_step.index('$remoteTag ='))
+        self.assertLess(release_step.index('$releaseCheck ='), release_step.index('gh api "repos/$env:GITHUB_REPOSITORY/git/refs"'))
+
     def test_direct_rc_upload_requires_local_exact_status_before_network(self):
         env=dict(CURSEFORGE_PROJECT_ID='123',CURSEFORGE_API_TOKEN='test-only',RELEASE_TAG='v0.2.0-rc.1',GITHUB_REPOSITORY=REPO)
         with tempfile.TemporaryDirectory() as directory:

@@ -133,6 +133,15 @@ jobs:
           RELEASE_TAG: ${{ steps.version.outputs.tag }}
         run: |
           $tag = $env:RELEASE_TAG
+          # Fail closed on an existing or uncheckable release before creating a tag.
+          # A prior partial upload must be reconciled from immutable receipts, not clobbered.
+          $releaseCheck = (gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$tag" 2>&1 | Out-String)
+          if ($LASTEXITCODE -eq 0) {
+            throw "Existing GitHub release $tag: reconcile exact assets and receipts; refusing mutation."
+          }
+          if ($releaseCheck -notmatch 'HTTP 404') {
+            throw "Cannot prove GitHub release $tag is absent; no tag or upload mutation."
+          }
           $remoteTag = git ls-remote --tags origin "refs/tags/$tag"
           if ($LASTEXITCODE -ne 0) { throw "Could not check the release tag." }
           if ($remoteTag) {
@@ -150,23 +159,14 @@ jobs:
           $title = "Foundations PL4 $env:VERSION"
           $prerelease = if ($env:VERSION -match "(alpha|beta|rc|\d[ab](\.|$))") { "true" } else { "false" }
           $artifacts = @("build/libs/FoundationsPL4-1.21.1-$env:VERSION.jar", "build/libs/FoundationsPL4-1.21.1-$env:VERSION-sources.jar", "FoundationsPL4-$env:VERSION-source.zip", "SHA256SUMS.txt")
-          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
-          $exists = $LASTEXITCODE -eq 0
-          if ($exists) {
-            gh release upload $tag @artifacts --clobber --repo $env:GITHUB_REPOSITORY
-            if ($LASTEXITCODE -ne 0) { throw "Could not upload release artifacts." }
-            if (Test-Path $notes) {
-              gh release edit $tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
-              if ($LASTEXITCODE -ne 0) { throw "Could not update release notes." }
-            }
+          # This path creates only a new immutable version. A concurrent release
+          # creation must fail rather than uploading over or editing existing assets.
+          if (Test-Path $notes) {
+            gh release create $tag @artifacts --verify-tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
           } else {
-            if (Test-Path $notes) {
-              gh release create $tag @artifacts --verify-tag --title $title --notes-file $notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
-            } else {
-              gh release create $tag @artifacts --verify-tag --title $title --generate-notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
-            }
-            if ($LASTEXITCODE -ne 0) { throw "Could not publish the validated release." }
+            gh release create $tag @artifacts --verify-tag --title $title --generate-notes "--prerelease=$prerelease" --repo $env:GITHUB_REPOSITORY
           }
+          if ($LASTEXITCODE -ne 0) { throw "Could not publish a new validated release; inspect existing tag/release receipts before retry." }
 
       - name: Upload tested runtime JAR to CurseForge when configured
         if: env.PL4_ALLOW_PUBLICATION == 'true' && (steps.version.outputs.publish == 'true')
