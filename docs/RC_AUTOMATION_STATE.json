@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T0710Z",
+    "claimed_at": "2026-10-28T07:10:03.331Z",
+    "expires_at": "2026-10-28T07:39:03.331Z",
+    "base_sha": "653779337e9044988472c211b7682f34cb8c2004",
+    "scope": "legacy 1.12.2 exact native evidence reconciliation and scoped source implementation; no duplicate builds",
+    "mode": "exclusive_source_writer"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
