@@ -90,14 +90,65 @@ public final class LegacyWirelessStorage {
             seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
         }return result;
     }
+    /** The handler snapshot is valid only while its installed host and target tiles remain
+     * the same. Capability/slot callbacks can synchronously replace a target tile, so
+     * validate both before and after EVERY provider call. Never force-load a chunk. */
     private static final class StorageInventory implements ConservingItems.Inventory<ItemStack>{
-        final net.minecraftforge.items.IItemHandler nativeInventory;StorageInventory(net.minecraftforge.items.IItemHandler inventory){nativeInventory=inventory;}
-        public int slots(){return nativeInventory.getSlots();}
-        public ItemStack extract(int slot,int amount,boolean simulate){return nativeInventory.extractItem(slot,amount,simulate);}
-        public ItemStack insert(int slot,ItemStack value,boolean simulate){return nativeInventory.insertItem(slot,value,simulate);}
-        ItemStack peek(int slot){return nativeInventory.getStackInSlot(slot);}
+        final LegacyTile node;final net.minecraftforge.items.IItemHandler nativeInventory;
+        final net.minecraft.world.World world;final net.minecraft.util.math.BlockPos host,target;
+        final net.minecraft.tileentity.TileEntity installed;final String owner;
+        StorageInventory(LegacyTile node,net.minecraftforge.items.IItemHandler inventory,
+                         net.minecraft.world.World world,net.minecraft.util.math.BlockPos host,
+                         net.minecraft.util.math.BlockPos target,net.minecraft.tileentity.TileEntity installed,String owner){
+            this.node=node;nativeInventory=inventory;this.world=world;this.host=host;
+            this.target=target;this.installed=installed;this.owner=owner;
+        }
+        private boolean current(){
+            return node.fluidServer()&&node.getWorld()==world&&owner.equals(node.owner)
+                    &&host.equals(node.getPos())&&target.equals(node.target())
+                    &&world.isBlockLoaded(host,false)&&world.isBlockLoaded(target,false)
+                    &&world.getTileEntity(host)==node&&world.getTileEntity(target)==installed;
+        }
+        public int slots(){if(!current())return 0;int n=nativeInventory.getSlots();return current()?n:0;}
+        public ItemStack extract(int slot,int amount,boolean simulate){
+            if(!current())return ItemStack.EMPTY;
+            ItemStack taken=nativeInventory.extractItem(slot,amount,simulate);
+            if(!current()){
+                if(!simulate)throw new IllegalStateException("Native storage tile changed during extraction");
+                return ItemStack.EMPTY;
+            }
+            return taken;
+        }
+        public ItemStack insert(int slot,ItemStack value,boolean simulate){
+            if(!current())return value;
+            ItemStack remaining=nativeInventory.insertItem(slot,value,simulate);
+            if(!current()){
+                if(!simulate)throw new IllegalStateException("Native storage tile changed during insertion");
+                return value;
+            }
+            return remaining;
+        }
+        ItemStack peek(int slot){
+            if(!current())return ItemStack.EMPTY;
+            ItemStack value=nativeInventory.getStackInSlot(slot);
+            return current()?value:ItemStack.EMPTY;
+        }
     }
-    private static StorageInventory inventory(LegacyTile node){net.minecraftforge.items.IItemHandler handler=node.inventory();return handler==null?null:new StorageInventory(handler);}
+    private static StorageInventory inventory(LegacyTile node){
+        if(node==null||!node.fluidServer())return null;
+        net.minecraft.world.World world=node.getWorld();String owner=node.owner;
+        net.minecraft.util.math.BlockPos host=node.getPos(),target=node.target();
+        if(!world.isBlockLoaded(host,false)||!world.isBlockLoaded(target,false)
+                ||world.getTileEntity(host)!=node)return null;
+        net.minecraft.tileentity.TileEntity installed=world.getTileEntity(target);
+        if(installed==null||installed instanceof LegacyTile)return null;
+        net.minecraftforge.items.IItemHandler handler=node.inventory();
+        if(handler==null||!node.fluidServer()||node.getWorld()!=world
+                ||!owner.equals(node.owner)||!target.equals(node.target())
+                ||!world.isBlockLoaded(target,false)||world.getTileEntity(target)!=installed
+                ||world.getTileEntity(host)!=node)return null;
+        return new StorageInventory(node,handler,world,host,target,installed,owner);
+    }
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();
         try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
