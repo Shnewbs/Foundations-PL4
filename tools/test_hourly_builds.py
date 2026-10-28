@@ -349,6 +349,16 @@ class PublicationTests(unittest.TestCase):
             self.assertIn('ref=v0.2.0-rc.1', gh.call_args.args[1])
             download.assert_not_called()
 
+    def test_world_upgrade_probe_pins_beta_and_tests_current_exact_source(self):
+        # The old workflow silently tested an obsolete hard-coded candidate, so
+        # even a green migration result could not qualify the current RC source.
+        workflow = (ROOT / ".github/workflows/real-world-upgrade-probe.yml").read_text()
+        self.assertIn("ref: 7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c", workflow)
+        self.assertIn("ref: ${{ github.sha }}", workflow)
+        self.assertNotIn("1cb1ee0eec9813a1e167c78258f361edf8278921", workflow)
+        self.assertIn("run_probe.py baseline", workflow)
+        self.assertIn("run_probe.py candidate", workflow)
+
     def test_main_release_publisher_never_overwrites_or_edits_existing_assets(self):
         source = (Path(__file__).resolve().parents[1] / ".github/workflows/release.yml").read_text()
         self.assertNotIn("--clobber", source)

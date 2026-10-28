@@ -18,11 +18,14 @@ jobs:
           path: control
       - uses: actions/checkout@v4
         with:
-          ref: v0.2b.0
+          # Exact immutable commit currently referenced by released-beta v0.2b.0.
+          # A moving/recreated tag must never silently change the migration baseline.
+          ref: 7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c
           path: baseline
       - uses: actions/checkout@v4
         with:
-          ref: 1cb1ee0eec9813a1e167c78258f361edf8278921
+          # The workflow-triggering commit is the actual candidate, never an old frozen snapshot.
+          ref: ${{ github.sha }}
           path: candidate
       - uses: actions/setup-java@v4
         with:
