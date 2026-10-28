@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261027T1801PT-placement-diagnostics",
+    "acquired_at": "2026-10-28T01:05:50.773Z",
+    "active_until": "2026-10-28T01:43:50.773Z",
+    "expires_at": "2026-10-28T01:43:50.773Z",
+    "source_commit": "c015b713b2f409e93c4582de89762ef6318b108e",
+    "scope": "1.6.4 native decode-rewrite x80 diagnostic integrity and 1.12.2 exact-source qualification reconciliation"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
