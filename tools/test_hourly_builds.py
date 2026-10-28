@@ -1,5 +1,6 @@
 """Scheduled build identity/deduplication and RC publication failure cases; no network."""
 import base64
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -73,6 +74,43 @@ class HourlyBuildTests(unittest.TestCase):
             self.assertIn('/branches/', path)
             return {'commit': {'sha': SHA}}
         self.assertEqual(len(builds.discover(self.ledger, REPO, force=True, lookup=lookup)), 24)
+
+    def test_reviewed_network_failure_defers_only_matching_source_for_three_hours(self):
+        report = dict(source_ref="mc/1.12.2", source_commit=SHA,
+                      kind="UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT",
+                      failed_workflow_run=40705534234,
+                      observed_at="2026-10-28T14:25:03Z",
+                      retry_after="2026-10-28T17:25:03Z")
+        self.ledger["temporary_environment_build_blockers"] = {"1.12.2": report}
+        row = dict(minecraft="1.12.2", branch="mc/1.12.2")
+        at = datetime(2026, 10, 28, 15, 0, tzinfo=timezone.utc)
+        self.assertTrue(builds.environment_retry_deferred(self.ledger, row, SHA, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, row, "b"*40, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, dict(row, branch="main"), SHA, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, row, SHA, datetime(2026, 10, 28, 17, 26, tzinfo=timezone.utc)))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, row, SHA, datetime(2026, 10, 28, 14, 24, tzinfo=timezone.utc)))
+
+        def lookup(path):
+            if "/branches/" in path: return {"commit": {"sha": SHA}}
+            return {"artifacts": []}
+        rows = builds.discover(self.ledger, REPO, lookup=lookup, now=at)
+        self.assertEqual(len(rows), 23)
+        self.assertNotIn("1.12.2", [row["minecraft"] for row in rows])
+        self.assertEqual(len(builds.discover(self.ledger, REPO, force=True, lookup=lookup, now=at)), 24)
+        self.assertEqual(len(builds.discover(self.ledger, REPO, lookup=lookup, now=datetime(2026, 10, 28, 17, 26, tzinfo=timezone.utc))), 24)
+
+    def test_environment_deferral_rejects_unreviewed_indefinite_or_bad_receipts(self):
+        row = dict(minecraft="1.12.2", branch="mc/1.12.2")
+        base = dict(source_ref=row["branch"], source_commit=SHA, kind="UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT",
+                    failed_workflow_run=40705534234, observed_at="2026-10-28T14:25:03Z", retry_after="2026-10-28T17:25:03Z")
+        for changes in (dict(kind="GAMEPLAY_FAILURE"), dict(failed_workflow_run=True),
+                        dict(retry_after="2026-10-29T17:25:03Z"),
+                        dict(retry_after="2026-10-28T14:25:03Z"),
+                        dict(observed_at="2026-10-28T14:25:03")):
+            modified = dict(base, **changes)
+            ledger = {"temporary_environment_build_blockers": {"1.12.2": modified}}
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                builds.environment_retry_deferred(ledger, row, SHA)
 
     def fixture(self, root, legacy=False):
         logs=root/'verification-logs';logs.mkdir();libs=root/'build/libs';libs.mkdir(parents=True)

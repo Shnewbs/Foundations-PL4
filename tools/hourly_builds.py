@@ -1,5 +1,6 @@
 """Select pinned exact-target builds; successful retained artifacts deduplicate runs."""
 import argparse
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import os
@@ -54,7 +55,47 @@ def retained_pass(repo, name, lookup, run_cache):
     return False
 
 
-def discover(ledger, repo, force=False, lookup=api):
+def environment_retry_deferred(ledger, row, sha, now=None):
+    """Temporarily suppress a reviewed external outage for only its pinned source.
+
+    A failed native artifact never becomes an accepted build.  This bounded pause
+    is restricted to a recorded external cause and must automatically expire.
+    A changed source, different branch or explicit --force remains buildable.
+    """
+    entries = ledger.get("temporary_environment_build_blockers", {})
+    if not isinstance(entries, dict):
+        raise ValueError("Malformed temporary environment blocker ledger")
+    entry = entries.get(row["minecraft"])
+    if entry is None:
+        return False
+    if not isinstance(entry, dict):
+        raise ValueError("Malformed exact-target environment blocker")
+    if entry.get("source_ref") != row["branch"] or entry.get("source_commit") != sha:
+        return False
+    if entry.get("kind") not in {"UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT", "RUNNER_UNAVAILABLE", "BILLING_LIMIT"}:
+        raise ValueError("Unreviewed environment blocker cannot defer builds")
+    if type(entry.get("failed_workflow_run")) is not int or entry["failed_workflow_run"] < 1:
+        raise ValueError("Environment blocker must name an actual failed workflow run")
+
+    def utc(value):
+        if not isinstance(value, str) or not value.endswith("Z"):
+            raise ValueError("Environment blocker needs explicit UTC timestamps")
+        result = datetime.fromisoformat(value[:-1] + "+00:00")
+        if result.utcoffset() != timedelta(0):
+            raise ValueError("Environment blocker timestamp is not UTC")
+        return result
+
+    observed = utc(entry.get("observed_at"))
+    retry = utc(entry.get("retry_after"))
+    if retry <= observed or retry - observed > timedelta(hours=4):
+        raise ValueError("Environment retry deferral must be positive and <= four hours")
+    instant = datetime.now(timezone.utc) if now is None else now
+    if instant.tzinfo is None:
+        raise ValueError("Environment retry comparison requires timezone")
+    return observed <= instant < retry
+
+
+def discover(ledger, repo, force=False, lookup=api, now=None):
     selected = []
     cached_runs = {}
     for row in targets(ledger):
@@ -63,8 +104,14 @@ def discover(ledger, repo, force=False, lookup=api):
         if not re.fullmatch(r"[0-9a-f]{40}", sha):
             raise ValueError("Invalid pinned commit")
         name = f"hourly-native-{row['minecraft']}-{sha}"
-        if force or not retained_pass(repo, name, lookup, cached_runs):
+        if force:
             selected.append(dict(row, sha=sha))
+            continue
+        if retained_pass(repo, name, lookup, cached_runs):
+            continue
+        if environment_retry_deferred(ledger, row, sha, now=now):
+            continue
+        selected.append(dict(row, sha=sha))
     return selected
 
 

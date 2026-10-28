@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "Forge 1.6.4 existing source 84d4d035 passes 370/370 native scenarios and 18/18 Python controller tests on run 40703299815; 1536 decode assertions/40 distinct JVMs, registered provider188/4, historical migration60/3. Newly enforced all three actual native placement receipts x64/x80/x200 include original air0/chunk/metadata/tile/ordered JVM stdout-vs-JSON, 60 matching placement rows across20 write phases plus80 terrain rows and80 gravity guard receipts. Initial cea23cd8 failed new controller test assuming only two placements, corrected. 193-entry artifact ZIP SHA256 25bcf5c53dc700a41b38ddf49973fe9d9f8789475533cf411d6f9217cedef2ab; production SRG SHA256 598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2 unchanged. Native-only evidence; no installed-provider, current-client, multiplayer, arbitrary-world or sustained-performance acceptance. All 24 RC flags false, no new GitHub or CurseForge release.",
+  "latest_work": "2026-10-28 15:14 UTC: hourly 40705534234 failed 1.12.2 f0d75b5 Forge installer download of log4j-core 2.15.0 with SocketTimeoutException before native test; failure artifact12824385408 retained. 1.6.4 84d4d035 and main1.21.1 jobs passed in the same matrix; no 1.12.2 exact-source new native result. Bounded three-hour unchanged-source external failure defer added to controller with automated negative/expiry tests; no RC clearance or publication.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2437,5 +2437,23 @@
     "evidence": "docs/acceptance/rc-dev-164-placement-log-binding-2026-10-28.json",
     "rc_publication_cleared": false,
     "scope": "Exact source native/controller, restart and pre-upgrade fixture qualification only; production JAR unchanged. No real installed optional provider, unloaded alias, current exact-JAR client, dedicated multiplayer, arbitrary saved world, sustained performance or RC acceptance."
+  },
+  "temporary_environment_build_blockers": {
+    "1.12.2": {
+      "source_ref": "mc/1.12.2",
+      "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+      "kind": "UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT",
+      "failed_workflow_run": 40705534234,
+      "failed_job_id": 122876728559,
+      "observed_at": "2026-10-28T14:25:03Z",
+      "retry_after": "2026-10-28T17:25:03Z",
+      "dependency": "org.apache.logging.log4j:log4j-core:2.15.0",
+      "failure": "Forge installer SocketTimeoutException from libraries.minecraft.net during installation; no native scenario was run",
+      "artifact_id": 12824385408,
+      "artifact_name": "FAILED-hourly-native-1.12.2-40705534234-1",
+      "outcome": "TRANSIENT_EXTERNAL_DOWNLOAD_FAILURE_NOT_SOURCE_FAILURE",
+      "evidence_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40705534234",
+      "effect": "Defer this unchanged exact source for three hours; changed source and --force unaffected; no RC acceptance"
+    }
   }
 }
