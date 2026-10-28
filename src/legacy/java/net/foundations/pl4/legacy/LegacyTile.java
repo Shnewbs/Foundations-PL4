@@ -79,15 +79,29 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
         if(fluidServer()&&role()==1&&LegacyWirelessSafety.data(worldObj).blocked(owner,target())){status="Item target fenced by unresolved item handoff";return 0;}
         if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(worldObj==null||worldObj.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||worldObj.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord))return 0;
-        BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}BoundedNetwork.Point sourceTarget=target();String transferOwner=owner;NativeInventory source=inventory();if(source==null&&pending==null)return 0;
+        BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network host limit exceeded";return 0;}
+        final net.minecraft.world.World transferWorld=worldObj;
+        final BoundedNetwork.Point sourceHost=point();
+        BoundedNetwork.Point sourceTarget=target();String transferOwner=owner;
+        NativeInventory source=inventory();if(source==null&&pending==null)return 0;
+        final TileEntity sourceBacking=source==null?null:transferWorld.getBlockTileEntity(sourceTarget.x,sourceTarget.y,sourceTarget.z);
         ConservingItems.Work work=new ConservingItems.Work(1024);Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();seen.add(target());int moved=0;
         for(BoundedNetwork.Point p:plan.nodes){
             TileEntity raw=worldObj.getBlockTileEntity(p.x,p.y,p.z);if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
             if(sink.role()!=2||!owner.equals(sink.owner)||LegacyWirelessSafety.data(worldObj).blocked(owner,sink.target())||worldObj.isBlockIndirectlyGettingPowered(p.x,p.y,p.z)||!seen.add(sink.target()))continue;
             BoundedNetwork.Point destinationTarget=sink.target();NativeInventory dest=sink.inventory();if(dest==null||(source!=null&&source.inventory==dest.inventory))continue;
             if(!transferOwner.equals(owner)||!transferOwner.equals(sink.owner)||!sourceTarget.equals(target())||!destinationTarget.equals(sink.target())){status="Item route changed during native inventory discovery";continue;}
+            final BoundedNetwork.Point destinationHost=sink.point();
+            final TileEntity destinationBacking=transferWorld.getBlockTileEntity(destinationTarget.x,destinationTarget.y,destinationTarget.z);
             ConservingItems.Escrow<ItemStack> e=LegacyWirelessSafety.automaticEscrow(this,sourceTarget,destinationTarget);
-            int budget=LegacyPL4.itemRate-moved;if(pending!=null)moved+=ConservingItems.flush(STACKS,e,dest,budget,LegacyPL4.slotLimit,work);else if(source!=null)moved+=ConservingItems.move(STACKS,e,source,dest,budget,LegacyPL4.slotLimit,work);
+            int budget=LegacyPL4.itemRate-moved;
+            ConservingItems.Inventory<ItemStack> guardedDestination=adaptTransfer(this,sink,dest,sourceHost,
+                    sourceTarget,destinationHost,destinationTarget,destinationBacking,transferOwner,transferWorld);
+            if(pending!=null)moved+=ConservingItems.flush(STACKS,e,guardedDestination,budget,LegacyPL4.slotLimit,work);
+            else if(source!=null)moved+=ConservingItems.move(STACKS,e,
+                    adaptTransfer(this,this,source,sourceHost,sourceTarget,sourceHost,sourceTarget,
+                            sourceBacking,transferOwner,transferWorld),
+                    guardedDestination,budget,LegacyPL4.slotLimit,work);
             if(moved>=LegacyPL4.itemRate||!work.available())break;
         }
         status=moved>0?"Moved "+moved+" items":pending==null?"Waiting for items or space":"Waiting with "+pending.stackSize+" items in escrow";return moved;
@@ -104,6 +118,41 @@ public final class LegacyTile extends TileEntity implements net.minecraftforge.f
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}
         public ItemStack copy(ItemStack s,int n){if(n==0)return null;ItemStack copy=s.copy();copy.stackSize=n;return copy;}
     };
+    /** Recheck the exact installed native backing and owner after every IInventory
+     * callback. Simulation revocation prevents extraction; executed revocation
+     * leaves the existing phase journal sealed instead of retrying blindly. */
+    private static ConservingItems.Inventory<ItemStack> adaptTransfer(final LegacyTile root,
+            final LegacyTile endpoint,final NativeInventory adapter,
+            final BoundedNetwork.Point rootPos,final BoundedNetwork.Point rootTarget,
+            final BoundedNetwork.Point endpointPos,final BoundedNetwork.Point backingPos,
+            final TileEntity backing,final String transferOwner,final net.minecraft.world.World origin){
+        return new ConservingItems.Inventory<ItemStack>(){
+            private void valid(){
+                if(origin==null||origin.isRemote||backing==null||backing.isInvalid()
+                        ||root.worldObj!=origin||endpoint.worldObj!=origin
+                        ||root.isInvalid()||endpoint.isInvalid()
+                        ||root.side<0||root.side>5||endpoint.side<0||endpoint.side>5
+                        ||!rootPos.equals(root.point())||!rootTarget.equals(root.target())
+                        ||!endpointPos.equals(endpoint.point())||!backingPos.equals(endpoint.target())
+                        ||!transferOwner.equals(root.owner)||!transferOwner.equals(endpoint.owner)
+                        ||!origin.blockExists(rootPos.x,rootPos.y,rootPos.z)
+                        ||!origin.blockExists(endpointPos.x,endpointPos.y,endpointPos.z)
+                        ||!origin.blockExists(backingPos.x,backingPos.y,backingPos.z)
+                        ||origin.getBlockTileEntity(rootPos.x,rootPos.y,rootPos.z)!=root
+                        ||origin.getBlockTileEntity(endpointPos.x,endpointPos.y,endpointPos.z)!=endpoint
+                        ||origin.getBlockTileEntity(backingPos.x,backingPos.y,backingPos.z)!=backing
+                        ||adapter.inventory!=backing)
+                    throw new IllegalStateException("Native inventory backing or authorization changed during callback");
+            }
+            public int slots(){valid();int result=adapter.slots();valid();return result;}
+            public ItemStack extract(int slot,int amount,boolean simulate){
+                valid();ItemStack result=adapter.extract(slot,amount,simulate);valid();return result;
+            }
+            public ItemStack insert(int slot,ItemStack value,boolean simulate){
+                valid();ItemStack result=adapter.insert(slot,value,simulate);valid();return result;
+            }
+        };
+    }
     public static final class NativeInventory implements ConservingItems.Inventory<ItemStack>{
         public final IInventory inventory;public final int[] indices;private final int face;
         public NativeInventory(IInventory inventory,int face){

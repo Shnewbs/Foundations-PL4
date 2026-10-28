@@ -157,6 +157,44 @@ public final class NativeScenarios {
                         &&looseIron()==drops&&world.getChunkProvider().getLoadedChunkCount()==loaded,
                         "reentrant size callback preserves both backings and sink without drops or new loads");
             }});
+            test("automatic native sink simulation revocation cannot debit source",new Runnable(){public void run(){
+                final LegacyTile root=node(EXPORT);final int[] callbacks=new int[2];
+                source().setInventorySlotContents(0,readerStack(32));
+                TileEntityChest revoker=new TileEntityChest(){
+                    @Override public boolean isItemValidForSlot(int slot,ItemStack value){
+                        callbacks[0]++;root.owner="revoked-during-native-simulation";
+                        return super.isItemValidForSlot(slot,value);
+                    }
+                    @Override public void setInventorySlotContents(int slot,ItemStack value){
+                        callbacks[1]++;super.setInventorySlotContents(slot,value);
+                    }
+                };
+                world.setBlockTileEntity(3,200,0,revoker);
+                int drops=looseIron(),loaded=world.getChunkProvider().getLoadedChunkCount();
+                boolean denied=false;try{root.transferOnce();}catch(IllegalStateException expected){denied=true;}
+                check(denied&&callbacks[0]>0&&callbacks[1]==0
+                        &&readerCount(source().getStackInSlot(0))==32&&readerCount(revoker.getStackInSlot(0))==0
+                        &&root.pending==null&&journalEntries()==0&&looseIron()==drops
+                        &&world.getChunkProvider().getLoadedChunkCount()==loaded,
+                        "native sink simulated insert revocation must stop all actual extraction and drops");
+            }});
+            test("automatic native executed source revocation seals uncertain extraction",new Runnable(){public void run(){
+                final LegacyTile root=node(EXPORT);final int[] executed=new int[1];
+                TileEntityChest revoker=new TileEntityChest(){
+                    @Override public ItemStack decrStackSize(int slot,int amount){
+                        ItemStack out=super.decrStackSize(slot,amount);
+                        executed[0]++;root.side=5;return out;
+                    }
+                };
+                revoker.setInventorySlotContents(0,readerStack(32));
+                world.setBlockTileEntity(-1,200,0,revoker);
+                boolean denied=false;try{root.transferOnce();}catch(IllegalStateException expected){denied=true;}
+                check(denied&&executed[0]==1&&readerCount(revoker.getStackInSlot(0))==24
+                        &&readerCount(destination().getStackInSlot(0))==0&&LegacyItemSafety.blocked(root)
+                        &&journalEntries()>0,"post-extraction native route revocation retains original-route uncertainty");
+                check(root.transferOnce()==0&&executed[0]==1&&readerCount(revoker.getStackInSlot(0))==24,
+                        "sealed native uncertainty cannot run an additional extraction");
+            }});
             test("item extraction after mutation quarantines without repeat",new Runnable(){public void run(){FaultyChest src=faultyChest(true);src.setInventorySlotContents(0,readerStack(32));src.failExtract=true;try{fluidNode(0).transferOnce();throw new AssertionError("expected extraction failure");}catch(IllegalStateException expected){}check(LegacyItemSafety.blocked(fluidNode(0))&&readerCount(src.getStackInSlot(0))==24,"uncertain extraction captured");src.failExtract=false;check(fluidNode(0).transferOnce()==0&&readerCount(src.getStackInSlot(0))==24,"no further source loss");}});
             test("item quarantine survives native save reload",new Runnable(){public void run(){LegacyTile tile=fluidNode(0);tile.pending=readerStack(8);tile.itemFault="uncertain insertion";NBTTagCompound tag=saveFluid(tile);LegacyTile copy=new LegacyTile();copy.readFromNBT(tag);check(LegacyItemSafety.blocked(copy)&&readerCount(copy.pending)==8,"persistent quarantine");}});
             test("breaking uncertain item escrow drops receipt only",new Runnable(){public void run(){LegacyTile tile=fluidNode(0);tile.pending=readerStack(8);tile.itemFault="uncertain insertion";fluidAir(0,200);check(itemReceipts()==1&&looseIron()==0,"no spendable duplicate on break");LegacyItemSafety.drop(tile);check(itemReceipts()==1,"receipt drop idempotent");}});

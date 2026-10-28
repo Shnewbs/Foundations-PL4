@@ -32,7 +32,7 @@
     "legacy_save_schema": 3,
     "acceptance_evidence": "Release-attached legacy-scenarios.json and native.log, only after all gates pass"
   },
-  "expected_native_scenarios": 366,
+  "expected_native_scenarios": 368,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -123,5 +123,6 @@
   "item_owner_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_OWNER_ONLY_ORIGINAL_CONTEXT_PROCESS_VALIDATION",
   "item_handheld_admission_fixture": true,
   "item_handheld_admission_acceptance": "PENDING_EXACT_NATIVE_READINESS_OBSERVATION_AND_ALIAS_REGRESSION",
-  "decode_placement_observation_fixture": true
+  "decode_placement_observation_fixture": true,
+  "native_provider_callback_continuity_candidate": "Development-only: native item transport pins source/sink/host/world/owner across slots, simulated and executed IInventory callbacks; two adversarial native cases. Native/restart/migration/JAR/client/provider/multiplayer/performance acceptance pending; no release clearance."
 }
