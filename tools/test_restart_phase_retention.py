@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements
+from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,retain_decode_placement_failure
 
 class PhaseRetentionTests(unittest.TestCase):
     def setUp(self):
@@ -44,6 +44,24 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
         report=dict(suite='decode-raw',placements=[self.good(64),other])
         with self.assertRaisesRegex(ValueError,'x=80'):
             require_legacy_decode_placements(report,'write','1.6.4')
+    def test_failed_placement_retains_json_and_reports_native_stage(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            logs=Path(temporary);log=logs/'native.log';log.write_text('native x80 failed\\n')
+            bad=dict(self.good(80),stage='placement_assertion',actual_block=13,
+                     tile_class=None,neighbor_nonair=[dict(dx=0,dy=1,dz=0,block=13)],
+                     falling_entities_near=1)
+            report=dict(suite='decode-rewrite',placements=[self.good(64),bad])
+            try:
+                require_legacy_decode_placements(report,'write','1.6.4')
+            except ValueError as error:
+                path=retain_decode_placement_failure(logs,'item-decode-rewrite-restart',
+                                                     'write',123,1,log,report,error)
+            else: self.fail('Native gravel overwrite was incorrectly accepted')
+            evidence=json.loads(path.read_text())
+            self.assertEqual(evidence['placements'][1]['actual_block'],13)
+            self.assertEqual(evidence['placements'][1]['falling_entities_near'],1)
+            self.assertIn('"actual_block":13',evidence['failure'])
+            self.assertEqual(evidence['log_sha256'],digest(log))
     def test_missing_duplicate_or_wrong_flags_rejected(self):
         for rows in ([self.good(64)],[self.good(64),self.good(64)],
                      [dict(self.good(64),placement_flags=3),self.good(80)],

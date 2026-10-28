@@ -214,8 +214,11 @@ public final class DecodeRestartScenarios {
             row.put("stage","tile_validity");
             row.put("tile_invalid",tile==null?null:tile.isInvalid());
             row.put("stage","placement_assertion");
-            if(actual!=LegacyPL4.EXPORT.blockID||!(tile instanceof LegacyTile)||tile.isInvalid())
+            if(actual!=LegacyPL4.EXPORT.blockID||!(tile instanceof LegacyTile)||tile.isInvalid()){
+                row.put("neighbor_nonair",failureNeighborhood(x));
+                row.put("falling_entities_near",world.getEntitiesWithinAABB(net.minecraft.entity.item.EntityFallingSand.class,AxisAlignedBB.getBoundingBox(x-1,198,31,x+2,206,34)).size());
                 throw new AssertionError("Native fixture placement failed: "+row);
+            }
             row.put("stage","owner_update");
             LegacyTile n=(LegacyTile)tile;n.owner=OWNER;n.fluidDirty();
             row.put("stage","complete");
@@ -225,6 +228,21 @@ public final class DecodeRestartScenarios {
             placements.add(row);
             System.out.println("PL4 DECODE PLACEMENT "+new com.google.gson.Gson().toJson(row));
         }
+    }
+    private List<Map<String,Object>> failureNeighborhood(int x){
+        // Read-only, bounded failure evidence. Do not trigger chunk loads, retry
+        // placement or replace a missing tile: preserve the native failing state.
+        List<Map<String,Object>> cells=new ArrayList<Map<String,Object>>();
+        for(int dy=-1;dy<=4;dy++)for(int dx=-1;dx<=1;dx++)for(int dz=-1;dz<=1;dz++){
+            int xx=x+dx,yy=200+dy,zz=32+dz;
+            if(!world.blockExists(xx,yy,zz))continue;
+            int block=world.getBlockId(xx,yy,zz);
+            if(block==0)continue;
+            Map<String,Object> cell=new LinkedHashMap<String,Object>();
+            cell.put("dx",dx);cell.put("dy",dy);cell.put("dz",dz);cell.put("block",block);
+            cells.add(cell);
+        }
+        return cells;
     }
     private void clearFallingBlocksAbove(int x){
         int removed=0;
