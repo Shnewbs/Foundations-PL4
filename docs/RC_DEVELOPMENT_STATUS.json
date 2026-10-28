@@ -1657,6 +1657,18 @@
       },
       "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance",
       "latest_exact_native_qualification": {
+        "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+        "native_cases": "368/368",
+        "workflow_run": 40669706429,
+        "artifact_id": 12807334156,
+        "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+        "decode_restart_assertions": 1536,
+        "provider_assertions": 188,
+        "historical_assertions": 60,
+        "fixture_gravity_actor_removed": true,
+        "scope": "Native+restart+generated preview.3 migration only; development, no RC clearance"
+      },
+      "previous_exact_native_qualification": {
         "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
         "native_cases": "368/368",
         "workflow_run": 40661943594,
@@ -1666,15 +1678,10 @@
         "provider_assertions": 188,
         "historical_assertions": 60,
         "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
-      },
-      "latest_fixture_only_source_pending": {
-        "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
-        "workflow_run": 40669706429,
-        "status": "CI_IN_PROGRESS"
       }
     }
   ],
-  "latest_work": "2026-10-28T10:12:41.898Z: prior exact callback-continuity branch runs PASS native 397/397 (1.12.2) and 368/368 (1.6.4) with production hashes and saved-world/JVM evidence. 1.6.4 real falling-gravel adversary source ef01e15 pushed; CI_IN_PROGRESS; all 24 RC flags remain false.",
+  "latest_work": "2026-10-28T10:15:00.829Z: native-verified 1.12.2 f0d75b5 397/397 and current 1.6.4 ef01e15 368/368. Two actual 1.6.4 rewrite gravity actors spawned and removed in native write/crash-write; current production SRG JAR SHA unchanged. 1.6.4 root intermittent terrain cause, client/providers/multiplayer/performance still open. No new eligible RC, all 24 clearance flags false.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2253,14 +2260,72 @@
       "controller_test": "10/10 local unit cases PASS",
       "native_run": 40669706429,
       "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
-      "native_ci_status_at_checkpoint": "CI_IN_PROGRESS",
-      "fully_native_qualified_at_checkpoint": false,
-      "production_jar_sha256_for_candidate": null,
+      "native_ci_status_at_checkpoint": "COMPLETED_SUCCESS",
+      "fully_native_qualified_at_checkpoint": true,
+      "production_jar_sha256_for_candidate": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
       "observed_historical_interference": "2026-10-28 retained original failure decode-scope/crash-write x80 block ID 13 replacing expected 3501 and separate 2026-10-27 native placement evidence; root cause not fully demonstrated",
       "synthetic_log_note": "PL4 NATIVE PLACEMENT REJECTION fixture emitted by tools/test_restart_phase_retention.py during negative unit test is NOT a new native game failure",
       "branch_publisher_guard": "Inspected branch-local native and release workflows before push: development/uncleared RC publishing blocked",
-      "rc_publication_cleared": false
+      "rc_publication_cleared": false,
+      "artifact_id": 12807334156,
+      "artifact_sha256": "a4f99e8b4f36a8080a96a69b6ed3c9a222c9695c0e47aace91d10999707ff378",
+      "native_scenarios": "368/368"
     },
     "full_acceptance_or_rc_clearance": false
+  },
+  "latest_164_gravel_actor_regression": {
+    "minecraft": "1.6.4",
+    "branch": "mc/1.6.4",
+    "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "parent_source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+    "native_run": 40669706429,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
+    "artifact_id": 12807334156,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429/artifacts/12807334156",
+    "artifact_sha256": "a4f99e8b4f36a8080a96a69b6ed3c9a222c9695c0e47aace91d10999707ff378",
+    "artifact_zip_entries": 193,
+    "artifact_zip_crc": "PASS",
+    "native_scenarios": "368/368",
+    "decode_assertions": 1536,
+    "decode_processes": 40,
+    "provider_assertions": 188,
+    "provider_processes": 4,
+    "historical_assertions": 60,
+    "historical_processes": 3,
+    "unique_decode_provider_pids": 44,
+    "retained_decode_worlds_verified": 20,
+    "restart_log_hashes_verified": 44,
+    "production_jar_name": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+    "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+    "production_byte_identical_to_parent": true,
+    "source_git_archive_pinned": true,
+    "gravity_actor_native_receipts": {
+      "suite": "decode-rewrite",
+      "write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "crash_write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "verify_phases": "No actor spawn in verify phases",
+      "native_gravity_guard_removals": "2/2 observed, not synthetic fixture-only Python checks"
+    },
+    "production_smoke": "PASS",
+    "generated_preview3_migration": "PASS",
+    "release_maturity": "development",
+    "rc_publication_cleared": false,
+    "publisher_step": "SKIPPED",
+    "scope_limits": [
+      "Actual native gravel actor removed in two disposable test write phases; historical spontaneous x80 failure root cause not proven fixed",
+      "No current exact-JAR stock-client screenshot review",
+      "No actual installed third-party provider binaries, broad alias/unload or dedicated multiplayer validation",
+      "No arbitrary save recovery, pre-save/power loss or sustained performance"
+    ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-28T10:12:41.898Z",
+  "recorded_at": "2026-10-28T10:15:00.829Z",
   "repo": "Shnewbs/Foundations-PL4",
   "summary": "Reconcile both real native callback-continuity source builds and add concrete native falling-gravel cleanup adversary on existing 1.6.4 branch",
   "verified_exact_native": {
@@ -75,15 +75,36 @@
     "controller_test": "10/10 local unit cases PASS",
     "native_run": 40669706429,
     "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
-    "native_ci_status_at_checkpoint": "CI_IN_PROGRESS",
-    "fully_native_qualified_at_checkpoint": false,
-    "production_jar_sha256_for_candidate": null,
+    "native_ci_status_at_checkpoint": "COMPLETED_SUCCESS",
+    "fully_native_qualified_at_checkpoint": true,
+    "production_jar_sha256_for_candidate": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
     "observed_historical_interference": "2026-10-28 retained original failure decode-scope/crash-write x80 block ID 13 replacing expected 3501 and separate 2026-10-27 native placement evidence; root cause not fully demonstrated",
     "synthetic_log_note": "PL4 NATIVE PLACEMENT REJECTION fixture emitted by tools/test_restart_phase_retention.py during negative unit test is NOT a new native game failure",
     "branch_publisher_guard": "Inspected branch-local native and release workflows before push: development/uncleared RC publishing blocked",
-    "rc_publication_cleared": false
+    "rc_publication_cleared": false,
+    "artifact_id": 12807334156,
+    "artifact_sha256": "a4f99e8b4f36a8080a96a69b6ed3c9a222c9695c0e47aace91d10999707ff378",
+    "native_scenarios": "368/368",
+    "gravity_actor_receipts": {
+      "suite": "decode-rewrite",
+      "write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "crash_write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "verify_phases": "No actor spawn in verify phases",
+      "native_gravity_guard_removals": "2/2 observed, not synthetic fixture-only Python checks"
+    },
+    "release_policy": "DEVELOPMENT_ONLY_PUBLISHER_SKIPPED"
   },
-  "checks": "Both retained Actions ZIP CRCs, installed runtime JAR SHA256, pinned source check, 20 raw decode world archive hashes per port, 44 distinct restart JVM PIDs and associated log hashes checked independently. Legacy scenario ordinary counts 397/368 from exact native reports; clean restart plus completed-save/flush parent SIGKILL and three historical import processes scoped to their retained worlds.",
+  "checks": "Both retained Actions ZIP CRCs, installed runtime JAR SHA256, pinned source check, 20 raw decode world archive hashes per port, 44 distinct restart JVM PIDs and associated log hashes checked independently. Legacy scenario ordinary counts 397/368 from exact native reports; clean restart plus completed-save/flush parent SIGKILL and three historical import processes scoped to their retained worlds. Subsequent exact source ef01e15 passed its own 368/368 native suite, 1536 decode/40 JVMs, 188 provider/four JVMs and 60 historical checks; two real spawned gravel actors in rewrite/write and rewrite/crash-write were each removed once by the loaded native fixture guard. New packaged SRG runtime is byte-identical to the previously qualified b0a4f45 production JAR; new artifact ZIP SHA and all 44 log hashes, 20 saved worlds and CRC were independently verified.",
   "remaining_acceptance": [
     "Current exact-JAR stock client screenshot/graphics acceptance",
     "Actual installed third-party optional provider binaries, authority and disconnected/unloaded alias boundaries",
@@ -101,11 +122,66 @@
     "existing_uploads_preserved": true,
     "publication_steps": "Development and uncleared RC source remains ineligible; no publisher triggered manually"
   },
-  "next_implementation": "Inspect 40669706429 exact native phase markers/artifact hashes; if new adversary fails, fix real 1.6.4 fixture/controller, otherwise carry proof to current JAR and extend to loaded/unloaded aliases, installed providers and dedicated multiplayer.",
+  "next_implementation": "Extend x80 loaded natural-terrain gravel interleaving/cross-chunk tests and actual installed provider/unloaded alias/dedicated multiplayer acceptance; leave all RC flags false until full exact-source clearance.",
   "writer_lease": {
     "owner": "pl4-chat-hourly-20261028T1003Z",
     "acquired_at": "2026-10-28T10:04:46.989Z",
     "released_at": "2026-10-28T10:12:41.898Z",
     "finite": true
+  },
+  "final_verified_current_164": {
+    "minecraft": "1.6.4",
+    "branch": "mc/1.6.4",
+    "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "parent_source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+    "native_run": 40669706429,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
+    "artifact_id": 12807334156,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429/artifacts/12807334156",
+    "artifact_sha256": "a4f99e8b4f36a8080a96a69b6ed3c9a222c9695c0e47aace91d10999707ff378",
+    "artifact_zip_entries": 193,
+    "artifact_zip_crc": "PASS",
+    "native_scenarios": "368/368",
+    "decode_assertions": 1536,
+    "decode_processes": 40,
+    "provider_assertions": 188,
+    "provider_processes": 4,
+    "historical_assertions": 60,
+    "historical_processes": 3,
+    "unique_decode_provider_pids": 44,
+    "retained_decode_worlds_verified": 20,
+    "restart_log_hashes_verified": 44,
+    "production_jar_name": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+    "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+    "production_byte_identical_to_parent": true,
+    "source_git_archive_pinned": true,
+    "gravity_actor_native_receipts": {
+      "suite": "decode-rewrite",
+      "write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "crash_write": {
+        "spawned": true,
+        "removed": true,
+        "actual_removed_entities_at_x80": 1,
+        "native_gravity_guards": 4
+      },
+      "verify_phases": "No actor spawn in verify phases",
+      "native_gravity_guard_removals": "2/2 observed, not synthetic fixture-only Python checks"
+    },
+    "production_smoke": "PASS",
+    "generated_preview3_migration": "PASS",
+    "release_maturity": "development",
+    "rc_publication_cleared": false,
+    "publisher_step": "SKIPPED",
+    "scope_limits": [
+      "Actual native gravel actor removed in two disposable test write phases; historical spontaneous x80 failure root cause not proven fixed",
+      "No current exact-JAR stock-client screenshot review",
+      "No actual installed third-party provider binaries, broad alias/unload or dedicated multiplayer validation",
+      "No arbitrary save recovery, pre-save/power loss or sustained performance"
+    ]
   }
 }
