@@ -1,0 +1,139 @@
+{
+  "recorded_at_utc": "2026-10-28T08:27:13Z",
+  "source_of_truth": "GitHub existing exact branches, immutable commits, completed native Actions logs and downloaded retained artifact bytes",
+  "goal": "24 exact targets through all RC acceptance and eligible publication; this checkpoint does not complete that goal",
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T0806Z",
+    "claim_commit": "8d3888155c9e4e9b2a0c7480a6c0541964debc61",
+    "released_at_utc": "2026-10-28T08:27:13Z",
+    "guarded_expected_parent": true
+  },
+  "parallel_actions_checked": true,
+  "duplicate_native_runs_started": false,
+  "version_branch_publishers_reviewed_before_push": true,
+  "direct_branch_commits": [
+    "aa23bef3398930aae28179594aea81d1f56df9fa",
+    "56a302d9182c0863c569d5f12393429ce59b6d48"
+  ],
+  "completed_exact_native": [
+    {
+      "minecraft": "1.12.2",
+      "loader": "Forge",
+      "loader_version": "14.23.5.2864",
+      "java": 8,
+      "branch": "mc/1.12.2",
+      "source_commit": "aa23bef3398930aae28179594aea81d1f56df9fa",
+      "changed_source": "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java",
+      "fix": "Automatic item transport now rejects a Forge IItemHandler obtained after native capability discovery if its installed host/target, side, owner, world or loaded state changed inside provider callbacks; no force loading.",
+      "native_regression": "native capability discovery swap cannot extract detached source",
+      "native_run": 40654775646,
+      "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40654775646",
+      "native_cases": "395/395",
+      "run_conclusion": "success",
+      "runtime_sha256": "fa5bfe811862835d0a8d3f3e773f35a8e18912b63d3a980ae18fb397523b8505",
+      "runtime_bytes": 165764,
+      "runtime_jar_entries": 141,
+      "artifact_id": 12801636439,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40654775646/artifacts/12801636439",
+      "artifact_sha256": "4a8d43b5c5dd41205cc9eeabfdb388b7958e38a154fb05e8c50cbe40eb8fcce5",
+      "artifact_zip_entries": 145,
+      "source_archive_sha256": "751b3cc957e4c96ad42cdda7614bbe46c60c038f468964f907641ee7441235f7",
+      "source_blob_identities": {
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "2ce9f4ba906de5606ce8a7d1302de645050de296",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "18b61bc7b9df137d0fe699307a06f0c2ff0ed6ec",
+        "BUILD_STATUS.json": "6ea9aa1ded6f0f9799ff4344fe12e2463be9dd43"
+      },
+      "native_checks": {
+        "source_archive_git_blobs": "3/3 match",
+        "outer_and_jar_zip_crc": "PASS",
+        "named_regression": "PASS ON ACTUAL NATIVE SERVER",
+        "separate_jvm_item_receipt_clean_and_saved_barrier": "PASS",
+        "preupgrade_fault_import_and_restart": "PASS"
+      },
+      "publication": {
+        "release_channel": "development",
+        "version": "0.2.0-rc.1-dev",
+        "rc_publication_cleared": false,
+        "branch_publisher_step": "skipped"
+      },
+      "limits": [
+        "No fresh stock client/GPU screenshot or installed external provider binary acceptance for this exact runtime",
+        "No multiplayer, arbitrary user-world migration or sustained performance acceptance"
+      ]
+    },
+    {
+      "minecraft": "1.6.4",
+      "loader": "Forge",
+      "loader_version": "9.11.1.1345",
+      "java": 7,
+      "branch": "mc/1.6.4",
+      "source_commit": "56a302d9182c0863c569d5f12393429ce59b6d48",
+      "changed_source": "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java",
+      "fix": "Automatic item transport now rejects an IInventory adapter produced by size/sided metadata callbacks that replaced or invalidated the original loaded target, host, owner or face; no force loading.",
+      "native_regression": "automatic native source size callback cannot extract detached backing",
+      "native_run": 40655791384,
+      "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40655791384",
+      "native_cases": "366/366",
+      "run_conclusion": "success",
+      "runtime_sha256": "051751257a7688921e73a0bec21ac1332fd3055964fd6669eac4ee8bedd3e8c8",
+      "runtime_bytes": 146989,
+      "runtime_jar_entries": 88,
+      "artifact_id": 12801713423,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40655791384/artifacts/12801713423",
+      "artifact_sha256": "25352b135865715939c0a1224ffd6c54d586de09ee81d252cc17f34974d931b5",
+      "artifact_zip_entries": 193,
+      "source_archive_sha256": "c5a5036317fe7f740d1e83a659dd06471af57a49ea192babeb870f5cbbb050d1",
+      "source_blob_identities": {
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "7d0e4244b324fb08d21ee55d04b79c8abec578c8",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "40eb95c5c7b3ab3100d7fdcb917b2ffd1ba94b20",
+        "BUILD_STATUS.json": "efa159ea53b19da63de23f82425c5f15cb028705"
+      },
+      "native_checks": {
+        "source_archive_git_blobs": "3/3 match",
+        "outer_and_srg_jar_zip_crc": "PASS",
+        "named_regression": "PASS ON ACTUAL NATIVE SERVER",
+        "separate_jvm_item_receipt_clean_and_saved_barrier": "PASS",
+        "preupgrade_fault_import_and_restart": "PASS"
+      },
+      "publication": {
+        "release_channel": "development",
+        "version": "0.2.0-rc.1-dev",
+        "rc_publication_cleared": false,
+        "branch_publisher_step": "skipped"
+      },
+      "limits": [
+        "Historical decode-scope/crash-write x=80 falling-gravel interruption remains causally unresolved; passing tests do not explain intermittent failure",
+        "No fresh stock client, installed external provider, multiplayer, arbitrary migration or sustained performance acceptance"
+      ]
+    }
+  ],
+  "prior_independent_112_branch_run": {
+    "run": 40648972109,
+    "result": "cancelled at 30-minute bound",
+    "distinct_previous_source": "117df59bc0f54f05b3385688156e866bf2c575c9",
+    "other_pinned_run": 40649176900,
+    "other_pinned_result": "394/394 pass; no rerun needed"
+  },
+  "publication": {
+    "all_exact_targets": 24,
+    "rc_cleared_targets": 0,
+    "new_github_rc_release": false,
+    "new_curseforge_upload": false,
+    "curseforge_moderation_visibility": "no new file submitted",
+    "all_version_channels": "development",
+    "unchanged_24_target_clearances": true
+  },
+  "blocked_acceptance": [
+    "Actual installed optional-provider binary and disconnected/unloaded alias without forced chunks",
+    "Current exact-source stock client/GUI images and full multiplayer/travel",
+    "Sustained full-server and provider performance, arbitrary save/migration and recovery validation",
+    "1.6.4 x80 falling gravel fixture root cause is still unconfirmed",
+    "Full 22 modern exact-target RC evidence and publication review"
+  ],
+  "next_steps": [
+    "Let hourly-builds.yml independently reconcile 395/366 qualified branch source without triggering duplicate runs",
+    "Implement fail-closed authoritative native item transfer across provider read/simulation/execution callback replacement; test loaded/unloaded and alias identity",
+    "Reproduce 1.6.4 x80 gravel/physics placement failure from retained raw evidence without weakening native acceptance",
+    "Only clear individual RC flags after installed-provider, client, multiplayer, migration and sustained performance evidence; no publisher on development source"
+  ]
+}
