@@ -34,7 +34,7 @@ def require_legacy_decode_terrain_log_match(report,native_log,phase,minecraft):
     if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
         return
     require_legacy_decode_terrain_observations(report,phase,minecraft)
-    encoded=re.findall(r'PL4 DECODE TERRAIN BEFORE ([^\\r\\n]+)',native_log)
+    encoded=re.findall(r'PL4 DECODE TERRAIN BEFORE ([^\r\n]+)',native_log)
     if len(encoded)!=4:
         raise ValueError('Expected four independent native pre-cleanup terrain log lines')
     try:
@@ -54,7 +54,7 @@ def require_legacy_decode_terrain_log_match(report,native_log,phase,minecraft):
         if before<0 or guard<0 or before>=guard:
             raise ValueError('Native terrain observation was not before cleanup x='+str(x))
     if report.get('suite')=='decode-rewrite':
-        actor=native_log.find('PL4 DECODE GRAVITY ADVERSARY x=80 ')
+        actor=native_log.find('PL4 DECODE GRAVITY ADVERSARY x=80 spawned=true removed=true')
         before=native_log.find('PL4 DECODE TERRAIN BEFORE '+encoded[2])
         if actor<0 or before<0 or before>=actor:
             raise ValueError('Native ambient terrain must precede deliberate rewrite gravel actor')

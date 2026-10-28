@@ -63,7 +63,7 @@ class NativeTerrainObservationsTests(unittest.TestCase):
                 start=(64,69) if x==69 else (80,85)
                 if x==85 and actor:lines.append('PL4 DECODE GRAVITY ADVERSARY x=80 spawned=true removed=true')
                 lines.extend('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=0 ceiling=true' % n for n in start)
-        return '\\n'.join(lines)
+        return '\n'.join(lines)
     def test_native_terrain_log_exact_rows_and_order(self):
         rows=[self.good(x) for x in (64,69,80,85)]
         self.assertIsNone(require_legacy_decode_terrain_log_match(self.report(rows),self.trace(rows,True),'write','1.6.4'))
@@ -73,7 +73,7 @@ class NativeTerrainObservationsTests(unittest.TestCase):
         rows=[self.good(x) for x in (64,69,80,85)]
         good=self.trace(rows,True)
         first='PL4 DECODE TERRAIN BEFORE '+json.dumps(rows[0],separators=(',',':'))
-        for bad in (good.replace(first,'',1),good+'\\n'+first,
+        for bad in (good.replace(first,'',1),good+'\n'+first,
                     good.replace('"chunk_x":5','"chunk_x":4',1),
                     good.replace('"host_block":0','"host_block":13',1),
                     good.replace('x=80 spawned=true','x=80 spawned=false')):
