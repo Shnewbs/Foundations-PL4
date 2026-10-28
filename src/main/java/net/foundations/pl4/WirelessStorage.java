@@ -16,6 +16,25 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public final class WirelessStorage {
     public static final int PAGE_SIZE=6,MAX_SLOTS=4096,MAX_ENDPOINTS=256;
     private record Target(Part node,IItemHandler inventory,Part.Link link,NetworkEngine.Ref ref){}
+    /** Recheck current server authority after any foreign inventory callback.
+     * A retained capability or a prior UI session is never an access grant. */
+    static boolean authorizedTarget(ServerPlayer player,Part.Link binding,NetworkEngine.Ref ref){
+        if(ref==null||anchor(player,binding)==null)return false;
+        HostEntity host=ref.host();
+        if(!(host.getLevel() instanceof net.minecraft.server.level.ServerLevel world)
+            ||world.getServer()!=player.serverLevel().getServer()
+            ||host.isRemoved()||!world.hasChunkAt(host.getBlockPos())
+            ||world.getBlockEntity(host.getBlockPos())!=host
+            ||!host.parts.containsValue(ref.part())||!host.canEdit(player)
+            ||!world.mayInteract(player,host.getBlockPos())||!ref.part().items
+            ||(ref.part().kind!=Kind.NODE&&ref.part().kind!=Kind.TRANSFER_NODE)
+            ||(!PLConfig.CROSS_DIMENSION.get()&&world!=player.serverLevel()))return false;
+        Part.Link link=ref.adjacent();
+        return world.hasChunkAt(link.pos())&&world.mayInteract(player,link.pos());
+    }
+    private static boolean live(ServerPlayer player,Part.Link binding,Target target){
+        return authorizedTarget(player,binding,target.ref())&&target.link().equals(target.ref().adjacent());
+    }
     private record Slot(UUID node,int slot){}
     static final class Entry {
         final ItemStack item;long count;final List<Slot> sources=new ArrayList<>();
@@ -45,22 +64,32 @@ public final class WirelessStorage {
             if(!PLConfig.CROSS_DIMENSION.get()&&world!=player.serverLevel())continue;
             if(!world.hasChunkAt(link.pos())||!world.mayInteract(player,link.pos()))continue;
             IItemHandler inventory=world.getCapability(Capabilities.ItemHandler.BLOCK,link.pos(),link.side());
-            if(inventory==null||!seen.inventory(world,link,inventory,inventory.getSlots()))continue;
-            result.add(new Target(ref.part(),inventory,link,ref));slots+=Math.min(MAX_SLOTS-slots,Math.max(0,inventory.getSlots()));
+            if(inventory==null)continue;
+            int count=inventory.getSlots();
+            Target candidate=new Target(ref.part(),inventory,link,ref);
+            if(!live(player,binding,candidate))return null;
+            if(!seen.inventory(world,link,inventory,count))continue;
+            result.add(candidate);slots+=Math.min(MAX_SLOTS-slots,Math.max(0,count));
         }
         return result;
     }
-    private static View view(List<Target> targets,String query,String sort){
+    private static View view(ServerPlayer player,Part.Link binding,List<Target> targets,String query,String sort){
         Map<net.minecraft.world.item.Item,List<Entry>> byItem=new LinkedHashMap<>();int scanned=0;boolean limited=targets.size()>=MAX_ENDPOINTS;
-        outer:for(Target target:targets)for(int slot=0;slot<target.inventory().getSlots();slot++){
+        outer:for(Target target:targets){
+            if(!live(player,binding,target))return null;
+            int slotCount=target.inventory().getSlots();
+            if(!live(player,binding,target))return null;
+            for(int slot=0;slot<slotCount;slot++){
             if(scanned>=MAX_SLOTS){limited=true;break outer;}scanned++;
             ItemStack stack=target.inventory().getStackInSlot(slot);
+            if(!live(player,binding,target))return null;
             if(stack.isEmpty()||!TransferFilters.items(stack,target.node(),false))continue;
             String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
             if(!query.isEmpty()&&!id.contains(query)&&!stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(query))continue;
             List<Entry> variants=byItem.computeIfAbsent(stack.getItem(),unused->new ArrayList<>());Entry row=null;
             for(Entry existing:variants)if(ItemStack.isSameItemSameComponents(existing.item,stack)){row=existing;break;}
             if(row==null){row=new Entry(stack);variants.add(row);}row.count+=stack.getCount();row.sources.add(new Slot(target.node().identity,slot));
+            }
         }
         List<Entry> rows=new ArrayList<>();byItem.values().forEach(rows::addAll);
         Comparator<Entry> names=Comparator.comparing((Entry e)->e.item.getHoverName().getString(),String.CASE_INSENSITIVE_ORDER).thenComparing(e->BuiltInRegistries.ITEM.getKey(e.item.getItem()).toString());
@@ -94,12 +123,23 @@ public final class WirelessStorage {
             Entry expected=session.shown().get(local);int remaining=Math.min(packet.amount(),room(player,expected.item)),moved=0;
             Map<UUID,Target> current=new HashMap<>();targets.forEach(t->current.put(t.node().identity,t));
             for(Slot source:expected.sources){
-                if(remaining<=0)break;Target target=current.get(source.node());if(target==null||source.slot()>=target.inventory().getSlots())continue;
+                if(remaining<=0)break;Target target=current.get(source.node());
+                if(target==null||!live(player,session.binding(),target))continue;
+                int slotCount=target.inventory().getSlots();
+                if(!live(player,session.binding(),target)||source.slot()<0||source.slot()>=slotCount)continue;
                 ItemStack stack=target.inventory().getStackInSlot(source.slot());
+                if(!live(player,session.binding(),target))continue;
                 if(!ItemStack.isSameItemSameComponents(expected.item,stack)||!TransferFilters.items(stack,target.node(),false))continue;
                 ItemStack trial=target.inventory().extractItem(source.slot(),remaining,true);
+                if(!live(player,session.binding(),target)||!WirelessItemTransfers.available(target.node()))continue;
                 if(!ItemTransferSafety.trial(trial,remaining)||!ItemStack.isSameItemSameComponents(expected.item,trial))continue;
-                int requested=Math.min(remaining,trial.getCount());ItemStack extracted=ItemTransferSafety.extract(target.ref(),expected.item,requested,()->target.inventory().extractItem(source.slot(),requested,false));
+                int requested=Math.min(remaining,trial.getCount());
+                ItemStack extracted=ItemTransferSafety.extract(target.ref(),expected.item,requested,()->{
+                    if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless withdrawal authority revoked before provider mutation");
+                    ItemStack result=target.inventory().extractItem(source.slot(),requested,false);
+                    if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless withdrawal authority revoked during provider mutation");
+                    return result;
+                });
                 if(extracted.isEmpty())continue;int count=WirelessItemTransfers.deliver(target.ref(),stackToPlayer->{player.getInventory().add(stackToPlayer);return stackToPlayer;});moved+=count;remaining-=extracted.getCount();
             }
             player.getInventory().setChanged();player.inventoryMenu.broadcastChanges();status=moved==0?"Nothing moved: contents, access, filters or available space changed.":"Withdrew "+moved+" item(s).";
@@ -108,11 +148,21 @@ public final class WirelessStorage {
             else{
                 ItemStack offhand=player.getOffhandItem();int moved=0,scanned=0;
                 outer:for(Target target:targets){
-                    if(offhand.isEmpty())break;if(!TransferFilters.items(offhand,target.node(),true))continue;
-                    for(int slot=0;slot<target.inventory().getSlots();slot++){
+                    if(offhand.isEmpty())break;if(!live(player,session.binding(),target)||!TransferFilters.items(offhand,target.node(),true))continue;
+                    int slotCount=target.inventory().getSlots();
+                    if(!live(player,session.binding(),target))continue;
+                    for(int slot=0;slot<slotCount;slot++){
                         if(offhand.isEmpty()||scanned++>=MAX_SLOTS)break outer;
-                        ItemStack offered=offhand.copy();ItemStack simulated=target.inventory().insertItem(slot,offered,true);int capacity=offered.getCount()-ItemTransferSafety.remainder(offered,simulated);if(capacity<=0)continue;
-                        ItemStack sent=offhand.copyWithCount(Math.min(capacity,offhand.getCount()));final int destinationSlot=slot;int accepted=WirelessItemTransfers.deposit(target.ref(),offhand,sent,value->target.inventory().insertItem(destinationSlot,value,false));moved+=accepted;
+                        ItemStack offered=offhand.copy();ItemStack simulated=target.inventory().insertItem(slot,offered,true);
+                        if(!live(player,session.binding(),target))continue outer;
+                        int capacity=offered.getCount()-ItemTransferSafety.remainder(offered,simulated);if(capacity<=0)continue;
+                        ItemStack sent=offhand.copyWithCount(Math.min(capacity,offhand.getCount()));final int destinationSlot=slot;
+                        int accepted=WirelessItemTransfers.deposit(target.ref(),offhand,sent,value->{
+                            if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless deposit authority revoked before provider mutation");
+                            ItemStack remainder=target.inventory().insertItem(destinationSlot,value,false);
+                            if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless deposit authority revoked during provider mutation");
+                            return remainder;
+                        });moved+=accepted;
                     }
                 }
                 player.getInventory().setChanged();player.inventoryMenu.broadcastChanges();status="Deposited "+moved+" item(s).";
@@ -126,7 +176,9 @@ public final class WirelessStorage {
     }
     private static int room(ServerPlayer player,ItemStack stack){int room=0;for(int i=0;i<36;i++){ItemStack existing=player.getInventory().getItem(i);if(existing.isEmpty())room+=stack.getMaxStackSize();else if(ItemStack.isSameItemSameComponents(existing,stack))room+=Math.max(0,Math.min(existing.getMaxStackSize(),stack.getMaxStackSize())-existing.getCount());if(room>=64)return 64;}return room;}
     private static UUID send(ServerPlayer player,InteractionHand hand,ItemStack tool,Part.Link binding,List<Target> targets,int page,String query,String sort,boolean reply,String status){
-        View view=view(targets,query,sort);int count=view.entries().size();page=Math.clamp(page,0,Math.max(0,(count-1)/PAGE_SIZE));
+        View view=view(player,binding,targets,query,sort);
+        if(view==null){SESSIONS.remove(player);sendClosed(player,"Storage access changed during provider enumeration.");return null;}
+        int count=view.entries().size();page=Math.clamp(page,0,Math.max(0,(count-1)/PAGE_SIZE));
         UUID token=UUID.randomUUID();List<Entry> shown=List.copyOf(view.entries().subList(page*PAGE_SIZE,Math.min(count,(page+1)*PAGE_SIZE)));ListTag rows=new ListTag();
         for(int i=0;i<shown.size();i++){Entry e=shown.get(i);CompoundTag row=new CompoundTag();row.putInt("slot",page*PAGE_SIZE+i);row.putString("name",e.item.getHoverName().getString());row.putLong("count",e.count);rows.add(row);}
         SESSIONS.put(player,new Session(token,hand,tool,binding,page,shown,query,sort,player.tickCount));

@@ -275,6 +275,28 @@ public final class R16GameTests {
         f.node().owner=OWNER;token=WirelessStorage.open(f.player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.node().identity=UUID.randomUUID();
         WirelessStorage.request(f.player(),new PLPackets.StorageRequest(token,"withdraw",0,64));h.assertTrue(f.chest().getItem(0).getCount()==17,"Replacing a Node cannot inherit another binding's authority");h.succeed();
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageCapabilityReadCannotKeepRevokedRoot(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-LiveRoot");
+        var binding=ToolItem.link(f.tool());var ref=new NetworkEngine.Ref(f.host(),f.node());
+        h.assertTrue(WirelessStorage.authorizedTarget(f.player(),binding,ref),"Original bound root is authorized");
+        f.node().owner=UUID.randomUUID();
+        h.assertTrue(!WirelessStorage.authorizedTarget(f.player(),binding,ref),"A provider read cannot preserve a revoked controller owner");
+        f.node().owner=OWNER;f.host().parts.remove(f.node().slot());
+        h.assertTrue(!WirelessStorage.authorizedTarget(f.player(),binding,ref),"Removed controller part cannot be authorized by a stale reference");
+        h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageCapabilityReadCannotKeepRevokedEndpoint(GameTestHelper h){
+        var f=networkStorage(h,"PL4-Storage-LiveEndpoint");
+        var binding=ToolItem.link(f.first().tool());var ref=new NetworkEngine.Ref(f.secondHost(),f.second());
+        h.assertTrue(WirelessStorage.authorizedTarget(f.first().player(),binding,ref),"Initially owned loaded endpoint is authorized");
+        f.second().owner=UUID.randomUUID();
+        h.assertTrue(!WirelessStorage.authorizedTarget(f.first().player(),binding,ref),"A foreign-owned endpoint cannot survive capability-read authorization");
+        f.second().owner=OWNER;f.secondHost().parts.remove(f.second().slot());
+        h.assertTrue(!WirelessStorage.authorizedTarget(f.first().player(),binding,ref),"Replaced endpoint cannot inherit stale capability permission");
+        h.succeed();
+    }
     private record NetworkStorageFixture(StorageFixture first,HostEntity secondHost,Part second,ChestBlockEntity secondChest){}
     private static NetworkStorageFixture networkStorage(GameTestHelper h,String name){
         var first=storageFixture(h,name);var secondChest=chest(h,new BlockPos(4,1,1));var secondHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
