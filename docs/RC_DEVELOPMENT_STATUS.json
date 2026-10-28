@@ -595,8 +595,8 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 387,
-      "native_gate": "PASS",
+      "expected_native_fixtures": 392,
+      "native_gate": "IN_PROGRESS_UNQUALIFIED",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
@@ -605,9 +605,9 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40442846030,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40442846030",
-      "source_commit": "d63fda3362c7d1e3d98bae2df6d3ea777dc84a1c",
+      "workflow_run": 40636413380,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
+      "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
       "runtime_sha256": "61556050a7f4d9b26cf4fa0cda5beac99dcb6b4bbec72d5584e522ae1444223e",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
@@ -631,7 +631,7 @@
       },
       "hourly_native_evidence": "acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
       "previous_client_evidence": "acceptance/rc-dev-1.12.2-stock-wireless-client.json",
-      "observed_native_fixtures": 387,
+      "observed_native_fixtures": null,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -1080,7 +1080,23 @@
         "rc_publication_cleared": false
       },
       "latest_native_publisher_guard_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
-      "latest_native_publisher_static": "22/22 PASS; no new current-source native run; historic 391/391 remains pinned ac86"
+      "latest_native_publisher_static": "22/22 PASS; no new current-source native run; historic 391/391 remains pinned ac86",
+      "previous_verified_native_gate": {
+        "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
+        "exact_native_run": 40607180135,
+        "hourly_run": 40610348219,
+        "expected_native_scenarios": 391,
+        "observed_native_scenarios": 391,
+        "artifact_id": 12783610988,
+        "qualification": "PASS_PINNED_NATIVE_SAVE_REOPEN_MIGRATION_ONLY",
+        "release_cleared": false
+      },
+      "pending_capability_discovery_candidate": {
+        "test": "wireless capability discovery replacement cannot debit player",
+        "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+        "qualification": "NOT_YET_QUALIFIED_AT_CHECKPOINT",
+        "controller_guard_source": "b7816b902fc50865dee2c5c4b5dc4ca10443474b"
+      }
     },
     {
       "minecraft": "1.6.4",
@@ -1580,7 +1596,7 @@
       "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
     }
   ],
-  "latest_work": "2026-10-27 21:19 PT / 2026-10-28 04:19Z: hardened both legacy push-native publishers (6e385da 1.6.4; 0d370e6 1.12.2), 22/22 static post-push policy readbacks each; 1.6.4 captured-slot stale-backing repair 01eeced passed native 365/365, 40 decode+4 provider JVMs, 80 native host placements, 80 gravity receipts and 3 historical-import JVMs; exact SRG SHA256 58c2033, artifact 12791681550. Independent failed 40619649369 showed one falling gravel entity/gravel at y201 near x80, supporting but not proving root cause. No new clients, multiplayer, RC clearance, GitHub release or CurseForge upload (0/24).",
+  "latest_work": "2026-10-27 22:22 PT / 2026-10-28T05:22:00Z: 1.12.2 native capability callback can replace the installed target during endpoint enumeration. Guarded development fix e567fe33 on mc/1.12.2 fails closed on changed target/owner/host/load state; new adversarial native case brings declared target count to 392. Main controller b7816b90 checks unique passing case, its discovery unit regressions pass; independent exact-source native action 40636413380 in_progress (no conclusion), not yet accepted or released. Publisher guards remain intact; RC clearance 0/24; 1.6.4 gravel cause still unresolved.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1826,5 +1842,39 @@
     "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   },
   "latest_legacy_publisher_checkpoint": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
-  "latest_legacy_source_checkpoint": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json"
+  "latest_legacy_source_checkpoint": "docs/acceptance/rc-dev-112-capability-discovery-2026-10-28.json",
+  "latest_112_capability_discovery_candidate": {
+    "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "branch": "mc/1.12.2",
+    "base_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2864",
+    "java": 8,
+    "new_test_name": "wireless capability discovery replacement cannot debit player",
+    "registered_native_case_count": 392,
+    "run_id": 40636413380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
+    "run_status_at_checkpoint": "in_progress",
+    "run_conclusion_at_checkpoint": null,
+    "fully_qualified_at_checkpoint": false,
+    "checks_running_at_checkpoint": true,
+    "source_readback_verified": true,
+    "source_blobs": {
+      "BUILD_STATUS.json": "252510918cab35610bbcfaaf93399e0c1f88861f",
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "742bb3637015ffd42589608b05fee90ff9b9628e",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "234df8c7012cb14f698da1d4484144f1288c12ce"
+    },
+    "controller_source_commit": "b7816b902fc50865dee2c5c4b5dc4ca10443474b",
+    "controller_regression_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001",
+    "main_verify_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636973974",
+    "release_policy_verified": "development channel, rc_publication_cleared false; both legacy native and release publishers guarded",
+    "scope": "Fail closed when a native target or host tile, ownership, or loaded state changes inside Forge capability discovery; production inventory mutations remain under existing escrow and per-call guards.",
+    "evidence_limits": [
+      "No exact-source native scenario/restart/JAR acceptance at this checkpoint unless CI finishes and receipts are inspected",
+      "No installed third-party mod/provider qualification from the adversarial built-in fixture",
+      "No current-client screenshot, dedicated multiplayer, arbitrary migration, or sustained performance acceptance",
+      "Original 1.6.4 gravel/native fixture intermittent failure still lacks a reproduced cause",
+      "No RC clearance or new GitHub/CurseForge upload"
+    ]
+  }
 }

@@ -5,15 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T0506Z",
-    "status": "active",
-    "acquired_at": "2026-10-28T05:07:00Z",
-    "expires_at": "2026-10-28T05:35:00Z",
-    "base_ref": "8bce52c6bab4a51b83faa5ae3e34d3473e8ade62",
-    "scope": "source validation and exact-target legacy fixtures; preserve active source and publisher policy",
-    "last_renewed_at": "2026-10-28T05:07:00Z"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -22,18 +14,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 21:19 PT / 2026-10-28 04:19Z: hardened both legacy push-native publishers (6e385da 1.6.4; 0d370e6 1.12.2), 22/22 static post-push policy readbacks each; 1.6.4 captured-slot stale-backing repair 01eeced passed native 365/365, 40 decode+4 provider JVMs, 80 native host placements, 80 gravity receipts and 3 historical-import JVMs; exact SRG SHA256 58c2033, artifact 12791681550. Independent failed 40619649369 showed one falling gravel entity/gravel at y201 near x80, supporting but not proving root cause. No new clients, multiplayer, RC clearance, GitHub release or CurseForge upload (0/24).",
-  "local_validation": "1.6.4 source 01eeced matches exact native Forge 9.11.1.1345 runtime 58c2033; 365/365 scenarios, 40 decode +4 provider JVMs, 80 valid placements, 80 gravity receipts, 60 historical checks, 193-member CRC artifact 2e28e3. 1.12.2 branch publisher-only guard post-push 22/22 static; older source ac86 remains last 391 native. No Windows/client/multiplayer/RC release.",
+  "current_checkpoint": "2026-10-27 22:22 PT / 2026-10-28T05:22:00Z: 1.12.2 native capability callback can replace the installed target during endpoint enumeration. Guarded development fix e567fe33 on mc/1.12.2 fails closed on changed target/owner/host/load state; new adversarial native case brings declared target count to 392. Main controller b7816b90 checks unique passing case, its discovery unit regressions pass; independent exact-source native action 40636413380 in_progress (no conclusion), not yet accepted or released. Publisher guards remain intact; RC clearance 0/24; 1.6.4 gravel cause still unresolved.",
+  "local_validation": "Source blob readback, 392 named test declarations, exact release policy/branch expected-SHA guards PASS; main verify 40636973974 PASS; hourly discovery unit cases 40636974001 discovery PASS. New 1.12.2 native/restart/production hash qualification in_progress, no current artifact verified; prior 391-case ac86 /40607180135 and 1.6.4 365-case 01eeced /40630703237 retained. No client/multiplayer/provider/performance RC clearance.",
   "next_work": [
-    "Physically reproduce original 1.6.4 x80 gravel13 overwrite with deterministic native falling-actor injection; earlier followup run40619649369 recorded one falling actor and gravel y201, while accepted run40630703237 removed zero; no source/JAR claim of actor root-cause repair.",
-    "Implement installed native 1.12.2 optional-provider and double-chest/alias backing identity + unloaded/reconnected host tests; preserve ownership and escrow; do not clear RC on isolated JVM proof.",
-    "Obtain fresh exact-source 1.6.4 client screenshots and multiplayer/migration/performance after changed runtime SHA 58c2033, use trusted hourly-builds.yml for 24 exact targets and deduplicate retained source artifacts.",
-    "Next qualified beta RC release only after explicit per-target clearance and artifact/immutable tag/CurseForge receipt reconciliation; 0/24 currently."
+    "Inspect exact e567fe3 native 1.12.2 action40636413380 and hourly controller40636974001; verify true392/392, restart/decode/provider/historical JVM counts, native/preview.3 migration, exact production hash/packaging, and publisher skip before promoting its native gate.",
+    "If a new native branch or controller test fails, use exact failing logs and a guarded same-branch fix, not duplicate unchanged reruns. Preserve unrelated variants and all 24 RC=false.",
+    "Reproduce original 1.6.4 x80 gravel13/falling-actor placement race in a deterministic isolated native fixture. Later successful 365/365 does not establish cause correction.",
+    "Then add installed 1.12.2 optional-provider/double-chest/alias/unload tests, exact client screenshot, multiplayer/online identities and sustained performance/migration evidence. Publish beta RC only after explicit per-target approval and immutable artifact/receipt checks."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-112-capability-discovery-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -55,14 +47,13 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261028T0402Z-gravity-investigation",
-    "released_at": "2026-10-28T04:19:16Z",
-    "checkpoint_commit": "commit_to_follow",
-    "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+    "owner": "pl4-chat-hourly-20261028T0506Z",
+    "released_at": "2026-10-28T05:22:00Z",
+    "checkpoint_commit": null,
+    "evidence": "docs/acceptance/rc-dev-112-capability-discovery-2026-10-28.json",
     "source_commits": [
-      "01eeced04350c24cb11211838744937f0c067506",
-      "6e385da520589905da9e538ed950d4018e5d3cd3",
-      "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9"
+      "e567fe33a8d6ca30204464e910176a6d3fca4199",
+      "b7816b902fc50865dee2c5c4b5dc4ca10443474b"
     ],
     "lease_bounded": true,
     "rc_publication_cleared": false
@@ -418,5 +409,39 @@
     "static_contracts_each": "22/22",
     "end_to_end_publisher_qualified": false,
     "evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json"
+  },
+  "latest_112_capability_discovery_candidate": {
+    "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "branch": "mc/1.12.2",
+    "base_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2864",
+    "java": 8,
+    "new_test_name": "wireless capability discovery replacement cannot debit player",
+    "registered_native_case_count": 392,
+    "run_id": 40636413380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
+    "run_status_at_checkpoint": "in_progress",
+    "run_conclusion_at_checkpoint": null,
+    "fully_qualified_at_checkpoint": false,
+    "checks_running_at_checkpoint": true,
+    "source_readback_verified": true,
+    "source_blobs": {
+      "BUILD_STATUS.json": "252510918cab35610bbcfaaf93399e0c1f88861f",
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "742bb3637015ffd42589608b05fee90ff9b9628e",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "234df8c7012cb14f698da1d4484144f1288c12ce"
+    },
+    "controller_source_commit": "b7816b902fc50865dee2c5c4b5dc4ca10443474b",
+    "controller_regression_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001",
+    "main_verify_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636973974",
+    "release_policy_verified": "development channel, rc_publication_cleared false; both legacy native and release publishers guarded",
+    "scope": "Fail closed when a native target or host tile, ownership, or loaded state changes inside Forge capability discovery; production inventory mutations remain under existing escrow and per-call guards.",
+    "evidence_limits": [
+      "No exact-source native scenario/restart/JAR acceptance at this checkpoint unless CI finishes and receipts are inspected",
+      "No installed third-party mod/provider qualification from the adversarial built-in fixture",
+      "No current-client screenshot, dedicated multiplayer, arbitrary migration, or sustained performance acceptance",
+      "Original 1.6.4 gravel/native fixture intermittent failure still lacks a reproduced cause",
+      "No RC clearance or new GitHub/CurseForge upload"
+    ]
   }
 }

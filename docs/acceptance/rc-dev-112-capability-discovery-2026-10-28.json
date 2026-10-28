@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-28T05:22:00Z",
+  "owner": "pl4-chat-hourly-20261028T0506Z",
+  "scope": "Finite implementation checkpoint; no new RC release",
+  "source_branch": "mc/1.12.2",
+  "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+  "lease_claim_commit": "cc7a2ac764c3ba68ae3fdbe966bdb26618ad8193",
+  "controller_commit": "b7816b902fc50865dee2c5c4b5dc4ca10443474b",
+  "native": {
+    "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "branch": "mc/1.12.2",
+    "base_commit": "0d370e69fdbd5aa1034ce131fbd13cd37f4bd8b9",
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2864",
+    "java": 8,
+    "new_test_name": "wireless capability discovery replacement cannot debit player",
+    "registered_native_case_count": 392,
+    "run_id": 40636413380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
+    "run_status_at_checkpoint": "in_progress",
+    "run_conclusion_at_checkpoint": null,
+    "fully_qualified_at_checkpoint": false,
+    "checks_running_at_checkpoint": true,
+    "source_readback_verified": true,
+    "source_blobs": {
+      "BUILD_STATUS.json": "252510918cab35610bbcfaaf93399e0c1f88861f",
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "742bb3637015ffd42589608b05fee90ff9b9628e",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "234df8c7012cb14f698da1d4484144f1288c12ce"
+    },
+    "controller_source_commit": "b7816b902fc50865dee2c5c4b5dc4ca10443474b",
+    "controller_regression_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001",
+    "main_verify_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636973974",
+    "release_policy_verified": "development channel, rc_publication_cleared false; both legacy native and release publishers guarded",
+    "scope": "Fail closed when a native target or host tile, ownership, or loaded state changes inside Forge capability discovery; production inventory mutations remain under existing escrow and per-call guards.",
+    "evidence_limits": [
+      "No exact-source native scenario/restart/JAR acceptance at this checkpoint unless CI finishes and receipts are inspected",
+      "No installed third-party mod/provider qualification from the adversarial built-in fixture",
+      "No current-client screenshot, dedicated multiplayer, arbitrary migration, or sustained performance acceptance",
+      "Original 1.6.4 gravel/native fixture intermittent failure still lacks a reproduced cause",
+      "No RC clearance or new GitHub/CurseForge upload"
+    ]
+  },
+  "verification": {
+    "branch_publication_policy_checked_before_push": true,
+    "main_controller_regressions": "PASS in hourly discovery job 122646070328",
+    "main_verify_run": 40636973974,
+    "main_verify": "PASS",
+    "legacy_source_readback": "PASS",
+    "native_action_status_at_checkpoint": "in_progress",
+    "native_action_conclusion_at_checkpoint": null,
+    "qualified_product_jar": false,
+    "published_git_rc": false,
+    "curseforge_new_upload": false
+  },
+  "prior_112_accepted": {
+    "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
+    "exact_native_run": 40607180135,
+    "hourly_run": 40610348219,
+    "expected_native_scenarios": 391,
+    "observed_native_scenarios": 391,
+    "artifact_id": 12783610988,
+    "qualification": "PASS_PINNED_NATIVE_SAVE_REOPEN_MIGRATION_ONLY",
+    "release_cleared": false
+  },
+  "prior_164_accepted": {
+    "source_commit": "01eeced04350c24cb11211838744937f0c067506",
+    "native_run": 40630703237,
+    "ordinary_native": "365/365",
+    "explanation": "Preserved exact prior evidence; does not close intermittent gravel overwrite"
+  },
+  "outstanding": [
+    "Inspect exact e567fe3 native 1.12.2 action40636413380 and hourly controller40636974001; verify true392/392, restart/decode/provider/historical JVM counts, native/preview.3 migration, exact production hash/packaging, and publisher skip before promoting its native gate.",
+    "If a new native branch or controller test fails, use exact failing logs and a guarded same-branch fix, not duplicate unchanged reruns. Preserve unrelated variants and all 24 RC=false.",
+    "Reproduce original 1.6.4 x80 gravel13/falling-actor placement race in a deterministic isolated native fixture. Later successful 365/365 does not establish cause correction.",
+    "Then add installed 1.12.2 optional-provider/double-chest/alias/unload tests, exact client screenshot, multiplayer/online identities and sustained performance/migration evidence. Publish beta RC only after explicit per-target approval and immutable artifact/receipt checks."
+  ],
+  "rc_publication_cleared": {
+    "count": 0,
+    "total": 24
+  }
+}
