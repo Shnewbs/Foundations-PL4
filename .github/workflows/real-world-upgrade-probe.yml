@@ -38,7 +38,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb xauth libgl1-mesa-dri
       - name: Check independent migration evidence regressions
-        run: python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_upgrade_evidence.py'
+        run: |
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_upgrade_evidence.py'
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_release_binary_preflight.py'
+      - name: Verify actual immutable GitHub published-beta production JAR bytes (not yet installed)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p results/immutable-baseline
+          gh api repos/Shnewbs/Foundations-PL4/git/ref/tags/v0.2b.0 > results/immutable-baseline/tag-ref.json
+          gh api repos/Shnewbs/Foundations-PL4/releases/tags/v0.2b.0 > results/immutable-baseline/release.json
+          gh release download v0.2b.0 -R Shnewbs/Foundations-PL4 --pattern 'FoundationsPL4-1.21.1-0.2b.0.jar' --dir results/immutable-baseline
+          python3 control/tools/multiplayer-probe/release_binary_preflight.py \
+            --release-json results/immutable-baseline/release.json \
+            --tag-ref-json results/immutable-baseline/tag-ref.json \
+            --jar results/immutable-baseline/FoundationsPL4-1.21.1-0.2b.0.jar \
+            --receipt results/immutable-baseline/verified-binary-preflight.json
       - name: Save actual released-beta world with both player inventories
         run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py baseline results/seed --phase seed
       - name: Open copied saved world with candidate server and clients
