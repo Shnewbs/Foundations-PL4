@@ -97,8 +97,11 @@ public final class LegacyTile extends TileEntity implements ITickable {
         if(LegacyItemSafety.blocked(this)){status="Item transfer quarantined; manual inspection required";return 0;}
         if(world==null||world.isRemote||(role()!=1&&role()!=3&&role()!=6)||!LegacyPL4.enabled||owner.isEmpty()||world.isBlockPowered(pos))return 0;
         BoundedNetwork.Plan plan=network();if(plan.overflow){status="Network exceeds configured host limit";return 0;}
+        final net.minecraft.world.World transferWorld=world;
+        final BlockPos sourceHostPos=pos;
         BlockPos sourceTarget=target();String transferOwner=owner;
         IItemHandler source=inventory();if(source==null&&pending.isEmpty()){status="No loaded source inventory";return 0;}
+        final TileEntity sourceBacking=source==null?null:transferWorld.getTileEntity(sourceTarget);
         ConservingItems.Work work=new ConservingItems.Work(1024);int moved=0;Set<BlockPos> seenTargets=new HashSet<BlockPos>();seenTargets.add(target());
         for(BoundedNetwork.Point p:plan.nodes){
             TileEntity raw=world.getTileEntity(new BlockPos(p.x,p.y,p.z));if(!(raw instanceof LegacyTile))continue;LegacyTile sink=(LegacyTile)raw;
@@ -107,10 +110,17 @@ public final class LegacyTile extends TileEntity implements ITickable {
             IItemHandler destination=sink.inventory();if(destination==null||destination==source)continue;
             // Capability discovery must not silently redirect the captured route or authorization.
             if(!transferOwner.equals(owner)||!transferOwner.equals(sink.owner)||!sourceTarget.equals(target())||!destinationTarget.equals(sink.target())){status="Item route changed during provider discovery";continue;}
+            final BlockPos destinationHostPos=sink.pos;
+            final TileEntity destinationBacking=transferWorld.getTileEntity(destinationTarget);
             ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.automaticEscrow(this,sourceTarget,destinationTarget);
             int budget=LegacyPL4.itemRate-moved;
-            if(!pending.isEmpty())moved+=ConservingItems.flush(STACKS,escrow,adapt(destination),budget,LegacyPL4.slotLimit,work);
-            else if(source!=null)moved+=ConservingItems.move(STACKS,escrow,adapt(source),adapt(destination),budget,LegacyPL4.slotLimit,work);
+            ConservingItems.Inventory<ItemStack> guardedDestination=adaptTransfer(this,sink,destination,
+                    sourceHostPos,sourceTarget,destinationHostPos,destinationTarget,destinationBacking,transferOwner,transferWorld);
+            if(!pending.isEmpty())moved+=ConservingItems.flush(STACKS,escrow,guardedDestination,budget,LegacyPL4.slotLimit,work);
+            else if(source!=null)moved+=ConservingItems.move(STACKS,escrow,
+                    adaptTransfer(this,this,source,sourceHostPos,sourceTarget,sourceHostPos,sourceTarget,
+                            sourceBacking,transferOwner,transferWorld),
+                    guardedDestination,budget,LegacyPL4.slotLimit,work);
             if(moved>=LegacyPL4.itemRate||!work.available())break;
         }
         status=moved>0?"Moved "+moved+" items":pending.isEmpty()?"Waiting for items or receiving space":"Waiting with "+pending.getCount()+" items in escrow";return moved;
@@ -131,6 +141,37 @@ public final class LegacyTile extends TileEntity implements ITickable {
         public boolean same(ItemStack a,ItemStack b){return !empty(a)&&!empty(b)&&a.isItemEqual(b)&&ItemStack.areItemStackTagsEqual(a,b);}
         public ItemStack copy(ItemStack value,int count){if(count==0)return ItemStack.EMPTY;ItemStack copy=value.copy();copy.setCount(count);return copy;}
     };
+    /** Pin installed backing and authorization through every untrusted provider callback.
+     * Revoked simulations stop before extraction. Revoked executed calls fail while
+     * the existing persistent journal phase remains sealed for inspection. */
+    private static ConservingItems.Inventory<ItemStack> adaptTransfer(final LegacyTile root,
+            final LegacyTile endpoint,final IItemHandler handler,
+            final BlockPos rootPos,final BlockPos rootTarget,final BlockPos endpointPos,
+            final BlockPos inventoryPos,final TileEntity backing,final String transferOwner,
+            final net.minecraft.world.World origin){
+        return new ConservingItems.Inventory<ItemStack>(){
+            private void valid(){
+                if(origin==null||origin.isRemote||backing==null||backing.isInvalid()
+                        ||root.world!=origin||endpoint.world!=origin||root.isInvalid()||endpoint.isInvalid()
+                        ||root.side<0||root.side>5||endpoint.side<0||endpoint.side>5
+                        ||!rootPos.equals(root.pos)||!rootTarget.equals(root.target())
+                        ||!endpointPos.equals(endpoint.pos)||!inventoryPos.equals(endpoint.target())
+                        ||!transferOwner.equals(root.owner)||!transferOwner.equals(endpoint.owner)
+                        ||!origin.isBlockLoaded(rootPos,false)||!origin.isBlockLoaded(endpointPos,false)
+                        ||!origin.isBlockLoaded(inventoryPos,false)
+                        ||origin.getTileEntity(rootPos)!=root||origin.getTileEntity(endpointPos)!=endpoint
+                        ||origin.getTileEntity(inventoryPos)!=backing)
+                    throw new IllegalStateException("Inventory backing or authorization changed during provider callback");
+            }
+            public int slots(){valid();int result=handler.getSlots();valid();return result;}
+            public ItemStack extract(int slot,int amount,boolean simulate){
+                valid();ItemStack result=handler.extractItem(slot,amount,simulate);valid();return result;
+            }
+            public ItemStack insert(int slot,ItemStack value,boolean simulate){
+                valid();ItemStack result=handler.insertItem(slot,value,simulate);valid();return result;
+            }
+        };
+    }
     public static ConservingItems.Inventory<ItemStack> adapt(final IItemHandler handler){return new ConservingItems.Inventory<ItemStack>(){
         public int slots(){return handler.getSlots();}public ItemStack extract(int slot,int amount,boolean simulate){return handler.extractItem(slot,amount,simulate);}
         public ItemStack insert(int slot,ItemStack value,boolean simulate){return handler.insertItem(slot,value,simulate);}

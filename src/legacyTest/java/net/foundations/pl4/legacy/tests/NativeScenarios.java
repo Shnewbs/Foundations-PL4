@@ -188,6 +188,43 @@ public final class NativeScenarios {
                         &&looseIron()==drops&&world.getChunkProvider().getLoadedChunkCount()==loaded,
                         "detached native inventory, new tile, sink and world drops remain conserved");
             }});
+            test("automatic simulated sink revocation cannot debit source",new Runnable(){public void run(){
+                final LegacyTile root=node(export);final int[] calls=new int[2];
+                source().setInventorySlotContents(0,readerStack(32));
+                net.minecraftforge.items.ItemStackHandler handler=new net.minecraftforge.items.ItemStackHandler(1){
+                    @Override public ItemStack insertItem(int slot,ItemStack stack,boolean simulate){
+                        if(simulate){calls[0]++;root.owner="revoked-during-simulated-insert";}
+                        else calls[1]++;
+                        return super.insertItem(slot,stack,simulate);
+                    }
+                };
+                world.setTileEntity(sink.east(),new AliasChest(handler));
+                int drops=looseIron(),loaded=world.getChunkProvider().getLoadedChunkCount();
+                boolean denied=false;try{root.transferOnce();}catch(IllegalStateException expected){denied=true;}
+                check(denied&&calls[0]>0&&calls[1]==0
+                        &&readerCount(source().getStackInSlot(0))==32&&handler.getStackInSlot(0).isEmpty()
+                        &&root.pending.isEmpty()&&journalEntries()==0&&looseIron()==drops
+                        &&world.getChunkProvider().getLoadedChunkCount()==loaded,
+                        "revocation in simulation must stop the later executed extraction without mutation");
+            }});
+            test("automatic executed source revocation seals uncertain extraction",new Runnable(){public void run(){
+                final LegacyTile root=node(export);final int[] executed=new int[1];
+                net.minecraftforge.items.ItemStackHandler handler=new net.minecraftforge.items.ItemStackHandler(1){
+                    @Override public ItemStack extractItem(int slot,int amount,boolean simulate){
+                        ItemStack out=super.extractItem(slot,amount,simulate);
+                        if(!simulate){executed[0]++;root.side=5;}
+                        return out;
+                    }
+                };
+                handler.setStackInSlot(0,readerStack(32));
+                world.setTileEntity(export.west(),new AliasChest(handler));
+                boolean denied=false;try{root.transferOnce();}catch(IllegalStateException expected){denied=true;}
+                check(denied&&executed[0]==1&&readerCount(handler.getStackInSlot(0))==24
+                        &&destination().getStackInSlot(0).isEmpty()&&LegacyItemSafety.blocked(root)
+                        &&journalEntries()>0,"post-extraction route revocation retains an unresolved original-route journal");
+                check(root.transferOnce()==0&&executed[0]==1&&readerCount(handler.getStackInSlot(0))==24,
+                        "sealed uncertain extraction must not retry or generate new inventory");
+            }});
             test("wireless metadata callback cannot insert into detached chest",new Runnable(){public void run(){
                 EntityPlayer p=wirelessPlayer();int beforeDrops=looseIron();
                 MetadataSwapChest old=new MetadataSwapChest();
