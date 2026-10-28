@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1904PT-gravel-repro",
-    "started_at": "2026-10-28T02:07:23Z",
-    "expires_at": "2026-10-28T02:40:00Z",
-    "scope": "1.6.4 native decode placement and evidence retention; main ledger reconciliation",
-    "base_commit": "54245eafc2f723b6cb56b1d57386cce297243f2c"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,18 +14,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 PT: 1.12.2 ac86a7b fully passed exact-source 391/391 native, 44 separate restart JVMs, production boot and preview.3 migration in branch 40607180135 and hourly 40610348219; scoped native qualification only. 1.6.4 5353412 hourly passed 365/365 + restart but its independent branch 40606652228 failed decode-rewrite x80 placement. New 1.6.4 diagnostic-only a8b727f is CI in progress; failure not resolved. No RC clearance or new release.",
+  "current_checkpoint": "2026-10-27 19:28 PT: mc/1.6.4 fixture-only gravel isolation and exact log guard added at 089135e; final native 40619744184 passes 365/365 + 40 decode/4 provider JVMs, 80 placements and 80 ceiling receipts, production SRG unchanged. Retained 40606652228 raw failure correctly attributed decode-scope/crash-write x80 actual gravel13 versus PL4 3501 (NOT decode-rewrite). Accepted runs removed 0 actual falling entities; mechanism remains unproven. All 24 RC clearances false; no release/upload.",
   "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
   "next_work": [
-    "Reconcile exact final 1.6.4 a8b727f native CI run 40613343806; inspect any error row at 80,200,32, bounded gravel/falling entity neighbors and retained phase process/JAR evidence without blind retry",
-    "Trace intermittent native gravel/terrain placement lifecycle before changing fixture or production behavior; preserve both failing branch and passing hourly same-source runs",
-    "Obtain installed-provider, actual-client, multiplayer, arbitrary-migration and sustained-performance acceptance for 1.12.2 native-qualified ac86a7b",
-    "Continue exact-target modernization/parity gaps while keeping 24 RC publication flags false until explicit release clearance"
+    "Reproduce and trace 1.6.4 decode-scope/crash-write x80 falling gravel/block replacement under controlled native physics; current scoped ceiling/actor isolation passes but never encountered a live falling entity in the accepted run, so do not claim original root cause fixed.",
+    "Inspect installed optional provider and disconnected alias behavior in 1.12.2 ac86a7b current production client, multiplayer with online identities/dimension travel, and sustained performance; retain native/migration scope.",
+    "Continue 22 modern exact-target parity and client/provider validation; all 24 explicit RC publication flags remain false.",
+    "Check trusted hourly-builds.yml exact-target artifacts before reruns; no stale legacy publisher replay, no unqualified GitHub/CurseForge RC."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
   "main_native_validation_run": 40448042043,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
@@ -52,11 +46,12 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261027T1801PT-placement-diagnostics",
-    "released_at": "2026-10-28T01:14:33.610Z",
-    "checkpoint": "Native 1.12.2 qualification reconciled; same-source 1.6.4 conflicting x80 placement outcomes retained; diagnostic-only 1.6.4 source pushed under guarded ref, no RC publication",
-    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
-    "source_commit": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
+    "owner": "pl4-chat-hourly-20261027T1904PT-gravel-repro",
+    "released_at": "2026-10-28T02:28:00Z",
+    "checkpoint": "mc/1.6.4 accepted private native fixture gravity isolation/guard evidence, original x80 native failure suite corrected, global RC uncleared; no publication",
+    "evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+    "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+    "branch_run": 40619744184,
     "rc_publication_cleared": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
@@ -346,9 +341,15 @@
     "intermittent_placement_root_cause_resolved": false,
     "final_diagnostic_commit": "a8b727f96879d5da9df4417d6f10d6b7f8a917fa",
     "final_diagnostic_run": 40613343806,
-    "final_diagnostic_status": "in_progress",
+    "final_diagnostic_status": "success",
     "rc_publication_cleared": false,
-    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
+    "followup_gravity_isolation_source": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+    "followup_native_run": 40619744184,
+    "followup_result": "PASS_PINNED_NATIVE_ONLY",
+    "latest_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+    "original_failure": "decode-scope/crash-write native x80 gravel replacement; prior decode-rewrite characterization corrected",
+    "original_failure_cause_resolved": false
   },
   "latest_112_metadata_callback_candidate": {
     "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
@@ -366,13 +367,20 @@
     "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
   },
   "latest_legacy_placement_reconciliation": {
-    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
-    "sources": [
-      "ac86a7bb14de8f60810c515def14b204d6510591",
-      "53534128528374c43056e21804a79846968f17ce",
-      "a8b727f96879d5da9df4417d6f10d6b7f8a917fa"
-    ],
-    "native_run": 40610348219,
-    "final_diagnostic_run": 40613343806
+    "evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+    "original_failed_run": 40606652228,
+    "corrected_original_failure_suite": "decode-scope/crash-write",
+    "exact_failed_x80_block_id": 13,
+    "exact_expected_x80_block_id": 3501,
+    "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+    "qualified_branch_run": 40619744184,
+    "artifact_id": 12787256527,
+    "native_scenarios": "365/365",
+    "decode_jvms": 40,
+    "provider_jvms": 4,
+    "actual_native_placement_receipts": 80,
+    "gravity_preflight_receipts": 80,
+    "actual_falling_entities_removed_in_accepted_runs": 0,
+    "scope": "scoped private fixture isolation only; original cause still unproven"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-26",
+  "recorded_date": "2026-10-27",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -1093,15 +1093,15 @@
         "source_commit": "c4aad343a4c449adbfaaaf06334e2bd0aadc7502",
         "runtime_sha256": "7307f7d8de5b009b543a68b6fab428814b4173118f0e983179c024e37cff925a"
       },
-      "workflow_run": 40448042043,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40448042043",
-      "source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
-      "runtime_sha256": "246afad2dad9d6e1e833988a3a092a4e16d67d3319e656d3087685b8e18e7461",
+      "workflow_run": 40619744184,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40619744184",
+      "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+      "runtime_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
       "acceptance_evidence": "acceptance/rc-dev-legacy-wireless-native.json",
-      "candidate_source_commit": "829ceafa6614010b5dc685fd8200425fd180e39c",
+      "candidate_source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
       "client_visual_acceptance": "PARTIAL_2_CURRENT_CAPTURES_REVIEWED_21_HASHED",
       "integrated_wireless_actions": "PASS_CURRENT_EXACT_JAR_GROUPING_VARIANTS_CONSERVATION_TRANSFER_SEARCH_SORT_STALE_REPLAY_CODECS",
       "world_display_acceptance": "PARTIAL_CURRENT_STOCK_PROBE_PASS_PRIOR_DISPLAY_VISUAL_REVIEW",
@@ -1116,7 +1116,7 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+      "hourly_native_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
       "observed_native_fixtures": 365,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
@@ -1165,7 +1165,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Repaired failed-phase evidence loss in1.6.4 native restart runner and added native fixture placement diagnostics. Exact raw JSON is copied before parsing/acceptance; PID/exit/log/report hashes survive missing/malformed/failed reports. Four retention and150 targeted local controller tests pass;201 discovery tests plus4 retention tests pass in pinned CI. Changed164 source829ceafa passes365/365,decode1536/40 JVMs,provider188/historical60;all80 native placement observations and44 process manifests verified. All20 raw decode worlds and12 newly packaged hashes across164/main qualify;main192 passes. Production164 JAR is byte-identical246afad2, retaining prior client evidence without a new client/capture review. Independent branch40448018062 passes with publisher skipped. Original40442840965 placement NPE remains unresolved; lost phase report cannot establish x, failed dereference or partial assertions. All24 RC flagsfalse;no new release/upload.",
+      "acceptance_attribution": "Fixture-only 1.6.4 source 089135e completes 365/365 exact native, 40 decode and 4 provider JVMs, 80 native placement observations, 80 gravity guard receipts, 20 retained decode worlds; production SRG bytes unchanged (6530959a). Original 40606652228 failure was decode-scope/crash-write x80 native gravel13, previously mislabeled decode-rewrite. Acceptance run 40619744184 had zero in-flight gravel removed, so original intermittent mechanism remains unproven. Existing stock client evidence is prior byte-identical payload, not a fresh client run. Provider/multiplayer/migration/perf and all RC publication gates remain open.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40443746113,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1577,7 +1577,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-27 PT: Reconciled exact-source 1.12.2 ac86a7b 391/391 native, 44 separate native process restart JVMs, production-only boot and preview.3 migration (40607180135, hourly 40610348219; runtime SHA 8856b7ae...). Previous 1.6.4 5353412 passed hourly 365/365 +44 JVMs but its independent branch 40606652228 failed native decode-rewrite x80; root cause unresolved. Added bounded fail-closed 1.6.4 placement/falling-block diagnostics at a8b727f, CI running. All 24 RC clearances false; no release.",
+  "latest_work": "2026-10-27 19:28 PT: Completed 1.6.4 native fixture-only falling-gravel and ceiling isolation plus exact 4-column guard receipt assertions. Pushed 089135e, qualified branch native 40619744184 (365/365 ordinary, 40 decode + 4 provider JVMs, 20 persisted worlds, 80 native placements and 80 valid guard receipts, unchanged production SRG 6530959a). Fixed malformed test-only Python escapes from intermediate failed 40619649369. Original failed 40606652228 was decode-scope/crash-write at x80 (block13 gravel vs expected3501); previous ledger incorrectly named decode-rewrite. No live falling entity in new accepted runs, so original cause remains unproven. All24 RC clearances false, no GitHub/CurseForge RC.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1799,7 +1799,13 @@
     "diagnostic_result_at_checkpoint": "pending",
     "intermittent_failure_resolved": false,
     "rc_publication_cleared": false,
-    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json"
+    "evidence": "docs/acceptance/rc-dev-legacy-placement-reconciliation-2026-10-28.json",
+    "gravity_fixture_source": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+    "gravity_fixture_native_run": 40619744184,
+    "gravity_fixture_result": "PASS_PINNED_NATIVE_ONLY",
+    "gravity_fixture_evidence": "docs/acceptance/rc-dev-legacy-gravity-isolation-2026-10-28.json",
+    "original_failure_corrected_to": "decode-scope/crash-write x80 native block13 gravel",
+    "original_failure_root_cause_resolved": false
   },
   "latest_112_metadata_callback_checkpoint": {
     "recorded_date": "2026-10-27 PT",

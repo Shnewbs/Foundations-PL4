@@ -1,0 +1,105 @@
+{
+  "recorded_at": "2026-10-28T02:28:00Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "writer": "pl4-chat-hourly-20261027T1904PT-gravel-repro",
+  "source_policy": "main and existing mc/1.6.4 only; guarded expected-parent ref updates, no force push or R16 attachment",
+  "failure_reconciliation": {
+    "original_failed_source": "53534128528374c43056e21804a79846968f17ce",
+    "failed_branch_run": 40606652228,
+    "failed_artifact_id": 12782150613,
+    "exact_failed_suite": "decode-scope",
+    "exact_failed_phase": "crash-write",
+    "failure_coordinate": [
+      80,
+      200,
+      32
+    ],
+    "expected_native_block": 3501,
+    "observed_native_block": 13,
+    "initial_block": 0,
+    "set_block_reported_changed": true,
+    "tile_present": false,
+    "phase_report_passed": false,
+    "failed_phase_report_path": "verification-logs/item-decode-scope-restart-crash-write.json",
+    "correction": "Earlier ledger described decode-rewrite from Python loop trace; actual retained raw report proves decode-scope/crash-write. No actual in-flight falling entity was recorded in that old report, so causality is unproven.",
+    "baseline_failure_artifact_sha256": "f6fb7823ff9193a5c8d49db1a9212f123f3c48b4488b93d25d9a0b776b321018"
+  },
+  "implementation": {
+    "branch": "mc/1.6.4",
+    "accepted_source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
+    "changed_files": [
+      "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+      "tools/verify_legacy_item_restart.py",
+      "tools/test_restart_phase_retention.py"
+    ],
+    "scope": "Disposable, already-loaded native decode-restart fixture: remove falling sand/gravel entities occupying four exact target columns, reject missing stone ceiling at y201, preserve strict no-retry/no-synthetic-tile native placement and add four unique guard log receipts per write phase. No production runtime mutation.",
+    "first_candidate_commit": "cb8e89fd5156b7ded335fc77e24b02c34762d511",
+    "first_run": 40619649369,
+    "first_run_conclusion": "failure",
+    "first_failure": "New private Python regex/newline escape error; corrected in guarded follow-up commit",
+    "corrected_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b"
+  },
+  "validated_exact_source": {
+    "run": 40619744184,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40619744184",
+    "conclusion": "success",
+    "workflow": "Forge 1.6.4 experimental native validation",
+    "artifact_id": 12787256527,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40619744184/artifacts/12787256527",
+    "artifact_zip_sha256": "3c8811385134853621657dd25efa777be056515795373f924150ed1fb4cd4965",
+    "zip_crc": "PASS",
+    "zip_members": 193,
+    "ordinary_native": {
+      "passed": 365,
+      "total": 365,
+      "failed": 0
+    },
+    "native_forge": "9.11.1.1345",
+    "runtime_java": 7,
+    "installed_production_srg_jar_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12",
+    "production_bytes_identical_to_prior_5353412": true,
+    "independent_provider_restart_jvms": 4,
+    "distinct_decode_restart_jvms": 40,
+    "decoded_native_worlds": 20,
+    "actual_native_decode_placements": 80,
+    "native_guard_receipts": 80,
+    "all_guard_ceilings_true": true,
+    "removed_static_falling_blocks_in_accepted_runs": 0,
+    "removed_falling_entities_in_accepted_runs": 0,
+    "source_fixture_integrity": "verified in exact pinned GitHub artifact",
+    "independent_private_runner_unit_tests": 9,
+    "release_step": "skipped_due_development_source"
+  },
+  "existing_other_target": {
+    "minecraft": "1.12.2",
+    "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
+    "workflow_run": 40607180135,
+    "hourly_run": 40610348219,
+    "native_passed": 391,
+    "native_total": 391,
+    "distinct_restart_jvms": 44,
+    "accepted_scope": "Prior native, save/reopen, production boot, generated preview.3 migration only; no new 1.12.2 source or validation here"
+  },
+  "publishing": {
+    "rc_targets_cleared": 0,
+    "total_targets": 24,
+    "github_rc_published": false,
+    "curseforge_new_upload": false,
+    "branch_publisher_guard_prechecked": true,
+    "version": "0.2.0-rc.1-dev",
+    "release_channel": "development",
+    "version_specific_publish_step": "skipped",
+    "existing_releases_unchanged": true
+  },
+  "remaining": {
+    "root_cause_of_original_native_gravel_replacement": "unproven; new accepted runs did not encounter in-flight gravel",
+    "tests_not_run": [
+      "new installed optional provider/alias tests",
+      "new stock Minecraft client capture review",
+      "new dedicated multiplayer/online identities",
+      "new arbitrary modpack save migration",
+      "new sustained full-server active-provider performance"
+    ],
+    "next": "Investigate entity/physics collision under controlled reproducible native falling-gravel activation, preserve actual failed raw-report evidence, then add installed provider/client/multiplayer acceptance; do not invent RC clearance"
+  }
+}
