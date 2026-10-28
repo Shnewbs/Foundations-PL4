@@ -1,0 +1,86 @@
+{
+  "checked_at": "2026-10-28T21:21:39.953Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Exact-source 1.21.1 native provider callback authorization plus current-source released-beta world-upgrade probe; not RC clearance",
+  "writer": "pl4-hourly-chat-20261028T2105-acceptance",
+  "production_changes": {
+    "initial_source": "ff713ed2cc4941da49891eadc05be2bab84a28f9",
+    "static_regression_repair": "18fbc6169847dbee284efa3bbb21271963b2864f",
+    "post_extraction_escrow_repair": "347a497808877721d40d05ec4b5c860c2dfac8f1",
+    "final_pinned_source": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+    "files": [
+      "src/main/java/net/foundations/pl4/WirelessStorage.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+      "BUILD_STATUS.json",
+      "tools/verify_r16.py"
+    ],
+    "behavior": "Validate binding, host/part identity, live ownership and permissions, loaded topology and adjacent target after external handler enumeration, item read, simulation and before/after mutating callbacks. Preserve actual extracted pendingItem and mark uncertain quarantine on post-extraction authorization loss.",
+    "native_new_cases": [
+      "wirelessStorageCapabilityReadCannotKeepRevokedRoot (also checks actual 4-item post-provider extraction held in escrow)",
+      "wirelessStorageCapabilityReadCannotKeepRevokedEndpoint"
+    ],
+    "new_native_total": 194,
+    "known_scope": "Fixture and in-process callback revocation coverage only; real installed third-party providers and unloaded/disconnected backing aliases remain unqualified."
+  },
+  "first_failure": {
+    "run_id": 40769689387,
+    "source": "ff713ed2cc4941da49891eadc05be2bab84a28f9",
+    "reason": "tools/verify_r16.py still expected 30 R16 GameTests after two native cases were added; offline static gate failed before Java/native",
+    "resolution": "Updated exact contract to 32 R16 tests",
+    "preserved": true
+  },
+  "qualified_prior_source": {
+    "source": "18fbc6169847dbee284efa3bbb21271963b2864f",
+    "verify_run_id": 40769944385,
+    "native_tests_passed": 194,
+    "native_tests_total": 194,
+    "scope": "Before additional post-extraction escrow fixture; prior passing source is distinct"
+  },
+  "validated_source": {
+    "source_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+    "pinned_hourly_run": 40770696373,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696373",
+    "native_jvm_scenarios_passed": 194,
+    "native_jvm_scenarios_expected": 194,
+    "verify_run": 40770696465,
+    "verify_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696465",
+    "native_status": "PASS",
+    "archive_artifact_id": 12852707753,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696373/artifacts/12852707753",
+    "artifact_zip_sha256": "7546c6a365ae0ad53f982dfa8978b1727f3656ccd8e1962499d147550d451f66",
+    "packaged_jar_sha256": {
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "1c1796920bb81e1c97b3ea4672dea8d27c28a84186282d1af27f59573497a0ac",
+      "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8941927bcb95a1d886f3caa59295e387fe6dd60ae30c9b5a197b68905985e3e8"
+    },
+    "scope": "Exact-source standalone native GameTest and source/JAR manifest attestation only"
+  },
+  "world_upgrade": {
+    "workflow_change_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+    "baseline_release": "v0.2b.0",
+    "baseline_immutable_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "removed_obsolete_candidate": "1cb1ee0eec9813a1e167c78258f361edf8278921",
+    "tested_candidate": "${{ github.sha }}",
+    "run_id": 40770696422,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696422",
+    "status_at_checkpoint": "in_progress",
+    "acceptance": "PENDING_OR_FAILED_NOT_ACCEPTED",
+    "scope": "Released-beta sampled world and two real loopback clients; not arbitrary modpack saves or full multiplayer acceptance"
+  },
+  "publication": {
+    "policy_run": 40770696444,
+    "github_release_step": "SKIPPED_DEVELOPMENT",
+    "curseforge_upload_step": "SKIPPED_DEVELOPMENT",
+    "cleared_exact_targets": 0,
+    "total_targets": 24,
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "existing_older_releases_preserved": true
+  },
+  "next": [
+    "Inspect current released-beta upgrade run artifacts, saved world hash, player/owner identities and real client logs; preserve failure receipt if any.",
+    "Complete installed third-party provider swaps and disconnected/unloaded inventory aliases without force-load; verify real callback mutation and escrow after native restart.",
+    "Obtain current exact-JAR client screenshots and dedicated multiplayer/dimension/profile validation; sustained active-provider performance and arbitrary-world migration.",
+    "Retain legacy 1.6.4 unresolved natural x=80 falling-gravel causality and legacy branch publication preflights; no RC until every applicable exact target clears."
+  ]
+}

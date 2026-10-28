@@ -440,7 +440,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 192,
+      "expected_native_fixtures": 194,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -451,14 +451,14 @@
       },
       "native_gate": "PASS",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
-      "workflow_run": 40448042043,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40448042043",
+      "source_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+      "workflow_run": 40770696373,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696373",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
-      "build_status_blob_sha": "b246e351135f96c125c2df586fb1a7ba21cfbaca",
-      "observed_native_fixtures": 192,
-      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
+      "observed_native_fixtures": 194,
+      "runtime_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -536,6 +536,16 @@
         "workflow_run": 40436915385
       },
       "latest_hourly_native": {
+        "source_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+        "run_id": 40770696373,
+        "expected_native_scenarios": 194,
+        "observed_native_scenarios": 194,
+        "artifact_id": 12852707753,
+        "artifact_zip_sha256": "7546c6a365ae0ad53f982dfa8978b1727f3656ccd8e1962499d147550d451f66",
+        "production_runtime_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+        "scope": "Current native 194/194 and source/JAR attestation; no client, installed-provider, multiplayer, migration or performance RC clearance"
+      },
+      "prior_hourly_native": {
         "source_commit": "781395dc6493a71725da9299671af2cf1372757b",
         "run_id": 40766042082,
         "expected_native_scenarios": 192,
@@ -1753,7 +1763,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-28T20:21:01.607Z: Frozen obsolete generic release.yml on mc/1.12.2 and mc/1.6.4, preserving branch-native publishers, explicit RC clearance and immutable receipt preflights. 1.6.4 f5c79e8 passes native372/372 and restart/historical run40761058763, exact SRG SHA1656e86e..., artifact12849095502 SHA b5020592...; no publication. 1.12 policy first red 40760919935 due escaped regex, corrected 05960aa0 policy PASS run40761009320; full native pending. 1.12 same-source af1feb4 two passing runs 40752206494/40754013917 yielded differing full JAR SHA39edfc.../c495f5..., but all142 ZIP entries have identical ordered payloads and only timestamps differ. Independent Java normalization of both gives identical SHA020e2cd... preserving 142/142 contents. Pushed 1.12 Gradle post-reobf timestamp normalization and native timestamp gate 6b9acb5; run40761899439 queued and unqualified. Previous hourly40754013917 pass 1.12 399/399 + 1.21.1, hourly40757651587 pass 1.21.1 192/192. All24 RC flags false; no GitHub or CurseForge release.",
+  "latest_work": "2026-10-28T21:21:39.953Z: Pushed 1.21.1 WirelessStorage post-provider permission/identity rechecks and preserved real post-extraction escrow on ownership revocation (ff713ed2, corrected contract18fbc616, finalized347a497). First verify40769689387 red on static 30-vs-32 test contract; exact source347a497 verified194/194 in40770322178. Fixed released-beta world upgrade workflow to pin baseline v0.2b.0 to 7c7c07 and current candidate to github.sha (c967590), regression passed; native hourly40770696373 PASS194/194 at c967590, runtime SHA cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c, ZIP 7546c6a365ae0ad53f982dfa8978b1727f3656ccd8e1962499d147550d451f66, unchanged 23 other tracks deduplicated; current source verify40770696465 PASS. World upgrade40770696422 in_progress, no acceptance yet. All24 RC clearance flags false, release and CurseForge steps skipped.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2878,6 +2888,18 @@
     "run_id": 40766042082,
     "forge112_native": "399/399 PASS, identical JAR SHA across independent source builds",
     "forge164_native": "372/372 PASS, identical SRG JAR SHA across independent source builds",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_live_provider_authority": {
+    "evidence": "docs/acceptance/rc-dev-1211-provider-authority-and-current-world-upgrade-2026-10-28.json",
+    "source_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
+    "source_prod_fix": "347a497808877721d40d05ec4b5c860c2dfac8f1",
+    "native_run": 40770696373,
+    "native_scenarios": "194/194",
+    "runtime_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "artifact_id": 12852707753,
+    "world_upgrade_run": 40770696422,
+    "world_upgrade_status": "in_progress",
     "rc_publication_cleared": false
   }
 }
