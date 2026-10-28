@@ -69,6 +69,30 @@ class HourlyBuildTests(unittest.TestCase):
             self.assertFalse(builds.retained_pass(REPO, 'wanted', lookup, {}))
         self.assertFalse(builds.retained_pass(REPO, 'wanted', lambda _: {'artifacts':[{'name':'wanted','expired':True}]}, {}))
 
+    def test_26x_retained_artifact_requires_current_native_attestation(self):
+        # A historical same-SHA 26.x artifact lacks the now-mandatory
+        # native_coverage and per-profile JAR/log identity. Rebuild just 26.x.
+        from urllib.parse import parse_qs, urlsplit
+        self.assertEqual(builds.artifact_name('1.21.1', SHA), 'hourly-native-1.21.1-' + SHA)
+        self.assertEqual(builds.artifact_name('26.3', SHA), 'hourly-native-26.3-' + SHA + '-native-attestation-v2')
+        with self.assertRaises(ValueError):
+            builds.artifact_name('26.3', 'not-a-commit')
+
+        def lookup(path):
+            if '/branches/' in path:
+                return {'commit': {'sha': SHA}}
+            if '/artifacts?' in path:
+                wanted = parse_qs(urlsplit(path).query)['name'][0]
+                historical = wanted.removesuffix('-native-attestation-v2')
+                return {'artifacts': [{'name': historical, 'expired': False, 'workflow_run': {'id': 1}}]}
+            return dict(path=builds.WORKFLOW, status='completed', head_branch='main',
+                        event='schedule', head_repository={'full_name': REPO})
+
+        selected = builds.discover(self.ledger, REPO, lookup=lookup)
+        self.assertEqual({row['minecraft'] for row in selected}, {'26.1', '26.1.2', '26.2', '26.3'})
+        self.assertTrue(all(row['artifact_name'] == builds.artifact_name(row['minecraft'], SHA)
+                            for row in selected))
+
     def test_force_rebuild_does_not_reuse_artifact(self):
         def lookup(path):
             self.assertIn('/branches/', path)

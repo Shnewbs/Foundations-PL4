@@ -35,6 +35,19 @@ def targets(ledger):
     return result
 
 
+def artifact_name(minecraft, source_sha):
+    """Version 26.x evidence names after mandatory loader/count/JAR attestation.
+
+    Retained artifacts created before that gate lack native_coverage and must not
+    silently satisfy the stronger exact-source controller, even at the same SHA.
+    Other exact targets retain their existing successful-artifact identities.
+    """
+    if not re.fullmatch(r"(?:1|26)\.\d+(?:\.\d+)?", minecraft) or not re.fullmatch(r"[0-9a-f]{40}", source_sha):
+        raise ValueError("Invalid exact-target artifact identity")
+    suffix = "-native-attestation-v2" if minecraft.startswith("26.") else ""
+    return f"hourly-native-{minecraft}-{source_sha}{suffix}"
+
+
 def retained_pass(repo, name, lookup, run_cache):
     data = lookup(f"repos/{repo}/actions/artifacts?" + urlencode(dict(name=name, per_page=100)))
     for artifact in data["artifacts"]:
@@ -103,15 +116,15 @@ def discover(ledger, repo, force=False, lookup=api, now=None):
         sha = branch["commit"]["sha"]
         if not re.fullmatch(r"[0-9a-f]{40}", sha):
             raise ValueError("Invalid pinned commit")
-        name = f"hourly-native-{row['minecraft']}-{sha}"
+        name = artifact_name(row["minecraft"], sha)
         if force:
-            selected.append(dict(row, sha=sha))
+            selected.append(dict(row, sha=sha, artifact_name=name))
             continue
         if retained_pass(repo, name, lookup, cached_runs):
             continue
         if environment_retry_deferred(ledger, row, sha, now=now):
             continue
-        selected.append(dict(row, sha=sha))
+        selected.append(dict(row, sha=sha, artifact_name=name))
     return selected
 
 

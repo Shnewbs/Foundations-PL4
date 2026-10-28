@@ -135,7 +135,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: passed_artifact
         with:
-          name: hourly-native-${{ matrix.minecraft }}-${{ matrix.sha }}
+          name: ${{ matrix.artifact_name }}
           path: |
             port/verification-logs/
             port/build/libs/*.jar
