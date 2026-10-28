@@ -212,6 +212,32 @@ public final class NativeScenarios {
             test("wireless node identity survives native NBT",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();LegacyTile copy=new LegacyTile();copy.readFromNBT(saveFluid(fluidNode(0)));check(copy.wirelessIdentity.equals(fluidNode(0).wirelessIdentity),"saved anchor");}});
             test("wireless replacement requires rebind",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidAir(0,200);fluidBlock(0,LegacyPL4.EXPORT);fluidNode(0).owner=fluidOwner();check(LegacyWirelessStorage.resolve(p,wirelessTool(p))==null,"new host identity");}});
             test("wireless owner change invalidates tool",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(0).owner="changed";check(LegacyWirelessStorage.resolve(p,wirelessTool(p))==null,"ownership rechecked");}});
+            test("wireless downstream view revocation hides prior snapshots",new Runnable(){public void run(){
+                final EntityPlayer p=wirelessPlayer();final ItemStack binding=wirelessTool(p);final LegacyTile root=fluidNode(0);
+                FaultyChest malicious=new FaultyChest(){boolean revoke=true;
+                    @Override public ItemStack getStackInSlot(int slot){ItemStack value=super.getStackInSlot(slot);
+                        if(revoke){revoke=false;root.owner="revoked-during-view";}return value;}
+                };
+                world.setBlockTileEntity(3,200,0,malicious);malicious.setInventorySlotContents(0,readerStack(32));
+                java.util.List<LegacyWirelessStorage.Entry> exposed=LegacyWirelessStorage.entries(p,binding);
+                check(exposed.isEmpty()&&root.owner.equals("revoked-during-view")
+                        &&readerCount(malicious.getStackInSlot(0))==32&&wirelessIron(p)==0,
+                        "downstream provider read cannot return stale authorized rows after controller revocation");
+            }});
+            test("wireless downstream metadata revocation cannot debit player",new Runnable(){public void run(){
+                final EntityPlayer p=wirelessPlayer();final ItemStack binding=wirelessTool(p);final LegacyTile root=fluidNode(0);
+                for(int i=0;i<27;i++)source().setInventorySlotContents(i,readerStack(64));
+                FaultyChest malicious=new FaultyChest(){boolean revoke=true;
+                    @Override public int getSizeInventory(){int size=super.getSizeInventory();
+                        if(revoke){revoke=false;root.owner="revoked-during-metadata";}return size;}
+                };
+                world.setBlockTileEntity(3,200,0,malicious);p.inventory.setInventorySlotContents(9,readerStack(32));
+                check(LegacyWirelessStorage.deposit(p,binding,9,17)==0
+                        &&root.owner.equals("revoked-during-metadata")
+                        &&readerCount(p.inventory.getStackInSlot(9))==32
+                        &&readerCount(malicious.getStackInSlot(0))==0,
+                        "downstream metadata callback revocation cannot debit player or credit destination");
+            }});
             test("wireless snapshots never expose mutable inventory",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));java.util.List<LegacyWirelessStorage.Entry> entries=LegacyWirelessStorage.entries(p,wirelessTool(p));check(entries.size()==1,"one occupied slot");entries.get(0).snapshot.stackSize=1;check(readerCount(source().getStackInSlot(0))==32,"defensive copy");}});
             test("wireless withdrawal conserves native items",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==17,"withdrawn amount");check(readerCount(source().getStackInSlot(0))==15&&wirelessIron(p)==17&&LegacyWirelessStorage.ready(fluidNode(0)),"conserved and settled");}});
             test("wireless deposit conserves native items",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();p.inventory.setInventorySlotContents(9,readerStack(32));check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==17,"deposited amount");check(wirelessIron(p)==15&&readerCount(source().getStackInSlot(0))==17&&LegacyWirelessStorage.ready(fluidNode(0)),"deducted before provider");}});

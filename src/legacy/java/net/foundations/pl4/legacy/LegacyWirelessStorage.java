@@ -27,6 +27,12 @@ public final class LegacyWirelessStorage {
         if(!root.fluidServer()||!root.canEdit(player)||root.owner.isEmpty()||!root.owner.equals(tag.getString("Owner"))||!root.wirelessIdentity.equals(tag.getString("Anchor"))||root.role()==5||root.role()==8)return null;
         return root;
     }
+    /** Keep the original player's binding authoritative after untrusted provider reads.
+     * In particular, a downstream chest cannot revoke the controller while still
+     * supplying rows or triggering a debit from the player's inventory. */
+    private static boolean boundRoot(EntityPlayer player,ItemStack tool,LegacyTile root){
+        return root!=null&&resolve(player,tool)==root;
+    }
     /** Identity of a native inventory instance and its actual slot, not a visible item or coordinate. */
     private static final class PhysicalSlot {
         final IInventory backing;final int slot;
@@ -117,16 +123,28 @@ public final class LegacyWirelessStorage {
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;
         Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();
-        try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
-            int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){
-                if(--left<0)return result;
-                ItemStack stack=inventory.peek(i);
-                if(!LegacyTile.STACKS.empty(stack)){
-                    PhysicalSlot id=physical(inventory.nativeInventory,i);
-                    if(seen.add(id))result.add(new Entry(node,i,stack,id));
+        try{
+            List<LegacyTile> available=endpoints(root);
+            if(!boundRoot(player,tool,root))return result;
+            for(LegacyTile node:available){
+                StorageInventory inventory=inventory(node);
+                if(!boundRoot(player,tool,root)){result.clear();return result;}
+                if(inventory==null)continue;
+                int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));
+                if(!boundRoot(player,tool,root)){result.clear();return result;}
+                for(int i=0;i<slots;i++){
+                    if(--left<0){if(!boundRoot(player,tool,root))result.clear();return result;}
+                    ItemStack stack=inventory.peek(i);
+                    if(!boundRoot(player,tool,root)){result.clear();return result;}
+                    if(!LegacyTile.STACKS.empty(stack)){
+                        PhysicalSlot id=physical(inventory.nativeInventory,i);
+                        if(seen.add(id))result.add(new Entry(node,i,stack,id));
+                    }
                 }
             }
-        }}catch(RuntimeException provider){result.clear();}return result;
+        }catch(RuntimeException provider){result.clear();}
+        if(!boundRoot(player,tool,root))result.clear();
+        return result;
     }
     public static final int MAX_SEARCH=32;
     /** Printable ASCII keeps native short-window controls bounded on both legacy protocols. */
@@ -203,7 +221,7 @@ public final class LegacyWirelessStorage {
     /** Explicit work object permits callers to share a finite transfer budget. Snapshot scans remain separately bounded by WORK_LIMIT. */
     public static int withdrawRow(EntityPlayer player,ItemStack tool,Row selected,int amount,ConservingItems.Work work){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||work==null)return 0;
-        if(!selected.grouped){Entry entry=selected.sources.get(0);return endpoints(root).contains(entry.node)?withdrawEntry(player,entry,amount,inventory(entry.node),work,false):0;}
+        if(!selected.grouped){Entry entry=selected.sources.get(0);return endpoints(root).contains(entry.node)?withdrawEntry(player,tool,root,entry,amount,inventory(entry.node),work,false):0;}
         // Reject changed counts, variants or group membership before the first extraction.
         boolean current=false;for(Row row:rows(player,tool,0,"",true))if(LegacyTile.STACKS.same(row.snapshot,selected.snapshot)){current=sameRow(row,selected);break;}
         if(!current)return 0;
@@ -213,33 +231,42 @@ public final class LegacyWirelessStorage {
             if(moved>=amount||!work.available()||resolve(player,tool)!=root)break;
             if(!endpoints(root).contains(entry.node))break;
             StorageInventory source=adapters.get(entry.node);if(source==null){if(!work.take())break;source=inventory(entry.node);if(source==null)break;adapters.put(entry.node,source);}
-            int part=withdrawEntry(player,entry,amount-moved,source,work,true);moved+=part;
+            int part=withdrawEntry(player,tool,root,entry,amount-moved,source,work,true);moved+=part;
             if(part==0||!ready(entry.node))break;
         }return moved;
     }
-    private static ConservingItems.Inventory<ItemStack> playerInventory(final EntityPlayer player,final int only){return new ConservingItems.Inventory<ItemStack>(){
-        public int slots(){return only<0?36:1;}
+    private static ConservingItems.Inventory<ItemStack> playerInventory(final EntityPlayer player,final ItemStack tool,final LegacyTile root,final int only){return new ConservingItems.Inventory<ItemStack>(){
+        public int slots(){return boundRoot(player,tool,root)?(only<0?36:1):0;}
         private int index(int slot){return only<0?slot:only;}
-        public ItemStack extract(int slot,int amount,boolean simulate){int i=index(slot);ItemStack value=player.inventory.getStackInSlot(i);if(LegacyTile.STACKS.empty(value)||tool(value))return null;
+        public ItemStack extract(int slot,int amount,boolean simulate){
+            if(!boundRoot(player,tool,root))return null;
+            int i=index(slot);ItemStack value=player.inventory.getStackInSlot(i);
+            if(!boundRoot(player,tool,root)||LegacyTile.STACKS.empty(value)||tool(value))return null;
             int n=Math.min(amount,LegacyTile.STACKS.count(value));if(simulate)return LegacyTile.STACKS.copy(value,n);
-            ItemStack taken=player.inventory.decrStackSize(i,n);player.inventory.onInventoryChanged();return taken;}
-        public ItemStack insert(int slot,ItemStack value,boolean simulate){int i=index(slot);ItemStack current=player.inventory.getStackInSlot(i);if(!LegacyTile.STACKS.empty(current)&&!LegacyTile.STACKS.same(current,value))return value;
+            ItemStack taken=player.inventory.decrStackSize(i,n);player.inventory.onInventoryChanged();
+            if(!boundRoot(player,tool,root))throw new IllegalStateException("Wireless root changed during player extraction");
+            return taken;}
+        public ItemStack insert(int slot,ItemStack value,boolean simulate){
+            if(!boundRoot(player,tool,root))return value;
+            int i=index(slot);ItemStack current=player.inventory.getStackInSlot(i);
+            if(!boundRoot(player,tool,root)||!LegacyTile.STACKS.empty(current)&&!LegacyTile.STACKS.same(current,value))return value;
             int n=Math.min(LegacyTile.STACKS.count(value),Math.max(0,Math.min(value.getMaxStackSize(),player.inventory.getInventoryStackLimit())-LegacyTile.STACKS.count(current)));
-            if(n>0&&!simulate){player.inventory.setInventorySlotContents(i,LegacyTile.STACKS.copy(value,n+LegacyTile.STACKS.count(current)));player.inventory.onInventoryChanged();}
+            if(n>0&&!simulate){player.inventory.setInventorySlotContents(i,LegacyTile.STACKS.copy(value,n+LegacyTile.STACKS.count(current)));player.inventory.onInventoryChanged();
+                if(!boundRoot(player,tool,root))throw new IllegalStateException("Wireless root changed during player insertion");}
             return LegacyTile.STACKS.copy(value,LegacyTile.STACKS.count(value)-n);}
     };}
     public static int withdraw(EntityPlayer player,ItemStack tool,Entry selected,int amount){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||!endpoints(root).contains(selected.node))return 0;
-        return withdrawEntry(player,selected,amount,inventory(selected.node),new ConservingItems.Work(WORK_LIMIT),false);
+        return withdrawEntry(player,tool,root,selected,amount,inventory(selected.node),new ConservingItems.Work(WORK_LIMIT),false);
     }
-    private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
+    private static int withdrawEntry(final EntityPlayer player,final ItemStack tool,final LegacyTile root,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
         final ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(entry.node);
         if(source==null||!ready(entry.node)||entry.slot<0||!work.take()||entry.slot>=Math.min(source.slots(),LegacyPL4.slotLimit)||!work.take())return 0;
         // A same-item chest replacement or route flip is not the physical slot the player selected.
         if(!entry.physical.equals(physical(source.nativeInventory,entry.slot)))return 0;
         ItemStack current=source.peek(entry.slot);if(exact?!ItemStack.areItemStacksEqual(current,entry.snapshot):!LegacyTile.STACKS.same(current,entry.snapshot))return 0;
         ConservingItems.Inventory<ItemStack> one=new ConservingItems.Inventory<ItemStack>(){public int slots(){return 1;}public ItemStack extract(int slot,int n,boolean simulate){return source.extract(entry.slot,n,simulate);}public ItemStack insert(int slot,ItemStack v,boolean simulate){return v;}};
-        try{return ConservingItems.move(LegacyTile.STACKS,escrow,one,playerInventory(player,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
+        try{return ConservingItems.move(LegacyTile.STACKS,escrow,one,playerInventory(player,tool,root,-1),Math.min(amount,entry.snapshot.getMaxStackSize()),Math.max(36,LegacyPL4.slotLimit),work);}
         finally{retain(entry.node);player.inventory.onInventoryChanged();}
     }
     public static int deposit(EntityPlayer player,ItemStack tool,int slot,int amount){
@@ -247,7 +274,7 @@ public final class LegacyWirelessStorage {
         ItemStack offered=player.inventory.getStackInSlot(slot);if(LegacyTile.STACKS.empty(offered)||tool(offered))return 0;
         ConservingItems.Work work=new ConservingItems.Work(WORK_LIMIT);int moved=0;
         for(LegacyTile node:endpoints(root)){ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(node);ConservingItems.Inventory<ItemStack> destination=inventory(node);if(destination==null)continue;
-            try{moved+=ConservingItems.move(LegacyTile.STACKS,escrow,playerInventory(player,slot),destination,amount-moved,LegacyPL4.slotLimit,work);}
+            try{moved+=ConservingItems.move(LegacyTile.STACKS,escrow,playerInventory(player,tool,root,slot),destination,amount-moved,LegacyPL4.slotLimit,work);}
             finally{retain(node);player.inventory.onInventoryChanged();}
             if(!ready(node)||moved>=amount||!work.available())break;
         }return moved;
