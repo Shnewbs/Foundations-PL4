@@ -60,13 +60,13 @@ def require_legacy_decode_terrain_log_match(report,native_log,phase,minecraft):
             raise ValueError('Native ambient terrain must precede deliberate rewrite gravel actor')
 
 def require_legacy_decode_placements(report,phase,minecraft):
-    """Bind the exact two native hosts to complete, ordered, unmodified placement receipts."""
+    """Bind the two native hosts and x200 journal barrier to complete, ordered placement receipts."""
     if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
         return
     rows=report.get('placements')
-    if not isinstance(rows,list) or len(rows)!=2 or any(not isinstance(row,dict) for row in rows):
+    if not isinstance(rows,list) or len(rows)!=3 or any(not isinstance(row,dict) for row in rows):
         raise ValueError('Missing, extra or malformed native decode host placements')
-    if [row.get('x') for row in rows]!=[64,80]:
+    if [row.get('x') for row in rows]!=[64,80,200]:
         raise ValueError('Missing, reordered or duplicated exact native decode host placements')
     for row in rows:
         x=row['x']
@@ -92,13 +92,13 @@ def require_legacy_decode_placement_log_match(report,native_log,phase,minecraft)
         return
     require_legacy_decode_placements(report,phase,minecraft)
     encoded=re.findall(r'PL4 DECODE PLACEMENT ([^\r\n]+)',native_log)
-    if len(encoded)!=2:
-        raise ValueError('Expected exactly two independent native placement log rows')
+    if len(encoded)!=3:
+        raise ValueError('Expected exactly three independent native placement log rows')
     try:
         logged=[json.loads(value) for value in encoded]
     except (ValueError,TypeError) as error:
         raise ValueError('Malformed native placement log JSON') from error
-    if any(not isinstance(row,dict) for row in logged) or [row.get('x') for row in logged]!=[64,80]:
+    if any(not isinstance(row,dict) for row in logged) or [row.get('x') for row in logged]!=[64,80,200]:
         raise ValueError('Missing, reordered or duplicate native placement log hosts')
     canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'))
     if canonical(logged)!=canonical(report['placements']):
@@ -109,6 +109,8 @@ def require_legacy_decode_placement_log_match(report,native_log,phase,minecraft)
             guard=native_log.find('PL4 DECODE GRAVITY GUARD x='+str(guard_x)+' ')
             if guard<0 or marker<0 or guard>=marker:
                 raise ValueError('Native placement was not after gravity isolation x='+str(x))
+    if native_log.find('PL4 DECODE PLACEMENT '+encoded[2])<=native_log.find('PL4 DECODE PLACEMENT '+encoded[1]):
+        raise ValueError('Journal x200 placement did not follow native host placements')
 
 def require_legacy_decode_gravity_guards(native_log,phase,minecraft,suite=None):
     """Require both native column isolation and a deliberately spawned actor in rewrite."""

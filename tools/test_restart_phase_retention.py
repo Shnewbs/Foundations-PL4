@@ -100,14 +100,14 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
             metadata=0,tile_class='net.foundations.pl4.legacy.LegacyTile',
             tile_invalid=False,block_exists_after=True)
     def test_exact_hosts_accepted_without_retries(self):
-        report=dict(suite='decode-raw',placements=[self.good(64),self.good(80),dict(x=200)])
+        report=dict(suite='decode-raw',placements=[self.good(64),self.good(80),self.good(200)])
         self.assertIsNone(require_legacy_decode_placements(report,'write','1.6.4'))
         self.assertIsNone(require_legacy_decode_placements(report,'verify','1.6.4'))
         self.assertIsNone(require_legacy_decode_placements(report,'write','1.12.2'))
     def test_gravel_overwrite_rejected_even_after_set_block_reports_success(self):
         other=self.good(80);other['stage']='placement_assertion'
         other['actual_block']=13;other['tile_class']=None
-        report=dict(suite='decode-raw',placements=[self.good(64),other])
+        report=dict(suite='decode-raw',placements=[self.good(64),other,self.good(200)])
         with self.assertRaisesRegex(ValueError,'x=80'):
             require_legacy_decode_placements(report,'write','1.6.4')
     def test_failed_placement_retains_json_and_reports_native_stage(self):
@@ -116,7 +116,7 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
             bad=dict(self.good(80),stage='placement_assertion',actual_block=13,
                      tile_class=None,neighbor_nonair=[dict(dx=0,dy=1,dz=0,block=13)],
                      falling_entities_near=1)
-            report=dict(suite='decode-rewrite',placements=[self.good(64),bad])
+            report=dict(suite='decode-rewrite',placements=[self.good(64),bad,self.good(200)])
             try:
                 require_legacy_decode_placements(report,'write','1.6.4')
             except ValueError as error:
@@ -134,24 +134,25 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
                           ('chunk_x',5),('chunk_x',True),('chunk_z',1),
                           ('set_block_changed',1),('expected_block',True)]:
             bad=dict(self.good(64),**{key:value})
-            report=dict(suite='decode-raw',placements=[bad,self.good(80)])
+            report=dict(suite='decode-raw',placements=[bad,self.good(80),self.good(200)])
             with self.subTest(key=key,value=value),self.assertRaises(ValueError):
                 require_legacy_decode_placements(report,'write','1.6.4')
         for missing in ('before_block','metadata','chunk_x','chunk_z'):
             bad=self.good(80);del bad[missing]
             with self.subTest(missing=missing),self.assertRaises(ValueError):
-                require_legacy_decode_placements(dict(suite='decode-raw',placements=[self.good(64),bad]),'crash-write','1.6.4')
+                require_legacy_decode_placements(dict(suite='decode-raw',placements=[self.good(64),bad,self.good(200)]),'crash-write','1.6.4')
 
     def placement_trace(self,rows):
         lines=[]
         for row in rows:
-            for x in (row['x'],row['x']+5):
-                lines.append('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=0 ceiling=true' % x)
+            if row['x'] in (64,80):
+                for x in (row['x'],row['x']+5):
+                    lines.append('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=0 ceiling=true' % x)
             lines.append('PL4 DECODE PLACEMENT '+json.dumps(row,separators=(',',':')))
         return '\n'.join(lines)
 
     def test_native_placement_log_matches_raw_report_and_guard_order(self):
-        rows=[self.good(64),self.good(80)]
+        rows=[self.good(64),self.good(80),self.good(200)]
         report=dict(suite='decode-raw',placements=rows)
         good=self.placement_trace(rows)
         self.assertIsNone(require_legacy_decode_placement_log_match(report,good,'write','1.6.4'))
@@ -194,8 +195,8 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
 
     def test_missing_duplicate_or_wrong_flags_rejected(self):
         for rows in ([self.good(64)],[self.good(64),self.good(64)],
-                     [dict(self.good(64),placement_flags=3),self.good(80)],
-                     [dict(self.good(64),tile_invalid=True),self.good(80)]):
+                     [dict(self.good(64),placement_flags=3),self.good(80),self.good(200)],
+                     [dict(self.good(64),tile_invalid=True),self.good(80),self.good(200)]):
             with self.subTest(rows=rows),self.assertRaises(ValueError):
                 require_legacy_decode_placements(dict(suite='decode-raw',placements=rows),'crash-write','1.6.4')
 
