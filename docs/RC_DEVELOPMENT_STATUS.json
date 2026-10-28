@@ -2454,6 +2454,21 @@
       "outcome": "TRANSIENT_EXTERNAL_DOWNLOAD_FAILURE_NOT_SOURCE_FAILURE",
       "evidence_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40705534234",
       "effect": "Defer this unchanged exact source for three hours; changed source and --force unaffected; no RC acceptance"
+    },
+    "1.6.4": {
+      "source_ref": "mc/1.6.4",
+      "source_commit": "5fa3ecf1174c93a0530eaf09e67a7882e7674c0d",
+      "kind": "UPSTREAM_CONNECTION_RESET",
+      "failed_workflow_run": 40752183303,
+      "failed_job_id": 123041519209,
+      "observed_at": "2026-10-28T19:15:14Z",
+      "retry_after": "2026-10-28T22:15:14Z",
+      "dependency": "Forge 1.6.4 9.11.1.1345 installer, maven.minecraftforge.net",
+      "failure": "curl: (56) Recv failure: Connection reset by peer; Gradle packaging passed; no native scenario started",
+      "artifact_id": 12845260858,
+      "artifact_sha256": "24d95f3d07eb6e18d225617fd49bfde0b09a21a2bd0072c1428c6f5b340e6d67",
+      "outcome": "TRANSIENT_EXTERNAL_CONNECTION_RESET_NOT_SOURCE_FAILURE",
+      "effect": "Defer only current unchanged source until 22:15:14Z; changed source and force eligible; no RC acceptance"
     }
   },
   "latest_environment_retry_controller_checkpoint": {

@@ -99,6 +99,28 @@ class HourlyBuildTests(unittest.TestCase):
         self.assertEqual(len(builds.discover(self.ledger, REPO, force=True, lookup=lookup, now=at)), 24)
         self.assertEqual(len(builds.discover(self.ledger, REPO, lookup=lookup, now=datetime(2026, 10, 28, 17, 26, tzinfo=timezone.utc))), 24)
 
+    def test_reviewed_forge_installer_connection_reset_deferred_only_for_pinned_164(self):
+        report = dict(source_ref="mc/1.6.4", source_commit=SHA,
+                      kind="UPSTREAM_CONNECTION_RESET", failed_workflow_run=40752183303,
+                      observed_at="2026-10-28T19:15:14Z",
+                      retry_after="2026-10-28T22:15:14Z")
+        self.ledger.setdefault("temporary_environment_build_blockers", {})["1.6.4"] = report
+        row = dict(minecraft="1.6.4", branch="mc/1.6.4")
+        at = datetime(2026, 10, 28, 20, 0, tzinfo=timezone.utc)
+        self.assertTrue(builds.environment_retry_deferred(self.ledger, row, SHA, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, row, "b"*40, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, dict(row, branch="mc/1.12.2"), SHA, at))
+        self.assertFalse(builds.environment_retry_deferred(self.ledger, row, SHA, datetime(2026, 10, 28, 22, 16, tzinfo=timezone.utc)))
+
+        def lookup(path):
+            if "/branches/" in path: return {"commit": {"sha": SHA}}
+            return {"artifacts": []}
+        pending = builds.discover(self.ledger, REPO, lookup=lookup, now=at)
+        self.assertEqual(len(pending), 23)
+        self.assertNotIn("1.6.4", [item["minecraft"] for item in pending])
+        self.assertEqual(len(builds.discover(self.ledger, REPO, force=True, lookup=lookup, now=at)), 24)
+        self.assertEqual(len(builds.discover(self.ledger, REPO, lookup=lookup, now=datetime(2026, 10, 28, 22, 16, tzinfo=timezone.utc))), 24)
+
     def test_environment_deferral_rejects_unreviewed_indefinite_or_bad_receipts(self):
         row = dict(minecraft="1.12.2", branch="mc/1.12.2")
         base = dict(source_ref=row["branch"], source_commit=SHA, kind="UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT",

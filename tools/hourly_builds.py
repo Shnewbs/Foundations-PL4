@@ -72,7 +72,7 @@ def environment_retry_deferred(ledger, row, sha, now=None):
         raise ValueError("Malformed exact-target environment blocker")
     if entry.get("source_ref") != row["branch"] or entry.get("source_commit") != sha:
         return False
-    if entry.get("kind") not in {"UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT", "RUNNER_UNAVAILABLE", "BILLING_LIMIT"}:
+    if entry.get("kind") not in {"UPSTREAM_LIBRARY_DOWNLOAD_TIMEOUT", "UPSTREAM_CONNECTION_RESET", "RUNNER_UNAVAILABLE", "BILLING_LIMIT"}:
         raise ValueError("Unreviewed environment blocker cannot defer builds")
     if type(entry.get("failed_workflow_run")) is not int or entry["failed_workflow_run"] < 1:
         raise ValueError("Environment blocker must name an actual failed workflow run")
