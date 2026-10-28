@@ -20,14 +20,14 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-28T18:26:48.178Z: Follow-up legacy branch exact-source CI qualified 1.6.4 97ccb4f 372/372 in completed run40743305276 (artifact12840088380 SHA256 562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35), and 1.12.2 4de703f 399/399 in completed run40743560785 (artifact12841370997 SHA256 f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462). Both workflow-native, restart and pre-upgrade checks passed; development publishers skipped. Separate 1.12.2 previous source f0d75b5 native 397/397 passed in pinned hourly run40742077744; main source7f7876c 192/192 and 20/20 publisher policy. Changed legacy source production JAR SHA-256 still needs independent artifact extraction; no installed optional provider/current client/multiplayer/arbitrary migration/sustained performance clearance; historic gravel x80 pending. 0/24 RC clearance, no new Github release/CurseForge upload. Released lease.",
+  "current_checkpoint": "2026-10-28T19:15Z: Guarded existing mc/1.6.4 and mc/1.12.2 publisher existence preflight with repository-200/release-404-only authenticated verification, explicit git ls-remote transport failure, and six offline adversarial tests. Commits 5fa3ecf and af1feb4; branch policy test steps passed, new complete native jobs 40752183303/40752206494 in progress. Independently extracted prior exact-source production JARs 1.6.4 SHA256 1656e86e... and 1.12.2 SHA256 e1344967... from ZIP-verified retained successful artifacts 12840088380/12841370997. No new source native acceptance yet, no new release, 0/24 clearance.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Use hourly-builds.yml to pin and retain updated exact branch sources 97ccb4f (1.6.4) and 4de703f (1.12.2) when a new pinned build is due. Avoid duplicates with successful branch artifacts 12840088380 and 12841370997, and retain distinct main prior 397/397 and 192/192 artifact hashes.",
-    "Extract and independently validate new branch production runtime JAR SHA-256 from retained native artifact manifests before any release; successful native scenario/restart gates alone are not final release acceptance.",
-    "Continue installed optional third-party provider binary and unloaded/disconnected alias work, current exact-JAR stock GUI screenshot review, multiplayer, arbitrary-world migration and sustained performance acceptance.",
-    "Investigate historical 1.6.4 x=80 natural gravel placement with retained phase reports; a deliberate negative placement-rejection fixture in successful native validation is not proof of the intermittent root cause.",
-    "Collect real 26.3 .23 and .39 native per-loader log and JAR checksum manifests for changed source. Keep 24 RC clearances false until all applicable acceptance and version-specific immutable publisher checks pass."
+    "Reconcile exact-source new legacy publisher-guarded branch runs 40752183303 and 40752206494 after complete, preserving their native, restart, migration, and packaged production hashes; do not inherit previous-source runtime digests as new-source build receipts.",
+    "Continue installed optional third-party provider binaries and unloaded/disconnected alias acceptance; capture current exact-JAR client visuals, multiplayer, arbitrary migrations and sustained performance.",
+    "Investigate historic natural 1.6.4 x=80 falling-gravel/physics placement failures with authentic retained phase evidence; passing synthetic rejection is not causality.",
+    "Collect real 26.3.0.23-beta and 26.3.0.39-beta pinned loader native-log and exact JAR manifests without publication.",
+    "Only publish immutable exact-version beta RC on recorded explicit acceptance clearance; all 24 currently false. Reconcile existing draft/release/CurseForge receipts before any attempt."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -82,7 +82,7 @@
     "lease_bounded": true,
     "rc_publication_cleared": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-loaded-foreign-alias-native-passes-2026-10-28.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-release-http404-integrity-2026-10-28.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -900,7 +900,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-28T18:26:48.178Z: Follow-up legacy branch exact-source CI qualified 1.6.4 97ccb4f 372/372 in completed run40743305276 (artifact12840088380 SHA256 562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35), and 1.12.2 4de703f 399/399 in completed run40743560785 (artifact12841370997 SHA256 f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462). Both workflow-native, restart and pre-upgrade checks passed; development publishers skipped. Separate 1.12.2 previous source f0d75b5 native 397/397 passed in pinned hourly run40742077744; main source7f7876c 192/192 and 20/20 publisher policy. Changed legacy source production JAR SHA-256 still needs independent artifact extraction; no installed optional provider/current client/multiplayer/arbitrary migration/sustained performance clearance; historic gravel x80 pending. 0/24 RC clearance, no new Github release/CurseForge upload. Released lease.",
+  "latest_work": "2026-10-28T19:15Z: Guarded existing mc/1.6.4 and mc/1.12.2 publisher existence preflight with repository-200/release-404-only authenticated verification, explicit git ls-remote transport failure, and six offline adversarial tests. Commits 5fa3ecf and af1feb4; branch policy test steps passed, new complete native jobs 40752183303/40752206494 in progress. Independently extracted prior exact-source production JARs 1.6.4 SHA256 1656e86e... and 1.12.2 SHA256 e1344967... from ZIP-verified retained successful artifacts 12840088380/12841370997. No new source native acceptance yet, no new release, 0/24 clearance.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1143,6 +1143,36 @@
         "New 399-test branch source needs independently extracted production-JAR checksum and modern exact artifact manifest; previous 397-test JAR hash is not transferable",
         "Installed optional provider, current client, dedicated multiplayer, arbitrary-world migration and sustained performance acceptance still pending"
       ]
+    }
+  },
+  "latest_legacy_release_http404_preflight": {
+    "evidence": "docs/acceptance/rc-dev-legacy-release-http404-integrity-2026-10-28.json",
+    "source_commits": {
+      "1.6.4": "5fa3ecf1174c93a0530eaf09e67a7882e7674c0d",
+      "1.12.2": "af1feb4a3f10a05f701db84f84eb82f36d044de3"
+    },
+    "native_runs": {
+      "1.6.4": 40752183303,
+      "1.12.2": 40752206494
+    },
+    "policy_regressions": "6/6 local and native GitHub policy steps success on both",
+    "native_qualification": "PENDING_COMPLETE_RUN",
+    "rc_publication_cleared": false
+  },
+  "latest_independent_legacy_runtime_hashes": {
+    "evidence": "docs/acceptance/rc-dev-legacy-release-http404-integrity-2026-10-28.json",
+    "source_commits": {
+      "1.6.4": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+      "1.12.2": "4de703f105189d9eebd778c611ea8d68f25be8bc"
+    },
+    "sha256": {
+      "1.6.4": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+      "1.12.2": "e1344967254fa2e9aba9ba533aaeed5e083a9fe1bfb371d68ec857fdfb022800"
+    },
+    "archive_crc": "PASS",
+    "archive_sha256": {
+      "1.6.4": "562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35",
+      "1.12.2": "f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462"
     }
   }
 }

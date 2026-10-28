@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-28T19:15:00Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Exact native legacy publisher fail-closed release absence and independent previous-source packaged runtime verification",
+  "writer": "pl4-chat-hourly-20261028T1910Z-publisher-404",
+  "lease_claim_commit": "f602e49b5afe886ea8494cc6194cddf06b620de8",
+  "policy_fix": {
+    "finding": "Both push-triggered legacy workflows treated any failed gh release view as evidence of absence; their git ls-remote tag probes also masked transport failure inside a conditional",
+    "repair": "Authenticated repository GET must return HTTP 200, and release/tag GET must return exactly HTTP 404; preflight refuses existing releases, 401/403/429/5xx, missing token/repo/tag, and transport failure. Explicit git ls-remote exit status is checked before release tag mutation.",
+    "shared_script_blob": "e90a1c7d17e28e71d17499db31fd73a95cfe4bca",
+    "shared_test_blob": "0357147673202989288ccff03235b925d08ae816",
+    "offline_tests": "6/6 PASS, including 200 existing, 401/403/429/5xx ambiguity, repo 404, offline transport, tag identity and supported exact-target cases",
+    "production_publication_path_live_test": "NOT_EXECUTED: both current exact sources remain development/uncleared",
+    "branches": {
+      "1.6.4": {
+        "source_commit": "5fa3ecf1174c93a0530eaf09e67a7882e7674c0d",
+        "source_parent": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+        "workflow_blob": "3040e2a6c5975235b2b7f375c25cfb59a720fa02",
+        "new_push_native_run": 40752183303,
+        "new_push_native_status_at_receipt": "IN_PROGRESS",
+        "preflight_test_step": "COMPLETED_SUCCESS",
+        "rc_cleared": false
+      },
+      "1.12.2": {
+        "source_commit": "af1feb4a3f10a05f701db84f84eb82f36d044de3",
+        "source_parent": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+        "workflow_blob": "0c9c3e9bb33e17d5e41c069674f609ed7de33497",
+        "new_push_native_run": 40752206494,
+        "new_push_native_status_at_receipt": "IN_PROGRESS",
+        "preflight_test_step": "COMPLETED_SUCCESS",
+        "rc_cleared": false
+      }
+    }
+  },
+  "previous_exact_source_artifacts": {
+    "1.6.4": {
+      "source_commit": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
+      "native_run": 40743305276,
+      "native_scenarios": "372/372 PASS",
+      "artifact_id": 12840088380,
+      "archive_sha256": "562a1d156ecb66ebb7327cdf6a6433911600d52a88bc50c849930ca7be74dc35",
+      "zip_entries": 193,
+      "crc": "PASS",
+      "runtime_file": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+      "runtime_sha256": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+      "runtime_size_bytes": 150194,
+      "runtime_zip_entries": 89,
+      "production_runtime_crc": "PASS",
+      "source_blob": "7055b4d829f5e9eacb90f6285f6bff8ed13c6d72",
+      "native_test_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+      "packaged_scenario_report_sha256": "f65f44902ae8864f4adbcb44555f50bea25c015882d416d0018207f3de50d6d2"
+    },
+    "1.12.2": {
+      "source_commit": "4de703f105189d9eebd778c611ea8d68f25be8bc",
+      "native_run": 40743560785,
+      "native_scenarios": "399/399 PASS",
+      "artifact_id": 12841370997,
+      "archive_sha256": "f197eee28f562c5681854bc84c571be096cf79268b700d6cbcdc8943641fd462",
+      "zip_entries": 145,
+      "crc": "PASS",
+      "runtime_file": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar",
+      "runtime_sha256": "e1344967254fa2e9aba9ba533aaeed5e083a9fe1bfb371d68ec857fdfb022800",
+      "runtime_size_bytes": 168412,
+      "runtime_zip_entries": 142,
+      "production_runtime_crc": "PASS",
+      "source_blob": "e3e79ae800e52dccc3d46dd452968c3577c08922",
+      "native_test_blob": "2eace03f8eeb76ae6b9f23bd50f26a8e3b6bea4c",
+      "packaged_scenario_report_sha256": "9911da0f3433bcfbaf856d989c4449d9d77f2465ecf389993cdfd75996eed3bb"
+    }
+  },
+  "artifact_review": "Downloaded retained ZIP bytes independently; verified outer SHA/CRC; extracted exact runtime JAR digests and inner ZIP CRC, inspected mcmod.info/version, ensured no private native scenario classes packaged, and matched two source Git blob SHA1 identities per archive",
+  "limitations": [
+    "The two updated publisher-source commits have not yet completed native/restart/migration validation at this receipt. Previous binary hashes remain scoped to their exact previous commits.",
+    "No RC publication preflight against an actual cleared release was executed; current release publication steps must remain skipped.",
+    "Installed optional-provider binaries, arbitrary/unloaded aliases, fresh exact-JAR client screenshots, multiplayer, arbitrary save migration, sustained performance, and historical 1.6.4 gravel collision root cause are unaccepted.",
+    "NeoForge 26.3 dual-loader .23/.39 fresh binary/log manifests remain pending."
+  ],
+  "release_status": {
+    "cleared_targets": 0,
+    "total_targets": 24,
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "existing_development_draft_preserved": true,
+    "latest_curseforge_reconciliation_run": 40749016926
+  }
+}
