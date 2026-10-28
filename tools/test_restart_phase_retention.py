@@ -46,7 +46,7 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
             require_legacy_decode_placements(report,'write','1.6.4')
     def test_failed_placement_retains_json_and_reports_native_stage(self):
         with tempfile.TemporaryDirectory() as temporary:
-            logs=Path(temporary);log=logs/'native.log';log.write_text('native x80 failed\\n')
+            logs=Path(temporary);log=logs/'native.log';log.write_text('native x80 failed\n')
             bad=dict(self.good(80),stage='placement_assertion',actual_block=13,
                      tile_class=None,neighbor_nonair=[dict(dx=0,dy=1,dz=0,block=13)],
                      falling_entities_near=1)

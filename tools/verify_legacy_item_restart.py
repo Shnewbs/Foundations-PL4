@@ -34,7 +34,7 @@ def retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,er
     record=dict(suite=report.get('suite'),phase=phase,pid=pid,exit_code=code,
                 log_sha256=digest(logfile),failure=str(error),placements=report.get('placements'))
     destination=logs/(prefix+'-'+phase+'-placement-rejection.json')
-    destination.write_text(json.dumps(record,indent=2,sort_keys=True)+'\\n')
+    destination.write_text(json.dumps(record,indent=2,sort_keys=True)+'\n')
     print('PL4 NATIVE PLACEMENT REJECTION '+json.dumps(record,sort_keys=True)[:4096],flush=True)
     return destination
 def verify(suite="item"):
