@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T2205Z-upgrade-evidence",
+    "claimed_at": "2026-10-28T22:05:49.549Z",
+    "expires_at": "2026-10-28T22:29:49.549Z",
+    "purpose": "Exact-source released-beta migration evidence integrity and scoped acceptance",
+    "expected_parent": "de55a627acda8a2834bde252e0fba145dd8a3da0"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
