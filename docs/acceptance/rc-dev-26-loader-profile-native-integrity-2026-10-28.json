@@ -1,0 +1,93 @@
+{
+  "recorded_at": "2026-10-28T17:11:28.005Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_branch": "main",
+  "source_commit": "e66ce6626d892c13027b53aa4f83195c939038d6",
+  "writer": "pl4-chat-hourly-20261028T1702Z",
+  "scope": "Hourly main controller/26.x native evidence integrity; no version-branch production code change, new 26.3 loader-profile native qualification, installed-provider acceptance, RC clearance, or publication.",
+  "finding": "26.x hourly receipts previously trusted a reported native_coverage table without independently re-reading its JVM log. The 26.3 two-loader build retained separate profile JARs but lacked profile-specific JAR SHA attestations in native_coverage; a final manifest only bound build/libs from the last loader.",
+  "implementation": {
+    "files": [
+      "tools/hourly_builds.py",
+      "tools/ports/validate_rc_candidate.py",
+      "tools/test_hourly_builds.py"
+    ],
+    "changes": [
+      "The hourly 26.x recorder binds each exact per-profile native count and distinct environment batch identity to the independently retained JVM native log's SHA-256 and single required-tests-passed marker.",
+      "The 26.3 runner hashes every JAR copied after native validation under each 26.3.0.23-beta and 26.3.0.39-beta loader profile.",
+      "The recorder checks complete non-empty per-profile JAR manifests against copied production bytes and binds the final .39 profile to the exact build/libs JAR set.",
+      "Native policy regressions now test a real fixture log, altered success count, two independent loader profile runtime bytes and tampered/misattributed per-profile JAR hashes."
+    ]
+  },
+  "validation": {
+    "previous_corrected_main_source": {
+      "source_commit": "77994504219253ea2b69b6e63b3a6ecb17705225",
+      "run": 40724186230,
+      "conclusion": "success",
+      "native_scenarios_passed": 192,
+      "native_scenarios_total": 192,
+      "artifact_id": 12832965494,
+      "artifact_zip_sha256": "489feb8de51d2215c5a71ea1f1e438e35cde8529c210136605ff75b6c7d4e6e6",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b"
+    },
+    "current_main_hourly": {
+      "source_commit": "e66ce6626d892c13027b53aa4f83195c939038d6",
+      "run": 40732504834,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40732504834",
+      "conclusion": "success",
+      "controller_policy_regressions": "18/18 PASS",
+      "native_target": "1.21.1",
+      "native_scenarios_passed": 192,
+      "native_scenarios_total": 192,
+      "artifact_id": 12835801828,
+      "artifact_name": "hourly-native-1.21.1-e66ce6626d892c13027b53aa4f83195c939038d6",
+      "artifact_expired": false,
+      "github_recorded_artifact_sha256": "1bbe5bc8a6abf18f108ecbeaccf401270d1d0acd14424a21ae52562b5a381cf6",
+      "packaged_jar_sha256": {
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar": "43c528976d6dbbcbece17381418eb67b0babca259f8fd421730818a32cecda15",
+        "FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar": "8455ba8a10c9691b53e5dac2d180795ccec0d66539f8c5ae86dde23bc1993182"
+      },
+      "note": "Workflow log and GitHub artifact checksum metadata verified; this run did not independently download/CRC-examine ZIP bytes."
+    },
+    "current_main_verifier": {
+      "run": 40732504838,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40732504838",
+      "conclusion": "success"
+    },
+    "current_main_publisher_policy": {
+      "run": 40732504833,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40732504833",
+      "conclusion": "success",
+      "github_release_step": "skipped",
+      "curseforge_step": "skipped"
+    },
+    "legacy_263_previous_native": {
+      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "run": 40205878290,
+      "artifact_id": 12603949042,
+      "observed_native": "192 PL4 plus 1 other per .23/.39 profile",
+      "limitation": "Historical profile tests predate stronger profile-JAR manifest validation; no retroactive new-integrity qualification or fresh 26.3 run is asserted."
+    }
+  },
+  "blockers": {
+    "1.12.2": "Unchanged Forge installer log4j-core:2.15.0 download timeout in run 40705534234 before game tests, deferred only until 2026-10-28T17:25:03Z; no unchanged manual rerun.",
+    "1.6.4": "Original spontaneous x=80 falling-gravel fixture placement cause unresolved; controlled actor removal and successful later fixtures do not establish original cause.",
+    "all_24": "Installed optional providers and unloaded aliases, current stock-client/screenshots, multiplayer identities and dimension travel, arbitrary saved-world migration/reconciliation, sustained loaded-provider performance and broader parity remain unaccepted."
+  },
+  "publication": {
+    "rc_publication_clearances": 0,
+    "total_exact_targets": 24,
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "current_development_snapshots_unpublished": true,
+    "curseforge_moderation_or_visibility_not_rechecked": true
+  },
+  "next_work": [
+    "Continue exact-source installed-provider and disconnected/unloaded alias acceptance, using existing mc/<exact-version> branches and pre-push publisher guards.",
+    "Probe original 1.6.4 natural x=80 gravel failure with retained raw JVM phase failure when reproducible.",
+    "Allow hourly retry of unchanged 1.12.2 source only after UTC 17:25:03Z (or sooner if source changes); avoid manual duplicate attempts.",
+    "At the next changed 26.3 source, require both real .23/.39 native logs and profile-specific JAR hashes via the new gate; static policy tests alone do not clear that acceptance.",
+    "Preserve all 24 false RC flags until installed/client/multiplayer/migration/performance acceptance and immutable publisher checks pass."
+  ]
+}

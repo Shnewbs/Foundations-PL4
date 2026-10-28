@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T16:17:55Z: Corrected main native-JAR manifest source 7799450 passed 17/17 Windows controller/publication policy tests in run40724186346. Initial 0d0df67 Windows separator failure in 40723840668 fixed; 0d0df67 Linux exact-source native passed192/192 in run40723840470 with artifact12832421076. Corrected 7799450 pinned hourly run40724186230 and main verifier40724186575 still pending; no current corrected-JAR acceptance claimed. 1.12.2 installer upstream failure deferred until 17:25:03Z; x80 gravel and broader acceptance still open. 0/24 RC flags, no new release/upload. Global lease released at checkpoint.",
+  "latest_work": "2026-10-28T17:11:28.005Z: Changed main 26.x native controller source e66ce662 binds exact per-loader JVM log counts/identity and unique staged 26.3 profile JAR hashes. 18/18 policy tests passed; exact main 1.21.1 run40732504834 passed 192/192 and retained artifact12835801828. Main verifier40732504838 success; publisher40732504833 release and CurseForge steps skipped. Corrected prior run40724186230 also confirmed success. No new 26.3 real native run or legacy source update. Forge1.12.2 deferred until 17:25:03Z; natural 1.6.4 gravel and installed provider/client/multiplayer/migration/performance pending. 0/24 RC clearance, 0 new RC/upload. Writer lease released.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2479,8 +2479,20 @@
     "policy_regression": "17/17 PASS after portability correction",
     "prior_integrity_source_native": "1.21.1 192/192 PASS run 40723840470",
     "final_source_run": 40724186230,
-    "final_source_native_at_checkpoint": "PENDING",
+    "final_source_native_at_checkpoint": "PASS: exact source 7799450, 1.21.1 192/192 run 40724186230, artifact 12832965494",
     "all_24_clearances": false,
     "scope": "Native artifact evidence integrity only"
+  },
+  "modern_26_loader_profile_integrity": {
+    "evidence": "docs/acceptance/rc-dev-26-loader-profile-native-integrity-2026-10-28.json",
+    "source_commit": "e66ce6626d892c13027b53aa4f83195c939038d6",
+    "scope": "Exact per-loader JVM log and copied JAR hash attestation; native-only; no new 26.3 exact-source profile run",
+    "policy_regressions": "18/18 PASS",
+    "current_main_native_run": 40732504834,
+    "current_main_native": "1.21.1 192/192 PASS",
+    "current_main_artifact_id": 12835801828,
+    "prior_26_3_run": 40205878290,
+    "prior_26_3_profile_hash_requalification": "NOT ASSERTED",
+    "all_24_rc_cleared": false
   }
 }
