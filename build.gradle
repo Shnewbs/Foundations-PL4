@@ -74,7 +74,7 @@ build.dependsOn restartTestJar
 // the wall-clock time to every ZIP entry. Keep reobfuscation first, then repack
 // the production JAR without altering any class/resource payload. This protects
 // full-file SHA-256 reproducibility, not only per-entry content identity.
-tasks.named('reobfJar').configure {
+tasks.matching { it.name == 'reobfJar' }.all {
     doLast {
         def runtime = new File(project.buildDir, "libs/${project.archivesBaseName}-${project.version}.jar")
         if (!runtime.isFile()) throw new GradleException("Missing reobfuscated Forge runtime: " + runtime)
