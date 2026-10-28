@@ -32,7 +32,7 @@ def require_legacy_decode_placements(report,phase,minecraft):
 def require_legacy_decode_gravity_guards(native_log,phase,minecraft):
     """Prove every write phase isolated only its loaded disposable fixture columns."""
     if minecraft!='1.6.4' or not phase.endswith('write'):return
-    rows=re.findall(r'PL4 DECODE GRAVITY GUARD x=(\\d+) removed_blocks=(\\d+) removed_entities=(\\d+) ceiling=(true|false)',native_log)
+    rows=re.findall(r'PL4 DECODE GRAVITY GUARD x=(\d+) removed_blocks=(\d+) removed_entities=(\d+) ceiling=(true|false)',native_log)
     if len(rows)!=4 or {int(row[0]) for row in rows}!={64,69,80,85} or any(row[3]!='true' for row in rows):
         raise ValueError('Missing, duplicated or failed native fixture gravity guards')
 
