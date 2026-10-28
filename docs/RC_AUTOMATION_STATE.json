@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {"owner":"pl4-chat-hourly-20261028T2305Z-release-binary-provenance","started_at":"2026-10-28T23:07:01.362Z","expires_at":"2026-10-28T23:32:01.362Z","purpose":"Implement exact released-beta JAR retrieval and cryptographic provenance preflight for two-client migration; no publication or clearance."},
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
