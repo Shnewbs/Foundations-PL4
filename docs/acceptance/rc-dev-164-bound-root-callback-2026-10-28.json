@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-28T13:15:59.996Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "minecraft": "1.6.4",
+  "branch": "mc/1.6.4",
+  "source_commit": "205fdeccdbbe1d42cd1975fdae038ee5a7ca4adb",
+  "parent_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
+  "source_blobs": {
+    "source": "636d96b6038702b09d72566b558df2faaf57cb71",
+    "fixture": "9aadcaf40f5854729d57ac98fea51a535ab62a6d",
+    "build_status": "be0ca5e506941c1027b6d27cac77ef65e32adfed"
+  },
+  "implementation": [
+    "Native handheld enumeration revalidates the bound root after downstream provider discovery, slots and peek callbacks; a revoked controller cannot return pre-revocation snapshots.",
+    "Player inventory source debit and destination credit revalidate the original handheld tool/controller, including after actual mutations; root invalidation returns no transfer before execution, while post-mutation uncertainty remains fail-closed."
+  ],
+  "new_native_cases": [
+    "wireless downstream view revocation hides prior snapshots",
+    "wireless downstream metadata revocation cannot debit player"
+  ],
+  "native_declared": 370,
+  "previous_qualified_native": 368,
+  "native_run": 40694385199,
+  "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40694385199",
+  "native_run_status_at_checkpoint": "completed",
+  "native_run_conclusion_at_checkpoint": "failure",
+  "new_source_qualified": false,
+  "runtime_sha256": null,
+  "build_artifact_id": null,
+  "publisher_review": "Existing legacy164-native.yml, release.yml and curseforge.yml exact-target/dev/RC guards inspected before branch source push; BUILD_STATUS development and RC clearance false; publisher ineligible.",
+  "other_targets": "No exact source changes to 1.12.2 or 22 modern targets in this checkpoint",
+  "remaining_acceptance": [
+    "new 370-case native build + restart/provider/historical processes and production JAR hashes",
+    "falling-gravel x80 root-cause reproduction",
+    "installed external provider and unloaded aliases",
+    "dedicated multiplayer and updated client screenshots",
+    "arbitrary migration and sustained active-provider performance"
+  ],
+  "rc_publication_cleared": false,
+  "github_rc_published": false,
+  "curseforge_uploaded": false,
+  "writer_lease_released": true
+}

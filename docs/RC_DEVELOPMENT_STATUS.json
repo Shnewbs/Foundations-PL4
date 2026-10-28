@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T12:18:27.350Z: mc/1.6.4 exact source a861764f PASS native 368/368, controller 16/16, decode 1536/40 JVMs, provider 188/4, historical 60; 80 ordered pre-cleanup native rows match 20 stdout phase logs, all ambient falling counts zero. Artifact 12815905181 ZIP 76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63. Prior initial controller source 3bd24c45 failed escaping and was corrected. Original x80 gravel root cause unresolved. RC 0/24; no release/upload; lease released.",
+  "latest_work": "2026-10-28T13:15:59.996Z: mc/1.6.4 source 205fdecc adds bound-root continuity across downstream handheld enumeration and player debit/credit, two adversarial native cases (370 declared vs 368 previous); completed/failure run 40694385199, new source NOT native-qualified, no new JAR/hash/release, RC 0/24.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2376,5 +2376,18 @@
     "root_cause_resolved": false,
     "rc_publication_cleared": false,
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
+  },
+  "latest_164_bound_root_callback_candidate": {
+    "source_commit": "205fdeccdbbe1d42cd1975fdae038ee5a7ca4adb",
+    "run_id": 40694385199,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40694385199",
+    "declared_native_cases": 370,
+    "previous_qualified_cases": 368,
+    "exact_native_qualified": false,
+    "production_runtime_sha256": null,
+    "scope": "Downstream native metadata/peek root-revocation and rechecked player debit/credit; two adversarial fixture cases",
+    "remaining": "native validation, JAR/restart/migration, installed provider, aliases, client, multiplayer and performance",
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json"
   }
 }
