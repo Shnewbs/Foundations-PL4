@@ -63,7 +63,12 @@ public final class LegacyWirelessStorage {
             if(!(raw instanceof LegacyTile))continue;
             LegacyTile alias=(LegacyTile)raw;
             int role=alias.role();
+            // Same-owner aliases already follow owner network and target-scoped
+            // journal rules. A failed DESTINATION insertion must not quarantine
+            // an independently healthy SOURCE inventory merely because its
+            // export tile retained destination escrow.
             if((role==1||role==2||role==LegacyReadings.ITEMS)
+                    &&!root.owner.equals(alias.owner)
                     &&target.equals(alias.fluidTarget())&&!ready(alias))return true;
         }
         return false;
