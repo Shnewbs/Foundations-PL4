@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T13:15:59.996Z: mc/1.6.4 source 205fdecc adds bound-root continuity across downstream handheld enumeration and player debit/credit, two adversarial native cases (370 declared vs 368 previous); completed/failure run 40694385199, new source NOT native-qualified, no new JAR/hash/release, RC 0/24.",
+  "latest_work": "2026-10-28T13:28:00.417Z: mc/1.6.4 source a527fbe3 exact Forge/Java 7 passes native 370/370 (two bound-root callback cases), separate decode 1536/40 JVM, registered provider 188/4, historical 60/3 and 80 terrain rows. First candidate 205fdecc failed native fixture Java compilation, corrected; 193-entry retained ZIP SHA256 f66ddd7c19aa4da7347fb910a918c8f3f28ad3ef0872a8d27842f48148db1433, runtime SRG 598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2. Run 40695140590, artifact 12819367391. No RC clearance 0/24, no new GitHub or CurseForge release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2378,16 +2378,27 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_164_bound_root_callback_candidate": {
-    "source_commit": "205fdeccdbbe1d42cd1975fdae038ee5a7ca4adb",
-    "run_id": 40694385199,
-    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40694385199",
-    "declared_native_cases": 370,
-    "previous_qualified_cases": 368,
-    "exact_native_qualified": false,
-    "production_runtime_sha256": null,
-    "scope": "Downstream native metadata/peek root-revocation and rechecked player debit/credit; two adversarial fixture cases",
-    "remaining": "native validation, JAR/restart/migration, installed provider, aliases, client, multiplayer and performance",
+    "source_commit": "a527fbe342bfcf8010a87d5563cd7c9e79fc25ff",
+    "initial_failed_source": "205fdeccdbbe1d42cd1975fdae038ee5a7ca4adb",
+    "initial_failed_run": 40694385199,
+    "corrected_native_run": 40695140590,
+    "corrected_native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40695140590",
+    "scenarios_passed": 370,
+    "scenarios_total": 370,
+    "native_validation": "PASS_SCOPED",
+    "portability": "PASS",
+    "restart_and_migration": "PASS_SCOPED",
+    "production_runtime_sha256": "598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2",
+    "artifact_id": 12819367391,
+    "artifact_sha256": "f66ddd7c19aa4da7347fb910a918c8f3f28ad3ef0872a8d27842f48148db1433",
+    "real_installed_provider": "PENDING",
+    "multiplayer": "PENDING",
+    "stock_client": "PENDING",
+    "original_x80_gravel": "UNRESOLVED",
+    "sustained_performance": "PENDING",
     "rc_publication_cleared": false,
+    "github_rc_published": false,
+    "curseforge_rc_submitted": false,
     "evidence": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json"
   }
 }
