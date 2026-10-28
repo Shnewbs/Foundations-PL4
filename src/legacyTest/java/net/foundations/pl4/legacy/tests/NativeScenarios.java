@@ -217,6 +217,21 @@ public final class NativeScenarios {
                         &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==beforeDrops,
                         "second capability callback preserves detached/new inventory and player stock");
             }});
+            test("wireless provider slots revoking root cannot debit player",new Runnable(){public void run(){
+                EntityPlayer p=wirelessPlayer();ItemStack bound=wirelessTool(p);int drops=looseIron();
+                for(int i=0;i<27;i++)source().setInventorySlotContents(i,readerStack(64));
+                RootRevokingChest chest=new RootRevokingChest(node(export));world.setTileEntity(sink.east(),chest);
+                p.inventory.setInventorySlotContents(9,readerStack(32));
+                int loadedBefore=world.getChunkProvider().getLoadedChunkCount();
+                check(LegacyWirelessStorage.deposit(p,bound,9,17)==0,
+                        "provider slot lookup revoking an earlier bound root must abort transfer");
+                check(chest.slotCalls>0&&"revoked-during-slots".equals(node(export).owner)
+                        &&LegacyWirelessStorage.resolve(p,bound)==null
+                        &&readerCount(chest.getStackInSlot(0))==0
+                        &&readerCount(p.inventory.getStackInSlot(9))==32
+                        &&looseIron()==drops&&world.getChunkProvider().getLoadedChunkCount()==loadedBefore,
+                        "revoked root preserves destination/player/drops without force loading");
+            }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
             test("wireless oversized graph fails closed",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyPL4.nodeLimit=2;check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"bounded graph");}});
@@ -615,6 +630,26 @@ public final class NativeScenarios {
                 return true;
             }
             return super.hasCapability(cap,face);
+        }
+        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing face){
+            return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                    ?net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(backing)
+                    :super.getCapability(cap,face);
+        }
+    }
+    /** The source endpoint remains installed, but an unrelated destination
+     * provider revokes the bound controller during slot metadata discovery. */
+    public static final class RootRevokingChest extends TileEntityChest {
+        final LegacyTile root;int slotCalls;
+        RootRevokingChest(LegacyTile root){this.root=root;}
+        final net.minecraftforge.items.IItemHandler backing=new net.minecraftforge.items.wrapper.InvWrapper(this){
+            @Override public int getSlots(){
+                if(++slotCalls==1)root.owner="revoked-during-slots";
+                return super.getSlots();
+            }
+        };
+        @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,net.minecraft.util.EnumFacing face){
+            return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY||super.hasCapability(cap,face);
         }
         @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing face){
             return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY

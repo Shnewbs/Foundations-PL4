@@ -112,17 +112,17 @@ public final class LegacyWirelessStorage {
      * the same. Capability/slot callbacks can synchronously replace a target tile, so
      * validate both before and after EVERY provider call. Never force-load a chunk. */
     private static final class StorageInventory implements ConservingItems.Inventory<ItemStack>{
-        final LegacyTile node;final net.minecraftforge.items.IItemHandler nativeInventory;
+        final LegacyTile node,root;final EntityPlayer player;final ItemStack tool;final net.minecraftforge.items.IItemHandler nativeInventory;
         final net.minecraft.world.World world;final net.minecraft.util.math.BlockPos host,target;
         final net.minecraft.tileentity.TileEntity installed;final String owner;
-        StorageInventory(LegacyTile node,net.minecraftforge.items.IItemHandler inventory,
+        StorageInventory(EntityPlayer player,ItemStack tool,LegacyTile root,LegacyTile node,net.minecraftforge.items.IItemHandler inventory,
                          net.minecraft.world.World world,net.minecraft.util.math.BlockPos host,
                          net.minecraft.util.math.BlockPos target,net.minecraft.tileentity.TileEntity installed,String owner){
-            this.node=node;nativeInventory=inventory;this.world=world;this.host=host;
+            this.node=node;this.root=root;this.player=player;this.tool=tool;nativeInventory=inventory;this.world=world;this.host=host;
             this.target=target;this.installed=installed;this.owner=owner;
         }
         private boolean current(){
-            return node.fluidServer()&&node.getWorld()==world&&owner.equals(node.owner)
+            return resolve(player,tool)==root&&node.fluidServer()&&node.getWorld()==world&&owner.equals(node.owner)
                     &&host.equals(node.getPos())&&target.equals(node.target())
                     &&world.isBlockLoaded(host,false)&&world.isBlockLoaded(target,false)
                     &&world.getTileEntity(host)==node&&world.getTileEntity(target)==installed;
@@ -152,7 +152,7 @@ public final class LegacyWirelessStorage {
             return current()?value:ItemStack.EMPTY;
         }
     }
-    private static StorageInventory inventory(LegacyTile node){
+    private static StorageInventory inventory(EntityPlayer player,ItemStack tool,LegacyTile root,LegacyTile node){
         if(node==null||!node.fluidServer())return null;
         net.minecraft.world.World world=node.getWorld();String owner=node.owner;
         net.minecraft.util.math.BlockPos host=node.getPos(),target=node.target();
@@ -167,13 +167,13 @@ public final class LegacyWirelessStorage {
                 ||!owner.equals(node.owner)||!host.equals(node.getPos())||!target.equals(node.target())
                 ||!world.isBlockLoaded(host,false)||!world.isBlockLoaded(target,false)
                 ||world.getTileEntity(host)!=node||world.getTileEntity(target)!=installed)return null;
-        return new StorageInventory(node,handler,world,host,target,installed,owner);
+        return new StorageInventory(player,tool,root,node,handler,world,host,target,installed,owner);
     }
     public static List<Entry> entries(EntityPlayer player,ItemStack tool){
         List<Entry> result=new ArrayList<Entry>();LegacyTile root=resolve(player,tool);if(root==null)return result;int left=WORK_LIMIT;Set<PhysicalSlot> seen=new HashSet<PhysicalSlot>();
-        try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(node);if(inventory==null)continue;
+        try{for(LegacyTile node:endpoints(root)){StorageInventory inventory=inventory(player,tool,root,node);if(inventory==null)continue;
             int slots=Math.max(0,Math.min(LegacyPL4.slotLimit,inventory.slots()));for(int i=0;i<slots;i++){if(--left<0)return result;ItemStack stack=inventory.peek(i);if(!LegacyTile.STACKS.empty(stack)){PhysicalSlot id=physical(inventory.nativeInventory,i,node);if(seen.add(id))result.add(new Entry(node,i,stack,id));}}
-        }}catch(RuntimeException provider){result.clear();}return result;
+        }if(resolve(player,tool)!=root)result.clear();}catch(RuntimeException provider){result.clear();}return result;
     }
     public static final int MAX_SEARCH=32;
     /** Printable ASCII keeps native short-window controls bounded on both legacy protocols. */
@@ -250,7 +250,7 @@ public final class LegacyWirelessStorage {
     /** Explicit work object permits callers to share a finite transfer budget. Snapshot scans remain separately bounded by WORK_LIMIT. */
     public static int withdrawRow(EntityPlayer player,ItemStack tool,Row selected,int amount,ConservingItems.Work work){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||work==null)return 0;
-        if(!selected.grouped){Entry entry=selected.sources.get(0);return endpoints(root).contains(entry.node)?withdrawEntry(player,entry,amount,inventory(entry.node),work,false):0;}
+        if(!selected.grouped){Entry entry=selected.sources.get(0);return endpoints(root).contains(entry.node)?withdrawEntry(player,entry,amount,inventory(player,tool,root,entry.node),work,false):0;}
         // Reject changed counts, variants or group membership before the first extraction.
         boolean current=false;for(Row row:rows(player,tool,0,"",true))if(LegacyTile.STACKS.same(row.snapshot,selected.snapshot)){current=sameRow(row,selected);break;}
         if(!current)return 0;
@@ -259,7 +259,7 @@ public final class LegacyWirelessStorage {
         for(Entry entry:selected.sources){
             if(moved>=amount||!work.available()||resolve(player,tool)!=root)break;
             if(!endpoints(root).contains(entry.node))break;
-            StorageInventory source=adapters.get(entry.node);if(source==null){if(!work.take())break;source=inventory(entry.node);if(source==null)break;adapters.put(entry.node,source);}
+            StorageInventory source=adapters.get(entry.node);if(source==null){if(!work.take())break;source=inventory(player,tool,root,entry.node);if(source==null)break;adapters.put(entry.node,source);}
             int part=withdrawEntry(player,entry,amount-moved,source,work,true);moved+=part;
             if(part==0||!ready(entry.node))break;
         }return moved;
@@ -292,7 +292,7 @@ public final class LegacyWirelessStorage {
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||slot<0||slot>=36||amount<1||amount>64)return 0;
         ItemStack offered=player.inventory.getStackInSlot(slot);if(LegacyTile.STACKS.empty(offered)||tool(offered))return 0;
         ConservingItems.Work work=new ConservingItems.Work(WORK_LIMIT);int moved=0;
-        for(LegacyTile node:endpoints(root)){ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(node);ConservingItems.Inventory<ItemStack> destination=inventory(node);if(destination==null)continue;
+        for(LegacyTile node:endpoints(root)){ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(node);ConservingItems.Inventory<ItemStack> destination=inventory(player,tool,root,node);if(destination==null)continue;
             try{moved+=ConservingItems.move(LegacyTile.STACKS,escrow,playerInventory(player,slot),destination,amount-moved,LegacyPL4.slotLimit,work);}
             finally{retain(node);player.inventory.markDirty();}
             if(!ready(node)||moved>=amount||!work.available())break;
