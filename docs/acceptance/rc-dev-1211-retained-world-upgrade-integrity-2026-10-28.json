@@ -1,0 +1,93 @@
+{
+  "checked_at": "2026-10-28T22:13:44.666Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Minecraft 1.21.1 exact-source released-beta-tagged source-compiled two-real-client disposable offline-world migration, with independently retained world-byte evidence. Does not certify exact published release JAR, arbitrary modpack saves, online authentication, installed optional providers, broad multiplayer or RC publication.",
+  "owner": "pl4-chat-hourly-20261028T2205Z-upgrade-evidence",
+  "implementation_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
+  "implemented_files": [
+    "tools/multiplayer-probe/run_probe.py",
+    "tools/multiplayer-probe/verify_upgrade_evidence.py",
+    "tools/multiplayer-probe/test_verify_upgrade_evidence.py",
+    ".github/workflows/real-world-upgrade-probe.yml"
+  ],
+  "predecessor_world_upgrade": {
+    "run": 40770696422,
+    "status": "PASS",
+    "archive_artifact": 12853375178,
+    "archive_zip_sha256": "0e26a0ede2fb27cd67404b03182fae7a3c3c502b3389794868928467a13344c8",
+    "zip_entry_count": 28,
+    "zip_crc": "PASS",
+    "observed_clients": 2,
+    "client_screenshots": "four valid PNG 960x720; notifications overlay part of upper frame",
+    "limitation": "Prior artifact did not retain actual saved-world bytes"
+  },
+  "current_world_upgrade": {
+    "run": 40777636720,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40777636720",
+    "status": "PASS",
+    "source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
+    "artifact_id": 12855522621,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40777636720/artifacts/12855522621",
+    "artifact_zip_sha256": "419f2a57ec97cb02f436eb22697a29ba8934a256ca22bb606318d1bb03b60c86",
+    "zip_entries": 33,
+    "zip_crc": "PASS",
+    "baseline_tag": "v0.2b.0",
+    "baseline_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "baseline_tag_ref_verified": true,
+    "baseline_published_jar_name": "FoundationsPL4-1.21.1-0.2b.0.jar",
+    "baseline_published_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "baseline_binary_executed": false,
+    "seed_world_sha256": "158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc",
+    "seed_world_zip_sha256": "c39a8f09b86d814239ca21e1550849b1dc4154bb4cac37f63738726ee1c8cf71",
+    "seed_world_files": 26,
+    "seed_world_bytes": 4659922,
+    "restored_copy_input_sha256": "158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc",
+    "restored_world_sha256": "c26f0fd5e3d8ca42771dcc8bf0ff99ad0b9c8fe9c9875831e312027d0004f498",
+    "restored_world_zip_sha256": "3e2d24658cfc1f69cc1f4ca9b59dcd44e0cce74dc014cac59ae0b3dcf2092949",
+    "restored_world_files": 30,
+    "restored_world_bytes": 4723710,
+    "seed_source_archive_sha256": "6ceb17e34e994b456fdc9f8b73f9a93f695d170159dc792524118c2593776489",
+    "restore_source_archive_sha256": "f12a44e095d555005aaac1bc5d26da25ced5d455e6693c9d6f9aa266a22e192a",
+    "seed_manifest_sha256": "da2d1793af8f0225f0a98e88887eab86968172ba66bd143fbe62ddc13aecbab8",
+    "restore_manifest_sha256": "88dee9569684796cc672a6ca9e8b1e60beefe8c5f7ef3492120d1bbf478b6552",
+    "assertions": "8/8 adversarial Python regressions; two real loopback clients, distinct stable native UUIDs, persistent owner/node identities, unauthorized nonoperator denial, two initial network requests per client, 17+17 retained client items, 94 remaining server barrel items, four actual valid 960x720 screenshots, exact saved-world copied input fingerprint",
+    "independent_retained_artifact_verification": "Downloaded original GitHub ZIP, matched SHA-256 and all 33 CRC-valid entries, extracted safe paths, reconstructed/hashed both saved-world ZIPs and repeated exact-source migration verifier offline: PASS.",
+    "current_build_runtime": "Source-compiled injected disposable test fixture; NOT the binary published on October 17."
+  },
+  "native_main_verify": {
+    "run": 40777637169,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40777637169",
+    "conclusion": "PASS",
+    "minecraft": "1.21.1",
+    "native_games": "194/194",
+    "scope": "Separate main GameTest verification at implementation source; no new pinned hourly artifact was built in this run"
+  },
+  "policy": {
+    "run": 40777636690,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40777636690",
+    "conclusion": "success",
+    "github_release_step": "skipped development",
+    "curseforge_step": "skipped development"
+  },
+  "publication": {
+    "rc_publication_cleared": false,
+    "cleared_exact_targets": 0,
+    "total_exact_targets": 24,
+    "new_github_rc_releases": 0,
+    "new_curseforge_uploads": 0,
+    "old_releases_unchanged": true,
+    "visibility_reverified": false
+  },
+  "limitations": [
+    "Not a test of the published v0.2b.0 binary or its historical physical JAR being installed; baseline source revision/tag matches the release, but fixture is injected and built from source.",
+    "Offline loopback accounts only: no authenticated server, different dimensions/profiles or optional providers.",
+    "World fixture is self-generated, not an arbitrary modpack save; visual screenshots at one 960x720 resolution retain offline toast overlays.",
+    "No full-server sustained performance, crash/power loss, real unloaded alias network, or 1.6.4 gravel root-cause clearance."
+  ],
+  "next": [
+    "Test the actual immutable released-beta binary and exact candidate production JAR in a new independent installed-runtime migration, rather than transferring source-compiled fixture success.",
+    "Installed optional-provider binaries and loaded/unloaded/disconnected handler alias preservation with real third-party callbacks.",
+    "Broader current client visual and dedicated multiplayer/profile/dimension acceptance; sustained performance and arbitrary modpack worlds.",
+    "Reproduce naturally caused 1.6.4 x=80 gravel overwrite with actor provenance; release only after each exact-target RC flag and all acceptance evidence actually pass."
+  ]
+}

@@ -1763,7 +1763,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-28T21:21:39.953Z: Pushed 1.21.1 WirelessStorage post-provider permission/identity rechecks and preserved real post-extraction escrow on ownership revocation (ff713ed2, corrected contract18fbc616, finalized347a497). First verify40769689387 red on static 30-vs-32 test contract; exact source347a497 verified194/194 in40770322178. Fixed released-beta world upgrade workflow to pin baseline v0.2b.0 to 7c7c07 and current candidate to github.sha (c967590), regression passed; native hourly40770696373 PASS194/194 at c967590, runtime SHA cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c, ZIP 7546c6a365ae0ad53f982dfa8978b1727f3656ccd8e1962499d147550d451f66, unchanged 23 other tracks deduplicated; current source verify40770696465 PASS. World upgrade40770696422 in_progress, no acceptance yet. All24 RC clearance flags false, release and CurseForge steps skipped.",
+  "latest_work": "2026-10-28T22:13:44.666Z: Implemented content-addressed saved-world ZIP snapshots, phase log/client/screenshot SHA256, restored-input byte identity and fail-closed two-client migration verification in ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3. Eight adversarial regression tests passed. Exact-source released-beta world upgrade 40777636720 PASS; retained ZIP 12855522621 SHA256 419f2a57ec97cb02f436eb22697a29ba8934a256ca22bb606318d1bb03b60c86, 33 CRC-valid entries, source seed world 26 files SHA256 158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc; copy matched; restored 30-file world SHA256 c26f0fd5e3d8ca42771dcc8bf0ff99ad0b9c8fe9c9875831e312027d0004f498. Independently re-verified extracted retained artifact. Main verify 40777637169 PASS194/194. Publication run40777636690 skipped GitHub and CurseForge, all24 RC flags false. This is source-compiled offline fixture, not published binary or arbitrary-world RC acceptance.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2900,6 +2900,18 @@
     "artifact_id": 12852707753,
     "world_upgrade_run": 40770696422,
     "world_upgrade_status": "in_progress",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_retained_world_upgrade": {
+    "evidence": "docs/acceptance/rc-dev-1211-retained-world-upgrade-integrity-2026-10-28.json",
+    "source": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
+    "run_id": 40777636720,
+    "archive_artifact_id": 12855522621,
+    "artifact_sha256": "419f2a57ec97cb02f436eb22697a29ba8934a256ca22bb606318d1bb03b60c86",
+    "seed_world_sha256": "158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc",
+    "restored_world_sha256": "c26f0fd5e3d8ca42771dcc8bf0ff99ad0b9c8fe9c9875831e312027d0004f498",
+    "main_game_tests": "194/194",
+    "scope": "source-compiled offline fixture only; independent release JAR and arbitrary-world acceptance still open",
     "rc_publication_cleared": false
   }
 }
