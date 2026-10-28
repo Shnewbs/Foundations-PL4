@@ -270,6 +270,10 @@ ENDPOINT_DISCOVERY_CASES = {
                'handheld discovery observes later endpoint before provider',
                'handheld discovery healthy provider remains scoped'],
 }
+# A target-specific 1.12.2 native provider-swap case must execute once.
+# Aggregate 392/392 alone cannot prove that the adversarial callback was run.
+CAPABILITY_DISCOVERY_CASES = ['wireless capability discovery replacement cannot debit player']
+
 HANDHELD_ADMISSION_CASES = ['handheld readiness owner readmission', 'handheld readiness context readmission', 'handheld readiness observed disconnected alias fence', 'handheld readiness valid scoped context']
 
 LIVE_ADMISSION_CASES = ["live admission owner rewrite rechecks cleared latch","live admission tick catches context rewrite","live admission disconnected alias remains fenced after owner edit tick","live admission valid context remains scoped and idempotent","live admission raw context rewrite preserves rejected payload"]
@@ -344,6 +348,8 @@ def record(root, expected_mc, expected_sha):
                 and migration["generated_preview3_world_upgrade"] == "PASS"):
             raise ValueError("Legacy native/production/migration evidence disagrees")
         validate_legacy_counts(root, native, expected)
+        if expected_mc == '1.12.2' and expected >= 392:
+            validate_live_evidence_cases(root, expected_mc, CAPABILITY_DISCOVERY_CASES)
         if status.get("item_endpoint_discovery_fixture") is True:
             if expected_mc not in ENDPOINT_DISCOVERY_CASES:
                 raise ValueError("Unregistered exact-target native endpoint discovery proof: " + expected_mc)

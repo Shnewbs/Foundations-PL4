@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from hourly_builds import validate_legacy_counts
+from hourly_builds import validate_legacy_counts, validate_live_evidence_cases, CAPABILITY_DISCOVERY_CASES
 class CountsTests(unittest.TestCase):
     def setUp(self):
         self.t=tempfile.TemporaryDirectory();self.addCleanup(self.t.cleanup);self.root=Path(self.t.name);(self.root/'run-legacy').mkdir();(self.root/'verification-logs').mkdir();self.report=dict(minecraft='1.12.2',total=2,passed=2,failed=0,results=[dict(passed=True),dict(passed=True)]);self.log='PL4 LEGACY SCENARIOS: 2/2';self.native=dict(minecraft='1.12.2')
@@ -24,4 +24,24 @@ class CountsTests(unittest.TestCase):
     def test_wrong_minecraft(self):
         self.report['minecraft']='1.6.4'
         with self.assertRaises(ValueError):self.validate()
+    def test_capability_discovery_requires_unique_native_case(self):
+        self.report['results'][0]['name'] = CAPABILITY_DISCOVERY_CASES[0]
+        self.report['results'][1]['name'] = 'unrelated native case'
+        (self.root/'run-legacy/legacy-scenarios.json').write_text(json.dumps(self.report))
+        validate_live_evidence_cases(self.root, '1.12.2', CAPABILITY_DISCOVERY_CASES)
+        self.report['results'][1]['name'] = CAPABILITY_DISCOVERY_CASES[0]
+        (self.root/'run-legacy/legacy-scenarios.json').write_text(json.dumps(self.report))
+        with self.assertRaises(ValueError):
+            validate_live_evidence_cases(self.root, '1.12.2', CAPABILITY_DISCOVERY_CASES)
+
+    def test_capability_discovery_rejects_missing_or_failed_case(self):
+        self.report['results'][0]['name'] = 'unrelated native case'
+        (self.root/'run-legacy/legacy-scenarios.json').write_text(json.dumps(self.report))
+        with self.assertRaises(ValueError):
+            validate_live_evidence_cases(self.root, '1.12.2', CAPABILITY_DISCOVERY_CASES)
+        self.report['results'][0] = dict(name=CAPABILITY_DISCOVERY_CASES[0], passed=False)
+        (self.root/'run-legacy/legacy-scenarios.json').write_text(json.dumps(self.report))
+        with self.assertRaises(ValueError):
+            validate_live_evidence_cases(self.root, '1.12.2', CAPABILITY_DISCOVERY_CASES)
+
 if __name__=='__main__':unittest.main()
