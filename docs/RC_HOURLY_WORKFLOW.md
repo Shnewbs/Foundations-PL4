@@ -85,3 +85,5 @@ For native 26.x candidates, the hourly recorder requires every claimed PL4/other
 
 
 Legacy push-triggered publisher existence checks must fail closed on authenticated repo verification and release/tag HTTP status, not interpret any failed `gh release view` or a masked `git ls-remote` as absence. The exact legacy version branches now run six offline preflight regressions before native validation. Scoped runtime checksum evidence from previously accepted artifacts is not transferable to newly edited source commits.
+
+A reviewed `UPSTREAM_CONNECTION_RESET` due to Forge installer `curl (56)` may defer only the exact recorded source for up to four hours (current reviewed window: three hours); force/manual override and changed source remain buildable. This is a *pre-native environmental blocker*, not acceptance. Do not hammer unchanged upstream downloads during the deferral. Per-branch publisher absence needs verified repo HTTP 200 plus release HTTP 404; a command or API failure never proves absence.

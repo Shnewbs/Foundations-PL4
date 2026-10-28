@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-28T19:15:00Z",
+  "recorded_at": "2026-10-28T19:24:45Z",
   "repository": "Shnewbs/Foundations-PL4",
   "scope": "Exact native legacy publisher fail-closed release absence and independent previous-source packaged runtime verification",
   "writer": "pl4-chat-hourly-20261028T1910Z-publisher-404",
@@ -17,7 +17,7 @@
         "source_parent": "97ccb4f24611ef018a91dbd3dace159cf6fedf9b",
         "workflow_blob": "3040e2a6c5975235b2b7f375c25cfb59a720fa02",
         "new_push_native_run": 40752183303,
-        "new_push_native_status_at_receipt": "IN_PROGRESS",
+        "new_push_native_status_at_receipt": "COMPLETED_FAILURE_EXTERNAL_CONNECTION_RESET_NO_NATIVE",
         "preflight_test_step": "COMPLETED_SUCCESS",
         "rc_cleared": false
       },
@@ -26,7 +26,7 @@
         "source_parent": "4de703f105189d9eebd778c611ea8d68f25be8bc",
         "workflow_blob": "0c9c3e9bb33e17d5e41c069674f609ed7de33497",
         "new_push_native_run": 40752206494,
-        "new_push_native_status_at_receipt": "IN_PROGRESS",
+        "new_push_native_status_at_receipt": "COMPLETED_SUCCESS_399_NATIVE_RESTART_PREUPGRADE",
         "preflight_test_step": "COMPLETED_SUCCESS",
         "rc_cleared": false
       }
@@ -82,5 +82,68 @@
     "new_curseforge_uploads": 0,
     "existing_development_draft_preserved": true,
     "latest_curseforge_reconciliation_run": 40749016926
+  },
+  "new_publisher_source_native_runs": {
+    "1.6.4": {
+      "branch": "mc/1.6.4",
+      "source_commit": "5fa3ecf1174c93a0530eaf09e67a7882e7674c0d",
+      "native_run": 40752183303,
+      "run_status": "COMPLETED_FAILURE",
+      "reason": "curl (56) Recv failure: Connection reset by peer during Forge 9.11.1.1345 installer fetch from maven.minecraftforge.net",
+      "preflight_offline_policy_tests": "6/6 PASS",
+      "gradle_build": "PASS",
+      "native_scenarios": "NOT_STARTED",
+      "restart": "NOT_STARTED",
+      "preupgrade_migration": "NOT_STARTED",
+      "failed_artifact_id": 12845260858,
+      "failed_artifact_sha256": "24d95f3d07eb6e18d225617fd49bfde0b09a21a2bd0072c1428c6f5b340e6d67",
+      "failed_artifact_entries": 10,
+      "artifact_crc": "PASS",
+      "packaged_srg_jar_sha256": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+      "packaged_runtime_identical_prior_source": true,
+      "publisher": "SKIPPED_DEVELOPMENT",
+      "rc_publication_cleared": false,
+      "retry_after": "2026-10-28T22:15:14Z"
+    },
+    "1.12.2": {
+      "branch": "mc/1.12.2",
+      "source_commit": "af1feb4a3f10a05f701db84f84eb82f36d044de3",
+      "native_run": 40752206494,
+      "run_status": "COMPLETED_SUCCESS",
+      "native_scenarios": "399/399 PASS",
+      "item_restart": "PASS",
+      "preupgrade_migration": "PASS",
+      "artifact_id": 12843643836,
+      "artifact_archive_sha256": "a51debad6aab5b411503b47d1d0c4f5bdfb78e96bcf4efc1fd24a326c050beca",
+      "artifact_entries": 145,
+      "artifact_crc": "PASS",
+      "production_jar_sha256": "39edfc082d17eaf63ac636b5e1b3202134321b506dab5d67225004cba2a8e8ce",
+      "production_jar_entries": 142,
+      "production_jar_vs_previous": "All 142 entry payloads byte-identical to 4de703f, but ZIP entry timestamps differ; complete JAR hash changed",
+      "publisher": "SKIPPED_DEVELOPMENT",
+      "rc_publication_cleared": false
+    }
+  },
+  "main_controller_followup": {
+    "implementation_commit": "f93fd79f887d4de245aeb02e7888f8903001aeea",
+    "change": "Exact-source upstream connection-reset deferral, three hours, changed source and --force unaffected",
+    "local_tests": "21/21 PASS",
+    "reviewed_failed_164_run": 40752183303,
+    "retry_after": "2026-10-28T22:15:14Z",
+    "pinned_hourly_triggered_run": 40754013917,
+    "pinned_hourly_at_checkpoint": "IN_PROGRESS; no qualification claimed"
+  },
+  "historical_26_3_binary_review": {
+    "old_source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+    "native_run": 40205878290,
+    "artifact_id": 12603949042,
+    "artifact_sha256": "602777bad1cab5dacdd201b65a6ba9600908a06c074754d092502234d4f404aa",
+    "artifact_entries": 18,
+    "zip_crc": "PASS",
+    "loader_23_profile_jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+    "loader_39_profile_jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+    "loader_23_native_log_sha256": "10db1e826eb3b8f63a8488bd49ed61f03fd87448d5e7965b50ecdb91bcbfff7f",
+    "loader_39_native_log_sha256": "0d88c2a15054ee0f3a6d5cc49ea8ca2785e957ce317189ae4d2e4b8cb0024a96",
+    "limitations": "Historical source only; recent controller attestation checks do not retroactively qualify these profile manifests"
   }
 }
