@@ -1,0 +1,105 @@
+{
+  "recorded_date": "2026-10-28",
+  "checked_at": "2026-10-28T09:12:04.470Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "goal": "Exact-version automatic item transport must remain pinned to its installed native endpoints through provider metadata, simulation, and execution",
+  "source_policy": "main and existing exact mc/<version> branches only; no force updates",
+  "writer_lease_owner": "pl4-chat-hourly-20261028T0902Z",
+  "source_changes": {
+    "1.12.2": "Wrap simulated and executed Forge IItemHandler calls in original root/endpoint/world/owner/loaded target/backing guards. Simulation invalidation denies transfer before executing source extraction. Executed callback invalidation preserves sealed persistent uncertainty for review.",
+    "1.6.4": "Wrap native IInventory slot, extract, insert callbacks in original installed target, owner, host/world/loaded checks. Fail after executed mutation under the existing source-target journal; do not retry blindly."
+  },
+  "branches": {
+    "1.12.2": {
+      "branch": "mc/1.12.2",
+      "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+      "parent_commit": "aa23bef3398930aae28179594aea81d1f56df9fa",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/f0d75b55448a5aa80e6d9742847530f752c97d6d",
+      "native_workflow_run": 40661731129,
+      "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129",
+      "native_workflow_status": "in_progress",
+      "native_workflow_conclusion": null,
+      "native_declared_scenarios": 397,
+      "prior_verified_scenarios": 395,
+      "new_native_cases": [
+        "automatic simulated sink revocation cannot debit source",
+        "automatic executed source revocation seals uncertain extraction"
+      ],
+      "source_blobs": {
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "b3906ad61895315cb089e7118c592cb27388cba6",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "2aa911d9750e65d6c03aa4adb7902340760dff25",
+        "BUILD_STATUS.json": "d303f9ee7faf4528439dc9e9797f1e5e1297f0f7"
+      },
+      "prior_runtime_sha256": "fa5bfe811862835d0a8d3f3e773f35a8e18912b63d3a980ae18fb397523b8505",
+      "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
+      "release_channel": "development",
+      "rc_publication_cleared": false,
+      "native_qualified_on_new_source": false,
+      "production_jar_sha256": null,
+      "artifact_id": null,
+      "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+    },
+    "1.6.4": {
+      "branch": "mc/1.6.4",
+      "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+      "parent_commit": "56a302d9182c0863c569d5f12393429ce59b6d48",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+      "native_workflow_run": 40661943594,
+      "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594",
+      "native_workflow_status": "in_progress",
+      "native_workflow_conclusion": null,
+      "native_declared_scenarios": 368,
+      "prior_verified_scenarios": 366,
+      "new_native_cases": [
+        "automatic native sink simulation revocation cannot debit source",
+        "automatic native executed source revocation seals uncertain extraction"
+      ],
+      "source_blobs": {
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "d95f432a1dad01e866a4883f76af51ec6ae1e31c",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "f426b9e4487c67487f4c5186bb54652544138155",
+        "BUILD_STATUS.json": "e84cc5f7a2c896db1dd28cb84c101607bd4f2e61"
+      },
+      "prior_runtime_sha256": "051751257a7688921e73a0bec21ac1332fd3055964fd6669eac4ee8bedd3e8c8",
+      "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
+      "release_channel": "development",
+      "rc_publication_cleared": false,
+      "native_qualified_on_new_source": false,
+      "production_jar_sha256": null,
+      "artifact_id": null,
+      "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+    }
+  },
+  "publisher_review": {
+    "1.12.2": {
+      "native_workflow_blob": "42b34f0780ced0b4d7629a6070381a0bd135fdf3",
+      "release_workflow_blob": "0a6005ca830719b2de052fee97dddcfcece091e3",
+      "status": "verified beta + explicit RC approval + exact source/checksum/tag guards before source push"
+    },
+    "1.6.4": {
+      "native_workflow_blob": "c0d515bb3bf8a18ffd4374a8bbb1bcd941846a96",
+      "release_workflow_blob": "d3943a4427d5305ca55982c0deda00f3712ad0df",
+      "status": "verified beta + explicit RC approval + exact source/SRG runtime/checksum/tag guards before source push"
+    }
+  },
+  "prior_accepted_native_runs": {
+    "1.12.2": 40654775646,
+    "1.6.4": 40655791384
+  },
+  "new_runtime_hashes_accepted": false,
+  "accepted_migration_for_new_source": false,
+  "accepted_client_for_new_source": false,
+  "rc_publication_clearances": 0,
+  "all_targets": 24,
+  "github_release_url": null,
+  "curseforge_upload_id": null,
+  "curseforge_public_visible": null,
+  "blockers": [
+    "Exact-source end-to-end CI restart/historical qualification and artifact digest verification not yet complete at checkpoint",
+    "1.6.4 intermittent x80 gravel/native fixture collision root cause unresolved",
+    "Installed third-party provider binaries, disconnected/unobserved aliases, dedicated multiplayer/profile/dimension and arbitrary migrations not qualified",
+    "Sustained performance and exact-runtime client visuals not qualified"
+  ],
+  "next_step": "Read precise native receipt, migration and artifact hashes from the two existing CI runs; repair actual exact-source failures, then independently reconcile hourly-builds.yml artifacts without duplicating runs; extend actual installed-provider, multiplayer and sustained-performance acceptance.",
+  "limitations": "Prior 395/366 source runtime hashes cannot be transferred onto new 397/368 candidate sources. Merely compiling or passing preliminary native server cases does not clear a release. No publishing mutation authorized.",
+  "notes": "No R16 attachment used; no feature branch, no force push, no subagent, no alignment transforms."
+}

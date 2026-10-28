@@ -1647,7 +1647,7 @@
       "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
     }
   ],
-  "latest_work": "2026-10-28T08:27:13Z: exact Forge 1.12.2 aa23bef native 395/395 run 40654775646 artifact 12801636439 SHA256 4a8d43; exact Forge 1.6.4 56a302d native 366/366 run 40655791384 artifact 12801713423 SHA256 25352b. Both source/runtime ZIP identity, separate-process restart and preupgrade import passed; development release blocked, all 24 RC flags false.",
+  "latest_work": "2026-10-28T09:12:04.470Z: guarded automatic provider-callback continuity source commits 1.12.2 f0d75b5 declared 397, 1.6.4 b0a4f45 declared 368; both branch native runs active, no new exact artifact qualified; prior native 395/366 retained; all 24 RC flags false.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2084,5 +2084,71 @@
       "Historical decode-scope/crash-write x=80 falling-gravel interruption remains causally unresolved; passing tests do not explain intermittent failure",
       "No fresh stock client, installed external provider, multiplayer, arbitrary migration or sustained performance acceptance"
     ]
+  },
+  "automatic_provider_callback_continuity_candidate": {
+    "evidence": "docs/acceptance/rc-dev-legacy-automatic-callback-continuity-2026-10-28.json",
+    "checked_at": "2026-10-28T09:12:04.470Z",
+    "branches": {
+      "1.12.2": {
+        "branch": "mc/1.12.2",
+        "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+        "parent_commit": "aa23bef3398930aae28179594aea81d1f56df9fa",
+        "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/f0d75b55448a5aa80e6d9742847530f752c97d6d",
+        "native_workflow_run": 40661731129,
+        "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129",
+        "native_workflow_status": "in_progress",
+        "native_workflow_conclusion": null,
+        "native_declared_scenarios": 397,
+        "prior_verified_scenarios": 395,
+        "new_native_cases": [
+          "automatic simulated sink revocation cannot debit source",
+          "automatic executed source revocation seals uncertain extraction"
+        ],
+        "source_blobs": {
+          "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "b3906ad61895315cb089e7118c592cb27388cba6",
+          "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "2aa911d9750e65d6c03aa4adb7902340760dff25",
+          "BUILD_STATUS.json": "d303f9ee7faf4528439dc9e9797f1e5e1297f0f7"
+        },
+        "prior_runtime_sha256": "fa5bfe811862835d0a8d3f3e773f35a8e18912b63d3a980ae18fb397523b8505",
+        "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
+        "release_channel": "development",
+        "rc_publication_cleared": false,
+        "native_qualified_on_new_source": false,
+        "production_jar_sha256": null,
+        "artifact_id": null,
+        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+      },
+      "1.6.4": {
+        "branch": "mc/1.6.4",
+        "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+        "parent_commit": "56a302d9182c0863c569d5f12393429ce59b6d48",
+        "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+        "native_workflow_run": 40661943594,
+        "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594",
+        "native_workflow_status": "in_progress",
+        "native_workflow_conclusion": null,
+        "native_declared_scenarios": 368,
+        "prior_verified_scenarios": 366,
+        "new_native_cases": [
+          "automatic native sink simulation revocation cannot debit source",
+          "automatic native executed source revocation seals uncertain extraction"
+        ],
+        "source_blobs": {
+          "src/legacy/java/net/foundations/pl4/legacy/LegacyTile.java": "d95f432a1dad01e866a4883f76af51ec6ae1e31c",
+          "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "f426b9e4487c67487f4c5186bb54652544138155",
+          "BUILD_STATUS.json": "e84cc5f7a2c896db1dd28cb84c101607bd4f2e61"
+        },
+        "prior_runtime_sha256": "051751257a7688921e73a0bec21ac1332fd3055964fd6669eac4ee8bedd3e8c8",
+        "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
+        "release_channel": "development",
+        "rc_publication_cleared": false,
+        "native_qualified_on_new_source": false,
+        "production_jar_sha256": null,
+        "artifact_id": null,
+        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+      }
+    },
+    "release_cleared": false,
+    "unresolved": "New runtime SHA/client/provider/multiplayer/performance/migration qualification pending; original 1.6.4 x80 gravel cause remains open"
   }
 }
