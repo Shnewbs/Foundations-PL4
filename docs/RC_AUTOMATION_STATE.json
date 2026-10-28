@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T1207Z",
+    "claimed_at": "2026-10-28T12:06:26.355Z",
+    "expires_at": "2026-10-28T12:26:26.355Z",
+    "expected_parent": "069c5d4e646f3ffc34548cc8c42d5492ff1e2e9c",
+    "purpose": "Review exact 1.6.4 native terrain evidence; implement fail-closed log/report binding and native tests without duplicate builds",
+    "renewal_required": true
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
