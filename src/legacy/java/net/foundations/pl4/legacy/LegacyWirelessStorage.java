@@ -277,7 +277,7 @@ public final class LegacyWirelessStorage {
     };}
     public static int withdraw(EntityPlayer player,ItemStack tool,Entry selected,int amount){
         LegacyTile root=resolve(player,tool);if(root==null||!LegacyPL4.enabled||selected==null||amount<1||amount>64||!endpoints(root).contains(selected.node))return 0;
-        return withdrawEntry(player,selected,amount,inventory(selected.node),new ConservingItems.Work(WORK_LIMIT),false);
+        return withdrawEntry(player,selected,amount,inventory(player,tool,root,selected.node),new ConservingItems.Work(WORK_LIMIT),false);
     }
     private static int withdrawEntry(final EntityPlayer player,final Entry entry,int amount,final StorageInventory source,ConservingItems.Work work,boolean exact){
         final ConservingItems.Escrow<ItemStack> escrow=LegacyWirelessSafety.escrow(entry.node);
