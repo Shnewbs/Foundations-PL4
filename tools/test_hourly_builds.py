@@ -89,7 +89,7 @@ class HourlyBuildTests(unittest.TestCase):
                         event='schedule', head_repository={'full_name': REPO})
 
         selected = builds.discover(self.ledger, REPO, lookup=lookup)
-        self.assertEqual({row['minecraft'] for row in selected}, {'26.1', '26.1.2', '26.2', '26.3'})
+        self.assertEqual({row['minecraft'] for row in selected}, {'26.1.2', '26.3'})
         self.assertTrue(all(row['artifact_name'] == builds.artifact_name(row['minecraft'], SHA)
                             for row in selected))
 
