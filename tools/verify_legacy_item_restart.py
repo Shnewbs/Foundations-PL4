@@ -29,6 +29,36 @@ def require_legacy_decode_terrain_observations(report,phase,minecraft):
                    ('host_block','overhead_falling_blocks','live_falling_entities'))):
             raise ValueError('Unqualified pre-cleanup terrain/chunk evidence x='+str(x)+' '+str(r)[:1000])
 
+def require_legacy_decode_terrain_log_match(report,native_log,phase,minecraft):
+    """Bind native pre-cleanup observations to their separately retained stdout, in order."""
+    if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
+        return
+    require_legacy_decode_terrain_observations(report,phase,minecraft)
+    encoded=re.findall(r'PL4 DECODE TERRAIN BEFORE ([^\\r\\n]+)',native_log)
+    if len(encoded)!=4:
+        raise ValueError('Expected four independent native pre-cleanup terrain log lines')
+    try:
+        logged=[json.loads(value) for value in encoded]
+    except (TypeError,ValueError) as error:
+        raise ValueError('Malformed native pre-cleanup terrain log JSON') from error
+    if any(not isinstance(row,dict) for row in logged) or [row.get('x') for row in logged]!=[64,69,80,85]:
+        raise ValueError('Missing, reordered or duplicated native terrain log columns')
+    canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'))
+    if canonical(logged)!=canonical(report['terrain_before_cleanup']):
+        raise ValueError('Native pre-cleanup terrain log/report disagreement')
+    for x in (64,69,80,85):
+        prefix='PL4 DECODE TERRAIN BEFORE '
+        trace=next((value for value in encoded if json.loads(value).get('x')==x),None)
+        before=native_log.find(prefix+trace) if trace is not None else -1
+        guard=native_log.find('PL4 DECODE GRAVITY GUARD x='+str(x)+' ')
+        if before<0 or guard<0 or before>=guard:
+            raise ValueError('Native terrain observation was not before cleanup x='+str(x))
+    if report.get('suite')=='decode-rewrite':
+        actor=native_log.find('PL4 DECODE GRAVITY ADVERSARY x=80 ')
+        before=native_log.find('PL4 DECODE TERRAIN BEFORE '+encoded[2])
+        if actor<0 or before<0 or before>=actor:
+            raise ValueError('Native ambient terrain must precede deliberate rewrite gravel actor')
+
 def require_legacy_decode_placements(report,phase,minecraft):
     """Bind 1.6.4 decode admission to two real native host placements."""
     if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
@@ -121,6 +151,7 @@ def verify(suite="item"):
             report=retain_phase_report(work,logs,prefix,phase,pid,code,logfile)
             try:
                 require_legacy_decode_terrain_observations(report,phase,mc)
+                require_legacy_decode_terrain_log_match(report,text,phase,mc)
                 require_legacy_decode_placements(report,phase,mc)
             except ValueError as error:
                 retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error)

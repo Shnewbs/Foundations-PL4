@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,require_legacy_decode_terrain_observations,retain_decode_placement_failure,require_legacy_decode_gravity_guards
+from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,require_legacy_decode_terrain_observations,require_legacy_decode_terrain_log_match,retain_decode_placement_failure,require_legacy_decode_gravity_guards
 
 class PhaseRetentionTests(unittest.TestCase):
     def setUp(self):
@@ -53,6 +53,44 @@ class NativeTerrainObservationsTests(unittest.TestCase):
             bad=[dict(rows[0],**{key:value})]+rows[1:]
             with self.subTest(key=key),self.assertRaises(ValueError):
                 require_legacy_decode_terrain_observations(self.report(bad),'write','1.6.4')
+
+    def trace(self,rows,actor=False):
+        lines=[]
+        for row in rows:
+            x=row['x']
+            lines.append('PL4 DECODE TERRAIN BEFORE '+json.dumps(row,separators=(',',':')))
+            if x in (69,85):
+                start=(64,69) if x==69 else (80,85)
+                if x==85 and actor:lines.append('PL4 DECODE GRAVITY ADVERSARY x=80 spawned=true removed=true')
+                lines.extend('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=0 ceiling=true' % n for n in start)
+        return '\\n'.join(lines)
+    def test_native_terrain_log_exact_rows_and_order(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        self.assertIsNone(require_legacy_decode_terrain_log_match(self.report(rows),self.trace(rows,True),'write','1.6.4'))
+        self.assertIsNone(require_legacy_decode_terrain_log_match({},'','verify','1.6.4'))
+        self.assertIsNone(require_legacy_decode_terrain_log_match({},'','write','1.12.2'))
+    def test_native_terrain_log_missing_duplicate_or_mutated_rejected(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        good=self.trace(rows,True)
+        first='PL4 DECODE TERRAIN BEFORE '+json.dumps(rows[0],separators=(',',':'))
+        for bad in (good.replace(first,'',1),good+'\\n'+first,
+                    good.replace('"chunk_x":5','"chunk_x":4',1),
+                    good.replace('"host_block":0','"host_block":13',1),
+                    good.replace('x=80 spawned=true','x=80 spawned=false')):
+            with self.subTest(bad=bad),self.assertRaises(ValueError):
+                require_legacy_decode_terrain_log_match(self.report(rows),bad,'crash-write','1.6.4')
+    def test_native_terrain_log_reorder_and_late_snapshot_rejected(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        good=self.trace(rows,True)
+        wrong=rows[:];wrong[0],wrong[1]=wrong[1],wrong[0]
+        altered=good.replace(
+            'PL4 DECODE TERRAIN BEFORE '+json.dumps(rows[0],separators=(',',':')),
+            'PL4 DECODE TERRAIN BEFORE '+json.dumps(wrong[0],separators=(',',':')),1)
+        for bad in (altered,good.replace(
+                'PL4 DECODE TERRAIN BEFORE '+json.dumps(rows[0],separators=(',',':')),
+                '',1)+'\\nPL4 DECODE TERRAIN BEFORE '+json.dumps(rows[0],separators=(',',':'))):
+            with self.subTest(bad=bad),self.assertRaises(ValueError):
+                require_legacy_decode_terrain_log_match(self.report(rows),bad,'write','1.6.4')
 
 class NativeDecodePlacementAdmissionTests(unittest.TestCase):
     def good(self,x):
