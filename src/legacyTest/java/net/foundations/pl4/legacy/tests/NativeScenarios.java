@@ -191,6 +191,19 @@ public final class NativeScenarios {
                 check(LegacyWirelessStorage.ready(node(export)),
                         "read-only metadata replacement does not quarantine a healthy host");
             }});
+            test("wireless capability discovery replacement cannot debit player",new Runnable(){public void run(){
+                EntityPlayer p=wirelessPlayer();int beforeDrops=looseIron();
+                CapabilitySwapChest detached=new CapabilitySwapChest();world.setTileEntity(export.west(),detached);
+                for(int i=0;i<27;i++)destination().setInventorySlotContents(i,readerStack(64));
+                p.inventory.setInventorySlotContents(9,readerStack(32));
+                check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0,
+                        "unobserved replacement must abort provider discovery before player debit");
+                check(detached.capabilityCalls>0&&source()!=detached
+                        &&readerCount(detached.getStackInSlot(0))==0
+                        &&readerCount(source().getStackInSlot(0))==0
+                        &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==beforeDrops,
+                        "capability callback replacement leaves both inventories, player and drops unchanged");
+            }});
             test("wireless removed endpoint cannot be reused",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();destination().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);fluidAir(1,200);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&readerCount(destination().getStackInSlot(0))==32,"graph rechecked");}});
             test("wireless foreign endpoint excluded",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();fluidNode(2).owner="other";destination().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"owner partition");}});
             test("wireless oversized graph fails closed",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyPL4.nodeLimit=2;check(LegacyWirelessStorage.entries(p,wirelessTool(p)).isEmpty(),"bounded graph");}});
@@ -573,6 +586,29 @@ public final class NativeScenarios {
     }
     /** This handler deliberately keeps a reference to a detached chest. Without the
      * host/target guard it can drain a player after getSlots replaces its provider tile. */
+    /** Native capability query may replace its tile before returning an old handler. */
+    public static final class CapabilitySwapChest extends TileEntityChest {
+        int capabilityCalls;
+        final net.minecraftforge.items.IItemHandler backing=new net.minecraftforge.items.wrapper.InvWrapper(this);
+        @Override public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> cap,net.minecraft.util.EnumFacing face){
+            if(cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+                if(++capabilityCalls==1){
+                    net.minecraft.world.World w=getWorld();
+                    net.minecraft.util.math.BlockPos at=getPos();
+                    TileEntityChest replacement=new TileEntityChest();
+                    w.setTileEntity(at,replacement);
+                    if(w.getTileEntity(at)!=replacement)throw new IllegalStateException("Native discovery replacement failed");
+                }
+                return true;
+            }
+            return super.hasCapability(cap,face);
+        }
+        @Override public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> cap,net.minecraft.util.EnumFacing face){
+            return cap==net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                    ?net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(backing)
+                    :super.getCapability(cap,face);
+        }
+    }
     public static final class MetadataSwapChest extends TileEntityChest {
         int metadataCalls;
         final net.minecraftforge.items.IItemHandler backing=new net.minecraftforge.items.wrapper.InvWrapper(this);

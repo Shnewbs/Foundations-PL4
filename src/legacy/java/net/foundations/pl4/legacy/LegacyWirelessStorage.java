@@ -77,7 +77,25 @@ public final class LegacyWirelessStorage {
         // Inspect every authorized item endpoint before deduplication: a healthy alias must not bypass escrow quarantine.
         for(BoundedNetwork.Point point:plan.nodes){LegacyTile node=root.fluidNode(point);if(node==null||!root.owner.equals(node.owner))continue;
             int role=node.role();if(role!=1&&role!=2&&role!=LegacyReadings.ITEMS)continue;
-            net.minecraftforge.items.IItemHandler handler=node.inventory();handlers.put(node,handler);candidates.add(node);
+            // Provider discovery may synchronously replace the target tile, host, or owner.
+            // A fresh handler acquired after such a callback has NOT passed this
+            // network's quarantine/alias inspection. Abort the whole roster.
+            net.minecraft.world.World observedWorld=node.getWorld();
+            net.minecraft.util.math.BlockPos observedHost=node.getPos(),observedTarget=node.target();
+            String observedOwner=node.owner;
+            if(observedWorld==null||!observedWorld.isBlockLoaded(observedHost,false)
+                    ||!observedWorld.isBlockLoaded(observedTarget,false)){
+                blockedTargets.add(node.fluidTarget());continue;
+            }
+            net.minecraft.tileentity.TileEntity observedTile=observedWorld.getTileEntity(observedTarget);
+            net.minecraftforge.items.IItemHandler handler=node.inventory();
+            if(node.getWorld()!=observedWorld||!observedOwner.equals(node.owner)
+                    ||!observedHost.equals(node.getPos())||!observedTarget.equals(node.target())
+                    ||!observedWorld.isBlockLoaded(observedHost,false)
+                    ||!observedWorld.isBlockLoaded(observedTarget,false)
+                    ||observedWorld.getTileEntity(observedHost)!=node
+                    ||observedWorld.getTileEntity(observedTarget)!=observedTile)return result;
+            handlers.put(node,handler);candidates.add(node);
             Boolean previous=allOwnedSided.get(node.fluidTarget());allOwnedSided.put(node.fluidTarget(),(previous==null||previous.booleanValue())&&handler!=null&&handler.getClass()==LegacySidedInventory.class);
             if(!ready(node)){blockedTargets.add(node.fluidTarget());if(handler!=null)for(Object id:backing(handler))blockedHandlers.add(id);}
         }

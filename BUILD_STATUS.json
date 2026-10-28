@@ -30,7 +30,7 @@
     "verified_runtime_sha256": "31995fa3c46ab4fb6d76262d82484c9579b36cda1739f0844d2509f85c50d6dc",
     "release_published": false
   },
-  "expected_native_scenarios": 391,
+  "expected_native_scenarios": 392,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -119,5 +119,6 @@
   "item_owner_mutation_restart_acceptance": "PENDING_EXACT_NATIVE_OWNER_ONLY_ORIGINAL_CONTEXT_PROCESS_VALIDATION",
   "item_handheld_admission_fixture": true,
   "item_handheld_admission_acceptance": "PENDING_EXACT_NATIVE_READINESS_OBSERVATION_AND_ALIAS_REGRESSION",
-  "item_endpoint_discovery_fixture": true
+  "item_endpoint_discovery_fixture": true,
+  "native_capability_discovery_checkpoint": "Unqualified development candidate: fail closed if native provider discovery replaces host/target/owner; 1 new Forge 1.12.2 fixture scenario. Requires exact-source native, restart, migration, and client/provider acceptance; no release clearance."
 }
