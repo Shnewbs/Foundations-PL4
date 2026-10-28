@@ -68,3 +68,49 @@ task restartTestJar(type:Jar) { dependsOn restartTestClasses; from sourceSets.re
 reobf { restartTestJar { classpath=sourceSets.restartTest.compileClasspath } }
 restartTestJar.finalizedBy reobfRestartTestJar
 build.dependsOn restartTestJar
+
+
+// ForgeGradle's reobfJar rewrites the already-reproducible Gradle JAR and assigns
+// the wall-clock time to every ZIP entry. Keep reobfuscation first, then repack
+// the production JAR without altering any class/resource payload. This protects
+// full-file SHA-256 reproducibility, not only per-entry content identity.
+tasks.named('reobfJar').configure {
+    doLast {
+        def runtime = new File(project.buildDir, "libs/${project.archivesBaseName}-${project.version}.jar")
+        if (!runtime.isFile()) throw new GradleException("Missing reobfuscated Forge runtime: " + runtime)
+        def normalized = new File(runtime.parentFile, runtime.name + ".timestamp-normalized.tmp")
+        try {
+            new java.util.zip.ZipFile(runtime).withCloseable { source ->
+                new java.util.zip.ZipOutputStream(new java.io.BufferedOutputStream(new java.io.FileOutputStream(normalized))).withCloseable { target ->
+                    byte[] buffer = new byte[16384]
+                    def entries = source.entries()
+                    while (entries.hasMoreElements()) {
+                        def original = entries.nextElement()
+                        def entry = new java.util.zip.ZipEntry(original.name)
+                        entry.setTime(315532800000L)  // ZIP DOS epoch, 1980-01-01 UTC on native CI
+                        entry.setMethod(original.method)
+                        if (original.method == java.util.zip.ZipEntry.STORED) {
+                            entry.setSize(original.size)
+                            entry.setCompressedSize(original.size)
+                            entry.setCrc(original.crc)
+                        }
+                        if (original.comment) entry.setComment(original.comment)
+                        if (original.extra) entry.setExtra(original.extra)
+                        target.putNextEntry(entry)
+                        source.getInputStream(original).withCloseable { input ->
+                            int count
+                            while ((count = input.read(buffer)) != -1) {
+                                target.write(buffer, 0, count)
+                            }
+                        }
+                        target.closeEntry()
+                    }
+                }
+            }
+            java.nio.file.Files.move(normalized.toPath(), runtime.toPath(),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+        } finally {
+            if (normalized.exists()) normalized.delete()
+        }
+    }
+}

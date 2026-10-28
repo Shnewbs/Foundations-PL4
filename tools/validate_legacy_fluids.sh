@@ -4,6 +4,21 @@ set -euo pipefail
 mkdir -p verification-logs
 bash gradlew --no-daemon --console=plain clean build reobfLegacyTestJar 2>&1 | tee verification-logs/build.log
 
+# Post-reobf timestamp regression: FG3 rewrites Gradle's reproducible JAR and
+# had produced different runtime hashes from byte-identical class/resource sets.
+python3 - <<'PY'
+from pathlib import Path
+from zipfile import ZipFile
+runtime = Path("build/libs/FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar")
+with ZipFile(runtime) as archive:
+    bad = [entry.filename for entry in archive.infolist()
+           if entry.date_time != (1980, 1, 1, 0, 0, 0)]
+    if bad:
+        raise SystemExit("Nonreproducible runtime ZIP timestamps: " + repr(bad[:5]))
+print("PASS 1.12.2 production reobfuscated JAR has normalized ZIP entry timestamps")
+PY
+
+
 
 set -euo pipefail
 mkdir -p run-legacy/mods
