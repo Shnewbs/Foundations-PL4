@@ -2,6 +2,7 @@
 from pathlib import Path
 import argparse
 import json
+import hashlib
 import os
 import shutil
 import signal
@@ -9,6 +10,7 @@ import subprocess
 import tarfile
 import io
 import time
+from verify_upgrade_evidence import record_phase, world_fingerprint
 
 
 def main():
@@ -16,6 +18,7 @@ def main():
     if (args.phase=='restore')!=(args.restore_world is not None):raise ValueError('Restore requires an explicit saved probe run directory')
     source=args.source.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=True);fixture=Path(__file__).resolve().parent
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=source,text=True).strip();archive=subprocess.check_output(['git','archive','HEAD'],cwd=source)
+    source_archive_sha256=hashlib.sha256(archive).hexdigest();copied_input_world=None
     env=dict(os.environ,PL4_PROBE_SOURCE=commit,PL4_PROBE_OUTPUT=str(out),PL4_PROBE_PHASE=args.phase);processes=[];logs=[]
     roots={}
     for name in ['server','PL4ProbeA','PL4ProbeB']:
@@ -29,7 +32,9 @@ def main():
         if name=='server':
             if args.restore_world:
                 previous=args.restore_world.resolve()
+                copied_input_world=world_fingerprint(previous/'world')
                 shutil.copytree(previous/'world',run/'world')
+                if world_fingerprint(run/'world')!=copied_input_world:raise ValueError('Restored-world input differs from the saved native world')
                 shutil.copy2(previous/'probe-node-identity.txt',run/'probe-node-identity.txt')
             (run/'eula.txt').write_text('eula=true\n');(run/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=25576\nonline-mode=false\nmax-players=2\nspawn-protection=0\nlevel-type=minecraft:flat\nview-distance=3\nsimulation-distance=3\nenforce-secure-profile=false\n')
             extra="neoForge.runs.server { jvmArguments.addAll('-Xms256m','-Xmx768m') }\n"
@@ -40,6 +45,7 @@ def main():
     def launch(name,task):
         log=(out/(name+'.log')).open('w');logs.append(log)
         process=subprocess.Popen(['bash','gradlew','--no-daemon','--console=plain',task],cwd=roots[name],env=env,stdin=subprocess.PIPE,stdout=log,stderr=subprocess.STDOUT,text=True,start_new_session=True);processes.append(process);return process
+    completed=False
     try:
         server=launch('server','runServer');deadline=time.monotonic()+900
         while True:
@@ -58,13 +64,16 @@ def main():
             proof=json.loads((out/(name+'-client-proof.json')).read_text());assert proof['items_received']==17 and proof['identical_packets_sent']==(0 if args.phase=='restore' else 2) and proof['source_commit']==commit and proof['phase']==args.phase
             assert (out/(name+'-storage.png')).stat().st_size>1000
         proof=json.loads((out/'server-multiplayer-proof.json').read_text());assert proof['source_commit']==commit and proof['remaining_items']==94 and proof['items_per_player']==[17,17] and len(set(proof['real_client_uuids']))==2
-        print('PASS: two actual clients, distinct UUIDs, owner checks and '+('saved-world inventory/session restore.' if args.phase=='restore' else 'network replay conservation.'),flush=True)
+        completed=True
     finally:
         for p in processes:
             if p.poll() is None:
                 try:p.stdin.write('stop\n');p.stdin.flush();p.wait(timeout=25)
                 except (OSError,subprocess.TimeoutExpired):os.killpg(p.pid,signal.SIGTERM)
         for log in logs:log.close()
+    if completed:
+        record_phase(out,roots['server']/'run/world',commit,source_archive_sha256,args.phase,copied_input_world)
+        print('PASS: two actual clients, verified saved-world bytes, distinct UUIDs, owner checks and '+('world restore.' if args.phase=='restore' else 'replay conservation.'),flush=True)
 
 
 if __name__=='__main__':main()

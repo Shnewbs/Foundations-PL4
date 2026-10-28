@@ -37,21 +37,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xauth libgl1-mesa-dri
+      - name: Check independent migration evidence regressions
+        run: python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_upgrade_evidence.py'
       - name: Save actual released-beta world with both player inventories
         run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py baseline results/seed --phase seed
       - name: Open copied saved world with candidate server and clients
         run: xvfb-run -a -s '-screen 0 1280x960x24' python3 control/tools/multiplayer-probe/run_probe.py candidate results/restore --phase restore --restore-world multiplayer-seed-server/run
-      - name: Compare persistent identities and exact totals across process upgrade
+      - name: Require immutable-source and retained-world-byte migration evidence
+        env:
+          BASELINE_SOURCE_SHA: 7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c
+          CANDIDATE_SOURCE_SHA: ${{ github.sha }}
         run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path('results');a=json.loads((root/'seed/server-multiplayer-proof.json').read_text());b=json.loads((root/'restore/server-multiplayer-proof.json').read_text())
-          assert a['source_commit']!=b['source_commit'] and b['saved_world_restore']
-          assert a['node_identity']==b['node_identity'] and a['real_client_uuids']==b['real_client_uuids']
-          assert a['remaining_items']==b['remaining_items']==94 and a['items_per_player']==b['items_per_player']==[17,17]
-          print('PASS: released-beta saved world reopened with unchanged node identity, owner checks, vanilla storage and both actual player inventories.')
-          PY
+          python3 control/tools/multiplayer-probe/verify_upgrade_evidence.py results/seed results/restore --baseline "$BASELINE_SOURCE_SHA" --candidate "$CANDIDATE_SOURCE_SHA"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
