@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T17:11:28.005Z: Changed main 26.x native controller source e66ce662 binds exact per-loader JVM log counts/identity and unique staged 26.3 profile JAR hashes. 18/18 policy tests passed; exact main 1.21.1 run40732504834 passed 192/192 and retained artifact12835801828. Main verifier40732504838 success; publisher40732504833 release and CurseForge steps skipped. Corrected prior run40724186230 also confirmed success. No new 26.3 real native run or legacy source update. Forge1.12.2 deferred until 17:25:03Z; natural 1.6.4 gravel and installed provider/client/multiplayer/migration/performance pending. 0/24 RC clearance, 0 new RC/upload. Writer lease released.",
+  "latest_work": "2026-10-28T18:13:12.464Z: Guarded 1.21.1 publisher against overwriting/editing existing GitHub Release assets; main source 7f7876c987765a47c38d4950a9b4569401504cb6, 20/20 Windows publication/controller tests PASS (40742077972), verifier PASS (40742077688), GitHub release/CurseForge steps SKIPPED. Pinned native 1.21.1 192/192 PASS at 7f7876c987765a47c38d4950a9b4569401504cb6 (hourly 40742077744, artifact 12840810051, exact production sha256 4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b). Forge 1.6.4 new loaded foreign-owner same-inventory alias admission guard and two native regressions committed at 37c02c4ff742b4f7fe529d398b328dac6c04985a, declared 372; branch run 40742486566 IN_PROGRESS, not qualified. Same hourly action's 1.12.2 external-download retry still IN_PROGRESS. All 24 RC flags false, no GitHub RC/CurseForge upload. Writer lease released at checkpoint.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2494,5 +2494,69 @@
     "prior_26_3_run": 40205878290,
     "prior_26_3_profile_hash_requalification": "NOT ASSERTED",
     "all_24_rc_cleared": false
+  },
+  "latest_main_release_immutability": {
+    "source_commit": "7f7876c987765a47c38d4950a9b4569401504cb6",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/7f7876c987765a47c38d4950a9b4569401504cb6",
+    "workflow_file": ".github/workflows/release.yml",
+    "test_file": "tools/test_hourly_builds.py",
+    "changes": [
+      "Check GitHub release tag preexistence with HTTP-404-only absence proof before mutating tags",
+      "Fail closed for unknown GitHub responses or pre-existing releases; remove gh release upload --clobber and gh release edit",
+      "Add two publisher static regression tests to guard immutability and preflight ordering"
+    ],
+    "policy_run": 40742077972,
+    "policy_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077972",
+    "policy_regressions": {
+      "passed": 20,
+      "total": 20,
+      "source": "completed Windows Actions job log; Ran 20 tests, OK"
+    },
+    "release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "main_verification_run": 40742077688,
+    "main_verification": "COMPLETED_SUCCESS",
+    "publication_live_test": "NOT_PERFORMED",
+    "native_1211": {
+      "source_commit": "7f7876c987765a47c38d4950a9b4569401504cb6",
+      "run": 40742077744,
+      "job": 123006252952,
+      "job_result": "COMPLETED_SUCCESS",
+      "overall_run_at_checkpoint": "IN_PROGRESS_BECAUSE_1.12.2",
+      "declared_native": 192,
+      "passed_native": 192,
+      "artifact_id": 12840810051,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077744/artifacts/12840810051",
+      "github_reported_zip_sha256": "e751572321ffbcadaa8fa4a5f246b1fb855492a54aabbaa361f81693a09d0177",
+      "runtime_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "source_binary_hash_evidence": "native job log exact artifact_sha256 manifest; not a new client or installed-provider pass"
+    }
+  },
+  "latest_164_foreign_owner_alias_candidate": {
+    "source_commit": "37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "branch": "mc/1.6.4",
+    "expected_parent": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
+    "production_blob": "6dda0c8b62a1113a473a8d29f2d0f4ed34ec50b2",
+    "native_fixture_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+    "build_status_blob": "a9f692ca123d1f0cf55a96edbfddbb9b9b92964f",
+    "prior_qualified_native": 370,
+    "new_declared_native": 372,
+    "new_cases": [
+      "wireless owner-filtered loaded alias escrow fences shared target",
+      "wireless owner-filtered loaded alias blocks shared target deposit"
+    ],
+    "mechanics": "Already-loaded adjacent foreign-owner LegacyTile aliases facing the same physical target are checked for uncertainty before allowing the healthy owner-filtered handheld route; no world scan or forced chunk load",
+    "branch_publishers": "Inspected legacy164-native.yml and release.yml before push; exact-target development/uncleared RC guard, immutable runtime hash/release checks; not allowed to publish",
+    "native_run": 40742486566,
+    "native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742486566",
+    "native_status_at_checkpoint": "IN_PROGRESS",
+    "native_372_acceptance": "NOT_YET_QUALIFIED",
+    "production_runtime_sha256": "NOT_YET_RECORDED_FOR_CHANGED_SOURCE",
+    "limitations": [
+      "No physical unloaded/unobserved alias guarantee",
+      "No installed external provider, client screenshot, dedicated multiplayer, arbitrary world, sustained performance or recovered gravel root cause acceptance"
+    ]
   }
 }

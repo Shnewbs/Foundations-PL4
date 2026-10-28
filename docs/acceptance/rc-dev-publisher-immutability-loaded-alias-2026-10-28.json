@@ -1,0 +1,97 @@
+{
+  "recorded_at": "2026-10-28T18:13:12.464Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "lease_owner": "pl4-chat-hourly-20261028T1805Z",
+  "lease_released": true,
+  "scope": "Development-only main publication immutability and Forge 1.6.4 loaded-foreign-owner same-target handheld safety",
+  "main_publication_fix": {
+    "source_commit": "7f7876c987765a47c38d4950a9b4569401504cb6",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/7f7876c987765a47c38d4950a9b4569401504cb6",
+    "workflow_file": ".github/workflows/release.yml",
+    "test_file": "tools/test_hourly_builds.py",
+    "changes": [
+      "Check GitHub release tag preexistence with HTTP-404-only absence proof before mutating tags",
+      "Fail closed for unknown GitHub responses or pre-existing releases; remove gh release upload --clobber and gh release edit",
+      "Add two publisher static regression tests to guard immutability and preflight ordering"
+    ],
+    "policy_run": 40742077972,
+    "policy_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077972",
+    "policy_regressions": {
+      "passed": 20,
+      "total": 20,
+      "source": "completed Windows Actions job log; Ran 20 tests, OK"
+    },
+    "release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "main_verification_run": 40742077688,
+    "main_verification": "COMPLETED_SUCCESS",
+    "publication_live_test": "NOT_PERFORMED",
+    "native_1211": {
+      "source_commit": "7f7876c987765a47c38d4950a9b4569401504cb6",
+      "run": 40742077744,
+      "job": 123006252952,
+      "job_result": "COMPLETED_SUCCESS",
+      "overall_run_at_checkpoint": "IN_PROGRESS_BECAUSE_1.12.2",
+      "declared_native": 192,
+      "passed_native": 192,
+      "artifact_id": 12840810051,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742077744/artifacts/12840810051",
+      "github_reported_zip_sha256": "e751572321ffbcadaa8fa4a5f246b1fb855492a54aabbaa361f81693a09d0177",
+      "runtime_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+      "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
+      "source_binary_hash_evidence": "native job log exact artifact_sha256 manifest; not a new client or installed-provider pass"
+    }
+  },
+  "legacy_164_loaded_alias_candidate": {
+    "source_commit": "37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/37c02c4ff742b4f7fe529d398b328dac6c04985a",
+    "branch": "mc/1.6.4",
+    "expected_parent": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
+    "production_blob": "6dda0c8b62a1113a473a8d29f2d0f4ed34ec50b2",
+    "native_fixture_blob": "878296761ccc6424306fcfde4a6de493ddc495a2",
+    "build_status_blob": "a9f692ca123d1f0cf55a96edbfddbb9b9b92964f",
+    "prior_qualified_native": 370,
+    "new_declared_native": 372,
+    "new_cases": [
+      "wireless owner-filtered loaded alias escrow fences shared target",
+      "wireless owner-filtered loaded alias blocks shared target deposit"
+    ],
+    "mechanics": "Already-loaded adjacent foreign-owner LegacyTile aliases facing the same physical target are checked for uncertainty before allowing the healthy owner-filtered handheld route; no world scan or forced chunk load",
+    "branch_publishers": "Inspected legacy164-native.yml and release.yml before push; exact-target development/uncleared RC guard, immutable runtime hash/release checks; not allowed to publish",
+    "native_run": 40742486566,
+    "native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40742486566",
+    "native_status_at_checkpoint": "IN_PROGRESS",
+    "native_372_acceptance": "NOT_YET_QUALIFIED",
+    "production_runtime_sha256": "NOT_YET_RECORDED_FOR_CHANGED_SOURCE",
+    "limitations": [
+      "No physical unloaded/unobserved alias guarantee",
+      "No installed external provider, client screenshot, dedicated multiplayer, arbitrary world, sustained performance or recovered gravel root cause acceptance"
+    ]
+  },
+  "environment_recheck_112": {
+    "run": 40742077744,
+    "exact_branch": "mc/1.12.2",
+    "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+    "reason": "Original 2026-10-28T17:25:03Z reviewed upstream downloader cooldown expired; hourly discovery selected target",
+    "status": "IN_PROGRESS",
+    "previous_failed_run": 40705534234,
+    "previous_failed_reason": "Forge installer log4j-core:2.15.0 libraries.minecraft.net SocketTimeoutException before native game tests"
+  },
+  "acceptance": {
+    "clearance_count": 0,
+    "total_targets": 24,
+    "new_github_release": false,
+    "new_curseforge_upload": false,
+    "curseforge_maturity_for_future_qualified_rc": "beta",
+    "publication_receipt_new_ids": [],
+    "existing_receipts": "24 previously reconciled; no new receipt claimed"
+  },
+  "next_work": [
+    "Resolve pinned Forge 1.6.4 native run 40742486566 at exact source 37c02c4. If it fails, preserve failure and fix source/tests on existing mc/1.6.4 with new guarded writer lease; do not transfer previous 370-case qualification.",
+    "Resolve hourly run 40742077744's exact 1.12.2 environmental-retry outcome. Do not hammer an unchanged download/runner failure; record precise blocker or separately accepted artifact.",
+    "Test already-loaded foreign-owner same-target alias fix with independent real installed providers, unloaded/remote alias boundaries, client screenshots and two-player authority before RC clearance.",
+    "Reproduce the historical 1.6.4 x=80 spontaneous gravel placement with retained raw JVM logs; controlled-actor cleanups and normal passing worlds are not causal closure.",
+    "Collect exact-source multiplayer, broader modpack migration, installed optional-provider and sustained-performance evidence on all 24 exact target branches. Qualify modern 26.3 both real loader profiles on changed native source.",
+    "Do not publish until each target's exact-source acceptance and explicit boolean RC clearance pass; use only immutable new tags, beta CurseForge maturity and receipt reconciliation."
+  ]
+}
