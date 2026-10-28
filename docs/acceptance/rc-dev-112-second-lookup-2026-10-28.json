@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-28T06:18:05Z",
+  "source": "GitHub pinned source and actions retained exact artifacts",
+  "evidence_origin": "GitHub Actions 40636974001, downloaded ZIP independently CRC-checked and all 5 JAR SHA256 checks",
+  "completed_previous_candidate": {
+    "minecraft": "1.12.2",
+    "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "branch_action": {
+      "run_id": 40636413380,
+      "status": "cancelled",
+      "conclusion": "cancelled",
+      "reason": "job cancelled at 30-minute timeout; not accepted"
+    },
+    "independent_hourly": {
+      "run_id": 40636974001,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001",
+      "job_id": 122646230955,
+      "status": "success",
+      "artifact_id": 12793932585,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001/artifacts/12793932585",
+      "artifact_zip_sha256": "5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df",
+      "artifact_zip_members": 155,
+      "zip_crc": "PASS"
+    },
+    "native_scenarios": {
+      "expected": 392,
+      "passed": 392,
+      "failed": 0,
+      "forge": "14.23.5.2864",
+      "java": 8,
+      "production_only_boot": "PASS",
+      "preview3_generated_world_migration": "PASS"
+    },
+    "restart": {
+      "decode_assertions": 1536,
+      "decode_jvms": 40,
+      "decode_saved_worlds": 20,
+      "provider_assertions": 188,
+      "provider_jvms": 4,
+      "historical_assertions": 60,
+      "historical_processes": 3,
+      "raw_phase_log_sha256": "ALL_VERIFIED_IN_RETAINED_ARCHIVE",
+      "save_flush_parent_SIGKILL": "PASS_IN_SCOPED_FIXTURE"
+    },
+    "runtime_jar_sha256": "2e8e3eb5b8796449d442fd7f234be7c5348f4059be52d57477f44e72e10ff726",
+    "artifact_jar_sha256": {
+      "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-migration-scenarios.jar": "2dfe8bedaa8d3499748d62ca0128f7e20efdad8c47a36404c34e19972ff6da11",
+      "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-native-scenarios.jar": "21128c6d5505a15f4cc997c4a8c3e33ea6a332aed820b3cddcbf418db27c7e5b",
+      "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-restart-scenarios.jar": "2b7f9a3618dae5e93778b3cbb64931807bc308f0568f75b5a6f367c078a91058",
+      "FoundationsPL4-1.12.2-0.2.0-rc.1-dev-sources.jar": "ee37e61c617ba40e22c836b3dc147ca1242ce0d0e6b88935ac3d27dc508aa21e",
+      "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar": "2e8e3eb5b8796449d442fd7f234be7c5348f4059be52d57477f44e72e10ff726"
+    }
+  },
+  "new_development_candidate": {
+    "minecraft": "1.12.2",
+    "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+    "source_parent": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "exact_branch": "mc/1.12.2",
+    "changed_files": [
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+      "BUILD_STATUS.json"
+    ],
+    "source_fix": "Post-capability inventory lookup now requires same host pos and both host/target loaded before accessing installed tiles, failing closed on detached or unloaded host with no force-load.",
+    "added_regression": "wireless second capability lookup replacement cannot debit player",
+    "source_blobs": {
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "f080814dfb3cd9af4dac9ea7c2f65c869ea76a29",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "e2f43c43ae25319d1efb6f10de5a5a40eb981eed"
+    },
+    "declared_scenarios": 393,
+    "source_readback": "PASS",
+    "unique_native_declaration": "PASS",
+    "native": "PENDING",
+    "workflow_run": 40642756603,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
+    "production_jar_sha256": null,
+    "client_visual_acceptance": false,
+    "installed_provider_acceptance": false,
+    "multiplayer_acceptance": false,
+    "sustained_performance_acceptance": false,
+    "release_channel": "development",
+    "rc_publication_cleared": false
+  },
+  "publication_check": {
+    "workflow_run": 40639237226,
+    "artifact_id": 12794423867,
+    "previous_submissions": 24,
+    "new_uploads": 0,
+    "failures": 0,
+    "moderation_and_public_visibility_reverified": false,
+    "new_github_releases": 0,
+    "new_curseforge_upload_ids": [],
+    "previous_receipt_status": "already_submitted"
+  },
+  "limitations": [
+    "New 393-case candidate 791a94d has no current native/packaged/restart result or current-client acceptance; previous 392-case result is strictly tied to e567fe3",
+    "Prior mc/1.12.2 branch action cancelled at its 30-minute time limit, while independent hourly exact-source qualification passed",
+    "Previous 1.6.4 x80 gravel/falling-actor intermittent placement root cause unresolved; no invariant transferred between target versions",
+    "Installed optional providers, full dedicated multiplayer/online identities, arbitrary copied user worlds, sustained performance and wider 24-target parity remain open",
+    "All 24 rc_publication_cleared booleans remain false; no RC/GitHub release or CurseForge new upload"
+  ],
+  "next": [
+    "Inspect 791a94d exact-version native run 40642756603 and hourly pinned controller; qualify or fix only against retained exact logs; do not duplicate unchanged runs",
+    "If the 30-minute branch timeout recurs while hourly exact-source succeeds, review branch workflow duplicated validation budget before further reruns",
+    "Implement installed-provider alias/unload/multiplayer and real client acceptance using isolated exact-version tests; preserve other ports",
+    "Diagnose native 1.6.4 x80 gravel collision separately, then sustained performance and RC clearance"
+  ]
+}

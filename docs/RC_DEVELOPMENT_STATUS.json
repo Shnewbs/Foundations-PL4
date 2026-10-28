@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-27",
+  "recorded_date": "2026-10-28",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -595,8 +595,8 @@
     {
       "minecraft": "1.12.2",
       "source_ref": "mc/1.12.2",
-      "expected_native_fixtures": 392,
-      "native_gate": "IN_PROGRESS_UNQUALIFIED",
+      "expected_native_fixtures": 393,
+      "native_gate": "PENDING_EXACT_393_NATIVE_RESTART_MIGRATION",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
@@ -605,10 +605,10 @@
         "source_commit": "b1b01f14f4393fdfbd69978cb5c602601a366251",
         "runtime_sha256": "8fa62bb1d97ca959ed1fd3346a6e3c8f08ceb7c959f5a9a86221560c9d9b91c1"
       },
-      "workflow_run": 40636413380,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
-      "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
-      "runtime_sha256": "61556050a7f4d9b26cf4fa0cda5beac99dcb6b4bbec72d5584e522ae1444223e",
+      "workflow_run": 40642756603,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
+      "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+      "runtime_sha256": null,
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_scenarios": 143,
@@ -1096,6 +1096,53 @@
         "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
         "qualification": "NOT_YET_QUALIFIED_AT_CHECKPOINT",
         "controller_guard_source": "b7816b902fc50865dee2c5c4b5dc4ca10443474b"
+      },
+      "last_accepted_392_native": {
+        "source_commit": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+        "workflow_run": 40636974001,
+        "artifact_id": 12793932585,
+        "artifact_zip_sha256": "5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df",
+        "runtime_sha256": "2e8e3eb5b8796449d442fd7f234be7c5348f4059be52d57477f44e72e10ff726",
+        "expected_native_fixtures": 392,
+        "observed_native_fixtures": 392,
+        "decode_assertions": 1536,
+        "decode_jvms": 40,
+        "provider_assertions": 188,
+        "historical_assertions": 60,
+        "preview3_upgrade": "PASS",
+        "production_only_boot": "PASS",
+        "rc_publication_cleared": false
+      },
+      "latest_candidate": {
+        "minecraft": "1.12.2",
+        "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+        "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+        "source_parent": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+        "exact_branch": "mc/1.12.2",
+        "changed_files": [
+          "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+          "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+          "BUILD_STATUS.json"
+        ],
+        "source_fix": "Post-capability inventory lookup now requires same host pos and both host/target loaded before accessing installed tiles, failing closed on detached or unloaded host with no force-load.",
+        "added_regression": "wireless second capability lookup replacement cannot debit player",
+        "source_blobs": {
+          "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "f080814dfb3cd9af4dac9ea7c2f65c869ea76a29",
+          "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "e2f43c43ae25319d1efb6f10de5a5a40eb981eed"
+        },
+        "declared_scenarios": 393,
+        "source_readback": "PASS",
+        "unique_native_declaration": "PASS",
+        "native": "PENDING",
+        "workflow_run": 40642756603,
+        "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
+        "production_jar_sha256": null,
+        "client_visual_acceptance": false,
+        "installed_provider_acceptance": false,
+        "multiplayer_acceptance": false,
+        "sustained_performance_acceptance": false,
+        "release_channel": "development",
+        "rc_publication_cleared": false
       }
     },
     {
@@ -1596,7 +1643,7 @@
       "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
     }
   ],
-  "latest_work": "2026-10-27 22:22 PT / 2026-10-28T05:22:00Z: 1.12.2 native capability callback can replace the installed target during endpoint enumeration. Guarded development fix e567fe33 on mc/1.12.2 fails closed on changed target/owner/host/load state; new adversarial native case brings declared target count to 392. Main controller b7816b90 checks unique passing case, its discovery unit regressions pass; independent exact-source native action 40636413380 in_progress (no conclusion), not yet accepted or released. Publisher guards remain intact; RC clearance 0/24; 1.6.4 gravel cause still unresolved.",
+  "latest_work": "2026-10-27 23:18 PT / 2026-10-28T06:18:05Z: confirmed 1.12.2 e567fe3 392/392 native and 1536 decode/40 JVM, 188 provider/4 JVM, 60 historical/3 processes; 5 matched packaged hashes, production boot/preview.3 migration and ZIP CRC pass in hourly 40636974001. Independent branch 40636413380 cancelled at 30 minutes. Implemented host residency/second-capability replacement fix on existing mc/1.12.2 commit 791a94df, new exact 393-case CI 40642756603 pending. All 24 RC clearances false; no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1854,10 +1901,10 @@
     "registered_native_case_count": 392,
     "run_id": 40636413380,
     "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636413380",
-    "run_status_at_checkpoint": "in_progress",
-    "run_conclusion_at_checkpoint": null,
-    "fully_qualified_at_checkpoint": false,
-    "checks_running_at_checkpoint": true,
+    "run_status_at_checkpoint": "completed",
+    "run_conclusion_at_checkpoint": "cancelled",
+    "fully_qualified_at_checkpoint": true,
+    "checks_running_at_checkpoint": false,
     "source_readback_verified": true,
     "source_blobs": {
       "BUILD_STATUS.json": "252510918cab35610bbcfaaf93399e0c1f88861f",
@@ -1868,13 +1915,53 @@
     "controller_regression_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636974001",
     "main_verify_ci": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40636973974",
     "release_policy_verified": "development channel, rc_publication_cleared false; both legacy native and release publishers guarded",
-    "scope": "Fail closed when a native target or host tile, ownership, or loaded state changes inside Forge capability discovery; production inventory mutations remain under existing escrow and per-call guards.",
+    "scope": "Qualified exact-source native/restart/migration only; no installed provider, current client, multiplayer, performance, or RC clearance.",
     "evidence_limits": [
       "No exact-source native scenario/restart/JAR acceptance at this checkpoint unless CI finishes and receipts are inspected",
       "No installed third-party mod/provider qualification from the adversarial built-in fixture",
       "No current-client screenshot, dedicated multiplayer, arbitrary migration, or sustained performance acceptance",
       "Original 1.6.4 gravel/native fixture intermittent failure still lacks a reproduced cause",
       "No RC clearance or new GitHub/CurseForge upload"
-    ]
+    ],
+    "qualification_source": "Independent exact-source hourly run 40636974001; separate branch run cancelled",
+    "verified_hourly_run": 40636974001,
+    "verified_artifact_id": 12793932585,
+    "verified_zip_sha256": "5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df",
+    "native_cases": "392/392",
+    "production_runtime_sha256": "2e8e3eb5b8796449d442fd7f234be7c5348f4059be52d57477f44e72e10ff726",
+    "decode_assertions": 1536,
+    "provider_assertions": 188,
+    "historical_assertions": 60
+  },
+  "latest_112_second_lookup_candidate": {
+    "minecraft": "1.12.2",
+    "source_commit": "791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/791a94df5e1247d5c5cef9a7722784e972b7f0b4",
+    "source_parent": "e567fe33a8d6ca30204464e910176a6d3fca4199",
+    "exact_branch": "mc/1.12.2",
+    "changed_files": [
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+      "BUILD_STATUS.json"
+    ],
+    "source_fix": "Post-capability inventory lookup now requires same host pos and both host/target loaded before accessing installed tiles, failing closed on detached or unloaded host with no force-load.",
+    "added_regression": "wireless second capability lookup replacement cannot debit player",
+    "source_blobs": {
+      "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java": "f080814dfb3cd9af4dac9ea7c2f65c869ea76a29",
+      "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java": "e2f43c43ae25319d1efb6f10de5a5a40eb981eed"
+    },
+    "declared_scenarios": 393,
+    "source_readback": "PASS",
+    "unique_native_declaration": "PASS",
+    "native": "PENDING",
+    "workflow_run": 40642756603,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40642756603",
+    "production_jar_sha256": null,
+    "client_visual_acceptance": false,
+    "installed_provider_acceptance": false,
+    "multiplayer_acceptance": false,
+    "sustained_performance_acceptance": false,
+    "release_channel": "development",
+    "rc_publication_cleared": false
   }
 }
