@@ -174,6 +174,20 @@ public final class NativeScenarios {
             test("wireless full player inventory prevents extraction",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();for(int i=1;i<36;i++)p.inventory.setInventorySlotContents(i,readerStack(64));source().setInventorySlotContents(0,readerStack(32));check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0),17)==0&&readerCount(source().getStackInSlot(0))==32,"no space no extract");}});
             test("wireless full network prevents deposit",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();for(int i=0;i<27;i++){source().setInventorySlotContents(i,readerStack(64));destination().setInventorySlotContents(i,readerStack(64));}p.inventory.setInventorySlotContents(9,readerStack(32));check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0&&wirelessIron(p)==32,"no space no deduction");}});
             test("wireless stale variant selection rejected",new Runnable(){public void run(){EntityPlayer p=wirelessPlayer();source().setInventorySlotContents(0,readerStack(32));LegacyWirelessStorage.Entry e=LegacyWirelessStorage.entries(p,wirelessTool(p)).get(0);ItemStack changed=readerStack(32);changed.setStackDisplayName("Different");source().setInventorySlotContents(0,changed);check(LegacyWirelessStorage.withdraw(p,wirelessTool(p),e,17)==0&&wirelessIron(p)==0,"NBT variant changed");}});
+            test("native capability discovery swap cannot extract detached source",new Runnable(){public void run(){
+                int drops=looseIron(),loaded=world.getChunkProvider().getLoadedChunkCount();
+                CapabilitySwapChest detached=new CapabilitySwapChest();
+                world.setTileEntity(export.west(),detached);
+                detached.setInventorySlotContents(0,readerStack(32));
+                check(fluidNode(0).transferOnce()==0,
+                        "native automatic transport must reject a capability detached in discovery");
+                check(detached.capabilityCalls>0&&source()!=detached
+                        &&readerCount(detached.getStackInSlot(0))==32
+                        &&readerCount(source().getStackInSlot(0))==0
+                        &&readerCount(destination().getStackInSlot(0))==0
+                        &&looseIron()==drops&&world.getChunkProvider().getLoadedChunkCount()==loaded,
+                        "detached native inventory, new tile, sink and world drops remain conserved");
+            }});
             test("wireless metadata callback cannot insert into detached chest",new Runnable(){public void run(){
                 EntityPlayer p=wirelessPlayer();int beforeDrops=looseIron();
                 MetadataSwapChest old=new MetadataSwapChest();

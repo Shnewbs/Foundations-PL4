@@ -35,11 +35,33 @@ public final class LegacyTile extends TileEntity implements ITickable {
     public boolean canEdit(EntityPlayer player){return player!=null&&(owner.equals(player.getUniqueID().toString())||player.canUseCommand(2,"pl4legacy"));}
     public BlockPos target(){return pos.offset(EnumFacing.getFront(side));}
     public IItemHandler inventory(){
-        if(world==null||side<0||side>5||!world.isBlockLoaded(target(),false))return null;
-        TileEntity target=world.getTileEntity(target());if(target==null||target instanceof LegacyTile)return null;EnumFacing face=EnumFacing.getFront(side).getOpposite();
-        if(target.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face))return target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face);
-        if(target instanceof ISidedInventory)return new LegacySidedInventory((ISidedInventory)target,face);
-        if(target instanceof IInventory)return new InvWrapper((IInventory)target);return null;
+        // A provider may replace its own tile or the host synchronously in
+        // hasCapability/getCapability. Snapshot the installed route and fail
+        // closed before returning any handler obtained from a detached backing.
+        net.minecraft.world.World origin=world;
+        if(origin==null||side<0||side>5)return null;
+        BlockPos host=pos,inventoryPos=target();
+        int observedSide=side;String observedOwner=owner;
+        if(!origin.isBlockLoaded(host,false)||!origin.isBlockLoaded(inventoryPos,false)
+                ||origin.getTileEntity(host)!=this)return null;
+        TileEntity installed=origin.getTileEntity(inventoryPos);
+        if(installed==null||installed instanceof LegacyTile)return null;
+        EnumFacing face=EnumFacing.getFront(observedSide).getOpposite();
+        IItemHandler handler;
+        if(installed.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face))
+            handler=installed.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,face);
+        else if(installed instanceof ISidedInventory)
+            handler=new LegacySidedInventory((ISidedInventory)installed,face);
+        else if(installed instanceof IInventory)
+            handler=new InvWrapper((IInventory)installed);
+        else return null;
+        // Inspect the exact same loaded route again after arbitrary provider code.
+        // A null capability is a denial, not permission to try another adapter.
+        if(handler==null||world!=origin||side!=observedSide
+                ||!observedOwner.equals(owner)||!host.equals(pos)||!inventoryPos.equals(target())
+                ||!origin.isBlockLoaded(host,false)||!origin.isBlockLoaded(inventoryPos,false)
+                ||origin.getTileEntity(host)!=this||origin.getTileEntity(inventoryPos)!=installed)return null;
+        return handler;
     }
     public BoundedNetwork.Plan network(){
         return BoundedNetwork.scan(new BoundedNetwork.Graph(){public boolean connected(BoundedNetwork.Point p){
