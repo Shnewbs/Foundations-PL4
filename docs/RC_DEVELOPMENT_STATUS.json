@@ -1163,20 +1163,20 @@
     {
       "minecraft": "1.6.4",
       "source_ref": "mc/1.6.4",
-      "expected_native_fixtures": 365,
-      "native_gate": "PASS",
+      "expected_native_fixtures": 368,
+      "native_gate": "PASS_EXACT_368_NATIVE_AND_RESTART_MIGRATION_ONLY",
       "rc_publication_cleared": false,
       "scope": "transport, basic readers/displays and native handheld storage GUI; modern editor/multipart and advanced storage remain incomplete",
       "previous_native_gate": {
         "native_gate": "PASS",
-        "source_commit": "089135e65eddfd0bd1c1d0147dcd6b44fb91106b",
-        "workflow_run": 40619744184,
-        "runtime_sha256": "6530959a9e2d110568f423b7d609e906872d8cde318505d49f2f607851271e12"
+        "source_commit": "01eeced04350c24cb11211838744937f0c067506",
+        "workflow_run": 40630703237,
+        "runtime_sha256": "58c2033386e926bf36b743d0b9b7ac982406f5a1c543e022568157b9ca8274d2"
       },
-      "workflow_run": 40630703237,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40630703237",
-      "source_commit": "01eeced04350c24cb11211838744937f0c067506",
-      "runtime_sha256": "58c2033386e926bf36b743d0b9b7ac982406f5a1c543e022568157b9ca8274d2",
+      "workflow_run": 40685571384,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40685571384",
+      "source_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
+      "runtime_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
       "production_only_boot": "PASS",
       "generated_preview3_world_upgrade": "PASS",
       "wireless_storage_native_validation": "PASS",
@@ -1196,9 +1196,9 @@
         "workflow_run": "40208949789",
         "client_evidence": "acceptance/rc-dev-1.6.4-sorting-stock-client.json"
       },
-      "hourly_native_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
+      "hourly_native_evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json",
       "previous_client_evidence": "acceptance/rc-dev-1.6.4-stock-wireless-client.json",
-      "observed_native_fixtures": 365,
+      "observed_native_fixtures": 368,
       "wireless_search_native_validation": "PASS_16_EXACT_TARGET_SCENARIOS",
       "wireless_search": "BOUNDED_ASCII_SUBSTRING_PHYSICAL_OR_EXACT_VARIANT_ROWS",
       "wireless_grouped_quantities": "PASS_SCOPED_EXACT_ITEM_METADATA_FULL_NBT_LONG_TOTALS_BOUNDED_WITHDRAWAL",
@@ -1245,7 +1245,7 @@
       "previous_exact_source_client_evidence": "acceptance/rc-dev-164-target-aliases-2026-10-25.json",
       "item_route_edit_evidence": "acceptance/rc-dev-legacy-item-route-pinning-2026-10-25.json",
       "item_route_face_selection": "REFUSE_WHILE_FAULTED_OPAQUE_OR_HOLDING_ESCROW",
-      "acceptance_attribution": "Fresh source 01eeced: 365/365 native; 40 decode +4 provider separate JVMs, 80 exact host placements/gravity receipts, 3 historical import JVMs, exact packaged SRG SHA256 58c2033. Stale captured slot metadata now fails closed on reentrant tile detachment; no new stock-client/installed-provider/multiplayer/performance acceptance. Prior x80 actor observation supports gravity hypothesis but original physics cause unproven.",
+      "acceptance_attribution": "Exact mc/1.6.4 a861764f has 368/368 native, 16 Python controller tests, 1536 decode assertions across 40 JVMs, registered provider188/4 and historical60/three processes. New ordered log/report native terrain guard matches 80 observations in 20 write phases, all ambient gravel/entity counters zero; actual controlled gravity actor evidence remains separate. No spontaneous x80 cause, installed-provider, real current-client, multiplayer, copied-save, sustained performance or RC acceptance.",
       "item_route_face_edit_native_validation": "PASS_6_EXACT_TARGET_CASES",
       "client_workflow_run": 40443746113,
       "wireless_target_journal": "PASS_17_EXACT_NATIVE_CASES_NORMALIZED_LEGACY_OWNER",
@@ -1678,10 +1678,12 @@
         "provider_assertions": 188,
         "historical_assertions": 60,
         "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
-      }
+      },
+      "latest_native_artifact_id": 12815905181,
+      "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T11:12:03.351Z: Pushed 1.6.4 2c902d6 native pre-cleanup terrain/chunk boundary observations + 3 fail-closed Python controller regression tests; exact-source run 40677792469 in_progress/pending. Prior native 368/368 remains scoped to ef01e15, no new candidate artifact qualified, all 24 RC flags false, no release/upload.",
+  "latest_work": "2026-10-28T12:18:27.350Z: mc/1.6.4 exact source a861764f PASS native 368/368, controller 16/16, decode 1536/40 JVMs, provider 188/4, historical 60; 80 ordered pre-cleanup native rows match 20 stdout phase logs, all ambient falling counts zero. Artifact 12815905181 ZIP 76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63. Prior initial controller source 3bd24c45 failed escaping and was corrected. Original x80 gravel root cause unresolved. RC 0/24; no release/upload; lease released.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2341,8 +2343,8 @@
     },
     "native_run": 40677792469,
     "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40677792469",
-    "native_status_at_checkpoint": "in_progress",
-    "native_conclusion_at_checkpoint": null,
+    "native_status_at_checkpoint": "completed",
+    "native_conclusion_at_checkpoint": "success",
     "ordinary_native_cases_declaration": 368,
     "new_controller_tests": 3,
     "source_scope": "Restart fixture records four truly pre-cleanup terrain/chunk-column observations on two x64/x80 write seeds, before explicit gravel-actor injection; controller rejects missing/duplicate/fabricated chunk, host and gravity counts. No production mod behavior changed.",
@@ -2353,13 +2355,26 @@
       "native_scenarios": "368/368",
       "runtime_srg_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472"
     },
-    "new_exact_source_native_qualified": "NOT_YET_QUALIFIED",
-    "new_runtime_sha256": null,
+    "new_exact_source_native_qualified": "PASS_SCOPED_NATIVE_ONLY",
+    "new_runtime_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
     "root_cause_resolved": false,
     "installed_provider_qualified": false,
     "current_client_qualified": false,
     "dedicated_multiplayer_qualified": false,
     "sustained_performance_qualified": false,
     "rc_publication_cleared": false
+  },
+  "latest_164_terrain_log_binding": {
+    "source_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
+    "controller_first_failure_commit": "3bd24c451c97bcfb8424590fafa5cd37528f711d",
+    "first_failed_run": 40685427362,
+    "qualified_run": 40685571384,
+    "artifact_id": 12815905181,
+    "artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63",
+    "production_runtime_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+    "checks": "368 native,16 controller,1536/40 decode,188/4 provider,60 historical,80 native terrain/20 stdout phase matches",
+    "root_cause_resolved": false,
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   }
 }

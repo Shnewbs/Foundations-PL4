@@ -1,0 +1,108 @@
+{
+  "recorded_at": "2026-10-28T12:18:27.350Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "goal": "Continue exact-source acceptance toward all 24 cleared RCs; development only",
+  "previous_terrain_source": {
+    "branch": "mc/1.6.4",
+    "source_commit": "2c902d64d82925ecccda5207f0cf7db50acc8e65",
+    "run_id": 40677792469,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40677792469",
+    "artifact_id": 12811418460,
+    "artifact_sha256": "1a81b3747400030c284b11108604ca2ece2a616dcafbfb0f3eadc9fdf68d705b",
+    "result": "PASS_NATIVE_AND_RESTARTS_DEVELOPMENT_ONLY"
+  },
+  "source_changes": {
+    "first_controller_source_commit": "3bd24c451c97bcfb8424590fafa5cd37528f711d",
+    "first_run_id": 40685427362,
+    "first_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40685427362",
+    "first_run_result": "FAILED_CONTROLLERS_PYTHON_ESCAPED_NEWLINE_REGRESSION_DESPITE_368_NATIVE_PASS",
+    "corrected_source_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/a861764f13250467cc5aafd80ba256dc3ba813cb",
+    "modified_paths": [
+      "tools/verify_legacy_item_restart.py",
+      "tools/test_restart_phase_retention.py"
+    ],
+    "verified_blobs": {
+      "tools/verify_legacy_item_restart.py": "bd33404fc84e257b6fa63086559c4211d8a8c6de",
+      "tools/test_restart_phase_retention.py": "bb6b6418ab5dae7833f62ae49dce254831b9bbc4"
+    },
+    "behavior": "Match exactly four independent ordered native pre-cleanup terrain JSON stdout lines to saved per-phase JSON; require each before corresponding column cleanup, and ambient terrain before deliberate gravel adversary; reject wrong/missing/duplicate/mutated/reordered/late observations.",
+    "new_controller_regressions": 3,
+    "total_controller_regressions": 16,
+    "controller_regressions": "PASS_EXACT_GITHUB_ACTIONS"
+  },
+  "qualified_native": {
+    "branch": "mc/1.6.4",
+    "source_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
+    "run_id": 40685571384,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40685571384",
+    "status": "completed",
+    "conclusion": "success",
+    "artifact_id": 12815905181,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40685571384/artifacts/12815905181",
+    "artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63",
+    "artifact_members": 193,
+    "archive_crc": "PASS",
+    "artifact_expires_at": "2026-11-11T12:16:16Z",
+    "runtime_jar": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+    "runtime_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+    "minecraft": "1.6.4",
+    "forge": "9.11.1.1345",
+    "runtime_java": 7,
+    "ordinary_native_scenarios": "368/368",
+    "decode_restart_assertions": 1536,
+    "decode_restart_jvms": 40,
+    "registered_provider_restart_assertions": 188,
+    "registered_provider_jvms": 4,
+    "historical_fault_migration_assertions": 60,
+    "historical_processes": 3,
+    "distinct_decode_provider_jvms": 44,
+    "decode_world_archives": 20,
+    "precleanup_observations": 80,
+    "precleanup_columns": [
+      64,
+      69,
+      80,
+      85
+    ],
+    "precleanup_chunk_x": {
+      "64": 4,
+      "69": 4,
+      "80": 5,
+      "85": 5
+    },
+    "precleanup_host_block_zero": 80,
+    "precleanup_overhead_falling_zero": 80,
+    "precleanup_live_falling_zero": 80,
+    "independent_stdout_phase_matches": 20,
+    "independent_stdout_observation_matches": 80,
+    "raw_phase_log_hashes": "PASS_40_OF_40",
+    "process_report_hashes": "PASS_40_OF_40",
+    "production_only_server_boot": "PASS",
+    "generated_preview3_migration": "PASS",
+    "github_publisher_step": "SKIPPED_DEVELOPMENT_UNCLEARED"
+  },
+  "interpretation": {
+    "verified": "The exact-source validation/controller prevents a passing restart receipt from silently replacing or reordering native terrain-before-cleanup observations. All 20 write/crash-write phases had ambient gravel/sand counts zero across the four columns. Two controlled rewrite actors are separate from ambient observations.",
+    "not_proven": [
+      "Original intermittent x80 block13/falling-actor collision mechanism is not causally resolved by passing deterministic cleanup or zero ambient observations.",
+      "No actual installed third-party provider binary, skipped/unloaded alias, dedicated online multiplayer, fresh client screenshots, arbitrary user-world migration, pre-save/power-loss recovery, or sustained performance acceptance.",
+      "No RC publication clearance; 24 of 24 flags remain false."
+    ]
+  },
+  "release": {
+    "channel": "development",
+    "rc_publication_cleared": false,
+    "all_target_clearances": "0/24",
+    "new_github_rc": null,
+    "new_curseforge_upload_id": null,
+    "new_uploads": 0,
+    "public_visibility": "NOT_ASSERTED",
+    "prior_existing_curseforge_receipts": "24 previously submitted historical files; no evidence of any new eligible release"
+  },
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T1207Z",
+    "released_at": "2026-10-28T12:18:27.350Z"
+  },
+  "next_step": "Probe the spontaneous x80 falling-gravel/chunk population boundary with bounded exact loaded native observations and no force-loading; then installed optional provider and loaded/unloaded disconnected aliases, dedicated multiplayer/current client and sustained performance. Do not retry the same successful artifact without source change."
+}
