@@ -30,7 +30,7 @@
     "verified_runtime_sha256": "31995fa3c46ab4fb6d76262d82484c9579b36cda1739f0844d2509f85c50d6dc",
     "release_published": false
   },
-  "expected_native_scenarios": 397,
+  "expected_native_scenarios": 399,
   "release_published": false,
   "rc_publication_cleared": false,
   "parity": "ITEM_FLUID_ENERGY_TRANSPORT_BASIC_READERS_DISPLAYS_AND_HANDHELD_STORAGE",
@@ -123,5 +123,6 @@
   "native_capability_discovery_checkpoint": "Unqualified development candidate: fail closed if native provider discovery replaces host/target/owner; 1 new Forge 1.12.2 fixture scenario. Requires exact-source native, restart, migration, and client/provider acceptance; no release clearance.",
   "native_second_lookup_checkpoint": "Development-only source: 1.12.2 host/target post-capability revalidation and second getCapability replacement native fixture; exact-source build/restart/native acceptance pending; no RC clearance.",
   "native_root_authorization_checkpoint": "Development-only candidate: storage adapter revalidates original bound root against the current player/tool on every provider callback; native destination getSlots revokes a different root during deposit. Exact-source 394-case native, lifecycle, packaged hash, installed-provider/client/multiplayer/performance acceptance pending; no RC clearance.",
-  "native_provider_callback_continuity_candidate": "Development-only: native source/destination inventory adapters pin live root, endpoint, owner, route, loaded backing through metadata, simulation and execution. Two adversarial native cases; exact-source validation, client, installed-provider, multiplayer, migration and performance acceptance pending; no RC clearance."
+  "native_provider_callback_continuity_candidate": "Development-only: native source/destination inventory adapters pin live root, endpoint, owner, route, loaded backing through metadata, simulation and execution. Two adversarial native cases; exact-source validation, client, installed-provider, multiplayer, migration and performance acceptance pending; no RC clearance.",
+  "native_foreign_owner_loaded_alias_candidate": "Development only: inspect already-loaded foreign-owner inventory aliases adjacent to a selected exact target, and refuse shared physical chest while that alias carries unresolved escrow. Two native tests; pending changed-source validation, installed providers, unloaded aliases, client, multiplayer, arbitrary migration and performance; no RC clearance."
 }

@@ -58,6 +58,23 @@ public final class LegacyWirelessStorage {
         // Opaque adapters retain their existing logical route identity; no backing-store alias claim.
         return new PhysicalSlot(node,slot);
     }
+    /** A foreign-owned loaded endpoint can still face the same physical chest.
+     * Owner-filtered graph discovery must not hide its unacknowledged escrow.
+     * Inspect only adjacent already-loaded hosts; never scan or force-load worlds.
+     * Same-owner hosts retain existing target/handler journal ownership rules,
+     * including the separate healthy-source case after a destination-only fault. */
+    private static boolean loadedForeignAliasUncertain(LegacyTile root,BoundedNetwork.Point target){
+        for(int face=0;face<6;face++){
+            BoundedNetwork.Point next=target.offset(face);
+            if(next.y<0||next.y>255)continue;
+            LegacyTile alias=root.fluidNode(next);
+            if(alias==null||root.owner.equals(alias.owner))continue;
+            int role=alias.role();
+            if((role==1||role==2||role==LegacyReadings.ITEMS)
+                    &&target.equals(alias.fluidTarget())&&!ready(alias))return true;
+        }
+        return false;
+    }
     private static List<LegacyTile> endpoints(LegacyTile root){
         List<LegacyTile> result=new ArrayList<LegacyTile>();
         // Readmission of retained root evidence precedes all network/provider discovery.
@@ -102,7 +119,7 @@ public final class LegacyWirelessStorage {
         Set<BoundedNetwork.Point> seen=new HashSet<BoundedNetwork.Point>();
         Set<Object> seenHandlers=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object,Boolean>());
         for(LegacyTile node:candidates){net.minecraftforge.items.IItemHandler handler=handlers.get(node);
-            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget())||LegacyWirelessSafety.data(root.getWorld()).blocked(root.owner,node.target()))continue;
+            if(!ready(node)||node.fluidPowered()||blockedTargets.contains(node.fluidTarget())||loadedForeignAliasUncertain(root,node.fluidTarget())||LegacyWirelessSafety.data(root.getWorld()).blocked(root.owner,node.target()))continue;
             boolean blocked=false;if(handler!=null)for(Object id:backing(handler))if(blockedHandlers.contains(id)){blocked=true;break;}if(blocked)continue;
             if((!Boolean.TRUE.equals(allOwnedSided.get(node.fluidTarget()))&&seen.contains(node.fluidTarget()))||(handler!=null&&seenHandlers.contains(handler)))continue;
             seen.add(node.fluidTarget());if(handler!=null)seenHandlers.add(handler);result.add(node);
