@@ -5,7 +5,19 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261027T2003PT-publisher-parity",
+    "source_parent": "b23af9f1ea3680df8774a66b88b7d589e3e5758c",
+    "acquired_at": "2026-10-28T03:03:06Z",
+    "expires_at": "2026-10-28T03:38:06Z",
+    "scope": [
+      "mc/1.6.4 release artifact integrity and publication guards",
+      "docs/RC_AUTOMATION_STATE.json",
+      "docs/acceptance"
+    ],
+    "purpose": "Repair mismatch between 1.6.4 validated -srg artifact and release-upload artifact, expand fail-closed tests; preserve branch native and clearance flags",
+    "status": "active"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
