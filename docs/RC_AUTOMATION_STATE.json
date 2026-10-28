@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T1814Z",
+    "acquired_at": "2026-10-28T18:14:20.118Z",
+    "expires_at": "2026-10-28T18:26:20.118Z",
+    "base_commit": "995e1d72e6278e9bbf90748c7fc0b39a1b128eb7",
+    "purpose": "Repair native regression exposed in 40742486566: retain independent same-owner source access while fencing foreign-owner loaded aliases"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
