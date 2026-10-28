@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,retain_decode_placement_failure,require_legacy_decode_gravity_guards
+from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,require_legacy_decode_terrain_observations,retain_decode_placement_failure,require_legacy_decode_gravity_guards
 
 class PhaseRetentionTests(unittest.TestCase):
     def setUp(self):
@@ -27,6 +27,33 @@ class PhaseRetentionTests(unittest.TestCase):
         self.source.write_text('{"passed":true,"assertions":["one"]}')
         self.assertEqual(self.retain(),dict(passed=True,assertions=['one']))
         self.assertEqual(self.observation()['exit_code'],1)
+class NativeTerrainObservationsTests(unittest.TestCase):
+    def good(self,x):
+        return dict(x=x,chunk_x=x>>4,chunk_z=2,chunk_loaded=True,
+                    host_exists=True,host_block=0,
+                    overhead_falling_blocks=0,live_falling_entities=0)
+    def report(self,rows):
+        return dict(suite='decode-rewrite',terrain_before_cleanup=rows)
+    def test_all_four_native_columns_accepted(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        self.assertIsNone(require_legacy_decode_terrain_observations(self.report(rows),'write','1.6.4'))
+        self.assertIsNone(require_legacy_decode_terrain_observations({},'verify','1.6.4'))
+        self.assertIsNone(require_legacy_decode_terrain_observations({},'write','1.12.2'))
+    def test_missing_duplicate_and_wrong_chunk_rejected(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        for bad in (rows[:3],rows[:3]+[rows[2]], [dict(rows[0],chunk_x=5)]+rows[1:],
+                    [dict(rows[0],chunk_loaded=False)]+rows[1:],
+                    [dict(rows[0],host_exists=False)]+rows[1:]):
+            with self.subTest(bad=bad),self.assertRaises(ValueError):
+                require_legacy_decode_terrain_observations(self.report(bad),'crash-write','1.6.4')
+    def test_negative_and_boolean_counters_rejected(self):
+        rows=[self.good(x) for x in (64,69,80,85)]
+        for key,value in [('host_block',True),('overhead_falling_blocks',-1),
+                          ('live_falling_entities',True),('chunk_z',False)]:
+            bad=[dict(rows[0],**{key:value})]+rows[1:]
+            with self.subTest(key=key),self.assertRaises(ValueError):
+                require_legacy_decode_terrain_observations(self.report(bad),'write','1.6.4')
+
 class NativeDecodePlacementAdmissionTests(unittest.TestCase):
     def good(self,x):
         return dict(x=x,y=200,z=32,stage='complete',placement_flags=2,

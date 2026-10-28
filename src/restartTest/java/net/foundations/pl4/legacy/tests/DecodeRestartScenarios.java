@@ -21,6 +21,7 @@ public final class DecodeRestartScenarios {
     private WorldServer world;private final List<String> cases=new ArrayList<String>(),tokens=new ArrayList<String>();
     private final List<Map<String,Object>> outcomes=new ArrayList<Map<String,Object>>();
     private final List<Map<String,Object>> placements=new ArrayList<Map<String,Object>>();
+    private final List<Map<String,Object>> terrainBeforeCleanup=new ArrayList<Map<String,Object>>();
     private static final String OWNER="pl4owner";
     private String suite;
     @Mod.EventHandler public void started(FMLServerStartedEvent event)throws Exception{
@@ -39,7 +40,7 @@ public final class DecodeRestartScenarios {
             passed=true;System.out.println("PL4 ITEM RESTART "+phase+": PASS");
         }finally{
             Map<String,Object> report=new LinkedHashMap<String,Object>();report.put("minecraft","1.6.4");report.put("suite","decode-"+suite);report.put("phase",phase);report.put("passed",passed);report.put("assertions",cases);report.put("tokens",tokens);report.put("decode_outcomes",outcomes);report.put("process",java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
-            report.put("placements",placements);
+            report.put("placements",placements);report.put("terrain_before_cleanup",terrainBeforeCleanup);
             FileWriter out=new FileWriter("item-decode-"+suite+"-restart-"+phase+".json");try{new com.google.gson.Gson().toJson(report,out);}finally{out.close();}
             if(passed&&phase.equals("crash-write")){System.out.println("PL4 ITEM RESTART KILL READY");System.out.flush();System.err.flush();while(true)Thread.sleep(1000);}
             server.initiateShutdown();
@@ -48,6 +49,9 @@ public final class DecodeRestartScenarios {
     private void prepare(){
         for(int x:new int[]{64,80}){
             load(x);load(x+5);
+            // Snapshot the native terrain before injecting any actor or removing
+            // ambient gravel. These four columns straddle the x=80 chunk boundary.
+            observeTerrainBeforeCleanup(x);observeTerrainBeforeCleanup(x+5);
             // Native disposable terrain can contain falling gravel/sand above an opened cell.
             // A real falling-gravel actor is injected only in the isolated rewrite
             // fixture, so a zero-actor natural run cannot falsely qualify the
@@ -257,6 +261,26 @@ public final class DecodeRestartScenarios {
             cells.add(cell);
         }
         return cells;
+    }
+    private void observeTerrainBeforeCleanup(int x){
+        // Read-only, strictly within the chunks already loaded by prepare().
+        // Distinguish ambient world gravity from the deliberate rewrite actor.
+        Map<String,Object> row=new LinkedHashMap<String,Object>();
+        row.put("x",x);row.put("chunk_x",x>>4);row.put("chunk_z",32>>4);
+        row.put("chunk_loaded",world.getChunkProvider().chunkExists(x>>4,32>>4));
+        row.put("host_exists",world.blockExists(x,200,32));
+        row.put("host_block",world.getBlockId(x,200,32));
+        int overhead=0;
+        for(int y=201;y<256;y++){
+            int id=world.getBlockId(x,y,32);
+            if(id==Block.gravel.blockID||id==Block.sand.blockID)overhead++;
+        }
+        row.put("overhead_falling_blocks",overhead);
+        row.put("live_falling_entities",world.getEntitiesWithinAABB(
+                net.minecraft.entity.item.EntityFallingSand.class,
+                AxisAlignedBB.getBoundingBox(x,199,32,x+1,256,33)).size());
+        terrainBeforeCleanup.add(row);
+        System.out.println("PL4 DECODE TERRAIN BEFORE "+new com.google.gson.Gson().toJson(row));
     }
     private void clearFallingBlocksAbove(int x){
         int removedBlocks=0,removedEntities=0;

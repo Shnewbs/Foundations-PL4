@@ -11,6 +11,24 @@ def retain_phase_report(work,logs,prefix,phase,pid,code,logfile):
     (logs/(prefix+'-'+phase+'-process.json')).write_text(json.dumps(observation,indent=2)+'\n')
     if not source.is_file():raise ValueError('Missing restart phase report: '+phase+'; inspect '+str(logfile))
     return json.loads(target.read_text())
+def require_legacy_decode_terrain_observations(report,phase,minecraft):
+    """Reject missing or fabricated pre-cleanup native terrain/chunk receipts."""
+    if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
+        return
+    rows=report.get('terrain_before_cleanup')
+    if not isinstance(rows,list) or len(rows)!=4 or any(not isinstance(r,dict) for r in rows):
+        raise ValueError('Missing or duplicated native pre-cleanup terrain observations')
+    by_x={r.get('x'):r for r in rows}
+    if len(by_x)!=4 or set(by_x)!={64,69,80,85}:
+        raise ValueError('Wrong native pre-cleanup terrain columns')
+    for x,r in by_x.items():
+        if (type(r.get('chunk_x')) is not int or r['chunk_x']!=x>>4
+            or type(r.get('chunk_z')) is not int or r['chunk_z']!=2
+            or r.get('chunk_loaded') is not True or r.get('host_exists') is not True
+            or any(type(r.get(k)) is not int or r[k]<0 for k in
+                   ('host_block','overhead_falling_blocks','live_falling_entities'))):
+            raise ValueError('Unqualified pre-cleanup terrain/chunk evidence x='+str(x)+' '+str(r)[:1000])
+
 def require_legacy_decode_placements(report,phase,minecraft):
     """Bind 1.6.4 decode admission to two real native host placements."""
     if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
@@ -43,7 +61,8 @@ def require_legacy_decode_gravity_guards(native_log,phase,minecraft,suite=None):
 def retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error):
     """Emit the exact failed placement observation even when the JVM's phase fails."""
     record=dict(suite=report.get('suite'),phase=phase,pid=pid,exit_code=code,
-                log_sha256=digest(logfile),failure=str(error),placements=report.get('placements'))
+                log_sha256=digest(logfile),failure=str(error),placements=report.get('placements'),
+                terrain_before_cleanup=report.get('terrain_before_cleanup'))
     destination=logs/(prefix+'-'+phase+'-placement-rejection.json')
     destination.write_text(json.dumps(record,indent=2,sort_keys=True)+'\n')
     print('PL4 NATIVE PLACEMENT REJECTION '+json.dumps(record,sort_keys=True)[:4096],flush=True)
@@ -101,6 +120,7 @@ def verify(suite="item"):
             text=logfile.read_text(errors='replace');expected=-9 if phase=='crash-write' else 0
             report=retain_phase_report(work,logs,prefix,phase,pid,code,logfile)
             try:
+                require_legacy_decode_terrain_observations(report,phase,mc)
                 require_legacy_decode_placements(report,phase,mc)
             except ValueError as error:
                 retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error)
