@@ -59,9 +59,15 @@ jobs:
 
           status = json.loads(Path('BUILD_STATUS.json').read_text())
           try:
-              require_publication(status)
+              if status.get('minecraft') != '1.6.4' or status.get('loader') != 'Forge':
+                  raise ValueError('Wrong exact Minecraft/Forge publication source')
+              if str(status.get('release_channel', '')).lower() != 'beta':
+                  raise ValueError('Only cleared beta RC builds may publish from native validation')
+              if not is_rc(status.get('version', '')) or status.get('rc_publication_cleared') is not True:
+                  raise ValueError('Explicit exact-source RC publication clearance required')
+              require_publication(status, minecraft='1.6.4')
               allowed = True
-          except ValueError as error:
+          except (ValueError, KeyError, TypeError) as error:
               allowed = False
               print('Publication held:', error)
           with open(os.environ['GITHUB_ENV'], 'a') as output:
@@ -92,37 +98,74 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python3 tools/verify_preupgrade_item_faults.py
       - name: Publish a new tested version without rewriting existing releases
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
+        if: env.PL4_ALLOW_PUBLICATION == 'true' && github.ref == 'refs/heads/mc/1.6.4'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          version=$(python3 -c "import re,pathlib; print(re.search(r\"^version\s*=\s*'([A-Za-z0-9._-]+)'\",pathlib.Path('build.gradle').read_text(),re.M).group(1))")
-          if [[ "$version" == *-dev ]] || python3 -c "import json;raise SystemExit(0 if json.load(open('BUILD_STATUS.json')).get('release_channel')=='development' else 1)"; then
-            echo 'Development candidate: publication remains closed.'
-            exit 0
-          fi
+          # The exact checked-out source must explicitly clear a beta RC;
+          # this guard is independent of the earlier environment output.
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          status = json.loads(Path('BUILD_STATUS.json').read_text())
+          version = status.get('version', '')
+          gradle = re.search(r"^version\s*=\s*['\"]([^'\"]+)['\"]", Path('build.gradle').read_text(), re.M)
+          if (status.get('minecraft') != '1.6.4' or status.get('loader') != 'Forge'
+                  or status.get('release_channel') != 'beta'
+                  or status.get('rc_publication_cleared') is not True
+                  or not re.search(r'(?:^|[.\-_])rc\d*(?:[.\-_]|$)', version, re.I)
+                  or re.search(r'(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)', version, re.I)
+                  or gradle is None or gradle.group(1) != version):
+              raise SystemExit('Exact-source RC beta/target/version clearance missing; no release')
+          PY
+          test "$GITHUB_REF" = "refs/heads/mc/1.6.4"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote origin refs/heads/mc/1.6.4 | cut -f1)" = "$GITHUB_SHA"
+          version=$(python3 -c "import json;print(json.load(open('BUILD_STATUS.json'))['version'])")
           tag="mc1.6.4-v$version"
-          if git show-ref --verify --quiet "refs/tags/$tag"; then
-            git diff --exit-code "$tag" HEAD -- src/legacy build.gradle settings.gradle gradle.properties gradle/
-            gh release view "$tag"
-            echo 'Existing runtime source is unchanged; retain original tag and artifacts.'
-            exit 0
-          fi
-          test "$(git ls-remote origin refs/heads/mc/1.6.4 | cut -f1)" = "$(git rev-parse HEAD)"
           test -f "docs/releases/$version.md"
+          # Never reuse an existing tag, even if its source happens to match:
+          # an interrupted prior upload must be reconciled from its receipts.
+          if [[ -n "$(git ls-remote --tags origin "refs/tags/$tag")" ]]; then
+            echo "Existing tag $tag: reconcile immutable assets and CurseForge receipts; refusing duplicate upload." >&2
+            exit 1
+          fi
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json tagName >/dev/null 2>&1; then
+            echo "Existing GitHub release $tag: refusing duplicate upload." >&2
+            exit 1
+          fi
           mkdir -p release-files
-          cp "build/libs/FoundationsPL4-1.6.4-$version-srg.jar" "release-files/FoundationsPL4-1.6.4-$version.jar"
+          cp "build/libs/FoundationsPL4-1.6.4-$version-srg.jar" release-files/
           cp "build/libs/FoundationsPL4-1.6.4-$version-sources.jar" release-files/
           git archive --format=zip --output="release-files/FoundationsPL4-1.6.4-$version-source.zip" HEAD
           cp run-legacy/legacy-scenarios.json verification-logs/native.log verification-logs/clean-native-summary.json release-files/
           git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
           (cd release-files && sha256sum *.jar *.zip *.json *.log SOURCE_COMMIT.txt > SHA256SUMS.txt)
-          git tag "$tag"
-          git push origin "$tag"
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 $version (experimental)" --notes-file "docs/releases/$version.md"
+          # Validate unique checksum binding and exact source before changing any remote ref.
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('release-files')
+          status = json.loads(Path('BUILD_STATUS.json').read_text())
+          runtime = root / ('FoundationsPL4-1.6.4-' + status['version'] + '-srg.jar')
+          if not runtime.is_file() or not (root / 'SHA256SUMS.txt').is_file():
+              raise SystemExit('Missing exact-target runtime or checksums')
+          lines = (root / 'SHA256SUMS.txt').read_text().splitlines()
+          matching = [line for line in lines if line.endswith('  ' + runtime.name)]
+          digest = hashlib.sha256(runtime.read_bytes()).hexdigest()
+          if len(matching) != 1 or matching[0] != digest + '  ' + runtime.name:
+              raise SystemExit('Missing, ambiguous or mismatched exact runtime checksum')
+          if (root / 'SOURCE_COMMIT.txt').read_text().strip() != __import__('os').environ['GITHUB_SHA']:
+              raise SystemExit('Source commit differs from exact tested checkout')
+          PY
+          # GitHub rejects an already-created tag atomically (422); never force/update tags.
+          gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$tag" -f "sha=$GITHUB_SHA" >/dev/null
+          test "$(git ls-remote --tags origin "refs/tags/$tag" | cut -f1)" = "$GITHUB_SHA"
+          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.6.4 $version" --notes-file "docs/releases/$version.md" --repo "$GITHUB_REPOSITORY"
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url,tagName,isPrerelease,assets > release-files/GITHUB_RELEASE_RECEIPT.json
       - name: Archive exact verified branch source
         if: success()
         shell: bash
