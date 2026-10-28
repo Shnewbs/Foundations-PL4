@@ -60,22 +60,55 @@ def require_legacy_decode_terrain_log_match(report,native_log,phase,minecraft):
             raise ValueError('Native ambient terrain must precede deliberate rewrite gravel actor')
 
 def require_legacy_decode_placements(report,phase,minecraft):
-    """Bind 1.6.4 decode admission to two real native host placements."""
+    """Bind the exact two native hosts to complete, ordered, unmodified placement receipts."""
     if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
         return
     rows=report.get('placements')
-    if not isinstance(rows,list):raise ValueError('Missing native decode placement observations')
-    hosts=[row for row in rows if isinstance(row,dict) and row.get('x') in (64,80)]
-    if len(hosts)!=2 or {row['x'] for row in hosts}!={64,80}:
-        raise ValueError('Missing or duplicated exact native decode host placements')
-    for row in hosts:
-        if (row.get('y')!=200 or row.get('z')!=32 or row.get('stage')!='complete'
-            or row.get('placement_flags')!=2 or row.get('set_block_changed') is not True
-            or row.get('expected_block')!=3501 or row.get('actual_block')!=3501
+    if not isinstance(rows,list) or len(rows)!=2 or any(not isinstance(row,dict) for row in rows):
+        raise ValueError('Missing, extra or malformed native decode host placements')
+    if [row.get('x') for row in rows]!=[64,80]:
+        raise ValueError('Missing, reordered or duplicated exact native decode host placements')
+    for row in rows:
+        x=row['x']
+        if (type(x) is not int or type(row.get('y')) is not int or row['y']!=200
+            or type(row.get('z')) is not int or row['z']!=32
+            or type(row.get('chunk_x')) is not int or row['chunk_x']!=x>>4
+            or type(row.get('chunk_z')) is not int or row['chunk_z']!=2
+            or row.get('stage')!='complete' or row.get('block_exists_before') is not True
+            or type(row.get('before_block')) is not int or row['before_block']!=0
+            or type(row.get('placement_flags')) is not int or row['placement_flags']!=2
+            or row.get('set_block_changed') is not True
+            or type(row.get('expected_block')) is not int or row['expected_block']!=3501
+            or type(row.get('actual_block')) is not int or row['actual_block']!=3501
+            or type(row.get('metadata')) is not int or row['metadata']!=0
             or row.get('tile_class')!='net.foundations.pl4.legacy.LegacyTile'
             or row.get('tile_invalid') is not False or row.get('block_exists_after') is not True):
-            details={key:row.get(key) for key in ('stage','block_exists_before','before_block','set_block_changed','placement_flags','expected_block','actual_block','metadata','tile_class','tile_invalid','block_exists_after','neighbor_nonair','falling_entities_near')}
-            raise ValueError('Unqualified native decode host placement at x='+str(row.get('x'))+' '+json.dumps(details,sort_keys=True,separators=(',',':'))[:3000])
+            details={key:row.get(key) for key in ('stage','chunk_x','chunk_z','block_exists_before','before_block','set_block_changed','placement_flags','expected_block','actual_block','metadata','tile_class','tile_invalid','block_exists_after','neighbor_nonair','falling_entities_near')}
+            raise ValueError('Unqualified native decode host placement at x='+str(x)+' '+json.dumps(details,sort_keys=True,separators=(',',':'))[:3000])
+
+def require_legacy_decode_placement_log_match(report,native_log,phase,minecraft):
+    """Refuse JSON-only native placement evidence without matching ordered JVM stdout."""
+    if minecraft!='1.6.4' or not phase.endswith('write') or not str(report.get('suite','')).startswith('decode-'):
+        return
+    require_legacy_decode_placements(report,phase,minecraft)
+    encoded=re.findall(r'PL4 DECODE PLACEMENT ([^\r\n]+)',native_log)
+    if len(encoded)!=2:
+        raise ValueError('Expected exactly two independent native placement log rows')
+    try:
+        logged=[json.loads(value) for value in encoded]
+    except (ValueError,TypeError) as error:
+        raise ValueError('Malformed native placement log JSON') from error
+    if any(not isinstance(row,dict) for row in logged) or [row.get('x') for row in logged]!=[64,80]:
+        raise ValueError('Missing, reordered or duplicate native placement log hosts')
+    canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'))
+    if canonical(logged)!=canonical(report['placements']):
+        raise ValueError('Native placement log/report disagreement')
+    for i,(x,adjacent) in enumerate(((64,69),(80,85))):
+        marker=native_log.find('PL4 DECODE PLACEMENT '+encoded[i])
+        for guard_x in (x,adjacent):
+            guard=native_log.find('PL4 DECODE GRAVITY GUARD x='+str(guard_x)+' ')
+            if guard<0 or marker<0 or guard>=marker:
+                raise ValueError('Native placement was not after gravity isolation x='+str(x))
 
 def require_legacy_decode_gravity_guards(native_log,phase,minecraft,suite=None):
     """Require both native column isolation and a deliberately spawned actor in rewrite."""
@@ -153,6 +186,7 @@ def verify(suite="item"):
                 require_legacy_decode_terrain_observations(report,phase,mc)
                 require_legacy_decode_terrain_log_match(report,text,phase,mc)
                 require_legacy_decode_placements(report,phase,mc)
+                require_legacy_decode_placement_log_match(report,text,phase,mc)
             except ValueError as error:
                 retain_decode_placement_failure(logs,prefix,phase,pid,code,logfile,report,error)
                 raise

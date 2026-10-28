@@ -1,6 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
-from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,require_legacy_decode_terrain_observations,require_legacy_decode_terrain_log_match,retain_decode_placement_failure,require_legacy_decode_gravity_guards
+from verify_legacy_item_restart import retain_phase_report,digest,require_legacy_decode_placements,require_legacy_decode_placement_log_match,require_legacy_decode_terrain_observations,require_legacy_decode_terrain_log_match,retain_decode_placement_failure,require_legacy_decode_gravity_guards
 
 class PhaseRetentionTests(unittest.TestCase):
     def setUp(self):
@@ -94,10 +94,11 @@ class NativeTerrainObservationsTests(unittest.TestCase):
 
 class NativeDecodePlacementAdmissionTests(unittest.TestCase):
     def good(self,x):
-        return dict(x=x,y=200,z=32,stage='complete',placement_flags=2,
-            set_block_changed=True,expected_block=3501,actual_block=3501,
-            tile_class='net.foundations.pl4.legacy.LegacyTile',tile_invalid=False,
-            block_exists_after=True)
+        return dict(x=x,y=200,z=32,chunk_x=x>>4,chunk_z=2,
+            stage='complete',block_exists_before=True,before_block=0,
+            placement_flags=2,set_block_changed=True,expected_block=3501,actual_block=3501,
+            metadata=0,tile_class='net.foundations.pl4.legacy.LegacyTile',
+            tile_invalid=False,block_exists_after=True)
     def test_exact_hosts_accepted_without_retries(self):
         report=dict(suite='decode-raw',placements=[self.good(64),self.good(80),dict(x=200)])
         self.assertIsNone(require_legacy_decode_placements(report,'write','1.6.4'))
@@ -127,6 +128,45 @@ class NativeDecodePlacementAdmissionTests(unittest.TestCase):
             self.assertEqual(evidence['placements'][1]['falling_entities_near'],1)
             self.assertIn('"actual_block":13',evidence['failure'])
             self.assertEqual(evidence['log_sha256'],digest(log))
+    def test_native_placement_required_block_metadata_and_chunk_identity(self):
+        for key,value in [('before_block',13),('before_block',True),
+                          ('metadata',1),('metadata',False),('block_exists_before',False),
+                          ('chunk_x',5),('chunk_x',True),('chunk_z',1),
+                          ('set_block_changed',1),('expected_block',True)]:
+            bad=dict(self.good(64),**{key:value})
+            report=dict(suite='decode-raw',placements=[bad,self.good(80)])
+            with self.subTest(key=key,value=value),self.assertRaises(ValueError):
+                require_legacy_decode_placements(report,'write','1.6.4')
+        for missing in ('before_block','metadata','chunk_x','chunk_z'):
+            bad=self.good(80);del bad[missing]
+            with self.subTest(missing=missing),self.assertRaises(ValueError):
+                require_legacy_decode_placements(dict(suite='decode-raw',placements=[self.good(64),bad]),'crash-write','1.6.4')
+
+    def placement_trace(self,rows):
+        lines=[]
+        for row in rows:
+            for x in (row['x'],row['x']+5):
+                lines.append('PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=0 ceiling=true' % x)
+            lines.append('PL4 DECODE PLACEMENT '+json.dumps(row,separators=(',',':')))
+        return '\n'.join(lines)
+
+    def test_native_placement_log_matches_raw_report_and_guard_order(self):
+        rows=[self.good(64),self.good(80)]
+        report=dict(suite='decode-raw',placements=rows)
+        good=self.placement_trace(rows)
+        self.assertIsNone(require_legacy_decode_placement_log_match(report,good,'write','1.6.4'))
+        self.assertIsNone(require_legacy_decode_placement_log_match({},'','verify','1.6.4'))
+        self.assertIsNone(require_legacy_decode_placement_log_match({},'','write','1.12.2'))
+        first='PL4 DECODE PLACEMENT '+json.dumps(rows[0],separators=(',',':'))
+        second='PL4 DECODE PLACEMENT '+json.dumps(rows[1],separators=(',',':'))
+        for bad in (good.replace(first,'',1),good+'\n'+first,
+                    good.replace('"metadata":0','"metadata":1',1),
+                    good.replace('PL4 DECODE GRAVITY GUARD x=64 ', 'PL4 DECODE GRAVITY GUARD x=65 ',1),
+                    second+'\n'+good.replace(second,'',1),
+                    good.replace(second,'PL4 DECODE PLACEMENT {broken}',1)):
+            with self.subTest(bad=bad),self.assertRaises(ValueError):
+                require_legacy_decode_placement_log_match(report,bad,'crash-write','1.6.4')
+
     def test_native_gravity_guard_requirements(self):
         line=lambda x: 'PL4 DECODE GRAVITY GUARD x=%d removed_blocks=0 removed_entities=1 ceiling=true' % x
         log='\n'.join(line(x) for x in (64,69,80,85))
