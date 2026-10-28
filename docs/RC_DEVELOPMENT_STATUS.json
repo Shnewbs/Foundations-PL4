@@ -1147,7 +1147,18 @@
       "current_native_source_client_visual_acceptance": "NOT_EXECUTED",
       "current_native_source_installed_provider_acceptance": "NOT_EXECUTED",
       "current_native_source_dedicated_multiplayer_acceptance": "NOT_EXECUTED",
-      "current_native_source_sustained_performance_acceptance": "NOT_EXECUTED"
+      "current_native_source_sustained_performance_acceptance": "NOT_EXECUTED",
+      "latest_exact_native_qualification": {
+        "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+        "native_cases": "397/397",
+        "workflow_run": 40661731129,
+        "artifact_id": 12803933722,
+        "production_jar_sha256": "2d075e20842e8bb8680ddd3b855b88ae990d7f1c8b73c743eada6c9b1a5cd245",
+        "decode_restart_assertions": 1536,
+        "provider_assertions": 188,
+        "historical_assertions": 60,
+        "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
+      }
     },
     {
       "minecraft": "1.6.4",
@@ -1644,10 +1655,26 @@
         "previous_restart_failure": "decode-live-owner crash-write native placement x80 expected3501 actual13",
         "rc_publication_cleared": false
       },
-      "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance"
+      "latest_client_eligibility_for_new_runtime": "OPEN: runtime SHA 58c2033 differs from previous stock client tested bytes; prior capture claims are historical, not current-source acceptance",
+      "latest_exact_native_qualification": {
+        "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+        "native_cases": "368/368",
+        "workflow_run": 40661943594,
+        "artifact_id": 12804950866,
+        "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+        "decode_restart_assertions": 1536,
+        "provider_assertions": 188,
+        "historical_assertions": 60,
+        "scope": "Native, restart and generated preview.3 migration only; development, no RC clearance"
+      },
+      "latest_fixture_only_source_pending": {
+        "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+        "workflow_run": 40669706429,
+        "status": "CI_IN_PROGRESS"
+      }
     }
   ],
-  "latest_work": "2026-10-28T09:12:04.470Z: guarded automatic provider-callback continuity source commits 1.12.2 f0d75b5 declared 397, 1.6.4 b0a4f45 declared 368; both branch native runs active, no new exact artifact qualified; prior native 395/366 retained; all 24 RC flags false.",
+  "latest_work": "2026-10-28T10:12:41.898Z: prior exact callback-continuity branch runs PASS native 397/397 (1.12.2) and 368/368 (1.6.4) with production hashes and saved-world/JVM evidence. 1.6.4 real falling-gravel adversary source ef01e15 pushed; CI_IN_PROGRESS; all 24 RC flags remain false.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2150,5 +2177,90 @@
     },
     "release_cleared": false,
     "unresolved": "New runtime SHA/client/provider/multiplayer/performance/migration qualification pending; original 1.6.4 x80 gravel cause remains open"
+  },
+  "latest_legacy_callback_native_acceptance": {
+    "evidence": "docs/acceptance/rc-dev-legacy-gravel-actor-2026-10-28.json",
+    "qualified_native": {
+      "1.12.2": {
+        "minecraft": "1.12.2",
+        "branch": "mc/1.12.2",
+        "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+        "native_run": 40661731129,
+        "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129",
+        "native_cases": "397/397",
+        "native_unique_names": 397,
+        "artifact_id": 12803933722,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129/artifacts/12803933722",
+        "artifact_sha256": "3befddc71005c68e42f5074dc759545bb4b04baec1832c07a1d68e15e6594746",
+        "production_jar_name": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar",
+        "production_jar_sha256": "2d075e20842e8bb8680ddd3b855b88ae990d7f1c8b73c743eada6c9b1a5cd245",
+        "decode_assertions": 1536,
+        "decode_processes": 40,
+        "provider_assertions": 188,
+        "provider_processes": 4,
+        "historical_assertions": 60,
+        "historical_processes": 3,
+        "raw_decode_worlds": 20,
+        "distinct_decode_provider_processes": 44,
+        "zip_crc": "PASS",
+        "source_archive_consistency": "PASS",
+        "production_boot": "PASS",
+        "preview3_migration": "PASS",
+        "native_maturity": "PASS_EXACT_SOURCE_NATIVE_RESTART_MIGRATION_ONLY",
+        "rc_publication_cleared": false
+      },
+      "1.6.4": {
+        "minecraft": "1.6.4",
+        "branch": "mc/1.6.4",
+        "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+        "native_run": 40661943594,
+        "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594",
+        "native_cases": "368/368",
+        "native_log_marker": "PASS",
+        "artifact_id": 12804950866,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594/artifacts/12804950866",
+        "artifact_sha256": "0fabc267f20ab1d227589453bf21520077f73d1ebe3a7449d08eecca340aa49e",
+        "production_jar_name": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+        "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+        "decode_assertions": 1536,
+        "decode_processes": 40,
+        "provider_assertions": 188,
+        "provider_processes": 4,
+        "historical_assertions": 60,
+        "historical_processes": 3,
+        "raw_decode_worlds": 20,
+        "distinct_decode_provider_processes": 44,
+        "zip_crc": "PASS",
+        "source_archive_consistency": "PASS",
+        "production_boot": "PASS",
+        "preview3_migration": "PASS",
+        "native_maturity": "PASS_EXACT_SOURCE_NATIVE_RESTART_MIGRATION_ONLY",
+        "rc_publication_cleared": false
+      }
+    },
+    "additional_164_fixture": {
+      "branch": "mc/1.6.4",
+      "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+      "parent_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+      "changed_paths": [
+        "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+        "tools/verify_legacy_item_restart.py",
+        "tools/test_restart_phase_retention.py"
+      ],
+      "new_test": "A real native EntityFallingSand spawned in the isolated decode-rewrite x=80 disposable fixture must be killed by the guard before host placement; fail closed if proof marker or actual removed_entities count is missing",
+      "native_gameplay_scope": "isolated test fixture only, no production item transport or saved-game recovery changes",
+      "controller_test": "10/10 local unit cases PASS",
+      "native_run": 40669706429,
+      "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
+      "native_ci_status_at_checkpoint": "CI_IN_PROGRESS",
+      "fully_native_qualified_at_checkpoint": false,
+      "production_jar_sha256_for_candidate": null,
+      "observed_historical_interference": "2026-10-28 retained original failure decode-scope/crash-write x80 block ID 13 replacing expected 3501 and separate 2026-10-27 native placement evidence; root cause not fully demonstrated",
+      "synthetic_log_note": "PL4 NATIVE PLACEMENT REJECTION fixture emitted by tools/test_restart_phase_retention.py during negative unit test is NOT a new native game failure",
+      "branch_publisher_guard": "Inspected branch-local native and release workflows before push: development/uncleared RC publishing blocked",
+      "rc_publication_cleared": false
+    },
+    "full_acceptance_or_rc_clearance": false
   }
 }

@@ -5,29 +5,22 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T1003Z",
-    "acquired_at": "2026-10-28T10:04:46.989Z",
-    "expires_at": "2026-10-28T10:29:46.989Z",
-    "expected_parent": "c6e221efbcb25f3e19521eec984bb6cc1ed217df",
-    "purpose": "Reconcile successful exact-source native artifacts and implement next guarded PL4 acceptance repair",
-    "scope": "global source writer"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
-  "last_verified_legacy_native_run": 40655791384,
+  "last_verified_legacy_native_run": 40661943594,
   "last_verified_legacy_client_runs": {
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-28T09:12:04.470Z: guarded automatic provider-callback continuity source commits 1.12.2 f0d75b5 declared 397, 1.6.4 b0a4f45 declared 368; both branch native runs active, no new exact artifact qualified; prior native 395/366 retained; all 24 RC flags false.",
+  "current_checkpoint": "2026-10-28T10:12:41.898Z: prior exact callback-continuity branch runs PASS native 397/397 (1.12.2) and 368/368 (1.6.4) with production hashes and saved-world/JVM evidence. 1.6.4 real falling-gravel adversary source ef01e15 pushed; CI_IN_PROGRESS; all 24 RC flags remain false.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect exact 1.12.2 run 40661731129 and 1.6.4 run 40661943594 native process/migration/artifact receipts; if red, fix actual source or controller failure, do not duplicate unchanged runs",
-    "Reconcile changed exact sources with hourly-builds.yml pinned artifact dedup, preserve tested SHA256 runtime/JAR/source/world/log identities",
-    "Extend callback continuity to installed provider binaries, unloaded/skipped-host/alias and multiplayer identity edges; resolve 1.6.4 x80 gravel placement failure",
-    "Clear individual RC flags only after exact client/provider/multiplayer/migration/performance acceptance; no development release publication"
+    "Check exact new 1.6.4 falling-gravel adversary run 40669706429, require native spawned=true removed=true and x80 removed_entities >=1 in each rewrite write/crash-write, verify packaged hashes and archive or fix actual failure; do not duplicate active run",
+    "Verify new 1.6.4 fixture-only JAR byte identity against b0a4f45 scoped runtime and resolve original x80 gravel interleaving only with reproduction/evidence",
+    "Implement installed optional provider and unloaded/skipped-host/disconnected-alias acceptance, multiplayer server identities and sustained provider performance, preserving all 24 per-target RC flags until qualified",
+    "Recheck immutable tagged exact-source artifacts, publisher receipts and moderation separately only after true RC clearance; development binaries stay unpublished"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -37,6 +30,9 @@
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "latest_native_runs": [
+    40669706429,
+    40661943594,
+    40661731129,
     40654775646,
     40655791384,
     40630703237,
@@ -46,8 +42,8 @@
     40610348219
   ],
   "last_verified_legacy_native_runs": {
-    "1.12.2": 40654775646,
-    "1.6.4": 40655791384
+    "1.12.2": 40661731129,
+    "1.6.4": 40661943594
   },
   "latest_stock_client_evidence": {
     "1.12.2": "docs/acceptance/rc-dev-legacy-handheld-readiness-2026-10-26.json",
@@ -56,18 +52,19 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261028T0902Z",
-    "released_at": "2026-10-28T09:12:04.470Z",
-    "evidence": "docs/acceptance/rc-dev-legacy-automatic-callback-continuity-2026-10-28.json",
+    "owner": "pl4-chat-hourly-20261028T1003Z",
+    "released_at": "2026-10-28T10:12:41.898Z",
+    "evidence": "docs/acceptance/rc-dev-legacy-gravel-actor-2026-10-28.json",
     "source_commits": [
       "f0d75b55448a5aa80e6d9742847530f752c97d6d",
-      "b0a4f4537222770be934c3fbcbf4551e686a0e0b"
+      "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+      "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6"
     ],
     "lease_bounded": true,
     "rc_publication_cleared": false,
-    "run_state": "branch-native CI in progress at release checkpoint"
+    "run_state": "1.6.4 fixture CI CI_IN_PROGRESS; original two source native gates accepted only"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-automatic-callback-continuity-2026-10-28.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-gravel-actor-2026-10-28.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -91,7 +88,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-27: mc/1.6.4 post-provider-callback identity repair 4108fedf + main exact-1.12.2 endpoint proof controller repair 1018b6c; both exact-source workflow gates active, NOT yet qualified; zero RC clearance or new releases.",
+  "previous_checkpoint": "2026-10-28T09:12:04.470Z: guarded automatic provider-callback continuity source commits 1.12.2 f0d75b5 declared 397, 1.6.4 b0a4f45 declared 368; both branch native runs active, no new exact artifact qualified; prior native 395/366 retained; all 24 RC flags false.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -626,8 +623,8 @@
         "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/f0d75b55448a5aa80e6d9742847530f752c97d6d",
         "native_workflow_run": 40661731129,
         "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129",
-        "native_workflow_status": "in_progress",
-        "native_workflow_conclusion": null,
+        "native_workflow_status": "completed",
+        "native_workflow_conclusion": "success",
         "native_declared_scenarios": 397,
         "prior_verified_scenarios": 395,
         "new_native_cases": [
@@ -643,10 +640,11 @@
         "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
         "release_channel": "development",
         "rc_publication_cleared": false,
-        "native_qualified_on_new_source": false,
-        "production_jar_sha256": null,
-        "artifact_id": null,
-        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+        "native_qualified_on_new_source": true,
+        "production_jar_sha256": "2d075e20842e8bb8680ddd3b855b88ae990d7f1c8b73c743eada6c9b1a5cd245",
+        "artifact_id": 12803933722,
+        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted",
+        "artifact_sha256": "3befddc71005c68e42f5074dc759545bb4b04baec1832c07a1d68e15e6594746"
       },
       "1.6.4": {
         "branch": "mc/1.6.4",
@@ -655,8 +653,8 @@
         "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/b0a4f4537222770be934c3fbcbf4551e686a0e0b",
         "native_workflow_run": 40661943594,
         "native_workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594",
-        "native_workflow_status": "in_progress",
-        "native_workflow_conclusion": null,
+        "native_workflow_status": "completed",
+        "native_workflow_conclusion": "success",
         "native_declared_scenarios": 368,
         "prior_verified_scenarios": 366,
         "new_native_cases": [
@@ -672,13 +670,95 @@
         "source_readback": "exact branch ref, three Git blobs, two named native cases and BUILD_STATUS checked",
         "release_channel": "development",
         "rc_publication_cleared": false,
-        "native_qualified_on_new_source": false,
-        "production_jar_sha256": null,
-        "artifact_id": null,
-        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted"
+        "native_qualified_on_new_source": true,
+        "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+        "artifact_id": 12804950866,
+        "client_visual_installed_provider_multiplayer_sustained_performance": "not accepted",
+        "artifact_sha256": "0fabc267f20ab1d227589453bf21520077f73d1ebe3a7449d08eecca340aa49e"
       }
     },
-    "qualification": "SOURCE_COMMITTED_BRANCH_CI_IN_PROGRESS",
-    "next_step": "Read precise native receipt, migration and artifact hashes from the two existing CI runs; repair actual exact-source failures, then independently reconcile hourly-builds.yml artifacts without duplicating runs; extend actual installed-provider, multiplayer and sustained-performance acceptance."
+    "qualification": "BOTH_ORIGINAL_BRANCH_CANDIDATES_PASS_EXACT_NATIVE_PROCESS_MIGRATION_ONLY",
+    "next_step": "Current 1.6.4 source has new isolated gravel actor fixture; verify its exact new CI source separately. Installed providers/client/multiplayer/performance remain uncleared."
+  },
+  "latest_legacy_callback_native_acceptance": {
+    "1.12.2": {
+      "minecraft": "1.12.2",
+      "branch": "mc/1.12.2",
+      "source_commit": "f0d75b55448a5aa80e6d9742847530f752c97d6d",
+      "native_run": 40661731129,
+      "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129",
+      "native_cases": "397/397",
+      "native_unique_names": 397,
+      "artifact_id": 12803933722,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661731129/artifacts/12803933722",
+      "artifact_sha256": "3befddc71005c68e42f5074dc759545bb4b04baec1832c07a1d68e15e6594746",
+      "production_jar_name": "FoundationsPL4-1.12.2-0.2.0-rc.1-dev.jar",
+      "production_jar_sha256": "2d075e20842e8bb8680ddd3b855b88ae990d7f1c8b73c743eada6c9b1a5cd245",
+      "decode_assertions": 1536,
+      "decode_processes": 40,
+      "provider_assertions": 188,
+      "provider_processes": 4,
+      "historical_assertions": 60,
+      "historical_processes": 3,
+      "raw_decode_worlds": 20,
+      "distinct_decode_provider_processes": 44,
+      "zip_crc": "PASS",
+      "source_archive_consistency": "PASS",
+      "production_boot": "PASS",
+      "preview3_migration": "PASS",
+      "native_maturity": "PASS_EXACT_SOURCE_NATIVE_RESTART_MIGRATION_ONLY",
+      "rc_publication_cleared": false
+    },
+    "1.6.4": {
+      "minecraft": "1.6.4",
+      "branch": "mc/1.6.4",
+      "source_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+      "native_run": 40661943594,
+      "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594",
+      "native_cases": "368/368",
+      "native_log_marker": "PASS",
+      "artifact_id": 12804950866,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40661943594/artifacts/12804950866",
+      "artifact_sha256": "0fabc267f20ab1d227589453bf21520077f73d1ebe3a7449d08eecca340aa49e",
+      "production_jar_name": "FoundationsPL4-1.6.4-0.2.0-rc.1-dev-srg.jar",
+      "production_jar_sha256": "8c01867a248fb1ac4b980a608b62486e50ed68900c8dab17c6e70d06e3b7e472",
+      "decode_assertions": 1536,
+      "decode_processes": 40,
+      "provider_assertions": 188,
+      "provider_processes": 4,
+      "historical_assertions": 60,
+      "historical_processes": 3,
+      "raw_decode_worlds": 20,
+      "distinct_decode_provider_processes": 44,
+      "zip_crc": "PASS",
+      "source_archive_consistency": "PASS",
+      "production_boot": "PASS",
+      "preview3_migration": "PASS",
+      "native_maturity": "PASS_EXACT_SOURCE_NATIVE_RESTART_MIGRATION_ONLY",
+      "rc_publication_cleared": false
+    }
+  },
+  "latest_164_gravity_actor_candidate": {
+    "branch": "mc/1.6.4",
+    "source_commit": "ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "parent_commit": "b0a4f4537222770be934c3fbcbf4551e686a0e0b",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/ef01e150801e08b8d0e7aa95231f6b22acb8d5b6",
+    "changed_paths": [
+      "src/restartTest/java/net/foundations/pl4/legacy/tests/DecodeRestartScenarios.java",
+      "tools/verify_legacy_item_restart.py",
+      "tools/test_restart_phase_retention.py"
+    ],
+    "new_test": "A real native EntityFallingSand spawned in the isolated decode-rewrite x=80 disposable fixture must be killed by the guard before host placement; fail closed if proof marker or actual removed_entities count is missing",
+    "native_gameplay_scope": "isolated test fixture only, no production item transport or saved-game recovery changes",
+    "controller_test": "10/10 local unit cases PASS",
+    "native_run": 40669706429,
+    "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40669706429",
+    "native_ci_status_at_checkpoint": "CI_IN_PROGRESS",
+    "fully_native_qualified_at_checkpoint": false,
+    "production_jar_sha256_for_candidate": null,
+    "observed_historical_interference": "2026-10-28 retained original failure decode-scope/crash-write x80 block ID 13 replacing expected 3501 and separate 2026-10-27 native placement evidence; root cause not fully demonstrated",
+    "synthetic_log_note": "PL4 NATIVE PLACEMENT REJECTION fixture emitted by tools/test_restart_phase_retention.py during negative unit test is NOT a new native game failure",
+    "branch_publisher_guard": "Inspected branch-local native and release workflows before push: development/uncleared RC publishing blocked",
+    "rc_publication_cleared": false
   }
 }
