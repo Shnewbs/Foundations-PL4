@@ -196,14 +196,20 @@ public final class NativeScenarios {
                         "stale native backing denied even with identical item and coordinates");
                 // A provider can replace its tile while constructing size/slot metadata:
                 // the returned adapter then still holds identical indices on the old tile.
-                FaultyChest metadata=faultyChest(true);metadata.replaceOnSizeAfter=2;
+                // The earlier intentional block-to-air test can leave legitimate chest drops
+                // in this world. Compare the delta: only the callback's tile swap
+                // must be drop-free, regardless of the test's prior inventory history.
+                int dropsBeforeMetadata=looseIron();
+                FaultyChest metadata=faultyChest(true);metadata.replaceOnSizeAfter=1;
                 for(int i=0;i<27;i++)destination().setInventorySlotContents(i,readerStack(64));
                 p.inventory.setInventorySlotContents(9,readerStack(32));
                 check(LegacyWirelessStorage.deposit(p,wirelessTool(p),9,17)==0,
                         "metadata replacement cannot authorize detached insertion");
-                check(source()!=metadata&&readerCount(source().getStackInSlot(0))==0
-                        &&readerCount(p.inventory.getStackInSlot(9))==32&&looseIron()==0,
-                        "metadata replacement conserves player items without world drops");
+                check(source()!=metadata&&metadata.replaceOnSizeAfter==0
+                        &&readerCount(source().getStackInSlot(0))==0
+                        &&readerCount(p.inventory.getStackInSlot(9))==32
+                        &&looseIron()==dropsBeforeMetadata,
+                        "metadata callback must detach its old backing without consuming player items or adding drops");
                 check(LegacyWirelessStorage.ready(fluidNode(0)),
                         "read-only metadata replacement does not falsely quarantine host");
             }});
