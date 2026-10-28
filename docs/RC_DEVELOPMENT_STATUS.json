@@ -1577,7 +1577,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-27 19:53Z: 1.6.4 scoped native decode-placement repair 290b9e58 passed 40571895345 (365/365 ordinary,1536 decode/40 JVMs,188 provider,60 historical,7/7 controller tests). Native artifact ZIP SHA37288f57 and exact production SHA852f08e6; product unchanged vs failed predecessor804f1ec, but not the older client-tested246afad2. x80 gravel precursor and unknown root cause retained. No new client, installed-provider, multiplayer/performance acceptance, RC flag or release.",
+  "latest_work": "2026-10-27 PT: Scoped 1.6.4 metadata native fixture repair 5353412 made 365/365 native pass; separate-JVM decode-rewrite physical placement at x80 still FAILS in 40606652228. 1.12.2 ac86a7b adds runtime loaded target/host tile identity checks during metadata and item transfer callbacks, plus native replacement fixture (391 cases); 40607180135 native step passed, restart/migration pending. No RC releases or acceptance clearance.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -1790,11 +1790,22 @@
     "qualified_prior_source": "51d761456ced6bb885e3b4510f48118fc0daf3fd",
     "prior_native_run": 40594656761,
     "prior_native_result": "success",
-    "candidate_source": "db4e49bdb9cef327cad5f7601cce3259d967ab54",
-    "candidate_native_run": 40600693646,
-    "candidate_state_at_checkpoint": "in_progress",
+    "candidate_source": "53534128528374c43056e21804a79846968f17ce",
+    "candidate_native_run": 40606652228,
+    "candidate_state_at_checkpoint": "FAILED_DECODE_REWRITE_X80_AFTER_365_NATIVE_PASS",
     "candidate_qualified": false,
     "rc_clearance": false,
-    "evidence_path": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json"
+    "evidence_path": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json",
+    "previous_failed_native": 40600693646
+  },
+  "latest_112_metadata_callback_checkpoint": {
+    "recorded_date": "2026-10-27",
+    "source": "ac86a7bb14de8f60810c515def14b204d6510591",
+    "native_run": 40607180135,
+    "native_step": "success",
+    "full_run": "in_progress_at_checkpoint",
+    "qualified": false,
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
   }
 }

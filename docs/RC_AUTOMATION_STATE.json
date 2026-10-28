@@ -5,16 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261027T1702PT-metadata-fixture",
-    "run_id": "pl4-chat-hourly-20261027T1702PT-metadata-fixture",
-    "task": "PL4 builds and releases (Chat)",
-    "started_at": "2026-10-28T00:02:52Z",
-    "expires_at": "2026-10-28T00:52:52Z",
-    "scope": "main ledger and guarded mc/1.6.4 metadata callback native-fixture repair",
-    "expected_main_parent": "413f7b56a7a6d2c1bc400f8088a88e40e2657330",
-    "notes": "Read-only native run 40600693646 showed 364/365: assertion metadata replacement conserves player items without world drops. Branch publisher guards inspected; no RC clearance."
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -23,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-27 16:18 PT: 1.6.4 51d7614 successfully passed 365/365 native, production packaging/restarts/migration, with artifact 12774974877. New metadata callback detachment guard+native fixture db4e49b committed to mc/1.6.4; run 40600693646 in_progress at checkpoint, not yet qualified. Existing 1.12.2 b60b008 native artifact 12775313262 retained. Zero RC clearances or new releases.",
+  "current_checkpoint": "2026-10-27 PT: 1.6.4 metadata test repaired at 5353412; native 365/365 passes in 40606652228 but decode-rewrite x80 native placement fails, so NOT qualified. 1.12.2 ac86a7b implements real installed-tile identity guards; workflow 40607180135 native step PASS and restart in progress at checkpoint, so NOT fully qualified. All 24 RC clearances false, no new releases.",
   "local_validation": "Fresh source static controls PASS against 1.6.4 db4e49b (live-tile after callback and unchanged 365 native scenario declarations); actual native pending. Earlier 51d7614 passed native 365 and separate JVM/migration, but that evidence is not inherited by changed source.",
   "next_work": [
-    "Inspect 40600693646 exact candidate native logs and artifact after completion; do not inherit 51d qualification if candidate fails.",
-    "If pass, bind source/JAR/artifact hashes and native restart/decode/provider/historical counts to candidate.",
-    "Extend metadata-callback identity test and fix to 1.12.2 only after publisher guard/lease checks; investigate installed providers, unloaded alias and multiplayer acceptance.",
-    "Keep all 24 RC flags false until exact-target end-to-end acceptance and explicit clearance."
+    "Inspect raw retained 1.6.4 decode-rewrite x80 placement row, world/chunk block and tile stages and process logs for concrete terrain-overwrite cause; do not merely rerun unchanged job",
+    "Reconcile 1.12.2 run 40607180135 once completed; inspect native counts and exact production hash, retained process and migration records before qualifying this source",
+    "Probe callback-reentrant capability/slot on live installed 1.12.2 providers, disconnected aliases, multiplayer and loaded/unloaded host boundaries",
+    "Preserve all 24 RC flags false until actual target-by-target acceptance and explicit clearance"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -54,9 +45,10 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "6e900045dea09da16fb12c028ced039ba70c4b8f",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261027T2308Z-native-followup",
-    "released_at": "2026-10-27T23:18:30Z",
-    "checkpoint": "Qualified exact 51d 1.6.4 365 native; new db4e49b metadata-reentrancy fix awaits native run 40600693646; no RC releases."
+    "owner": "pl4-chat-hourly-20261027T1702PT-metadata-fixture",
+    "released_at": "2026-10-28T00:16:23.627Z",
+    "checkpoint": "1.6.4 5353412 passed native 365/365 but native decode-rewrite placement x80 failed; 1.12.2 ac86a7b tile-identity safety guard reached successful native step, separate-JVM qualification pending. No RC publication.",
+    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-native-metadata-reentrancy-2026-10-27.json",
   "latest_branch_publisher_review": {
@@ -334,5 +326,26 @@
     "artifact_sha256": "c83dc801c88d779ec999477742d4ccfd915bded910e97a8bb9054d47dcba87e7",
     "status": "PASS_PINNED_NATIVE_ONLY",
     "rc_clearance": false
+  },
+  "latest_164_metadata_callback_repair": {
+    "source_commit": "53534128528374c43056e21804a79846968f17ce",
+    "native_run": 40606652228,
+    "native_scenarios_passed": 365,
+    "native_scenarios_total": 365,
+    "full_run_result": "failure",
+    "failed_gate": "decode-rewrite physical host placement at x=80",
+    "artifact_id": 12782150613,
+    "artifact_zip_sha256": "f6fb7823ff9193a5c8d49db1a9212f123f3c48b4488b93d25d9a0b776b321018",
+    "qualified": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
+  },
+  "latest_112_metadata_callback_candidate": {
+    "source_commit": "ac86a7bb14de8f60810c515def14b204d6510591",
+    "native_run": 40607180135,
+    "declared_native_scenarios": 391,
+    "native_step": "success",
+    "full_run": "in_progress_at_checkpoint",
+    "qualified": false,
+    "evidence": "docs/acceptance/rc-dev-legacy-metadata-tile-reentrancy-2026-10-27-hourly.json"
   }
 }

@@ -1,0 +1,80 @@
+{
+  "recorded_at": "2026-10-28T00:16:23.627Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "writer": "pl4-chat-hourly-20261027T1702PT-metadata-fixture",
+  "source_policy": "exact branch commits only; development sources not RC cleared",
+  "prior_main_commit": "413f7b56a7a6d2c1bc400f8088a88e40e2657330",
+  "branch_changes": [
+    {
+      "minecraft": "1.6.4",
+      "branch": "mc/1.6.4",
+      "parent": "db4e49bdb9cef327cad5f7601cce3259d967ab54",
+      "commit": "53534128528374c43056e21804a79846968f17ce",
+      "changed_files": [
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java"
+      ],
+      "change": "Isolate preexisting chest-break drops from metadata-callback delta, require callback actually fire and reject detached adapter without consuming player inventory; production guard from parent unchanged",
+      "observed_prior_run": {
+        "id": 40600693646,
+        "conclusion": "failure",
+        "ordinary_native": "364/365",
+        "failed_case": "wireless stale variant selection rejected",
+        "failed_assertion": "metadata replacement conserves player items without world drops"
+      },
+      "observed_new_run": {
+        "id": 40606652228,
+        "conclusion": "failure",
+        "ordinary_native": "365/365 PASS",
+        "production_packaging": "PASS",
+        "restart_controller_unit_tests": "7/7 PASS",
+        "restart_phase_partial": "Six separate-JVM item/receipt restart phases show PASS before failing suite",
+        "failure": "Unqualified native decode host placement at x=80 while verifying decode-rewrite; exact raw row must be inspected",
+        "unqualified_artifact_id": 12782150613,
+        "unqualified_artifact_zip_sha256": "f6fb7823ff9193a5c8d49db1a9212f123f3c48b4488b93d25d9a0b776b321018",
+        "end_to_end_qualified": false,
+        "rc_cleared": false
+      }
+    },
+    {
+      "minecraft": "1.12.2",
+      "branch": "mc/1.12.2",
+      "parent": "b60b008ed8ab4d3ed676fff8b6b0d5816973e641",
+      "commit": "ac86a7bb14de8f60810c515def14b204d6510591",
+      "changed_files": [
+        "src/legacy/java/net/foundations/pl4/legacy/LegacyWirelessStorage.java",
+        "src/legacyTest/java/net/foundations/pl4/legacy/tests/NativeScenarios.java",
+        "BUILD_STATUS.json"
+      ],
+      "change": "Capture loaded host+target tile identity on capability discovery; revalidate before/after handler metadata/reads/simulated and executed item mutation, reject detached inventory and throw on uncertain executed writes. Add actual native metadata-reentrant tile replacement regression.",
+      "declared_native_scenarios": 391,
+      "observed_new_run": {
+        "id": 40607180135,
+        "native_build_and_scenarios_step": "completed success",
+        "separate_jvm_restart_step": "in_progress at receipt",
+        "preupgrade_migration_step": "not completed at receipt",
+        "workflow_completed": false,
+        "end_to_end_qualified": false,
+        "rc_cleared": false
+      }
+    }
+  ],
+  "preservation": {
+    "source_branches_unchanged_unrelated": true,
+    "force_pushed": false,
+    "unaccepted_artifacts_not_published": true,
+    "active_publication": false,
+    "rc_target_clearances": 0,
+    "kept_legacy_publisher_guards": true
+  },
+  "blockers": [
+    "1.6.4 decode-rewrite placement at x=80 failed independent native restart qualification, consistent with recurring terrain/chunk placement anomaly; no resolved root cause, do not retry blindly",
+    "1.12.2 full native restart/preupgrade/package accepted artifact pending run completion",
+    "No current installed optional provider, dedicated multiplayer, broad migration or sustained-performance acceptance; no RC release clearance"
+  ],
+  "next_steps": [
+    "Inspect raw retained 1.6.4 decode-rewrite x80 placement row, world/chunk block and tile stages and process logs for concrete terrain-overwrite cause; do not merely rerun unchanged job",
+    "Reconcile 1.12.2 run 40607180135 once completed; inspect native counts and exact production hash, retained process and migration records before qualifying this source",
+    "Probe callback-reentrant capability/slot on live installed 1.12.2 providers, disconnected aliases, multiplayer and loaded/unloaded host boundaries",
+    "Preserve all 24 RC flags false until actual target-by-target acceptance and explicit clearance"
+  ]
+}
