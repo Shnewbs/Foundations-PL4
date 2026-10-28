@@ -1683,7 +1683,7 @@
       "latest_native_artifact_sha256": "76db088988e16b1d1dbd24b69b304f615b5869710026d80327f19b9ef69f3a63"
     }
   ],
-  "latest_work": "2026-10-28T19:24:45Z: Fixed ambiguous native legacy publisher existence checks on mc/1.6.4 5fa3ecf and mc/1.12.2 af1feb4 (6/6 offline policy regressions each); 1.12.2 native run40752206494 passed 399/399 and separate restart/preupgrade, artifact12843643836 production JAR SHA256 39edfc... (142 payload entries same as prior, ZIP timestamps changed). 1.6.4 run40752183303 passed policy tests and packaging but failed before native on Forge Maven curl56 connection reset; artifact12845260858 retained, SRG JAR matches prior 1656e86e...; no native acceptance. Main f93fd79 adds exact-source 3-hour external reset deferral through 22:15:14Z, local controller tests21/21; pinned hourly run40754013917 triggered/in progress. Old 26.3 dual-loader artifact independently inspected, no current attestation. CurseForge reconciliation40749016926 found 24 prior receipts and zero new uploads. 0/24 clearance, no new release.",
+  "latest_work": "2026-10-28T20:21:01.607Z: Frozen obsolete generic release.yml on mc/1.12.2 and mc/1.6.4, preserving branch-native publishers, explicit RC clearance and immutable receipt preflights. 1.6.4 f5c79e8 passes native372/372 and restart/historical run40761058763, exact SRG SHA1656e86e..., artifact12849095502 SHA b5020592...; no publication. 1.12 policy first red 40760919935 due escaped regex, corrected 05960aa0 policy PASS run40761009320; full native pending. 1.12 same-source af1feb4 two passing runs 40752206494/40754013917 yielded differing full JAR SHA39edfc.../c495f5..., but all142 ZIP entries have identical ordered payloads and only timestamps differ. Independent Java normalization of both gives identical SHA020e2cd... preserving 142/142 contents. Pushed 1.12 Gradle post-reobf timestamp normalization and native timestamp gate 6b9acb5; run40761899439 queued and unqualified. Previous hourly40754013917 pass 1.12 399/399 + 1.21.1, hourly40757651587 pass 1.21.1 192/192. All24 RC flags false; no GitHub or CurseForge release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -2778,5 +2778,18 @@
     "loader_23_native_log_sha256": "10db1e826eb3b8f63a8488bd49ed61f03fd87448d5e7965b50ecdb91bcbfff7f",
     "loader_39_native_log_sha256": "0d88c2a15054ee0f3a6d5cc49ea8ca2785e957ce317189ae4d2e4b8cb0024a96",
     "limitations": "Historical source only; recent controller attestation checks do not retroactively qualify these profile manifests"
+  },
+  "latest_frozen_legacy_publishers_and_reobf": {
+    "evidence": "docs/acceptance/rc-dev-frozen-legacy-generic-publishers-and-reproducibility-2026-10-28.json",
+    "commit_164": "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+    "native_164_run": 40761058763,
+    "native_164_passed": 372,
+    "commit_112": "6b9acb5b8d4f2b0cdb48feedfae78fba02143c2c",
+    "native_112_run": 40761899439,
+    "native_112_status": "PENDING",
+    "same_source_full_jar_drift_proven_timestamps_only": true,
+    "entry_payloads_identical": 142,
+    "local_java_normalized_sha256": "020e2cd751f4d4fb5e0820e95e0a2ab15222b01c8276988a91bd68234685d4f4",
+    "release_clearances": 0
   }
 }

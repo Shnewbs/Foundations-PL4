@@ -1,0 +1,84 @@
+{
+  "recorded_at": "2026-10-28T20:20:24.719Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "writer_lease_owner": "pl4-chat-hourly-20261028T200922-legacy-tag-workflow",
+  "all_24_rc_publication_cleared": false,
+  "new_github_releases": 0,
+  "new_curseforge_uploads": 0,
+  "legacy_164": {
+    "branch": "mc/1.6.4",
+    "frozen_obsolete_job": ".github/workflows/release.yml",
+    "exact_native_publisher_preserved": ".github/workflows/legacy164-native.yml",
+    "commit": "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+    "run_id": 40761058763,
+    "result": "SUCCESS",
+    "native": "372/372",
+    "restart": "PASS",
+    "preupgrade": "PASS",
+    "artifact_id": 12849095502,
+    "artifact_zip_sha256": "b502059287e0168d487b540e141b73e6f7567c2b42dc7d7acdd710e6b84168a8",
+    "artifact_entries": 193,
+    "artifact_crc": "PASS",
+    "production_srg_sha256": "1656e86eb72db1c3758eda3ad16a92c734be0248cab313634ec66573bfb3dee7",
+    "publisher": "SKIPPED_DEVELOPMENT"
+  },
+  "legacy_112": {
+    "branch": "mc/1.12.2",
+    "frozen_obsolete_job": ".github/workflows/release.yml",
+    "exact_native_publisher_preserved": ".github/workflows/legacy112-native.yml",
+    "initial_policy_commit": "eeaaa93280d5ba623ccacf38f9e41ec225458c18",
+    "initial_policy_run": 40760919935,
+    "initial_result": "FAIL_1_OF_7_OFFLINE_TESTS_MALFORMED_REGEX",
+    "corrected_policy_commit": "05960aa08f7528f8e5f76b99ee3123b2b810fa15",
+    "corrected_policy_run": 40761009320,
+    "corrected_policy_step": "PASS",
+    "corrected_full_native": "IN_PROGRESS",
+    "reproducible_reobf_commit": "6b9acb5b8d4f2b0cdb48feedfae78fba02143c2c",
+    "repro_native_run": 40761899439,
+    "repro_native_result": "PENDING_UNQUALIFIED",
+    "production_change": "Gradle reobfJar post-processing rewrites ZIP entries with fixed 1980 DOS timestamp; native validation script rejects any noncanonical timestamp, retains content",
+    "publisher": "SKIP_DEVELOPMENT"
+  },
+  "same_source_reproducibility": {
+    "source_commit": "af1feb4a3f10a05f701db84f84eb82f36d044de3",
+    "first_run": 40752206494,
+    "first_artifact_id": 12843643836,
+    "first_archive_sha256": "a51debad6aab5b411503b47d1d0c4f5bdfb78e96bcf4efc1fd24a326c050beca",
+    "first_jar_sha256": "39edfc082d17eaf63ac636b5e1b3202134321b506dab5d67225004cba2a8e8ce",
+    "second_run": 40754013917,
+    "second_artifact_id": 12844424468,
+    "second_archive_sha256": "4fe629757f6fc915906267308f10c91785e1d5e34fd0906c1b34d50043ea6dbc",
+    "second_jar_sha256": "c495f5e92f8c58248b1e58e272bb8af1b6e858cfb9d2bec599079895267e5682",
+    "crc_checks": "PASS_BOTH",
+    "inner_entry_count": 142,
+    "ordered_entry_payload_differences": 0,
+    "entry_timestamp_differences": 142,
+    "other_zip_entry_metadata_differences": 0,
+    "independent_local_java_zip_repack": "PASS_TWO_BYTE_IDENTICAL_NORMALIZED_JARS_ALL_142_PAYLOADS_PRESERVED_CRC_PASS",
+    "local_normalized_sha256": "020e2cd751f4d4fb5e0820e95e0a2ab15222b01c8276988a91bd68234685d4f4",
+    "limitation": "This digest is local independent Java proof, not a qualified GitHub new-source JAR. Native Gradle fix pending."
+  },
+  "reconciled_prior_runs": [
+    {
+      "id": 40754013917,
+      "result": "SUCCESS",
+      "native_112": "399/399",
+      "native_1211": "PASS",
+      "artifact_112": 12844424468
+    },
+    {
+      "id": 40757651587,
+      "result": "SUCCESS",
+      "native_1211": "192/192",
+      "artifact_1211": 12846608068,
+      "artifact_zip_sha256": "058e60eb2e33cd40a93f2cacce14f7f980e9aebc831599c9b58148d8e64a1aba"
+    }
+  ],
+  "blockers": [
+    "Original 1.6.4 x=80 spontaneous gravel root cause remains unresolved",
+    "Unobserved/unloaded aliases and installed third-party providers not accepted",
+    "No fresh exact-JAR stock client, dedicated multiplayer, arbitrary save migration or sustained full-server performance",
+    "1.12 timestamp fix needs pinned native validation and production JAR hash",
+    "All 24 RC clearance flags false; no release or upload"
+  ]
+}

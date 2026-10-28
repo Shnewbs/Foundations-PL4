@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T200922-legacy-tag-workflow",
-    "acquired_at": "2026-10-28T20:09:22.849Z",
-    "expires_at": "2026-10-28T20:37:22.849Z",
-    "purpose": "Guard remaining legacy tag-triggered release.yml publishers and verify exact-source native build receipts",
-    "expected_parent": "715adbbfe3e85f993b541ce210481be2f5f73604"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,15 +14,14 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-28T19:24:45Z: Fixed ambiguous native legacy publisher existence checks on mc/1.6.4 5fa3ecf and mc/1.12.2 af1feb4 (6/6 offline policy regressions each); 1.12.2 native run40752206494 passed 399/399 and separate restart/preupgrade, artifact12843643836 production JAR SHA256 39edfc... (142 payload entries same as prior, ZIP timestamps changed). 1.6.4 run40752183303 passed policy tests and packaging but failed before native on Forge Maven curl56 connection reset; artifact12845260858 retained, SRG JAR matches prior 1656e86e...; no native acceptance. Main f93fd79 adds exact-source 3-hour external reset deferral through 22:15:14Z, local controller tests21/21; pinned hourly run40754013917 triggered/in progress. Old 26.3 dual-loader artifact independently inspected, no current attestation. CurseForge reconciliation40749016926 found 24 prior receipts and zero new uploads. 0/24 clearance, no new release.",
+  "current_checkpoint": "2026-10-28T20:21:01.607Z: Frozen obsolete generic release.yml on mc/1.12.2 and mc/1.6.4, preserving branch-native publishers, explicit RC clearance and immutable receipt preflights. 1.6.4 f5c79e8 passes native372/372 and restart/historical run40761058763, exact SRG SHA1656e86e..., artifact12849095502 SHA b5020592...; no publication. 1.12 policy first red 40760919935 due escaped regex, corrected 05960aa0 policy PASS run40761009320; full native pending. 1.12 same-source af1feb4 two passing runs 40752206494/40754013917 yielded differing full JAR SHA39edfc.../c495f5..., but all142 ZIP entries have identical ordered payloads and only timestamps differ. Independent Java normalization of both gives identical SHA020e2cd... preserving 142/142 contents. Pushed 1.12 Gradle post-reobf timestamp normalization and native timestamp gate 6b9acb5; run40761899439 queued and unqualified. Previous hourly40754013917 pass 1.12 399/399 + 1.21.1, hourly40757651587 pass 1.21.1 192/192. All24 RC flags false; no GitHub or CurseForge release.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Reconcile pending pinned main hourly workflow40754013917 triggered by controller fix f93fd79; do not launch duplicate builds. Confirm 1.6.4 deferral exact SHA and 1.12.2 exact-source artifact if scheduled.",
-    "Do not hammer unchanged Forge 1.6.4 upstream curl56 failure until 2026-10-28T22:15:14Z; changed sources/force remain eligible; separate 164 native and original x80 physics root cause still pending.",
-    "Evaluate legacy 1.12.2 JAR reproducibility: same 142 entry payloads with varying timestamp metadata; preserve exact source/JAR/run hashes, no binary aliasing.",
-    "Collect installed optional-provider, unloaded aliases, fresh client screenshots, multiplayer, migration of arbitrary saves and sustained performance for 24 targets.",
-    "Rebuild NeoForge 26.3 exact .23/.39 native profiles under current attestation; archival 40205878290 evidence is older and not retroactive.",
-    "Only publish after exact target acceptance and explicit rc_publication_cleared true, immutable tag/receipts and no duplicate or uncertain upload."
+    "Inspect GitHub Actions 40761899439 for 1.12.2 6b9acb5 exact-source Gradle post-reobf timestamp normalization: demand fixed DOS epoch, native399/399, restart/historical/migration, actual new production JAR SHA; if red, repair the real source failure, never borrow prior hashes.",
+    "Reconcile in-progress 1.12.2 40761009320 policy-corrected native result; initial erroneous-regex failure 40760919935 remains explicit and corrected.",
+    "Retain 1.6.4 f5c79e8 native 372/372 and exact SRG hash from 40761058763, preserve historical upstream reset and original spontaneous x80 placement cause separately; avoid re-running unchanged environmental failure.",
+    "Advance installed-provider, unloaded alias, current stock client and screenshot, dedicated multiplayer, arbitrary-world migration, sustained performance and 26.3 .23/.39 loader profile attestation; exact-target release qualification is still incomplete.",
+    "Only publish eligible immutable tagged exact-source RC after explicit per-target rc_publication_cleared true, checksum and prior receipts. All24 remain false and no new release/upload."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,24 +59,25 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "0d0df6745e495c27497def372c18ad9b7086d733",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261028T1910Z-publisher-404",
-    "released_at": "2026-10-28T19:24:45Z",
-    "evidence": "docs/acceptance/rc-dev-legacy-release-http404-integrity-2026-10-28.json",
-    "source_commits": [
-      "5fa3ecf1174c93a0530eaf09e67a7882e7674c0d",
-      "af1feb4a3f10a05f701db84f84eb82f36d044de3",
-      "f93fd79f887d4de245aeb02e7888f8903001aeea"
+    "owner": "pl4-chat-hourly-20261028T200922-legacy-tag-workflow",
+    "released_at": "2026-10-28T20:21:01.607Z",
+    "evidence": "docs/acceptance/rc-dev-frozen-legacy-generic-publishers-and-reproducibility-2026-10-28.json",
+    "branch_commits": [
+      "05960aa08f7528f8e5f76b99ee3123b2b810fa15",
+      "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+      "6b9acb5b8d4f2b0cdb48feedfae78fba02143c2c"
     ],
-    "qualified_112_run": 40752206494,
-    "failed_external_164_run": 40752183303,
-    "main_pinned_run": 40754013917,
-    "publisher_tests": "6/6 each legacy",
-    "controller_tests": "21/21 local",
+    "native_164_pass_run": 40761058763,
+    "native_112_pending_run": 40761899439,
+    "main_hourly_verified_runs": [
+      40754013917,
+      40757651587
+    ],
     "new_releases": 0,
     "rc_publication_cleared": false,
     "lease_bounded": true
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-legacy-release-http404-integrity-2026-10-28.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-frozen-legacy-generic-publishers-and-reproducibility-2026-10-28.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -901,7 +895,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-28T19:24:45Z: Fixed ambiguous native legacy publisher existence checks on mc/1.6.4 5fa3ecf and mc/1.12.2 af1feb4 (6/6 offline policy regressions each); 1.12.2 native run40752206494 passed 399/399 and separate restart/preupgrade, artifact12843643836 production JAR SHA256 39edfc... (142 payload entries same as prior, ZIP timestamps changed). 1.6.4 run40752183303 passed policy tests and packaging but failed before native on Forge Maven curl56 connection reset; artifact12845260858 retained, SRG JAR matches prior 1656e86e...; no native acceptance. Main f93fd79 adds exact-source 3-hour external reset deferral through 22:15:14Z, local controller tests21/21; pinned hourly run40754013917 triggered/in progress. Old 26.3 dual-loader artifact independently inspected, no current attestation. CurseForge reconciliation40749016926 found 24 prior receipts and zero new uploads. 0/24 clearance, no new release.",
+  "latest_work": "2026-10-28T20:21:01.607Z: Frozen obsolete generic release.yml on mc/1.12.2 and mc/1.6.4, preserving branch-native publishers, explicit RC clearance and immutable receipt preflights. 1.6.4 f5c79e8 passes native372/372 and restart/historical run40761058763, exact SRG SHA1656e86e..., artifact12849095502 SHA b5020592...; no publication. 1.12 policy first red 40760919935 due escaped regex, corrected 05960aa0 policy PASS run40761009320; full native pending. 1.12 same-source af1feb4 two passing runs 40752206494/40754013917 yielded differing full JAR SHA39edfc.../c495f5..., but all142 ZIP entries have identical ordered payloads and only timestamps differ. Independent Java normalization of both gives identical SHA020e2cd... preserving 142/142 contents. Pushed 1.12 Gradle post-reobf timestamp normalization and native timestamp gate 6b9acb5; run40761899439 queued and unqualified. Previous hourly40754013917 pass 1.12 399/399 + 1.21.1, hourly40757651587 pass 1.21.1 192/192. All24 RC flags false; no GitHub or CurseForge release.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1243,5 +1237,30 @@
     "loader_23_native_log_sha256": "10db1e826eb3b8f63a8488bd49ed61f03fd87448d5e7965b50ecdb91bcbfff7f",
     "loader_39_native_log_sha256": "0d88c2a15054ee0f3a6d5cc49ea8ca2785e957ce317189ae4d2e4b8cb0024a96",
     "limitations": "Historical source only; recent controller attestation checks do not retroactively qualify these profile manifests"
+  },
+  "latest_frozen_legacy_generic_publishers": {
+    "evidence": "docs/acceptance/rc-dev-frozen-legacy-generic-publishers-and-reproducibility-2026-10-28.json",
+    "legacy_112_frozen_corrected_commit": "05960aa08f7528f8e5f76b99ee3123b2b810fa15",
+    "legacy_164_frozen_commit": "f5c79e8e75f9808f7fff0a5b9d6ca4a9ba4786d9",
+    "legacy_164_exact_native_run": 40761058763,
+    "legacy_164_native": "372/372 PASS",
+    "obsolete_generic_job": "if: false",
+    "native_publisher_paths_preserved": true,
+    "publication_performed": false
+  },
+  "latest_112_reobf_determinism": {
+    "evidence": "docs/acceptance/rc-dev-frozen-legacy-generic-publishers-and-reproducibility-2026-10-28.json",
+    "same_source": "af1feb4a3f10a05f701db84f84eb82f36d044de3",
+    "same_source_run_ids": [
+      40752206494,
+      40754013917
+    ],
+    "entry_payloads_identical": 142,
+    "timestamp_different_entries": 142,
+    "local_normalized_java_sha256": "020e2cd751f4d4fb5e0820e95e0a2ab15222b01c8276988a91bd68234685d4f4",
+    "native_fix_commit": "6b9acb5b8d4f2b0cdb48feedfae78fba02143c2c",
+    "native_candidate_run": 40761899439,
+    "candidate_status": "PENDING_UNQUALIFIED",
+    "rc_publication_cleared": false
   }
 }
