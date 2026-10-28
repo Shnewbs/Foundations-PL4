@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Check fail-closed RC release absence preflight regressions
+        run: python3 -m unittest discover -s tools -p test_legacy_release_absence.py
       - name: Read publication maturity from exact checked-out source
         shell: bash
         run: |
@@ -119,14 +121,14 @@ jobs:
           test -f "docs/releases/$version.md"
           # Never reuse an existing tag, even if its source happens to match:
           # an interrupted prior upload must be reconciled from its receipts.
-          if [[ -n "$(git ls-remote --tags origin "refs/tags/$tag")" ]]; then
+          remote_tag_refs="$(git ls-remote --tags origin "refs/tags/$tag")" || { echo "Cannot check remote tag; release blocked." >&2; exit 1; }
+          if [[ -n "$remote_tag_refs" ]]; then
             echo "Existing tag $tag: reconcile immutable assets and CurseForge receipts; refusing duplicate upload." >&2
             exit 1
           fi
-          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json tagName >/dev/null 2>&1; then
-            echo "Existing GitHub release $tag: refusing duplicate upload." >&2
-            exit 1
-          fi
+          # Authenticate the repository, then require an exact release-tag HTTP 404.
+          # Any 401/403/429/5xx or network failure blocks publication, not an absence proof.
+          python3 tools/verify_legacy_release_absence.py "$tag"
           mkdir -p release-files
           cp "build/libs/FoundationsPL4-1.12.2-$version.jar" release-files/
           cp "build/libs/FoundationsPL4-1.12.2-$version-sources.jar" release-files/
