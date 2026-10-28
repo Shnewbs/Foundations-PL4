@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261028T1106Z",
+    "claimed_at": "2026-10-28T11:07:52.236Z",
+    "expires_at": "2026-10-28T11:20:52.236Z",
+    "expected_parent": "6f23f12f32b139a967d7e7c693e7643ae9123345",
+    "purpose": "1.6.4 natural gravity/chunk-local fixture reproduction and source acceptance; finite run",
+    "renewal_required": true
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
