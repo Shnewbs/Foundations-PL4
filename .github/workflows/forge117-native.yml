@@ -1,11 +1,11 @@
-name: Forge 1.17.1 installed full feature validation
+name: Forge 1.17.1 exact-source installed native and production validation
 on:
   push:
-    paths-ignore: ['.github/workflows/**']
+    paths-ignore: ['.github/workflows/**', 'tools/test_publisher_policy_1171.py']
     branches: [mc/1.17.1]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: forge117-native-validation
   cancel-in-progress: false
@@ -18,56 +18,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Read publication maturity from exact checked-out source
+      - name: Verify exact immutable 1.17.1 source without mutation
         shell: bash
         run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          """Shared release maturity and explicit RC clearance policy."""
-          import re
-
-
-          def release_type(version):
-              text = version.lower()
-              if re.search(r"(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)", text):
-                  raise ValueError("Development snapshots are not qualified releases")
-              if re.search(r"beta|(?:^|[.\-_])rc\d*(?:[.\-_]|$)|\db(?:[.\-_]|$)", text):
-                  return "beta"
-              if re.search(r"alpha|preview|experimental|(?:^|[.\-_])port(?:[.\-_]|$)|\da(?:[.\-_]|$)", text):
-                  return "alpha"
-              return "release"
-
-
-          def is_rc(version):
-              return bool(re.search(r"(?:^|[.\-_])rc\d*(?:[.\-_]|$)", version, re.I))
-
-
-          def require_publication(status, minecraft=None, version=None):
-              if not isinstance(status, dict):
-                  raise ValueError("Missing exact-source build status")
-              actual = status.get("version", "")
-              if not actual or (version is not None and actual != version):
-                  raise ValueError("Build status and release version disagree")
-              if minecraft is not None and status.get("minecraft") != minecraft:
-                  raise ValueError("Build status and exact Minecraft target disagree")
-              maturity = release_type(actual)
-              if status.get("release_channel", "").lower() == "development":
-                  raise ValueError("Development channel is not publishable")
-              if is_rc(actual) and status.get("rc_publication_cleared") is not True:
-                  raise ValueError("RC publication has not been explicitly cleared")
-              return maturity
-
-          status = json.loads(Path('BUILD_STATUS.json').read_text())
-          try:
-              require_publication(status)
-              allowed = True
-          except ValueError as error:
-              allowed = False
-              print('Publication held:', error)
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
-          PY
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          test "$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["minecraft"])')" = '1.17.1'
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/checked-source.zip "$GITHUB_SHA"
+          printf '%s\n' "$GITHUB_SHA" > verification-logs/source-commit.txt
+          sha256sum verification-logs/checked-source.zip > verification-logs/SOURCE_ARCHIVE_SHA256SUMS.txt
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -85,35 +46,25 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/verify_installed117.py 2>&1 | tee verification-logs/native.log
-      - name: Publish only the passed target
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
+      - name: Retain exact production JAR and installed runtime digests
+        if: always()
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          test "$(git ls-remote origin refs/heads/mc/1.17.1 | cut -f1)" = "$(git rev-parse HEAD)"
-          version=$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["version"])')
-          tag="mc1.17.1-v$version"
-          if git show-ref --verify --quiet "refs/tags/$tag"; then
-            git diff --exit-code "$tag" HEAD -- src/main build.gradle tools/installed117.gradle gradle/
-            gh release view "$tag"; exit 0
+          mkdir -p verification-logs
+          if test -d build/libs; then
+            find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 -r sha256sum > verification-logs/JAR_SHA256SUMS.txt
           fi
-          mkdir -p release-files
-          cp "build/libs/FoundationsPL4-1.17.1-$version.jar" "build/libs/FoundationsPL4-1.17.1-$version-sources.jar" release-files/
-          git archive --format=zip --output="release-files/FoundationsPL4-1.17.1-$version-source.zip" HEAD
-          cp verification-logs/installed-scenarios.log verification-logs/production-boot.log verification-logs/installed-summary.json verification-logs/port-scenarios.json verification-logs/source-commit.txt release-files/
-          (cd release-files && sha256sum * > SHA256SUMS.txt)
-          git tag "$tag"; git push origin "$tag"
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 1.17.1 $version" --notes-file "docs/releases/$version.md"
+          for file in verification-logs/build.log verification-logs/native.log verification-logs/installed-scenarios.log verification-logs/production-boot.log verification-logs/installed-summary.json verification-logs/port-scenarios.json; do
+            if test -f "$file"; then sha256sum "$file"; fi
+          done > verification-logs/LOG_SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: forge117-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            release-files/
             verification-logs/
+            build/libs/*.jar
             run-installed-117/port-scenarios.json
             run-installed-117/crash-reports/
             build/reports/
