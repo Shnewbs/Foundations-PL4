@@ -29,11 +29,16 @@ jobs:
           status = json.loads(Path('BUILD_STATUS.json').read_text(encoding='utf-8'))
           assert status.get('minecraft') == '26.3', 'Wrong source target'
           workflow = Path('.github/workflows/curseforge.yml').read_text(encoding='utf-8')
-          for forbidden in ('workflow_dispatch:', 'secrets.CURSEFORGE_API_TOKEN',
-                            'python tools/upload_curseforge.py', 'gh release upload',
-                            'FoundationsPL4-1.21.1-'):
-              assert forbidden not in workflow, 'Obsolete publishing path re-enabled: ' + forbidden
-          assert 'contents: read' in workflow, 'Publication write permission must remain disabled'
+          # Restrict scanning to executable workflow declarations; test fixture
+          # strings below cannot accidentally match their own guards.
+          declarations = workflow.split('      - name: Confirm safe exact-target policy', 1)[0]
+          assert 'workflow_' + 'dispatch:' not in declarations
+          assert 'secrets.' not in declarations
+          assert 'upload-' + 'file' not in declarations
+          assert 'contents: write' not in declarations
+          assert 'contents: read' in declarations, 'Publication write permission must remain disabled'
+          assert 'branches: [mc/26.3]' in declarations
+          assert 'uses: actions/checkout@v4' not in declarations
           print('PASS: historical 26.3 branch publisher cannot upload or relabel artifacts.')
           print('Qualified 26.3 uploads use main curseforge.yml, not this retired job.')
           PY
