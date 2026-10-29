@@ -1845,7 +1845,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T21:14:17.703Z: Forge 1.16.4 exact a35c5afe PASS 193/193 real native scenarios + production-only launch-profile Forge35/Java8 boot/shutdown (not stock ModLauncher); exact JAR b97f148d and artifact a9c7404c verified 23/23 archive and 982/982 JAR entries. Four more exact version-branch publisher guards 1.17.1, 1.19.2, 1.20.1, 1.19.3; eight policy runs PASS 68/68 checks; no new runtime qualification for workflow-only edits. 0/24 RC cleared and no releases/uploads. Evidence docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json.",
+  "latest_work": "2026-10-29T22:23:11.893Z: Eight existing target branches (1.18, 1.18.1, 1.19, 1.19.1, 1.19.4, 1.20, 1.20.2, 1.20.4) hardened against wrong-target/uncleared GitHub and CurseForge publication; unsafe 1.20 auto source transforms and native direct release paths retired. 16/16 read-only policy workflows PASS, 160/160 static test executions; no new GameTest/JAR/client/provider/sustained runtime acceptance, 0/24 RC cleared, no release/upload. Ledger docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3533,7 +3533,7 @@
     "final_audit_run": 40871592313,
     "release_yml_remaining": "Not a qualified 26.3 publishing path: asset names and clobber need version-specific correction before tag publication"
   },
-  "previous_latest_work": "2026-10-29T20:21:30.198Z: 1.16.5 exact final branch 4da64cd2546be267559a7c45bb3e54f26ac39f99 passed 191/191 installed native Forge36/Java 8 scenarios (1,786 server ticks) plus NEW stock production-only installed JAR startup and clean shutdown; production hash 573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614, retained artifact 12928554433 actual ZIP 22 CRC-valid entries (sha b0a8ae...), 982 CRC-valid production JAR entries, policy 12/12. 1.16.4 exact final source 193-case native run 40946223380 pending. 0/24 RC clearances, no release/upload. docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
+  "previous_latest_work": "2026-10-29T21:14:17.703Z: Forge 1.16.4 exact a35c5afe PASS 193/193 real native scenarios + production-only launch-profile Forge35/Java8 boot/shutdown (not stock ModLauncher); exact JAR b97f148d and artifact a9c7404c verified 23/23 archive and 982/982 JAR entries. Four more exact version-branch publisher guards 1.17.1, 1.19.2, 1.20.1, 1.19.3; eight policy runs PASS 68/68 checks; no new runtime qualification for workflow-only edits. 0/24 RC cleared and no releases/uploads. Evidence docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json.",
   "latest_1211_passive_item_destination_quarantine": {
     "target": "1.21.1",
     "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
@@ -4150,5 +4150,63 @@
       "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
     }
   ],
-  "last_acceptance_evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json"
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json",
+  "latest_eight_branch_publisher_safety": {
+    "evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
+    "checked_at": "2026-10-29T22:23:11.893Z",
+    "branches": [
+      {
+        "minecraft": "1.19.4",
+        "source": "57c118e9ed757bfa953d546c074860cbb00c4f28",
+        "publisher_run": 40963748944,
+        "curseforge_run": 40963748843
+      },
+      {
+        "minecraft": "1.20.2",
+        "source": "5322aebea368cde66d7fa90298d40f7a21769b69",
+        "publisher_run": 40964030041,
+        "curseforge_run": 40963618890
+      },
+      {
+        "minecraft": "1.20.4",
+        "source": "4c357b2d3ef07c72e4b9435dae9653dcaf79f2ce",
+        "publisher_run": 40964112014,
+        "curseforge_run": 40964112003
+      },
+      {
+        "minecraft": "1.20",
+        "source": "0a56b8593312974368c2de0253303048d4e269aa",
+        "publisher_run": 40964487129,
+        "curseforge_run": 40964487119
+      },
+      {
+        "minecraft": "1.18.1",
+        "source": "602e55d7c0cd3c16c1a5a42c64270ffd0cdb9c8b",
+        "publisher_run": 40964659202,
+        "curseforge_run": 40964659146
+      },
+      {
+        "minecraft": "1.18",
+        "source": "6b03129cf6bfe0dd782a824e44fb93fb8d9d28d8",
+        "publisher_run": 40964739802,
+        "curseforge_run": 40964740244
+      },
+      {
+        "minecraft": "1.19.1",
+        "source": "8f3b02a3bd5e037a233bdd4b8e3ef8b83b0272ce",
+        "publisher_run": 40964918779,
+        "curseforge_run": 40964918768
+      },
+      {
+        "minecraft": "1.19",
+        "source": "efbb1b08457434ac291acfb033e74432a6860d0b",
+        "publisher_run": 40964970966,
+        "curseforge_run": 40964970869
+      }
+    ],
+    "checks_passed": 160,
+    "workflow_jobs_passed": 16,
+    "new_native_qualified": 0,
+    "rc_clearance": "0/24"
+  }
 }

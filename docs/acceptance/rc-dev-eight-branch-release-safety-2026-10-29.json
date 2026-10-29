@@ -1,0 +1,152 @@
+{
+  "schema": "foundations-pl4-rc-development-evidence-v1",
+  "captured_at_utc": "2026-10-29T22:23:11.893Z",
+  "repo": "Shnewbs/Foundations-PL4",
+  "checkpoint_parent": "773e3ee5a2f8bd7fca0b013b7973e9d3e90ebec5",
+  "writer_lease_released": true,
+  "summary": "Eight existing exact-target publisher/native workflow safety corrections. No native/runtime acceptance and no release.",
+  "branches": [
+    {
+      "minecraft": "1.19.4",
+      "source_commit": "57c118e9ed757bfa953d546c074860cbb00c4f28",
+      "publisher_policy_run": 40963748944,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40963748944",
+      "curseforge_audit_run": 40963748843,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40963748843",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.20.2",
+      "source_commit": "5322aebea368cde66d7fa90298d40f7a21769b69",
+      "publisher_policy_run": 40964030041,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964030041",
+      "curseforge_audit_run": 40963618890,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40963618890",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.20.4",
+      "source_commit": "4c357b2d3ef07c72e4b9435dae9653dcaf79f2ce",
+      "publisher_policy_run": 40964112014,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964112014",
+      "curseforge_audit_run": 40964112003,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964112003",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.20",
+      "source_commit": "0a56b8593312974368c2de0253303048d4e269aa",
+      "publisher_policy_run": 40964487129,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964487129",
+      "curseforge_audit_run": 40964487119,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964487119",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.18.1",
+      "source_commit": "602e55d7c0cd3c16c1a5a42c64270ffd0cdb9c8b",
+      "publisher_policy_run": 40964659202,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964659202",
+      "curseforge_audit_run": 40964659146,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964659146",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.18",
+      "source_commit": "6b03129cf6bfe0dd782a824e44fb93fb8d9d28d8",
+      "publisher_policy_run": 40964739802,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964739802",
+      "curseforge_audit_run": 40964740244,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964740244",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.19.1",
+      "source_commit": "8f3b02a3bd5e037a233bdd4b8e3ef8b83b0272ce",
+      "publisher_policy_run": 40964918779,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964918779",
+      "curseforge_audit_run": 40964918768,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964918768",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    },
+    {
+      "minecraft": "1.19",
+      "source_commit": "efbb1b08457434ac291acfb033e74432a6860d0b",
+      "publisher_policy_run": 40964970966,
+      "publisher_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964970966",
+      "curseforge_audit_run": 40964970869,
+      "curseforge_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40964970869",
+      "policy_tests_per_workflow": 10,
+      "policy_pass": true,
+      "rc_publication_cleared": false,
+      "native_new_qualified": false,
+      "new_production_jar_sha256": null,
+      "publication": "none"
+    }
+  ],
+  "total_workflows_passed": 16,
+  "total_static_tests_passed": 160,
+  "specific_fixes": [
+    "1.19.4 obsolete generic 1.21.1 release and direct CF retired; source-pinned manual Forge45 native evidence strengthened",
+    "1.20.2 direct native GitHub tag/release removed, JAR/log/source checksums and build/libs retention fixed in second commit",
+    "1.20.4 direct native GitHub release removed, source/JAR/log receipts and read-only policy guards",
+    "1.20 old automatic source transformation/git push and native direct release removed without executing transforms",
+    "1.18.1/1.18/1.19.1/1.19 wrong-target direct publishers retired and native manual runners source/checksum evidence improved"
+  ],
+  "limitations": [
+    "All 160 checks are static publisher policy unit tests, not native Minecraft GameTests.",
+    "Final 1.20.2 CurseForge job was not rerun after source-only JAR retention update; its unchanged CF workflow passed on preceding c38ff5e commit, while final publisher audit passed on 5322aebe.",
+    "No native build, production JAR, installed provider, multiplayer, migration, visual or performance evidence newly qualified on these source commits.",
+    "1.18 is historic alpha without explicit RC clearance. 1.6.4 natural gravel failure remains unresolved."
+  ],
+  "publication": {
+    "new_github_releases": 0,
+    "new_curseforge_upload_ids": [],
+    "new_moderation_visibility_claims": [],
+    "main_release_run": 40963345699,
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "rc_clearance": "0/24"
+  },
+  "next_work": [
+    "Review pinned hourly-builds.yml native artifact selection for eight changed exact branch refs; inspect genuine native GameTest totals, complete runtime JAR/source/log SHA256, retained ZIP and production smoke. Do not dispatch duplicate or transfer old qualification.",
+    "Inspect other unguarded exact-version branch-local publisher paths (including 26.x/1.21.1); review unsafe push trigger before any source update.",
+    "Implement and validate actual installed third-party provider owner-revocation, unloaded/cross-owner aliases, authenticated multiplayer, saved-world migration and sustained performance; 1.6.4 x80 gravel root cause still open.",
+    "Only create new immutable exact-version GitHub beta RC and CurseForge beta after exact-source acceptance and explicit rc_publication_cleared=true; preserve existing receipts."
+  ]
+}
