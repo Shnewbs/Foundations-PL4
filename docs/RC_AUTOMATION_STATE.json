@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T0502Z-topology",
-    "claimed_at": "2026-10-29T05:03:00Z",
-    "expires_at": "2026-10-29T05:35:00Z",
-    "purpose": "Bounded installed-binary cable topology acceptance, exact-source tests and receipts",
-    "base_commit": "8459e62c11e2dec21d3de599d3b5cd0b8cff0a18"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -23,10 +17,10 @@
   "current_checkpoint": "2026-10-29T04:26:07.708Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact native-qualified aa9b439 development production JAR now transfers real items with installed TransferEngine.run on BOTH real NeoForge server lifecycles: beta 1728->1664 source and 0->64 sink; restored candidate 1664->1600 source and 64->128 sink. 1728 conserved per phase, zero escrow, source/sink UUIDs and configured Inventory Reader/Data Cable persisted in raw saved Anvil region NBT. Explicit NetworkEngine.Ref endpoint membership bypasses true topology; no actual clients/optional providers/arbitrary worlds/performance accepted. Exact controller source 60afabd44c404e93c3a98e67c20778a551390b85, successful installed run 40817349163, 75/75 policy tests, artifact 12872604397 ZIP sha256 a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137, 25/25 CRC-valid, two nested world ZIPs CRC valid. Preceding strict NBT failure 40816881432 traced to historical beta missing new zero escrow tags; source fix 1dd6785 and six adversarial tests passed. Prior candidate 194/194 native is a retained existing JAR; no new production JAR or release. Publisher run 40817349194 skipped both publishing steps. All 24 exact-target RC flags false, no GitHub RC/CurseForge upload.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Build an actual connected DATA_CABLE topology and assert automatic NetworkEngine tick routing under immutable published-beta/candidate binaries; manual explicit Ref endpoints do not prove cable discovery.",
-    "Run two genuine independent clients against installed beta and candidate binaries with authenticated item mutation, permission isolation, UI screenshots and saved-world migration.",
-    "Qualify installed external providers/unloaded/disconnected inventory aliases and sustained performance; extend independent exact-target acceptance to other 23 targets without relabeling artifacts.",
-    "Continue investigating old 1.6.4 natural gravel x=80 incident; do not treat intermittent passing runs as root-cause resolution."
+    "Prove server-scheduled NetworkEngine tick moves and conserves inventory through the physically discovered seven-cable route, without direct TransferEngine.run or fabricated Ref endpoints, under both exact installed JARs.",
+    "Run two genuine installed-JAR clients through the world upgrade with permissions, actual transfer UI/screenshots, inventory conservation and client/server logs.",
+    "Independently qualify installed providers, disconnected/unloaded inventory alias safety, arbitrary worlds, sustained performance, and 23 other exact targets.",
+    "Investigate historical Forge 1.6.4 spontaneous gravel x80 cause before changing acceptance, maintaining guarded exact branch publishing workflows."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -906,7 +900,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-29T03:21:40Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact previously 194/194-native-qualified aa9b439 candidate world migration now persists TWO real PL4 parts (INVENTORY_READER east slot5, DATA_CABLE centre slot6), same owner and distinct unchanged part UUIDs in both real dedicated-server JVMs AND raw saved region NBT. Run40811316320 PASS; 62/62 policy regressions and 25-entry retained ZIP independently CRC/SHA checked, artifact12869549832 SHA256 fef32063287e88192efa89a3912b4caff900b464a6fd4f7d36f1b282302291b3. Both genuine JAR-only server jobs40811316287 PASS; build verification40811316244 PASS. Native beta source world19 files -> candidate22 files; exact baseline copy preserved, barrel128 diamonds each. No clients or actual network transfer in these tests, no installed optional providers, arbitrary worlds, sustained performance or RC clearance. All24 publication flags false; no new GitHub RC or CurseForge upload; development binaries unpublished.",
+  "latest_work": "2026-10-29T05:21:30Z: Installed Minecraft 1.21.1 immutable beta v0.2b.0 and native-qualified aa9b439 candidate now each prove actual physical DATA_CABLE topology via native NetworkEngine: seven saved cable centres, two passive transfer endpoints, forced sever-by-blocked-arm then live reconnect, and 9 exact native owner/UUID identities retained in raw Anvil region NBT across genuine saved-world upgrade. Final exact controller source 2a615ba6, installed run40822624071 SUCCESS, policy 87/87, artifact12875096843 zip SHA256 7b724f464691c8e790b61e0d7b66f017bc992dc888ee10144a7131682b686528, 25/25 CRC valid, two nested world archives CRC valid. Initial malformed JSON 40821568974 fixed fc178370; pre-onLoad server-start failure 40821699766 and diagnostic 40822025773 (native all_loaded_parts=0) fixed by waiting for actual ServerTickEvent.Post in 04daafad; no synthetic host registration. Previous real TransferEngine transfers remain 64+64 using explicit Ref lists, 1728 conserved, zero escrow; no automatic tick delivery over discovered topology, clients, providers or arbitrary worlds. No new production JAR, RC or CurseForge upload. All24 release clearances false, lease released.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1608,5 +1602,26 @@
     "publication_steps": "SKIPPED",
     "native_failed_then_fixed": 40816881432,
     "fix_commit": "1dd6785644375c99e869944b1332ff80616366a2"
+  },
+  "latest_1211_installed_cable_topology": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-native-cable-discovery-2026-10-29.json",
+    "source_commit": "2a615ba6b6e02818a6d29ba998b74141b8e9c248",
+    "native_run": 40822624071,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40822624071",
+    "artifact_id": 12875096843,
+    "artifact_zip_sha256": "7b724f464691c8e790b61e0d7b66f017bc992dc888ee10144a7131682b686528",
+    "policy_regressions": "87/87",
+    "raw_persisted_cable_nbt": true,
+    "connected_endpoints": 2,
+    "cable_centres": 7,
+    "automatic_tick_item_transfer_tested": false,
+    "client_executed": false,
+    "rc_publication_cleared": false
+  },
+  "last_writer_lease_release": {
+    "owner": "pl4-hourly-chat-20261029T0502Z-topology",
+    "claimed_at": "2026-10-29T05:03:00Z",
+    "released_at": "2026-10-29T05:21:30Z",
+    "reason": "Completed bounded native installed graph+Anvil source and acceptance checkpoint with finite resume work"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-28",
+  "recorded_date": "2026-10-29",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -1774,7 +1774,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T04:26:07.708Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact native-qualified aa9b439 development production JAR now transfers real items with installed TransferEngine.run on BOTH real NeoForge server lifecycles: beta 1728->1664 source and 0->64 sink; restored candidate 1664->1600 source and 64->128 sink. 1728 conserved per phase, zero escrow, source/sink UUIDs and configured Inventory Reader/Data Cable persisted in raw saved Anvil region NBT. Explicit NetworkEngine.Ref endpoint membership bypasses true topology; no actual clients/optional providers/arbitrary worlds/performance accepted. Exact controller source 60afabd44c404e93c3a98e67c20778a551390b85, successful installed run 40817349163, 75/75 policy tests, artifact 12872604397 ZIP sha256 a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137, 25/25 CRC-valid, two nested world ZIPs CRC valid. Preceding strict NBT failure 40816881432 traced to historical beta missing new zero escrow tags; source fix 1dd6785 and six adversarial tests passed. Prior candidate 194/194 native is a retained existing JAR; no new production JAR or release. Publisher run 40817349194 skipped both publishing steps. All 24 exact-target RC flags false, no GitHub RC/CurseForge upload.",
+  "latest_work": "2026-10-29T05:21:30Z: Installed Minecraft 1.21.1 immutable beta v0.2b.0 and native-qualified aa9b439 candidate now each prove actual physical DATA_CABLE topology via native NetworkEngine: seven saved cable centres, two passive transfer endpoints, forced sever-by-blocked-arm then live reconnect, and 9 exact native owner/UUID identities retained in raw Anvil region NBT across genuine saved-world upgrade. Final exact controller source 2a615ba6, installed run40822624071 SUCCESS, policy 87/87, artifact12875096843 zip SHA256 7b724f464691c8e790b61e0d7b66f017bc992dc888ee10144a7131682b686528, 25/25 CRC valid, two nested world archives CRC valid. Initial malformed JSON 40821568974 fixed fc178370; pre-onLoad server-start failure 40821699766 and diagnostic 40822025773 (native all_loaded_parts=0) fixed by waiting for actual ServerTickEvent.Post in 04daafad; no synthetic host registration. Previous real TransferEngine transfers remain 64+64 using explicit Ref lists, 1728 conserved, zero escrow; no automatic tick delivery over discovered topology, clients, providers or arbitrary worlds. No new production JAR, RC or CurseForge upload. All24 release clearances false, lease released.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3209,5 +3209,31 @@
       "Qualify installed external providers/unloaded/disconnected inventory aliases and sustained performance; extend independent exact-target acceptance to other 23 targets without relabeling artifacts.",
       "Continue investigating old 1.6.4 natural gravel x=80 incident; do not treat intermittent passing runs as root-cause resolution."
     ]
+  },
+  "latest_1211_installed_cable_topology": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-native-cable-discovery-2026-10-29.json",
+    "source_commit": "2a615ba6b6e02818a6d29ba998b74141b8e9c248",
+    "native_run": 40822624071,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40822624071",
+    "artifact_id": 12875096843,
+    "artifact_zip_sha256": "7b724f464691c8e790b61e0d7b66f017bc992dc888ee10144a7131682b686528",
+    "policy_regressions": "87/87",
+    "raw_persisted_cable_nbt": true,
+    "connected_endpoints": 2,
+    "cable_centres": 7,
+    "automatic_tick_item_transfer_tested": false,
+    "client_executed": false,
+    "rc_publication_cleared": false,
+    "prior_baseline_jar": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "prior_candidate_jar": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "policy_tests_by_suite": [
+      28,
+      19,
+      16,
+      9,
+      15
+    ],
+    "main_verify_run": 40822624075,
+    "main_verify_at_checkpoint": "PENDING"
   }
 }

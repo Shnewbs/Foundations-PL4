@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-29T05:21:30Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "operational_scope": "Finite implementation/acceptance run on guarded main; existing mc/exact-version branches unchanged; no new production release, no forced ref update, no legacy attachment used.",
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T0502Z-topology",
+    "claimed_at": "2026-10-29T05:03:00Z",
+    "released_at": "2026-10-29T05:21:30Z",
+    "release_on_checkpoint": true
+  },
+  "main_implementation_commits": [
+    "177909eb464620196de5ce99feecc3a2d4578d1a",
+    "0ae0802222fb8ff136cade81ef295c6ecb55b662",
+    "fc178370c8ef5ba490b0e5928ca0fcd0b6f676ff",
+    "ce3f9748af62acabb9fdc4fbac659c7f23e3d42e",
+    "04daafada9641b3b23658a537fb4ad1c46531b27",
+    "2a615ba6b6e02818a6d29ba998b74141b8e9c248"
+  ],
+  "implementation": [
+    "Actual installed-NeoForge DATA_CABLE seven-centre physical graph connects two owned passive transfer-node endpoints using native NetworkEngine.storageNodes (never manufactured refs).",
+    "One physical cable arm is blocked and must disconnect the far endpoint; clearing it must restore both endpoints, on both immutable published beta and native-qualified candidate.",
+    "The exact saved native Anvil region must contain all nine original unique cable and endpoint UUIDs, correct slot/owner/disabled-arm flags, with no changed UUIDs across the real beta-to-candidate byte-identical-world restore.",
+    "On restore, fixture waits until genuine HostEntity.onLoad registration on native ServerTickEvent.Post, never forces native NetworkEngine.add to make tests pass.",
+    "Installed TransferEngine source/sink movement remains independently tested through explicit Ref membership only; automatic network tick and item delivery via discovered cable graph are not claimed."
+  ],
+  "initial_failures": [
+    {
+      "run": 40821568974,
+      "issue": "Topology receipt generated malformed JSON (unclosed cable ID array)",
+      "fixed_in": "fc178370c8ef5ba490b0e5928ca0fcd0b6f676ff"
+    },
+    {
+      "run": 40821699766,
+      "issue": "Restore graph checked too early; server-start lifecycle had no loaded hosts",
+      "diagnosed_with": 40822025773,
+      "observed": "discovered=0 all_loaded_parts=0",
+      "fixed_in": "04daafada9641b3b23658a537fb4ad1c46531b27"
+    }
+  ],
+  "verified_runs": [
+    {
+      "run": 40822292906,
+      "source": "04daafada9641b3b23658a537fb4ad1c46531b27",
+      "result": "SUCCESS",
+      "policy_regressions": "80/80",
+      "artifact_id": 12874749286,
+      "artifact_zip_sha256": "b8e02f221a17d60e7fcde90db546ecb8b5f31ba59332eeacb769cff6b71c96e4"
+    },
+    {
+      "run": 40822624071,
+      "source": "2a615ba6b6e02818a6d29ba998b74141b8e9c248",
+      "result": "SUCCESS",
+      "policy_regressions": "87/87",
+      "artifact_id": 12875096843,
+      "artifact_zip_sha256": "7b724f464691c8e790b61e0d7b66f017bc992dc888ee10144a7131682b686528",
+      "artifact_entries": 25,
+      "artifact_crc": "PASS",
+      "seed_world_files": 19,
+      "restore_world_files": 22,
+      "seed_saved_world_sha256": "b3364d270620dde8a7d9ef09da4d8e5f468bbf57ab19d28e6000e805e7786ac0",
+      "restore_saved_world_sha256": "6efa3f0d516edc7a1993599151048c2585f88a8f13b1eec8b7ef0598149e92ac",
+      "nested_world_zip_crc": "PASS_BOTH",
+      "raw_saved_region_nbt": "PASS_SEVEN_CABLE_CENTRES_TWO_ENDPOINTS_NINE_IDENTITY_PARITY",
+      "published_beta_phase": "PASS_NATIVE_INSTALLED_SERVER",
+      "candidate_restore_phase": "PASS_NATIVE_INSTALLED_SERVER"
+    }
+  ],
+  "exact_binaries": {
+    "baseline": {
+      "tag": "v0.2b.0",
+      "jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229"
+    },
+    "candidate": {
+      "source_sha": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+      "native_qualified_prior": "194/194",
+      "artifact_id": 12859271452,
+      "jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+      "new_production_jar_built_this_run": false
+    }
+  },
+  "native_scope": {
+    "published_beta_connected": 2,
+    "candidate_connected": 2,
+    "blocked_arm_disconnect": 1,
+    "reenabled_endpoints": 2,
+    "cable_centres": 7,
+    "original_uuids_preserved": 9,
+    "raw_nbt_verified": true,
+    "live_native_transfer_by_explicit_refs": {
+      "seed_delivered": 64,
+      "candidate_delivered": 64,
+      "total_items_conserved": 1728,
+      "escrow": 0
+    },
+    "automatic_native_tick_routing": false,
+    "live_items_over_connected_graph": false,
+    "genuine_clients": false,
+    "installed_optional_providers": false,
+    "arbitrary_user_world": false,
+    "sustained_performance": false
+  },
+  "ci": {
+    "native_installed_world_upgrade": 40822624071,
+    "main_verify": 40822624075,
+    "main_verify_status_at_checkpoint": "IN_PROGRESS_NOT_COUNTED_AS_PASS",
+    "publisher": 40822624147,
+    "github_release_step": "SKIPPED_DEVELOPMENT",
+    "curseforge_step": "SKIPPED_DEVELOPMENT"
+  },
+  "publishing": {
+    "total_targets": 24,
+    "rc_clearances": 0,
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "curseforge_public_visibility_reverified": false
+  },
+  "blockers": [
+    "Automatic NetworkEngine scheduled tick delivery across discovered DATA_CABLE endpoint membership remains untested, and previous real item movement was explicitly supplied endpoints.",
+    "Two installed binary clients with authentication, unauthorized inventory mutation and migration/GUI screenshots not tested.",
+    "Installed optional power/item providers and unloaded/disconnected/double-inventory aliases unqualified.",
+    "Sustained performance, arbitrary-world migrations and all-port exact-source RC acceptance unqualified.",
+    "Historical Forge 1.6.4 spontaneous x80 gravel/falling-block actor cause unresolved."
+  ],
+  "next": "Build a native two-endpoint connected cable network with vanilla inventories and wait for actual server NetworkEngine scheduled sampling to transfer items (no direct TransferEngine.run/ref injection), then raw-NBT conserve/escrow check and two independent clients on both installed JARs. Keep existing version-source publishers guarded and 24 clearances false."
+}
