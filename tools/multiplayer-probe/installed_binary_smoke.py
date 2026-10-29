@@ -71,8 +71,8 @@ public final class InstalledBinaryProbe {
         try {
             Path proof = Path.of(output);
             Files.createDirectories(proof.getParent());
-            String json = "{\\\"schema\\\":1,\\\"loaded_mod_id\\\":\\\"foundations_pl4\\\","
-                + "\\\"server_started\\\":true,\\\"expected_jar_sha256\\\":\\\"" + sha + "\\\"}\\n";
+            String json = "{\"schema\":1,\"loaded_mod_id\":\"foundations_pl4\","
+                + "\"server_started\":true,\"expected_jar_sha256\":\"" + sha + "\"}\n";
             Files.writeString(proof, json, StandardCharsets.UTF_8);
         } catch (Exception failure) {
             throw new IllegalStateException("Cannot preserve installed-server proof", failure);
