@@ -136,7 +136,72 @@ def uuid_int_array(values):
     return str(uuid.UUID(int=bits))
 
 
-def inspect_chunk(chunk):
+def _native_diamonds(entity, xyz):
+    if entity.get("id") != "minecraft:barrel":
+        raise ValueError("Wrong installed native transfer barrel identity at " + str(xyz))
+    items = entity.get("Items")
+    if not isinstance(items, list):
+        raise ValueError("Native installed transfer barrel lacks its saved inventory")
+    slots = set()
+    total = 0
+    for item in items:
+        if not isinstance(item, dict) or item.get("id") != "minecraft:diamond":
+            raise ValueError("Unexpected item in native installed transfer inventory")
+        slot = item.get("Slot")
+        count = item.get("count", item.get("Count"))
+        if (type(slot) is not int or not 0 <= slot < 27 or slot in slots
+                or type(count) is not int or not 1 <= count <= 64):
+            raise ValueError("Malformed persisted native installed transfer item stack")
+        slots.add(slot)
+        total += count
+    return total
+
+
+def inspect_transfer_entities(targets, expected):
+    """Require direct saved Anvil NBT, not only the runtime JSON transfer receipt."""
+    if not isinstance(expected, dict):
+        raise ValueError("Native installed transfer proof is missing")
+    identities = []
+    for position, mode, field in (((0, 80, 2), 2, "source_identity"),
+                                  ((4, 80, 2), 1, "sink_identity")):
+        entity = targets.get(position)
+        if (not isinstance(entity, dict)
+                or entity.get("id") != "foundations_pl4:host"
+                or entity.get("schema") != 2):
+            raise ValueError("Missing real persisted native installed transfer host")
+        parts = entity.get("parts")
+        if not isinstance(parts, list) or len(parts) != 1:
+            raise ValueError("Missing/ambiguous native saved transfer part")
+        part = parts[0]
+        if (not isinstance(part, dict)
+                or part.get("kind") != "transfernode"
+                or type(part.get("face")) is not int or part["face"] != 5
+                or type(part.get("transferMode")) is not int or part["transferMode"] != mode
+                or part.get("items") != 1 or part.get("fluids") != 0 or part.get("energy") != 0
+                or part.get("resourceEscrow") != 0
+                or part.get("itemEscrowCount") != 0
+                or part.get("itemTransferFault") != ""
+                or "pendingItem" in part):
+            raise ValueError("Native saved transfer part route, fault or escrow changed")
+        owner = uuid_int_array(part.get("owner"))
+        identity = uuid_int_array(part.get("identity"))
+        if owner != PART_OWNER or identity != expected.get(field):
+            raise ValueError("Native installed transfer owner/UUID does not match active proof")
+        identities.append(identity)
+    if identities[0] == identities[1]:
+        raise ValueError("Native installed transfer part identities duplicated")
+    source = _native_diamonds(targets.get((1, 80, 2), {}), (1, 80, 2))
+    sink = _native_diamonds(targets.get((5, 80, 2), {}), (5, 80, 2))
+    if (source != expected.get("source_after")
+            or sink != expected.get("sink_after")
+            or source + sink != 1728):
+        raise ValueError("Raw saved native transferred item counts do not match real engine output")
+    return {"source_diamonds": source, "sink_diamonds": sink,
+            "source_identity": identities[0], "sink_identity": identities[1],
+            "item_total": 1728, "item_escrow": 0}
+
+
+def inspect_chunk(chunk, expected_transfer=None):
     entities = chunk.get("block_entities")
     if not isinstance(entities, list):
         raise ValueError("Native chunk has no block_entities list")
@@ -145,7 +210,8 @@ def inspect_chunk(chunk):
         if not isinstance(entity, dict):
             raise ValueError("Malformed native block entity compound")
         xyz = tuple(entity.get(k) for k in ("x", "y", "z"))
-        if xyz in ((0, 80, 0), (1, 80, 0)):
+        if xyz in ((0, 80, 0), (1, 80, 0), (0, 80, 2),
+                    (1, 80, 2), (4, 80, 2), (5, 80, 2)):
             if xyz in targets:
                 raise ValueError("Duplicate native fixture block entity position")
             targets[xyz] = entity
@@ -203,7 +269,10 @@ def inspect_chunk(chunk):
         items[slot] = quantity
     if items != {0: 64, 1: 64}:
         raise ValueError("Native barrel inventory was not conserved")
-    return {"parts": parts, "barrel_diamonds": 128, "host_schema": 2}
+    result = {"parts": parts, "barrel_diamonds": 128, "host_schema": 2}
+    if expected_transfer is not None:
+        result["transfer_nbt"] = inspect_transfer_entities(targets, expected_transfer)
+    return result
 
 
 def inspect_archive(phase_dir, phase, expected_sha):
@@ -216,7 +285,7 @@ def inspect_archive(phase_dir, phase, expected_sha):
         if z.testzip() is not None or z.namelist().count(REGION) != 1:
             raise ValueError("Missing, duplicate or corrupt native region archive")
         data = z.read(REGION)
-    observed = inspect_chunk(decode_region(data))
+    observed = inspect_chunk(decode_region(data), expected_transfer=proof["transfer"])
     if observed["parts"] != proof["parts"] or observed["barrel_diamonds"] != proof["barrel_diamonds"]:
         raise ValueError("Raw saved native region NBT differs from installed-JAR runtime proof")
     return {
@@ -230,12 +299,19 @@ def verify_native_upgrade(seed, restore, baseline_sha, candidate_sha):
     after = inspect_archive(restore, "restore", candidate_sha)
     if before["parts"] != after["parts"]:
         raise ValueError("Actual serialized native PL4 multipart UUID/owner not retained across binaries")
+    src, dst = before["transfer_nbt"], after["transfer_nbt"]
+    if (src["source_identity"] != dst["source_identity"]
+            or src["sink_identity"] != dst["sink_identity"]
+            or dst["source_diamonds"] >= src["source_diamonds"]
+            or dst["sink_diamonds"] <= src["sink_diamonds"]):
+        raise ValueError("Raw saved installed transfer inventories/identities did not progress")
     return {
         "schema": 1, "baseline_jar_sha256": baseline_sha,
         "candidate_jar_sha256": candidate_sha,
         "seed_native": before, "restore_native": after,
-        "result": "PASS_NATIVE_SAVED_NBT_CONFIGURED_MULTIPART_ONLY",
-        "client_executed": False, "live_item_transfer_tested": False,
+        "result": "PASS_NATIVE_SAVED_NBT_MULTIPART_AND_EXPLICIT_REF_TRANSFER",
+        "client_executed": False, "live_item_transfer_tested": True,
+        "live_network_topology_tested": False,
         "installed_optional_providers_tested": False,
         "rc_publication_cleared": False,
     }
