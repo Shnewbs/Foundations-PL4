@@ -157,7 +157,7 @@ def _native_diamonds(entity, xyz):
     return total
 
 
-def inspect_transfer_entities(targets, expected):
+def inspect_transfer_entities(targets, expected, allow_legacy_missing=False):
     """Require direct saved Anvil NBT, not only the runtime JSON transfer receipt."""
     if not isinstance(expected, dict):
         raise ValueError("Native installed transfer proof is missing")
@@ -179,8 +179,10 @@ def inspect_transfer_entities(targets, expected):
                 or type(part.get("transferMode")) is not int or part["transferMode"] != mode
                 or part.get("items") != 1 or part.get("fluids") != 0 or part.get("energy") != 0
                 or part.get("resourceEscrow") != 0
-                or part.get("itemEscrowCount") != 0
-                or part.get("itemTransferFault") != ""
+                or part.get("itemEscrowCount", 0) != 0
+                or part.get("itemTransferFault", "") != ""
+                or (not allow_legacy_missing and (
+                    "itemEscrowCount" not in part or "itemTransferFault" not in part))
                 or "pendingItem" in part):
             raise ValueError("Native saved transfer part route, fault or escrow changed")
         owner = uuid_int_array(part.get("owner"))
@@ -201,7 +203,7 @@ def inspect_transfer_entities(targets, expected):
             "item_total": 1728, "item_escrow": 0}
 
 
-def inspect_chunk(chunk, expected_transfer=None):
+def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False):
     entities = chunk.get("block_entities")
     if not isinstance(entities, list):
         raise ValueError("Native chunk has no block_entities list")
@@ -271,7 +273,8 @@ def inspect_chunk(chunk, expected_transfer=None):
         raise ValueError("Native barrel inventory was not conserved")
     result = {"parts": parts, "barrel_diamonds": 128, "host_schema": 2}
     if expected_transfer is not None:
-        result["transfer_nbt"] = inspect_transfer_entities(targets, expected_transfer)
+        result["transfer_nbt"] = inspect_transfer_entities(
+            targets, expected_transfer, allow_legacy_missing=allow_legacy_missing)
     return result
 
 
@@ -285,7 +288,8 @@ def inspect_archive(phase_dir, phase, expected_sha):
         if z.testzip() is not None or z.namelist().count(REGION) != 1:
             raise ValueError("Missing, duplicate or corrupt native region archive")
         data = z.read(REGION)
-    observed = inspect_chunk(decode_region(data), expected_transfer=proof["transfer"])
+    observed = inspect_chunk(decode_region(data), expected_transfer=proof["transfer"],
+                             allow_legacy_missing=(phase == "seed"))
     if observed["parts"] != proof["parts"] or observed["barrel_diamonds"] != proof["barrel_diamonds"]:
         raise ValueError("Raw saved native region NBT differs from installed-JAR runtime proof")
     return {
