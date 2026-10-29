@@ -103,13 +103,13 @@ public final class MultiplayerServerProbe {
         for(int i=0;i<CABLE_CELLS.length;i++){
             if(!(level.getBlockEntity(CABLE_CELLS[i]) instanceof HostEntity h))return false;
             Part cable=h.parts.get(6);
-            if(cable==null||!cable.kind.name().equals("DATA_CABLE")||cable.blockedFaces!=0
+            if(cable==null||!((Enum<?>)cable.kind).name().equals("DATA_CABLE")||cable.blockedFaces!=0
                     ||!cable.owner.equals(uuid("PL4ProbeA")))return false;
             if(h.parts.size()!=((i==0||i==6)?2:1))throw new IllegalStateException("Saved cable multipart layout invalid");
             cableHosts[i]=h;cables[i]=cable;
             if(i==0||i==6){
                 Part endpoint=h.parts.get(5);
-                if(endpoint==null||!endpoint.kind.name().equals("TRANSFER_NODE")
+                if(endpoint==null||!((Enum<?>)endpoint.kind).name().equals("TRANSFER_NODE")
                         ||endpoint.face!=Direction.EAST||endpoint.transferMode!=0
                         ||endpoint.items||!endpoint.owner.equals(uuid("PL4ProbeA")))
                     throw new IllegalStateException("Saved native transfer endpoint changed");
