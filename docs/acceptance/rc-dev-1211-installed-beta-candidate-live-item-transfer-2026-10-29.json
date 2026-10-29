@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T04:26:07.708Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "result": "PASS_EXACT_INSTALLED_JAR_EXPLICIT_REF_ITEM_TRANSFER_PERSISTENCE_RAW_NBT_ONLY",
+  "control_source_commit": "60afabd44c404e93c3a98e67c20778a551390b85",
+  "development_source_commits": [
+    "d23b1aa8444bd592578f8f0a010d250d6e9c8452",
+    "fc2319109dd4d575fc2cf5f5430d577ec9f364b9",
+    "c8e571da44c1b8320f90a0662378ea0331d24122",
+    "1dd6785644375c99e869944b1332ff80616366a2",
+    "60afabd44c404e93c3a98e67c20778a551390b85"
+  ],
+  "scope": "Minecraft 1.21.1; actual immutable installed published beta and previously native-194/194-qualified development production JAR; two real NeoForge dedicated-server processes; installed real TransferEngine.run with explicit Ref endpoints, vanilla barrel capability extraction/insertion, saved/reopened world and direct raw region-NBT inspection. No clients, dynamic live network topology or external providers tested.",
+  "sources": {
+    "published_beta": {
+      "tag": "v0.2b.0",
+      "immutable_tag_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+      "jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+      "exact_target": "1.21.1"
+    },
+    "candidate": {
+      "qualifying_native_source_commit": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+      "prior_native_run": 40785212711,
+      "prior_native_game_tests": "194/194",
+      "jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+      "not_rebuilt_this_session": true
+    }
+  },
+  "exact_native": {
+    "run_id": 40817349163,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40817349163",
+    "outcome": "COMPLETED_SUCCESS",
+    "control_source_commit": "60afabd44c404e93c3a98e67c20778a551390b85",
+    "candidate_previous_native_qualification": "PASS_194/194_AT_AA9B439_NOT_CURRENT_SOURCE",
+    "regression_tests": {
+      "status": "PASS",
+      "total": 75,
+      "batches": [
+        23,
+        12,
+        16,
+        9,
+        15
+      ]
+    },
+    "archive": {
+      "id": 12872604397,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40817349163/artifacts/12872604397",
+      "github_zip_sha256": "a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137",
+      "independently_rehashed": true,
+      "entries": 25,
+      "zip_crc": "PASS",
+      "bytes": 521659
+    },
+    "seed": {
+      "saved_world_files": 19,
+      "saved_world_zip_sha256": "c81e246828dee5868ef3f5e8ccfe1999645875111b93f4dfe06e2c7b41c2d7ce",
+      "world_fingerprint_sha256": "3425ccf37dd28410b56939897005e73468b4bce29b5484ca27fcc8331cd9e466",
+      "barrel_source_before": 1728,
+      "barrel_source_after": 1664,
+      "barrel_sink_before": 0,
+      "barrel_sink_after": 64,
+      "engine_delivered": 64,
+      "pending_item_escrow": 0
+    },
+    "restore": {
+      "saved_world_files": 22,
+      "saved_world_zip_sha256": "ca30bd521b4bca5897c417c5ca220eec2a696a39b6adaa07430350292774b010",
+      "world_fingerprint_sha256": "99585debafec78fd62935e69ca59d3505408761598c9d8710ce08a5a58ac8cc2",
+      "input_exact_copy_fingerprint_sha256": "3425ccf37dd28410b56939897005e73468b4bce29b5484ca27fcc8331cd9e466",
+      "barrel_source_before": 1664,
+      "barrel_source_after": 1600,
+      "barrel_sink_before": 64,
+      "barrel_sink_after": 128,
+      "engine_delivered": 64,
+      "pending_item_escrow": 0
+    },
+    "native_transfer_part_identities": {
+      "source": "e8547b0e-8eae-4f02-89aa-c1f2c361c053",
+      "sink": "d1dbd2ef-c855-4213-9f81-46ef4ee72abd",
+      "retained_across_binary_migration": true,
+      "identical_part_owner": "3d83227f-3df1-4c66-a188-a2f271bb86b3"
+    },
+    "persisted_multipart": {
+      "parts": 2,
+      "kinds": [
+        "INVENTORY_READER",
+        "DATA_CABLE"
+      ],
+      "uuids_unchanged": true,
+      "owner_unchanged": true,
+      "original_barrel_diamonds_unchanged": 128
+    },
+    "native_NBT": {
+      "independently_parsed": true,
+      "raw_source_sink_counts_match": true,
+      "verified_zero_escrow": true,
+      "identity_retained": true,
+      "result": "PASS_NATIVE_SAVED_NBT_MULTIPART_AND_EXPLICIT_REF_TRANSFER",
+      "seed_nested_zip_crc": "PASS",
+      "restore_nested_zip_crc": "PASS"
+    },
+    "live_transfer_total_conserved_items": 1728,
+    "release_publisher_run": 40817349194,
+    "publisher_status": "COMPLETED_SUCCESS_BUT_GITHUB_RELEASE_AND_CURSEFORGE_UPLOAD_STEPS_SKIPPED",
+    "source_verification_run": 40817349196,
+    "source_verification_status_at_checkpoint": "IN_PROGRESS_NOT_A_RELEASE_GATE"
+  },
+  "fixed_failure": {
+    "failed_strict_native_run": 40816881432,
+    "artifact_id": 12872647693,
+    "artifact_sha256": "6bb54973fc23dec27370db89ce9642fc647411a9901e53778756f2d10160dd43",
+    "cause": "The immutable published beta serializes no itemEscrowCount or itemTransferFault tags; the newer candidate writes zero/empty. Anvil validator originally demanded the new fields in both versions.",
+    "source_fix_commit": "1dd6785644375c99e869944b1332ff80616366a2",
+    "corrected_guard": "Legacy absence is permitted only when validating the seed beta and only as empty/zero; candidate remains required to write both modern tags. Nonzero escrow/fault continues to fail closed.",
+    "first_pass_after_fix": 40817133337,
+    "regression_commit": "60afabd44c404e93c3a98e67c20778a551390b85",
+    "extra_legacy_and_forgery_regressions": 6
+  },
+  "acceptance": {
+    "client_executed": false,
+    "two_installed_clients_tested": false,
+    "real_transfer_engine_tested": true,
+    "live_topology_discovery_tested": false,
+    "installed_optional_providers_tested": false,
+    "unloaded_alias_tested": false,
+    "arbitrary_user_world_tested": false,
+    "sustained_performance_tested": false,
+    "all_exact_target_rc_clearances": "0/24",
+    "rc_publication_cleared": false,
+    "new_github_rc_releases": 0,
+    "new_curseforge_uploads": 0
+  },
+  "next_steps": [
+    "Build an actual connected DATA_CABLE topology and assert automatic NetworkEngine tick routing under immutable published-beta/candidate binaries; manual explicit Ref endpoints do not prove cable discovery.",
+    "Run two genuine independent clients against installed beta and candidate binaries with authenticated item mutation, permission isolation, UI screenshots and saved-world migration.",
+    "Qualify installed external providers/unloaded/disconnected inventory aliases and sustained performance; extend independent exact-target acceptance to other 23 targets without relabeling artifacts.",
+    "Continue investigating old 1.6.4 natural gravel x=80 incident; do not treat intermittent passing runs as root-cause resolution."
+  ]
+}

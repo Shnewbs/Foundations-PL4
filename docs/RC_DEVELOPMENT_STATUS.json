@@ -554,6 +554,17 @@
         "artifact_zip_sha256": "bc40eaa44932587ff734ce52e21e3a68df8587f07a4ead3b15e8d60fc42e066a",
         "production_runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
         "scope": "GameTest development-source qualification only; docs checkpoint newer than tested source"
+      },
+      "latest_installed_binary_transfer": {
+        "evidence": "docs/acceptance/rc-dev-1211-installed-beta-candidate-live-item-transfer-2026-10-29.json",
+        "native_run": 40817349163,
+        "candidate_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+        "source_commit": "60afabd44c404e93c3a98e67c20778a551390b85",
+        "verified_live_item_transfer": true,
+        "explicit_ref_only": true,
+        "actual_clients": false,
+        "production_candidate_rebuilt": false,
+        "rc_publication_cleared": false
       }
     },
     {
@@ -1763,7 +1774,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T03:21:40Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact previously 194/194-native-qualified aa9b439 candidate world migration now persists TWO real PL4 parts (INVENTORY_READER east slot5, DATA_CABLE centre slot6), same owner and distinct unchanged part UUIDs in both real dedicated-server JVMs AND raw saved region NBT. Run40811316320 PASS; 62/62 policy regressions and 25-entry retained ZIP independently CRC/SHA checked, artifact12869549832 SHA256 fef32063287e88192efa89a3912b4caff900b464a6fd4f7d36f1b282302291b3. Both genuine JAR-only server jobs40811316287 PASS; build verification40811316244 PASS. Native beta source world19 files -> candidate22 files; exact baseline copy preserved, barrel128 diamonds each. No clients or actual network transfer in these tests, no installed optional providers, arbitrary worlds, sustained performance or RC clearance. All24 publication flags false; no new GitHub RC or CurseForge upload; development binaries unpublished.",
+  "latest_work": "2026-10-29T04:26:07.708Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact native-qualified aa9b439 development production JAR now transfers real items with installed TransferEngine.run on BOTH real NeoForge server lifecycles: beta 1728->1664 source and 0->64 sink; restored candidate 1664->1600 source and 64->128 sink. 1728 conserved per phase, zero escrow, source/sink UUIDs and configured Inventory Reader/Data Cable persisted in raw saved Anvil region NBT. Explicit NetworkEngine.Ref endpoint membership bypasses true topology; no actual clients/optional providers/arbitrary worlds/performance accepted. Exact controller source 60afabd44c404e93c3a98e67c20778a551390b85, successful installed run 40817349163, 75/75 policy tests, artifact 12872604397 ZIP sha256 a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137, 25/25 CRC-valid, two nested world ZIPs CRC valid. Preceding strict NBT failure 40816881432 traced to historical beta missing new zero escrow tags; source fix 1dd6785 and six adversarial tests passed. Prior candidate 194/194 native is a retained existing JAR; no new production JAR or release. Publisher run 40817349194 skipped both publishing steps. All 24 exact-target RC flags false, no GitHub RC/CurseForge upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3176,5 +3187,27 @@
       "new_curseforge_uploads": 0
     },
     "next_step": "Implement genuine installed-beta -> installed-candidate two-client world migration including actual node/controller route, item movement and identity/ownership conservation, plus installed provider and unloaded/disconnected aliases. Extend coverage to remaining exact versions without relabeling binary artifacts."
+  },
+  "latest_1211_installed_item_transfer": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-beta-candidate-live-item-transfer-2026-10-29.json",
+    "source_commit": "60afabd44c404e93c3a98e67c20778a551390b85",
+    "installed_native_run": 40817349163,
+    "regressions": "75/75",
+    "artifact_id": 12872604397,
+    "artifact_zip_sha256": "a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137",
+    "beta_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "candidate_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "verified_item_movement": "64 diamonds in each of two actual installed Java server phases",
+    "raw_persisted_nbt": true,
+    "source_jar_rebuilt_this_session": false,
+    "client_executed": false,
+    "network_topology_tested": false,
+    "rc_publication_cleared": false,
+    "remaining_acceptance": [
+      "Build an actual connected DATA_CABLE topology and assert automatic NetworkEngine tick routing under immutable published-beta/candidate binaries; manual explicit Ref endpoints do not prove cable discovery.",
+      "Run two genuine independent clients against installed beta and candidate binaries with authenticated item mutation, permission isolation, UI screenshots and saved-world migration.",
+      "Qualify installed external providers/unloaded/disconnected inventory aliases and sustained performance; extend independent exact-target acceptance to other 23 targets without relabeling artifacts.",
+      "Continue investigating old 1.6.4 natural gravel x=80 incident; do not treat intermittent passing runs as root-cause resolution."
+    ]
   }
 }
