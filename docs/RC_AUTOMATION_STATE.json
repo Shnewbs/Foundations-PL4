@@ -5,7 +5,15 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T1406Z",
+    "acquired_at": "2026-10-29T14:06:20.078Z",
+    "expires_at": "2026-10-29T14:30:20.078Z",
+    "source_branch": "main",
+    "head_at_acquisition": "8896f22f23a57f55185f8a86e39c2acf14abf4b4",
+    "purpose": "Exact-source PL4 1.21.1 installed provider callback/unloaded alias acceptance; 26.3 native evidence reconciliation",
+    "finite": true
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
