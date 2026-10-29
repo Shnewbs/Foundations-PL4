@@ -167,8 +167,11 @@ def prepare(checkout, jar, output, expected):
     shutil.copyfile(jar, installed)
     if digest(installed) != expected:
         raise ValueError("Installed copy does not match pinned input bytes")
+    # Vanilla rewrites server.properties/eula.txt during startup. They are
+    # runtime evidence, never immutable source inputs; check safety keys later.
     protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
-                 "gradle/wrapper/gradle-wrapper.properties", *entries]
+                 "gradle/wrapper/gradle-wrapper.properties",
+                 *(name for name in entries if not name.startswith("run/"))]
     files = {name: digest(output / name) for name in protected}
     manifest = {"schema": 1, "expected_jar_sha256": expected, "installed_name": jar.name,
                 "isolation": "Only standalone probe sources; PL4 production bytecode exclusively in run/mods",
@@ -186,6 +189,17 @@ def verify(output, log):
     files = manifest["files"]
     if not files or any(not (output / n).is_file() or digest(output / n) != sha for n, sha in files.items()):
         raise ValueError("Isolated probe project changed after installation preparation")
+    server_props = {}
+    for line in (output / "run/server.properties").read_text().splitlines():
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            server_props[key.strip()] = value.strip()
+    if any(server_props.get(key) != value for key, value in {
+            "server-ip": "127.0.0.1", "server-port": "25578",
+            "online-mode": "false", "max-players": "1"}.items()):
+        raise ValueError("Native runtime escaped isolated loopback/offline server configuration")
+    if "eula=true" not in (output / "run/eula.txt").read_text().splitlines():
+        raise ValueError("Native runtime lacks explicit disposable-server EULA")
     sources = sorted(p.relative_to(output).as_posix() for p in (output / "src/main/java").rglob("*.java"))
     if sources != [JAVA_REL]:
         raise ValueError("Runtime contains compiled-from-source PL4 classes or unexpected Java sources")
