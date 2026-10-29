@@ -189,7 +189,7 @@ public final class TransferEngine {
     private static int itemSpace(MinecraftServer server,ItemStack stack,List<NetworkEngine.Ref> sinks,NetworkEngine.Ref source,Budgets budgets,Set<PairKey> pairs){
         int remaining=stack.getCount();
         for(NetworkEngine.Ref sink:sinks){
-            if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!itemAllowed(stack,sink,true))continue;
+            if(remaining<=0)break;if(pairs.contains(pair(source,sink))||ItemTransferSafety.blocked(sink.part())||!itemAllowed(stack,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
             int offered=Math.min(remaining,budget);ItemStack send=stack.copyWithCount(offered);ItemStack rest=ItemHandlerHelper.insertItemStacked(to,send,true);remaining-=offered-ItemTransferSafety.remainder(send,rest);
@@ -199,7 +199,7 @@ public final class TransferEngine {
     private static void flushItem(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
         Part p=source.part();if(ItemTransferSafety.blocked(p))return;
         for(NetworkEngine.Ref sink:sinks){
-            if(p.pendingItem.isEmpty())break;if(pairs.contains(pair(source,sink))||!itemAllowed(p.pendingItem,sink,true))continue;
+            if(p.pendingItem.isEmpty())break;if(pairs.contains(pair(source,sink))||ItemTransferSafety.blocked(sink.part())||!itemAllowed(p.pendingItem,sink,true))continue;
             int budget=budgets.remaining(budgets.items,sink,PLConfig.ITEM_RATE.get());if(budget<=0)continue;
             IItemHandler to=itemHandler(server,sink);if(to==null)continue;
             int offered=Math.min(p.pendingItem.getCount(),budget);ItemStack send=p.pendingItem.copyWithCount(offered);ItemStack rest=ItemTransferSafety.insert(source,send,()->ItemHandlerHelper.insertItemStacked(to,send,false));int accepted=offered-rest.getCount();

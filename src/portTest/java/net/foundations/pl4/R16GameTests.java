@@ -56,6 +56,31 @@ public final class R16GameTests {
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void quarantinedPassiveItemEndpointNeverAcceptsDelivery(GameTestHelper h){
+        ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));
+        from.setItem(0,new ItemStack(Items.DIAMOND,13));
+        HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
+        HostEntity node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);
+        Part source=part(remove,Direction.WEST),sink=part(node,Direction.EAST);
+        source.transferMode=2;
+        var plan=TransferEngine.prepare(List.of(ref(remove,Direction.WEST),ref(node,Direction.EAST)));
+        sink.itemTransferFault="Uncertain external insertion; inspect provider";
+        TransferEngine.run(h.getLevel().getServer(),plan);
+        h.assertTrue(from.getItem(0).getCount()==13&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),
+            "Unresolved passive item endpoint must not receive new delivery or trigger extraction");
+        sink.itemTransferFault="";
+        sink.opaqueItemEscrow=new net.minecraft.nbt.CompoundTag();
+        TransferEngine.run(h.getLevel().getServer(),plan);
+        h.assertTrue(from.getItem(0).getCount()==13&&to.getItem(0).isEmpty()&&source.pendingItem.isEmpty(),
+            "Opaque saved item escrow cannot become a passive destination");
+        sink.opaqueItemEscrow=null;
+        TransferEngine.run(h.getLevel().getServer(),plan);
+        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==13&&source.pendingItem.isEmpty(),
+            "Explicitly restored healthy passive destination resumes the same cached plan");
+        h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fullPassiveDestinationDoesNotExtract(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));for(int i=0;i<to.getContainerSize();i++)to.setItem(i,new ItemStack(Items.COBBLESTONE,64));
         HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),node=host(h,new BlockPos(4,1,1),Kind.NODE,Direction.EAST);part(remove,Direction.WEST).transferMode=2;

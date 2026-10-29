@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 195,
+  "expected_native_tests": 196,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -49,8 +49,8 @@
   "measured_performance_acceptance": "PARTIAL_NATIVE_OPERATIONS_MEASURED_MIXED_RESULTS",
   "migration_acceptance": "PARTIAL_GENERATED_RELEASED_BETA_SOURCE_WORLD_UPGRADE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
-  "candidate_workflow_run": "40848203024",
+  "candidate_native_validation": "PENDING_NEW_EXACT_SOURCE_196_NATIVE_REGRESSION",
+  "candidate_workflow_run": "PENDING",
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
   "native_test_isolation": "PASS",
@@ -66,5 +66,7 @@
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
   },
-  "current_source_notes": "2026-10-29 physical cable owner-partition native pass 195/195 on source 1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5; output dev JAR SHA256 fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d. No RC clearance; newly built JAR not installed-provider or client accepted."
+  "current_source_notes": "2026-10-29 new passive item destination quarantine guard: reject faulted or opaque-escrow Node endpoints before both simulated capacity checks and real insertion. Added native regression for explicit fault, opaque escrow, then healthy resume; 196 GameTests required. Native/installed/client qualification pending exact new source; no RC clearance.",
+  "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+  "previous_candidate_workflow_run": "40848203024"
 }
