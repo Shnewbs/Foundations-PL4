@@ -13,7 +13,9 @@ permissions:
   contents: read
 concurrency:
   group: pl4-installed-beta-jar-native-smoke
-  cancel-in-progress: false
+  # This is isolated non-publishing acceptance; supersede earlier *probe-only*
+  # runs after source/test changes. Hourly pinned native builds remain separate.
+  cancel-in-progress: true
 jobs:
   installed_release_server:
     runs-on: ubuntu-latest
