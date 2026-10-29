@@ -1,0 +1,80 @@
+{
+  "date_utc": "2026-10-29T16:14:19.038Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_commit": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+  "workflow_control_source": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
+  "target": "1.21.1",
+  "change": "StorageNodes revalidates full cached host/part/owner/cable group and rebuilds once on stale network so legitimate local inventory remains while detached/foreign endpoints are denied",
+  "source_files": [
+    "src/main/java/net/foundations/pl4/NetworkEngine.java",
+    "src/portTest/java/net/foundations/pl4/R16GameTests.java"
+  ],
+  "native": {
+    "failed_predecessors": [
+      {
+        "id": 40908472995,
+        "source": "1e9f55fe00581034f67b03157226f3870833959c",
+        "result": "FAILED_1_OF_200_NETWORK_STORAGE_FOREIGN_ENDPOINT_LOCAL_SOURCE_DENIED"
+      },
+      {
+        "id": 40908844922,
+        "source": "0d2d752a5af285e229dab52fb8f2017e0c4fce2b",
+        "result": "FAILED_1_OF_200_SAME_TEST"
+      }
+    ],
+    "latest_run": 40909149431,
+    "status": "PASS native verification (inspect count before accepting)",
+    "exact_final_source_count_not_claimed": false
+  },
+  "previous_installed_exact_binary": {
+    "producer_native_source": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "producer_native_run": 40904509128,
+    "producer_native_result": "200/200 PASS",
+    "candidate_jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "installed_controller_source": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
+    "dedicated_run": 40905997944,
+    "dedicated_result": "PASS both immutable beta and candidate",
+    "two_client_run": 40905998001,
+    "two_client_result": "PASS genuine two offline clients each phase, 64+64 physical scheduled cable transfers, 60+60 severed ticks; conserved 1728 diamonds; saved NBT and nine UUIDs verified",
+    "two_client_artifact_id": 12911757138,
+    "two_client_artifact_sha256": "34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce",
+    "two_client_artifact_zip_entries": 46,
+    "limitations": [
+      "This exact 200-case candidate predates new alias fix",
+      "offline loopback, not authenticated multiplayer",
+      "Minecraft onboarding overlays partially obstruct UI screenshots",
+      "no third-party installed provider, unloaded chunk, arbitrary save or sustained perf acceptance"
+    ],
+    "rc_publication_cleared": false
+  },
+  "publisher": {
+    "run_id": 40909149205,
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "rc_clearance_flags_true": 0,
+    "rc_clearance_flags_total": 24,
+    "github_new_release_created": false,
+    "curseforge_new_upload_id": null,
+    "public_visibility_unverified": true
+  },
+  "remaining": [
+    "Latest source has not been binary-installed in two-client world",
+    "Native latest not yet evidenced by actual passing count at checkpoint",
+    "Actual third-party provider untested",
+    "Online authenticated clients, arbitrary-save migrations, unloaded aliases and sustained perf unaccepted",
+    "1.6.4 gravel x80 cause unresolved"
+  ],
+  "previous_successful_200_source_native": {
+    "source": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "run_id": 40904509128,
+    "result": "200/200",
+    "jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf"
+  },
+  "writer_lease_released": true,
+  "next_work": [
+    "Wait for and inspect 08dee987 exact-source native run 40909149431; if PASS verify retained artifact and hash then pin that production JAR separately for installed two-client and dedicated binary acceptance, preserving old 383c537 evidence and not relabeling JARs.",
+    "Install an actual third-party item capability provider mod and test callback-time unload, revoked owner, detached intermediate cable, stale cached storage UI session and real inventory/escrow saved NBT; no chunk force-loading.",
+    "Continue 23 other exact-version branch parity, branch-local publishing guard audit before any version update, 26.x installed provider profiles, historical 1.6.4 x80 gravel causality, authenticated multiplayer, arbitrary-world migrations and sustained performance.",
+    "Do not clear 24 RC clearance flags or publish development or snapshot artifacts; only explicit fully accepted exact-source immutable beta RC release with existing GitHub and CurseForge receipt paths."
+  ]
+}

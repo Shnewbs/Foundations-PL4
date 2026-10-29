@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261029T1604Z",
-    "acquired_at": "2026-10-29T16:03:59.283Z",
-    "expires_at": "2026-10-29T16:17:59.283Z",
-    "source_branch": "main",
-    "base_commit": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
-    "task": "Verify installed pinned 200-case JAR evidence; advance exact 1.21.1 unloaded provider alias/authorization acceptance with source tests; no release unless cleared"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
+  "current_checkpoint": "2026-10-29 16:14 UTC: 200-case development JAR 51e474f2... passed real installed dedicated-server and two-client beta->candidate upgrade on pinned pre-fix source 383c537; 40905997944 / 40905998001, client ZIP sha256 34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce. New main production hardening 08dee987 validates and rebuilds stale cached host/part/cable inventory membership before exposing alias; two preceding code versions 1e9f55f and 0d2d752 each failed 1/200 native networkstoragerevokesnewlyforeignendpoint by also denying legitimate local storage. Latest exact 08dee987 run 40909149431 PASS native verification (inspect count before accepting), not yet installed-tested; release job 40909149205 success, no new RC eligibility, 0/24 flags.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Install a real third-party provider mod in an isolated exact 1.21.1 server/client and test item capability reentrancy, late owner/host/chunk revocation, provider version, screenshots and native saved world inventory/escrow receipts. Native tests and installed vanilla chests do not qualify third-party providers.",
-    "Pin and execute the latest 200-case source/JAR (383c537, SHA-256 51e474f...) in installed server and two real client workflows separately from earlier 199-case evidence; audit disconnected/unloaded alias, stale registration after unload and replacement without chunk force-loading, preserving exact world hashes.",
-    "Continue independent exact-version work and publisher guard reviews for 26.3 and other 22 maintained targets; online authenticated multiplayer, arbitrary saved-world migration, sustained performance and historical 1.6.4 gravel x80 causality remain open.",
-    "Never clear exact-target RC publication flags or publish development snapshots. Publish only fully qualified exact-tag/source immutable RC with receipts through existing validated GitHub and CurseForge paths."
+    "Wait for and inspect 08dee987 exact-source native run 40909149431; if PASS verify retained artifact and hash then pin that production JAR separately for installed two-client and dedicated binary acceptance, preserving old 383c537 evidence and not relabeling JARs.",
+    "Install an actual third-party item capability provider mod and test callback-time unload, revoked owner, detached intermediate cable, stale cached storage UI session and real inventory/escrow saved NBT; no chunk force-loading.",
+    "Continue 23 other exact-version branch parity, branch-local publishing guard audit before any version update, 26.x installed provider profiles, historical 1.6.4 x80 gravel causality, authenticated multiplayer, arbitrary-world migrations and sustained performance.",
+    "Do not clear 24 RC clearance flags or publish development or snapshot artifacts; only explicit fully accepted exact-source immutable beta RC release with existing GitHub and CurseForge receipt paths."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -76,7 +69,7 @@
     "release_performed": false,
     "rc_clearance": "0/24"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-passive-item-quarantine-and-263-publisher-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-200-and-live-cached-alias-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -100,7 +93,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
+  "previous_checkpoint": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -895,7 +888,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
+  "latest_work": "2026-10-29 16:14 UTC: 200-case development JAR 51e474f2... passed real installed dedicated-server and two-client beta->candidate upgrade on pinned pre-fix source 383c537; 40905997944 / 40905998001, client ZIP sha256 34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce. New main production hardening 08dee987 validates and rebuilds stale cached host/part/cable inventory membership before exposing alias; two preceding code versions 1e9f55f and 0d2d752 each failed 1/200 native networkstoragerevokesnewlyforeignendpoint by also denying legitimate local storage. Latest exact 08dee987 run 40909149431 PASS native verification (inspect count before accepting), not yet installed-tested; release job 40909149205 success, no new RC eligibility, 0/24 flags.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1616,11 +1609,12 @@
     "rc_publication_cleared": false
   },
   "last_writer_lease_release": {
-    "owner": "pl4-chat-hourly-20261029T1542Z",
-    "released_at": "2026-10-29T15:50:36.867Z",
-    "source_branch": "main",
-    "checkpoint_parent": "383c5378457d06725b3597c6051e2cb4c51e4253",
-    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
+    "owner": "pl4-chat-hourly-20261029T1604Z",
+    "released_at": "2026-10-29T16:14:19.038Z",
+    "checkpoint_parent": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-200-and-live-cached-alias-2026-10-29.json",
+    "writer_lease_released": true,
+    "release_performed": false,
     "rc_clearance": "0/24"
   },
   "last_writer_release_previous_1211_scheduled": {
@@ -2056,11 +2050,13 @@
     "rc_publication_cleared": false
   },
   "last_completed_writer": {
-    "owner": "pl4-chat-hourly-20261029T1542Z",
-    "released_at": "2026-10-29T15:50:36.867Z",
-    "checkpoint_source_parent": "383c5378457d06725b3597c6051e2cb4c51e4253",
-    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
-    "writer_lease": "released"
+    "owner": "pl4-chat-hourly-20261029T1604Z",
+    "released_at": "2026-10-29T16:14:19.038Z",
+    "checkpoint_source_parent": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-200-and-live-cached-alias-2026-10-29.json",
+    "writer_lease": "released",
+    "release_performed": false,
+    "rc_clearance": "0/24"
   },
   "latest_1211_stale_registered_host_alias": {
     "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
@@ -2080,6 +2076,55 @@
     "artifact_zip_sha256": "edc7be92245297b2ca3d2f07370339f50c97ad5a1bc739ee80bb8c4ba098e8ad",
     "production_jar_sha256": "2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0",
     "installed_two_client": "PASS_SCOPED_199_CASE_BINARY_ONLY",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_cached_alias_authority": {
+    "source_commit": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+    "source_paths": [
+      "src/main/java/net/foundations/pl4/NetworkEngine.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java"
+    ],
+    "failure_runs": [
+      {
+        "id": 40908472995,
+        "source": "1e9f55fe00581034f67b03157226f3870833959c",
+        "result": "FAILED_1_OF_200_NETWORK_STORAGE_FOREIGN_ENDPOINT_LOCAL_SOURCE_DENIED"
+      },
+      {
+        "id": 40908844922,
+        "source": "0d2d752a5af285e229dab52fb8f2017e0c4fce2b",
+        "result": "FAILED_1_OF_200_SAME_TEST"
+      }
+    ],
+    "verification": {
+      "run_id": 40909149431,
+      "status": "PASS native verification (inspect count before accepting)",
+      "source": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+      "native_count_claim": "PENDING_EXACT_LOG_AT_CHECKPOINT"
+    },
+    "installed_on_current_source": false,
+    "release_eligible": false,
+    "rc_publication_cleared": false
+  },
+  "latest_1211_installed_200_case": {
+    "producer_native_source": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "producer_native_run": 40904509128,
+    "producer_native_result": "200/200 PASS",
+    "candidate_jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "installed_controller_source": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
+    "dedicated_run": 40905997944,
+    "dedicated_result": "PASS both immutable beta and candidate",
+    "two_client_run": 40905998001,
+    "two_client_result": "PASS genuine two offline clients each phase, 64+64 physical scheduled cable transfers, 60+60 severed ticks; conserved 1728 diamonds; saved NBT and nine UUIDs verified",
+    "two_client_artifact_id": 12911757138,
+    "two_client_artifact_sha256": "34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce",
+    "two_client_artifact_zip_entries": 46,
+    "limitations": [
+      "This exact 200-case candidate predates new alias fix",
+      "offline loopback, not authenticated multiplayer",
+      "Minecraft onboarding overlays partially obstruct UI screenshots",
+      "no third-party installed provider, unloaded chunk, arbitrary save or sustained perf acceptance"
+    ],
     "rc_publication_cleared": false
   }
 }

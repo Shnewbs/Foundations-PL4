@@ -1784,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
+  "latest_work": "2026-10-29 16:14 UTC: 200-case development JAR 51e474f2... passed real installed dedicated-server and two-client beta->candidate upgrade on pinned pre-fix source 383c537; 40905997944 / 40905998001, client ZIP sha256 34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce. New main production hardening 08dee987 validates and rebuilds stale cached host/part/cable inventory membership before exposing alias; two preceding code versions 1e9f55f and 0d2d752 each failed 1/200 native networkstoragerevokesnewlyforeignendpoint by also denying legitimate local storage. Latest exact 08dee987 run 40909149431 PASS native verification (inspect count before accepting), not yet installed-tested; release job 40909149205 success, no new RC eligibility, 0/24 flags.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3582,6 +3582,55 @@
     "previous_installed_199_run": 40901066957,
     "previous_installed_199_jar_sha256": "2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0",
     "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_cached_alias_authority": {
+    "source_commit": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+    "source_paths": [
+      "src/main/java/net/foundations/pl4/NetworkEngine.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java"
+    ],
+    "failure_runs": [
+      {
+        "id": 40908472995,
+        "source": "1e9f55fe00581034f67b03157226f3870833959c",
+        "result": "FAILED_1_OF_200_NETWORK_STORAGE_FOREIGN_ENDPOINT_LOCAL_SOURCE_DENIED"
+      },
+      {
+        "id": 40908844922,
+        "source": "0d2d752a5af285e229dab52fb8f2017e0c4fce2b",
+        "result": "FAILED_1_OF_200_SAME_TEST"
+      }
+    ],
+    "verification": {
+      "run_id": 40909149431,
+      "status": "PASS native verification (inspect count before accepting)",
+      "source": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+      "native_count_claim": "PENDING_EXACT_LOG_AT_CHECKPOINT"
+    },
+    "installed_on_current_source": false,
+    "release_eligible": false,
+    "rc_publication_cleared": false
+  },
+  "latest_1211_installed_200_case": {
+    "producer_native_source": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "producer_native_run": 40904509128,
+    "producer_native_result": "200/200 PASS",
+    "candidate_jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "installed_controller_source": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
+    "dedicated_run": 40905997944,
+    "dedicated_result": "PASS both immutable beta and candidate",
+    "two_client_run": 40905998001,
+    "two_client_result": "PASS genuine two offline clients each phase, 64+64 physical scheduled cable transfers, 60+60 severed ticks; conserved 1728 diamonds; saved NBT and nine UUIDs verified",
+    "two_client_artifact_id": 12911757138,
+    "two_client_artifact_sha256": "34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce",
+    "two_client_artifact_zip_entries": 46,
+    "limitations": [
+      "This exact 200-case candidate predates new alias fix",
+      "offline loopback, not authenticated multiplayer",
+      "Minecraft onboarding overlays partially obstruct UI screenshots",
+      "no third-party installed provider, unloaded chunk, arbitrary save or sustained perf acceptance"
+    ],
     "rc_publication_cleared": false
   }
 }
