@@ -9,6 +9,8 @@ import zipfile
 import exact_native_candidate as gate
 from installed_binary_smoke import digest
 
+digest_file = digest
+
 SOURCE = "a" * 40
 NAME = "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar"
 
@@ -44,6 +46,53 @@ class ExactNativeCandidateTests(unittest.TestCase):
             if extra:
                 for name, payload in extra:
                     z.writestr(name, payload)
+
+    def metadata(self, sha=SOURCE, digest=None, expired=False):
+        artifact_id = 12859271452
+        metadata = {
+            "id": artifact_id, "name": "verification-" + sha + "-1",
+            "expired": expired, "digest": "sha256:" + (digest or digest_file(self.artifact)),
+            "archive_download_url": "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/"
+                                    + str(artifact_id) + "/zip",
+            "workflow_run": {
+                "id": 40785212711, "repository_id": 1396808859,
+                "head_repository_id": 1396808859,
+                "head_branch": "main", "head_sha": sha
+            }
+        }
+        file = self.root / "authenticated-metadata.json"
+        file.write_text(json.dumps(metadata))
+        return file
+
+    def test_main_artifact_without_embedded_marker_accepts_authenticated_gitHub_source(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr(NAME, self.binary)
+        metadata = self.metadata()
+        proof = gate.extract(self.artifact, self.output, digest_file(self.artifact),
+                             SOURCE, self.jar_sha, metadata)
+        self.assertEqual(proof["artifact_github_metadata_id"], 12859271452)
+        self.assertEqual(proof["source_attestation"], "github-validated-artifact-metadata")
+
+    def test_main_artifact_without_source_and_without_metadata_is_rejected(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr(NAME, self.binary)
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_main_artifact_mismatched_metadata_source_rejected(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr(NAME, self.binary)
+        meta = self.metadata(sha="b" * 40)
+        with self.assertRaises(ValueError):
+            gate.extract(self.artifact, self.output, digest_file(self.artifact),
+                         SOURCE, self.jar_sha, meta)
+
+    def test_main_artifact_expired_metadata_rejected(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr(NAME, self.binary)
+        meta = self.metadata(expired=True)
+        with self.assertRaises(ValueError):
+            gate.extract(self.artifact, self.output, digest_file(self.artifact),
+                         SOURCE, self.jar_sha, meta)
 
     def extract(self, source=SOURCE):
         return gate.extract(self.artifact, self.output, digest(self.artifact), source, self.jar_sha)
