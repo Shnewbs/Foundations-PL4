@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T0802Z-integrated-cable-two-client",
+    "claimed_at": "2026-10-29T08:03:58.868Z",
+    "expires_at": "2026-10-29T08:29:58.868Z",
+    "base_commit": "279808f46a8b7299d4b84deb241691d5d5a5b16a",
+    "purpose": "Implement exact 1.21.1 installed-binary two-client plus scheduled cable transfer acceptance; finite guarded source edit run",
+    "renewals": 0
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
