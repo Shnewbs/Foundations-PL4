@@ -1,129 +1,31 @@
-name: Validate legacy display lighting and storage
+name: Audit retired 1.21.1 legacy-readers.yml workflow (read-only)
 on:
   push:
-    branches: [main]
+    branches: ['mc/1.21.1']
     paths: ['.github/workflows/legacy-readers.yml']
-  workflow_dispatch:
 permissions:
-  contents: write
-concurrency:
-  group: legacy-reader-development
-  cancel-in-progress: false
+  contents: read
 jobs:
-  protect_development:
+  audit-only:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Keep legacy development snapshots as private drafts
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          python3 - <<'PY'
-          import json,os,subprocess
-          repo=os.environ['GH_REPO']
-          releases=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases?per_page=100'],text=True))
-          for release in releases:
-              tag=release['tag_name']
-              if tag in {'mc1.12.2-v0.2.0-rc.1-dev','mc1.6.4-v0.2.0-rc.1-dev'} and not release['draft']:
-                  subprocess.run(['gh','api','--method','PATCH',f"repos/{repo}/releases/{release['id']}",'-F','draft=true'],check=True,stdout=subprocess.DEVNULL)
-                  print('Moved unqualified development snapshot to draft:',tag)
-          PY
-  native:
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        minecraft: ['1.12.2', '1.6.4']
-    steps:
       - uses: actions/checkout@v4
-        with:
-          ref: mc/${{ matrix.minecraft }}
-          fetch-depth: 0
-      - uses: actions/setup-java@v4
-        if: matrix.minecraft == '1.6.4'
-        with:
-          distribution: zulu
-          java-version: '7'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: |
-            8
-            21
-          cache: gradle
-      - name: Build and execute 156 installed native scenarios
-        env:
-          TARGET: ${{ matrix.minecraft }}
+      - name: Reject obsolete source rewrites and direct publication
         shell: bash
         run: |
-          set -euo pipefail
-          if [ "$TARGET" = '1.12.2' ]; then
-            export JAVA_HOME="$JAVA_HOME_8_X64"
-            export PATH="$JAVA_HOME/bin:$PATH"
-          fi
-          bash tools/validate_legacy_fluids.sh
-      - name: Boot packaged production JAR without test fixtures
-        env:
-          TARGET: ${{ matrix.minecraft }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ "$TARGET" = '1.12.2' ]; then
-            python3 tools/production_smoke_1122.py
-          else
-            python3 tools/production_smoke_164.py
-          fi
-      - name: Verify saved preview.3 world upgrade with exact packaged JARs
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 tools/verify_legacy_upgrade.py
-      - name: Record only passing exact-source native evidence
-        env:
-          TARGET_BRANCH: mc/${{ matrix.minecraft }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          parent=$(git rev-parse HEAD)
-          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
           python3 - <<'PY'
-          import json,os
           from pathlib import Path
-          status=json.loads(Path('BUILD_STATUS.json').read_text())
-          native=json.loads(Path('verification-logs/clean-native-summary.json').read_text())
-          smoke=json.loads(Path('verification-logs/production-smoke.json').read_text())
-          assert native['total']==native['passed']==status['expected_native_scenarios']==156
-          assert native['failed']==0 and native['runtime_sha256']==smoke['runtime_sha256']
-          assert smoke['production_only_startup']==smoke['clean_stop']=='PASS'
-          migration=json.loads(Path('verification-logs/legacy-migration-summary.json').read_text())
-          assert migration['generated_preview3_world_upgrade']=='PASS'
-          assert migration['candidate_runtime_sha256']==native['runtime_sha256']
-          status.update(generated_world_migration_acceptance='PASS_PREVIEW3_TO_CANDIDATE',migration_workflow_run=os.environ['GITHUB_RUN_ID'])
-          status.update(candidate_native_validation='PASS',candidate_workflow_run=os.environ['GITHUB_RUN_ID'],
-              candidate_source_commit=smoke['source_commit'],candidate_runtime_sha256=smoke['runtime_sha256'],
-              production_smoke='PASS_FOR_THIS_CANDIDATE',candidate_wireless_validation='PASS_36_NATIVE_HANDHELD_AND_CONTAINER_SCENARIOS',rc_publication_cleared=False)
-          Path('BUILD_STATUS.json').write_text(json.dumps(status,indent=2)+'\n')
+          source = Path('.github/workflows/legacy-readers.yml').read_text(encoding='utf-8')
+          declarations = source.split('jobs:', 1)[0]
+          assert "branches: ['mc/1.21.1']" in declarations
+          assert 'contents: read' in declarations
+          assert 'contents:' + ' write' not in declarations
+          assert 'workflow_' + 'dispatch:' not in declarations
+          assert 'workflow_' + 'run:' not in declarations
+          assert 'release:' not in declarations
+          for forbidden in ('secrets' + '.', 'gh' + ' release', 'git' + ' push', '--' + 'clobber', 'upload_' + 'curseforge.py', 'api.' + 'curseforge.com'):
+              assert forbidden not in source, forbidden
+          print('PASS: retired mc/1.21.1 legacy-readers.yml is read only; no source rewriting or publication.')
+          print('Use the main pinned hourly-builds.yml for exact native validation; RC publication requires explicit clearance.')
           PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add BUILD_STATUS.json
-          if ! git diff --cached --quiet; then
-            git commit -m 'Record passing legacy reader and display native gates; RC acceptance remains open'
-            git push origin "HEAD:$TARGET_BRANCH"
-          fi
-          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
-          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-          (cd verification-logs && sha256sum checked-source.zip > source-SHA256SUMS.txt)
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: UNRELEASED-legacy-readers-${{ matrix.minecraft }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            verification-logs/
-            run-legacy/legacy-scenarios.json
-            run-legacy/crash-reports/
-            build/libs/*.jar
-            build/reports/
-          retention-days: 14
-          if-no-files-found: warn

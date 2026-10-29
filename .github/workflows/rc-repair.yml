@@ -1,108 +1,31 @@
-name: Repair failed RC development port gates
+name: Audit retired 1.21.1 rc-repair.yml workflow (read-only)
 on:
-  workflow_run:
-    workflows: ['Align and validate all RC development ports']
-    types: [completed]
-  workflow_dispatch:
-    inputs:
-      run_id:
-        description: Native development run whose failed targets should be retried
-        required: true
-        type: string
+  push:
+    branches: ['mc/1.21.1']
+    paths: ['.github/workflows/rc-repair.yml']
 permissions:
-  contents: write
-  actions: read
-concurrency:
-  group: rc-development-repair
-  cancel-in-progress: false
+  contents: read
 jobs:
-  discover:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure'
+  audit-only:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.targets.outputs.matrix }}
-      count: ${{ steps.targets.outputs.count }}
+    timeout-minutes: 5
     steps:
-      - id: targets
-        env:
-          GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN: ${{ github.event.workflow_run.id || inputs.run_id }}
+      - uses: actions/checkout@v4
+      - name: Reject obsolete source rewrites and direct publication
         shell: bash
         run: |
           python3 - <<'PY'
-          import json, os, re, subprocess
-          repo=os.environ['GITHUB_REPOSITORY']; run=os.environ['SOURCE_RUN']
-          data=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{run}/jobs?per_page=100'],text=True))
-          rows=[]
-          for job in data['jobs']:
-              match=re.fullmatch(r'modern \(([^,]+), ([^,]+), (\d+)\)',job['name'])
-              if match and job['conclusion'] not in {'success','skipped'}:
-                  mc, branch, java=match.groups(); rows.append(dict(minecraft=mc,branch=branch,java=java))
-          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              out.write('matrix='+json.dumps({'include':rows})+'\ncount='+str(len(rows))+'\n')
-          print(json.dumps(rows,indent=2))
+          from pathlib import Path
+          source = Path('.github/workflows/rc-repair.yml').read_text(encoding='utf-8')
+          declarations = source.split('jobs:', 1)[0]
+          assert "branches: ['mc/1.21.1']" in declarations
+          assert 'contents: read' in declarations
+          assert 'contents:' + ' write' not in declarations
+          assert 'workflow_' + 'dispatch:' not in declarations
+          assert 'workflow_' + 'run:' not in declarations
+          assert 'release:' not in declarations
+          for forbidden in ('secrets' + '.', 'gh' + ' release', 'git' + ' push', '--' + 'clobber', 'upload_' + 'curseforge.py', 'api.' + 'curseforge.com'):
+              assert forbidden not in source, forbidden
+          print('PASS: retired mc/1.21.1 rc-repair.yml is read only; no source rewriting or publication.')
+          print('Use the main pinned hourly-builds.yml for exact native validation; RC publication requires explicit clearance.')
           PY
-  repair:
-    needs: discover
-    if: needs.discover.outputs.count != '0'
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      max-parallel: 6
-      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          path: control
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ matrix.branch }}
-          path: port
-          fetch-depth: 0
-      - uses: actions/setup-java@v4
-        if: matrix.java == '17'
-        with:
-          distribution: temurin
-          java-version: '8'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: ${{ matrix.java }}
-          cache: gradle
-          cache-dependency-path: port/**/*.gradle*
-      - name: Prepare complete reviewed development baseline
-        run: python3 control/tools/ports/prepare_rc_candidate.py port '${{ matrix.minecraft }}'
-      - name: Validate using exact-target native harness
-        run: python3 control/tools/ports/validate_rc_candidate.py port
-      - name: Save only independently passing source
-        working-directory: port
-        env:
-          TARGET_BRANCH: ${{ matrix.branch }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          parent=$(git rev-parse HEAD)
-          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$parent"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/main/java/net/foundations/pl4/core/TransferRules.java tools/R16RegressionTests.java src/main/java/net/foundations/pl4/NetworkEngine.java src/main/java/net/foundations/pl4/TransferEngine.java src/main/java/net/foundations/pl4/client/WirelessStorageScreen.java src/main/resources/assets/foundations_pl4/guide/en_us.json docs/FIELD_GUIDE.md build.gradle BUILD_STATUS.json release-version.txt docs/releases/0.2.0-rc.1-dev.md .github/workflows/
-          git commit -m 'Validate RC development baseline with the correct isolated native harness'
-          git push origin "HEAD:$TARGET_BRANCH"
-          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
-          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-          (cd verification-logs && sha256sum checked-source.zip > source-SHA256SUMS.txt)
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: UNRELEASED-RC-development-${{ matrix.minecraft }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            port/verification-logs/
-            port/build/libs/*.jar
-            port/build/reports/
-            port/build/test-results/
-            port/run/logs/
-            port/run/crash-reports/
-          retention-days: 14
-          if-no-files-found: warn
