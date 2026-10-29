@@ -15,6 +15,8 @@ on:
       - 'tools/multiplayer-probe/verify_upgrade_evidence.py'
       - 'tools/multiplayer-probe/verify_native_multipart_nbt.py'
       - 'tools/multiplayer-probe/test_verify_native_multipart_nbt.py'
+      - 'tools/multiplayer-probe/verify_installed_client_nbt.py'
+      - 'tools/multiplayer-probe/test_verify_installed_client_nbt.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -46,6 +48,7 @@ jobs:
         run: |
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_two_clients.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_native_multipart_nbt.py'
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_installed_client_nbt.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_smoke.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_release_binary_preflight.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_exact_native_candidate.py'
@@ -98,6 +101,8 @@ jobs:
       - name: Independently verify native client screenshots, permissions, inventories and saved world
         run: |
           python3 control/tools/multiplayer-probe/installed_binary_two_clients.py verify \
+            --seed binary-clients/seed --restore binary-clients/restore
+          python3 control/tools/multiplayer-probe/verify_installed_client_nbt.py \
             --seed binary-clients/seed --restore binary-clients/restore
       - name: Retain original and candidate native-world receipts even on failure
         if: always()
