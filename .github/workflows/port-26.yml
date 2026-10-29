@@ -26,7 +26,7 @@ jobs:
           assert 'contents:' + ' write' not in declaration
           assert 'workflow_' + 'dispatch:' not in declaration
           assert 'branches:' + " ['mc/26.3']" not in declaration
-          assert 'runGameTestServer' not in source
+          assert 'run' + 'GameTestServer' not in source
           assert 'gh' + ' release' not in source
           assert 'secrets' + '.' not in source
           print('PASS: obsolete branch-local 26.3 native workflow cannot misattribute 26.1.2 outputs.')
