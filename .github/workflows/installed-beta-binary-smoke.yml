@@ -11,6 +11,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  # The installed-candidate gate reads a retained successful native artifact.
+  actions: read
 concurrency:
   group: pl4-installed-beta-jar-native-smoke
   # This is isolated non-publishing acceptance; supersede earlier *probe-only*
