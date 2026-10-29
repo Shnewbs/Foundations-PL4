@@ -179,17 +179,23 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
 
-    def test_wrong_owner_and_slot_fail_closed(self):
-        for field, value in (("owner", "00000000-0000-4000-8000-000000000000"), ("slot", 12)):
-            with self.subTest(field=field):
-                self.pair()
-                path = self.restore / "installed-world-proof.json"
-                proof = json.loads(path.read_text())
-                proof["parts"][0][field] = value
-                path.write_text(json.dumps(proof))
-                with self.assertRaises(ValueError):
-                    gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
-                self.phase(self.restore, "restore", self.candidate, self.candidate_sha, self.seed)
+    def test_wrong_owner_fails_closed(self):
+        self.pair()
+        path = self.restore / "installed-world-proof.json"
+        proof = json.loads(path.read_text())
+        proof["parts"][0]["owner"] = "00000000-0000-4000-8000-000000000000"
+        path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_wrong_slot_fails_closed(self):
+        self.pair()
+        path = self.restore / "installed-world-proof.json"
+        proof = json.loads(path.read_text())
+        proof["parts"][0]["slot"] = 12
+        path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
 
 
 if __name__ == "__main__":
