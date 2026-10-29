@@ -2,9 +2,12 @@ name: Forge 1.13.2 native port investigation
 on:
   push:
     branches: [mc/1.13.2]
+    paths-ignore:
+      - '.github/workflows/**'
+      - 'tools/test_publisher_policy_1132.py'
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: forge1132-port
   cancel-in-progress: false
@@ -16,30 +19,23 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Preserve exact immutable checked-out source (no transforms or pushes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/checked-source.zip "$GITHUB_SHA"
+          printf '%s\n' "$GITHUB_SHA" > verification-logs/SOURCE_COMMIT.txt
+          sha256sum verification-logs/checked-source.zip > verification-logs/SOURCE_ARCHIVE_SHA256SUMS.txt
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: |
             8
             17
-      - name: Prepare exact native source and save revision
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 tools/prepare_1132.py
-          python3 tools/backport_1132_mcp_names.py
-          git diff --check
-          git add src tools/java8 tools/run_port_checks.py build.gradle BUILD_STATUS.json PORT_TARGET.json README.md docs/releases/0.2a-port.1.md
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m "Prepare exact 1.13.2 Forge25 native feature source"
-            git push origin HEAD:mc/1.13.2
-          fi
-          mkdir -p verification-logs
-          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
-      - name: Compile and verify target sources (no release on failed gate)
+      - name: Compile and verify exact Forge25 source (no release on failure)
         shell: bash
         run: |
           set -euo pipefail
@@ -50,18 +46,31 @@ jobs:
           set -euo pipefail
           python3 tools/java8/runtime.py native 2>&1 | tee verification-logs/native.log
           python3 - <<'PY'
-          import json,pathlib
-          r=json.loads(pathlib.Path('verification-logs/port-scenarios.json').read_text())
-          assert r['minecraft']=='1.13.2' and r['total']==194 and r['passed']==194 and r['failed']==0,r
+          import json, pathlib
+          report=json.loads(pathlib.Path('verification-logs/port-scenarios.json').read_text())
+          assert report['minecraft']=='1.13.2' and report['total']==194 and report['passed']==194 and report['failed']==0, report
           print('PASS 194 native Forge25 scenarios')
           PY
-      - name: Preserve exact sources and diagnostics, without publishing unverified binaries
+      - name: Preserve actual produced JAR and log hashes (even on failure)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification-logs
+          if test -d build/libs; then
+            find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 -r sha256sum > verification-logs/JAR_SHA256SUMS.txt
+          fi
+          for log in verification-logs/build.log verification-logs/native.log verification-logs/port-scenarios.json; do
+            if test -f "$log"; then sha256sum "$log"; fi
+          done > verification-logs/LOG_SHA256SUMS.txt
+      - name: Preserve exact sources and diagnostics without publishing unverified binaries
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: forge1132-native-evidence
           path: |
             verification-logs/
+            build/libs/*.jar
             build/java8/*.json
             build/reports/
             run-java8/port-scenarios.json
