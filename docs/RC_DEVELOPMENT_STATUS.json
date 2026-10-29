@@ -1784,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 16:14 UTC: 200-case development JAR 51e474f2... passed real installed dedicated-server and two-client beta->candidate upgrade on pinned pre-fix source 383c537; 40905997944 / 40905998001, client ZIP sha256 34fb204098f1247bf50d7011c9de07216d8e694e6fa95edf50c17aaf9f9170ce. New main production hardening 08dee987 validates and rebuilds stale cached host/part/cable inventory membership before exposing alias; two preceding code versions 1e9f55f and 0d2d752 each failed 1/200 native networkstoragerevokesnewlyforeignendpoint by also denying legitimate local storage. Latest exact 08dee987 run 40909149431 PASS native verification (inspect count before accepting), not yet installed-tested; release job 40909149205 success, no new RC eligibility, 0/24 flags.",
+  "latest_work": "2026-10-29 16:24 UTC: Native 200/200 on exact 1.21.1 source 08dee98707765be3a8fbe44150c8bbf39cabd5cf, run 40909149431; production JAR SHA-256 ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b (883 CRC valid entries); native artifact ZIP SHA-256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069. Installed exact production binary dedicated run 40909886467 passed both immutable beta and candidate. Real two-client installed beta->exact candidate world migration 40910091169 passed, 2 offline graphical clients each phase, seven-centre cable, 64+64 automatic diamonds, 60+60 severed ticks, 1,728 conserved and zero escrow with 9 UUIDs and native saved-world NBT preserved; retained archive 12914370394 SHA-256 4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7 (46/46 ZIP CRC). Initial workflow pin 40909886723 failed two stale controller test constants before native phase; repaired in 9111e5a and rerun passed. 0/24 RC cleared, both publisher steps skipped, no new GitHub/CurseForge release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3604,13 +3604,17 @@
     ],
     "verification": {
       "run_id": 40909149431,
-      "status": "PASS native verification (inspect count before accepting)",
+      "status": "PASS_200_OF_200_NATIVE",
       "source": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
-      "native_count_claim": "PENDING_EXACT_LOG_AT_CHECKPOINT"
+      "artifact_id": 12912977020,
+      "jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+      "artifact_zip_sha256": "1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069"
     },
-    "installed_on_current_source": false,
+    "installed_on_current_source": true,
     "release_eligible": false,
-    "rc_publication_cleared": false
+    "rc_publication_cleared": false,
+    "installed_server_run": 40909886467,
+    "installed_two_client_run": 40910091169
   },
   "latest_1211_installed_200_case": {
     "producer_native_source": "383c5378457d06725b3597c6051e2cb4c51e4253",
@@ -3630,6 +3634,131 @@
       "offline loopback, not authenticated multiplayer",
       "Minecraft onboarding overlays partially obstruct UI screenshots",
       "no third-party installed provider, unloaded chunk, arbitrary save or sustained perf acceptance"
+    ],
+    "rc_publication_cleared": false
+  },
+  "latest_1211_cached_storage_installed": {
+    "date_utc": "2026-10-29T16:24:29.390Z",
+    "target": "1.21.1",
+    "repository": "Shnewbs/Foundations-PL4",
+    "implementation": {
+      "source_commit": "08dee98707765be3a8fbe44150c8bbf39cabd5cf",
+      "path": "src/main/java/net/foundations/pl4/NetworkEngine.java",
+      "change": "Cache admission validates live host block-entity identity, full group part attachment, owner and intermediate cables; rebuilds stale network once to retain authorized local inventory while denying newly detached/foreign remote inventory alias",
+      "native_tests_extended": [
+        "staleLoadedHostCannotReenterAReplacedInventoryAlias",
+        "physicalCableRejectsForeignOwnerAfterLiveTransfer"
+      ],
+      "intermediate_failed_native": [
+        {
+          "source": "1e9f55fe00581034f67b03157226f3870833959c",
+          "run": 40908472995,
+          "reason": "1 of 200 failed; revoked foreign endpoint incorrectly hid authorized local storage"
+        },
+        {
+          "source": "0d2d752a5af285e229dab52fb8f2017e0c4fce2b",
+          "run": 40908844922,
+          "reason": "same 1 of 200 failure; recovered local endpoint after rebuild in final source"
+        }
+      ]
+    },
+    "native": {
+      "run": 40909149431,
+      "result": "PASS_200_OF_200_NATIVE",
+      "artifact_id": 12912977020,
+      "artifact_sha256": "1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069",
+      "native_log_sha256": "2258ba189cfdd0eaadf81411adc3e6b68ea48c625fd64510cc02ac0b9f64a4e4",
+      "production_jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+      "production_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+      "production_entries_crc_ok": 883,
+      "artifact_entries_crc_ok": 6,
+      "metadata": {
+        "minecraft": "1.21.1",
+        "neoforge": "[21.1.250,21.2)",
+        "channel": "development"
+      },
+      "alternate_verify_workflow_run": 40910091032
+    },
+    "installed_dedicated": {
+      "run": 40909886467,
+      "workflow_source": "a4c63dd334f40ffe22ce1bceef73ed51faf24839",
+      "result": "PASS both installed immutable-beta and exact candidate server",
+      "candidate_artifact_id": 12912563694,
+      "candidate_artifact_sha256": "506d9425a990271d08174e0a3145e741ace2a2f6742398e809e1db7f1c9c3a62",
+      "beta_artifact_id": 12912214309,
+      "beta_artifact_sha256": "b3a36db76f7ee5a9b76905e89e298769119b7fa0b43258b1af8e21a6d5fb0ced",
+      "candidate_native_source": "08dee98707765be3a8fbe44150c8bbf39cabd5cf"
+    },
+    "installed_two_client": {
+      "run": 40910091169,
+      "workflow_source": "9111e5a454b1a0f309e3f9ab335014245b3ed193",
+      "result": "PASS_SCOPED_OFFLINE_TWO_GUI_CLIENTS_PER_PHASE",
+      "artifact_id": 12914370394,
+      "artifact_zip_sha256": "4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7",
+      "outer_zip_entries_crc_ok": 46,
+      "seed_world_sha256": "0d39dfda3729978f77710d926b5313f85c6934f82c7d807e67ee1ce0ee7da119",
+      "seed_archive_files_crc_ok": 26,
+      "restore_world_sha256": "18579ed1c047404b53d4bf53f48af5cc8e12e89358a188128aa808ced0d54678",
+      "restore_archive_files_crc_ok": 30,
+      "published_beta_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+      "candidate_jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+      "real_clients_each_phase": 2,
+      "screenshots": {
+        "count": 4,
+        "size": "960x720",
+        "visual_review": "Wireless Storage visible, some UI controls obscured by Minecraft first-run/onboarding overlays"
+      },
+      "native_cable_centres": 7,
+      "owned_endpoints": 2,
+      "severed_ticks_each_phase": 60,
+      "automatic_transfer_each_phase": 64,
+      "seed_inventory": {
+        "source_diamonds": 1664,
+        "sink_diamonds": 64,
+        "total_diamonds": 1728
+      },
+      "restore_inventory": {
+        "source_diamonds": 1600,
+        "sink_diamonds": 128,
+        "total_diamonds": 1728
+      },
+      "pending_escrow": 0,
+      "original_nine_cable_endpoint_uuids_preserved": true,
+      "playerdata": {
+        "saved_diamonds_each": [
+          17,
+          17
+        ],
+        "barrel_diamonds": 94,
+        "conserved_total": 128
+      },
+      "independent_raw_region_nbt_proof": "PASS"
+    },
+    "prior_workflow_failure": {
+      "run": 40909886723,
+      "reason": "Two client policy regression still asserted previous 383c537 source and 12909794155 artifact after workflow pins updated; failed BEFORE installed runtime",
+      "repair_commit": "9111e5a454b1a0f309e3f9ab335014245b3ed193",
+      "repair": "Controller constants/provenance test now match exact native source/JAR/artifact; passing run 40910091169"
+    },
+    "publisher": {
+      "run": 40910091020,
+      "github_release_step": "SKIPPED",
+      "curseforge_upload_step": "SKIPPED",
+      "new_github_release_url": null,
+      "new_curseforge_upload_id": null,
+      "curseforge_public_visibility_verified": false,
+      "rc_clearance_true": 0,
+      "total_targets": 24
+    },
+    "limitations": [
+      "Actual installed optional third-party provider callback/reentrancy not tested",
+      "Not authenticated online Minecraft multiplayer",
+      "Generic copied-save migration and unknown provider/journal recovery not accepted",
+      "Unloaded inventory aliases and reentrant chunk-load under installed provider not accepted",
+      "No sustained-performance benchmark",
+      "Remaining 23 exact version tracks require their own acceptance",
+      "1.6.4 historical gravel x80 root cause unknown",
+      "New visual screenshots contain first-run overlays"
     ],
     "rc_publication_cleared": false
   }
