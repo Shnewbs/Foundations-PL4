@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T1003Z-installed-client-native-loader",
+    "claimed_at": "2026-10-29T10:03:26Z",
+    "expires_at": "2026-10-29T10:33:26Z",
+    "purpose": "Finite main-only isolated installed binary client native-library triage and exact 1.21.1 development-JAR acceptance; no RC clearance",
+    "expected_parent": "a0250c66a5f15c969eba5351492bc50a01258592",
+    "scope": "main; no mc/<exact-version> changes"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
