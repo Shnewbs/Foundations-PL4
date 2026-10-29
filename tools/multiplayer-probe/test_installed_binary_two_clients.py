@@ -33,6 +33,22 @@ class InstalledTwoClientPolicy(unittest.TestCase):
         self.assertNotIn("implementation project(", build)
         self.assertNotIn("net.foundations.pl4.src", build)
 
+    def test_split_package_native_module_failure_is_prevented(self):
+        # First real server failure (40834122264): ModLauncher refused the
+        # PL4 package being exported by BOTH the installed JAR and probe mod.
+        self.assertTrue(gate.SERVER_REL.startswith("src/main/java/net/foundations/pl4probe/"))
+        self.assertTrue(gate.CLIENT_REL.startswith("src/main/java/net/foundations/pl4probe/"))
+        self.assertNotEqual(gate.SERVER_REL.split("/MultiplayerServerProbe.java")[0],
+                            "src/main/java/net/foundations/pl4")
+        self.assertNotIn("package net.foundations.pl4;", gate.ENTRY)
+
+    def test_part_kind_constructed_from_installed_jar(self):
+        import inspect
+        source = inspect.getsource(gate._prepare)
+        self.assertIn('Class.forName(\\"net.foundations.pl4.Kind\\")', source)
+        self.assertIn('installedPart(\\"NODE\\",Direction.EAST', source)
+        self.assertIn('installedPart(\\"DATA_CABLE\\",Direction.DOWN', source)
+
     def test_server_only_binds_loopback(self):
         build = gate.build_file("server", "FoundationsPL4-1.21.1-0.2b.0.jar")
         self.assertIn("server { server()", build)

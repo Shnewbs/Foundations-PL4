@@ -22,8 +22,8 @@ from verify_upgrade_evidence import (
     NAMES, FILES, digest, snapshot_world, world_fingerprint, zip_world_fingerprint,
 )
 
-SERVER_REL = "src/main/java/net/foundations/pl4/MultiplayerServerProbe.java"
-CLIENT_REL = "src/main/java/net/foundations/pl4/client/MultiplayerClientProbe.java"
+SERVER_REL = "src/main/java/net/foundations/pl4probe/MultiplayerServerProbe.java"
+CLIENT_REL = "src/main/java/net/foundations/pl4probe/client/MultiplayerClientProbe.java"
 ENTRY_REL = "src/main/java/net/foundations/pl4probe/InstalledTwoClientProbe.java"
 SOURCE_FILES = (SERVER_REL, CLIENT_REL, ENTRY_REL)
 TAG = "PL4_INSTALLED_TWO_CLIENT_SERVER_READY:"
@@ -128,18 +128,50 @@ def _prepare(checkout, jar, output, phase, source, jar_sha, copy_from=None):
             "org.gradle.parallel=false\norg.gradle.workers.max=1\n"
         )
         (root / "build.gradle").write_text(build_file(name, jar.name))
-        src = root / "src/main/java/net/foundations/pl4"
+        src = root / "src/main/java/net/foundations/pl4probe"
         (src / "client").mkdir(parents=True)
         server_java = (fixture / "MultiplayerServerProbe.java").read_text().replace(
+            "package net.foundations.pl4;",
+            "package net.foundations.pl4probe;\nimport net.foundations.pl4.*;"
+        ).replace(
             "@EventBusSubscriber(modid=FoundationsPL4.ID",
             '@EventBusSubscriber(modid="pl4_binary_probe"'
         )
         client_java = (fixture / "MultiplayerClientProbe.java").read_text().replace(
+            "package net.foundations.pl4.client;",
+            "package net.foundations.pl4probe.client;\nimport net.foundations.pl4.*;"
+        ).replace(
             "@EventBusSubscriber(modid=FoundationsPL4.ID",
             '@EventBusSubscriber(modid="pl4_binary_probe"'
         )
         if 'modid="pl4_binary_probe"' not in server_java or 'modid="pl4_binary_probe"' not in client_java:
             raise ValueError("Could not bind both actual-client probes to isolated probe mod")
+        # A separate probe module MUST NOT declare the installed PL4 Java package.
+        # Construct public Part through the loaded installed JAR's Kind enum by
+        # reflection; Kind is intentionally package-private production API.
+        server_java = server_java.replace(
+            "new Part(Kind.NODE,Direction.EAST,uuid(\"PL4ProbeA\"))",
+            'installedPart("NODE",Direction.EAST,uuid("PL4ProbeA"))'
+        ).replace(
+            "new Part(Kind.DATA_CABLE,Direction.DOWN,node.owner)",
+            'installedPart("DATA_CABLE",Direction.DOWN,node.owner)'
+        ).replace(
+            "public final class MultiplayerServerProbe {",
+            """public final class MultiplayerServerProbe {
+    private static Part installedPart(String id, Direction face, UUID owner) {
+        try {
+            Class<?> kind = Class.forName("net.foundations.pl4.Kind");
+            Object selected = java.util.Arrays.stream(kind.getEnumConstants())
+                .filter(value -> ((Enum<?>) value).name().equals(id))
+                .findFirst().orElseThrow();
+            return (Part) Part.class.getConstructor(kind, Direction.class, UUID.class)
+                .newInstance(selected, face, owner);
+        } catch (ReflectiveOperationException ex) {
+            throw new IllegalStateException("Installed PL4 native part construction unavailable", ex);
+        }
+    }
+"""
+        )
         server_java = server_java.replace(
             "var level=event.getServer().overworld();",
             'if (!net.neoforged.fml.ModList.get().isLoaded("foundations_pl4")) '
@@ -348,7 +380,7 @@ def run_phase(checkout, jar, output, phase, source, jar_sha, seed=None, timeout=
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             if server.poll() is not None:
-                raise RuntimeError("Actual installed server stopped before two clients connected")
+                raise RuntimeError("Actual installed server stopped before two clients connected; native log tail: " + (output / "server.log").read_text(errors="replace")[-12000:])
             if TAG + jar_sha in (output / "server.log").read_text(errors="replace"):
                 break
             time.sleep(2)
