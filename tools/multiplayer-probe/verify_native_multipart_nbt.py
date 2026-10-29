@@ -203,7 +203,73 @@ def inspect_transfer_entities(targets, expected, allow_legacy_missing=False):
             "item_total": 1728, "item_escrow": 0}
 
 
-def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False):
+
+# Seven genuinely placed cable centres and two attached passive transfer ports.
+# All cells are in origin Anvil chunk 0,0; never inspect a manufactured JSON row
+# in place of the saved region data.
+CABLE_CELLS = ((0, 80, 5), (0, 80, 6), (1, 80, 6),
+               (2, 80, 6), (3, 80, 6), (4, 80, 6), (4, 80, 5))
+
+
+def inspect_connected_cables(targets, expected):
+    """Independently require nine exact installed-parts in native saved NBT."""
+    if not isinstance(expected, dict):
+        raise ValueError("Native installed DATA_CABLE topology proof is missing")
+    cable_ids = expected.get("cable_identities")
+    if not isinstance(cable_ids, list) or len(cable_ids) != len(CABLE_CELLS):
+        raise ValueError("Native DATA_CABLE proof needs seven distinct part UUIDs")
+    observed = []
+    identities = set()
+    for index, position in enumerate(CABLE_CELLS):
+        host = targets.get(position)
+        if (not isinstance(host, dict) or host.get("id") != "foundations_pl4:host"
+                or host.get("schema") != 2):
+            raise ValueError("Missing actual serialized native DATA_CABLE host: " + str(position))
+        parts = host.get("parts")
+        endpoint_index = 0 if index == 0 else 1 if index == len(CABLE_CELLS) - 1 else None
+        expected_count = 2 if endpoint_index is not None else 1
+        if not isinstance(parts, list) or len(parts) != expected_count:
+            raise ValueError("Invalid physical cable centre/endpoint multipart count")
+        cables = [p for p in parts if isinstance(p, dict) and p.get("kind") == "datacable"]
+        if len(cables) != 1:
+            raise ValueError("Missing or ambiguous serialized native DATA_CABLE")
+        cable = cables[0]
+        if (type(cable.get("face")) is not int or cable["face"] != 0
+                or type(cable.get("blockedFaces")) is not int or cable["blockedFaces"] != 0
+                or uuid_int_array(cable.get("owner")) != PART_OWNER):
+            raise ValueError("Native saved cable face/owner/arm-disabled mismatch")
+        identity = uuid_int_array(cable.get("identity"))
+        if identity != cable_ids[index] or identity in identities:
+            raise ValueError("Native DATA_CABLE part UUID differs from installed proof")
+        identities.add(identity)
+        if endpoint_index is not None:
+            endpoints = [p for p in parts if isinstance(p, dict)
+                         and p.get("kind") == "transfernode"]
+            if len(endpoints) != 1:
+                raise ValueError("Missing passive installed transfer-node endpoint")
+            endpoint = endpoints[0]
+            expected_id = expected.get("source_identity" if endpoint_index == 0 else "sink_identity")
+            if (type(endpoint.get("face")) is not int or endpoint["face"] != 5
+                    or type(endpoint.get("transferMode")) is not int or endpoint["transferMode"] != 0
+                    or any(endpoint.get(k) != 0 for k in ("items", "fluids", "energy"))
+                    or uuid_int_array(endpoint.get("owner")) != PART_OWNER):
+                raise ValueError("Saved native topology endpoint is not passive/owned")
+            endpoint_id = uuid_int_array(endpoint.get("identity"))
+            if endpoint_id != expected_id or endpoint_id in identities:
+                raise ValueError("Native topology endpoint UUID was replaced or reused")
+            identities.add(endpoint_id)
+        observed.append({"position": list(position), "cable_identity": identity,
+                         "has_endpoint": endpoint_index is not None})
+    if len(identities) != 9:
+        raise ValueError("Native saved DATA_CABLE graph has missing/repeated identities")
+    return {"cable_count": len(CABLE_CELLS), "endpoint_count": 2,
+            "cable_identities": cable_ids,
+            "source_identity": expected["source_identity"],
+            "sink_identity": expected["sink_identity"],
+            "native_cells": observed}
+
+
+def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False, expected_topology=None):
     entities = chunk.get("block_entities")
     if not isinstance(entities, list):
         raise ValueError("Native chunk has no block_entities list")
@@ -213,7 +279,7 @@ def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False):
             raise ValueError("Malformed native block entity compound")
         xyz = tuple(entity.get(k) for k in ("x", "y", "z"))
         if xyz in ((0, 80, 0), (1, 80, 0), (0, 80, 2),
-                    (1, 80, 2), (4, 80, 2), (5, 80, 2)):
+                    (1, 80, 2), (4, 80, 2), (5, 80, 2)) + CABLE_CELLS:
             if xyz in targets:
                 raise ValueError("Duplicate native fixture block entity position")
             targets[xyz] = entity
@@ -275,6 +341,8 @@ def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False):
     if expected_transfer is not None:
         result["transfer_nbt"] = inspect_transfer_entities(
             targets, expected_transfer, allow_legacy_missing=allow_legacy_missing)
+    if expected_topology is not None:
+        result["topology_nbt"] = inspect_connected_cables(targets, expected_topology)
     return result
 
 
@@ -289,7 +357,8 @@ def inspect_archive(phase_dir, phase, expected_sha):
             raise ValueError("Missing, duplicate or corrupt native region archive")
         data = z.read(REGION)
     observed = inspect_chunk(decode_region(data), expected_transfer=proof["transfer"],
-                             allow_legacy_missing=(phase == "seed"))
+                             allow_legacy_missing=(phase == "seed"),
+                             expected_topology=proof["topology"])
     if observed["parts"] != proof["parts"] or observed["barrel_diamonds"] != proof["barrel_diamonds"]:
         raise ValueError("Raw saved native region NBT differs from installed-JAR runtime proof")
     return {
@@ -303,6 +372,8 @@ def verify_native_upgrade(seed, restore, baseline_sha, candidate_sha):
     after = inspect_archive(restore, "restore", candidate_sha)
     if before["parts"] != after["parts"]:
         raise ValueError("Actual serialized native PL4 multipart UUID/owner not retained across binaries")
+    if before["topology_nbt"] != after["topology_nbt"]:
+        raise ValueError("Native persisted DATA_CABLE/endpoint UUIDs changed between exact-JAR runs")
     src, dst = before["transfer_nbt"], after["transfer_nbt"]
     if (src["source_identity"] != dst["source_identity"]
             or src["sink_identity"] != dst["sink_identity"]
@@ -315,7 +386,9 @@ def verify_native_upgrade(seed, restore, baseline_sha, candidate_sha):
         "seed_native": before, "restore_native": after,
         "result": "PASS_NATIVE_SAVED_NBT_MULTIPART_AND_EXPLICIT_REF_TRANSFER",
         "client_executed": False, "live_item_transfer_tested": True,
-        "live_network_topology_tested": False,
+        "live_network_topology_tested": True,
+        "native_raw_cable_nbt_verified": True,
+        "native_automatic_tick_routing_tested": False,
         "installed_optional_providers_tested": False,
         "rc_publication_cleared": False,
     }

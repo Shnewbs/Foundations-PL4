@@ -190,5 +190,77 @@ class InstalledTransferNativeNBTPolicy(unittest.TestCase):
             gate.inspect_transfer_entities(observed, expected)
 
 
+def cable_fixture():
+    """Synthetic parsed NBT: positive control + malicious mutation cases only."""
+    cable_cells = gate.CABLE_CELLS
+    source = "aaaa0000-0000-4000-8000-000000000001"
+    sink = "bbbb0000-0000-4000-8000-000000000002"
+    cable_ids = ["cccc0000-0000-4000-8000-%012d" % i for i in range(1, 8)]
+
+    def ints(value):
+        return list(struct.unpack(">4i", uuid.UUID(value).bytes))
+
+    targets = {}
+    for i, pos in enumerate(cable_cells):
+        parts = [{
+            "kind": "datacable", "face": 0, "blockedFaces": 0,
+            "owner": ints(gate.PART_OWNER), "identity": ints(cable_ids[i]),
+        }]
+        if i == 0 or i == 6:
+            parts.append({
+                "kind": "transfernode", "face": 5, "transferMode": 0,
+                "items": 0, "fluids": 0, "energy": 0,
+                "owner": ints(gate.PART_OWNER), "identity": ints(source if i == 0 else sink),
+            })
+        targets[pos] = {"id": "foundations_pl4:host", "schema": 2, "parts": parts}
+    return targets, {"source_identity": source, "sink_identity": sink,
+                     "cable_identities": cable_ids}
+
+
+class NativeInstalledCableNBTAudit(unittest.TestCase):
+    def test_exact_native_cable_cells_and_endpoints(self):
+        targets, receipt = cable_fixture()
+        result = gate.inspect_connected_cables(targets, receipt)
+        self.assertEqual(result["cable_count"], 7)
+        self.assertEqual(result["endpoint_count"], 2)
+
+    def test_missing_loaded_bridge_cable_fails(self):
+        targets, receipt = cable_fixture()
+        del targets[gate.CABLE_CELLS[3]]
+        with self.assertRaisesRegex(ValueError, "Missing actual serialized"):
+            gate.inspect_connected_cables(targets, receipt)
+
+    def test_blocked_native_bridge_arm_fails(self):
+        targets, receipt = cable_fixture()
+        targets[gate.CABLE_CELLS[3]]["parts"][0]["blockedFaces"] = 1 << 5
+        with self.assertRaisesRegex(ValueError, "arm-disabled"):
+            gate.inspect_connected_cables(targets, receipt)
+
+    def test_duplicate_cable_identity_fails(self):
+        targets, receipt = cable_fixture()
+        targets[gate.CABLE_CELLS[3]]["parts"][0]["identity"] = (
+            targets[gate.CABLE_CELLS[2]]["parts"][0]["identity"])
+        with self.assertRaisesRegex(ValueError, "UUID"):
+            gate.inspect_connected_cables(targets, receipt)
+
+    def test_forged_endpoint_owner_fails(self):
+        targets, receipt = cable_fixture()
+        targets[gate.CABLE_CELLS[6]]["parts"][1]["owner"] = [0, 0, 0, 0]
+        with self.assertRaisesRegex(ValueError, "passive/owned"):
+            gate.inspect_connected_cables(targets, receipt)
+
+    def test_unexpected_extra_multipart_fails(self):
+        targets, receipt = cable_fixture()
+        targets[gate.CABLE_CELLS[1]]["parts"].append(dict(targets[gate.CABLE_CELLS[1]]["parts"][0]))
+        with self.assertRaisesRegex(ValueError, "multipart count"):
+            gate.inspect_connected_cables(targets, receipt)
+
+    def test_endpoint_transfer_becoming_active_fails(self):
+        targets, receipt = cable_fixture()
+        targets[gate.CABLE_CELLS[0]]["parts"][1]["transferMode"] = 2
+        with self.assertRaisesRegex(ValueError, "passive/owned"):
+            gate.inspect_connected_cables(targets, receipt)
+
+
 if __name__ == "__main__":
     unittest.main()
