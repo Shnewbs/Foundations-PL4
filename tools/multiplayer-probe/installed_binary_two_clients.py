@@ -278,12 +278,14 @@ def verify_cable_receipt(server, native_log, phase, jar_sha):
     keys = {"engine", "cable_count", "connected_endpoints", "severed_endpoints",
             "severed_ticks", "source_before", "source_after", "sink_before",
             "sink_after", "delivered", "total", "direct_transfer_invocations",
-            "pending_escrow", "identities", "two_real_clients_connected"}
+            "pending_escrow", "identities", "two_real_clients_connected",
+            "owner_revocation_ticks", "owner_revocation_denied"}
     if not isinstance(transfer, dict) or set(transfer) != keys:
         raise ValueError("Native two-client physical cable transfer proof missing or incomplete")
     counts = ("cable_count", "connected_endpoints", "severed_endpoints", "severed_ticks",
               "source_before", "source_after", "sink_before", "sink_after",
-              "delivered", "total", "direct_transfer_invocations", "pending_escrow")
+              "delivered", "total", "direct_transfer_invocations", "pending_escrow",
+              "owner_revocation_ticks")
     if any(type(transfer[k]) is not int or transfer[k] < 0 for k in counts):
         raise ValueError("Invalid native cable integer count or boolean substitution")
     ids = transfer["identities"]
@@ -296,6 +298,8 @@ def verify_cable_receipt(server, native_log, phase, jar_sha):
             or transfer["cable_count"] != 7 or transfer["connected_endpoints"] != 2
             or transfer["severed_endpoints"] != 1
             or not 60 <= transfer["severed_ticks"] <= 100
+            or not 60 <= transfer["owner_revocation_ticks"] <= 100
+            or transfer["owner_revocation_denied"] is not True
             or transfer["two_real_clients_connected"] is not True
             or transfer["direct_transfer_invocations"] != 0
             or transfer["pending_escrow"] != 0 or transfer["total"] != 1728):

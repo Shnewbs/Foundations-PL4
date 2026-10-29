@@ -147,6 +147,7 @@ class InstalledTwoClientPolicy(unittest.TestCase):
             "total": 1728, "direct_transfer_invocations": 0, "pending_escrow": 0,
             "identities": ["abcdef01-1111-2222-3333-%012x" % i for i in range(9)],
             "two_real_clients_connected": True,
+            "owner_revocation_ticks": 60, "owner_revocation_denied": True,
         }
         self._write("server-multiplayer-proof.json", json.dumps(self.server))
         self._write("server.log", gate.TAG + gate.BASELINE_JAR + "\n" +
@@ -251,6 +252,28 @@ class InstalledTwoClientPolicy(unittest.TestCase):
     def test_short_disconnected_interval_fails(self):
         self._cable_mutation(severed_ticks=1)
         with self.assertRaisesRegex(ValueError, "revocation"):
+            self.check_fixture()
+
+    def test_short_owner_revocation_interval_fails(self):
+        self._cable_mutation(owner_revocation_ticks=4)
+        with self.assertRaisesRegex(ValueError, "revocation"):
+            self.check_fixture()
+
+    def test_false_owner_revocation_receipt_fails(self):
+        self._cable_mutation(owner_revocation_denied=False)
+        with self.assertRaisesRegex(ValueError, "revocation"):
+            self.check_fixture()
+
+    def test_boolean_owner_revocation_interval_fails(self):
+        self._cable_mutation(owner_revocation_ticks=True)
+        with self.assertRaisesRegex(ValueError, "integer count"):
+            self.check_fixture()
+
+    def test_missing_owner_revocation_receipt_fails(self):
+        del self.server["cable_transfer"]["owner_revocation_denied"]
+        self._write("server-multiplayer-proof.json", json.dumps(self.server))
+        self._manifest()
+        with self.assertRaisesRegex(ValueError, "missing or incomplete"):
             self.check_fixture()
 
     def test_two_client_presence_required_during_delivery(self):
