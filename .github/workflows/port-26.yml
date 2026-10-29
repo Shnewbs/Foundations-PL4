@@ -1,220 +1,34 @@
-name: Validate and release Minecraft 26.1.2
+name: Audit retired 26.1.2 wrong-version 26.3 native controller
 on:
   push:
-    paths-ignore: ['.github/workflows/**']
     branches: ['mc/26.1.2']
-  workflow_dispatch:
+    paths: ['.github/workflows/port-26.yml']
 permissions:
-  contents: write
-  actions: read
+  contents: read
 jobs:
-  port:
-    if: github.ref == 'refs/heads/mc/26.1.2'
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        neoforge: ['26.1.2.114']
+  audit-only:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Read publication maturity from exact checked-out source
-        shell: bash
+      - name: Verify pinned exact target isolation
         run: |
-          python - <<'PY'
-          import json, os
+          python3 - <<'PY'
           from pathlib import Path
-          """Shared release maturity and explicit RC clearance policy."""
-          import re
-
-
-          def release_type(version):
-              text = version.lower()
-              if re.search(r"(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)", text):
-                  raise ValueError("Development snapshots are not qualified releases")
-              if re.search(r"beta|(?:^|[.\-_])rc\d*(?:[.\-_]|$)|\db(?:[.\-_]|$)", text):
-                  return "beta"
-              if re.search(r"alpha|preview|experimental|(?:^|[.\-_])port(?:[.\-_]|$)|\da(?:[.\-_]|$)", text):
-                  return "alpha"
-              return "release"
-
-
-          def is_rc(version):
-              return bool(re.search(r"(?:^|[.\-_])rc\d*(?:[.\-_]|$)", version, re.I))
-
-
-          def require_publication(status, minecraft=None, version=None):
-              if not isinstance(status, dict):
-                  raise ValueError("Missing exact-source build status")
-              actual = status.get("version", "")
-              if not actual or (version is not None and actual != version):
-                  raise ValueError("Build status and release version disagree")
-              if minecraft is not None and status.get("minecraft") != minecraft:
-                  raise ValueError("Build status and exact Minecraft target disagree")
-              maturity = release_type(actual)
-              if status.get("release_channel", "").lower() == "development":
-                  raise ValueError("Development channel is not publishable")
-              if is_rc(actual) and status.get("rc_publication_cleared") is not True:
-                  raise ValueError("RC publication has not been explicitly cleared")
-              return maturity
-
-          status = json.loads(Path('BUILD_STATUS.json').read_text())
-          try:
-              require_publication(status)
-              allowed = True
-          except ValueError as error:
-              allowed = False
-              print('Publication held:', error)
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
+          from json import loads
+          source = Path('.github/workflows/port-26.yml').read_text()
+          declaration = source.split('jobs:', 1)[0]
+          status = loads(Path('BUILD_STATUS.json').read_text())
+          assert status['minecraft'] == '26.1.2'
+          assert status['rc_publication_cleared'] is False
+          assert "branches: ['mc/26.1.2']" in declaration
+          assert 'contents: read' in declaration
+          assert 'contents:' + ' write' not in declaration
+          assert 'workflow_' + 'dispatch:' not in declaration
+          assert 'branches:' + " ['mc/26.3']" not in declaration
+          assert 'runGameTestServer' not in source
+          assert 'gh' + ' release' not in source
+          assert 'secrets' + '.' not in source
+          print('PASS: obsolete branch-local 26.3 native workflow cannot misattribute 26.1.2 outputs.')
+          print('The main hourly-builds.yml performs native pinned 26.1.2 source/JAR qualification.')
           PY
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '25'
-          cache: gradle
-      - name: Compile port
-        run: |
-          set -euo pipefail
-          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain compileJava 2>&1 | tee port-compile.log
-      - name: Offline regression checks
-        run: python3 tools/run_offline_checks.py
-      - name: Build and native tests
-        run: |
-          set -euo pipefail
-          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain build
-          bash gradlew -PneoForgeVersion=${{ matrix.neoforge }} --no-daemon --console=plain runGameTestServer 2>&1 | tee port-native.log
-          python3 tools/verify_native_port_run.py port-native.log
-      - name: Collect API migration diagnostics
-        if: always()
-        run: |
-          mkdir -p port-diagnostics
-          python3 tools/port_api_inventory.py
-          cp port-compile.log port-diagnostics/ || true
-          find "$HOME/.gradle/caches" -type f \( -name '*sources*.jar' -o -name '*manifest*.json' \) -printf '%p\n' > port-diagnostics/source-paths.txt
-          find . -path './.git' -prune -o -name '*sources*.jar' -print >> port-diagnostics/source-paths.txt
-          find "$HOME/.gradle/caches/neoformruntime" -maxdepth 4 -type f -printf '%p\n' >> port-diagnostics/source-paths.txt 2>/dev/null || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: port-26-diagnostics-${{ matrix.neoforge }}
-          path: |
-            port-diagnostics/
-            build/libs/
-            build/reports/
-            port-native.log
-            run/logs/
-            run/crash-reports/
-
-  publish:
-    needs: port
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    concurrency:
-      group: port-2612-release-publication
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v4
-      - name: Read publication maturity from exact checked-out source
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          """Shared release maturity and explicit RC clearance policy."""
-          import re
-
-
-          def release_type(version):
-              text = version.lower()
-              if re.search(r"(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)", text):
-                  raise ValueError("Development snapshots are not qualified releases")
-              if re.search(r"beta|(?:^|[.\-_])rc\d*(?:[.\-_]|$)|\db(?:[.\-_]|$)", text):
-                  return "beta"
-              if re.search(r"alpha|preview|experimental|(?:^|[.\-_])port(?:[.\-_]|$)|\da(?:[.\-_]|$)", text):
-                  return "alpha"
-              return "release"
-
-
-          def is_rc(version):
-              return bool(re.search(r"(?:^|[.\-_])rc\d*(?:[.\-_]|$)", version, re.I))
-
-
-          def require_publication(status, minecraft=None, version=None):
-              if not isinstance(status, dict):
-                  raise ValueError("Missing exact-source build status")
-              actual = status.get("version", "")
-              if not actual or (version is not None and actual != version):
-                  raise ValueError("Build status and release version disagree")
-              if minecraft is not None and status.get("minecraft") != minecraft:
-                  raise ValueError("Build status and exact Minecraft target disagree")
-              maturity = release_type(actual)
-              if status.get("release_channel", "").lower() == "development":
-                  raise ValueError("Development channel is not publishable")
-              if is_rc(actual) and status.get("rc_publication_cleared") is not True:
-                  raise ValueError("RC publication has not been explicitly cleared")
-              return maturity
-
-          status = json.loads(Path('BUILD_STATUS.json').read_text())
-          try:
-              require_publication(status)
-              allowed = True
-          except ValueError as error:
-              allowed = False
-              print('Publication held:', error)
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
-          PY
-      - uses: actions/download-artifact@v4
-        with:
-          name: port-26-diagnostics-26.1.2.114
-          path: validated
-      - name: Prepare validated release
-        run: |
-          python3 - <<'PYTHON'
-          import pathlib, re, shutil, hashlib, os, subprocess
-          root=pathlib.Path('validated')
-          version=re.search(r"^version\s*=\s*'([A-Za-z0-9._-]+)'",pathlib.Path('build.gradle').read_text(),re.M).group(1)
-          jars=[f'FoundationsPL4-26.1.2-{version}.jar',f'FoundationsPL4-26.1.2-{version}-sources.jar']
-          out=pathlib.Path('build/libs');out.mkdir(parents=True,exist_ok=True)
-          archive=out/f'FoundationsPL4-26.1.2-{version}-source.zip'
-          subprocess.run(['git','archive','--format=zip','--output='+str(archive),'HEAD'],check=True)
-          hashes=[hashlib.sha256(archive.read_bytes()).hexdigest()+'  '+archive.name]
-          for name in jars:
-              found=list(root.rglob(name))
-              if len(found)!=1: raise SystemExit('Missing or ambiguous tested artifact: '+name)
-              target=out/name;shutil.copy2(found[0],target)
-              hashes.append(hashlib.sha256(target.read_bytes()).hexdigest()+'  '+name)
-          (out/'SHA256SUMS.txt').write_text('\n'.join(hashes)+'\n')
-          with open(os.environ['GITHUB_ENV'],'a') as env:
-              env.write(f'VERSION={version}\nRELEASE_TAG=mc26.1.2-v{version}\nMINECRAFT_VERSION=26.1.2\n')
-          PYTHON
-      - name: Publish GitHub prerelease
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            git fetch origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
-            test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$GITHUB_SHA" || { echo 'Existing release has different source; use a new revision.'; exit 1; }
-          else
-            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "Foundations PL4 26.1.2 — $VERSION" --prerelease --latest=false --notes-file "docs/releases/$VERSION.md" build/libs/*.jar build/libs/*.zip build/libs/SHA256SUMS.txt
-          fi
-      - name: Publish validated runtime to CurseForge
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
-          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
-        run: python3 tools/upload_curseforge.py
-      - name: Preserve release files
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-files-26.1.2-${{ github.sha }}
-          path: |
-            build/libs/
-            curseforge-upload.json
-          retention-days: 14
-          if-no-files-found: warn
