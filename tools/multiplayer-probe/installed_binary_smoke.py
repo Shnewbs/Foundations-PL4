@@ -348,6 +348,7 @@ public final class InstalledBinaryProbe {
                 if (i > 0) ids.append(",");
                 ids.append("\"").append(identity).append("\"");
             }
+            ids.append("]");
             if (allIds.size() != 9 || source.equals(sink))
                 throw new IllegalStateException("Native topology endpoint UUIDs are not unique");
             return "{\"network_engine\":\"net.foundations.pl4.NetworkEngine\","
