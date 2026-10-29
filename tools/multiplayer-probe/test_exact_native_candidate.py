@@ -1,0 +1,93 @@
+"""Adversarial local provenance tests; synthetic ZIPs never certify a native game run."""
+import io
+import json
+from pathlib import Path
+import tempfile
+import unittest
+import zipfile
+
+import exact_native_candidate as gate
+from installed_binary_smoke import digest
+
+SOURCE = "a" * 40
+NAME = "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar"
+
+
+class ExactNativeCandidateTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.artifact = self.root / "native-artifact.zip"
+        self.output = self.root / "candidate.jar"
+        with io.BytesIO() as data:
+            with zipfile.ZipFile(data, "w") as z:
+                z.writestr("META-INF/neoforge.mods.toml",
+                           'modId="foundations_pl4"\nversionRange="[1.21.1]"\n')
+                z.writestr("net/foundations/pl4/FoundationsPL4.class", b"fixture class")
+            self.binary = data.getvalue()
+        self.verified_jar = self.root / "reference.jar"
+        self.verified_jar.write_bytes(self.binary)
+        self.jar_sha = digest(self.verified_jar)
+        self.write_archive()
+        self.art_sha = digest(self.artifact)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write_archive(self, source=SOURCE, member=NAME, extra=None, data=None):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr("verification-logs/SOURCE_COMMIT.txt", source + "\n")
+            z.writestr(member, self.binary if data is None else data)
+            z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar", b"sources")
+            z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar", b"fixture")
+            if extra:
+                for name, payload in extra:
+                    z.writestr(name, payload)
+
+    def extract(self, source=SOURCE):
+        return gate.extract(self.artifact, self.output, digest(self.artifact), source, self.jar_sha)
+
+    def test_exact_source_artifact_and_one_native_production_jar(self):
+        proof = self.extract()
+        self.assertEqual(digest(self.output), self.jar_sha)
+        self.assertEqual(proof["source_commit"], SOURCE)
+        self.assertFalse(proof["installed_candidate_binary_executed"])
+        self.assertFalse(proof["rc_publication_cleared"])
+        self.assertEqual(json.loads(Path(str(self.output)+".provenance.json").read_text()), proof)
+
+    def test_wrong_source_rejected(self):
+        self.write_archive(source="b" * 40)
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_tampered_outer_artifact_hash_rejected(self):
+        with self.assertRaises(ValueError):
+            gate.extract(self.artifact, self.output, "0" * 64, SOURCE, self.jar_sha)
+
+    def test_neighbor_version_jar_not_relabelled(self):
+        self.write_archive(member=NAME.replace("1.21.1", "1.21.2"))
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_native_fixture_and_source_jars_cannot_substitute_for_production(self):
+        self.write_archive(member=NAME.replace(".jar", "-native-scenarios.jar"))
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_duplicate_production_jars_rejected(self):
+        self.write_archive(extra=[(NAME.replace(".jar", "-alternative.jar"), self.binary)])
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_changed_inner_binary_rejected(self):
+        self.write_archive(data=self.binary + b"unexpected bytes")
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_malicious_archive_entry_rejected(self):
+        self.write_archive(extra=[("../escape.txt", b"unsafe")])
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_existing_output_is_never_overwritten(self):
+        self.output.write_bytes(b"existing data")
+        with self.assertRaises(FileExistsError): self.extract()
+        self.assertEqual(self.output.read_bytes(), b"existing data")
+
+
+if __name__ == "__main__":
+    unittest.main()
