@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 194,
+  "expected_native_tests": 195,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -44,13 +44,13 @@
     "historical_evidence": "docs/releases/"
   },
   "release_published": false,
-  "port_status": "RC_DEVELOPMENT_NATIVE_GATE_PASSED",
+  "port_status": "RC_DEVELOPMENT_ACCEPTANCE_IN_PROGRESS",
   "installed_runtime_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PARTIAL_NATIVE_OPERATIONS_MEASURED_MIXED_RESULTS",
   "migration_acceptance": "PARTIAL_GENERATED_RELEASED_BETA_SOURCE_WORLD_UPGRADE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "candidate_native_validation": "PASS",
-  "candidate_workflow_run": "39885592948",
+  "candidate_native_validation": "PENDING_CURRENT_SOURCE",
+  "candidate_workflow_run": "40847836209",
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
   "native_test_isolation": "PASS",
@@ -59,11 +59,12 @@
   "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
   "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE",
+  "native_compilation": "PENDING_CURRENT_SOURCE_NATIVE_RUN",
   "acceptance_evidence": {
     "client_visual": "docs/acceptance/rc-dev-1.21.1-client-visual.json",
     "real_client_storage": "docs/acceptance/rc-dev-1.21.1-real-client-storage.json",
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
-  }
+  },
+  "current_source_notes": "2026-10-29 owner-bound physical cable topology candidate: previously 194/194 native; 195 tests need exact-source GameTest pass. Original failed 40847836209 solely at stale expected_native_tests before GameTests."
 }
