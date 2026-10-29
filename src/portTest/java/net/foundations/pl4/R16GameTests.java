@@ -430,6 +430,14 @@ public final class R16GameTests {
         TransferEngine.run(server,connected);
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==32,
             "Native cable must deliver when both endpoint owners match");
+        Part detachedCable=right.parts.remove(6);
+        h.assertTrue(NetworkEngine.storageNodes(server,source).isEmpty(),
+            "Detached intermediate cable must revoke cached remote inventory aliases immediately");
+        right.parts.put(6,detachedCable);
+        NetworkEngine.rebuild(server);
+        connected=NetworkEngine.storageNodes(server,source);
+        h.assertTrue(connected.size()==2,
+            "Restored loaded cable must rejoin both owned endpoints after rebuild");
         from.setItem(0,new ItemStack(Items.DIAMOND,12));
         // Reuse the actual previously authorized native transfer plan before any
         // dirty-rebuild notification. Its cached endpoints must not authorize

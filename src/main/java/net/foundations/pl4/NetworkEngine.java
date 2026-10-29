@@ -169,13 +169,15 @@ public final class NetworkEngine {
             break;
         }
         if(!anchorAttached||anchor.owner==null){dirty=true;return List.of();}
-        List<Ref> nodes=cachedStorageNodes.get(anchor);
-        if(nodes==null){dirty=true;return List.of();}
-        for(Ref ref:nodes)if(!loadedHost(ref.host,server)
+        // A revoked intermediate cable must not keep its old endpoints connected.
+        // Inspect the complete cached path, not only the exposed storage nodes.
+        for(Ref ref:group.parts)if(!loadedHost(ref.host,server)
             ||ref.host.parts.get(ref.part.slot())!=ref.part
             ||!anchor.owner.equals(ref.part.owner)){
             dirty=true;return List.of();
         }
+        List<Ref> nodes=cachedStorageNodes.get(anchor);
+        if(nodes==null){dirty=true;return List.of();}
         return nodes;
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
