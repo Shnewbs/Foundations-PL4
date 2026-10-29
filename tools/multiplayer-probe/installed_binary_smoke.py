@@ -313,8 +313,22 @@ public final class InstalledBinaryProbe {
             }
             var discover = network.getMethod("storageNodes", net.minecraft.server.MinecraftServer.class, part);
             java.util.List<?> linked = (java.util.List<?>) discover.invoke(null, server, endpointParts[0]);
-            if (linked.size() != 2)
-                throw new IllegalStateException("Physical cable graph did not connect both endpoints");
+            if (linked.size() != 2) {
+                var observedNetwork = (java.util.List<?>) network.getMethod("all",
+                    net.minecraft.server.MinecraftServer.class).invoke(null, server);
+                StringBuilder detail = new StringBuilder();
+                for (Object reference : observedNetwork) {
+                    Object candidate = ref.getMethod("part").invoke(reference);
+                    Object nativeHost = ref.getMethod("host").invoke(reference);
+                    detail.append(" [").append(
+                        ((net.minecraft.world.level.block.entity.BlockEntity)nativeHost).getBlockPos())
+                        .append(",").append(((Enum<?>)part.getField("kind").get(candidate)).name())
+                        .append(",").append(part.getMethod("slot").invoke(candidate)).append("]");
+                }
+                throw new IllegalStateException("Installed NetworkEngine did not connect both "
+                    + "seven-centre cable endpoints: discovered=" + linked.size()
+                    + " all_loaded_parts=" + observedNetwork.size() + detail);
+            }
             java.util.Set<Object> observed = new java.util.HashSet<>();
             for (Object row : linked) {
                 if (!ref.isInstance(row)) throw new IllegalStateException("Foreign topology reference");
