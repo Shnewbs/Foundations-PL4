@@ -171,7 +171,18 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 191
+      "observed_native_fixtures": 191,
+      "latest_exact_native_production_smoke": {
+        "source": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+        "run": 40946815023,
+        "passed": 191,
+        "total": 191,
+        "jar_sha256": "573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614",
+        "artifact_id": 12928554433,
+        "installed_production_only": "PASS",
+        "client_and_provider_acceptance": "PENDING",
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.17.1",
@@ -1784,7 +1795,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T20:17:29.179Z: Fixed the 1.16.4 and 1.16.5 development branch-local GitHub/CurseForge publishing gates, preserving Java8 installed native validation (193 and 191 respectively). New 1.16.5 stock Forge36 production-only JAR smoke gate is policy-qualified but native execution pending. 1.16.4 policy 11/11 and 1.16.5 policy 12/12 PASS; earlier transient 1.16.4 audit filename error corrected. Independently verified 7/7 hourly native exact-source jobs (1.14.4 194, 1.15.2 194, 1.16.1 193, 1.16.2 195, 1.16.3 193, 1.18.2 193, 1.21.1 200), with original source/JAR/ZIP SHA-256 receipts. 0/24 RC clearance, no new releases/uploads; see docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json.",
+  "latest_work": "2026-10-29T20:21:30.198Z: 1.16.5 exact final branch 4da64cd2546be267559a7c45bb3e54f26ac39f99 passed 191/191 installed native Forge36/Java 8 scenarios (1,786 server ticks) plus NEW stock production-only installed JAR startup and clean shutdown; production hash 573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614, retained artifact 12928554433 actual ZIP 22 CRC-valid entries (sha b0a8ae...), 982 CRC-valid production JAR entries, policy 12/12. 1.16.4 exact final source 193-case native run 40946223380 pending. 0/24 RC clearances, no release/upload. docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3928,5 +3939,18 @@
       }
     ],
     "scope": "native only; no installed providers/client/sustained performance"
+  },
+  "previous_latest_work_1165_native_receipt": "2026-10-29T20:17:29.179Z: Fixed the 1.16.4 and 1.16.5 development branch-local GitHub/CurseForge publishing gates, preserving Java8 installed native validation (193 and 191 respectively). New 1.16.5 stock Forge36 production-only JAR smoke gate is policy-qualified but native execution pending. 1.16.4 policy 11/11 and 1.16.5 policy 12/12 PASS; earlier transient 1.16.4 audit filename error corrected. Independently verified 7/7 hourly native exact-source jobs (1.14.4 194, 1.15.2 194, 1.16.1 193, 1.16.2 195, 1.16.3 193, 1.18.2 193, 1.21.1 200), with original source/JAR/ZIP SHA-256 receipts. 0/24 RC clearance, no new releases/uploads; see docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json.",
+  "latest_1165_native_installed_production_success": {
+    "evidence": "docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json",
+    "source": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+    "run": 40946815023,
+    "native_total": 191,
+    "native_passed": 191,
+    "jar_sha256": "573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614",
+    "artifact_id": 12928554433,
+    "production_only_startup": "PASS",
+    "clean_stop": "PASS",
+    "release_cleared": false
   }
 }

@@ -1,0 +1,90 @@
+{
+  "recorded_at_utc": "2026-10-29T20:21:30.198Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "mc/1.16.5",
+  "exact_source": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+  "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/4da64cd2546be267559a7c45bb3e54f26ac39f99",
+  "scope": "Exact native Forge36 Minecraft 1.16.5 Java 8 scenario and production-only installed JAR dedicated-server smoke",
+  "workflow_run": 40946815023,
+  "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946815023",
+  "workflow_conclusion": "completed_success",
+  "job_id": 123704245795,
+  "actual_native": {
+    "minecraft": "1.16.5",
+    "forge": "36.2.42",
+    "runtime_java": 8,
+    "build_java": 17,
+    "passed": 191,
+    "total": 191,
+    "failed": 0,
+    "server_ticks": 1786,
+    "status": "PASS",
+    "evidence": "Retained verification-logs/java8-summary.json, port-scenarios.json, installed-native.log; PL4 SCENARIOS SUCCESS marker independently present"
+  },
+  "production_installed": {
+    "status": "PASS",
+    "scenario_mod_installed": false,
+    "production_only_startup": "PASS",
+    "clean_stop": "PASS",
+    "runtime_profile": "stock-forge36",
+    "jar": "FoundationsPL4-1.16.5-0.2.0-rc.1-dev-java8.jar",
+    "runtime_sha256": "573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614",
+    "jar_size_bytes": 1297507,
+    "production_jar_crc_entries": 982,
+    "production_jar_crc_result": "PASS",
+    "evidence": "verification-logs/production-smoke.json and production-smoke.log; independently unpacked actual production JAR"
+  },
+  "production_native_artifact": {
+    "artifact_id": 12928554433,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946815023/artifacts/12928554433",
+    "artifact_name": "full-patch-1165-40946815023-1",
+    "outer_sha256": "b0a8ae39169f8f4a88e2ad8b443bc86357c94c567d908793a7811c25fcbd5a8d",
+    "bytes": 5391891,
+    "entry_count": 22,
+    "crc_all": "PASS",
+    "retention": "14 days",
+    "evidence_files": [
+      "verification-logs/JAR_SHA256SUMS.txt",
+      "verification-logs/SOURCE_COMMIT.txt",
+      "verification-logs/java8-summary.json",
+      "verification-logs/port-scenarios.json",
+      "verification-logs/production-smoke.json",
+      "verification-logs/production-smoke.log",
+      "build/libs/FoundationsPL4-1.16.5-0.2.0-rc.1-dev-java8.jar"
+    ],
+    "checksums_independently_compared": true
+  },
+  "policy_test": {
+    "run": 40946814800,
+    "passed": 12,
+    "total": 12,
+    "conclusion": "PASS"
+  },
+  "main_publication": {
+    "run": 40947753356,
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "new_publication": false
+  },
+  "exact_1164_final": {
+    "source": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+    "policy_run": 40946223342,
+    "policy_tests": "11/11 PASS",
+    "native_run": 40946223380,
+    "native_status": "PENDING_AT_EVIDENCE_TIME",
+    "native_old_source_run": 40946171772
+  },
+  "release": {
+    "rc_publication_cleared": false,
+    "rc_clearances": "0/24",
+    "new_github_release": false,
+    "new_curseforge_upload": false,
+    "moderation_public_visibility": "NOT_APPLICABLE_NEW_RELEASE"
+  },
+  "limitations": [
+    "This 1.16.5 test executes stock Forge production-only dedicated-server startup and native scenarios; not installed third-party providers, two graphical clients, authenticated multiplayer, arbitrary saved-world migration, or sustained production performance.",
+    "A passing development JAR must not be published; rc_publication_cleared remains false.",
+    "Current 1.16.4 final-source native and production smoke still await a completed exact-source result; previous intermediate-source build is separate."
+  ],
+  "next_step": "Read queued 1.16.4 exact final-source native run 40946223380 and retained JAR hashes before accepting; advance installed provider/alias and performance gates for all exact versions."
+}
