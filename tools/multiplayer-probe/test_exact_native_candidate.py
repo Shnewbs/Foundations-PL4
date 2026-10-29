@@ -39,7 +39,8 @@ class ExactNativeCandidateTests(unittest.TestCase):
             z.writestr("verification-logs/SOURCE_COMMIT.txt", source + "\n")
             z.writestr(member, self.binary if data is None else data)
             z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar", b"sources")
-            z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar", b"fixture")
+            if member != "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar":
+                z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar", b"fixture")
             if extra:
                 for name, payload in extra:
                     z.writestr(name, payload)
