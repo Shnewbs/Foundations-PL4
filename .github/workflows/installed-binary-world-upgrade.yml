@@ -10,6 +10,8 @@ on:
       - 'tools/multiplayer-probe/exact_native_candidate.py'
       - 'tools/multiplayer-probe/release_binary_preflight.py'
       - 'tools/multiplayer-probe/verify_upgrade_evidence.py'
+      - 'tools/multiplayer-probe/verify_native_multipart_nbt.py'
+      - 'tools/multiplayer-probe/test_verify_native_multipart_nbt.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -34,6 +36,7 @@ jobs:
       - name: Fail-closed installed-binary and saved-world regressions
         run: |
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_world_upgrade.py'
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_verify_native_multipart_nbt.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_smoke.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_release_binary_preflight.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_exact_native_candidate.py'
@@ -87,6 +90,12 @@ jobs:
       - name: Independently verify exact installed binary/world identities and artifacts
         run: |
           python3 control/tools/multiplayer-probe/installed_binary_world_upgrade.py verify \
+            --seed binary-upgrade/seed --restore binary-upgrade/restore \
+            --baseline-sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229 \
+            --candidate-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c
+      - name: Independently inspect real saved PL4 multipart NBT from both installed JAR servers
+        run: |
+          python3 control/tools/multiplayer-probe/verify_native_multipart_nbt.py \
             --seed binary-upgrade/seed --restore binary-upgrade/restore \
             --baseline-sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229 \
             --candidate-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c

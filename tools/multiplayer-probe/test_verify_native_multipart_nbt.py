@@ -1,0 +1,118 @@
+"""Synthetic Anvil-only negative cases; these are NOT native installed-JAR evidence."""
+import struct
+import unittest
+import uuid
+import zlib
+
+import verify_native_multipart_nbt as gate
+
+
+def string(value):
+    raw = value.encode("utf-8")
+    return struct.pack(">H", len(raw)) + raw
+
+
+def tag(kind, key, content):
+    return bytes([kind]) + string(key) + content
+
+
+def comp(*fields):
+    return b"".join(fields) + b"\0"
+
+
+def list_of_compounds(values):
+    return b"\x0a" + struct.pack(">i", len(values)) + b"".join(values)
+
+
+def uid(value):
+    value = uuid.UUID(value).int
+    ints = [(value >> shift) & 0xffffffff for shift in (96, 64, 32, 0)]
+    return struct.pack(">i", 4) + struct.pack(">4I", *ints)
+
+
+def fixture_chunk(parts=True, barrel=64, duplicate_uuid=False, owner=None):
+    owner = owner or gate.PART_OWNER
+    identity_a = "11111111-2222-4333-8444-555555555555"
+    identity_b = identity_a if duplicate_uuid else "66666666-7777-4888-8999-aaaaaaaaaaaa"
+    def part(kind, face, identity):
+        return comp(
+            tag(8, "kind", string(kind)),
+            tag(3, "face", struct.pack(">i", face)),
+            tag(11, "owner", uid(owner)),
+            tag(11, "identity", uid(identity)),
+        )
+    host = comp(
+        tag(8, "id", string("foundations_pl4:host")),
+        tag(3, "x", struct.pack(">i", 0)),
+        tag(3, "y", struct.pack(">i", 80)),
+        tag(3, "z", struct.pack(">i", 0)),
+        tag(3, "schema", struct.pack(">i", 2)),
+        tag(9, "parts", list_of_compounds([
+            part("inventoryreader", 5, identity_a),
+            part("datacable", 0, identity_b),
+        ] if parts else [])),
+    )
+    def diamond(slot, count):
+        return comp(
+            tag(1, "Slot", struct.pack(">b", slot)),
+            tag(8, "id", string("minecraft:diamond")),
+            tag(3, "count", struct.pack(">i", count)),
+        )
+    other = comp(
+        tag(8, "id", string("minecraft:barrel")),
+        tag(3, "x", struct.pack(">i", 1)),
+        tag(3, "y", struct.pack(">i", 80)),
+        tag(3, "z", struct.pack(">i", 0)),
+        tag(9, "Items", list_of_compounds([diamond(0, barrel), diamond(1, 64)])),
+    )
+    return tag(10, "", comp(tag(9, "block_entities", list_of_compounds([host, other]))))
+
+
+def fixture_region(chunk):
+    packed = zlib.compress(chunk)
+    record = struct.pack(">I", len(packed) + 1) + b"\x02" + packed
+    count = (len(record) + 4095) // 4096
+    region = bytearray((2 + count) * 4096)
+    region[:4] = (2).to_bytes(3, "big") + bytes([count])
+    region[8192:8192 + len(record)] = record
+    return bytes(region)
+
+
+class NativeMultipartRegionPolicy(unittest.TestCase):
+    def test_native_compound_and_uuid_layout(self):
+        actual = gate.inspect_chunk(gate.decode_region(fixture_region(fixture_chunk())))
+        self.assertEqual(actual["barrel_diamonds"], 128)
+        self.assertEqual(actual["host_schema"], 2)
+        self.assertEqual([p["slot"] for p in actual["parts"]], [5, 6])
+        self.assertEqual(actual["parts"][0]["kind"], "INVENTORY_READER")
+        self.assertEqual(actual["parts"][1]["kind"], "DATA_CABLE")
+
+    def test_old_empty_parts_legacy_smoke_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "empty/incomplete"):
+            gate.inspect_chunk(gate.decode_region(fixture_region(fixture_chunk(parts=False))))
+
+    def test_duplicate_part_uuid_cannot_pass(self):
+        with self.assertRaisesRegex(ValueError, "Duplicate native persisted"):
+            gate.inspect_chunk(gate.decode_region(fixture_region(fixture_chunk(duplicate_uuid=True))))
+
+    def test_mutated_owner_cannot_be_accepted(self):
+        with self.assertRaisesRegex(ValueError, "part kind/slot/owner"):
+            gate.inspect_chunk(gate.decode_region(fixture_region(
+                fixture_chunk(owner="aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee"))))
+
+    def test_nonconserved_native_barrel_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "not conserved"):
+            gate.inspect_chunk(gate.decode_region(fixture_region(fixture_chunk(barrel=63))))
+
+    def test_invalid_compression_or_sector_is_rejected(self):
+        region = bytearray(fixture_region(fixture_chunk()))
+        region[8192 + 4] = 9
+        with self.assertRaisesRegex(ValueError, "compression"):
+            gate.decode_region(bytes(region))
+        region[0:4] = b"\0\0\0\0"
+        with self.assertRaisesRegex(ValueError, "offset"):
+            gate.decode_region(bytes(region))
+
+
+if __name__ == "__main__":
+    unittest.main()
