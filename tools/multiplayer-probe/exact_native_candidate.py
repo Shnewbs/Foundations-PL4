@@ -15,7 +15,7 @@ import zipfile
 from installed_binary_smoke import validate_binary, digest
 
 
-def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256):
+def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artifact_metadata=None):
     artifact_zip, output = Path(artifact_zip), Path(output)
     for label, value, size in [
         ("artifact SHA256", artifact_sha256, 64),
@@ -28,6 +28,28 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256):
         raise ValueError("Retained native GitHub artifact ZIP SHA256 mismatch")
     if output.exists():
         raise FileExistsError("Will not overwrite an existing candidate binary")
+    # Github's main verification artifact does not embed SOURCE_COMMIT.txt.
+    # In this case require the authentic GitHub REST artifact metadata, fetched
+    # in the same workflow run (not a user-provided label or nearby-version JAR).
+    authenticated_source = None
+    artifact_id = None
+    if artifact_metadata is not None:
+        metadata = json.loads(Path(artifact_metadata).read_text())
+        workflow = metadata.get("workflow_run", {})
+        artifact_id = metadata.get("id")
+        if (type(artifact_id) is not int or artifact_id <= 0 or
+                metadata.get("expired") is not False or
+                metadata.get("digest") != "sha256:" + artifact_sha256 or
+                metadata.get("archive_download_url") !=
+                    "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/" + str(artifact_id) + "/zip" or
+                type(workflow.get("id")) is not int or workflow["id"] <= 0 or
+                workflow.get("repository_id") != 1396808859 or
+                workflow.get("head_repository_id") != 1396808859 or
+                workflow.get("head_branch") != "main" or
+                workflow.get("head_sha") != source_sha or
+                not str(metadata.get("name", "")).startswith("verification-" + source_sha + "-")):
+            raise ValueError("Native artifact GitHub source/digest metadata is missing, stale or mismatched")
+        authenticated_source = source_sha
     with zipfile.ZipFile(artifact_zip) as z:
         entries = z.infolist()
         names = [entry.filename for entry in entries]
@@ -36,12 +58,12 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256):
             raise ValueError("Corrupt, duplicated or unsafe native artifact archive")
         sources = [n for n in names if n == "verification-logs/SOURCE_COMMIT.txt"
                    or n.endswith("/verification-logs/SOURCE_COMMIT.txt")]
-        if len(sources) != 1:
-            raise ValueError("Native artifact lacks exactly one source-commit attestation")
-        source_path = sources[0]
-        if z.read(source_path).decode("ascii").strip() != source_sha:
-            raise ValueError("Native artifact source is not the pinned exact commit")
-        prefix = source_path[: -len("verification-logs/SOURCE_COMMIT.txt")]
+        if len(sources) > 1 or (not sources and authenticated_source is None):
+            raise ValueError("Native artifact lacks exactly one independent source attestation")
+        source_path = sources[0] if sources else None
+        if source_path is not None and z.read(source_path).decode("ascii").strip() != source_sha:
+            raise ValueError("Embedded native artifact source is not the pinned exact commit")
+        prefix = source_path[: -len("verification-logs/SOURCE_COMMIT.txt")] if source_path else ""
         libprefix = prefix + "build/libs/"
         candidates = [n for n in names if n.startswith(libprefix)
                       and "/" not in n[len(libprefix):]
@@ -72,7 +94,9 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256):
     receipt = {
         "schema": 1, "source_commit": source_sha,
         "artifact_zip_sha256": artifact_sha256,
-        "source_marker": source_path, "production_member": name,
+        "source_marker": source_path, "artifact_github_metadata_id": artifact_id,
+        "source_attestation": "github-validated-artifact-metadata" if source_path is None else "embedded-source-marker",
+        "production_member": name,
         "production_jar_sha256": jar_sha256,
         "output_name": output.name, "output_sha256": digest(output),
         "native_pass_rechecked_here": False,
@@ -90,9 +114,10 @@ def main():
     p.add_argument("--artifact-sha256", required=True)
     p.add_argument("--source-sha", required=True)
     p.add_argument("--jar-sha256", required=True)
+    p.add_argument("--artifact-metadata", type=Path, help="Required if archive lacks embedded source marker; obtain from authenticated gh api")
     args = p.parse_args()
     print(json.dumps(extract(args.artifact_zip, args.output, args.artifact_sha256,
-                             args.source_sha, args.jar_sha256), sort_keys=True))
+                             args.source_sha, args.jar_sha256, args.artifact_metadata), sort_keys=True))
 
 
 if __name__ == "__main__":
