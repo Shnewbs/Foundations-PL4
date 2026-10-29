@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T07:52:32.722Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "minecraft": "1.21.1",
+  "result": "PASS_SCOPED_EXACT_INSTALLED_BINARIES_TWO_REAL_CLIENTS_NATIVE_PLAYERDATA_AND_REGION_NBT",
+  "rc_publication_cleared": false,
+  "release_channel": "development",
+  "implementation": {
+    "main_source_at_validation": "d632543d2d2168aa9cb8f2346f32eb08e1172af3",
+    "commits": [
+      "2b2c1144d05e5fb4af8597d2b92e213a4ff12ced",
+      "d632543d2d2168aa9cb8f2346f32eb08e1172af3"
+    ],
+    "new_files": [
+      "tools/multiplayer-probe/verify_installed_client_nbt.py",
+      "tools/multiplayer-probe/test_verify_installed_client_nbt.py"
+    ],
+    "repaired_controller": "tools/multiplayer-probe/installed_binary_two_clients.py",
+    "workflow": ".github/workflows/installed-binary-two-client-upgrade.yml",
+    "regressions_added": 15,
+    "scope": "Fail-closed direct saved playerdata gzip NBT, Anvil chunk/barrel/owned node/cable UUID, tool link binding, 17+17+94 diamond conservation and clean native process exit"
+  },
+  "immutable_binary_provenance": {
+    "published_beta_tag": "v0.2b.0",
+    "published_beta_source": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "published_beta_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "development_candidate_source": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "development_candidate_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "native_candidate_original_run": 40785212711,
+    "native_candidate_original_gametests": "194/194"
+  },
+  "validation": {
+    "installed_binary_run": 40837667228,
+    "installed_binary_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40837667228",
+    "installed_binary_result": "completed_success",
+    "retained_artifact_id": 12881367190,
+    "retained_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40837667228/artifacts/12881367190",
+    "artifact_zip_sha256": "7e5de9d675affc1dea07c506357a69e90d868d1435ef3e5b460b801f1b2ae336",
+    "zip_entries": 45,
+    "zip_crc": "PASS",
+    "seed_saved_world_sha256": "b98f6d6f76e45af83a1ca79291c23611b5c023ef9853f2f525407589e23988ad",
+    "seed_saved_files": 26,
+    "restore_saved_world_sha256": "d624bf5a74adc809f7cd29e2c0d0188bd6e6d073a8d3195f6caeeaa68d075608",
+    "restore_saved_files": 30,
+    "nested_world_zip_crc": "BOTH_PASS",
+    "native_player_and_anvil_proof_sha256": "e550062bb3ccdec4f2ae8b90383eca64adc063bfd19bfc9179659c77e6216cf2",
+    "native_proof_result": "PASS_SCOPED_NATIVE_PLAYERDATA_AND_MULTIPART_NBT",
+    "two_real_installed_clients_each_phase": true,
+    "player_diamonds_seed": [
+      17,
+      17
+    ],
+    "player_diamonds_restore": [
+      17,
+      17
+    ],
+    "barrel_diamonds_both_phases": 94,
+    "total_diamonds_each_phase": 128,
+    "original_node_identity_preserved": true,
+    "original_cable_identity_preserved": true,
+    "zero_escrow": true,
+    "client_screenshots": 4,
+    "source_verify_run": 40837667338,
+    "source_verify_result": "completed_success",
+    "main_gametests": "194/194",
+    "last_untouched_main_validation_run": 40836989203,
+    "publication_policy_run": 40837667268,
+    "github_release_step": "SKIPPED",
+    "curseforge_upload_step": "SKIPPED"
+  },
+  "repaired_failure": {
+    "previous_failed_installed_run": 40836989229,
+    "failed_artifact_id": 12880489240,
+    "failed_artifact_sha256": "d2b06cd9c30d9f06febb6a04fe5cbe84c5592456b620917e6be6ec9e93bddaad",
+    "cause": "Both native clients and server saved/shut down successfully but Gradle wrapper still had not exited when immediate fallback contacted already-closed RCON; connection refused. New bounded 30s natural server.wait before authenticated RCON fallback, requiring eventual clean exit.",
+    "source_not_classified_as_product_failure": true,
+    "retry_trigger": "CHANGED_SOURCE"
+  },
+  "limits": [
+    "Scoped to two real graphical NeoForge 1.21.1 clients on offline private loopback; no online player authentication or network latency.",
+    "This two-client Wireless Storage migration did not simultaneously run the separate real seven-cable automatic tick-transfer topology.",
+    "Installed third-party item/power providers, unloaded/double-inventory alias cases, arbitrary user/modpack world migrations, sustained active-provider performance, broad GUI screenshot polish and remaining 23 exact versions unaccepted.",
+    "Historical 1.6.4 natural x80 gravel-placement root cause unresolved.",
+    "No new RC publication eligible; 0 of 24 clearances true. No release/upload receipts generated."
+  ],
+  "next_step": "Combine two genuine installed clients, saved-world migration and scheduled seven-centre DATA_CABLE item transfer with revocation, unload/reload and provider-alias safeguards; verify actual native NBT and timing, then extend exact native acceptance per target.",
+  "publication": {
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "curseforge_moderation_or_public_visibility": "NO_NEW_UPLOAD",
+    "rc_cleared": 0,
+    "maintained_targets": 24
+  }
+}

@@ -3270,5 +3270,19 @@
     "online_authenticated": false,
     "installed_optional_providers": false,
     "rc_publication_cleared": false
+  },
+  "latest_1211_installed_client_native_nbt": {
+    "source": "d632543d2d2168aa9cb8f2346f32eb08e1172af3",
+    "run": 40837667228,
+    "artifact_id": 12881367190,
+    "sha256": "7e5de9d675affc1dea07c506357a69e90d868d1435ef3e5b460b801f1b2ae336",
+    "pass": true,
+    "real_clients_each_phase": 2,
+    "live_saved_worlds": 2,
+    "direct_native_nbt_player_and_barrel_conservation": true,
+    "native_gametests": "194/194",
+    "remaining": "No cable+clients one scenario, providers, online auth, arbitrary worlds, sustained load or other 23 exact targets",
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-1211-installed-clients-native-saved-nbt-2026-10-29.json"
   }
 }
