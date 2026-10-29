@@ -2,6 +2,8 @@
 import hashlib
 import json
 from pathlib import Path
+import struct
+from unittest.mock import patch
 import tempfile
 import unittest
 import zipfile
@@ -134,6 +136,59 @@ class InstalledBinaryIsolationTests(unittest.TestCase):
     def test_overwriting_existing_runtime_fails(self):
         self.prepare()
         with self.assertRaises(FileExistsError): self.prepare()
+
+    def test_rcon_shutdown_requires_ephemeral_authenticated_loopback(self):
+        self.prepare()
+        config = self.target / "run/server.properties"
+        self.assertIn("enable-rcon=true", config.read_text())
+        self.assertIn("rcon.port=25579", config.read_text())
+        config.write_text(config.read_text().replace("server-ip=127.0.0.1", "server-ip=0.0.0.0"))
+        with self.assertRaises(ValueError):
+            gate.stop_server_rcon(config)
+
+    def test_rcon_authenticated_stop_sends_command_only_after_auth(self):
+        self.prepare()
+        def packet(request_id, packet_type):
+            body = struct.pack("<ii", request_id, packet_type) + b"\0\0"
+            return struct.pack("<i", len(body)) + body
+        class FakeSocket:
+            def __init__(self):
+                self.reply = packet(194, 0) + packet(194, 2)
+                self.sent = []
+            def __enter__(self): return self
+            def __exit__(self, *unused): return False
+            def settimeout(self, unused): pass
+            def recv(self, size):
+                chunk, self.reply = self.reply[:size], self.reply[size:]
+                return chunk
+            def sendall(self, data): self.sent.append(data)
+        fake = FakeSocket()
+        with patch.object(gate.socket, "create_connection", return_value=fake) as connect:
+            gate.stop_server_rcon(self.target / "run/server.properties")
+        connect.assert_called_once_with(("127.0.0.1", 25579), timeout=5)
+        self.assertEqual(len(fake.sent), 2)
+        self.assertIn(b"stop\0\0", fake.sent[1])
+        self.assertIn(struct.pack("<ii", 195, 2), fake.sent[1])
+
+    def test_rcon_authentication_failure_never_sends_stop(self):
+        self.prepare()
+        class FailedAuthSocket:
+            def __init__(self):
+                body = struct.pack("<ii", -1, 2) + b"\0\0"
+                self.reply = struct.pack("<i", len(body)) + body
+                self.sent = []
+            def __enter__(self): return self
+            def __exit__(self, *unused): return False
+            def settimeout(self, unused): pass
+            def recv(self, size):
+                chunk, self.reply = self.reply[:size], self.reply[size:]
+                return chunk
+            def sendall(self, data): self.sent.append(data)
+        fake = FailedAuthSocket()
+        with patch.object(gate.socket, "create_connection", return_value=fake):
+            with self.assertRaises(PermissionError):
+                gate.stop_server_rcon(self.target / "run/server.properties")
+        self.assertEqual(len(fake.sent), 1)
 
 
 if __name__ == "__main__":

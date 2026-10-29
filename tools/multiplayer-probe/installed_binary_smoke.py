@@ -9,7 +9,11 @@ import json
 import os
 from pathlib import Path
 import re
+import secrets
 import shutil
+import signal
+import socket
+import struct
 import subprocess
 import time
 import zipfile
@@ -154,7 +158,8 @@ def prepare(checkout, jar, output, expected):
         JAVA_REL: JAVA,
         TOML_REL: TOML,
         "run/eula.txt": "eula=true\n",
-        "run/server.properties": "server-ip=127.0.0.1\nserver-port=25578\nonline-mode=false\nmax-players=1\nlevel-type=minecraft:flat\nview-distance=3\nsimulation-distance=3\n",
+        "run/server.properties": ("server-ip=127.0.0.1\nserver-port=25578\nonline-mode=false\nmax-players=1\nlevel-type=minecraft:flat\nview-distance=3\nsimulation-distance=3\n"
+                                  "enable-rcon=true\nrcon.port=25579\nrcon.password=" + secrets.token_urlsafe(32) + "\n"),
     }
     for name, value in entries.items():
         target = output / name
@@ -196,8 +201,11 @@ def verify(output, log):
             server_props[key.strip()] = value.strip()
     if any(server_props.get(key) != value for key, value in {
             "server-ip": "127.0.0.1", "server-port": "25578",
-            "online-mode": "false", "max-players": "1"}.items()):
+            "online-mode": "false", "max-players": "1",
+            "enable-rcon": "true", "rcon.port": "25579"}.items()):
         raise ValueError("Native runtime escaped isolated loopback/offline server configuration")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{32,}", server_props.get("rcon.password", "")):
+        raise ValueError("Native runtime missing ephemeral authenticated local shutdown control")
     if "eula=true" not in (output / "run/eula.txt").read_text().splitlines():
         raise ValueError("Native runtime lacks explicit disposable-server EULA")
     sources = sorted(p.relative_to(output).as_posix() for p in (output / "src/main/java").rglob("*.java"))
@@ -229,6 +237,78 @@ def verify(output, log):
     return receipt
 
 
+def _receive_exact(sock, count):
+    chunks = []
+    while count:
+        chunk = sock.recv(count)
+        if not chunk:
+            raise ConnectionError("RCON response ended before a complete packet")
+        chunks.append(chunk)
+        count -= len(chunk)
+    return b"".join(chunks)
+
+
+def _rcon_send(sock, request_id, packet_type, message):
+    data = struct.pack("<ii", request_id, packet_type) + message.encode("utf-8") + b"\0\0"
+    sock.sendall(struct.pack("<i", len(data)) + data)
+
+
+def _rcon_receive(sock):
+    (size,) = struct.unpack("<i", _receive_exact(sock, 4))
+    if size < 10 or size > 4096:
+        raise ValueError("Invalid bounded local RCON reply frame")
+    payload = _receive_exact(sock, size)
+    if payload[-2:] != b"\0\0":
+        raise ValueError("Malformed local RCON reply terminator")
+    return struct.unpack("<ii", payload[:8])
+
+
+def stop_server_rcon(properties):
+    """Authenticated loopback /stop; Gradle runServer does not forward stdin."""
+    config = {}
+    for line in Path(properties).read_text().splitlines():
+        if "=" in line and not line.startswith("#"):
+            key, value = line.split("=", 1)
+            config[key.strip()] = value.strip()
+    if (config.get("server-ip") != "127.0.0.1"
+            or config.get("enable-rcon") != "true"
+            or config.get("rcon.port") != "25579"
+            or not re.fullmatch(r"[A-Za-z0-9_-]{32,}", config.get("rcon.password", ""))):
+        raise ValueError("Local authenticated RCON shutdown configuration was changed")
+    with socket.create_connection(("127.0.0.1", 25579), timeout=5) as sock:
+        sock.settimeout(5)
+        _rcon_send(sock, 194, 3, config["rcon.password"])
+        # Minecraft often sends an empty type-0 frame before type-2 auth.
+        authenticated = False
+        for _ in range(3):
+            response_id, response_type = _rcon_receive(sock)
+            if response_id == -1:
+                raise PermissionError("Local RCON authentication rejected")
+            if response_type == 2:
+                if response_id != 194:
+                    raise PermissionError("Local RCON authentication identity mismatch")
+                authenticated = True
+                break
+            if response_id != 194 or response_type != 0:
+                raise ValueError("Unexpected local RCON authentication frame")
+        if not authenticated:
+            raise PermissionError("Local RCON authentication never completed")
+        _rcon_send(sock, 195, 2, "stop")
+
+
+def _stop_with_retry(properties):
+    failure = None
+    for attempt in range(3):
+        try:
+            stop_server_rcon(properties)
+            return
+        except (OSError, ConnectionError) as exc:
+            failure = exc
+            if attempt < 2:
+                time.sleep(2)
+    raise RuntimeError("Authenticated loopback RCON stop unavailable") from failure
+
+
 def run(output, seconds):
     output = Path(output).resolve()
     manifest = json.loads((output / "prepared-installation.json").read_text())
@@ -238,11 +318,11 @@ def run(output, seconds):
     env = dict(os.environ, PL4_EXPECTED_JAR_SHA256=expected, PL4_INSTALLED_PROOF=str(proof))
     with log_path.open("w") as log:
         process = subprocess.Popen(["bash", "gradlew", "--no-daemon", "--console=plain", "runServer"],
-                                   cwd=output, env=env, stdin=subprocess.PIPE, stdout=log,
-                                   stderr=subprocess.STDOUT, text=True)
-        ready = False
+                                   cwd=output, env=env, stdin=subprocess.DEVNULL, stdout=log,
+                                   stderr=subprocess.STDOUT, text=True, start_new_session=True)
         try:
             deadline = time.monotonic() + seconds
+            ready = False
             while time.monotonic() < deadline:
                 if process.poll() is not None:
                     break
@@ -250,21 +330,26 @@ def run(output, seconds):
                     ready = True
                     break
                 time.sleep(3)
-            if ready:
-                process.stdin.write("stop\n")
-                process.stdin.flush()
-                process.wait(timeout=90)
-            else:
+            if not ready:
                 raise TimeoutError("Installed production-JAR NeoForge server did not attest startup; inspect retained log")
+            # Gradle stdin is not the Minecraft console. Send an authenticated
+            # loopback /stop, then require the native task to exit cleanly.
+            _stop_with_retry(output / "run/server.properties")
+            try:
+                process.wait(timeout=90)
+            except subprocess.TimeoutExpired as exc:
+                raise RuntimeError("Native server did not exit after authenticated RCON stop") from exc
             if process.returncode != 0:
-                raise RuntimeError("Native installed-JAR runner exited unsuccessfully")
+                raise RuntimeError("Native installed-JAR runner exited unsuccessfully after RCON stop")
         finally:
             if process.poll() is None:
-                process.terminate()
+                # Terminate the complete isolated Gradle/server process group;
+                # otherwise the wrapper can leave an orphan game JVM.
+                os.killpg(process.pid, signal.SIGTERM)
                 try:
                     process.wait(timeout=20)
                 except subprocess.TimeoutExpired:
-                    process.kill()
+                    os.killpg(process.pid, signal.SIGKILL)
                     process.wait()
     return verify(output, log_path)
 
