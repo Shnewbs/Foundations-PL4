@@ -28,6 +28,7 @@ ENTRY_REL = "src/main/java/net/foundations/pl4probe/InstalledTwoClientProbe.java
 SOURCE_FILES = (SERVER_REL, CLIENT_REL, ENTRY_REL)
 TAG = "PL4_INSTALLED_TWO_CLIENT_SERVER_READY:"
 CLIENT_TAG = "PL4_INSTALLED_TWO_CLIENT_READY:"
+CABLE_TAG = "PL4_INSTALLED_CABLE_CLIENT_TICK:"
 BASELINE_SOURCE = "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c"
 CANDIDATE_SOURCE = "aa9b439b69106b6232ef2c58fdfa155889d0ba1f"
 BASELINE_JAR = "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229"
@@ -219,10 +220,9 @@ def _prepare(checkout, jar, output, phase, source, jar_sha, copy_from=None):
                 shutil.copytree(Path(copy_from) / "server/run/world", runtime / "world", symlinks=False)
                 if world_fingerprint(runtime / "world") != copied:
                     raise ValueError("Restored installed-beta world copy changed before candidate boot")
-                shutil.copy2(
-                    Path(copy_from) / "server/run/probe-node-identity.txt",
-                    runtime / "probe-node-identity.txt"
-                )
+                for receipt in ("probe-node-identity.txt", "probe-cable-identities.txt"):
+                    shutil.copy2(Path(copy_from) / "server/run" / receipt,
+                                 runtime / receipt)
         sources = sorted(p.relative_to(root).as_posix()
                          for p in (root / "src/main/java").rglob("*.java"))
         if sources != sorted(SOURCE_FILES):
@@ -259,6 +259,57 @@ def check_project(root, source, jar_sha):
     if len(installed) != 1 or installed[0].name != manifest["installed_jar_name"]:
         raise ValueError("Missing or duplicate installed production mod")
     smoke.validate_binary(installed[0], jar_sha)
+
+
+
+def verify_cable_receipt(server, native_log, phase, jar_sha):
+    """Fail closed on native physical sever/reconnect and automatic scheduled transfer.
+
+    Fixture JSON is not independent native proof: its exact source, compiled-test
+    identity and log are separately bound by the installed phase manifest.
+    """
+    transfer = server.get("cable_transfer")
+    keys = {"engine", "cable_count", "connected_endpoints", "severed_endpoints",
+            "severed_ticks", "source_before", "source_after", "sink_before",
+            "sink_after", "delivered", "total", "direct_transfer_invocations",
+            "pending_escrow", "identities", "two_real_clients_connected"}
+    if not isinstance(transfer, dict) or set(transfer) != keys:
+        raise ValueError("Native two-client physical cable transfer proof missing or incomplete")
+    counts = ("cable_count", "connected_endpoints", "severed_endpoints", "severed_ticks",
+              "source_before", "source_after", "sink_before", "sink_after",
+              "delivered", "total", "direct_transfer_invocations", "pending_escrow")
+    if any(type(transfer[k]) is not int or transfer[k] < 0 for k in counts):
+        raise ValueError("Invalid native cable integer count or boolean substitution")
+    ids = transfer["identities"]
+    if (not isinstance(ids, list) or len(ids) != 9
+            or any(not isinstance(v, str) or not re.fullmatch(
+                r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", v) for v in ids)
+            or len(set(ids)) != 9):
+        raise ValueError("Invalid or repeated native installed cable/endpoint identity")
+    if (transfer["engine"] != "net.foundations.pl4.NetworkEngine.tick"
+            or transfer["cable_count"] != 7 or transfer["connected_endpoints"] != 2
+            or transfer["severed_endpoints"] != 1
+            or not 60 <= transfer["severed_ticks"] <= 100
+            or transfer["two_real_clients_connected"] is not True
+            or transfer["direct_transfer_invocations"] != 0
+            or transfer["pending_escrow"] != 0 or transfer["total"] != 1728):
+        raise ValueError("Native two-client topology/revocation/scheduled-tick proof is insufficient")
+    before = transfer["source_before"] + transfer["sink_before"]
+    after = transfer["source_after"] + transfer["sink_after"]
+    if (before != 1728 or after != 1728 or not 0 < transfer["delivered"] < 1728
+            or transfer["source_before"] - transfer["source_after"] != transfer["delivered"]
+            or transfer["sink_after"] - transfer["sink_before"] != transfer["delivered"]
+            or transfer["source_after"] <= 0):
+        raise ValueError("Native real-client scheduled network delivery is not item conserving")
+    if ((phase == "seed" and
+         (transfer["source_before"], transfer["sink_before"]) != (1728, 0))
+            or (phase == "restore" and transfer["sink_before"] <= 0)):
+        raise ValueError("No correctly seeded/restored native cable provider inventory")
+    marker = CABLE_TAG + jar_sha + ":" + str(transfer["delivered"])
+    matched = [line for line in native_log.splitlines() if CABLE_TAG in line]
+    if len(matched) != 1 or not matched[0].strip().endswith(marker):
+        raise ValueError("Missing/ambiguous native installed client-and-cable server tick marker")
+    return transfer
 
 
 def verify_phase(output, phase, source, jar_sha):
@@ -307,6 +358,7 @@ def verify_phase(output, phase, source, jar_sha):
             or server.get("duplicate_network_requests_ignored") is not (phase == "seed")
             or server.get("saved_world_restore") is not (phase == "restore")):
         raise ValueError("Actual installed server multiplayer/authorization proof failed")
+    verify_cable_receipt(server, server_log, phase, jar_sha)
     for index, name in enumerate(NAMES):
         png = output / (name + "-storage.png")
         if png.stat().st_size <= 1000 or png.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
@@ -440,6 +492,14 @@ def verify_upgrade(seed, restore):
     b = verify_phase(restore, "restore", CANDIDATE_SOURCE, CANDIDATE_JAR)
     sa = json.loads((Path(seed) / "server-multiplayer-proof.json").read_text())
     sb = json.loads((Path(restore) / "server-multiplayer-proof.json").read_text())
+    ca = verify_cable_receipt(sa, (Path(seed) / "server.log").read_text(errors="replace"),
+                              "seed", BASELINE_JAR)
+    cb = verify_cable_receipt(sb, (Path(restore) / "server.log").read_text(errors="replace"),
+                              "restore", CANDIDATE_JAR)
+    if (ca["identities"] != cb["identities"]
+            or ca["source_after"] != cb["source_before"]
+            or ca["sink_after"] != cb["sink_before"]):
+        raise ValueError("Migrated physical cable UUIDs or saved native inventories changed")
     if (a["world"] != b["copied_input_world"]
             or sa["node_identity"] != sb["node_identity"]
             or sa["real_client_uuids"] != sb["real_client_uuids"]
@@ -455,8 +515,12 @@ def verify_upgrade(seed, restore):
         "real_installed_clients_each_phase": 2,
         "real_client_screenshots": 4,
         "network_request_replay_denied": True,
+        "two_client_physical_cable_auto_transfer": True,
+        "native_cable_severed_ticks_each_phase": [
+            ca["severed_ticks"], cb["severed_ticks"]],
+        "native_cable_delivery_each_phase": [ca["delivered"], cb["delivered"]],
         "installed_binary_two_client_migration": "PASS",
-        "scope": "Two actual offline-mode NeoForge clients in each exact installed production-JAR phase; source fixture remains separate. No online-auth, installed optional providers, arbitrary worlds, sustained performance, other exact versions or RC clearance.",
+        "scope": "Two real offline-mode clients in each installed production-JAR phase with saved migration, NetworkEngine scheduled DATA_CABLE transfer and 60+ ticks of physical route denial. No online authentication, owner-revocation after provider callback, optional installed providers, arbitrary worlds, sustained performance, other exact versions or RC clearance.",
         "rc_publication_cleared": False,
     }
     (Path(restore) / "installed-two-client-upgrade-receipt.json").write_text(
