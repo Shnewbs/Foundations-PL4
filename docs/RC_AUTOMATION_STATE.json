@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T0502Z-topology",
+    "claimed_at": "2026-10-29T05:03:00Z",
+    "expires_at": "2026-10-29T05:35:00Z",
+    "purpose": "Bounded installed-binary cable topology acceptance, exact-source tests and receipts",
+    "base_commit": "8459e62c11e2dec21d3de599d3b5cd0b8cff0a18"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
