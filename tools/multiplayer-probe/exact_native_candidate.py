@@ -15,8 +15,10 @@ import zipfile
 from installed_binary_smoke import validate_binary, digest
 
 
-def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artifact_metadata=None):
+def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artifact_metadata=None, expected_native_tests=194):
     artifact_zip, output = Path(artifact_zip), Path(output)
+    if type(expected_native_tests) is not int or not 1 <= expected_native_tests <= 10000:
+        raise ValueError("Invalid exact native GameTest count")
     for label, value, size in [
         ("artifact SHA256", artifact_sha256, 64),
         ("source SHA", source_sha, 40),
@@ -65,17 +67,21 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artif
             raise ValueError("Embedded native artifact source is not the pinned exact commit")
         prefix = source_path[: -len("verification-logs/SOURCE_COMMIT.txt")] if source_path else ""
         libprefix = prefix + "build/libs/"
-        # This exact retained aa9b439 1.21.1 candidate requires its real native
-        # GameTest log, not just a plausible checksum/zip from a failed job.
+        # Every pinned candidate requires its own exact real native GameTest
+        # completion log, not a plausible checksum/zip from a failed job.
         native_path = prefix + "verification-logs/native.log"
         if native_path not in names:
             raise ValueError("Pinned native candidate has no actual JVM test log")
         native_raw = z.read(native_path)
         native_log = native_raw.decode("utf-8", errors="replace")
-        if (not re.search(r"={6,} 194 GAME TESTS COMPLETE IN [0-9.]+ s", native_log) or
-            "All 194 required tests passed :)" not in native_log or
-            "BUILD SUCCESSFUL" not in native_log):
-            raise ValueError("Pinned 1.21.1 native GameTest log lacks exact 194/194 success markers")
+        complete = r"={6,} " + str(expected_native_tests) + r" GAME TESTS COMPLETE IN [0-9.]+ s"
+        passed = "All " + str(expected_native_tests) + " required tests passed :)"
+        if (not re.search(complete, native_log) or
+                passed not in native_log or
+                "BUILD SUCCESSFUL" not in native_log):
+            raise ValueError("Pinned native GameTest log lacks exact "
+                             + str(expected_native_tests) + "/" + str(expected_native_tests)
+                             + " success markers")
         native_log_sha256 = hashlib.sha256(native_raw).hexdigest()
         candidates = [n for n in names if n.startswith(libprefix)
                       and "/" not in n[len(libprefix):]
@@ -108,7 +114,7 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artif
         "artifact_zip_sha256": artifact_sha256,
         "source_marker": source_path, "artifact_github_metadata_id": artifact_id,
         "native_log_member": native_path, "native_log_sha256": native_log_sha256,
-        "native_log_success_count": "194/194",
+        "native_log_success_count": str(expected_native_tests) + "/" + str(expected_native_tests),
         "source_attestation": "github-validated-artifact-metadata" if source_path is None else "embedded-source-marker",
         "production_member": name,
         "production_jar_sha256": jar_sha256,
@@ -129,9 +135,12 @@ def main():
     p.add_argument("--source-sha", required=True)
     p.add_argument("--jar-sha256", required=True)
     p.add_argument("--artifact-metadata", type=Path, help="Required if archive lacks embedded source marker; obtain from authenticated gh api")
+    p.add_argument("--expected-native-tests", type=int, default=194,
+                   help="Exact independently recorded GameTest count for this immutable source")
     args = p.parse_args()
     print(json.dumps(extract(args.artifact_zip, args.output, args.artifact_sha256,
-                             args.source_sha, args.jar_sha256, args.artifact_metadata), sort_keys=True))
+                             args.source_sha, args.jar_sha256, args.artifact_metadata,
+                             args.expected_native_tests), sort_keys=True))
 
 
 if __name__ == "__main__":
