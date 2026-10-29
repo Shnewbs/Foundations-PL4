@@ -39,8 +39,10 @@ public final class NetworkEngine {
         ResourceLocation id=ResourceLocation.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));
     }
     public static boolean loaded(MinecraftServer server,Part.Link link){ServerLevel l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
+    /** Exclude stale registrations whose original HostEntity was replaced at the same loaded position. */
     private static boolean loadedHost(HostEntity h,MinecraftServer s){
-        return !h.isRemoved()&&h.getLevel() instanceof ServerLevel l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
+        return !h.isRemoved()&&h.getLevel() instanceof ServerLevel l&&l.getServer()==s
+            &&l.hasChunkAt(h.getBlockPos())&&l.getBlockEntity(h.getBlockPos())==h;
     }
     public static List<Ref> all(MinecraftServer s){
         List<Ref> result=new ArrayList<>();

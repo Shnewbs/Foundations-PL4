@@ -26,7 +26,7 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'e.register(R16GameTests.class)' in native('PLGameTests.java'),
- 'thirty-seven transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==37,
+ 'thirty-eight transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==38,
  'wireless backing swaps seal extracted escrow':'wirelessStorageRevokesReplacedBackingDuringExtraction' in native('R16GameTests.java') and 'requirePostExtractionBackingAuthority' in read('src/main/java/net/foundations/pl4/WirelessStorage.java'),
  'backing capability identity rechecked after provider callbacks':'replacedCapabilityBackingCannotReuseCachedItemHandler' in native('R16GameTests.java') and 'record ItemTarget(' in engine and 'to.live(server,sink)' in engine,
  'quarantined passive endpoint regression is registered': 'quarantinedPassiveItemEndpointNeverAcceptsDelivery' in native('R16GameTests.java') and 'ItemTransferSafety.blocked(sink.part())' in engine,

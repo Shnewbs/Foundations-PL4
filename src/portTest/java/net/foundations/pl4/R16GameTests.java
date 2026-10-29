@@ -22,6 +22,27 @@ public final class R16GameTests {
     private static NetworkEngine.Ref ref(HostEntity h,Direction face){return new NetworkEngine.Ref(h,part(h,face));}
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void staleLoadedHostCannotReenterAReplacedInventoryAlias(GameTestHelper h){
+        BlockPos position=new BlockPos(2,1,1);
+        HostEntity original=host(h,position,Kind.TRANSFER_NODE,Direction.WEST);
+        var server=h.getLevel().getServer();
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.all(server).stream().anyMatch(r->r.host()==original),
+            "Initially installed source host must appear in the loaded native graph");
+        h.setBlock(position,Blocks.CHEST);
+        // Model a late callback restoring a stale registration after ordinary removal.
+        original.clearRemoved();
+        NetworkEngine.add(original);
+        h.assertTrue(NetworkEngine.all(server).stream().noneMatch(r->r.host()==original),
+            "Stale loaded HostEntity at an occupied position must never regain network authority");
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.storageNodes(server,part(original,Direction.WEST)).isEmpty(),
+            "The stale node must have no cached reachable inventory aliases");
+        NetworkEngine.remove(original);
+        h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
         HostEntity node=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST),add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);part(add,Direction.EAST).transferMode=1;
