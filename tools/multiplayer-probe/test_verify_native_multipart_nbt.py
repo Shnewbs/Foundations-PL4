@@ -264,3 +264,27 @@ class NativeInstalledCableNBTAudit(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ScheduledNativeAnvilInventoryPolicy(unittest.TestCase):
+    def test_scheduled_barrels_require_actual_saved_quantities(self):
+        targets, graph = cable_fixture()
+        targets[(1, 80, 5)] = {"id": "minecraft:barrel", "Items": [
+            {"id": "minecraft:diamond", "Slot": i, "count": 64} for i in range(26)]}
+        targets[(5, 80, 5)] = {"id": "minecraft:barrel", "Items": [
+            {"id": "minecraft:diamond", "Slot": 0, "count": 64}]}
+        scheduled = {"source_identity": graph["source_identity"],
+                     "sink_identity": graph["sink_identity"],
+                     "source_after": 1664, "sink_after": 64}
+        self.assertEqual(
+            gate.inspect_scheduled_transfer_entities(targets, scheduled, graph)["item_total"], 1728)
+        targets[(5, 80, 5)]["Items"][0]["count"] = 63
+        with self.assertRaisesRegex(ValueError, "scheduled NetworkEngine inventory"):
+            gate.inspect_scheduled_transfer_entities(targets, scheduled, graph)
+
+    def test_scheduled_graph_mismatched_endpoint_fails(self):
+        targets, graph = cable_fixture()
+        expected = {"source_identity": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                    "sink_identity": graph["sink_identity"]}
+        with self.assertRaisesRegex(ValueError, "not cable-owned endpoints"):
+            gate.inspect_scheduled_transfer_entities(targets, expected, graph)

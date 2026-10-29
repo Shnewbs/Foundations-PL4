@@ -52,7 +52,7 @@ def check_world_proof(output, phase, expected_sha):
     if not evidence.is_file() or evidence.is_symlink():
         raise ValueError("Missing native installed-JAR configured multipart proof")
     proof = json.loads(evidence.read_text())
-    if (set(proof) != set(expected_proof) | {"parts", "transfer", "topology"}
+    if (set(proof) != set(expected_proof) | {"parts", "transfer", "topology", "scheduled_transfer"}
             or any(proof.get(name) != value for name, value in expected_proof.items())):
         raise ValueError("Native installed-JAR block entity/inventory proof is absent or altered")
     topology = proof.get("topology")
@@ -72,7 +72,7 @@ def check_world_proof(output, phase, expected_sha):
             or topology["restored_endpoints"] != 2
             or type(topology["cable_count"]) is not int
             or topology["cable_count"] != 7
-            or topology["automatic_tick_tested"] is not False):
+            or topology["automatic_tick_tested"] is not True):
         raise ValueError("Installed physical cable topology has no connected/severed evidence")
     ids = [topology["source_identity"], topology["sink_identity"]]
     cables = topology["cable_identities"]
@@ -117,6 +117,41 @@ def check_world_proof(output, phase, expected_sha):
         raise ValueError("Installed beta did not start with original seeded items")
     if phase == "restore" and transfer["sink_before"] <= 0:
         raise ValueError("Installed candidate did not reopen transferred source-world contents")
+    scheduled = proof.get("scheduled_transfer")
+    required_scheduled = {"engine", "source_before", "source_after", "sink_before",
+                          "sink_after", "delivered", "total", "sample_ticks_observed",
+                          "direct_transfer_invocations", "source_identity",
+                          "sink_identity", "pending_escrow"}
+    if not isinstance(scheduled, dict) or set(scheduled) != required_scheduled:
+        raise ValueError("No independent installed NetworkEngine scheduled-tick transfer proof")
+    if scheduled["engine"] != "net.foundations.pl4.NetworkEngine.tick":
+        raise ValueError("Scheduled transfer did not originate from native NetworkEngine tick")
+    for key in ("source_before", "source_after", "sink_before", "sink_after",
+                "delivered", "total", "sample_ticks_observed",
+                "direct_transfer_invocations", "pending_escrow"):
+        if type(scheduled[key]) is not int or scheduled[key] < 0:
+            raise ValueError("Invalid scheduled native integer counter: " + key)
+    if (scheduled["total"] != 1728 or scheduled["pending_escrow"] != 0
+            or scheduled["direct_transfer_invocations"] != 0
+            or not 1 <= scheduled["sample_ticks_observed"] <= 160
+            or not 0 < scheduled["delivered"] < scheduled["source_before"]
+            or scheduled["source_before"] + scheduled["sink_before"] != 1728
+            or scheduled["source_after"] + scheduled["sink_after"] != 1728
+            or scheduled["source_before"] - scheduled["source_after"] != scheduled["delivered"]
+            or scheduled["sink_after"] - scheduled["sink_before"] != scheduled["delivered"]
+            or scheduled["source_identity"] != topology["source_identity"]
+            or scheduled["sink_identity"] != topology["sink_identity"]):
+        raise ValueError("Scheduled connected-cable item movement or conservation failed")
+    if phase == "seed" and (scheduled["source_before"] != 1728
+                            or scheduled["sink_before"] != 0):
+        raise ValueError("Published beta did not seed the scheduled network inventory")
+    if phase == "restore" and scheduled["sink_before"] <= 0:
+        raise ValueError("Candidate did not restore scheduled native inventory")
+    tick_markers = [line.strip() for line in native_log.read_text(errors="replace").splitlines()
+                    if "PL4_INSTALLED_SCHEDULED_TICK:" in line]
+    required_tick = "PL4_INSTALLED_SCHEDULED_TICK:" + expected_sha + ":" + str(scheduled["delivered"])
+    if len(tick_markers) != 1 or not tick_markers[0].endswith(required_tick):
+        raise ValueError("No uniquely logged installed ServerTickEvent item movement")
     parts = proof["parts"]
     if not isinstance(parts, list) or len(parts) != len(PART_LAYOUT):
         raise ValueError("Native installed PL4 world has no configured multipart pieces")
@@ -263,6 +298,13 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
     candidate_graph = check_world_proof(restore, "restore", candidate_sha)["topology"]
     if beta_graph != candidate_graph:
         raise ValueError("Connected installed cable topology did not persist through world upgrade")
+    beta_scheduled = check_world_proof(seed, "seed", beta_sha)["scheduled_transfer"]
+    candidate_scheduled = check_world_proof(restore, "restore", candidate_sha)["scheduled_transfer"]
+    if (beta_scheduled["source_after"] != candidate_scheduled["source_before"]
+            or beta_scheduled["sink_after"] != candidate_scheduled["sink_before"]
+            or beta_scheduled["source_identity"] != candidate_scheduled["source_identity"]
+            or beta_scheduled["sink_identity"] != candidate_scheduled["sink_identity"]):
+        raise ValueError("Installed scheduled-tick cable inventory or node UUIDs did not migrate")
     if before["world"] != after["copied_input_world"]:
         raise ValueError("Exact saved baseline world was not the candidate's copied input")
     receipt = {
@@ -281,8 +323,10 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
         "configured_part_identities": [part["identity"] for part in beta_parts],
         "connected_native_cable_graph": "PASS_DISCOVERED_SEVERED_AND_RESTORED",
         "native_cable_count": beta_graph["cable_count"],
-        "automatic_tick_tested": False,
-        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel; actual installed TransferEngine moves diamonds through vanilla barrel capabilities in each phase with conservation and unchanged node UUIDs. The separate seven-centre cable network is actually discovered, severed and reconnected by installed NetworkEngine, but live items still move via the older explicitly supplied Ref membership and no automatic tick is exercised. Server-only: no clients, network-topology routing, installed optional providers, arbitrary worlds or RC clearance.",
+        "automatic_tick_tested": True,
+        "scheduled_network_beta_delivered": beta_scheduled["delivered"],
+        "scheduled_network_candidate_delivered": candidate_scheduled["delivered"],
+        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel; actual installed TransferEngine moves diamonds through vanilla barrel capabilities in each phase with conservation and unchanged node UUIDs. The separate seven-centre cable network is actually discovered, severed and reconnected by installed NetworkEngine, and the independent connected graph delivers items during genuine installed NetworkEngine server tick callbacks; older explicit-Ref transfer is recorded separately. Server-only: no clients, installed optional providers, arbitrary worlds, sustained performance or RC clearance.",
         "client_executed": False,
         "rc_publication_cleared": False,
     }

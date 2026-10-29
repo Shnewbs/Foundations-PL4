@@ -65,7 +65,22 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "cable_identities": [
                 "10000000-0000-4000-8000-%012d" % i for i in range(3, 10)
             ],
-            "automatic_tick_tested": False,
+            "automatic_tick_tested": True,
+        }
+
+    def scheduled(self, phase):
+        if phase == "seed":
+            source_before, sink_before = 1728, 0
+        else:
+            source_before, sink_before = 1664, 64
+        return {
+            "engine": "net.foundations.pl4.NetworkEngine.tick",
+            "source_before": source_before, "source_after": source_before - 64,
+            "sink_before": sink_before, "sink_after": sink_before + 64,
+            "delivered": 64, "total": 1728, "sample_ticks_observed": 20,
+            "direct_transfer_invocations": 0, "pending_escrow": 0,
+            "source_identity": self.topology()["source_identity"],
+            "sink_identity": self.topology()["sink_identity"],
         }
 
     def phase(self, root, phase, jar, sha, copy=None):
@@ -80,7 +95,7 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             import shutil
             shutil.copytree(copy / "run/world", root / "run/world")
         log = root / "installed-server.log"
-        log.write_text(smoke.MARKER + sha + "\n" + gate.WORLD_MARKER + phase.upper() + ":" + sha + "\n")
+        log.write_text(smoke.MARKER + sha + "\n" + gate.WORLD_MARKER + phase.upper() + ":" + sha + "\n" + "PL4_INSTALLED_SCHEDULED_TICK:" + sha + ":64\n")
         (root / "installed-server-proof.json").write_text(json.dumps({
             "schema": 1, "loaded_mod_id": "foundations_pl4",
             "server_started": True, "expected_jar_sha256": sha,
@@ -93,6 +108,7 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "parts": self.configured_parts(),
             "transfer": self.transfer(phase),
             "topology": self.topology(),
+            "scheduled_transfer": self.scheduled(phase),
         }))
         copied = gate.world_fingerprint(copy / "run/world") if copy else None
         return gate.capture_phase(root, phase, sha, copied)
@@ -342,3 +358,67 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_missing_scheduled_transfer_fails(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        del receipt["scheduled_transfer"]
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_synthetic_direct_transfer_cannot_substitute_for_tick(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["scheduled_transfer"]["direct_transfer_invocations"] = 1
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_scheduled_inventory_zero_or_forged_balance_fails(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["scheduled_transfer"]["delivered"] = 0
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_scheduled_native_endpoint_not_in_graph_fails(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["scheduled_transfer"]["source_identity"] = "ffffffff-ffff-4fff-8fff-ffffffffffff"
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_missing_native_scheduled_log_marker_fails(self):
+        self.pair()
+        p = self.seed / "installed-server.log"
+        p.write_text(p.read_text().replace("PL4_INSTALLED_SCHEDULED_TICK:", "FAKE_TICK:"))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_scheduled_tick_boolean_cannot_count_as_duration(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["scheduled_transfer"]["sample_ticks_observed"] = True
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_scheduled_restored_inventory_cannot_reset(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["scheduled_transfer"]["source_before"] = 1728
+        receipt["scheduled_transfer"]["sink_before"] = 0
+        receipt["scheduled_transfer"]["source_after"] = 1664
+        receipt["scheduled_transfer"]["sink_after"] = 64
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)

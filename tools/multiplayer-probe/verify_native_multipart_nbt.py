@@ -269,7 +269,25 @@ def inspect_connected_cables(targets, expected):
             "native_cells": observed}
 
 
-def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False, expected_topology=None):
+def inspect_scheduled_transfer_entities(targets, expected, topology):
+    """Independent saved-Anvil checks for tick-routed inventory, not JSON alone."""
+    if not isinstance(expected, dict) or not isinstance(topology, dict):
+        raise ValueError("Missing scheduled native transfer/physical cable evidence")
+    if (expected.get("source_identity") != topology.get("source_identity")
+            or expected.get("sink_identity") != topology.get("sink_identity")):
+        raise ValueError("Scheduled transfer UUIDs are not cable-owned endpoints")
+    source = _native_diamonds(targets.get((1, 80, 5), {}), (1, 80, 5))
+    sink = _native_diamonds(targets.get((5, 80, 5), {}), (5, 80, 5))
+    if (source != expected.get("source_after")
+            or sink != expected.get("sink_after")
+            or source + sink != 1728):
+        raise ValueError("Raw saved scheduled NetworkEngine inventory differs from live tick proof")
+    return {"source_diamonds": source, "sink_diamonds": sink,
+            "source_identity": expected["source_identity"],
+            "sink_identity": expected["sink_identity"], "item_total": 1728}
+
+
+def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False, expected_topology=None, expected_scheduled=None):
     entities = chunk.get("block_entities")
     if not isinstance(entities, list):
         raise ValueError("Native chunk has no block_entities list")
@@ -279,7 +297,8 @@ def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False, exp
             raise ValueError("Malformed native block entity compound")
         xyz = tuple(entity.get(k) for k in ("x", "y", "z"))
         if xyz in ((0, 80, 0), (1, 80, 0), (0, 80, 2),
-                    (1, 80, 2), (4, 80, 2), (5, 80, 2)) + CABLE_CELLS:
+                    (1, 80, 2), (4, 80, 2), (5, 80, 2),
+                    (1, 80, 5), (5, 80, 5)) + CABLE_CELLS:
             if xyz in targets:
                 raise ValueError("Duplicate native fixture block entity position")
             targets[xyz] = entity
@@ -343,6 +362,9 @@ def inspect_chunk(chunk, expected_transfer=None, allow_legacy_missing=False, exp
             targets, expected_transfer, allow_legacy_missing=allow_legacy_missing)
     if expected_topology is not None:
         result["topology_nbt"] = inspect_connected_cables(targets, expected_topology)
+    if expected_scheduled is not None:
+        result["scheduled_transfer_nbt"] = inspect_scheduled_transfer_entities(
+            targets, expected_scheduled, expected_topology)
     return result
 
 
@@ -358,7 +380,8 @@ def inspect_archive(phase_dir, phase, expected_sha):
         data = z.read(REGION)
     observed = inspect_chunk(decode_region(data), expected_transfer=proof["transfer"],
                              allow_legacy_missing=(phase == "seed"),
-                             expected_topology=proof["topology"])
+                             expected_topology=proof["topology"],
+                             expected_scheduled=proof["scheduled_transfer"])
     if observed["parts"] != proof["parts"] or observed["barrel_diamonds"] != proof["barrel_diamonds"]:
         raise ValueError("Raw saved native region NBT differs from installed-JAR runtime proof")
     return {
@@ -374,6 +397,12 @@ def verify_native_upgrade(seed, restore, baseline_sha, candidate_sha):
         raise ValueError("Actual serialized native PL4 multipart UUID/owner not retained across binaries")
     if before["topology_nbt"] != after["topology_nbt"]:
         raise ValueError("Native persisted DATA_CABLE/endpoint UUIDs changed between exact-JAR runs")
+    scheduled_before, scheduled_after = before["scheduled_transfer_nbt"], after["scheduled_transfer_nbt"]
+    if (scheduled_before["source_identity"] != scheduled_after["source_identity"]
+            or scheduled_before["sink_identity"] != scheduled_after["sink_identity"]
+            or scheduled_after["source_diamonds"] >= scheduled_before["source_diamonds"]
+            or scheduled_after["sink_diamonds"] <= scheduled_before["sink_diamonds"]):
+        raise ValueError("Raw saved native automatic-tick network inventory did not progress")
     src, dst = before["transfer_nbt"], after["transfer_nbt"]
     if (src["source_identity"] != dst["source_identity"]
             or src["sink_identity"] != dst["sink_identity"]
@@ -384,11 +413,11 @@ def verify_native_upgrade(seed, restore, baseline_sha, candidate_sha):
         "schema": 1, "baseline_jar_sha256": baseline_sha,
         "candidate_jar_sha256": candidate_sha,
         "seed_native": before, "restore_native": after,
-        "result": "PASS_NATIVE_SAVED_NBT_MULTIPART_AND_EXPLICIT_REF_TRANSFER",
+        "result": "PASS_NATIVE_SAVED_NBT_MULTIPART_EXPLICIT_REF_AND_SCHEDULED_TICK",
         "client_executed": False, "live_item_transfer_tested": True,
         "live_network_topology_tested": True,
         "native_raw_cable_nbt_verified": True,
-        "native_automatic_tick_routing_tested": False,
+        "native_automatic_tick_routing_tested": True,
         "installed_optional_providers_tested": False,
         "rc_publication_cleared": False,
     }

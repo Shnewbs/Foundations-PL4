@@ -392,49 +392,163 @@ public final class InstalledBinaryProbe {
     private String pendingWorldSha;
     private String pendingParts;
     private String pendingTransfer;
+    private String pendingTopology;
+    private String pendingScheduledTransfer;
     private Block pendingNativeBlock;
     private int nativeWaitTicks;
+    private Object[] scheduledNodes;
+    private Object[] scheduledHosts;
+    private BarrelBlockEntity[] scheduledBarrels;
+    private int[] scheduledBefore;
+    private long scheduledStartTick;
 
-    /** Restore-side HostEntity.onLoad occurs on live chunk ticks, not ServerStartedEvent.
-     * Do not force-register any PL4 host: wait for the actual installed runtime
-     * to supply every loaded part before attesting its physical cable topology.
+    /**
+     * Configure the already native-discovered cable graph for real server-scheduled
+     * transfer. Unlike installedTransferProof this never constructs Ref objects
+     * and never calls either TransferEngine.run or NetworkEngine.tick.
+     * The saved passive endpoints are armed only after physical topology checks.
+     */
+    @SuppressWarnings("unchecked")
+    private void beginScheduledTransfer(net.minecraft.server.MinecraftServer server,
+            net.minecraft.server.level.ServerLevel level, boolean seed)
+            throws ReflectiveOperationException {
+        BlockPos[] cells = {new BlockPos(0, 80, 5), new BlockPos(4, 80, 5)};
+        ClassLoader loader = pendingNativeBlock.getClass().getClassLoader();
+        Class<?> host = Class.forName("net.foundations.pl4.HostEntity", true, loader);
+        Class<?> part = Class.forName("net.foundations.pl4.Part", true, loader);
+        Object[] nodes = new Object[2], hosts = new Object[2];
+        BarrelBlockEntity[] barrels = new BarrelBlockEntity[2];
+        for (int i = 0; i < 2; i++) {
+            BlockPos barrelPos = cells[i].east();
+            if (seed && !level.setBlock(barrelPos, Blocks.BARREL.defaultBlockState(), 3))
+                throw new IllegalStateException("Cannot place scheduled-tick native barrel");
+            if (!(level.getBlockEntity(barrelPos) instanceof BarrelBlockEntity barrel))
+                throw new IllegalStateException("Scheduled-tick native barrel missing on save/restore");
+            barrels[i] = barrel;
+            hosts[i] = level.getBlockEntity(cells[i]);
+            if (!host.isInstance(hosts[i]))
+                throw new IllegalStateException("Scheduled-tick native cable host not loaded");
+            Map<Integer, Object> parts = (Map<Integer, Object>) host.getField("parts").get(hosts[i]);
+            if (parts.size() != 2 || !parts.containsKey(5) || !parts.containsKey(6))
+                throw new IllegalStateException("Scheduled transfer endpoint is not the discovered cable host");
+            nodes[i] = parts.get(5);
+            if (!"TRANSFER_NODE".equals(((Enum<?>)part.getField("kind").get(nodes[i])).name())
+                    || part.getField("transferMode").getInt(nodes[i]) != 0
+                    || part.getField("items").getBoolean(nodes[i])
+                    || !PART_OWNER.equals(part.getField("owner").get(nodes[i])))
+                throw new IllegalStateException("Saved scheduled endpoint is not owned and passive");
+        }
+        if (seed) {
+            for (int slot = 0; slot < 27; slot++)
+                barrels[0].setItem(slot, new ItemStack(Items.DIAMOND, 64));
+            barrels[0].setChanged();
+        }
+        int source = diamonds(barrels[0]), sink = diamonds(barrels[1]);
+        if (source <= 0 || source + sink != 1728
+                || (seed && sink != 0) || (!seed && sink <= 0))
+            throw new IllegalStateException("Scheduled transfer original world conservation failed");
+        // The only transfer driver is the installed production runtime's
+        // registered ServerTickEvent.Post -> NetworkEngine.tick listener.
+        for (int i = 0; i < 2; i++) {
+            part.getField("transferMode").setInt(nodes[i], i == 0 ? 2 : 1);
+            part.getField("items").setBoolean(nodes[i], true);
+            host.getMethod("changed").invoke(hosts[i]);
+        }
+        scheduledNodes = nodes;
+        scheduledHosts = hosts;
+        scheduledBarrels = barrels;
+        scheduledBefore = new int[]{source, sink};
+        scheduledStartTick = server.getTickCount();
+    }
+
+    /** Observe actual vanilla barrel changes made by the installed server tick. */
+    private boolean pollScheduledTransfer(net.minecraft.server.MinecraftServer server)
+            throws ReflectiveOperationException {
+        long elapsed = server.getTickCount() - scheduledStartTick;
+        if (elapsed <= 0) return false;
+        if (elapsed > 160)
+            throw new IllegalStateException("Installed network never transferred after 160 real server ticks");
+        int source = diamonds(scheduledBarrels[0]), sink = diamonds(scheduledBarrels[1]);
+        if (source == scheduledBefore[0] && sink == scheduledBefore[1]) return false;
+        int moved = scheduledBefore[0] - source;
+        if (moved <= 0 || moved != sink - scheduledBefore[1]
+                || source + sink != 1728 || source <= 0)
+            throw new IllegalStateException("Native scheduled NetworkEngine tick lost/duplicated inventory");
+        Class<?> part = scheduledNodes[0].getClass();
+        for (int i = 0; i < 2; i++) {
+            if (!((ItemStack)part.getField("pendingItem").get(scheduledNodes[i])).isEmpty())
+                throw new IllegalStateException("Native scheduled transfer has unsealed item escrow");
+            // Disable the driver after the observed cycle. This bounds movement
+            // during asynchronous RCON shutdown and leaves a passive saved-world
+            // checkpoint that the next installed JAR must explicitly rearm.
+            part.getField("transferMode").setInt(scheduledNodes[i], 0);
+            part.getField("items").setBoolean(scheduledNodes[i], false);
+            scheduledHosts[i].getClass().getMethod("changed").invoke(scheduledHosts[i]);
+            scheduledBarrels[i].setChanged();
+        }
+        String sourceId = part.getField("identity").get(scheduledNodes[0]).toString();
+        String sinkId = part.getField("identity").get(scheduledNodes[1]).toString();
+        if (sourceId.equals(sinkId)) throw new IllegalStateException("Duplicate scheduled native node UUID");
+        pendingScheduledTransfer = "{\"engine\":\"net.foundations.pl4.NetworkEngine.tick\","
+            + "\"source_before\":" + scheduledBefore[0] + ",\"source_after\":" + source
+            + ",\"sink_before\":" + scheduledBefore[1] + ",\"sink_after\":" + sink
+            + ",\"delivered\":" + moved + ",\"total\":1728,\"sample_ticks_observed\":" + elapsed
+            + ",\"direct_transfer_invocations\":0,\"source_identity\":\"" + sourceId
+            + "\",\"sink_identity\":\"" + sinkId + "\",\"pending_escrow\":0}";
+        System.out.println("PL4_INSTALLED_SCHEDULED_TICK:" + pendingWorldSha + ":" + moved);
+        return true;
+    }
+
+    /**
+     * Restored HostEntity.onLoad registration and real server tick delivery
+     * are independently awaited. No test-side call drives the transfer.
      */
     private void serverTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
         if (pendingWorldPhase == null) return;
         var server = event.getServer();
         try {
-            var nativeNetwork = Class.forName("net.foundations.pl4.NetworkEngine",
-                true, pendingNativeBlock.getClass().getClassLoader());
-            var loaded = (java.util.List<?>) nativeNetwork.getMethod("all",
-                net.minecraft.server.MinecraftServer.class).invoke(null, server);
-            int minimum = pendingWorldPhase.equals("seed") ? 4 : 13;
-            if (loaded.size() < minimum) {
-                if (++nativeWaitTicks <= 200) return;
-                throw new IllegalStateException("Restored PL4 HostEntity.onLoad registration "
-                    + "did not complete after 200 native ticks: loaded_parts=" + loaded.size()
-                    + " expected_at_least=" + minimum);
+            if (pendingTopology == null) {
+                var nativeNetwork = Class.forName("net.foundations.pl4.NetworkEngine",
+                    true, pendingNativeBlock.getClass().getClassLoader());
+                var loaded = (java.util.List<?>) nativeNetwork.getMethod("all",
+                    net.minecraft.server.MinecraftServer.class).invoke(null, server);
+                int minimum = pendingWorldPhase.equals("seed") ? 4 : 13;
+                if (loaded.size() < minimum) {
+                    if (++nativeWaitTicks <= 200) return;
+                    throw new IllegalStateException("Restored PL4 HostEntity.onLoad registration "
+                        + "did not complete after 200 native ticks: loaded_parts=" + loaded.size()
+                        + " expected_at_least=" + minimum);
+                }
+                pendingTopology = installedCableTopologyProof(server, server.overworld(),
+                    pendingNativeBlock, pendingWorldPhase.equals("seed"));
+                beginScheduledTransfer(server, server.overworld(), pendingWorldPhase.equals("seed"));
+                return;
             }
-            String topology = installedCableTopologyProof(server, server.overworld(),
-                pendingNativeBlock, pendingWorldPhase.equals("seed"));
+            if (!pollScheduledTransfer(server)) return;
             String destination = System.getenv("PL4_WORLD_PROOF");
             if (destination == null || destination.isEmpty())
                 throw new IllegalStateException("Missing native world proof destination");
             Path proof = Path.of(destination);
             Files.createDirectories(proof.getParent());
+            String liveTopology = pendingTopology.replace(
+                "\"automatic_tick_tested\":false}", "\"automatic_tick_tested\":true}");
+            if (liveTopology.equals(pendingTopology))
+                throw new IllegalStateException("Native topology missing automatic-tick proof gate");
             String worldJson = "{\"schema\":1,\"phase\":\"" + pendingWorldPhase
                 + "\",\"expected_jar_sha256\":\"" + pendingWorldSha
                 + "\",\"host\":\"foundations_pl4:multipart_host\""
                 + ",\"host_entity\":\"foundations_pl4:host\""
                 + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
                 + pendingParts + ",\"transfer\":" + pendingTransfer
-                + ",\"topology\":" + topology + "}\n";
+                + ",\"topology\":" + liveTopology
+                + ",\"scheduled_transfer\":" + pendingScheduledTransfer + "}\n";
             Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
             String phase = pendingWorldPhase, sha = pendingWorldSha;
             pendingWorldPhase = null;
             System.out.println("PL4_INSTALLED_WORLD_" + phase.toUpperCase() + ":" + sha);
             System.out.println("PL4_INSTALLED_BINARY_READY:" + sha);
         } catch (ReflectiveOperationException | java.io.IOException failure) {
-            throw new IllegalStateException("Installed native graph lifecycle/proof unavailable", failure);
+            throw new IllegalStateException("Installed native scheduled-tick proof unavailable", failure);
         }
     }
 
