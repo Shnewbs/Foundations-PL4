@@ -1,0 +1,71 @@
+name: Installed 1.21.1 released-beta JAR server smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/installed-beta-binary-smoke.yml'
+      - 'tools/multiplayer-probe/installed_binary_smoke.py'
+      - 'tools/multiplayer-probe/test_installed_binary_smoke.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pl4-installed-beta-jar-native-smoke
+  cancel-in-progress: false
+jobs:
+  installed_release_server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: control/**/*.gradle*
+      - name: Check probe isolation and adversarial receipt regressions
+        run: python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_smoke.py'
+      - name: Download and revalidate immutable public released-beta JAR bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p results/immutable-baseline
+          gh api repos/Shnewbs/Foundations-PL4/git/ref/tags/v0.2b.0 > results/immutable-baseline/tag-ref.json
+          gh api repos/Shnewbs/Foundations-PL4/releases/tags/v0.2b.0 > results/immutable-baseline/release.json
+          gh release download v0.2b.0 -R Shnewbs/Foundations-PL4 --pattern 'FoundationsPL4-1.21.1-0.2b.0.jar' --dir results/immutable-baseline
+          python3 control/tools/multiplayer-probe/release_binary_preflight.py \
+            --release-json results/immutable-baseline/release.json \
+            --tag-ref-json results/immutable-baseline/tag-ref.json \
+            --jar results/immutable-baseline/FoundationsPL4-1.21.1-0.2b.0.jar \
+            --receipt results/immutable-baseline/verified-binary-preflight.json
+      - name: Install genuine released JAR in isolated probe-only NeoForge runtime
+        run: |
+          python3 control/tools/multiplayer-probe/installed_binary_smoke.py prepare \
+            --checkout control \
+            --jar results/immutable-baseline/FoundationsPL4-1.21.1-0.2b.0.jar \
+            --output installed-runtime \
+            --sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229
+      - name: Run native dedicated server with installed released-beta production JAR
+        run: |
+          python3 control/tools/multiplayer-probe/installed_binary_smoke.py run \
+            --output installed-runtime --timeout-seconds 1500
+      - name: Preserve installed-runtime evidence even on failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installed-released-beta-server-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/immutable-baseline/tag-ref.json
+            results/immutable-baseline/release.json
+            results/immutable-baseline/verified-binary-preflight.json
+            installed-runtime/prepared-installation.json
+            installed-runtime/installed-server-proof.json
+            installed-runtime/installed-server-receipt.json
+            installed-runtime/installed-server.log
+            installed-runtime/run/logs/
+            installed-runtime/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: warn
