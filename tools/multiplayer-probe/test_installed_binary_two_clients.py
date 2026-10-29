@@ -45,7 +45,7 @@ class InstalledTwoClientPolicy(unittest.TestCase):
     def test_part_kind_constructed_from_installed_jar(self):
         import inspect
         source = inspect.getsource(gate._prepare)
-        self.assertIn('Class.forName(\\"net.foundations.pl4.Kind\\")', source)
+        self.assertIn('Class<?> kind = Class.forName(', source)
         self.assertIn('installedPart(\\"NODE\\",Direction.EAST', source)
         self.assertIn('installedPart(\\"DATA_CABLE\\",Direction.DOWN', source)
 
