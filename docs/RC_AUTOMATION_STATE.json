@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T0802Z-integrated-cable-two-client",
-    "claimed_at": "2026-10-29T08:03:58.868Z",
-    "expires_at": "2026-10-29T08:29:58.868Z",
-    "base_commit": "279808f46a8b7299d4b84deb241691d5d5a5b16a",
-    "purpose": "Implement exact 1.21.1 installed-binary two-client plus scheduled cable transfer acceptance; finite guarded source edit run",
-    "renewals": 0
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29T07:52:32.722Z: Exact installed 1.21.1 immutable beta→pinned-native candidate two real-client saved-world upgrade plus NEW independent playerdata gzip/Anvil region NBT accepted in run 40837667228, artifact 12881367190 SHA256 7e5de9d675affc1dea07c506357a69e90d868d1435ef3e5b460b801f1b2ae336; 45/45 ZIP CRC, seed/restored native world 26/30 files, each phase 17+17 client plus 94 barrel diamonds =128, original owned node/cable UUIDs and zero escrow; controller source d632543d2d2168aa9cb8f2346f32eb08e1172af3, main verify 40837667338 PASS 194/194. Previous candidate RCON race run 40836989229 failed despite native self-stop; repaired bounded natural shutdown in d632543d2d2168aa9cb8f2346f32eb08e1172af3, 15 new negative tests. Publisher 40837667268 SKIPPED both. No new production RC/JAR publication, installed providers/online auth/cable+client integration/performance/other 23 targets unaccepted. 0/24 clearances; global writer lease released.",
+  "current_checkpoint": "2026-10-29T08:25:56.160Z: Actual installed Minecraft 1.21.1 immutable beta→pinned native-qualified candidate TWO graphical clients per phase AND native seven-centre DATA_CABLE scheduled transfer accepted in 40841205322. After severing a physical arm for 60 server ticks, restored cable delivered 64+64 diamonds automatically (no explicit Ref), saved source/sink 1728→1664/64→1600/128 conserved, all nine cable/endpoints identities and owner persisted in real raw Anvil NBT, zero escrow. Native source 8e61f688, 117/117 policy regressions, 46/46 retained outer ZIP CRC, 26/30 nested world ZIPs CRC, four visually inspected 960x720 screenshots (toast overlays remain), main 40841205325 PASS 194/194 and production JAR unchanged SHA256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c. Publisher 40841205217 skipped GitHub and CurseForge. No optional installed providers, post-owner revocation, arbitrary worlds, authenticated online multiplayer, sustained performance or other 23 exact versions accepted. 0/24 RC clearances; no release or upload.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Combine genuine installed 1.21.1 two-client StorageRequest with actual scheduled physical seven-centre DATA_CABLE automatic item transfer, migration, revocation and offline/online identity tests; validate native NBT and client screenshots on one pinned workflow.",
-    "Expand installed optional item/power providers, unloaded and disconnected double-inventory handler aliases, arbitrary real modpack worlds and sustained active-provider/server performance; all 24 RC flags remain false.",
-    "Extend independent exact-version acceptance beyond 1.21.1 to the other 23 maintained versions; investigate 1.6.4 natural gravel x80 root cause with saved native observation, no rebranding neighboring JARs.",
-    "Publish only when exact tagged source is fully accepted with rc_publication_cleared explicitly true, and tagged immutable release/CurseForge receipt checks pass. Currently no eligible new release."
+    "Add installed optional provider tests (item, power, FE/EU/J/Electrodynamics/GregTech as applicable), unloaded/disconnected double-inventory aliases, owner-revocation after capability callback and recovery with exact source/JAR evidence.",
+    "Extend exact native authenticated multiplayer, arbitrary-world upgrades, screenshot visual polish and sustained busy-network performance for Minecraft 1.21.1; preserve new two-client cable acceptance receipt.",
+    "Continue native exact-version acceptance of the remaining 23 targets using hourly-builds.yml, including 1.6.4 natural gravel x80 root-cause; native pass alone never clears RC.",
+    "Only publish a new immutable source-qualified exact-target GitHub RC and CurseForge beta after recorded per-target rc_publication_cleared=true, no prior upload and verified receipts; currently 0/24."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -67,28 +60,35 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T0735Z-native-two-client-nbt",
-    "released_at": "2026-10-29T07:52:32.722Z",
-    "purpose": "Exact installed two-client native saved-NBT proof and explicit acceptance gating; finite source edits",
+    "owner": "pl4-hourly-chat-20261029T0802Z-integrated-cable-two-client",
+    "released_at": "2026-10-29T08:25:56.160Z",
+    "purpose": "Implement exact 1.21.1 installed-binary two-client plus scheduled cable transfer acceptance; finite guarded source edit run",
     "source_commits": [
-      "2b2c1144d05e5fb4af8597d2b92e213a4ff12ced",
-      "d632543d2d2168aa9cb8f2346f32eb08e1172af3"
+      "0538bd48962796d18c3150453a99fd2d26f826c8",
+      "e23cf9f254ccd5126bd78430926bbae72ed9c131",
+      "8008b23bc01597ca586f4499333d8f4c2d38c2c3",
+      "0bbe0b18011b1d2c27c28d812eca620d1633858a",
+      "7bedbb6e96a451cc4c1973c94ac17aaa70a42327",
+      "df9250b067466c379cad15e0398c429e9e03c8de",
+      "8e61f688914858038edbd1c7fafced2231c7a29a"
     ],
-    "failure_root_cause": "Native server/Gradle wrapper shutdown RCON race repaired",
-    "installed_native_run": 40837667228,
-    "artifact_id": 12881367190,
-    "artifact_sha256": "7e5de9d675affc1dea07c506357a69e90d868d1435ef3e5b460b801f1b2ae336",
-    "main_verification_run": 40837667338,
-    "native_tests": "194/194",
-    "regression_tests_added": 15,
-    "new_github_rcs": 0,
+    "successful_installed_native_run": 40841205322,
+    "artifact_id": 12882339622,
+    "artifact_zip_sha256": "11159abf7aa4c00b340214b46a1b822672807e126952244c002f78a6a5d8c962",
+    "native_main_verify": 40841205325,
+    "native_Gametests": "194/194",
+    "policy_regressions": "117/117",
+    "publication_run": 40841205217,
+    "github_release": "SKIPPED",
+    "curseforge_upload": "SKIPPED",
+    "new_github_RCs": 0,
     "new_curseforge_uploads": 0,
     "rc_clearance": "0/24",
-    "evidence": "docs/acceptance/rc-dev-1211-installed-clients-native-saved-nbt-2026-10-29.json",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-binary-two-client-cable-auto-transfer-2026-10-29.json",
     "lease_bounded": true,
-    "prior_release_owner": "pl4-hourly-chat-20261029T0706Z-installed-clients"
+    "prior_release_owner": "pl4-hourly-chat-20261029T0735Z-native-two-client-nbt"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-binary-two-real-client-migration-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-binary-two-client-cable-auto-transfer-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -1720,5 +1720,26 @@
     "rc_clearances": "0/24",
     "new_releases": 0,
     "new_uploads": 0
+  },
+  "latest_1211_installed_two_client_cable_auto_transfer": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-binary-two-client-cable-auto-transfer-2026-10-29.json",
+    "source_commit": "8e61f688914858038edbd1c7fafced2231c7a29a",
+    "native_run": 40841205322,
+    "artifact_id": 12882339622,
+    "artifact_zip_sha256": "11159abf7aa4c00b340214b46a1b822672807e126952244c002f78a6a5d8c962",
+    "policy_regressions": "117/117",
+    "main_native_run": 40841205325,
+    "native_Gametests": "194/194",
+    "automatic_delivery": [
+      64,
+      64
+    ],
+    "severed_ticks": [
+      60,
+      60
+    ],
+    "raw_NBT": true,
+    "clients_per_phase": 2,
+    "rc_publication_cleared": false
   }
 }
