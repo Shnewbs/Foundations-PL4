@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261029T1542Z",
-    "acquired_at": "2026-10-29T15:42:37.409Z",
-    "expires_at": "2026-10-29T15:59:37.409Z",
-    "source_branch": "main",
-    "base_commit": "0883bf98bd185aecfb6b1d0111045b4d676c1b7b",
-    "task": "Scoped loaded HostEntity alias rejection and exact 1.21.1 native regression, no publication"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
+  "current_checkpoint": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Use an actual installed third-party item capability provider with callback-time ownership and host/chunk revocation (simulation, getSlots, execution) against native 1.21.1 JAR f2409659; record exact provider version, source/JAR/screenshots and no item loss",
-    "Implement and test disconnected/unloaded inventory aliases and cached topology invalidation mid-provider callback (including world unload and replacement of block entity) without force-loading, rechecking native escrow recovery",
-    "Expand exact-version installed-provider, real client, online-auth multiplayer, arbitrary migration and sustained performance acceptance to mc/26.3 and the remaining 22 maintained targets; preserve historical 1.6.4 gravel root-cause blocker",
-    "Do not mark any RC clearance or publish until applicable exact-source all-version/per-target acceptance is fully recorded; confirm immutable tag and existing Github/CurseForge receipts before attempting release"
+    "Install a real third-party provider mod in an isolated exact 1.21.1 server/client and test item capability reentrancy, late owner/host/chunk revocation, provider version, screenshots and native saved world inventory/escrow receipts. Native tests and installed vanilla chests do not qualify third-party providers.",
+    "Pin and execute the latest 200-case source/JAR (383c537, SHA-256 51e474f...) in installed server and two real client workflows separately from earlier 199-case evidence; audit disconnected/unloaded alias, stale registration after unload and replacement without chunk force-loading, preserving exact world hashes.",
+    "Continue independent exact-version work and publisher guard reviews for 26.3 and other 22 maintained targets; online authenticated multiplayer, arbitrary saved-world migration, sustained performance and historical 1.6.4 gravel x80 causality remain open.",
+    "Never clear exact-target RC publication flags or publish development snapshots. Publish only fully qualified exact-tag/source immutable RC with receipts through existing validated GitHub and CurseForge paths."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -100,7 +93,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
+  "previous_checkpoint": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -895,7 +888,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
+  "latest_work": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1616,27 +1609,12 @@
     "rc_publication_cleared": false
   },
   "last_writer_lease_release": {
-    "owner": "pl4-hourly-chat-20261029T0900Z-installed-provider-callback",
-    "released_at": "2026-10-29T09:20:00Z",
-    "purpose": "Finite physical cable live-ownership source fix and exact 1.21.1 native verification; no RC publication",
-    "source_commits": [
-      "71331c41c30bc8c47bf9dfba9995d0d50a5758bf",
-      "f55ee2f03f599d04b3e473e9ff1c45ae8968e648",
-      "d0694636a0a18aefe26eae3ae18d75763e5b578f",
-      "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5"
-    ],
-    "qualified_exact_source": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
-    "native_run": 40848203024,
-    "native_required_passed": 195,
-    "artifact_id": 12885364230,
-    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
-    "evidence": "docs/acceptance/rc-dev-1211-physical-owner-isolation-native-2026-10-29.json",
-    "publisher_run": 40848203026,
-    "publisher_steps": "BOTH_SKIPPED",
-    "rc_clearance": "0/24",
-    "new_releases": 0,
-    "new_curseforge_uploads": 0,
-    "lease_bounded": true
+    "owner": "pl4-chat-hourly-20261029T1542Z",
+    "released_at": "2026-10-29T15:50:36.867Z",
+    "source_branch": "main",
+    "checkpoint_parent": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
+    "rc_clearance": "0/24"
   },
   "last_writer_release_previous_1211_scheduled": {
     "owner": "pl4-hourly-chat-20261029T0410Z-installed-two-client",
@@ -2071,10 +2049,30 @@
     "rc_publication_cleared": false
   },
   "last_completed_writer": {
-    "owner": "pl4-hourly-chat-20261029T1406Z",
-    "released_at": "2026-10-29T14:24:47.938Z",
-    "checkpoint_source_parent": "0b3b75220623cff43856c171d6ab9ee5b2d9f129",
-    "evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
+    "owner": "pl4-chat-hourly-20261029T1542Z",
+    "released_at": "2026-10-29T15:50:36.867Z",
+    "checkpoint_source_parent": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
     "writer_lease": "released"
+  },
+  "latest_1211_stale_registered_host_alias": {
+    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
+    "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "native_run": 40904509128,
+    "artifact_id": 12909794155,
+    "artifact_sha256": "c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c",
+    "production_jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "game_tests": "200/200 PASS",
+    "installed_200_case_jar": "PENDING",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_previous_199_installed": {
+    "source_commit": "ef12490f5eca4d801680069469ef9b37c830f27c",
+    "run_id": 40901066957,
+    "artifact_id": 12910365445,
+    "artifact_zip_sha256": "edc7be92245297b2ca3d2f07370339f50c97ad5a1bc739ee80bb8c4ba098e8ad",
+    "production_jar_sha256": "2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0",
+    "installed_two_client": "PASS_SCOPED_199_CASE_BINARY_ONLY",
+    "rc_publication_cleared": false
   }
 }

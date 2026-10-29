@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-10-29T15:50:36.867Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "execution_scope": "Finite scheduled source implementation and verified native exact-source build; independent prior installed 199-case migration; no release.",
+  "writer": "pl4-chat-hourly-20261029T1542Z",
+  "writer_lease_released_in_checkpoint": true,
+  "implementation": {
+    "source_change_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "writer_claim_commit": "38f7f4e880c7923005e70f1dbec2bc59907a2e7e",
+    "changed_files": [
+      "src/main/java/net/foundations/pl4/NetworkEngine.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+      "tools/verify_r16.py",
+      "BUILD_STATUS.json"
+    ],
+    "behavior": "NetworkEngine.loadedHost refuses removed/unloaded/wrong-server and now refuses replaced block entities at the same loaded position even if stale callbacks re-register a HostEntity. Native test verifies original membership, re-registration after chest replacement, no stale Ref in all(server), and absent storage group after rebuild. Artificial late callback, not a real external installed provider."
+  },
+  "minecraft_1211_native": {
+    "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "run_id": 40904509128,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40904509128",
+    "game_tests": {
+      "passed": 200,
+      "required": 200,
+      "observed_log": "All 200 required tests passed :)",
+      "gradle": "BUILD SUCCESSFUL"
+    },
+    "artifact_id": 12909794155,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40904509128/artifacts/12909794155",
+    "artifact_zip_sha256": "c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c",
+    "source_artifact_id": 12909628899,
+    "source_artifact_zip_sha256": "76a1efc376ff3849634ae0364b94225784cf15214eb3e4786af666ba7e899edf",
+    "production_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "production_jar_entries": 883,
+    "production_jar_crc": "PASS",
+    "artifact_entries": 6,
+    "artifact_crc": "PASS",
+    "source_native_test_count": 38,
+    "installed_production_binary_two_clients": "NOT_TESTED_FOR_THIS_NEW_200_CASE_JAR",
+    "third_party_provider": "NOT_TESTED",
+    "rc_publication_cleared": false
+  },
+  "previous_exact_199_case_installed": {
+    "source_commit": "ef12490f5eca4d801680069469ef9b37c830f27c",
+    "prior_control_commit": "0883bf98bd185aecfb6b1d0111045b4d676c1b7b",
+    "production_jar_sha256": "2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0",
+    "native_run_id": 40901067002,
+    "verified_native": "199/199 PASS",
+    "installed_run_id": 40901066957,
+    "installed_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40901066957",
+    "result": "PASS_TWO_REAL_OFFLINE_GUI_CLIENTS_BOTH_PHASES",
+    "artifact_id": 12910365445,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40901066957/artifacts/12910365445",
+    "artifact_zip_sha256": "edc7be92245297b2ca3d2f07370339f50c97ad5a1bc739ee80bb8c4ba098e8ad",
+    "artifact_crc": "PASS_46_OF_46",
+    "saved_world_archive_crc": "PASS_26_SEED_30_RESTORE",
+    "baseline_source": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "baseline_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "two_real_graphical_clients_per_phase": 2,
+    "physical_data_cable_centres": 7,
+    "severed_ticks_per_phase": [
+      60,
+      60
+    ],
+    "automatic_transfer_diamonds_per_phase": [
+      64,
+      64
+    ],
+    "diamonds_conserved": 1728,
+    "pending_item_escrow": 0,
+    "saved_world_uuids_preserved": 9,
+    "client_screenshots": 4,
+    "limitations": [
+      "Offline-mode loopback, not authenticated users",
+      "Installed third-party provider absent",
+      "Screenshots contain Minecraft notification overlays",
+      "Not accepted for new 200-case binary",
+      "Arbitrary-world migrations, sustained performance and unloaded provider aliases untested"
+    ]
+  },
+  "publication": {
+    "workflow_id": 40904508972,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40904508972",
+    "github_release": "SKIPPED",
+    "curseforge_upload": "SKIPPED",
+    "new_release_urls": [],
+    "new_curseforge_upload_ids": [],
+    "clearances": "0/24",
+    "development_only": true
+  },
+  "native_26_3_prior": {
+    "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+    "workflow_id": 40883621654,
+    "result": "PASS_TWO_NATIVE_LOADER_PROFILES_192_PL4_TESTS_EACH_NOT_RC"
+  },
+  "limitations": [
+    "No new installed 200-case JAR client qualification",
+    "No third-party installed providers, authenticated multiplayer or sustained workload",
+    "Synthetic stale re-registration does not independently establish every native chunk unload callback ordering",
+    "Other 23 exact targets remain RC-uncleared",
+    "Experimental 1.6.4 gravel root cause unresolved"
+  ],
+  "next_work": [
+    "Install a real third-party provider mod in an isolated exact 1.21.1 server/client and test item capability reentrancy, late owner/host/chunk revocation, provider version, screenshots and native saved world inventory/escrow receipts. Native tests and installed vanilla chests do not qualify third-party providers.",
+    "Pin and execute the latest 200-case source/JAR (383c537, SHA-256 51e474f...) in installed server and two real client workflows separately from earlier 199-case evidence; audit disconnected/unloaded alias, stale registration after unload and replacement without chunk force-loading, preserving exact world hashes.",
+    "Continue independent exact-version work and publisher guard reviews for 26.3 and other 22 maintained targets; online authenticated multiplayer, arbitrary saved-world migration, sustained performance and historical 1.6.4 gravel x80 causality remain open.",
+    "Never clear exact-target RC publication flags or publish development snapshots. Publish only fully qualified exact-tag/source immutable RC with receipts through existing validated GitHub and CurseForge paths."
+  ]
+}

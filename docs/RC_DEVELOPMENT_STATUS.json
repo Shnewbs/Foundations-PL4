@@ -440,7 +440,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 197,
+      "expected_native_fixtures": 200,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -449,16 +449,16 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PASS_197_OF_197_EXACT_SOURCE_NO_RC_CLEARANCE",
+      "native_gate": "PASS_200_OF_200_EXACT_SOURCE_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
-      "workflow_run": 40889342067,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889342067",
+      "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+      "workflow_run": 40904509128,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40904509128",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
+      "hourly_native_evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
       "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
-      "observed_native_fixtures": 197,
-      "runtime_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
+      "observed_native_fixtures": 200,
+      "runtime_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -1784,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
+  "latest_work": "2026-10-29 15:50 UTC: 1.21.1 stale HostEntity registration fix on exact source 383c5378457d06725b3597c6051e2cb4c51e4253 passed 200/200 native GameTests (run 40904509128); production development JAR SHA-256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf, retained ZIP SHA-256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c. Earlier 199-case exact binary ef12490/2ddd2c passed two real offline clients each phase and 64+64 automatic transfers in installed run 40901066957, NOT this new 200-case binary. All 24 RC clearance flags false; no new GitHub RC or CurseForge upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3571,6 +3571,17 @@
     ],
     "jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
     "evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_stale_registered_host_alias": {
+    "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+    "expected_native_fixtures": 200,
+    "native_run": 40904509128,
+    "jar_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+    "installed_this_exact_jar": false,
+    "previous_installed_199_run": 40901066957,
+    "previous_installed_199_jar_sha256": "2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0",
+    "evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
     "rc_publication_cleared": false
   }
 }
