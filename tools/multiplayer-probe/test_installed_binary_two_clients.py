@@ -139,8 +139,18 @@ class InstalledTwoClientPolicy(unittest.TestCase):
             "items_per_player": [17, 17], "remaining_items": 94,
             "duplicate_network_requests_ignored": True, "saved_world_restore": False,
         }
+        self.server["cable_transfer"] = {
+            "engine": "net.foundations.pl4.NetworkEngine.tick", "cable_count": 7,
+            "connected_endpoints": 2, "severed_endpoints": 1,
+            "severed_ticks": 60, "source_before": 1728, "source_after": 1664,
+            "sink_before": 0, "sink_after": 64, "delivered": 64,
+            "total": 1728, "direct_transfer_invocations": 0, "pending_escrow": 0,
+            "identities": ["abcdef01-1111-2222-3333-%012x" % i for i in range(9)],
+            "two_real_clients_connected": True,
+        }
         self._write("server-multiplayer-proof.json", json.dumps(self.server))
-        self._write("server.log", gate.TAG + gate.BASELINE_JAR)
+        self._write("server.log", gate.TAG + gate.BASELINE_JAR + "\n" +
+                    gate.CABLE_TAG + gate.BASELINE_JAR + ":64\n")
         for index, name in enumerate(NAMES):
             self._write(name + ".log", gate.CLIENT_TAG + gate.BASELINE_JAR + ":" + name)
             self._write(name + "-storage.png", b"\x89PNG\r\n\x1a\n" + b"!" * 1100)
@@ -223,6 +233,64 @@ class InstalledTwoClientPolicy(unittest.TestCase):
     def test_tampered_screenshot_fails_sha(self):
         self._write("PL4ProbeB-storage.png", b"not real")
         with self.assertRaisesRegex(ValueError, "artifact"):
+            self.check_fixture()
+
+
+    def _cable_mutation(self, **values):
+        self.server["cable_transfer"].update(values)
+        self._write("server-multiplayer-proof.json", json.dumps(self.server))
+        self._manifest()
+
+    def test_missing_cable_receipt_cannot_qualify(self):
+        self.server.pop("cable_transfer")
+        self._write("server-multiplayer-proof.json", json.dumps(self.server))
+        self._manifest()
+        with self.assertRaisesRegex(ValueError, "cable transfer"):
+            self.check_fixture()
+
+    def test_short_disconnected_interval_fails(self):
+        self._cable_mutation(severed_ticks=1)
+        with self.assertRaisesRegex(ValueError, "revocation"):
+            self.check_fixture()
+
+    def test_two_client_presence_required_during_delivery(self):
+        self._cable_mutation(two_real_clients_connected=False)
+        with self.assertRaisesRegex(ValueError, "revocation"):
+            self.check_fixture()
+
+    def test_direct_transfer_substitution_fails(self):
+        self._cable_mutation(direct_transfer_invocations=1)
+        with self.assertRaisesRegex(ValueError, "scheduled-tick"):
+            self.check_fixture()
+
+    def test_duplicate_saved_cable_uuid_fails(self):
+        self.server["cable_transfer"]["identities"][8] = self.server["cable_transfer"]["identities"][7]
+        self._write("server-multiplayer-proof.json", json.dumps(self.server))
+        self._manifest()
+        with self.assertRaisesRegex(ValueError, "identity"):
+            self.check_fixture()
+
+    def test_synthetic_item_creation_fails(self):
+        self._cable_mutation(sink_after=65)
+        with self.assertRaisesRegex(ValueError, "item conserving"):
+            self.check_fixture()
+
+    def test_boolean_cannot_substitute_native_tick_count(self):
+        self._cable_mutation(severed_ticks=True)
+        with self.assertRaisesRegex(ValueError, "integer count"):
+            self.check_fixture()
+
+    def test_missing_native_cable_tick_marker_fails(self):
+        self._write("server.log", gate.TAG + gate.BASELINE_JAR)
+        self._manifest()
+        with self.assertRaisesRegex(ValueError, "marker"):
+            self.check_fixture()
+
+    def test_replayed_native_cable_tick_marker_fails(self):
+        p = self.path / "server.log"
+        p.write_text(p.read_text() + gate.CABLE_TAG + gate.BASELINE_JAR + ":64\n")
+        self._manifest()
+        with self.assertRaisesRegex(ValueError, "marker"):
             self.check_fixture()
 
     def test_duplicate_server_marker_is_rejected(self):
