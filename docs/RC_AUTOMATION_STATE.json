@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T0410Z-installed-two-client",
+    "claimed_at": "2026-10-29T04:10:52.663Z",
+    "expires_at": "2026-10-29T04:34:52.663Z",
+    "purpose": "Implement installed-JAR two-client transfer/migration acceptance and guard source edits",
+    "expected_parent": "c89c3224f07e3363fe4f21f579ea637513639fde",
+    "scope": "main; exact 1.21.1 native test workflows only"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
