@@ -5,6 +5,7 @@ permissions:
   contents: read
 jobs:
   verify:
+    if: github.ref == 'refs/heads/mc/1.19.1'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -13,10 +14,25 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Record immutable checked-out source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          mkdir -p verification-logs
+          git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
+          git archive --format=zip --output=verification-logs/source-at-build.zip HEAD
+          sha256sum verification-logs/source-at-build.zip > verification-logs/SOURCE_ARCHIVE_SHA256SUMS.txt
       - name: Compile and reobfuscate exact Forge 42 artifacts
         run: bash gradlew --no-daemon --console=plain clean build
       - name: Run installed native GameTests and production-only smoke
         run: python3 tools/run_1191_native_tests.py
+      - name: Hash retained production and native evidence
+        run: |
+          set -euo pipefail
+          test -n "$(find build/libs -maxdepth 1 -type f -name '*.jar' -print -quit)"
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 sha256sum > verification-logs/JAR_SHA256SUMS.txt
+          find verification-logs -maxdepth 1 -type f -name '*.log' -print0 | sort -z | xargs -0 -r sha256sum > verification-logs/LOG_SHA256SUMS.txt
+          sha256sum -c verification-logs/JAR_SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
