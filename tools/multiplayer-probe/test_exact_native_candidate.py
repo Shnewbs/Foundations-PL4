@@ -13,6 +13,7 @@ digest_file = digest
 
 SOURCE = "a" * 40
 NAME = "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar"
+NATIVE_LOG = "========= 194 GAME TESTS COMPLETE IN 5.597 s ======================\nAll 194 required tests passed :)\nBUILD SUCCESSFUL\n"
 
 
 class ExactNativeCandidateTests(unittest.TestCase):
@@ -39,6 +40,7 @@ class ExactNativeCandidateTests(unittest.TestCase):
     def write_archive(self, source=SOURCE, member=NAME, extra=None, data=None):
         with zipfile.ZipFile(self.artifact, "w") as z:
             z.writestr("verification-logs/SOURCE_COMMIT.txt", source + "\n")
+            z.writestr("verification-logs/native.log", NATIVE_LOG)
             z.writestr(member, self.binary if data is None else data)
             z.writestr("build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-sources.jar", b"sources")
             if member != "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev-native-scenarios.jar":
@@ -67,6 +69,7 @@ class ExactNativeCandidateTests(unittest.TestCase):
     def test_main_artifact_without_embedded_marker_accepts_authenticated_gitHub_source(self):
         with zipfile.ZipFile(self.artifact, "w") as z:
             z.writestr(NAME, self.binary)
+            z.writestr("verification-logs/native.log", NATIVE_LOG)
         metadata = self.metadata()
         proof = gate.extract(self.artifact, self.output, digest_file(self.artifact),
                              SOURCE, self.jar_sha, metadata)
@@ -76,11 +79,13 @@ class ExactNativeCandidateTests(unittest.TestCase):
     def test_main_artifact_without_source_and_without_metadata_is_rejected(self):
         with zipfile.ZipFile(self.artifact, "w") as z:
             z.writestr(NAME, self.binary)
+            z.writestr("verification-logs/native.log", NATIVE_LOG)
         with self.assertRaises(ValueError): self.extract()
 
     def test_main_artifact_mismatched_metadata_source_rejected(self):
         with zipfile.ZipFile(self.artifact, "w") as z:
             z.writestr(NAME, self.binary)
+            z.writestr("verification-logs/native.log", NATIVE_LOG)
         meta = self.metadata(sha="b" * 40)
         with self.assertRaises(ValueError):
             gate.extract(self.artifact, self.output, digest_file(self.artifact),
@@ -89,6 +94,7 @@ class ExactNativeCandidateTests(unittest.TestCase):
     def test_main_artifact_expired_metadata_rejected(self):
         with zipfile.ZipFile(self.artifact, "w") as z:
             z.writestr(NAME, self.binary)
+            z.writestr("verification-logs/native.log", NATIVE_LOG)
         meta = self.metadata(expired=True)
         with self.assertRaises(ValueError):
             gate.extract(self.artifact, self.output, digest_file(self.artifact),
@@ -104,6 +110,20 @@ class ExactNativeCandidateTests(unittest.TestCase):
         self.assertFalse(proof["installed_candidate_binary_executed"])
         self.assertFalse(proof["rc_publication_cleared"])
         self.assertEqual(json.loads(Path(str(self.output)+".provenance.json").read_text()), proof)
+
+    def test_missing_native_jvm_log_rejected(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr("verification-logs/SOURCE_COMMIT.txt", SOURCE + "\n")
+            z.writestr(NAME, self.binary)
+        with self.assertRaises(ValueError): self.extract()
+
+    def test_native_failed_game_test_count_rejected(self):
+        self.write_archive(extra=[("verification-logs/native-failure-summary.txt", b"failed")])
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr("verification-logs/SOURCE_COMMIT.txt", SOURCE + "\n")
+            z.writestr("verification-logs/native.log", "All 193 required tests passed :)\\nBUILD SUCCESSFUL\\n")
+            z.writestr(NAME, self.binary)
+        with self.assertRaises(ValueError): self.extract()
 
     def test_wrong_source_rejected(self):
         self.write_archive(source="b" * 40)
