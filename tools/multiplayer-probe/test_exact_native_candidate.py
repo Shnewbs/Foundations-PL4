@@ -125,6 +125,34 @@ class ExactNativeCandidateTests(unittest.TestCase):
             z.writestr(NAME, self.binary)
         with self.assertRaises(ValueError): self.extract()
 
+    def test_exact_195_native_source_requires_195_completion_and_pass(self):
+        with zipfile.ZipFile(self.artifact, "w") as z:
+            z.writestr("verification-logs/SOURCE_COMMIT.txt", SOURCE + "\\n")
+            z.writestr("verification-logs/native.log",
+                       "========= 195 GAME TESTS COMPLETE IN 5.621 s ======================\\n"
+                       "All 195 required tests passed :)\\nBUILD SUCCESSFUL\\n")
+            z.writestr(NAME, self.binary)
+        receipt = gate.extract(self.artifact, self.output,
+                               digest(self.artifact), SOURCE, self.jar_sha,
+                               expected_native_tests=195)
+        self.assertEqual(receipt["native_log_success_count"], "195/195")
+        self.assertEqual(receipt["production_jar_sha256"], self.jar_sha)
+
+    def test_declared_195_rejects_historical_194_native_log(self):
+        with self.assertRaisesRegex(ValueError, "195/195"):
+            gate.extract(self.artifact, self.output, digest(self.artifact),
+                         SOURCE, self.jar_sha, expected_native_tests=195)
+        self.assertFalse(self.output.exists())
+
+    def test_native_count_type_and_bounds_fail_closed(self):
+        for count in (True, 0, -1, 10001, "195"):
+            with self.subTest(count=count):
+                with self.assertRaisesRegex(ValueError, "native GameTest count"):
+                    gate.extract(self.artifact, self.output,
+                                 digest(self.artifact), SOURCE, self.jar_sha,
+                                 expected_native_tests=count)
+                self.assertFalse(self.output.exists())
+
     def test_wrong_source_rejected(self):
         self.write_archive(source="b" * 40)
         with self.assertRaises(ValueError): self.extract()
