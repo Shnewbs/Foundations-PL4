@@ -49,6 +49,8 @@ JAVA = r"""package net.foundations.pl4probe;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.UUID;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -69,6 +71,86 @@ import net.minecraft.world.item.Items;
 public final class InstalledBinaryProbe {
     public InstalledBinaryProbe(IEventBus bus, ModContainer container) {
         NeoForge.EVENT_BUS.addListener(this::serverStarted);
+    }
+
+
+    // Only the installed PL4 JAR supplies these classes. Reflection prevents
+    // compiling implementation classes into this independent probe workspace.
+    private static final UUID PART_OWNER = UUID.fromString("3d83227f-3df1-4c66-a188-a2f271bb86b3");
+
+    private static Object installedPart(ClassLoader loader, String kindName, Direction face)
+            throws ReflectiveOperationException {
+        Class<?> kind = Class.forName("net.foundations.pl4.Kind", true, loader);
+        Class<?> part = Class.forName("net.foundations.pl4.Part", true, loader);
+        return part.getConstructor(kind, Direction.class, UUID.class)
+            .newInstance(kind.getField(kindName).get(null), face, PART_OWNER);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static String configuredMultipartProof(net.minecraft.world.level.block.entity.BlockEntity host,
+            boolean seed) {
+        if (!host.getClass().getName().equals("net.foundations.pl4.HostEntity")) {
+            throw new IllegalStateException("World host is not installed PL4 HostEntity");
+        }
+        try {
+            ClassLoader loader = host.getClass().getClassLoader();
+            Class<?> partType = Class.forName("net.foundations.pl4.Part", true, loader);
+            Class<?> hostBlock = Class.forName("net.foundations.pl4.HostBlock", true, loader);
+            Map<Integer, Object> parts = (Map<Integer, Object>) host.getClass().getField("parts").get(host);
+            if (seed) {
+                if (!parts.isEmpty()) throw new IllegalStateException("Fresh PL4 host already contains parts");
+                var canAdd = hostBlock.getMethod("canAdd", host.getClass(), partType);
+                Object cable = installedPart(loader, "DATA_CABLE", Direction.DOWN);
+                if (!Boolean.TRUE.equals(canAdd.invoke(null, host, cable)))
+                    throw new IllegalStateException("Installed PL4 rejects native centre cable");
+                parts.put((Integer) partType.getMethod("slot").invoke(cable), cable);
+                Object reader = installedPart(loader, "INVENTORY_READER", Direction.EAST);
+                if (!Boolean.TRUE.equals(canAdd.invoke(null, host, reader)))
+                    throw new IllegalStateException("Installed PL4 rejects barrel-facing inventory reader");
+                parts.put((Integer) partType.getMethod("slot").invoke(reader), reader);
+                host.getClass().getMethod("changed").invoke(host);
+            }
+            // Reopen must load the same native saved Part objects; no fixture
+            // reconstruction or new UUID generation occurs on restore.
+            if (parts.size() != 2 || !parts.containsKey(5) || !parts.containsKey(6)) {
+                throw new IllegalStateException("Native saved PL4 parts missing or slot map changed");
+            }
+            StringBuilder result = new StringBuilder("[");
+            UUID firstIdentity = null;
+            for (int slot : new int[]{5, 6}) {
+                Object part = parts.get(slot);
+                if (part == null || part.getClass() != partType
+                        || !slotEquals(partType, part, slot)) {
+                    throw new IllegalStateException("Installed PL4 part has invalid native slot");
+                }
+                String kind = ((Enum<?>) partType.getField("kind").get(part)).name();
+                Direction face = (Direction) partType.getField("face").get(part);
+                UUID owner = (UUID) partType.getField("owner").get(part);
+                UUID identity = (UUID) partType.getField("identity").get(part);
+                String expectedKind = slot == 5 ? "INVENTORY_READER" : "DATA_CABLE";
+                Direction expectedFace = slot == 5 ? Direction.EAST : Direction.DOWN;
+                if (!expectedKind.equals(kind) || face != expectedFace
+                        || !PART_OWNER.equals(owner) || identity == null
+                        || identity.equals(firstIdentity)) {
+                    throw new IllegalStateException("Installed PL4 configured part identity changed");
+                }
+                firstIdentity = slot == 5 ? identity : firstIdentity;
+                if (slot == 6) result.append(",");
+                result.append("{\\"slot\\":").append(slot)
+                    .append(",\\"kind\\":\\"").append(kind)
+                    .append("\\",\\"face\\":\\"").append(face.name())
+                    .append("\\",\\"owner\\":\\"").append(owner)
+                    .append("\\",\\"identity\\":\\"").append(identity).append("\\"}");
+            }
+            return result.append("]").toString();
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Installed PL4 reflection/part API unavailable", e);
+        }
+    }
+
+    private static boolean slotEquals(Class<?> partType, Object part, int slot)
+            throws ReflectiveOperationException {
+        return ((Integer) partType.getMethod("slot").invoke(part)) == slot;
     }
 
     private void serverStarted(ServerStartedEvent event) {
@@ -141,6 +223,7 @@ public final class InstalledBinaryProbe {
             if (!hostType.equals("foundations_pl4:host")) {
                 throw new IllegalStateException("Installed PL4 block entity lost its registered type: " + hostType);
             }
+            String configuredParts = configuredMultipartProof(level.getBlockEntity(hostPos), phase.equals("seed"));
             try {
                 String path = System.getenv("PL4_WORLD_PROOF");
                 if (path == null || path.isEmpty()) {
@@ -152,7 +235,8 @@ public final class InstalledBinaryProbe {
                     + "\",\"expected_jar_sha256\":\"" + sha
                     + "\",\"host\":\"foundations_pl4:multipart_host\""
                     + ",\"host_entity\":\"foundations_pl4:host\""
-                    + ",\"barrel_diamonds\":128,\"server_started\":true}\n";
+                    + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
+                    + configuredParts + "}\n";
                 Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
             } catch (Exception failure) {
                 throw new IllegalStateException("Cannot preserve installed-JAR world proof", failure);

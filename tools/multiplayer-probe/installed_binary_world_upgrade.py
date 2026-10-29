@@ -19,6 +19,8 @@ from verify_upgrade_evidence import (
 HOST = "foundations_pl4:multipart_host"
 ENTITY = "foundations_pl4:host"
 WORLD_MARKER = "PL4_INSTALLED_WORLD_"
+PART_OWNER = "3d83227f-3df1-4c66-a188-a2f271bb86b3"
+PART_LAYOUT = ((5, "INVENTORY_READER", "EAST"), (6, "DATA_CABLE", "DOWN"))
 
 
 def require_sha(value):
@@ -47,9 +49,28 @@ def check_world_proof(output, phase, expected_sha):
         "server_started": True,
     }
     evidence = output / "installed-world-proof.json"
-    if not evidence.is_file() or json.loads(evidence.read_text()) != expected_proof:
+    if not evidence.is_file() or evidence.is_symlink():
+        raise ValueError("Missing native installed-JAR configured multipart proof")
+    proof = json.loads(evidence.read_text())
+    if (set(proof) != set(expected_proof) | {"parts"}
+            or any(proof.get(name) != value for name, value in expected_proof.items())):
         raise ValueError("Native installed-JAR block entity/inventory proof is absent or altered")
-    return expected_proof
+    parts = proof["parts"]
+    if not isinstance(parts, list) or len(parts) != len(PART_LAYOUT):
+        raise ValueError("Native installed PL4 world has no configured multipart pieces")
+    identities = set()
+    for part, (slot, kind, face) in zip(parts, PART_LAYOUT):
+        if (not isinstance(part, dict)
+                or set(part) != {"slot", "kind", "face", "owner", "identity"}
+                or part["slot"] != slot or type(part["slot"]) is not int
+                or part["kind"] != kind or part["face"] != face
+                or part["owner"] != PART_OWNER
+                or not isinstance(part["identity"], str)
+                or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", part["identity"])
+                or part["identity"] in identities):
+            raise ValueError("Native installed PL4 part kind/face/owner/identity changed")
+        identities.add(part["identity"])
+    return proof
 
 
 def verify_phase(output, phase, expected_sha):
@@ -165,6 +186,10 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
     restore = Path(restore)
     before = verify_phase(seed, "seed", beta_sha)
     after = verify_phase(restore, "restore", candidate_sha)
+    beta_parts = check_world_proof(seed, "seed", beta_sha)["parts"]
+    candidate_parts = check_world_proof(restore, "restore", candidate_sha)["parts"]
+    if beta_parts != candidate_parts:
+        raise ValueError("Installed PL4 native multipart kind/slot/owner/UUID did not persist across JARs")
     if before["world"] != after["copied_input_world"]:
         raise ValueError("Exact saved baseline world was not the candidate's copied input")
     receipt = {
@@ -175,7 +200,9 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
         "beta_phase_evidence_sha256": digest(seed / "world-phase-evidence.json"),
         "candidate_phase_evidence_sha256": digest(restore / "world-phase-evidence.json"),
         "installed_beta_to_candidate_world_smoke": "PASS",
-        "scope": "Two real installed production-JAR dedicated-server lifecycles, PL4 multipart host and saved 128-item barrel. Server-only: no clients, live storage transfer, installed optional providers, arbitrary worlds or RC clearance.",
+        "configured_multipart_parts_persisted": len(beta_parts),
+        "configured_part_identities": [part["identity"] for part in beta_parts],
+        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel. Server-only: no clients, live item transfer, installed optional providers, arbitrary worlds or RC clearance.",
         "client_executed": False,
         "rc_publication_cleared": False,
     }

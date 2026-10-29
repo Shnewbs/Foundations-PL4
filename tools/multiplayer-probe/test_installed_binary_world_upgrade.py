@@ -32,6 +32,14 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         self.seed = self.root / "seed"
         self.restore = self.root / "restore"
 
+    def configured_parts(self):
+        return [
+            {"slot": 5, "kind": "INVENTORY_READER", "face": "EAST",
+             "owner": gate.PART_OWNER, "identity": "11111111-2222-4333-8444-555555555555"},
+            {"slot": 6, "kind": "DATA_CABLE", "face": "DOWN",
+             "owner": gate.PART_OWNER, "identity": "66666666-7777-4888-8999-aaaaaaaaaaaa"},
+        ]
+
     def phase(self, root, phase, jar, sha, copy=None):
         smoke.prepare(self.checkout, jar, root, sha)
         if copy is None:
@@ -54,6 +62,7 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "schema": 1, "phase": phase, "expected_jar_sha256": sha,
             "host": gate.HOST, "host_entity": gate.ENTITY,
             "barrel_diamonds": 128, "server_started": True,
+            "parts": self.configured_parts(),
         }))
         copied = gate.world_fingerprint(copy / "run/world") if copy else None
         return gate.capture_phase(root, phase, sha, copied)
@@ -141,6 +150,46 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         path.write_text(json.dumps(evidence))
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+
+    def test_no_parts_cannot_qualify_multipart_migration(self):
+        self.pair()
+        path = self.restore / "installed-world-proof.json"
+        proof = json.loads(path.read_text())
+        proof["parts"] = []
+        path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_part_identity_must_survive_actual_restore(self):
+        self.pair()
+        path = self.restore / "installed-world-proof.json"
+        proof = json.loads(path.read_text())
+        proof["parts"][0]["identity"] = "bbbbbbbb-cccc-4ddd-8eee-ffffffffffff"
+        path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_duplicate_part_identity_is_rejected(self):
+        self.pair()
+        path = self.seed / "installed-world-proof.json"
+        proof = json.loads(path.read_text())
+        proof["parts"][1]["identity"] = proof["parts"][0]["identity"]
+        path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_wrong_owner_and_slot_fail_closed(self):
+        for field, value in (("owner", "00000000-0000-4000-8000-000000000000"), ("slot", 12)):
+            with self.subTest(field=field):
+                self.pair()
+                path = self.restore / "installed-world-proof.json"
+                proof = json.loads(path.read_text())
+                proof["parts"][0][field] = value
+                path.write_text(json.dumps(proof))
+                with self.assertRaises(ValueError):
+                    gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+                self.phase(self.restore, "restore", self.candidate, self.candidate_sha, self.seed)
 
 
 if __name__ == "__main__":
