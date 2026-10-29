@@ -1781,7 +1781,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 09:20 UTC: Fixed owner-blind physical DATA_CABLE topology union in main NetworkEngine and added actual live-owner-revocation/rejoin GameTest. Exact source 1ea6d95a passed 195/195 native GameTests in run 40848203024; production dev JAR SHA256 fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d; retained ZIP artifact 12885364230 SHA256 0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a, independently CRC verified. Earlier fixture count and manifest failures fixed; unrelated installed two-client rerun 40847578498 failed due to missing liblwjgl_stb.so in runner client B, not accepted. Publisher 40848203026 skipped both steps. Newly patched JAR not installed/visually accepted, other 23 targets not changed, 0/24 RC clearances, zero new releases/uploads.",
+  "latest_work": "2026-10-29 10:16 UTC: Investigated failed 1.21.1 installed two-client 40847578498 native LWJGL stb absence (client B, 17-entry failed evidence ZIP hash 331ef01a...): exact root cause not proven. Implemented bounded genuine client A ModLauncher bootstrap before starting real client B (both still connected concurrently); fail closed on early crash/timeout. Re-pinned dedicated installed-JAR server and installed beta->candidate two-client workflows to exact 195/195-native-tested source 1ea6d95a, retained artifact 12885364230, JAR fe19eda..., with exact native 195 log gate and 7 new adversarial cases. 20/20 static readback invariants passed, but no new exact 195 JAR installed-server or 2-client native pass independently verified yet. Prior old-JAR accepted 40841205322 remains scoped to its own binary; all 24 clearance flags false, no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3423,6 +3423,25 @@
     "rc_publication_cleared": false,
     "release_channel": "development",
     "publisher_run": 40848203026,
+    "release_receipts": "NONE"
+  },
+  "latest_1211_195_owner_isolation_installed_candidate": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
+    "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+    "native_run": 40848203024,
+    "native_gametests": "195/195 PASS",
+    "artifact_id": 12885364230,
+    "artifact_zip_sha256": "0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a",
+    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+    "prior_client_failure_run": 40847578498,
+    "prior_client_failure": "Missing liblwjgl_stb.so; native bootstrap race possible but not proven",
+    "bootstrap_guard": "first actual ModLauncher client launched before starting second real Minecraft client; strict crash/timeout failure",
+    "authored_negative_and_positive_tests": 7,
+    "static_readback": "20/20 PASS; not actual code/test execution",
+    "new_installed_server_result": "PENDING_NEW_EXACT_JAR",
+    "new_two_client_result": "PENDING_NEW_EXACT_JAR",
+    "rc_publication_cleared": false,
+    "source_branch_updates": 0,
     "release_receipts": "NONE"
   }
 }
