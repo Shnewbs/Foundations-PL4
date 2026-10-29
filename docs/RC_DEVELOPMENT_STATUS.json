@@ -440,7 +440,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 195,
+      "expected_native_fixtures": 197,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -449,16 +449,16 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PASS_195_OF_195_EXACT_SOURCE_NO_RC_CLEARANCE",
+      "native_gate": "PASS_197_OF_197_EXACT_SOURCE_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
-      "workflow_run": 40848203024,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024",
+      "source_commit": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+      "workflow_run": 40889342067,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889342067",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
       "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
-      "observed_native_fixtures": 195,
-      "runtime_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+      "observed_native_fixtures": 197,
+      "runtime_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -572,7 +572,8 @@
         "native_run": 40848203024,
         "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
         "installed_binary_accepted": false
-      }
+      },
+      "latest_scoped_installed_client_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json"
     },
     {
       "minecraft": "26.1.2",
@@ -632,12 +633,12 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PASS",
+      "native_gate": "PASS_192_PL4_EACH_OF_TWO_PROFILES_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+      "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
       "build_status_blob_sha": "410085959dd0b60b682e5eabb31c036305689e05",
-      "workflow_run": "40205878290",
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
+      "workflow_run": 40883621654,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40883621654",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
       "observed_native_fixtures": 193,
@@ -666,7 +667,9 @@
           }
         },
         "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
-      }
+      },
+      "runtime_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+      "latest_scoped_native_two_profile_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json"
     },
     {
       "minecraft": "1.12.2",
@@ -1781,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T13:20:24.664Z: Hardened all active mc/26.3 publishing paths (final 69d9d38). Old frozen/branch-local CurseForge publishers retired; port native matrix remains but cannot publish. New exact-tag-only beta RC publisher requires explicit bool clearance, SHA/native/asset/404 preflights. Exact branch policy audit 40880592087 PASS (6/6), publish SKIPPED; two previous native two-profile jobs still running, not accepted as final 69d source. All 24 RC clearances false, no new GH/CurseForge release.",
+  "latest_work": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3537,6 +3540,37 @@
     "legacy_fixed_publishers_retired": true,
     "duplicate_policy_change_matrix_prevented": true,
     "source_runtime_native_new_jar": "NOT_YET_QUALIFIED",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_callback_revocation_native_installed": {
+    "source_commit": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+    "expected_native_fixtures": 197,
+    "native_run": 40889342067,
+    "jar_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
+    "installed_server_run": 40889965154,
+    "two_client_migration_run": 40889964749,
+    "evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
+    "rc_publication_cleared": false
+  },
+  "latest_263_final_source_two_profile_native": {
+    "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+    "run_id": 40883621654,
+    "profiles": [
+      {
+        "version": "26.3.0.23-beta",
+        "pl4_fixtures_passed": 192,
+        "total_tests_passed": 193,
+        "log_sha256": "6265d334be4408313b60e15568ebd221b59850a353e2077edd45595bc7ec184f"
+      },
+      {
+        "version": "26.3.0.39-beta",
+        "pl4_fixtures_passed": 192,
+        "total_tests_passed": 193,
+        "log_sha256": "3004b3b6c279e7b0f839893ded9d43d7acef6b4152ad8b34dc75fc31fabc88cb"
+      }
+    ],
+    "jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+    "evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
     "rc_publication_cleared": false
   }
 }

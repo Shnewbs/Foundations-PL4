@@ -1,5 +1,12 @@
 # Hourly RC development and publication
 
+## October 29, 2026 — exact 1.21.1 callback/revocation acceptance and final 26.3 two-profile native source
+
+Current [1.21.1 GameTest run 40889342067](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889342067) passed **197/197**, source `71075e68c4ca7296a5a8e098a00b9a54702161cb`, development JAR SHA-256 `f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103` (NOT a public RC). Installed dedicated baseline/candidate [40889965154](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889965154) and true two-client saved-world migration [40889964749](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889964749) passed their scoped gates. Confirmed live `NetworkEngine.tick` cable item transfers 64+64, 60 disconnected ticks per phase, two offline-mode clients each phase, screenshot and direct NBT verification, no escrow. These tests do **not** install external provider mods or simulate authenticated users; screenshots contain onboarding overlays.
+
+The **final publisher-guard source** `mc/26.3` `69d9d38b443dfcbfb86b5999ad4b30b7b12528c9` is now native-qualified by [hourly-builds.yml run 40883621654](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40883621654): two exact NeoForge loader profiles, each 192/192 PL4 cases, packaged JAR `12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591`, retained source+artifact digest. This supersedes the earlier note that only the historical 26.3 source was tested. Neither loader profile is fully RC-accepted. Preserve existing guarded branch publisher paths and do not publish a development JAR. Detailed hashes, failures, archive integrity and remaining work in [docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json](docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json).
+
+
 The owner authorized continuing implementation plus hourly builds and qualified releases on October 25, 2026 (America/Los_Angeles). The objective remains accepted feature/performance parity and RC releases for all 24 maintained exact targets. Native gate success alone does not clear an RC.
 
 

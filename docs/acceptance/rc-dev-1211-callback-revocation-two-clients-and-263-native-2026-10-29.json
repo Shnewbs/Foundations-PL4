@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-10-29T14:24:47.938Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "execution_scope": "Finite scheduled PL4 source implementation, exact-source GameTests, installed production-JAR server/client acceptance and independent two-profile native reconciliation; no RC release",
+  "writer": "pl4-hourly-chat-20261029T1406Z",
+  "writer_lease_released_in_checkpoint": true,
+  "implementation": {
+    "source_change_commit": "b0a939920a9c5b505d64d3257d7e21d53c09aca9",
+    "coverage_fix_commit": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+    "installed_pins_commit": "0b3b75220623cff43856c171d6ab9ee5b2d9f129",
+    "files": [
+      "src/main/java/net/foundations/pl4/ItemTransferSafety.java",
+      "src/main/java/net/foundations/pl4/TransferEngine.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+      "tools/verify_r16.py",
+      "BUILD_STATUS.json",
+      ".github/workflows/installed-beta-binary-smoke.yml",
+      ".github/workflows/installed-binary-two-client-upgrade.yml",
+      "tools/multiplayer-probe/installed_binary_two_clients.py"
+    ],
+    "behavior": "Revalidate current loaded host BE, attached Part, owner, routing channels and loaded target before and after simulated and actual foreign item callbacks. Preserve actual extracted escrow and quarantine if route is revoked after foreign mutation; reject unauthorized replay."
+  },
+  "minecraft_1211_native": {
+    "source_commit": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+    "controller_commit": "0b3b75220623cff43856c171d6ab9ee5b2d9f129",
+    "game_tests": {
+      "passed": 197,
+      "required": 197,
+      "source": "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+      "r16_tests": 35
+    },
+    "run_id": 40889342067,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889342067",
+    "result": "PASS",
+    "artifact_id": 12904491268,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889342067/artifacts/12904491268",
+    "artifact_sha256": "4fed595cf1334326a4911eb25f25fce75fa7fbe3e734d67d20e789f5500bee8e",
+    "artifact_entries": 6,
+    "artifact_crc": "PASS",
+    "production_jar_entries": 882,
+    "production_jar_crc": "PASS",
+    "production_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
+    "native_log_sha256": "854f089d89b5408a52e5ce1958676534f2f1c4f5c49b25a1309a07b13076390d",
+    "offline_checks": "PASS",
+    "first_failed_count_guard": {
+      "source": "b0a939920a9c5b505d64d3257d7e21d53c09aca9",
+      "run": 40888959439,
+      "reason": "BUILD_STATUS.json expected 196 while actual source registered 197 native fixtures; build blocked before native test execution; repaired by 71075e68"
+    }
+  },
+  "minecraft_1211_installed_server": {
+    "run_id": 40889965154,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889965154",
+    "candidate_server": "PASS",
+    "published_beta_server": "PASS",
+    "candidate_artifact_id": 12904851170,
+    "candidate_artifact_sha256": "ac6934be69acdc28fca787d09ffc400547988579313f4ed34e4b216a2bdae0c6",
+    "baseline_artifact_id": 12904062692,
+    "baseline_artifact_sha256": "ab27593e540bc8e67640d6740fc36421e3c56d697c564f77cd6c2e4e8a2dae5e",
+    "baseline_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "candidate_jar_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
+    "candidate_source": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+    "scope": "Actual installed production JAR NeoForge dedicated-server startup only; not installed third-party provider validation"
+  },
+  "minecraft_1211_two_client": {
+    "run_id": 40889964749,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889964749",
+    "result": "PASS_SCOPED_NATIVE_TWO_REAL_OFFLINE_CLIENTS_BOTH_PHASES",
+    "artifact_id": 12904667495,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40889964749/artifacts/12904667495",
+    "artifact_sha256": "d65cecf40eff9ba19021d581c1e89f43304022a71f9cf7779f27ce28d029f8d9",
+    "artifact_entries": 46,
+    "artifact_crc": "PASS",
+    "screenshots": 4,
+    "screenshot_dimensions": [
+      960,
+      720
+    ],
+    "screenshot_review": "Four real GUI client Wireless Storage screenshots inspected; functional UI visible, Minecraft onboarding/chat/tutorial popups partly obscure controls, no assertion of visual RC acceptance",
+    "baseline_source": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "baseline_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "restored_candidate_source": "71075e68c4ca7296a5a8e098a00b9a54702161cb",
+    "restored_jar_sha256": "f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103",
+    "real_clients_each_phase": 2,
+    "network_transfer_driver": "installed NetworkEngine.tick",
+    "manual_transfer_invocations": 0,
+    "physical_data_cable_centres": 7,
+    "severed_ticks_each_phase": 60,
+    "auto_delivered_diamonds_each_phase": [
+      64,
+      64
+    ],
+    "seed_source_diamonds": 1664,
+    "seed_destination_diamonds": 64,
+    "restore_source_diamonds": 1600,
+    "restore_destination_diamonds": 128,
+    "conserved_total_diamonds_each_phase": 1728,
+    "pending_escrow": 0,
+    "native_saved_worlds": [
+      {
+        "phase": "seed",
+        "files": 26,
+        "crc": "PASS",
+        "archive_sha256": "19929db89bf33a2c25503c89cfc9254a048dd2385bb04a25906244509ac94b84"
+      },
+      {
+        "phase": "restore",
+        "files": 30,
+        "crc": "PASS",
+        "archive_sha256": "de751e01d81e3c017da0adbcb3baf025769453b4cae7bcddb7effe441d6c4e88"
+      }
+    ],
+    "native_playerdata": "PASS two player UUIDs/wireless bindings, 17+17 player diamonds, 94 saved barrel diamonds",
+    "native_cable_nbt": "PASS nine endpoint/cable UUIDs, owner, 7 cable centres and conserved inventories",
+    "permission_probe": "PASS foreign nonoperator denied, owner/operator exercise, duplicate request safeguards scoped to fixture",
+    "limitations": [
+      "Offline-mode loopback clients, not authenticated online users",
+      "Provider callback revocation native test is not an installed third-party provider test",
+      "No arbitrary-world migration or noncontrolled unloaded inventory alias qualification",
+      "No sustained TPS/memory/performance acceptance",
+      "Screenshots partially obscured by Minecraft onboarding overlays",
+      "No RC publication clearance"
+    ]
+  },
+  "minecraft_263_final_source_native": {
+    "target": "26.3",
+    "branch": "mc/26.3",
+    "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+    "run_id": 40883621654,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40883621654",
+    "result": "PASS_EXACT_SOURCE_TWO_NEOFORGE_PROFILES",
+    "loader_profiles": [
+      {
+        "version": "26.3.0.23-beta",
+        "pl4_fixtures_passed": 192,
+        "total_tests_passed": 193,
+        "log_sha256": "6265d334be4408313b60e15568ebd221b59850a353e2077edd45595bc7ec184f"
+      },
+      {
+        "version": "26.3.0.39-beta",
+        "pl4_fixtures_passed": 192,
+        "total_tests_passed": 193,
+        "log_sha256": "3004b3b6c279e7b0f839893ded9d43d7acef6b4152ad8b34dc75fc31fabc88cb"
+      }
+    ],
+    "artifact_id": 12901083385,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40883621654/artifacts/12901083385",
+    "artifact_sha256": "f25cf17ff9b3dc6c6656f8ff22e15ceb900252afe419fb3fcbda2c5b6ea2bd91",
+    "artifact_entries": 18,
+    "artifact_crc": "PASS",
+    "production_jar_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
+    "production_jar_entries": 961,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "3a6f14ab43e947e697f033d3bb89ae3ab24e21368a69ef6d50fb483997d1f68d",
+    "run_manifest_source_verified": true,
+    "limitation": "Development source with branch publisher guards validated; no installed provider/client/multiplayer/performance final RC acceptance"
+  },
+  "publisher": {
+    "main_build_and_release_run": 40889964473,
+    "github_release_step": "SKIPPED",
+    "curseforge_upload_step": "SKIPPED",
+    "source_maturity": "0.2.0-rc.1-dev",
+    "rc_clearance_count": 0,
+    "total_targets": 24,
+    "new_github_releases": [],
+    "new_curseforge_uploads": [],
+    "curseforge_upload_ids": [],
+    "moderation_or_public_visibility": "NOT_APPLICABLE_NO_UPLOAD"
+  },
+  "independent_checks": [
+    "Read first four required authoritative main RC docs",
+    "Read current Actions and retained native artifacts before selecting work",
+    "Guarded finite writer lease and guarded expected-parent main updates, no version branch pushes",
+    "Independently downloaded 1.21.1 verification 6-entry ZIP; production JAR 882 entries CRC-valid; native 197 pass markers",
+    "Independently downloaded installed server result artifacts and confirmed source/JAR/installed_mod proof",
+    "Independently downloaded two-client artifact and reviewed 4 GUI screenshots, ZIP 46/46 CRC and both native world archives 26/26 and 30/30 entries",
+    "Independently downloaded 26.3 final-source native artifact, verified 18-entry ZIP and two 961-entry production JARs with identical SHA"
+  ],
+  "limitations": [
+    "No installed third-party item/energy/fluid providers and callback revocation is native probe only",
+    "No arbitrary-world, authenticated online, unloaded alias, recovery power-loss or sustained performance acceptance",
+    "No all 24 exact targets RC clearance (0/24)",
+    "Dev JAR evidence must not be presented as published RC",
+    "Historical 1.6.4 gravel root cause open"
+  ],
+  "next_work": [
+    "Use an actual installed third-party item capability provider with callback-time ownership and host/chunk revocation (simulation, getSlots, execution) against native 1.21.1 JAR f2409659; record exact provider version, source/JAR/screenshots and no item loss",
+    "Implement and test disconnected/unloaded inventory aliases and cached topology invalidation mid-provider callback (including world unload and replacement of block entity) without force-loading, rechecking native escrow recovery",
+    "Expand exact-version installed-provider, real client, online-auth multiplayer, arbitrary migration and sustained performance acceptance to mc/26.3 and the remaining 22 maintained targets; preserve historical 1.6.4 gravel root-cause blocker",
+    "Do not mark any RC clearance or publish until applicable exact-source all-version/per-target acceptance is fully recorded; confirm immutable tag and existing Github/CurseForge receipts before attempting release"
+  ]
+}
