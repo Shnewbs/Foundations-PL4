@@ -65,6 +65,18 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artif
             raise ValueError("Embedded native artifact source is not the pinned exact commit")
         prefix = source_path[: -len("verification-logs/SOURCE_COMMIT.txt")] if source_path else ""
         libprefix = prefix + "build/libs/"
+        # This exact retained aa9b439 1.21.1 candidate requires its real native
+        # GameTest log, not just a plausible checksum/zip from a failed job.
+        native_path = prefix + "verification-logs/native.log"
+        if native_path not in names:
+            raise ValueError("Pinned native candidate has no actual JVM test log")
+        native_raw = z.read(native_path)
+        native_log = native_raw.decode("utf-8", errors="replace")
+        if (not re.search(r"={6,} 194 GAME TESTS COMPLETE IN [0-9.]+ s", native_log) or
+            "All 194 required tests passed :)" not in native_log or
+            "BUILD SUCCESSFUL" not in native_log):
+            raise ValueError("Pinned 1.21.1 native GameTest log lacks exact 194/194 success markers")
+        native_log_sha256 = hashlib.sha256(native_raw).hexdigest()
         candidates = [n for n in names if n.startswith(libprefix)
                       and "/" not in n[len(libprefix):]
                       and n[len(libprefix):].startswith("FoundationsPL4-1.21.1-")
@@ -95,6 +107,8 @@ def extract(artifact_zip, output, artifact_sha256, source_sha, jar_sha256, artif
         "schema": 1, "source_commit": source_sha,
         "artifact_zip_sha256": artifact_sha256,
         "source_marker": source_path, "artifact_github_metadata_id": artifact_id,
+        "native_log_member": native_path, "native_log_sha256": native_log_sha256,
+        "native_log_success_count": "194/194",
         "source_attestation": "github-validated-artifact-metadata" if source_path is None else "embedded-source-marker",
         "production_member": name,
         "production_jar_sha256": jar_sha256,
