@@ -262,9 +262,6 @@ class NativeInstalledCableNBTAudit(unittest.TestCase):
             gate.inspect_connected_cables(targets, receipt)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class ScheduledNativeAnvilInventoryPolicy(unittest.TestCase):
     def test_scheduled_barrels_require_actual_saved_quantities(self):
@@ -288,3 +285,7 @@ class ScheduledNativeAnvilInventoryPolicy(unittest.TestCase):
                     "sink_identity": graph["sink_identity"]}
         with self.assertRaisesRegex(ValueError, "not cable-owned endpoints"):
             gate.inspect_scheduled_transfer_entities(targets, expected, graph)
+
+if __name__ == "__main__":
+    unittest.main()
+

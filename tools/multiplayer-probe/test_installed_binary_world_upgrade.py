@@ -350,14 +350,11 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         self.pair()
         p = self.restore / "installed-world-proof.json"
         receipt = json.loads(p.read_text())
-        receipt["topology"]["automatic_tick_tested"] = True
+        receipt["topology"]["automatic_tick_tested"] = False
         p.write_text(json.dumps(receipt))
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
 
-
-if __name__ == "__main__":
-    unittest.main()
 
     def test_missing_scheduled_transfer_fails(self):
         self.pair()
@@ -422,3 +419,7 @@ if __name__ == "__main__":
         p.write_text(json.dumps(receipt))
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+if __name__ == "__main__":
+    unittest.main()
+
