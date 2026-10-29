@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-29T12:25:05.441Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "goal": "24 maintained exact target native acceptance and qualified RC publication",
+  "writer": "pl4-hourly-chat-20261029-1209Z",
+  "global_lease": "released at checkpoint",
+  "production_implementation": {
+    "target": "1.21.1",
+    "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "production_fix_commit": "98bb8c28d84c39fbcea3db93ff50184829a74de5",
+    "verifier_repair_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "native_run_id": 40872436881,
+    "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881",
+    "native_result": "PASS_196_OF_196",
+    "offline_result": "PASS",
+    "previous_failing_run_id": 40871978537,
+    "previous_failure": "R16 static guard expected 33 after adding 34th GameTest; no native stage executed. Fixed with explicit 34-test and new-case coverage in 6219ebf.",
+    "native_log_sha256": "fe958423f08e686b7b7f05161fb90ec5225be3950efb7e0bab638c84bee8e345",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "18f0e54d83af7d43d21306cf6ea33b88c43cca55a909808299c12cb44d0a6439",
+    "artifact_id": 12896716840,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881/artifacts/12896716840",
+    "artifact_zip_sha256": "7ca187f5de166280f8638ff60af68f8ee461d84ea281fd48b9fbd9b2f70d24e2",
+    "outer_zip_entries": 6,
+    "outer_zip_crc": "PASS",
+    "production_jar_entries": 882,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "aa0296680c44a89466350b3c67d317aefe51439f07d104972f3d331a579522b3",
+    "native_scenarios_jar_sha256": "fabe189252ecc30679e71f58b3da196501098941068e62835796a74feaa75105",
+    "source_archive_artifact_id": 12896562359,
+    "source_archive_sha256": "1cebc562dc49b07c45985c4bb1141f78ffd136046299e77a762b0943580175c4",
+    "implementation": "Passive NODE item destination with persistent itemTransferFault or opaqueItemEscrow is excluded before both simulated space and real insertion; native case proves rejection then healthy cached-plan resume.",
+    "installed_provider_acceptance": false,
+    "installed_two_client_acceptance_on_new_jar": false,
+    "release_channel": "development",
+    "rc_publication_cleared": false
+  },
+  "branch_publisher_safety": {
+    "target": "mc/26.3",
+    "prior_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+    "final_commit": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "final_commit_url": "https://github.com/Shnewbs/Foundations-PL4/commit/c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "finding": "Obsolete manual CurseForge job hardcoded neighbor 1.21.1 runtime on 26.3 and omitted exact tagged RC clearance",
+    "resolution": "Retired branch-local manual uploader. New workflow only runs a read-only safety audit on its own path changes; no manual dispatch, upload calls, credentials or publication write permission. Qualified 26.3 CurseForge uploads remain through main exact-tag checksum and publication policy reconciler.",
+    "final_audit_run_id": 40871592313,
+    "audit_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40871592313",
+    "audit_result": "PASS",
+    "intermediate_failed_self_tests": [
+      40871449425,
+      40871538631
+    ],
+    "branch_build_status": {
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "release_channel": "development",
+      "rc_publication_cleared": false
+    },
+    "existing_release_workflow": "Inspected release.yml: development/RC deny gates present; old 1.21.1 asset-name and --clobber logic remain unsuitable for qualified 26.3 release. Do not use it for a 26.3 RC; harden exact-tag release path separately before publication.",
+    "production_source_modified": false,
+    "native_artifacts_preserved": true,
+    "new_publication": false
+  },
+  "publication": {
+    "exact_target_rc_clearances": 0,
+    "total_targets": 24,
+    "github_rc_release_created": false,
+    "curseforge_upload_created": false,
+    "moderation_visibility": "not reassessed",
+    "publisher_run_id": 40872436791,
+    "publisher_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436791",
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED"
+  },
+  "remaining_acceptance": [
+    "Installed provider callback reentrancy and owner/attachment revocation during provider simulate/extract/insert; do not infer from this fixture.",
+    "Unloaded/disconnected inventory aliases and double inventory capability lifetime without force-loading.",
+    "Run installed beta-to-new 196/196 development JAR two-client network migration; prior installed binary evidence remains scoped to the older e0287799 candidate.",
+    "Authenticated online multiplayer, arbitrary user/modpack saved-world migration, sustained active-network performance and visual UI screenshot polish.",
+    "Validate 26.3 exact-target release.yml asset/tag/immutability path before any qualified 26.3 release, and run 26.3 updated source native only when required.",
+    "Finish exact-source qualified RC acceptance for 24 maintained versions; resolve historical 1.6.4 gravel root cause."
+  ]
+}

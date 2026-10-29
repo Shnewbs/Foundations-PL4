@@ -5,15 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "writer": "pl4-hourly-chat-20261029-1209Z",
-    "owner": "ChatGPT PL4 scheduled build session",
-    "claimed_at": "2026-10-29T12:09:17.646Z",
-    "expires_at": "2026-10-29T12:27:17.646Z",
-    "expected_parent": "2366b2db327d961466d8dc6e24691c362ac22c8c",
-    "task": "Guard mc/26.3 CurseForge publisher and continue exact-source PL4 acceptance; no release before explicit clearance",
-    "finite": true
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -22,14 +14,15 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
+  "current_checkpoint": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Build native adversarial installed provider that mutates owner or capabilities during simulate/extract/insert, with post-callback quarantine; do not clear old escrow.",
-    "Exercise unloaded/disconnected inventory aliases without force-loading and validate exact source saved-state behavior.",
-    "Guard and correct 26.3 branch-local CurseForge publisher before any future 26.3 branch source change; review all others similarly.",
-    "Use hourly-builds.yml pinned exact native dedup for 24 targets; do not publish until specific rc_publication_cleared true and complete installed/migration/performance receipts.",
-    "No duplicate validation for unchanged exact sources; retained 40863794077 and 40862937491 are authoritative for their tested bytes."
+    "Implement and native-qualify provider callbacks that revoke ownership/attachment during simulate/extract/insert, without clearing escrow or reusing stale routes.",
+    "Test unloaded, disconnected and double-inventory aliases with no forced chunk load; retain raw provider and saved-world observations.",
+    "Run exact new 1.21.1 JAR 18f0e54d... through installed provider, dedicated server and genuine client migration acceptance, after checking retained-source artifacts for deduplication.",
+    "Repair/qualify any 26.3 release.yml tag/asset/immutable receipt issues before using a 26.3 qualified publishing path; old branch-local CurseForge workflow is retired.",
+    "Use hourly-builds.yml for pinned exact 24-target native matrix; no RC publish until each exact target's clearance explicitly true.",
+    "Finish independent online multiplayer, arbitrary-world migration, sustained performance and legacy 1.6.4 gravel acceptance."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -69,16 +62,16 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T1105Z-callback-auth",
-    "released_at": "2026-10-29T11:19:22Z",
-    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
-    "pinned_workflow_commit": "5a84e673555b81c112e9bffe60c32d1e582498d8",
-    "checkpoint_evidence": "docs/acceptance/rc-dev-1211-stale-transfer-plan-native-installed-2026-10-29.json",
+    "owner": "pl4-hourly-chat-20261029-1209Z",
+    "released_at": "2026-10-29T12:25:05.441Z",
+    "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "checkpoint_evidence": "docs/acceptance/rc-dev-1211-passive-item-quarantine-and-263-publisher-2026-10-29.json",
     "writer_lease_released": true,
     "actual_release": false,
-    "rc_clearance": "0/24"
+    "rc_clearance": "0/24",
+    "branch_publisher_commit": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-passive-item-quarantine-and-263-publisher-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -102,7 +95,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-28T11:12:03.351Z: Pushed 1.6.4 2c902d6 native pre-cleanup terrain/chunk boundary observations + 3 fail-closed Python controller regression tests; exact-source run 40677792469 in_progress/pending. Prior native 368/368 remains scoped to ef01e15, no new candidate artifact qualified, all 24 RC flags false, no release/upload.",
+  "previous_checkpoint": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -897,7 +890,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-29 ~10:18 UTC: Installed 1.21.1 owner-isolated dev 195-native-qualified artifact (source 1ea6d95a, JAR fe19eda...) now pinned as exact candidate for both nonpublishing installed-server and two-real-client beta-world-upgrade native workflows; no new installed-JAR server/client successful execution verified at checkpoint. Fixed test controller's concurrent client native bootstrap by staging genuine first ModLauncher launch before second genuine client; underlying LWJGL stb failure 40847578498 root cause unproven. 7 adversarial tests authored, runtime results pending; 20/20 static repository invariants read back. Existing 195/195 GameTests run 40848203024 and artifact ZIP 0cc420... CRC verified; older installed two-client 40841205322 does not qualify new dev JAR. All 24 release clearance flags false, no new eligible release/CurseForge upload; no mc branch changes.",
+  "latest_work": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -1847,5 +1840,71 @@
     "rc_clearance": "0/24",
     "evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
     "lease_bounded": true
+  },
+  "latest_1211_passive_item_destination_quarantine": {
+    "target": "1.21.1",
+    "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "production_fix_commit": "98bb8c28d84c39fbcea3db93ff50184829a74de5",
+    "verifier_repair_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "native_run_id": 40872436881,
+    "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881",
+    "native_result": "PASS_196_OF_196",
+    "offline_result": "PASS",
+    "previous_failing_run_id": 40871978537,
+    "previous_failure": "R16 static guard expected 33 after adding 34th GameTest; no native stage executed. Fixed with explicit 34-test and new-case coverage in 6219ebf.",
+    "native_log_sha256": "fe958423f08e686b7b7f05161fb90ec5225be3950efb7e0bab638c84bee8e345",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "18f0e54d83af7d43d21306cf6ea33b88c43cca55a909808299c12cb44d0a6439",
+    "artifact_id": 12896716840,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881/artifacts/12896716840",
+    "artifact_zip_sha256": "7ca187f5de166280f8638ff60af68f8ee461d84ea281fd48b9fbd9b2f70d24e2",
+    "outer_zip_entries": 6,
+    "outer_zip_crc": "PASS",
+    "production_jar_entries": 882,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "aa0296680c44a89466350b3c67d317aefe51439f07d104972f3d331a579522b3",
+    "native_scenarios_jar_sha256": "fabe189252ecc30679e71f58b3da196501098941068e62835796a74feaa75105",
+    "source_archive_artifact_id": 12896562359,
+    "source_archive_sha256": "1cebc562dc49b07c45985c4bb1141f78ffd136046299e77a762b0943580175c4",
+    "implementation": "Passive NODE item destination with persistent itemTransferFault or opaqueItemEscrow is excluded before both simulated space and real insertion; native case proves rejection then healthy cached-plan resume.",
+    "installed_provider_acceptance": false,
+    "installed_two_client_acceptance_on_new_jar": false,
+    "release_channel": "development",
+    "rc_publication_cleared": false
+  },
+  "latest_263_branch_publisher_retirement": {
+    "target": "mc/26.3",
+    "prior_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+    "final_commit": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "final_commit_url": "https://github.com/Shnewbs/Foundations-PL4/commit/c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "finding": "Obsolete manual CurseForge job hardcoded neighbor 1.21.1 runtime on 26.3 and omitted exact tagged RC clearance",
+    "resolution": "Retired branch-local manual uploader. New workflow only runs a read-only safety audit on its own path changes; no manual dispatch, upload calls, credentials or publication write permission. Qualified 26.3 CurseForge uploads remain through main exact-tag checksum and publication policy reconciler.",
+    "final_audit_run_id": 40871592313,
+    "audit_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40871592313",
+    "audit_result": "PASS",
+    "intermediate_failed_self_tests": [
+      40871449425,
+      40871538631
+    ],
+    "branch_build_status": {
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "release_channel": "development",
+      "rc_publication_cleared": false
+    },
+    "existing_release_workflow": "Inspected release.yml: development/RC deny gates present; old 1.21.1 asset-name and --clobber logic remain unsuitable for qualified 26.3 release. Do not use it for a 26.3 RC; harden exact-tag release path separately before publication.",
+    "production_source_modified": false,
+    "native_artifacts_preserved": true,
+    "new_publication": false
+  },
+  "last_writer_release_prior_passive_quarantine": {
+    "owner": "pl4-hourly-chat-20261029T1105Z-callback-auth",
+    "released_at": "2026-10-29T11:19:22Z",
+    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "pinned_workflow_commit": "5a84e673555b81c112e9bffe60c32d1e582498d8",
+    "checkpoint_evidence": "docs/acceptance/rc-dev-1211-stale-transfer-plan-native-installed-2026-10-29.json",
+    "writer_lease_released": true,
+    "actual_release": false,
+    "rc_clearance": "0/24"
   }
 }

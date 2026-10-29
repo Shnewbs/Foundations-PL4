@@ -1781,7 +1781,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
+  "latest_work": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3463,6 +3463,67 @@
     "inspected": ".github/workflows/release.yml and .github/workflows/curseforge.yml",
     "release_yml": "push-triggered publisher contains development and explicit RC clearance checks; no branch modifications made",
     "curseforge_yml": "manual workflow hardcodes 1.21.1 JAR name rather than 26.3 and lacks direct exact-tag RC source clearance check; do not invoke or push 26.3 source until reviewed/corrected version-specific publishing guards are proven",
-    "remediation": "Guard version-specific publisher and explicit exact-target checksum/source clearance before a source branch update; preserve existing validated native flows and releases."
+    "remediation": "Guard version-specific publisher and explicit exact-target checksum/source clearance before a source branch update; preserve existing validated native flows and releases.",
+    "status": "resolved_by_retiring_obsolete_manual_branch_uploader",
+    "final_branch_commit": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "final_audit_run": 40871592313,
+    "release_yml_remaining": "Not a qualified 26.3 publishing path: asset names and clobber need version-specific correction before tag publication"
+  },
+  "previous_latest_work": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
+  "latest_1211_passive_item_destination_quarantine": {
+    "target": "1.21.1",
+    "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "production_fix_commit": "98bb8c28d84c39fbcea3db93ff50184829a74de5",
+    "verifier_repair_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
+    "native_run_id": 40872436881,
+    "native_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881",
+    "native_result": "PASS_196_OF_196",
+    "offline_result": "PASS",
+    "previous_failing_run_id": 40871978537,
+    "previous_failure": "R16 static guard expected 33 after adding 34th GameTest; no native stage executed. Fixed with explicit 34-test and new-case coverage in 6219ebf.",
+    "native_log_sha256": "fe958423f08e686b7b7f05161fb90ec5225be3950efb7e0bab638c84bee8e345",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "18f0e54d83af7d43d21306cf6ea33b88c43cca55a909808299c12cb44d0a6439",
+    "artifact_id": 12896716840,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40872436881/artifacts/12896716840",
+    "artifact_zip_sha256": "7ca187f5de166280f8638ff60af68f8ee461d84ea281fd48b9fbd9b2f70d24e2",
+    "outer_zip_entries": 6,
+    "outer_zip_crc": "PASS",
+    "production_jar_entries": 882,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "aa0296680c44a89466350b3c67d317aefe51439f07d104972f3d331a579522b3",
+    "native_scenarios_jar_sha256": "fabe189252ecc30679e71f58b3da196501098941068e62835796a74feaa75105",
+    "source_archive_artifact_id": 12896562359,
+    "source_archive_sha256": "1cebc562dc49b07c45985c4bb1141f78ffd136046299e77a762b0943580175c4",
+    "implementation": "Passive NODE item destination with persistent itemTransferFault or opaqueItemEscrow is excluded before both simulated space and real insertion; native case proves rejection then healthy cached-plan resume.",
+    "installed_provider_acceptance": false,
+    "installed_two_client_acceptance_on_new_jar": false,
+    "release_channel": "development",
+    "rc_publication_cleared": false
+  },
+  "latest_263_branch_publisher_retirement": {
+    "target": "mc/26.3",
+    "prior_commit": "cc5e0cf40bfc64d9d7fce1c1dc5f7caeb7a27bf1",
+    "final_commit": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "final_commit_url": "https://github.com/Shnewbs/Foundations-PL4/commit/c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "finding": "Obsolete manual CurseForge job hardcoded neighbor 1.21.1 runtime on 26.3 and omitted exact tagged RC clearance",
+    "resolution": "Retired branch-local manual uploader. New workflow only runs a read-only safety audit on its own path changes; no manual dispatch, upload calls, credentials or publication write permission. Qualified 26.3 CurseForge uploads remain through main exact-tag checksum and publication policy reconciler.",
+    "final_audit_run_id": 40871592313,
+    "audit_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40871592313",
+    "audit_result": "PASS",
+    "intermediate_failed_self_tests": [
+      40871449425,
+      40871538631
+    ],
+    "branch_build_status": {
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "release_channel": "development",
+      "rc_publication_cleared": false
+    },
+    "existing_release_workflow": "Inspected release.yml: development/RC deny gates present; old 1.21.1 asset-name and --clobber logic remain unsuitable for qualified 26.3 release. Do not use it for a 26.3 RC; harden exact-tag release path separately before publication.",
+    "production_source_modified": false,
+    "native_artifacts_preserved": true,
+    "new_publication": false
   }
 }
