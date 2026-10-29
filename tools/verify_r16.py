@@ -26,7 +26,8 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'e.register(R16GameTests.class)' in native('PLGameTests.java'),
- 'thirty-three transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==33,
+ 'thirty-four transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==34,
+ 'quarantined passive endpoint regression is registered': 'quarantinedPassiveItemEndpointNeverAcceptsDelivery' in native('R16GameTests.java') and 'ItemTransferSafety.blocked(sink.part())' in engine,
  'native physical cable owner isolation is exercised':(
      'a.part.owner!=null&&a.part.owner.equals(b.part.owner)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java')
      and 'physicalCableRejectsForeignOwnerAfterLiveTransfer' in native('R16GameTests.java')),
