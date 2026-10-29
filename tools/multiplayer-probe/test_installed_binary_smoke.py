@@ -116,6 +116,21 @@ class InstalledBinaryIsolationTests(unittest.TestCase):
         self.sha = gate.digest(self.jar)
         with self.assertRaises(ValueError): self.prepare()
 
+    def test_vanilla_server_properties_rewrite_is_not_false_source_tamper(self):
+        self.prepare()
+        self.pretend_started()
+        with (self.target / "run/server.properties").open("a") as f:
+            f.write("motd=A disposable server\\n")
+        result = gate.verify(self.target, self.log)
+        self.assertEqual(result["installed_binary_server_smoke"], "PASS")
+
+    def test_runtime_cannot_escape_loopback(self):
+        self.prepare()
+        self.pretend_started()
+        config = self.target / "run/server.properties"
+        config.write_text(config.read_text().replace("server-ip=127.0.0.1", "server-ip=0.0.0.0"))
+        with self.assertRaises(ValueError): gate.verify(self.target, self.log)
+
     def test_overwriting_existing_runtime_fails(self):
         self.prepare()
         with self.assertRaises(FileExistsError): self.prepare()
