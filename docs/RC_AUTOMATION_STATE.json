@@ -6,12 +6,12 @@
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
   "writer_lease": {
-    "owner": "pl4-chat-hourly-20261029T1551Z",
-    "acquired_at": "2026-10-29T15:51:36.778Z",
-    "expires_at": "2026-10-29T16:02:36.778Z",
+    "owner": "pl4-chat-hourly-20261029T1604Z",
+    "acquired_at": "2026-10-29T16:03:59.283Z",
+    "expires_at": "2026-10-29T16:17:59.283Z",
     "source_branch": "main",
-    "base_commit": "4fdc23410ae7adeb43d6e3227aa1bf092e5bd81b",
-    "task": "Pin exact already native-qualified 200-case development binary for installed dedicated and two-real-client migration tests; no release"
+    "base_commit": "61e7367113b7bab35fdb7db5f76d05b63554ef96",
+    "task": "Verify installed pinned 200-case JAR evidence; advance exact 1.21.1 unloaded provider alias/authorization acceptance with source tests; no release unless cleared"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
@@ -1274,12 +1274,12 @@
     "fixed_zip_timestamps": true
   },
   "last_expired_writer_lease": {
-    "owner": "pl4-chat-hourly-20261029T1505Z",
-    "acquired_at": "2026-10-29T15:07:15.790Z",
-    "expires_at": "2026-10-29T15:42:15.790Z",
+    "owner": "pl4-chat-hourly-20261029T1551Z",
+    "acquired_at": "2026-10-29T15:51:36.778Z",
+    "expires_at": "2026-10-29T16:02:36.778Z",
     "source_branch": "main",
-    "base_commit": "493f2c52690d813cbb3f7e88b0d37f5e7a575fdd",
-    "task": "RC acceptance: loaded inventory alias/provider identity guard; no publication"
+    "base_commit": "4fdc23410ae7adeb43d6e3227aa1bf092e5bd81b",
+    "task": "Pin exact already native-qualified 200-case development binary for installed dedicated and two-real-client migration tests; no release"
   },
   "latest_26x_native_attestation": {
     "evidence": "docs/acceptance/rc-dev-26x-native-attested-hourly-2026-10-28.json",
