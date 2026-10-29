@@ -1,11 +1,13 @@
 name: Forge 1.20.2 exact native port
 on:
   push:
-    paths-ignore: ['.github/workflows/**']
+    paths-ignore:
+      - '.github/workflows/**'
+      - 'tools/test_publisher_policy_1202.py'
     branches: [mc/1.20.2]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: forge1202-native
   cancel-in-progress: false
@@ -17,56 +19,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Read publication maturity from exact checked-out source
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          """Shared release maturity and explicit RC clearance policy."""
-          import re
-
-
-          def release_type(version):
-              text = version.lower()
-              if re.search(r"(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)", text):
-                  raise ValueError("Development snapshots are not qualified releases")
-              if re.search(r"beta|(?:^|[.\-_])rc\d*(?:[.\-_]|$)|\db(?:[.\-_]|$)", text):
-                  return "beta"
-              if re.search(r"alpha|preview|experimental|(?:^|[.\-_])port(?:[.\-_]|$)|\da(?:[.\-_]|$)", text):
-                  return "alpha"
-              return "release"
-
-
-          def is_rc(version):
-              return bool(re.search(r"(?:^|[.\-_])rc\d*(?:[.\-_]|$)", version, re.I))
-
-
-          def require_publication(status, minecraft=None, version=None):
-              if not isinstance(status, dict):
-                  raise ValueError("Missing exact-source build status")
-              actual = status.get("version", "")
-              if not actual or (version is not None and actual != version):
-                  raise ValueError("Build status and release version disagree")
-              if minecraft is not None and status.get("minecraft") != minecraft:
-                  raise ValueError("Build status and exact Minecraft target disagree")
-              maturity = release_type(actual)
-              if status.get("release_channel", "").lower() == "development":
-                  raise ValueError("Development channel is not publishable")
-              if is_rc(actual) and status.get("rc_publication_cleared") is not True:
-                  raise ValueError("RC publication has not been explicitly cleared")
-              return maturity
-
-          status = json.loads(Path('BUILD_STATUS.json').read_text())
-          try:
-              require_publication(status)
-              allowed = True
-          except ValueError as error:
-              allowed = False
-              print('Publication held:', error)
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
-          PY
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -80,37 +32,23 @@ jobs:
           mkdir -p verification-logs
           git archive --format=zip --output=verification-logs/source-at-build.zip HEAD
           git rev-parse HEAD > verification-logs/SOURCE_COMMIT.txt
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          sha256sum verification-logs/source-at-build.zip > verification-logs/SOURCE_ARCHIVE_SHA256SUMS.txt
       - name: Compile, reobfuscate and run all 191 actual GameTests
         shell: bash
         run: |
           set -euo pipefail
           bash gradlew --no-daemon --console=plain clean build runGameTestServer 2>&1 | tee verification-logs/native.log
           grep -F 'All 191 required tests passed' verification-logs/native.log
-      - name: Publish verified exact-version JAR and matching source
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
+      - name: Hash native log and exact production artifacts
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          target=1.20.2;version=$(python3 -c 'import json;print(json.load(open("BUILD_STATUS.json"))["version"])')
-          name="FoundationsPL4-$target-$version";tag="mc$target-v$version"
-          test "$(git ls-remote origin "refs/heads/mc/$target" | cut -f1)" = "$(git rev-parse HEAD)"
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
-            git fetch origin "refs/tags/$tag:refs/tags/$tag"
-            git diff --exit-code "$tag" HEAD -- src/main build.gradle
-            if gh release view "$tag" >/dev/null 2>&1; then exit 0; fi
-          else
-            git tag "$tag";git push origin "$tag"
-          fi
-          mkdir -p release-files
-          cp "build/libs/$name.jar" "build/libs/$name-sources.jar" release-files/
-          git archive --format=zip --output="release-files/$name-source.zip" "$tag"
-          cp verification-logs/native.log "release-files/$name-native-tests.log"
-          git rev-parse "$tag^{commit}" > release-files/SOURCE_COMMIT.txt
-          (cd release-files && sha256sum * > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
-          gh release create "$tag" release-files/* --verify-tag --prerelease --title "Foundations PL4 $target $version (Forge 48.1.0 alpha)" --notes-file "docs/releases/$version.md"
+          sha256sum verification-logs/native.log > verification-logs/LOG_SHA256SUMS.txt
+          test -n "$(find build/libs -maxdepth 1 -type f -name '*.jar' -print -quit)"
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 sha256sum > verification-logs/JAR_SHA256SUMS.txt
+          sha256sum -c verification-logs/LOG_SHA256SUMS.txt
+          sha256sum -c verification-logs/JAR_SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
