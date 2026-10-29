@@ -14,6 +14,19 @@ from verify_upgrade_evidence import digest, NAMES, FILES
 
 
 class InstalledTwoClientPolicy(unittest.TestCase):
+    def test_candidate_constants_match_both_workflow_provenance_pins(self):
+        # A successful beta seed cannot substitute for a newer candidate restore.
+        # This failed the installed migration run 40900293347 when only workflow
+        # artifact pins changed but this controller retained the older JAR SHA.
+        root = Path(__file__).resolve().parents[2]
+        for filename in ("installed-binary-two-client-upgrade.yml", "installed-beta-binary-smoke.yml"):
+            with self.subTest(workflow=filename):
+                workflow = (root / ".github" / "workflows" / filename).read_text()
+                self.assertIn("--source-sha " + gate.CANDIDATE_SOURCE, workflow)
+                self.assertIn("--jar-sha256 " + gate.CANDIDATE_JAR, workflow)
+                self.assertIn("--expected-native-tests 199", workflow)
+        self.assertNotEqual(gate.BASELINE_JAR, gate.CANDIDATE_JAR)
+
     def test_sha_requires_exact_lowercase(self):
         self.assertEqual(gate.exact_sha(gate.BASELINE_JAR), gate.BASELINE_JAR)
         for value in ("", "a" * 63, "A" * 64, True, None, "../evil"):
