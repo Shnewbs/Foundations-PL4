@@ -156,12 +156,27 @@ public final class NetworkEngine {
         Group group=cachedMembership.get(reader);
         return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&reader.kind.reader()?group.targets:List.of();
     }
-    /** Physical data network only: visual reader exports never grant inventory access. */
+    /** Cached membership is never authority after a host or part is detached mid-tick.
+     * Validate the anchor and every exposed inventory endpoint before publishing aliases;
+     * rebuilding the full graph is deferred until its next ordinary refresh. */
     public static List<Ref> storageNodes(MinecraftServer server,Part anchor){
         ensureCurrent(server);
         Group group=cachedMembership.get(anchor);
-        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()
-            ?cachedStorageNodes.get(anchor):List.of();
+        if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get())return List.of();
+        boolean anchorAttached=false;
+        for(Ref ref:group.parts)if(ref.part==anchor){
+            anchorAttached=loadedHost(ref.host,server)&&ref.host.parts.get(anchor.slot())==anchor;
+            break;
+        }
+        if(!anchorAttached||anchor.owner==null){dirty=true;return List.of();}
+        List<Ref> nodes=cachedStorageNodes.get(anchor);
+        if(nodes==null){dirty=true;return List.of();}
+        for(Ref ref:nodes)if(!loadedHost(ref.host,server)
+            ||ref.host.parts.get(ref.part.slot())!=ref.part
+            ||!anchor.owner.equals(ref.part.owner)){
+            dirty=true;return List.of();
+        }
+        return nodes;
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent.Post e){

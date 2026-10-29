@@ -29,6 +29,16 @@ public final class R16GameTests {
         NetworkEngine.rebuild(server);
         h.assertTrue(NetworkEngine.all(server).stream().anyMatch(r->r.host()==original),
             "Initially installed source host must appear in the loaded native graph");
+        Part originalNode=part(original,Direction.WEST);
+        h.assertTrue(NetworkEngine.storageNodes(server,originalNode).stream()
+            .anyMatch(r->r.host()==original&&r.part()==originalNode),
+            "Attached native storage node must be reachable in the cached physical graph");
+        // Model a provider callback detaching a part without sending a topology event.
+        original.parts.remove(originalNode.slot());
+        h.assertTrue(NetworkEngine.storageNodes(server,originalNode).isEmpty(),
+            "Cached storage aliases must reject a detached part before the next rebuild");
+        original.parts.put(originalNode.slot(),originalNode);
+        NetworkEngine.rebuild(server);
         h.setBlock(position,Blocks.CHEST);
         // Model a late callback restoring a stale registration after ordinary removal.
         original.clearRemoved();
