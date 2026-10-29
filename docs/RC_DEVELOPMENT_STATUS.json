@@ -440,7 +440,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 194,
+      "expected_native_fixtures": 195,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -449,16 +449,16 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PASS",
+      "native_gate": "PASS_195_OF_195_EXACT_SOURCE_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c967590970f8aacec042e1c4e2c12f5100e704c5",
-      "workflow_run": 40770696373,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40770696373",
+      "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+      "workflow_run": 40848203024,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-placement-diagnostics-2026-10-26.json",
       "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
-      "observed_native_fixtures": 194,
-      "runtime_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+      "observed_native_fixtures": 195,
+      "runtime_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -565,6 +565,13 @@
         "actual_clients": false,
         "production_candidate_rebuilt": false,
         "rc_publication_cleared": false
+      },
+      "latest_owner_isolation_native": {
+        "evidence": "docs/acceptance/rc-dev-1211-physical-owner-isolation-native-2026-10-29.json",
+        "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+        "native_run": 40848203024,
+        "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+        "installed_binary_accepted": false
       }
     },
     {
@@ -1774,7 +1781,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T08:25:56.160Z: Actual installed Minecraft 1.21.1 immutable beta→pinned native-qualified candidate TWO graphical clients per phase AND native seven-centre DATA_CABLE scheduled transfer accepted in 40841205322. After severing a physical arm for 60 server ticks, restored cable delivered 64+64 diamonds automatically (no explicit Ref), saved source/sink 1728→1664/64→1600/128 conserved, all nine cable/endpoints identities and owner persisted in real raw Anvil NBT, zero escrow. Native source 8e61f688, 117/117 policy regressions, 46/46 retained outer ZIP CRC, 26/30 nested world ZIPs CRC, four visually inspected 960x720 screenshots (toast overlays remain), main 40841205325 PASS 194/194 and production JAR unchanged SHA256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c. Publisher 40841205217 skipped GitHub and CurseForge. No optional installed providers, post-owner revocation, arbitrary worlds, authenticated online multiplayer, sustained performance or other 23 exact versions accepted. 0/24 RC clearances; no release or upload.",
+  "latest_work": "2026-10-29 09:20 UTC: Fixed owner-blind physical DATA_CABLE topology union in main NetworkEngine and added actual live-owner-revocation/rejoin GameTest. Exact source 1ea6d95a passed 195/195 native GameTests in run 40848203024; production dev JAR SHA256 fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d; retained ZIP artifact 12885364230 SHA256 0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a, independently CRC verified. Earlier fixture count and manifest failures fixed; unrelated installed two-client rerun 40847578498 failed due to missing liblwjgl_stb.so in runner client B, not accepted. Publisher 40848203026 skipped both steps. Newly patched JAR not installed/visually accepted, other 23 targets not changed, 0/24 RC clearances, zero new releases/uploads.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3403,5 +3410,19 @@
       "No new released RC or production candidate from this acceptance harness"
     ],
     "next_step": "Installed optional-provider capability and unloaded/disconnected double-inventory alias acceptance with revocation/recovery; arbitrary-world and sustained active-network client/server performance; expand every exact version independently."
+  },
+  "latest_owner_isolation_checkpoint": {
+    "evidence": "docs/acceptance/rc-dev-1211-physical-owner-isolation-native-2026-10-29.json",
+    "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+    "native_run": 40848203024,
+    "game_tests": "195/195 PASS",
+    "artifact_sha256": "0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a",
+    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+    "client_failure_run": 40847578498,
+    "client_failure_kind": "MISSING_LWJGL_STB_NATIVE_LIBRARY",
+    "rc_publication_cleared": false,
+    "release_channel": "development",
+    "publisher_run": 40848203026,
+    "release_receipts": "NONE"
   }
 }

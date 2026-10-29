@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T09:20:00Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "exact_minecraft_target": "1.21.1",
+  "release_channel": "development",
+  "owner": "pl4-hourly-chat-20261029T0900Z-installed-provider-callback",
+  "lease_bounded": true,
+  "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+  "implementation_commits": [
+    "71331c41c30bc8c47bf9dfba9995d0d50a5758bf",
+    "f55ee2f03f599d04b3e473e9ff1c45ae8968e648",
+    "d0694636a0a18aefe26eae3ae18d75763e5b578f",
+    "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5"
+  ],
+  "current_source_fix": "NetworkEngine.rebuild partitions physical MultipartTopology.network edges by equal non-null part.owner; wireless edges retain their existing owner checks. No force-loaded chunks or external provider data required.",
+  "added_native_case": "R16GameTests.physicalCableRejectsForeignOwnerAfterLiveTransfer: 32 items transferred while matching owners, live sink owner changed and 12 source items remain blocked without escrow, owner restored and all 44 items delivered.",
+  "root_source_observation": "Previous physical edge union ignored owner while wireless owner check existed. Pre-fix native exploit was not independently executed; patch plus 195 exact-source native regressions passed.",
+  "native_verification": {
+    "run": 40848203024,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024",
+    "result": "COMPLETED_SUCCESS",
+    "required_passed": 195,
+    "required_total": 195,
+    "artifact_id": 12885364230,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024/artifacts/12885364230",
+    "artifact_zip_sha256": "0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a",
+    "artifact_zip_entries": 6,
+    "artifact_crc": "PASS_INDEPENDENT_DOWNLOAD",
+    "production_jar": "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+    "production_jar_entries": 882,
+    "production_jar_crc": "PASS_INDEPENDENT_DOWNLOAD",
+    "native_log_sha256": "ce1ec500cb37c90d0fbfbb077bacd76efb29dcd06d4e5543a9fb5852736dc61b"
+  },
+  "earlier_failure_repairs": [
+    {
+      "commit": "f55ee2f03f599d04b3e473e9ff1c45ae8968e648",
+      "run": 40847578438,
+      "failure": "offline verify_r16.py fixture hardcoded 32; new 33rd native case",
+      "resolution": "d0694636 updated verifier and new source guard"
+    },
+    {
+      "commit": "d0694636a0a18aefe26eae3ae18d75763e5b578f",
+      "run": 40847836209,
+      "failure": "verifyBuildStatus expected_native_tests 194, actual 195; stopped before native GameTests",
+      "resolution": "1ea6d95a updated BUILD_STATUS expected_native_tests 195; subsequent exact run passed"
+    }
+  ],
+  "independent_installed_client_failure": {
+    "run": 40847578498,
+    "artifact_id": 12885398453,
+    "artifact_zip_sha256": "331ef01a2a045b9ca19ddc293fcbe07367add04433698cabf0346c35c0ef4158",
+    "artifact_entries": 17,
+    "artifact_crc": "PASS_INDEPENDENT_DOWNLOAD",
+    "scope": "Unchanged installed immutable published beta and pinned older candidate, not newly compiled production fix",
+    "failure": "Client PL4ProbeB failed in NeoForge early graphical bootstrap: java.lang.UnsatisfiedLinkError: Failed to locate library: liblwjgl_stb.so; server reached ready; no accepted two-client migration in this failed run.",
+    "classification": "RUNNER_GRAPHICS_NATIVE_LIBRARY_LOADING_NO_NEW_SOURCE_ACCEPTANCE",
+    "repeat_unchanged_environment": false,
+    "previous_accepted_run": 40841205322
+  },
+  "publisher": {
+    "run": 40848203026,
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "rc_publication_cleared": false
+  },
+  "preserved_published_beta": {
+    "tag": "v0.2b.0",
+    "jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229"
+  },
+  "preserved_prior_pinned_candidate": {
+    "source": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c"
+  },
+  "acceptance_limitations": [
+    "New security patch is native GameTest-qualified but NOT yet verified as a newly installed candidate under two graphical clients or with installed third-party providers.",
+    "Unloaded or double-inventory aliases, post-capability callback owner revocation, online authenticated multiplayer, arbitrary-world migration, sustained performance and current visuals remain open.",
+    "Physical-edge union without owner equality was observed on sampled modern mc/<exact-version> branches; no version-branch source push or native qualification was made in this run.",
+    "All 24 exact-version RC publication clearances remain false; prior accepted installed beta-to-older-candidate evidence must not be relabeled as acceptance of this newly compiled JAR."
+  ]
+}

@@ -44,13 +44,13 @@
     "historical_evidence": "docs/releases/"
   },
   "release_published": false,
-  "port_status": "RC_DEVELOPMENT_ACCEPTANCE_IN_PROGRESS",
+  "port_status": "RC_DEVELOPMENT_NATIVE_GATE_PASSED",
   "installed_runtime_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "measured_performance_acceptance": "PARTIAL_NATIVE_OPERATIONS_MEASURED_MIXED_RESULTS",
   "migration_acceptance": "PARTIAL_GENERATED_RELEASED_BETA_SOURCE_WORLD_UPGRADE",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "candidate_native_validation": "PENDING_CURRENT_SOURCE",
-  "candidate_workflow_run": "40847836209",
+  "candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+  "candidate_workflow_run": "40848203024",
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
   "native_test_isolation": "PASS",
@@ -59,12 +59,12 @@
   "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
   "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
-  "native_compilation": "PENDING_CURRENT_SOURCE_NATIVE_RUN",
+  "native_compilation": "PASS_FOR_1ea6d95a_EXACT_SOURCE",
   "acceptance_evidence": {
     "client_visual": "docs/acceptance/rc-dev-1.21.1-client-visual.json",
     "real_client_storage": "docs/acceptance/rc-dev-1.21.1-real-client-storage.json",
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
   },
-  "current_source_notes": "2026-10-29 owner-bound physical cable topology candidate: previously 194/194 native; 195 tests need exact-source GameTest pass. Original failed 40847836209 solely at stale expected_native_tests before GameTests."
+  "current_source_notes": "2026-10-29 physical cable owner-partition native pass 195/195 on source 1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5; output dev JAR SHA256 fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d. No RC clearance; newly built JAR not installed-provider or client accepted."
 }
