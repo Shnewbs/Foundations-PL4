@@ -1763,7 +1763,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T00:12Z: Implemented a new isolated 1.21.1 installed released-beta JAR server runtime probe and fail-closed receipt verifier (tools/multiplayer-probe/installed_binary_smoke.py), 13 adversarial test cases and new on-push CI workflow installed-beta-binary-smoke.yml. Unlike prior migration, this *attempts* actual production JAR installation without copying PL4 Java sources into the probe project. CI run ID, test results and actual native runtime proof have NOT been independently observed; no new runtime qualification. Existing 194/194 source-native and source-compiled 2-client migration receipts remain prior exact-source evidence only. All 24 RC flags false, no RC/CurseForge publication.",
+  "latest_work": "2026-10-29T00:21:53.017Z: Added standalone 1.21.1 genuine installed-production-JAR native server probes for both immutable released v0.2b.0 and exact native-qualified current development candidate. A separate probe-only NeoForge mod is compiled; PL4 production Java source is never compiled in these isolated installed runtimes. New CI includes exact-source/ZIP/JAR/native log binding via authenticated GitHub Actions metadata, and 28 authored adversarial policy regressions, superseded probe-only runs cancel (hourly native unaffected). Independently re-downloaded prior retained native artifact 12859271452: outer ZIP SHA256 357be6c3..., 6/6 CRC, native log 194/194, 1.21.1 production JAR SHA256 cee5787a..., 882 entries. THIS IS ONLY REINSPECTION OF EXISTING PASSING ARTIFACT, NOT NEW NATIVELY EXECUTED INSTALLATION. New policy regression and both installed-server native workflow results are pending/unobserved (no run ID available); exact binary-to-binary client/world migration and provider/performance acceptance still pending. RC clearances remain 0/24; no new releases or CurseForge uploads.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3013,6 +3013,21 @@
     "source_jar_runtime_hash": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
     "candidate_installed_binary_run": "NOT_STARTED",
     "release_eligible": false,
-    "previous_latest_work": "2026-10-28T22:13:44.666Z: Implemented content-addressed saved-world ZIP snapshots, phase log/client/screenshot SHA256, restored-input byte identity and fail-closed two-client migration verification in ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3. Eight adversarial regression tests passed. Exact-source released-beta world upgrade 40777636720 PASS; retained ZIP 12855522621 SHA256 419f2a57ec97cb02f436eb22697a29ba8934a256ca22bb606318d1bb03b60c86, 33 CRC-valid entries, source seed world 26 files SHA256 158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc; copy matched; restored 30-file world SHA256 c26f0fd5e3d8ca42771dcc8bf0ff99ad0b9c8fe9c9875831e312027d0004f498. Independently re-verified extracted retained artifact. Main verify 40777637169 PASS194/194. Publication run40777636690 skipped GitHub and CurseForge, all24 RC flags false. This is source-compiled offline fixture, not published binary or arbitrary-world RC acceptance."
+    "previous_latest_work": "2026-10-28T22:13:44.666Z: Implemented content-addressed saved-world ZIP snapshots, phase log/client/screenshot SHA256, restored-input byte identity and fail-closed two-client migration verification in ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3. Eight adversarial regression tests passed. Exact-source released-beta world upgrade 40777636720 PASS; retained ZIP 12855522621 SHA256 419f2a57ec97cb02f436eb22697a29ba8934a256ca22bb606318d1bb03b60c86, 33 CRC-valid entries, source seed world 26 files SHA256 158830c7a2195a599ab1913f475076a55813674d58ddcd35a48f1f9682e492fc; copy matched; restored 30-file world SHA256 c26f0fd5e3d8ca42771dcc8bf0ff99ad0b9c8fe9c9875831e312027d0004f498. Independently re-verified extracted retained artifact. Main verify 40777637169 PASS194/194. Publication run40777636690 skipped GitHub and CurseForge, all24 RC flags false. This is source-compiled offline fixture, not published binary or arbitrary-world RC acceptance.",
+    "updated_at_utc": "2026-10-29T00:21:53.017Z",
+    "latest_installed_candidate_code": "217c970f1368ffe786d3b38da455e71308b0cfef",
+    "latest_installed_candidate_tests": "ad84ef584a762af1f9fc8b8a62ef933a9cffb26f",
+    "source_gate": "GitHub metadata source head_sha/repo/digest for six-member artifact lacking SOURCE_COMMIT.txt, plus actual 194/194 JVM native log and production JAR sha256",
+    "current_workflow_source": "ee45978056f3bf29c2176ea361043769db76b8eb",
+    "regression_authored": 28,
+    "regression_executed_and_passed": "NOT_YET_VERIFIED",
+    "immutable_released_beta_binary_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "candidate_native_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "candidate_previously_passing_native_run": 40785212711,
+    "candidate_retained_zip_sha256": "357be6c367d5f3e7b0b8a0edde28e57c8be06d4f237d4d3a5f931208109026d7",
+    "candidate_artifact_reinspection": "PASS 6/6 ZIP CRC, native log 194/194, JAR 882 entries; preexisting native success only",
+    "new_installed_binary_native_run": "NOT_YET_VERIFIED",
+    "new_installed_binary_client_migration": false,
+    "rc_publication_cleared": false
   }
 }
