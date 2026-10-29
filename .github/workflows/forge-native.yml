@@ -1,4 +1,4 @@
-name: Forge 1.16.5 exact-source Java 8 native validation
+name: Forge 1.16.5 exact-source Java 8 native and production validation
 on:
   push:
     branches: ['mc/1.16.5']
@@ -43,7 +43,7 @@ jobs:
         run: |
           set -euo pipefail
           bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
-      - name: Exact native 191 Forge36 installed scenarios
+      - name: Exact native 191 Forge36 installed scenarios and production-only startup
         shell: bash
         run: |
           set -euo pipefail
@@ -53,8 +53,9 @@ jobs:
           import json
           report=json.loads(Path('verification-logs/port-scenarios.json').read_text())
           assert report['minecraft']=='1.16.5' and report['total']==191 and report['passed']==191 and report['failed']==0, report
-          print('PASS: 191 native Forge32 scenarios')
+          print('PASS: 191 native Forge36 scenarios')
           PY
+          python3 tools/production_smoke.py 2>&1 | tee verification-logs/production-smoke-step.log
       - name: Retain exact JAR and runtime log digests
         if: always()
         shell: bash
@@ -64,7 +65,7 @@ jobs:
           if test -d build/libs; then
             find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 -r sha256sum > verification-logs/JAR_SHA256SUMS.txt
           fi
-          for file in verification-logs/build.log verification-logs/native-run.log verification-logs/port-scenarios.json verification-logs/java8-summary.json; do
+          for file in verification-logs/build.log verification-logs/native-run.log verification-logs/port-scenarios.json verification-logs/java8-summary.json verification-logs/production-smoke.json verification-logs/production-smoke.log; do
             if test -f "$file"; then sha256sum "$file"; fi
           done > verification-logs/LOG_SHA256SUMS.txt
       - name: Retain exact native results (no development publication)
@@ -78,5 +79,6 @@ jobs:
             build/java8/*.json
             run-java8/port-scenarios.json
             run-java8/crash-reports/
+            run-java8-production/crash-reports/
           retention-days: 14
           if-no-files-found: warn

@@ -14,6 +14,7 @@ class PublisherSafety1165(unittest.TestCase):
         cls.release = (WF / "release.yml").read_text(encoding="utf-8")
         cls.cf = (WF / "curseforge.yml").read_text(encoding="utf-8")
         cls.status = json.loads((ROOT / "BUILD_STATUS.json").read_text(encoding="utf-8"))
+        cls.smoke = (ROOT / "tools" / "production_smoke.py").read_text(encoding="utf-8")
 
     def test_exact_version_and_uncleared_dev(self):
         self.assertEqual(self.status["minecraft"], "1.16.5")
@@ -35,13 +36,20 @@ class PublisherSafety1165(unittest.TestCase):
                       "report['total']==191", "report['passed']==191", "report['failed']==0"):
             self.assertIn(token, self.native)
 
-    def test_stock_forge_native_191_without_unproven_smoke(self):
+    def test_production_only_smoke_after_native(self):
         self.assertIn("tools/java8/runtime.py native", self.native)
-        self.assertNotIn("tools/production_smoke.py", self.native)
+        self.assertIn("tools/production_smoke.py", self.native)
+        self.assertLess(self.native.index("runtime.py native"), self.native.index("production_smoke.py"))
+
+    def test_stock_forge_smoke_is_disconnected_from_scenario_mod(self):
+        for token in ("stock-forge36", "production-only", "scenario_mod_installed", "production-smoke.json", "forge-"):
+            self.assertIn(token, self.smoke)
+        self.assertIn("elif p.name in {'libraries','pl4-launch-profile'}", self.smoke)
+        self.assertNotIn("forge35_profile", self.smoke)
 
     def test_retained_evidence(self):
         for token in ("JAR_SHA256SUMS.txt", "LOG_SHA256SUMS.txt",
-                      "retention-days: 14"):
+                      "run-java8-production/crash-reports/", "retention-days: 14"):
             self.assertIn(token, self.native)
 
     def test_no_old_alignment_run(self):
