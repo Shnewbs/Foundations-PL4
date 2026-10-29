@@ -331,6 +331,36 @@ public final class R16GameTests {
         h.assertTrue(f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).getCount()==23,"Every remote Node ownership is rechecked, not just the anchor");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void physicalCableRejectsForeignOwnerAfterLiveTransfer(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(4,1,1));
+        from.setItem(0,new ItemStack(Items.DIAMOND,32));
+        HostEntity left=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
+        HostEntity right=host(h,new BlockPos(3,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        Part source=part(left,Direction.WEST),sink=part(right,Direction.EAST);
+        source.transferMode=2;sink.transferMode=1;left.changed();right.changed();
+        var connected=NetworkEngine.storageNodes(server,source);
+        h.assertTrue(connected.size()==2,"Matching-owner physical endpoints must connect");
+        TransferEngine.run(server,connected);
+        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==32,
+            "Native cable must deliver when both endpoint owners match");
+        from.setItem(0,new ItemStack(Items.DIAMOND,12));
+        UUID original=sink.owner;sink.owner=UUID.randomUUID();right.changed();
+        var isolated=NetworkEngine.storageNodes(server,source);
+        h.assertTrue(isolated.size()==1&&isolated.getFirst().part()==source,
+            "Foreign-owned endpoint must be removed from the cached physical cable graph");
+        TransferEngine.run(server,isolated);
+        h.assertTrue(from.getItem(0).getCount()==12&&to.getItem(0).getCount()==32
+            &&source.pendingItem.isEmpty(),"Revoking a live cable endpoint must prevent transfer or escrow");
+        sink.owner=original;right.changed();
+        var rejoined=NetworkEngine.storageNodes(server,source);
+        h.assertTrue(rejoined.size()==2,"Restoring owner reopens only the matching cable graph");
+        TransferEngine.run(server,rejoined);
+        h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==44,
+            "Reauthorized cable resumes without losing or minting items");
+        h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void networkStorageDropsDisconnectedSources(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-C");f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);

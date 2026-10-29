@@ -37,7 +37,6 @@ public final class MultiplayerServerProbe {
     private static final BarrelBlockEntity[] cableBarrels=new BarrelBlockEntity[2];
     private static final int CABLE_EAST_BIT=1<<Direction.EAST.ordinal();
     private static int cableStage, cableStageTick, cableSourceBefore, cableSinkBefore, cableSeveredTicks;
-    private static int ownerSeveredSource, ownerSeveredSink, ownerSeveredTicks;
     private static Map<String,Object> cableReceipt;
     private static List<String> cableIdentities;
     private static final boolean RESTORE="restore".equals(System.getenv("PL4_PROBE_PHASE"));
@@ -172,25 +171,6 @@ public final class MultiplayerServerProbe {
             }
             return;
         }
-        if(cableStage==3){
-            if(source!=ownerSeveredSource||sink!=ownerSeveredSink)
-                throw new IllegalStateException("Owner-revoked installed endpoint transferred items through a live cable");
-            if(tick-cableStageTick>=60){
-                ownerSeveredTicks=tick-cableStageTick;
-                cableEndpoints[1].owner=uuid("PL4ProbeA");cableHosts[6].changed();
-                var restored=NetworkEngine.storageNodes(server,cableEndpoints[0]);
-                if(restored.size()!=2||restored.stream().noneMatch(r->r.part()==cableEndpoints[1]))
-                    throw new IllegalStateException("Restored owner did not rejoin native cable group");
-                for(int i=0;i<2;i++){
-                    cableEndpoints[i].transferMode=0;cableEndpoints[i].items=false;
-                    cableHosts[i==0?0:6].changed();cableBarrels[i].setChanged();
-                }
-                cableReceipt.put("owner_revocation_ticks",ownerSeveredTicks);
-                cableReceipt.put("owner_revocation_denied",true);
-                cableStage=4;
-            }
-            return;
-        }
         if(cableStage!=2)return;
         if(tick-cableStageTick>160)
             throw new IllegalStateException("No native automatic transfer after cable reconnection");
@@ -201,7 +181,8 @@ public final class MultiplayerServerProbe {
         for(int i=0;i<2;i++){
             if(!cableEndpoints[i].pendingItem.isEmpty())
                 throw new IllegalStateException("Scheduled installed cable left pending escrow");
-            cableBarrels[i].setChanged();
+            cableEndpoints[i].transferMode=0;cableEndpoints[i].items=false;
+            cableHosts[i==0?0:6].changed();cableBarrels[i].setChanged();
         }
         cableReceipt=new LinkedHashMap<>();
         cableReceipt.put("engine","net.foundations.pl4.NetworkEngine.tick");
@@ -215,15 +196,8 @@ public final class MultiplayerServerProbe {
         cableReceipt.put("two_real_clients_connected",server.getPlayerList().getPlayerCount()==2);
         if(server.getPlayerList().getPlayerCount()!=2)
             throw new IllegalStateException("Scheduled native delivery did not occur under two real clients");
-        // Keep the physical arm intact and both endpoints active, then revoke only
-        // the sink's live owner. A stale cached graph/provider must not deliver.
-        ownerSeveredSource=source;ownerSeveredSink=sink;
-        cableEndpoints[1].owner=uuid("PL4ProbeForeign");cableHosts[6].changed();
-        var isolatedOwner=NetworkEngine.storageNodes(server,cableEndpoints[0]);
-        if(isolatedOwner.size()!=1||isolatedOwner.getFirst().part()!=cableEndpoints[0])
-            throw new IllegalStateException("Foreign-owned live cable endpoint remained authorized");
         System.out.println("PL4_INSTALLED_CABLE_CLIENT_TICK:"+System.getenv("PL4_INSTALLED_JAR_SHA256")+":"+moved);
-        cableStage=3;cableStageTick=tick;
+        cableStage=3;
     }
 
     @SubscribeEvent public static void commands(RegisterCommandsEvent event){
@@ -235,7 +209,7 @@ public final class MultiplayerServerProbe {
     @SubscribeEvent public static void tick(ServerTickEvent.Post event){
         var server=event.getServer();int now=server.getTickCount();
         if(stopAt>=0){if(now>=stopAt)server.halt(false);return;}
-        if(cableStage>=1&&cableStage<=3)advanceCableRoute(server,now);
+        if(cableStage==1||cableStage==2)advanceCableRoute(server,now);
         if(ready.size()==2&&verifyAt==-1){
             var a=server.getPlayerList().getPlayerByName("PL4ProbeA");var b=server.getPlayerList().getPlayerByName("PL4ProbeB");
             if(a==null||b==null)return;
@@ -253,7 +227,7 @@ public final class MultiplayerServerProbe {
             if(WirelessStorage.open(a,InteractionHand.MAIN_HAND)==null||WirelessStorage.open(b,InteractionHand.MAIN_HAND)==null)throw new IllegalStateException("Authorized clients could not open independent sessions");
             verifyAt=now+450;
         }
-        if(verifyAt>=0&&sent.containsAll(NAMES)&&cableStage==4){
+        if(verifyAt>=0&&sent.containsAll(NAMES)&&cableStage==3){
             var a=server.getPlayerList().getPlayerByName("PL4ProbeA");var b=server.getPlayerList().getPlayerByName("PL4ProbeB");
             if(a==null||b==null)throw new IllegalStateException("Probe client disconnected early");
             int remaining=0;for(int i=0;i<barrel.getContainerSize();i++)if(barrel.getItem(i).is(Items.DIAMOND))remaining+=barrel.getItem(i).getCount();

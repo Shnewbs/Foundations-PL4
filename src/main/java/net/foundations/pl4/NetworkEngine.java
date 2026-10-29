@@ -73,7 +73,14 @@ public final class NetworkEngine {
                 r.part.kind,r.part.face.ordinal(),r.part.blockedFaces));
         }
         var topology=net.foundations.pl4.core.MultipartTopology.plan(nodes);
-        for(var edge:topology.network())sets.union(edge.a(),edge.b());
+        // Physical contact must never bridge independent owners. Otherwise a
+        // cached cable group can expose a newly foreign inventory endpoint to
+        // NetworkEngine.tick even though wireless linking checks ownership.
+        for(var edge:topology.network()){
+            Ref a=refs.get(edge.a()), b=refs.get(edge.b());
+            if(a.part.owner!=null&&a.part.owner.equals(b.part.owner))
+                sets.union(edge.a(),edge.b());
+        }
         topology.cableArms().forEach((i,values)->arms.put(refs.get(i).host,values));
         Map<HostEntity,Integer> leads=new IdentityHashMap<>();
         for(int i:topology.externalLeads()){
