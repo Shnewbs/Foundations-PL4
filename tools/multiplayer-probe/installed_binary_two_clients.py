@@ -423,6 +423,27 @@ def _finish_server(server, properties):
         raise RuntimeError("Installed server did not exit cleanly after two client sessions")
 
 
+
+def _wait_for_client_native_bootstrap(process, log_file, deadline):
+    """Serialize LWJGL early-native initialization, not game/client sessions.
+
+    Two simultaneous Gradle runClient launches can race on shared NeoForm /
+    LWJGL extraction caches. Require the actual first client to finish
+    ModLauncher early-display initialization before starting the second.
+    Both genuine clients still connect and remain online together.
+    """
+    marker = "Launching target 'forgeclientdev'"
+    log_file = Path(log_file)
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            tail = log_file.read_text(errors="replace")[-4000:] if log_file.is_file() else ""
+            raise RuntimeError("First installed client exited before native bootstrap: " + tail)
+        if log_file.is_file() and marker in log_file.read_text(errors="replace"):
+            return
+        time.sleep(2)
+    raise TimeoutError("First installed client did not finish LWJGL/ModLauncher bootstrap")
+
+
 def run_phase(checkout, jar, output, phase, source, jar_sha, seed=None, timeout=1500):
     output = Path(output).resolve()
     jar = Path(jar).resolve()
@@ -460,7 +481,13 @@ def run_phase(checkout, jar, output, phase, source, jar_sha, seed=None, timeout=
             time.sleep(2)
         else:
             raise TimeoutError("Actual installed-JAR server did not attest startup")
-        clients = [launch(name, "runClient") for name in NAMES]
+        # Real client processes must overlap for native multiplayer assertions,
+        # but their Gradle/LWJGL bootstrap must not race on the same shared cache.
+        clients = [launch(NAMES[0], "runClient")]
+        _wait_for_client_native_bootstrap(
+            clients[0], output / (NAMES[0] + ".log"), deadline
+        )
+        clients.append(launch(NAMES[1], "runClient"))
         while time.monotonic() < deadline:
             if any(p.poll() not in (None, 0) for p in clients):
                 raise RuntimeError("A real installed production-JAR client exited unsuccessfully")
