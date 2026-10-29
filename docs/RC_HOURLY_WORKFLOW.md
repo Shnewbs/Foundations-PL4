@@ -2,6 +2,11 @@
 
 The owner authorized continuing implementation plus hourly builds and qualified releases on October 25, 2026 (America/Los_Angeles). The objective remains accepted feature/performance parity and RC releases for all 24 maintained exact targets. Native gate success alone does not clear an RC.
 
+
+## October 29, 2026 — 26.3 branch publishing safety checkpoint
+
+The existing `mc/26.3` branch now guards a NEW release behind an exact `mc26.3-v<version>` tag push, its tagged `BUILD_STATUS.json` boolean `rc_publication_cleared: true`, beta RC maturity, exact 26.3 identity, SHA, native fixture counts, checked production assets and immutable absence preflight. Direct branch-local CurseForge and frozen artifact publishers were retired; main `curseforge.yml` remains the only approved receipt-backed upload reconciler. The dual-profile `port-26.yml` native matrix is retained without a publish job or write permission. Branch policy CI [40880592087](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40880592087) passed six offline tests and skipped release; native two-profile runs [40880292946](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40880292946) and [40880403579](https://github.com/Shnewbs/Foundations-PL4/actions/runs/40880403579) were still running at this checkpoint. No final-source native artifact, installed provider, new release or upload clearance follows. Details: `docs/acceptance/rc-dev-263-exact-target-publisher-safety-2026-10-29.json`.
+
 ## Execution
 
 - The ChatGPT task continues actual implementation from `main` and existing `mc/<version>` branches. Read `RC_DEVELOPMENT_STATUS.json`, the master roadmap and `RC_AUTOMATION_STATE.json` first. Complete the next authorized implementation/acceptance item and preserve resumable source/evidence. Do not create feature branches, overwrite unrelated work or use the attached R16 archive as current source.

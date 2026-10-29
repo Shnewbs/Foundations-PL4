@@ -1781,7 +1781,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
+  "latest_work": "2026-10-29T13:20:24.664Z: Hardened all active mc/26.3 publishing paths (final 69d9d38). Old frozen/branch-local CurseForge publishers retired; port native matrix remains but cannot publish. New exact-tag-only beta RC publisher requires explicit bool clearance, SHA/native/asset/404 preflights. Exact branch policy audit 40880592087 PASS (6/6), publish SKIPPED; two previous native two-profile jobs still running, not accepted as final 69d source. All 24 RC clearances false, no new GH/CurseForge release.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3469,7 +3469,7 @@
     "final_audit_run": 40871592313,
     "release_yml_remaining": "Not a qualified 26.3 publishing path: asset names and clobber need version-specific correction before tag publication"
   },
-  "previous_latest_work": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
+  "previous_latest_work": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
   "latest_1211_passive_item_destination_quarantine": {
     "target": "1.21.1",
     "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
@@ -3525,5 +3525,18 @@
     "production_source_modified": false,
     "native_artifacts_preserved": true,
     "new_publication": false
+  },
+  "latest_263_exact_target_publisher_safety": {
+    "evidence": "docs/acceptance/rc-dev-263-exact-target-publisher-safety-2026-10-29.json",
+    "branch_head": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+    "policy_audit_run": 40880592087,
+    "policy_result": "SUCCESS_6_6",
+    "release_job": "SKIPPED",
+    "publisher_end_to_end": "NOT_QUALIFIED_UNCLEARED",
+    "port_matrix_publish_removed": true,
+    "legacy_fixed_publishers_retired": true,
+    "duplicate_policy_change_matrix_prevented": true,
+    "source_runtime_native_new_jar": "NOT_YET_QUALIFIED",
+    "rc_publication_cleared": false
   }
 }

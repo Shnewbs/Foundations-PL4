@@ -1,0 +1,78 @@
+{
+  "recorded_at_utc": "2026-10-29T13:20:24.664Z",
+  "purpose": "Retire branch-local frozen 26.3 publishing routes and guard new exact-target RC publication",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_refs": {
+    "main_parent": "21e9857d9ea98e8f0553100a2a52310273312c48",
+    "branch": "mc/26.3",
+    "branch_previous": "c5a7d7fe2ff9709b6fa2a97de8703d2db5747053",
+    "implementation": "f836307f87787690fc2affe9c0784bbd2dba9b32",
+    "audit_fix": "c06687e52911847484bd4d87aae1526d714133ab",
+    "final_branch_head": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9"
+  },
+  "modified_branch_files": [
+    ".github/workflows/release.yml",
+    ".github/workflows/port-26.yml",
+    ".github/workflows/curseforge-26.yml",
+    ".github/workflows/publish-port-26.yml",
+    "tools/release_263_policy.py",
+    "tools/test_release_263_policy.py"
+  ],
+  "publisher_remediations": [
+    "Old fixed historical publish-port-26.yml executable with historical artifact/run references retired; now read-only, no dispatch or upload",
+    "Old curseforge-26.yml workflow_run/manual uploader retired; main curseforge.yml remains receipt-backed exact-tag reconciler",
+    "port-26.yml retains 26.3.0.23-beta and 26.3.0.39-beta native matrix, but publish job removed, contents write removed",
+    "release.yml now exact mc26.3-v* tag-push only for publishing; branch push and manual dispatch perform policy audit but cannot publish",
+    "Tag publisher checks exact Minecraft 26.3, beta RC channel, rc_publication_cleared boolean true, source SHA, native GameTest count, runtime metadata, ZIP CRC, exact SHA256 manifest, immutable existing tag and HTTP 404 release absence; never clobbers assets",
+    "Version-branch publisher contains no CurseForge upload step; main reconciler owns eligible upload/receipt and moderation state",
+    "Publisher-only test changes excluded from port-26 automatic matrix trigger to prevent duplicate expensive runs"
+  ],
+  "tests": {
+    "policy_success_run": 40880592087,
+    "policy_success_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40880592087",
+    "policy_previous_success": 40880403474,
+    "policy_regressions": "6/6 unittest PASS in exact 69d9d38 job log",
+    "publisher_job": "SKIPPED (branch push)",
+    "initial_failed_self_tests": [
+      40880293007,
+      40880292999,
+      40880293137
+    ],
+    "failure_reason": "Audit test previously matched a literal 'secrets.' self-check inside already-retired curseforge.yml; test correctly scoped its executable declaration after c06687e"
+  },
+  "native": {
+    "new_final_branch_exact_source_pinned_hourly": "NOT_YET_QUALIFIED",
+    "legacy_two_profile_port_runs_in_progress_at_checkpoint": [
+      40880292946,
+      40880403579
+    ],
+    "native_build_scope": "Previous original runs still executing (26.3.0.23-beta and 26.3.0.39-beta); no new accepted production/JAR hash asserted",
+    "same_source_dedup": "Do not dispatch extra native matrix; existing hourly-builds.yml verifies changed/expired exact source later"
+  },
+  "release": {
+    "source_build_status": {
+      "minecraft": "26.3",
+      "version": "0.2.0-rc.1-dev",
+      "release_channel": "development",
+      "rc_publication_cleared": false
+    },
+    "all_version_rc_clearances": "0/24",
+    "github_new_rcs": 0,
+    "curseforge_new_upload_ids": [],
+    "curseforge_public_visibility": "NOT_APPLICABLE_NO_UPLOAD",
+    "publication_end_to_end_qualified": false,
+    "tag_created": false,
+    "previous_263_beta_url": "https://github.com/Shnewbs/Foundations-PL4/releases/tag/mc26.3-v0.2b.0"
+  },
+  "limitations": [
+    "No actual 26.3 cleared RC tag or end-to-end immutable publisher execution; this is a guarded fail-closed route and policy tests, not RC clearance",
+    "Native source, installed providers, multiplayer, migration, sustained performance, other exact-version acceptance and historical 1.6.4 gravel remain outstanding",
+    "Previously running two-profile development validation is not a passed 24-target native release gate"
+  ],
+  "next_work": [
+    "Reconcile running dual-profile 26.3 source-specific native jobs, preserve real counts/artifacts and do not rerun identical runner failures",
+    "Implement/test Minecraft 1.21.1 callback-time ownership/host validation around provider simulation, item extraction/insert and capability getSlots, then perform pinned native and installed-JAR tests",
+    "Qualify disconnected/unloaded aliases and installed third-party providers across exact targets",
+    "Only when exact target fully accepted, intentionally mark boolean RC source clearance true, create immutable version-specific tag and verify new publisher end-to-end; main CurseForge reconciler alone records upload ID and visibility"
+  ]
+}
