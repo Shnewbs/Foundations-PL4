@@ -248,6 +248,119 @@ public final class InstalledBinaryProbe {
         }
     }
 
+    /** Isolated physical DATA_CABLE graph; no manual Ref list or transfer-rate claim. */
+    @SuppressWarnings("unchecked")
+    private static String installedCableTopologyProof(net.minecraft.server.MinecraftServer server,
+            net.minecraft.server.level.ServerLevel level, Block nativeHostBlock, boolean seed) {
+        BlockPos[] cells = {new BlockPos(0, 80, 5), new BlockPos(0, 80, 6),
+            new BlockPos(1, 80, 6), new BlockPos(2, 80, 6),
+            new BlockPos(3, 80, 6), new BlockPos(4, 80, 6),
+            new BlockPos(4, 80, 5)};
+        try {
+            ClassLoader loader = nativeHostBlock.getClass().getClassLoader();
+            Class<?> host = Class.forName("net.foundations.pl4.HostEntity", true, loader);
+            Class<?> part = Class.forName("net.foundations.pl4.Part", true, loader);
+            Class<?> block = Class.forName("net.foundations.pl4.HostBlock", true, loader);
+            Class<?> network = Class.forName("net.foundations.pl4.NetworkEngine", true, loader);
+            Class<?> ref = Class.forName("net.foundations.pl4.NetworkEngine$Ref", true, loader);
+            var changed = host.getMethod("changed");
+            var canAdd = block.getMethod("canAdd", host, part);
+            Object[] cableParts = new Object[7];
+            Object[] endpointParts = new Object[2];
+            for (int i = 0; i < cells.length; i++) {
+                BlockPos pos = cells[i];
+                if (seed) {
+                    level.setBlock(pos.below(), Blocks.IRON_BLOCK.defaultBlockState(), 3);
+                    if (!level.setBlock(pos, nativeHostBlock.defaultBlockState(), 3))
+                        throw new IllegalStateException("Cannot place installed DATA_CABLE route");
+                }
+                Object entity = level.getBlockEntity(pos);
+                if (!host.isInstance(entity)) throw new IllegalStateException("Installed cable host is missing");
+                Map<Integer, Object> parts = (Map<Integer, Object>) host.getField("parts").get(entity);
+                if (seed) {
+                    Object cable = installedPart(loader, "DATA_CABLE", Direction.DOWN);
+                    if (!Boolean.TRUE.equals(canAdd.invoke(null, entity, cable)))
+                        throw new IllegalStateException("Native cable centre shape rejected");
+                    parts.put(6, cable);
+                    if (i == 0 || i == 6) {
+                        Object endpoint = installedPart(loader, "TRANSFER_NODE", Direction.EAST);
+                        part.getField("transferMode").setInt(endpoint, 0);
+                        part.getField("items").setBoolean(endpoint, false);
+                        part.getField("fluids").setBoolean(endpoint, false);
+                        part.getField("energy").setBoolean(endpoint, false);
+                        if (!Boolean.TRUE.equals(canAdd.invoke(null, entity, endpoint)))
+                            throw new IllegalStateException("Native endpoint/cable multipart overlap");
+                        parts.put(5, endpoint);
+                    }
+                    changed.invoke(entity);
+                }
+                if (parts.size() != ((i == 0 || i == 6) ? 2 : 1)
+                        || parts.get(6) == null
+                        || !"DATA_CABLE".equals(((Enum<?>) part.getField("kind").get(parts.get(6))).name())
+                        || part.getField("blockedFaces").getInt(parts.get(6)) != 0)
+                    throw new IllegalStateException("Installed cable route was not saved intact");
+                cableParts[i] = parts.get(6);
+                if (i == 0 || i == 6) {
+                    Object endpoint = parts.get(5);
+                    if (endpoint == null || !"TRANSFER_NODE".equals(
+                            ((Enum<?>)part.getField("kind").get(endpoint)).name())
+                            || part.getField("face").get(endpoint) != Direction.EAST
+                            || part.getField("transferMode").getInt(endpoint) != 0
+                            || !PART_OWNER.equals(part.getField("owner").get(endpoint)))
+                        throw new IllegalStateException("Installed passive topology endpoint changed");
+                    endpointParts[i == 0 ? 0 : 1] = endpoint;
+                }
+            }
+            var discover = network.getMethod("storageNodes", net.minecraft.server.MinecraftServer.class, part);
+            java.util.List<?> linked = (java.util.List<?>) discover.invoke(null, server, endpointParts[0]);
+            if (linked.size() != 2)
+                throw new IllegalStateException("Physical cable graph did not connect both endpoints");
+            java.util.Set<Object> observed = new java.util.HashSet<>();
+            for (Object row : linked) {
+                if (!ref.isInstance(row)) throw new IllegalStateException("Foreign topology reference");
+                observed.add(ref.getMethod("part").invoke(row));
+            }
+            if (observed.size() != 2 || !observed.contains(endpointParts[0])
+                    || !observed.contains(endpointParts[1]))
+                throw new IllegalStateException("Native network graph includes missing/foreign endpoints");
+            Object midHost = level.getBlockEntity(cells[3]);
+            int eastBit = 1 << Direction.EAST.ordinal();
+            part.getField("blockedFaces").setInt(cableParts[3], eastBit);
+            changed.invoke(midHost);
+            java.util.List<?> severed = (java.util.List<?>) discover.invoke(null, server, endpointParts[0]);
+            if (severed.size() != 1 || ref.getMethod("part").invoke(severed.get(0)) != endpointParts[0])
+                throw new IllegalStateException("Disabled cable arm did not isolate opposite endpoint");
+            part.getField("blockedFaces").setInt(cableParts[3], 0);
+            changed.invoke(midHost);
+            java.util.List<?> restored = (java.util.List<?>) discover.invoke(null, server, endpointParts[0]);
+            if (restored.size() != 2)
+                throw new IllegalStateException("Reenabled cable arm did not restore physical network");
+            String source = part.getField("identity").get(endpointParts[0]).toString();
+            String sink = part.getField("identity").get(endpointParts[1]).toString();
+            java.util.Set<String> allIds = new java.util.HashSet<>();
+            allIds.add(source);
+            allIds.add(sink);
+            StringBuilder ids = new StringBuilder("[");
+            for (int i = 0; i < cableParts.length; i++) {
+                String identity = part.getField("identity").get(cableParts[i]).toString();
+                if (!allIds.add(identity))
+                    throw new IllegalStateException("Installed cable UUID reused");
+                if (i > 0) ids.append(",");
+                ids.append("\"").append(identity).append("\"");
+            }
+            if (allIds.size() != 9 || source.equals(sink))
+                throw new IllegalStateException("Native topology endpoint UUIDs are not unique");
+            return "{\"network_engine\":\"net.foundations.pl4.NetworkEngine\","
+                + "\"graph\":\"PHYSICAL_DATA_CABLE\","
+                + "\"connected_endpoints\":2,\"severed_endpoints\":1,"
+                + "\"restored_endpoints\":2,\"cable_count\":7,"
+                + "\"source_identity\":\"" + source + "\",\"sink_identity\":\"" + sink
+                + "\",\"cable_identities\":" + ids + ",\"automatic_tick_tested\":false}";
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException("Installed PL4 NetworkEngine topology API missing", failure);
+        }
+    }
+
     private static int diamonds(BarrelBlockEntity barrel) {
         int result = 0;
         for (int i = 0; i < barrel.getContainerSize(); i++) {
@@ -331,6 +444,7 @@ public final class InstalledBinaryProbe {
             }
             String configuredParts = configuredMultipartProof(level.getBlockEntity(hostPos), phase.equals("seed"));
             String transferProof = installedTransferProof(event.getServer(), level, host, phase.equals("seed"));
+            String topologyProof = installedCableTopologyProof(event.getServer(), level, host, phase.equals("seed"));
             try {
                 String path = System.getenv("PL4_WORLD_PROOF");
                 if (path == null || path.isEmpty()) {
@@ -343,7 +457,8 @@ public final class InstalledBinaryProbe {
                     + "\",\"host\":\"foundations_pl4:multipart_host\""
                     + ",\"host_entity\":\"foundations_pl4:host\""
                     + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
-                    + configuredParts + ",\"transfer\":" + transferProof + "}\n";
+                    + configuredParts + ",\"transfer\":" + transferProof
+                    + ",\"topology\":" + topologyProof + "}\n";
                 Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
             } catch (Exception failure) {
                 throw new IllegalStateException("Cannot preserve installed-JAR world proof", failure);

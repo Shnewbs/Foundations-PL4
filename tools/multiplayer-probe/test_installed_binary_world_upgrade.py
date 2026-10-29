@@ -54,6 +54,20 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "sink_identity": "abcdefab-abcd-4bcd-8bcd-abcdefabcdef",
         }
 
+    def topology(self):
+        return {
+            "network_engine": "net.foundations.pl4.NetworkEngine",
+            "graph": "PHYSICAL_DATA_CABLE",
+            "connected_endpoints": 2, "severed_endpoints": 1,
+            "restored_endpoints": 2, "cable_count": 7,
+            "source_identity": "10000000-0000-4000-8000-000000000001",
+            "sink_identity": "10000000-0000-4000-8000-000000000002",
+            "cable_identities": [
+                "10000000-0000-4000-8000-%012d" % i for i in range(3, 10)
+            ],
+            "automatic_tick_tested": False,
+        }
+
     def phase(self, root, phase, jar, sha, copy=None):
         smoke.prepare(self.checkout, jar, root, sha)
         if copy is None:
@@ -78,6 +92,7 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "barrel_diamonds": 128, "server_started": True,
             "parts": self.configured_parts(),
             "transfer": self.transfer(phase),
+            "topology": self.topology(),
         }))
         copied = gate.world_fingerprint(copy / "run/world") if copy else None
         return gate.capture_phase(root, phase, sha, copied)
@@ -274,6 +289,52 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         p = self.restore / "installed-world-proof.json"
         receipt = json.loads(p.read_text())
         receipt["transfer"]["engine"] = "net.minecraft.world.Container"
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+
+    def test_fake_connected_network_does_not_qualify(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["topology"]["connected_endpoints"] = 1
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_missing_severed_cable_control_fails_closed(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["topology"]["severed_endpoints"] = 2
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_rewritten_saved_cable_identity_is_rejected(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["topology"]["cable_identities"][3] = "f0000000-0000-4000-8000-000000000000"
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_duplicate_native_cable_uuid_is_rejected(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["topology"]["cable_identities"][3] = receipt["topology"]["source_identity"]
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_automatic_tick_must_not_be_claimed_without_execution(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["topology"]["automatic_tick_tested"] = True
         p.write_text(json.dumps(receipt))
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)

@@ -52,9 +52,38 @@ def check_world_proof(output, phase, expected_sha):
     if not evidence.is_file() or evidence.is_symlink():
         raise ValueError("Missing native installed-JAR configured multipart proof")
     proof = json.loads(evidence.read_text())
-    if (set(proof) != set(expected_proof) | {"parts", "transfer"}
+    if (set(proof) != set(expected_proof) | {"parts", "transfer", "topology"}
             or any(proof.get(name) != value for name, value in expected_proof.items())):
         raise ValueError("Native installed-JAR block entity/inventory proof is absent or altered")
+    topology = proof.get("topology")
+    required_topology = {"network_engine", "graph", "connected_endpoints",
+                         "severed_endpoints", "restored_endpoints", "cable_count",
+                         "source_identity", "sink_identity", "cable_identities",
+                         "automatic_tick_tested"}
+    if not isinstance(topology, dict) or set(topology) != required_topology:
+        raise ValueError("No native installed topology discovery proof")
+    if (topology["network_engine"] != "net.foundations.pl4.NetworkEngine"
+            or topology["graph"] != "PHYSICAL_DATA_CABLE"
+            or type(topology["connected_endpoints"]) is not int
+            or topology["connected_endpoints"] != 2
+            or type(topology["severed_endpoints"]) is not int
+            or topology["severed_endpoints"] != 1
+            or type(topology["restored_endpoints"]) is not int
+            or topology["restored_endpoints"] != 2
+            or type(topology["cable_count"]) is not int
+            or topology["cable_count"] != 7
+            or topology["automatic_tick_tested"] is not False):
+        raise ValueError("Installed physical cable topology has no connected/severed evidence")
+    ids = [topology["source_identity"], topology["sink_identity"]]
+    cables = topology["cable_identities"]
+    if not isinstance(cables, list) or len(cables) != 7:
+        raise ValueError("Incomplete native installed cable UUIDs")
+    ids += cables
+    if (any(not isinstance(identity, str)
+            or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", identity)
+            for identity in ids)
+            or len(set(ids)) != 9):
+        raise ValueError("Repeated/invalid native topology identities")
     transfer = proof.get("transfer")
     expected_transfer = {
         "engine", "source_before", "source_after", "sink_before",
@@ -230,6 +259,10 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
             or beta_transfer["source_identity"] != candidate_transfer["source_identity"]
             or beta_transfer["sink_identity"] != candidate_transfer["sink_identity"]):
         raise ValueError("Installed candidate transfer did not resume exact native beta saved state/parts")
+    beta_graph = check_world_proof(seed, "seed", beta_sha)["topology"]
+    candidate_graph = check_world_proof(restore, "restore", candidate_sha)["topology"]
+    if beta_graph != candidate_graph:
+        raise ValueError("Connected installed cable topology did not persist through world upgrade")
     if before["world"] != after["copied_input_world"]:
         raise ValueError("Exact saved baseline world was not the candidate's copied input")
     receipt = {
@@ -246,7 +279,10 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
         "candidate_delivered_items": candidate_transfer["delivered"],
         "installed_transfer_total_items": 1728,
         "configured_part_identities": [part["identity"] for part in beta_parts],
-        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel; actual installed TransferEngine moves diamonds through vanilla barrel capabilities in each phase with conservation and unchanged node UUIDs. Explicit endpoint Ref membership bypasses live network discovery. Server-only: no clients, network-topology routing, installed optional providers, arbitrary worlds or RC clearance.",
+        "connected_native_cable_graph": "PASS_DISCOVERED_SEVERED_AND_RESTORED",
+        "native_cable_count": beta_graph["cable_count"],
+        "automatic_tick_tested": False,
+        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel; actual installed TransferEngine moves diamonds through vanilla barrel capabilities in each phase with conservation and unchanged node UUIDs. The separate seven-centre cable network is actually discovered, severed and reconnected by installed NetworkEngine, but live items still move via the older explicitly supplied Ref membership and no automatic tick is exercised. Server-only: no clients, network-topology routing, installed optional providers, arbitrary worlds or RC clearance.",
         "client_executed": False,
         "rc_publication_cleared": False,
     }
