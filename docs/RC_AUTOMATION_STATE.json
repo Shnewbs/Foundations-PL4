@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-hourly-20261029T0006Z-installed-binary-smoke",
-    "started_at": "2026-10-29T00:08:53.703Z",
-    "expires_at": "2026-10-29T00:38:53.703Z",
-    "purpose": "Implement and gate a separate installed immutable 1.21.1 beta production-JAR server runtime proof; no RC publication or source-compiled acceptance transfer"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -19,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29T00:13:29.603Z: Implemented separate installed-released-beta JAR 1.21.1 native server probe (isolation script, 13 adversarial tests, GitHub Actions workflow), with fail-closed production-JAR hash/metadata, standalone probe-only Java code, actual ModList + ServerStartedEvent proof gate, loopback-only server and retained native logs. CI regressions/native runtime NOT YET independently verified; no new source/JAR/runtime pass or RC clearance. 0/24, no release/upload.",
+  "current_checkpoint": "2026-10-29T00:23:16.766Z: Pushed new 1.21.1 isolated installed-public-beta JAR and exact-native-qualified-development-JAR source-separated dedicated-server probes, an authenticated artifact-metadata/194-JVM-log/production-SHA gate, 28 authored negative policy tests, and a paired nonpublishing GitHub Actions workflow (latest workflow ee459780). Reinspected actual prior native artifact 12859271452 downloaded 6/6 CRC ZIP SHA 357be6c3..., raw native 194/194 log SHA 2fd1e39d..., dev JAR SHA cee5787a... with 882 CRC-valid entries. Actual *new* Python CI test pass, installed-JAR server runtime, candidate install and client/world migration NOT YET VERIFIED (no new run ID/tool receipt). Existing native 194/194 and source-compiled world migration stay qualified ONLY at original source. 0/24 RC clearances, no new Github/CurseForge release. Finite writer lease released.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect new installed-beta-binary-smoke.yml Actions run and retained logs; qualify or repair real native installed released-beta server startup (not just synthetic Python tests).",
-    "Install and execute exact currently validated 1.21.1 candidate production JAR in separate source-isolated runtime, binding its JAR SHA and pinned source to native startup receipt.",
-    "Extend both actual installed binaries to two-client saved-world migration with genuine published baseline and candidate JARs, then third-party installed providers, unloaded aliases, broader multiplayer/world/client and sustained performance acceptance.",
-    "Reproduce 1.6.4 natural x80 gravel overwrite provenance and maintain all-version exact RC clearance/publication gates."
+    "Inspect exact independent beta and candidate installed production-JAR server workflow run IDs, native logs, isolated ModList+ServerStartedEvent receipts and retained source/JAR hashes; fix only actual demonstrated failures.",
+    "Complete real released-beta production-JAR to exact development candidate production-JAR two-client saved-world migration; prior source-compiled migration does not confer installed execution acceptance.",
+    "Installed optional-provider and disconnected/unloaded aliases, 1.6.4 x80 natural gravel root cause, other client, multiplayer, performance, and arbitrary-world migration acceptance.",
+    "Maintain per-target explicit RC clearance and publisher safeguards; keep hourly build/release work enabled."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -65,18 +60,26 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-hourly-20261028T2312Z-reconcile-native-evidence",
-    "released_at": "2026-10-28T23:13:24.328Z",
-    "evidence": "docs/acceptance/rc-dev-1211-published-beta-jar-byte-preflight-2026-10-28.json",
-    "implementation_commit": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
-    "main_native_run": 40785212711,
-    "migration_run": 40785212768,
-    "all_pinned_regressions": "17/17 PASS",
-    "release_binary_preflight": "PASS; NOT EXECUTED",
-    "native_result": "194/194 PASS",
-    "migration_result": "PASS; SOURCE-COMPILED",
-    "rc_publication_cleared": false,
-    "new_releases": 0,
+    "owner": "pl4-chat-hourly-20261029T0006Z-installed-binary-smoke",
+    "released_at": "2026-10-29T00:23:16.766Z",
+    "purpose": "Isolated installed immutable beta plus pinned native-qualified candidate JAR server-only acceptance probe implementation",
+    "implementation_commits": [
+      "c23bdf3af889fdaa0989d867f1b571cb435d1c89",
+      "e1826a40eebd6d4de6862ac09e9afa8f0abfc5ce",
+      "ee45978056f3bf29c2176ea361043769db76b8eb",
+      "217c970f1368ffe786d3b38da455e71308b0cfef",
+      "ad84ef584a762af1f9fc8b8a62ef933a9cffb26f"
+    ],
+    "previously_verified_native_run": 40785212711,
+    "new_native_run": null,
+    "prior_artifact_independent_verification": "PASS exact ZIP/JAR SHA, 194/194 native JVM log and 6/6 CRC",
+    "authored_regressions": 28,
+    "new_regression_CI": "UNVERIFIED",
+    "new_server_native_CI": "UNVERIFIED",
+    "new_GitHub_RC_releases": 0,
+    "new_CurseForge_uploads": 0,
+    "rc_publication_clearances": "0/24",
+    "evidence": "docs/acceptance/rc-dev-1211-isolated-installed-release-binary-server-2026-10-28.json",
     "lease_bounded": true
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-published-beta-jar-byte-preflight-2026-10-28.json",
@@ -881,7 +884,8 @@
     "production_srg_sha256": "598b26f2614319f40c4bba54381fd17fb732aa179fa449547c3a78aaa8e0f6b2",
     "lease_bounded": true,
     "rc_publication_cleared": false,
-    "run_state": "PASS_SCOPED_NATIVE_RESTART_MIGRATION_ONLY"
+    "run_state": "PASS_SCOPED_NATIVE_RESTART_MIGRATION_ONLY",
+    "this_run_previous_checkpoint": "2026-10-29T00:13:29.603Z: Implemented separate installed-released-beta JAR 1.21.1 native server probe (isolation script, 13 adversarial tests, GitHub Actions workflow), with fail-closed production-JAR hash/metadata, standalone probe-only Java code, actual ModList + ServerStartedEvent proof gate, loopback-only server and retained native logs. CI regressions/native runtime NOT YET independently verified; no new source/JAR/runtime pass or RC clearance. 0/24, no release/upload."
   },
   "latest_164_terrain_log_binding": {
     "source_commit": "a861764f13250467cc5aafd80ba256dc3ba813cb",
@@ -1413,6 +1417,26 @@
     "unchanged_release_binary_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
     "rc_publication_cleared": false,
     "previous_checkpoint": "2026-10-28T23:13:24.328Z: Independently verified new v0.2b.0 released-JAR byte preflight and source-compiled two-client upgrade at exact main aa9b439b; 17/17 total regression tests, native 194/194 run 40785212711 and archived CRC/SHA source-world preservation run 40785212768. Published beta JAR SHA 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229, dev production JAR SHA cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c. Downloaded beta binary was NOT installed/executed; migration only source compiled. 0/24 RC clearances, zero new releases; writer lease released.",
-    "limitations": "No independent run ID/job/artifact confirmation yet; source compiled prior acceptance does not qualify the new installed binary execution. Candidate production JAR and clients/world migration not executed."
+    "limitations": "No independent run ID/job/artifact confirmation yet; source compiled prior acceptance does not qualify the new installed binary execution. Candidate production JAR and clients/world migration not executed.",
+    "validated_old_artifact_run": 40785212711,
+    "validated_old_artifact_id": 12859271452,
+    "validated_old_artifact_source_sha": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "validated_old_artifact_sha256": "357be6c367d5f3e7b0b8a0edde28e57c8be06d4f237d4d3a5f931208109026d7",
+    "validated_old_artifact_crc": "PASS 6/6",
+    "validated_old_native_result": "194/194 from existing successful run, NOT new job",
+    "validated_old_native_log_sha256": "2fd1e39d2f4e7d736f027b9397048f05f579a9470d910b1282495521825678c8",
+    "validated_old_dev_production_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "validated_published_beta_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "workflow_commit": "ee45978056f3bf29c2176ea361043769db76b8eb",
+    "installed_probe_script_commit": "e1826a40eebd6d4de6862ac09e9afa8f0abfc5ce",
+    "installed_source_provenance_commit": "217c970f1368ffe786d3b38da455e71308b0cfef",
+    "installed_source_provenance_test_commit": "ad84ef584a762af1f9fc8b8a62ef933a9cffb26f",
+    "new_authored_policy_test_cases": 28,
+    "new_policy_CI_verified": false,
+    "newly_installed_server_real_run_id": null,
+    "installed_beta_server_verified": false,
+    "installed_candidate_server_verified": false,
+    "installed_binary_to_binary_multiplayer_verified": false,
+    "new_release_eligible": false
   }
 }
