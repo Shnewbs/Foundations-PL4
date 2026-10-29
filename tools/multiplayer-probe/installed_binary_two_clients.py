@@ -157,6 +157,12 @@ def _prepare(checkout, jar, output, phase, source, jar_sha, copy_from=None):
             "new Part(Kind.DATA_CABLE,Direction.DOWN,node.owner)",
             'installedPart("DATA_CABLE",Direction.DOWN,node.owner)'
         ).replace(
+            'new Part(Kind.DATA_CABLE,Direction.DOWN,uuid("PL4ProbeA"))',
+            'installedPart("DATA_CABLE",Direction.DOWN,uuid("PL4ProbeA"))'
+        ).replace(
+            'new Part(Kind.TRANSFER_NODE,Direction.EAST,uuid("PL4ProbeA"))',
+            'installedPart("TRANSFER_NODE",Direction.EAST,uuid("PL4ProbeA"))'
+        ).replace(
             "public final class MultiplayerServerProbe {",
             """public final class MultiplayerServerProbe {
     private static Part installedPart(String id, Direction face, UUID owner) {

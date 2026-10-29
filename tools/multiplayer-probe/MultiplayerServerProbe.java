@@ -77,11 +77,11 @@ public final class MultiplayerServerProbe {
                 throw new IllegalStateException("Native cable fixture placement failed");
             HostEntity h=(HostEntity)level.getBlockEntity(pos);
             if(h==null)throw new IllegalStateException("Native cable host missing");
-            Part c=installedPart("DATA_CABLE",Direction.DOWN,uuid("PL4ProbeA"));
+            Part c=new Part(Kind.DATA_CABLE,Direction.DOWN,uuid("PL4ProbeA"));
             if(!HostBlock.canAdd(h,c))throw new IllegalStateException("Native centre cable overlap");
             h.parts.put(6,c);
             if(i==0||i==6){
-                Part endpoint=installedPart("TRANSFER_NODE",Direction.EAST,uuid("PL4ProbeA"));
+                Part endpoint=new Part(Kind.TRANSFER_NODE,Direction.EAST,uuid("PL4ProbeA"));
                 endpoint.transferMode=0;endpoint.items=false;endpoint.fluids=false;endpoint.energy=false;
                 if(!HostBlock.canAdd(h,endpoint))throw new IllegalStateException("Native transfer endpoint overlap");
                 h.parts.put(5,endpoint);
