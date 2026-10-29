@@ -114,5 +114,81 @@ class NativeMultipartRegionPolicy(unittest.TestCase):
             gate.decode_region(bytes(region))
 
 
+
+def transfer_fixture(legacy=False):
+    """Synthetic parsed NBT only, never proof of a native game execution."""
+    source_id = "11111111-2222-4333-8444-555555555555"
+    sink_id = "66666666-7777-4888-8999-aaaaaaaaaaaa"
+    def integers(value):
+        return list(struct.unpack(">4i", uuid.UUID(value).bytes))
+    def host(x, mode, identity):
+        part = {
+            "kind": "transfernode", "face": 5, "transferMode": mode,
+            "items": 1, "fluids": 0, "energy": 0, "resourceEscrow": 0,
+            "owner": integers(gate.PART_OWNER), "identity": integers(identity),
+        }
+        if not legacy:
+            part["itemEscrowCount"] = 0
+            part["itemTransferFault"] = ""
+        return {"id": "foundations_pl4:host", "schema": 2, "parts": [part]}
+    def barrel(count):
+        return {
+            "id": "minecraft:barrel",
+            "Items": [{"id": "minecraft:diamond", "Slot": i, "count": min(64, count-64*i)}
+                      for i in range((count + 63)//64)],
+        }
+    targets = {
+        (0, 80, 2): host(0, 2, source_id),
+        (1, 80, 2): barrel(1664),
+        (4, 80, 2): host(4, 1, sink_id),
+        (5, 80, 2): barrel(64),
+    }
+    expected = {
+        "source_identity": source_id, "sink_identity": sink_id,
+        "source_after": 1664, "sink_after": 64,
+    }
+    return targets, expected
+
+
+class InstalledTransferNativeNBTPolicy(unittest.TestCase):
+    def test_candidate_saved_transfer_inventory_and_uuid_pass(self):
+        observed, expected = transfer_fixture()
+        result = gate.inspect_transfer_entities(observed, expected)
+        self.assertEqual(result["source_diamonds"], 1664)
+        self.assertEqual(result["sink_diamonds"], 64)
+        self.assertEqual(result["item_total"], 1728)
+
+    def test_published_beta_may_omit_only_new_safe_escrow_keys(self):
+        observed, expected = transfer_fixture(legacy=True)
+        self.assertEqual(gate.inspect_transfer_entities(
+            observed, expected, allow_legacy_missing=True)["item_escrow"], 0)
+        with self.assertRaisesRegex(ValueError, "route, fault or escrow"):
+            gate.inspect_transfer_entities(observed, expected)
+
+    def test_legacy_missing_keys_does_not_allow_positive_escrow(self):
+        observed, expected = transfer_fixture(legacy=True)
+        observed[(0, 80, 2)]["parts"][0]["itemEscrowCount"] = 1
+        with self.assertRaisesRegex(ValueError, "route, fault or escrow"):
+            gate.inspect_transfer_entities(observed, expected, allow_legacy_missing=True)
+
+    def test_wrong_native_source_balance_fails(self):
+        observed, expected = transfer_fixture()
+        observed[(1, 80, 2)]["Items"][0]["count"] = 63
+        with self.assertRaisesRegex(ValueError, "counts"):
+            gate.inspect_transfer_entities(observed, expected)
+
+    def test_forged_native_transfer_part_owner_fails(self):
+        observed, expected = transfer_fixture()
+        observed[(4, 80, 2)]["parts"][0]["owner"] = [0, 0, 0, 0]
+        with self.assertRaisesRegex(ValueError, "owner/UUID"):
+            gate.inspect_transfer_entities(observed, expected)
+
+    def test_wrong_native_mode_fails(self):
+        observed, expected = transfer_fixture()
+        observed[(4, 80, 2)]["parts"][0]["transferMode"] = 2
+        with self.assertRaisesRegex(ValueError, "route, fault or escrow"):
+            gate.inspect_transfer_entities(observed, expected)
+
+
 if __name__ == "__main__":
     unittest.main()
