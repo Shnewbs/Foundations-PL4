@@ -1,58 +1,16 @@
-name: Publish existing release to CurseForge
-
+name: Retired 1.20.4 direct CurseForge uploader audit
 on:
+  push:
+    branches: ['mc/1.20.4']
+    paths: ['.github/workflows/curseforge.yml']
   workflow_dispatch:
-    inputs:
-      tag:
-        description: Existing GitHub release tag
-        required: true
-        default: mc1.20.4-v0.2a-port.1
-
 permissions:
-  contents: write
-
-concurrency:
-  group: release-publication
-  cancel-in-progress: false
-
+  contents: read
 jobs:
-  upload:
+  audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Download the already validated GitHub artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag }}
-        run: |
-          python - <<'PY'
-          import os, re, subprocess, json, hashlib
-          from pathlib import Path
-          tag = os.environ['RELEASE_TAG']
-          status = json.loads(Path('BUILD_STATUS.json').read_text(encoding='utf-8'))
-          minecraft = status['minecraft']
-          if minecraft not in ('1.20.1', '1.20.2', '1.20.4') or not tag.startswith(f'mc{minecraft}-v'):
-              raise SystemExit('Invalid release tag')
-          version = tag[len(f'mc{minecraft}-v'):]
-          if not re.fullmatch(r'[A-Za-z0-9._-]+', version) or version != status['version']:
-              raise SystemExit('Release version does not match this branch')
-          jar = f'FoundationsPL4-{minecraft}-{version}.jar'
-          repo = os.environ['GITHUB_REPOSITORY']
-          subprocess.run(['gh', 'release', 'download', tag, '--repo', repo, '--pattern', jar, '--pattern', 'SHA256SUMS.txt', '--dir', 'build/libs'], check=True)
-          digest = hashlib.sha256(Path('build/libs', jar).read_bytes()).hexdigest()
-          entries = Path('build/libs/SHA256SUMS.txt').read_text().splitlines()
-          if f'{digest}  {jar}' not in entries:
-              raise SystemExit('GitHub release checksum does not match runtime JAR')
-          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', repo, '--json', 'body'], text=True))
-          notes = Path(f'docs/releases/{version}.md')
-          notes.parent.mkdir(parents=True, exist_ok=True)
-          notes.write_text(release['body'], encoding='utf-8')
-          with open(os.environ['GITHUB_ENV'], 'a') as env:
-              env.write(f'VERSION={version}\nRELEASE_TAG={tag}\nMINECRAFT_VERSION={minecraft}\n')
-          PY
-      - name: Upload release to CurseForge
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
-          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
-        run: python tools/upload_curseforge.py
+      - name: Verify no branch-local upload or unsafe release
+        run: python3 -m unittest -v tools/test_publisher_policy_1204.py
