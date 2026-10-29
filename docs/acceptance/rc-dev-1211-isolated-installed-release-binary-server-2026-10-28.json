@@ -1,0 +1,52 @@
+{
+  "recorded_at_utc": "2026-10-29T00:12:59.449Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "target": "Minecraft 1.21.1",
+  "implementation_goal": "Replace source-compiled-only migration provenance with a first separate installed production-JAR native runtime proof, without transferring acceptance to client/multiplayer or RC publication.",
+  "previous_qualification": {
+    "source": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "native_action": 40785212711,
+    "native_game_tests": "194/194 PASS",
+    "source_compiled_migration_action": 40785212768,
+    "migration_result": "PASS, source-compiled ONLY",
+    "prior_release_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "exact_published_release": "https://github.com/Shnewbs/Foundations-PL4/releases/tag/v0.2b.0"
+  },
+  "new_work": {
+    "isolated_runtime_script": "tools/multiplayer-probe/installed_binary_smoke.py",
+    "script_checkpoint": "e1826a40eebd6d4de6862ac09e9afa8f0abfc5ce",
+    "regression_tests": "tools/multiplayer-probe/test_installed_binary_smoke.py",
+    "tests_checkpoint": "33cf16013a5543cc7dbf7dcdc94f1e61d064c749",
+    "workflow": ".github/workflows/installed-beta-binary-smoke.yml",
+    "workflow_checkpoint": "7663e18ea788cdf7727c5b4a43876f3c6998eb7b",
+    "authored_adversarial_tests": 13,
+    "policy": "Fail-closed exact released JAR checksum + metadata; generate only separate probe Java mod and no PL4 production sources; place sole production JAR in run/mods; require native ModList and ServerStartedEvent proof, bounded process shutdown, local loopback configuration, log/manifest hashes; reject duplicate JARs and unexpected injected Java sources.",
+    "original_R16_attachment_used": false,
+    "feature_branches_created": 0,
+    "version_branches_changed": 0
+  },
+  "validation_this_run": {
+    "independent_source_readback": "CONFIRMED new source, tests and workflow exist on main",
+    "python_regression_execution": "PENDING_NOT_INDEPENDENTLY_OBSERVED",
+    "native_installed_release_JAR_execution": "PENDING_NOT_INDEPENDENTLY_OBSERVED",
+    "active_workflow_run_id": "UNAVAILABLE_FROM_CURRENT_CONNECTOR",
+    "retained_new_native_artifact": "NONE_VERIFIED",
+    "exact_candidate_production_JAR_executed": false,
+    "screenshot_reviewed": false,
+    "installed_provider_verification": false,
+    "multiplayer_migration_accepted": false,
+    "rc_publication_cleared": false
+  },
+  "publication": {
+    "new_github_rc_releases": 0,
+    "new_curseforge_uploads": 0,
+    "rc_clearances": "0/24, unchanged",
+    "maturity": "development only; unqualified probes and snapshots never published"
+  },
+  "next_work": [
+    "Inspect first native isolated-JAR server workflow run/retained logs, repair any real loader/plugin/source-isolation failures without repeating unchanged external runner failures.",
+    "Run exact 1.21.1 candidate production JAR from the pinned native artifact in a separate installed production runtime; verify runtime hash and source identity.",
+    "Extend isolated binary execution to the two actual clients and original/candidate world seed/restore, then optional installed providers, arbitrary worlds and sustained performance.",
+    "Preserve prior unresolved 1.6.4 x80 gravel cause and all exact-target release clearances."
+  ]
+}
