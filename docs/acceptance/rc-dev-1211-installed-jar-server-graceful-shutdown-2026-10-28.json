@@ -1,0 +1,53 @@
+{
+  "recorded_at_utc": "2026-10-29T01:17:24.201Z",
+  "evidence": "docs/acceptance/rc-dev-1211-installed-jar-server-graceful-shutdown-2026-10-28.json",
+  "implementation_commit": "c763ea0e576bf395f69f8223338ccba36c5e39a1",
+  "policy_run": 40799159079,
+  "policy_result": "COMPLETED_SUCCESS",
+  "regression_tests": {
+    "released_server": 16,
+    "candidate_provenance": 15,
+    "candidate_server": 16,
+    "all_passed": true
+  },
+  "observed_root_cause": "Previous 40793491930 jobs independently loaded the actual immutable JARs but timed out after 90 seconds waiting for Gradle runServer to accept a console stop via wrapper stdin; prior run FAILED and cannot be counted.",
+  "fix": "Generate ephemeral authenticated loopback RCON settings in isolated disposable server, send stop only after the native server-start proof, require clean Gradle/native exit, and terminate entire isolated JVM process group on error; three new RCON adversarial tests.",
+  "published_beta": {
+    "tag": "v0.2b.0",
+    "source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "job_id": 123202825605,
+    "result": "PASS installed actual JAR and ModList+ServerStartedEvent proof with zero-exit authenticated stop",
+    "artifact_id": 12864418744,
+    "artifact_sha256": "7e75584b5029e6ff1f55b8316f1599fd5df1e0b8bc9e8d9669df2a8397d12ecf",
+    "native_server_log_sha256": "e3cb28b401023e546dc3991a5f4b2f814911ea73988d6e01a763207e3baa629a",
+    "proof_sha256": "c94efbab46329cec56a031d5f2f4252c8eb0be37e210d23b356755b4a5e06f5e"
+  },
+  "pinned_candidate": {
+    "source_commit": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "original_native_run": 40785212711,
+    "original_native_tests": "194/194",
+    "jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "job_id": 123202825835,
+    "result": "PASS genuine retained native-qualified production JAR installed, separate ServerStartedEvent proof and clean exit",
+    "artifact_id": 12865117103,
+    "artifact_sha256": "806df52ad4bd87d38e32504373290ad9c5150289f0e1b374593c3cfebcef8dae",
+    "native_server_log_sha256": "fd4c53059fc9309a7d4de57c79df20396c3cf63b0fcaad646717acd31313b392",
+    "proof_sha256": "c1bd0dc1698780a8738e00d00ef10fed6d4a3b65d56e15443dbe78cdbe223117"
+  },
+  "publication": {
+    "policy_run": 40799159232,
+    "result": "COMPLETED_SUCCESS",
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "rc_clearances": "0/24"
+  },
+  "acceptance_limitations": [
+    "Installed production JARs executed only in independent isolated offline loopback dedicated servers; no two-client migration with these binaries.",
+    "Source-compiled prior two-client world upgrade is distinct evidence and cannot clear binary-to-binary migration.",
+    "No installed optional provider, unloaded alias, broader multiplayer, current client screenshot, sustained performance, arbitrary-world recovery or legacy gravel root-cause acceptance.",
+    "Exact candidate source and JAR are unchanged older native-qualified bytes; the new c763e policy harness commit is not a new PL4 production build."
+  ]
+}
