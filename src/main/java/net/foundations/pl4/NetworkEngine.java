@@ -156,29 +156,33 @@ public final class NetworkEngine {
         Group group=cachedMembership.get(reader);
         return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&reader.kind.reader()?group.targets:List.of();
     }
-    /** Cached membership is never authority after a host or part is detached mid-tick.
-     * Validate the anchor and every exposed inventory endpoint before publishing aliases;
-     * rebuilding the full graph is deferred until its next ordinary refresh. */
+    /** Cached membership is not authority after a host, owner or intermediate cable changes.
+     * Rebuild once on rare invalidation so healthy local nodes remain usable, but stale
+     * remote aliases cannot survive until the next scheduled network sample. */
+    private static boolean currentStorageGroup(MinecraftServer server,Part anchor,Group group){
+        if(anchor.owner==null)return false;
+        boolean anchorAttached=false;
+        for(Ref ref:group.parts){
+            if(!loadedHost(ref.host,server)
+                ||ref.host.parts.get(ref.part.slot())!=ref.part
+                ||!anchor.owner.equals(ref.part.owner))return false;
+            if(ref.part==anchor)anchorAttached=true;
+        }
+        return anchorAttached;
+    }
+    /** Physical data network only: visual reader exports never grant inventory access. */
     public static List<Ref> storageNodes(MinecraftServer server,Part anchor){
         ensureCurrent(server);
         Group group=cachedMembership.get(anchor);
         if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get())return List.of();
-        boolean anchorAttached=false;
-        for(Ref ref:group.parts)if(ref.part==anchor){
-            anchorAttached=loadedHost(ref.host,server)&&ref.host.parts.get(anchor.slot())==anchor;
-            break;
+        if(!currentStorageGroup(server,anchor,group)){
+            dirty=true;
+            rebuild(server);
+            group=cachedMembership.get(anchor);
+            if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()
+                ||!currentStorageGroup(server,anchor,group))return List.of();
         }
-        if(!anchorAttached||anchor.owner==null){dirty=true;return List.of();}
-        // A revoked intermediate cable must not keep its old endpoints connected.
-        // Inspect the complete cached path, not only the exposed storage nodes.
-        for(Ref ref:group.parts)if(!loadedHost(ref.host,server)
-            ||ref.host.parts.get(ref.part.slot())!=ref.part
-            ||!anchor.owner.equals(ref.part.owner)){
-            dirty=true;return List.of();
-        }
-        List<Ref> nodes=cachedStorageNodes.get(anchor);
-        if(nodes==null){dirty=true;return List.of();}
-        return nodes;
+        return cachedStorageNodes.getOrDefault(anchor,List.of());
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent.Post e){

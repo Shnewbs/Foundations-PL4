@@ -431,8 +431,9 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==32,
             "Native cable must deliver when both endpoint owners match");
         Part detachedCable=right.parts.remove(6);
-        h.assertTrue(NetworkEngine.storageNodes(server,source).isEmpty(),
-            "Detached intermediate cable must revoke cached remote inventory aliases immediately");
+        var detached=NetworkEngine.storageNodes(server,source);
+        h.assertTrue(detached.size()==1&&detached.getFirst().part()==source,
+            "Detached intermediate cable must exclude remote aliases while retaining the local source");
         right.parts.put(6,detachedCable);
         NetworkEngine.rebuild(server);
         connected=NetworkEngine.storageNodes(server,source);
