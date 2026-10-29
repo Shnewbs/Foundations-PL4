@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029-2020Z",
+    "acquired_at": "2026-10-29T20:20:28.378Z",
+    "expires_at": "2026-10-29T20:32:28.378Z",
+    "source_head": "01e337e907c46a281bddfaf9d9368b7cbbfd6d51",
+    "scope": "finite exact 1.16.5 native installed production artifact receipt reconciliation",
+    "purpose": "record newly completed 191/191 Forge36 production smoke, no release"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
