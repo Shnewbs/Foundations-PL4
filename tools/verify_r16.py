@@ -30,6 +30,11 @@ checks={
  'native physical cable owner isolation is exercised':(
      'a.part.owner!=null&&a.part.owner.equals(b.part.owner)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java')
      and 'physicalCableRejectsForeignOwnerAfterLiveTransfer' in native('R16GameTests.java')),
+ 'stale plan rechecks live endpoint owners and part attachment':(
+     'source.part().owner.equals(sink.part().owner)' in engine
+     and 'source.host().parts.get(source.part().slot())==source.part()' in engine
+     and 'sink.host().parts.get(sink.part().slot())==sink.part()' in engine
+     and 'TransferEngine.run(server,stalePlan)' in native('R16GameTests.java')),
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }

@@ -153,7 +153,13 @@ public final class TransferEngine {
         return rotateTies(endpoints.stream().filter(s->routable(s,sink,targets)).toList(),cursor);
     }
     private static boolean routable(NetworkEngine.Ref source,NetworkEngine.Ref sink,Map<NetworkEngine.Ref,TargetKey> targets){
-        return source!=sink&&!sameTarget(source,sink,targets)&&TransferRules.canRouteOnChannels(
+        // A cached transfer plan is not authority: live owner and host membership can
+        // change between topology rebuilds or while a provider callback executes.
+        return source!=sink&&source.part().owner!=null
+            &&source.part().owner.equals(sink.part().owner)
+            &&source.host().parts.get(source.part().slot())==source.part()
+            &&sink.host().parts.get(sink.part().slot())==sink.part()
+            &&!sameTarget(source,sink,targets)&&TransferRules.canRouteOnChannels(
             source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,source.part().outputChannel,
             sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode,sink.part().inputChannel);
     }

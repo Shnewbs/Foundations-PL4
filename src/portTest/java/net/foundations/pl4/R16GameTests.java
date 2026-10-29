@@ -345,7 +345,16 @@ public final class R16GameTests {
         h.assertTrue(from.getItem(0).isEmpty()&&to.getItem(0).getCount()==32,
             "Native cable must deliver when both endpoint owners match");
         from.setItem(0,new ItemStack(Items.DIAMOND,12));
-        UUID original=sink.owner;sink.owner=UUID.randomUUID();right.changed();
+        // Reuse the actual previously authorized native transfer plan before any
+        // dirty-rebuild notification. Its cached endpoints must not authorize
+        // newly foreign inventory even if the rest of the graph is unchanged.
+        var stalePlan=TransferEngine.prepare(connected);
+        UUID original=sink.owner;sink.owner=UUID.randomUUID();
+        TransferEngine.run(server,stalePlan);
+        h.assertTrue(from.getItem(0).getCount()==12&&to.getItem(0).getCount()==32
+            &&source.pendingItem.isEmpty()&&sink.pendingItem.isEmpty(),
+            "Stale native transfer plan must reject a newly foreign endpoint before topology rebuild");
+        right.changed();
         var isolated=NetworkEngine.storageNodes(server,source);
         h.assertTrue(isolated.size()==1&&isolated.getFirst().part()==source,
             "Foreign-owned endpoint must be removed from the cached physical cable graph");
