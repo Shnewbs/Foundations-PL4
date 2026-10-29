@@ -25,8 +25,8 @@ class InstalledTwoClientPolicy(unittest.TestCase):
                 self.assertIn("--source-sha " + gate.CANDIDATE_SOURCE, workflow)
                 self.assertIn("--jar-sha256 " + gate.CANDIDATE_JAR, workflow)
                 self.assertIn("--expected-native-tests 200", workflow)
-                self.assertIn("actions/artifacts/12909794155", workflow)
-                self.assertIn("--artifact-sha256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c", workflow)
+                self.assertIn("actions/artifacts/12912977020", workflow)
+                self.assertIn("--artifact-sha256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069", workflow)
                 self.assertNotIn("actions/artifacts/12907239925", workflow)
         self.assertNotEqual(gate.BASELINE_JAR, gate.CANDIDATE_JAR)
 
