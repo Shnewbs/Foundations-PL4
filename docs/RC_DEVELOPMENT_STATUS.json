@@ -3772,5 +3772,63 @@
     "release_created": false,
     "rc_publication_cleared": false,
     "evidence": "docs/acceptance/rc-dev-1144-branch-publisher-safety-2026-10-29.json"
+  },
+  "latest_modern_branch_publisher_safety": {
+    "checked_at_utc": "2026-10-29T19:23:55.012Z",
+    "evidence": "docs/acceptance/rc-dev-six-modern-branch-publisher-hardening-2026-10-29.json",
+    "branches": [
+      {
+        "minecraft": "1.13.2",
+        "source_commit": "f249f14b9473b70493b7ee1cca01640c02c6276e",
+        "policy_run": 40937888202,
+        "curseforge_audit_run": 40937888025,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.18.2",
+        "source_commit": "401599a225a3f7b5a9db4c7c444094b1633a7c57",
+        "policy_run": 40938131250,
+        "curseforge_audit_run": 40938131162,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.15.2",
+        "source_commit": "c879cf9f2fabf2c06589ae0210aa39b9d08d9422",
+        "policy_run": 40938398965,
+        "curseforge_audit_run": 40938398841,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.16.1",
+        "source_commit": "c1484e33d781e63bfccfceae8357dd5d831f7565",
+        "policy_run": 40938824563,
+        "curseforge_audit_run": 40938824648,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.16.2",
+        "source_commit": "161fa7f246caf17d75eefcebd5c806f0da4afbb7",
+        "policy_run": 40939121928,
+        "curseforge_audit_run": 40939122063,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.16.3",
+        "source_commit": "141c00baeb1f3f7ee3aa79468b4647913a7d8045",
+        "policy_run": 40939189505,
+        "curseforge_audit_run": 40939189400,
+        "native_retested": false,
+        "rc_publication_cleared": false
+      }
+    ],
+    "static_regressions": "12/12 Actions PASS, 132/132 test executions",
+    "new_native_production_evidence": false,
+    "new_rc_eligible": false,
+    "next_target": "mc/1.16.4"
   }
 }
