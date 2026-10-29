@@ -154,6 +154,111 @@ public final class InstalledBinaryProbe {
         return ((Integer) partType.getMethod("slot").invoke(part)) == slot;
     }
 
+
+    // Native installed-JAR transfer engine and vanilla capability: supplied
+    // endpoint refs are explicit, so topology discovery and players are NOT tested.
+    @SuppressWarnings("unchecked")
+    private static String installedTransferProof(net.minecraft.server.MinecraftServer server,
+            net.minecraft.server.level.ServerLevel level, Block hostBlock, boolean seed) {
+        BlockPos[] hosts = {new BlockPos(0, 80, 2), new BlockPos(4, 80, 2)};
+        if (seed) for (BlockPos pos : hosts) {
+            if (!level.setBlock(pos, hostBlock.defaultBlockState(), 3)
+                    || !level.setBlock(pos.east(), Blocks.BARREL.defaultBlockState(), 3))
+                throw new IllegalStateException("Cannot place installed transfer host and barrel");
+        }
+        try {
+            Object[] entities = {level.getBlockEntity(hosts[0]), level.getBlockEntity(hosts[1])};
+            if (entities[0] == null || entities[1] == null)
+                throw new IllegalStateException("Missing installed transfer hosts");
+            ClassLoader loader = entities[0].getClass().getClassLoader();
+            Class<?> host = Class.forName("net.foundations.pl4.HostEntity", true, loader);
+            Class<?> part = Class.forName("net.foundations.pl4.Part", true, loader);
+            Class<?> ref = Class.forName("net.foundations.pl4.NetworkEngine$Ref", true, loader);
+            Class<?> engine = Class.forName("net.foundations.pl4.TransferEngine", true, loader);
+            Class<?> block = Class.forName("net.foundations.pl4.HostBlock", true, loader);
+            Object[] pieces = new Object[2];
+            BarrelBlockEntity[] barrels = new BarrelBlockEntity[2];
+            for (int i = 0; i < 2; i++) {
+                if (!host.isInstance(entities[i])
+                        || !(level.getBlockEntity(hosts[i].east()) instanceof BarrelBlockEntity))
+                    throw new IllegalStateException("Native transfer host/barrel type mismatch");
+                barrels[i] = (BarrelBlockEntity) level.getBlockEntity(hosts[i].east());
+                Map<Integer, Object> parts = (Map<Integer, Object>) host.getField("parts").get(entities[i]);
+                if (seed) {
+                    if (!parts.isEmpty()) throw new IllegalStateException("Transfer host was not fresh");
+                    Object node = installedPart(loader, "TRANSFER_NODE", Direction.EAST);
+                    part.getField("transferMode").setInt(node, i == 0 ? 2 : 1);
+                    part.getField("fluids").setBoolean(node, false);
+                    part.getField("energy").setBoolean(node, false);
+                    if (!Boolean.TRUE.equals(block.getMethod("canAdd", host, part).invoke(null, entities[i], node)))
+                        throw new IllegalStateException("Installed TRANSFER_NODE placement rejected");
+                    parts.put((Integer) part.getMethod("slot").invoke(node), node);
+                    host.getMethod("changed").invoke(entities[i]);
+                }
+                if (parts.size() != 1 || !parts.containsKey(5))
+                    throw new IllegalStateException("Native transfer node absent on reload");
+                pieces[i] = parts.get(5);
+                if (!"TRANSFER_NODE".equals(((Enum<?>)part.getField("kind").get(pieces[i])).name())
+                        || part.getField("face").get(pieces[i]) != Direction.EAST
+                        || !PART_OWNER.equals(part.getField("owner").get(pieces[i]))
+                        || part.getField("transferMode").getInt(pieces[i]) != (i == 0 ? 2 : 1)
+                        || !part.getField("items").getBoolean(pieces[i])
+                        || part.getField("fluids").getBoolean(pieces[i])
+                        || part.getField("energy").getBoolean(pieces[i]))
+                    throw new IllegalStateException("Installed transfer direction/owner/flags changed");
+            }
+            if (seed) {
+                if (barrels[0].getContainerSize() != 27 || barrels[1].getContainerSize() != 27)
+                    throw new IllegalStateException("Unexpected native barrel capacity");
+                for (int i = 0; i < 27; i++) barrels[0].setItem(i, new ItemStack(Items.DIAMOND, 64));
+                barrels[0].setChanged();
+            }
+            int[] before = new int[2], after = new int[2];
+            for (int i = 0; i < 2; i++) {
+                before[i] = diamonds(barrels[i]);
+            }
+            if (before[0] <= 0 || before[0] + before[1] != 1728
+                    || (seed && before[1] != 0) || (!seed && before[1] <= 0))
+                throw new IllegalStateException("Native transfer pre-state or save conservation failed");
+            Object source = ref.getConstructor(host, part).newInstance(entities[0], pieces[0]);
+            Object sink = ref.getConstructor(host, part).newInstance(entities[1], pieces[1]);
+            engine.getMethod("run", net.minecraft.server.MinecraftServer.class, java.util.List.class)
+                .invoke(null, server, java.util.List.of(source, sink));
+            for (int i = 0; i < 2; i++) {
+                after[i] = diamonds(barrels[i]);
+                barrels[i].setChanged();
+                ((net.minecraft.world.level.block.entity.BlockEntity)entities[i]).setChanged();
+                if (!((ItemStack)part.getField("pendingItem").get(pieces[i])).isEmpty())
+                    throw new IllegalStateException("Pending item escrow after actual transfer");
+            }
+            int moved = before[0] - after[0];
+            if (moved <= 0 || after[0] <= 0 || moved != after[1] - before[1]
+                    || after[0] + after[1] != 1728)
+                throw new IllegalStateException("Installed TransferEngine failed live delivery/conservation");
+            String sourceId = part.getField("identity").get(pieces[0]).toString();
+            String sinkId = part.getField("identity").get(pieces[1]).toString();
+            if (sourceId.equals(sinkId)) throw new IllegalStateException("Duplicate native transfer node UUID");
+            return "{\"engine\":\"net.foundations.pl4.TransferEngine\",\"source_before\":"
+                + before[0] + ",\"source_after\":" + after[0] + ",\"sink_before\":"
+                + before[1] + ",\"sink_after\":" + after[1] + ",\"delivered\":"
+                + moved + ",\"total\":1728,\"source_identity\":\"" + sourceId
+                + "\",\"sink_identity\":\"" + sinkId + "\",\"pending_escrow\":0}";
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException("Real installed PL4 transfer API unavailable", failure);
+        }
+    }
+
+    private static int diamonds(BarrelBlockEntity barrel) {
+        int result = 0;
+        for (int i = 0; i < barrel.getContainerSize(); i++) {
+            ItemStack stack = barrel.getItem(i);
+            if (!stack.isEmpty() && !stack.is(Items.DIAMOND))
+                throw new IllegalStateException("Unexpected non-diamond in transfer barrel");
+            result += stack.getCount();
+        }
+        return result;
+    }
+
     private void serverStarted(ServerStartedEvent event) {
         if (!ModList.get().isLoaded("foundations_pl4")) {
             throw new IllegalStateException("Installed production PL4 mod was not loaded");
@@ -225,6 +330,7 @@ public final class InstalledBinaryProbe {
                 throw new IllegalStateException("Installed PL4 block entity lost its registered type: " + hostType);
             }
             String configuredParts = configuredMultipartProof(level.getBlockEntity(hostPos), phase.equals("seed"));
+            String transferProof = installedTransferProof(event.getServer(), level, host, phase.equals("seed"));
             try {
                 String path = System.getenv("PL4_WORLD_PROOF");
                 if (path == null || path.isEmpty()) {
@@ -237,7 +343,7 @@ public final class InstalledBinaryProbe {
                     + "\",\"host\":\"foundations_pl4:multipart_host\""
                     + ",\"host_entity\":\"foundations_pl4:host\""
                     + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
-                    + configuredParts + "}\n";
+                    + configuredParts + ",\"transfer\":" + transferProof + "}\n";
                 Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
             } catch (Exception failure) {
                 throw new IllegalStateException("Cannot preserve installed-JAR world proof", failure);
