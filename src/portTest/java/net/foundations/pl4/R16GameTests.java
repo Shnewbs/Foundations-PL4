@@ -445,6 +445,52 @@ public final class R16GameTests {
     }
 
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void itemProviderCallbackRevocationRetainsEscrow(GameTestHelper h){
+        ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));
+        from.setItem(0,new ItemStack(Items.DIAMOND,13));
+        HostEntity remove=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),
+            add=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        part(remove,Direction.WEST).transferMode=2;part(add,Direction.EAST).transferMode=1;
+        NetworkEngine.Ref source=ref(remove,Direction.WEST),sink=ref(add,Direction.EAST);
+        var server=h.getLevel().getServer();
+        h.assertTrue(TransferEngine.liveItemRoute(server,source,sink),"Loaded owned endpoints must be authorized");
+        boolean extractionRevoked=false;
+        try{
+            ItemTransferSafety.extract(sink,new ItemStack(Items.DIAMOND,7),7,
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    source.part().owner=UUID.randomUUID();
+                    return from.removeItem(0,7);
+                });
+        }catch(IllegalStateException expected){extractionRevoked=true;}
+        h.assertTrue(extractionRevoked&&ItemTransferSafety.blocked(sink.part())
+            &&sink.part().pendingItem.getCount()==7&&from.getItem(0).getCount()==6&&to.getItem(0).isEmpty(),
+            "Actual provider extraction followed by owner revocation must retain uncertain items and quarantine");
+        int[] callbacks={0};
+        ItemStack denied=ItemTransferSafety.insert(sink,sink.part().pendingItem.copy(),
+            ()->TransferEngine.liveItemRoute(server,source,sink),()->{callbacks[0]++;return ItemStack.EMPTY;});
+        h.assertTrue(denied.getCount()==7&&callbacks[0]==0&&sink.part().pendingItem.getCount()==7,
+            "Revoked route must not invoke another provider or spend retained escrow");
+        source.part().owner=OWNER;sink.part().itemTransferFault="";
+        boolean insertionRevoked=false;
+        try{
+            ItemTransferSafety.insert(sink,sink.part().pendingItem.copy(),
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    to.setItem(0,new ItemStack(Items.DIAMOND,7));
+                    source.part().owner=UUID.randomUUID();
+                    return ItemStack.EMPTY;
+                });
+        }catch(IllegalStateException expected){insertionRevoked=true;}
+        h.assertTrue(insertionRevoked&&ItemTransferSafety.blocked(sink.part())
+            &&sink.part().pendingItem.getCount()==7&&to.getItem(0).getCount()==7,
+            "Revocation after actual insertion keeps escrow uncertain rather than automatically settling it");
+        source.part().owner=OWNER;
+        Part attached=remove.parts.remove(source.part().slot());
+        h.assertTrue(!TransferEngine.liveItemRoute(server,source,sink),"Detached cached source cannot authorize mutation");
+        remove.parts.put(attached.slot(),attached);
+        h.succeed();
+    }
+
     private static void itemQuarantineChecks(NetworkEngine.Ref owner){
         Part p=owner.part();p.pendingItem=new ItemStack(Items.DIAMOND,8);int[] calls={0};
         boolean failed=false;
