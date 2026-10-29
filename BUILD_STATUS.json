@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 196,
+  "expected_native_tests": 197,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -66,7 +66,7 @@
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
   },
-  "current_source_notes": "2026-10-29 new passive item destination quarantine guard: reject faulted or opaque-escrow Node endpoints before both simulated capacity checks and real insertion. Added native regression for explicit fault, opaque escrow, then healthy resume; 196 GameTests required. Native/installed/client qualification pending exact new source; no RC clearance.",
+  "current_source_notes": "2026-10-29 callback-time item authority hardening: recheck live host/part/owner/loaded adjacency after capability and simulation callbacks, and preserve write-ahead fault + extracted escrow if ownership or attachment changes during actual provider extract/insert. Native regression itemProviderCallbackRevocationRetainsEscrow added; 197 exact-source GameTests required. Native run not yet qualified, installed provider and two-client acceptances still pending; no RC clearance. Previous 196/196 passive destination qualification remains source-specific.",
   "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
   "previous_candidate_workflow_run": "40848203024"
 }
