@@ -72,6 +72,7 @@ import net.minecraft.world.item.Items;
 public final class InstalledBinaryProbe {
     public InstalledBinaryProbe(IEventBus bus, ModContainer container) {
         NeoForge.EVENT_BUS.addListener(this::serverStarted);
+        NeoForge.EVENT_BUS.addListener(this::serverTick);
     }
 
 
@@ -387,6 +388,56 @@ public final class InstalledBinaryProbe {
         return result;
     }
 
+    private String pendingWorldPhase;
+    private String pendingWorldSha;
+    private String pendingParts;
+    private String pendingTransfer;
+    private Block pendingNativeBlock;
+    private int nativeWaitTicks;
+
+    /** Restore-side HostEntity.onLoad occurs on live chunk ticks, not ServerStartedEvent.
+     * Do not force-register any PL4 host: wait for the actual installed runtime
+     * to supply every loaded part before attesting its physical cable topology.
+     */
+    private void serverTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        if (pendingWorldPhase == null) return;
+        var server = event.getServer();
+        try {
+            var nativeNetwork = Class.forName("net.foundations.pl4.NetworkEngine",
+                true, pendingNativeBlock.getClass().getClassLoader());
+            var loaded = (java.util.List<?>) nativeNetwork.getMethod("all",
+                net.minecraft.server.MinecraftServer.class).invoke(null, server);
+            int minimum = pendingWorldPhase.equals("seed") ? 4 : 13;
+            if (loaded.size() < minimum) {
+                if (++nativeWaitTicks <= 200) return;
+                throw new IllegalStateException("Restored PL4 HostEntity.onLoad registration "
+                    + "did not complete after 200 native ticks: loaded_parts=" + loaded.size()
+                    + " expected_at_least=" + minimum);
+            }
+            String topology = installedCableTopologyProof(server, server.overworld(),
+                pendingNativeBlock, pendingWorldPhase.equals("seed"));
+            String destination = System.getenv("PL4_WORLD_PROOF");
+            if (destination == null || destination.isEmpty())
+                throw new IllegalStateException("Missing native world proof destination");
+            Path proof = Path.of(destination);
+            Files.createDirectories(proof.getParent());
+            String worldJson = "{\"schema\":1,\"phase\":\"" + pendingWorldPhase
+                + "\",\"expected_jar_sha256\":\"" + pendingWorldSha
+                + "\",\"host\":\"foundations_pl4:multipart_host\""
+                + ",\"host_entity\":\"foundations_pl4:host\""
+                + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
+                + pendingParts + ",\"transfer\":" + pendingTransfer
+                + ",\"topology\":" + topology + "}\n";
+            Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
+            String phase = pendingWorldPhase, sha = pendingWorldSha;
+            pendingWorldPhase = null;
+            System.out.println("PL4_INSTALLED_WORLD_" + phase.toUpperCase() + ":" + sha);
+            System.out.println("PL4_INSTALLED_BINARY_READY:" + sha);
+        } catch (ReflectiveOperationException | java.io.IOException failure) {
+            throw new IllegalStateException("Installed native graph lifecycle/proof unavailable", failure);
+        }
+    }
+
     private void serverStarted(ServerStartedEvent event) {
         if (!ModList.get().isLoaded("foundations_pl4")) {
             throw new IllegalStateException("Installed production PL4 mod was not loaded");
@@ -459,26 +510,15 @@ public final class InstalledBinaryProbe {
             }
             String configuredParts = configuredMultipartProof(level.getBlockEntity(hostPos), phase.equals("seed"));
             String transferProof = installedTransferProof(event.getServer(), level, host, phase.equals("seed"));
-            String topologyProof = installedCableTopologyProof(event.getServer(), level, host, phase.equals("seed"));
-            try {
-                String path = System.getenv("PL4_WORLD_PROOF");
-                if (path == null || path.isEmpty()) {
-                    throw new IllegalStateException("Missing isolated native world proof destination");
-                }
-                Path proof = Path.of(path);
-                Files.createDirectories(proof.getParent());
-                String worldJson = "{\"schema\":1,\"phase\":\"" + phase
-                    + "\",\"expected_jar_sha256\":\"" + sha
-                    + "\",\"host\":\"foundations_pl4:multipart_host\""
-                    + ",\"host_entity\":\"foundations_pl4:host\""
-                    + ",\"barrel_diamonds\":128,\"server_started\":true,\"parts\":"
-                    + configuredParts + ",\"transfer\":" + transferProof
-                    + ",\"topology\":" + topologyProof + "}\n";
-                Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
-            } catch (Exception failure) {
-                throw new IllegalStateException("Cannot preserve installed-JAR world proof", failure);
-            }
-            System.out.println("PL4_INSTALLED_WORLD_" + phase.toUpperCase() + ":" + sha);
+            pendingWorldPhase = phase;
+            pendingWorldSha = sha;
+            pendingNativeBlock = host;
+            pendingParts = configuredParts;
+            pendingTransfer = transferProof;
+            // World and startup markers are emitted ONLY when the native
+            // ServerTickEvent sees restored HostEntity.onLoad registrations.
+            return;
+
         }
         System.out.println("PL4_INSTALLED_BINARY_READY:" + sha);
     }
