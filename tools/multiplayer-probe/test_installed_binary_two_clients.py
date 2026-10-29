@@ -83,6 +83,56 @@ class InstalledTwoClientPolicy(unittest.TestCase):
             with self.assertRaises((OSError, KeyError, ValueError)):
                 gate.verify_phase(tmp, "seed", gate.BASELINE_SOURCE, gate.BASELINE_JAR)
 
+    def test_native_bootstrap_gate_requires_actual_modlauncher_launch(self):
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "clientA.log"
+            log.write_text(
+                "[main/INFO] [EARLYDISPLAY/]: Requested GL version 4.5 got version 4.5\\n"
+                "[main/INFO] [LaunchServiceHandler/MODLAUNCHER]: "
+                "Launching target 'forgeclientdev' with arguments []\\n"
+            )
+            process = Mock()
+            process.poll.return_value = None
+            with patch.object(gate.time, "sleep") as sleep:
+                gate._wait_for_client_native_bootstrap(
+                    process, log, gate.time.monotonic() + 20
+                )
+                sleep.assert_not_called()
+
+    def test_native_bootstrap_gate_rejects_missing_stb_library(self):
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "clientA.log"
+            log.write_text(
+                "java.lang.UnsatisfiedLinkError: Failed to locate library: liblwjgl_stb.so"
+            )
+            process = Mock()
+            process.poll.return_value = 1
+            with self.assertRaisesRegex(RuntimeError, "liblwjgl_stb.so"):
+                gate._wait_for_client_native_bootstrap(
+                    process, log, gate.time.monotonic() + 20
+                )
+
+    def test_native_bootstrap_gate_rejects_missing_launch_marker(self):
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "clientA.log"
+            log.write_text("Requested GL version 4.5 got version 4.5")
+            process = Mock()
+            process.poll.return_value = None
+            with patch.object(gate.time, "monotonic", side_effect=[0, 2]):
+                with patch.object(gate.time, "sleep"):
+                    with self.assertRaisesRegex(TimeoutError, "LWJGL/ModLauncher"):
+                        gate._wait_for_client_native_bootstrap(process, log, 1)
+
+    def test_installed_clients_start_serial_bootstrap_but_keep_both_real_clients(self):
+        import inspect
+        source = inspect.getsource(gate.run_phase)
+        a = source.index('launch(NAMES[0], "runClient")')
+        stage = source.index("_wait_for_client_native_bootstrap(")
+        b = source.index('launch(NAMES[1], "runClient")')
+        self.assertLess(a, stage)
+        self.assertLess(stage, b)
+        self.assertIn("if all(p.poll() == 0 for p in clients):", source)
+
     def test_native_self_shutdown_does_not_attempt_closed_rcon(self):
         server = Mock()
         server.poll.return_value = None
