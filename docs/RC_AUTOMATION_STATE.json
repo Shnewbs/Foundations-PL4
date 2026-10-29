@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T0610Z-native-tick-routing",
-    "claimed_at": "2026-10-29T06:10:15Z",
-    "expires_at": "2026-10-29T06:40:15Z",
-    "purpose": "Implement and validate installed binary automatic NetworkEngine tick routing and preserve exact RC acceptance evidence",
-    "expected_parent_sha": "111b586b58d7861286c9534de4dfc2d2b6fe08c8"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29T04:26:07.708Z: Installed 1.21.1 immutable beta v0.2b.0 -> exact native-qualified aa9b439 development production JAR now transfers real items with installed TransferEngine.run on BOTH real NeoForge server lifecycles: beta 1728->1664 source and 0->64 sink; restored candidate 1664->1600 source and 64->128 sink. 1728 conserved per phase, zero escrow, source/sink UUIDs and configured Inventory Reader/Data Cable persisted in raw saved Anvil region NBT. Explicit NetworkEngine.Ref endpoint membership bypasses true topology; no actual clients/optional providers/arbitrary worlds/performance accepted. Exact controller source 60afabd44c404e93c3a98e67c20778a551390b85, successful installed run 40817349163, 75/75 policy tests, artifact 12872604397 ZIP sha256 a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137, 25/25 CRC-valid, two nested world ZIPs CRC valid. Preceding strict NBT failure 40816881432 traced to historical beta missing new zero escrow tags; source fix 1dd6785 and six adversarial tests passed. Prior candidate 194/194 native is a retained existing JAR; no new production JAR or release. Publisher run 40817349194 skipped both publishing steps. All 24 exact-target RC flags false, no GitHub RC/CurseForge upload.",
+  "current_checkpoint": "2026-10-29T06:20:50Z: Exact 1.21.1 installed immutable beta JAR and native-qualified candidate JAR each transferred 64 diamonds through real ServerTickEvent.Post/NetworkEngine.tick across physically discovered seven-centre DATA_CABLE route without a test-side TransferEngine.run or fabricated refs. Native Anvil saved NBT seed source/sink 1664/64, candidate restored 1600/128; 1728 conserved, zero escrow, same two owner/part UUIDs, 19-file input copied exactly and 22-file restored. Exact acceptance source 25a7a88ae, workflow 40828273375 PASS, 96/96 policy regressions, 25/25 retained artifact CRC and both nested world ZIPs CRC, artifact sha256 b7a70f582af989aa295e9fd904dfb8ba9c3b2a672b735fd76e81634839f881d5. Main verify 40828273434 passed 194/194. Publisher 40828273443 skipped publication. No new production JAR/client/provider/perf acceptance/RC or CurseForge, 0/24 clearances. Bounded lease released.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Prove server-scheduled NetworkEngine tick moves and conserves inventory through the physically discovered seven-cable route, without direct TransferEngine.run or fabricated Ref endpoints, under both exact installed JARs.",
-    "Run two genuine installed-JAR clients through the world upgrade with permissions, actual transfer UI/screenshots, inventory conservation and client/server logs.",
-    "Independently qualify installed providers, disconnected/unloaded inventory alias safety, arbitrary worlds, sustained performance, and 23 other exact targets.",
-    "Investigate historical Forge 1.6.4 spontaneous gravel x80 cause before changing acceptance, maintaining guarded exact branch publishing workflows."
+    "Run two genuine installed-JAR Minecraft 1.21.1 clients through published-beta → candidate saved-world migration; inspect authorization, transfer UI/client screenshots, item conservation and server/client log receipts.",
+    "Prove installed optional item/power providers, unloaded/disconnected and double-inventory alias behavior, actual multiplayer player permissions, arbitrary-world migrations and sustained active-provider performance.",
+    "Extend exact-source/installed-binary acceptance and release readiness to remaining 23 target versions without prematurely granting publication clearance.",
+    "Resolve historical Forge 1.6.4 spontaneous gravel x80 cause, retaining branch-local push publisher guards and exact-version tests."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,28 +60,26 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T0410Z-installed-two-client",
-    "released_at": "2026-10-29T04:26:07.708Z",
-    "purpose": "Installed immutable production JAR native item transfers across beta/candidate migration, raw NBT parity, and legacy escrow schema compatibility",
+    "owner": "pl4-hourly-chat-20261029T0610Z-native-tick-routing",
+    "released_at": "2026-10-29T06:20:50Z",
+    "purpose": "Actual installed-binary NetworkEngine scheduled tick delivery across seven-centre cable topology; independent saved-world and NBT attestation",
     "implementation_commits": [
-      "d23b1aa8444bd592578f8f0a010d250d6e9c8452",
-      "fc2319109dd4d575fc2cf5f5430d577ec9f364b9",
-      "c8e571da44c1b8320f90a0662378ea0331d24122",
-      "1dd6785644375c99e869944b1332ff80616366a2",
-      "60afabd44c404e93c3a98e67c20778a551390b85"
+      "55948f668504ba86725e9288ad88a1bee4cd4214",
+      "25a7a88ae647511bca66f4df90fe9fa5bae19a72"
     ],
-    "successful_workflow_run": 40817349163,
-    "artifact_id": 12872604397,
-    "artifact_sha256": "a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137",
-    "source_verification_run": 40817349196,
-    "policy_regressions": "75/75",
+    "successful_workflow_run": 40828273375,
+    "artifact_id": 12877272732,
+    "artifact_sha256": "b7a70f582af989aa295e9fd904dfb8ba9c3b2a672b735fd76e81634839f881d5",
+    "source_verification_run": 40828273434,
+    "policy_regressions": "96/96",
+    "native_gametests": "194/194",
     "new_github_rcs": 0,
     "new_curseforge_uploads": 0,
     "rc_clearance": "0/24",
-    "evidence": "docs/acceptance/rc-dev-1211-installed-beta-candidate-live-item-transfer-2026-10-29.json",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-scheduled-network-tick-2026-10-29.json",
     "lease_bounded": true
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-configured-multipart-native-nbt-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-scheduled-network-tick-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -1625,9 +1617,61 @@
     "rc_publication_cleared": false
   },
   "last_writer_lease_release": {
-    "owner": "pl4-hourly-chat-20261029T0502Z-topology",
-    "claimed_at": "2026-10-29T05:03:00Z",
-    "released_at": "2026-10-29T05:21:30Z",
-    "reason": "Completed bounded native installed graph+Anvil source and acceptance checkpoint with finite resume work"
+    "owner": "pl4-hourly-chat-20261029T0610Z-native-tick-routing",
+    "released_at": "2026-10-29T06:20:50Z",
+    "purpose": "Actual installed-binary NetworkEngine scheduled tick delivery across seven-centre cable topology; independent saved-world and NBT attestation",
+    "implementation_commits": [
+      "55948f668504ba86725e9288ad88a1bee4cd4214",
+      "25a7a88ae647511bca66f4df90fe9fa5bae19a72"
+    ],
+    "successful_workflow_run": 40828273375,
+    "artifact_id": 12877272732,
+    "artifact_sha256": "b7a70f582af989aa295e9fd904dfb8ba9c3b2a672b735fd76e81634839f881d5",
+    "source_verification_run": 40828273434,
+    "policy_regressions": "96/96",
+    "native_gametests": "194/194",
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "rc_clearance": "0/24",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-scheduled-network-tick-2026-10-29.json",
+    "lease_bounded": true
+  },
+  "last_writer_release_previous_1211_scheduled": {
+    "owner": "pl4-hourly-chat-20261029T0410Z-installed-two-client",
+    "released_at": "2026-10-29T04:26:07.708Z",
+    "purpose": "Installed immutable production JAR native item transfers across beta/candidate migration, raw NBT parity, and legacy escrow schema compatibility",
+    "implementation_commits": [
+      "d23b1aa8444bd592578f8f0a010d250d6e9c8452",
+      "fc2319109dd4d575fc2cf5f5430d577ec9f364b9",
+      "c8e571da44c1b8320f90a0662378ea0331d24122",
+      "1dd6785644375c99e869944b1332ff80616366a2",
+      "60afabd44c404e93c3a98e67c20778a551390b85"
+    ],
+    "successful_workflow_run": 40817349163,
+    "artifact_id": 12872604397,
+    "artifact_sha256": "a9dad6ad8c969cc6590af497ad3af2b9120ace67bc623c19351bf2dabf515137",
+    "source_verification_run": 40817349196,
+    "policy_regressions": "75/75",
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "rc_clearance": "0/24",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-beta-candidate-live-item-transfer-2026-10-29.json",
+    "lease_bounded": true
+  },
+  "latest_1211_installed_scheduled_network_tick": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-scheduled-network-tick-2026-10-29.json",
+    "source_commit": "25a7a88ae647511bca66f4df90fe9fa5bae19a72",
+    "native_run": 40828273375,
+    "artifact_id": 12877272732,
+    "artifact_zip_sha256": "b7a70f582af989aa295e9fd904dfb8ba9c3b2a672b735fd76e81634839f881d5",
+    "policy_regressions": "96/96",
+    "main_verify_run": 40828273434,
+    "main_native": "194/194",
+    "beta_items_delivered": 64,
+    "candidate_items_delivered": 64,
+    "saved_region_nbt": true,
+    "server_scheduled_tick": true,
+    "client_executed": false,
+    "rc_publication_cleared": false
   }
 }

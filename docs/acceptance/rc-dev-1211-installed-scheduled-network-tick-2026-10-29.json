@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-29T06:20:50Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Finite source and acceptance implementation on main; no source changes to any mc/<version> branch, no new production JAR, no RC publication.",
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261029T0610Z-native-tick-routing",
+    "claimed_at": "2026-10-29T06:10:15Z",
+    "released_at": "2026-10-29T06:20:50Z",
+    "bounded": true
+  },
+  "implementation_commits": [
+    "55948f668504ba86725e9288ad88a1bee4cd4214",
+    "25a7a88ae647511bca66f4df90fe9fa5bae19a72"
+  ],
+  "actual_installed_binary_workflow": {
+    "run_id": 40828273375,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40828273375",
+    "status": "completed",
+    "conclusion": "success",
+    "source_sha": "25a7a88ae647511bca66f4df90fe9fa5bae19a72",
+    "artifact_id": 12877272732,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40828273375/artifacts/12877272732",
+    "artifact_zip_sha256": "b7a70f582af989aa295e9fd904dfb8ba9c3b2a672b735fd76e81634839f881d5",
+    "artifact_bytes": 527151,
+    "entry_count": 25,
+    "zip_crc": "PASS",
+    "nested_world_zip_counts": {
+      "beta": 19,
+      "candidate": 22
+    },
+    "nested_world_zip_crc": "PASS_BOTH",
+    "policy_regressions": {
+      "suites": [
+        35,
+        21,
+        16,
+        9,
+        15
+      ],
+      "passed": 96,
+      "failed": 0
+    }
+  },
+  "main_source_native_verification": {
+    "run_id": 40828273434,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40828273434",
+    "conclusion": "success",
+    "native_gametests_passed": 194,
+    "native_gametests_failed": 0,
+    "distinction": "main source GameTest validation; no new packaged exact-source production candidate JAR"
+  },
+  "published_beta": {
+    "tag": "v0.2b.0",
+    "production_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "scheduled_network_source_before": 1728,
+    "scheduled_network_source_after": 1664,
+    "scheduled_network_sink_before": 0,
+    "scheduled_network_sink_after": 64,
+    "items_delivered": 64,
+    "ticks_observed": 19,
+    "server_log_sha256": "8ec4b325ac0c8c34b298cc56cae10b405a3ca85d9dfa857b40bdf01daa2c29eb",
+    "saved_world_sha256": "6f77d61127113f366101072e1d03dad94939634236ba6b17faf5f4f53a3de812",
+    "saved_world_files": 19
+  },
+  "development_candidate": {
+    "native_qualified_existing_source_sha": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "production_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "previous_194_native_gametests": true,
+    "scheduled_network_source_before": 1664,
+    "scheduled_network_source_after": 1600,
+    "scheduled_network_sink_before": 64,
+    "scheduled_network_sink_after": 128,
+    "items_delivered": 64,
+    "ticks_observed": 19,
+    "server_log_sha256": "f52a140add07eea0360023dec5c019f104f74832e868f0a1b22a3dc247817a98",
+    "copied_input_world_sha256": "6f77d61127113f366101072e1d03dad94939634236ba6b17faf5f4f53a3de812",
+    "restored_world_sha256": "08cc7858d797f66658af93fcca9753c5f5a6d47c0439c7aa022e29e04ad046cd",
+    "restored_world_files": 22
+  },
+  "saved_native_nbt": {
+    "raw_region_validated": true,
+    "topology": "seven physical DATA_CABLE centres, 2 owned TRANSFER_NODE endpoints, disconnect/reconnect proved",
+    "native_real_scheduled_server_tick": true,
+    "manual_NetworkEngine_tick_calls": 0,
+    "direct_TransferEngine_run_invocations_during_scheduled_phase": 0,
+    "scheduled_network_source_part_uuid": "dc0527e5-af2e-472b-9820-42589e285ef2",
+    "scheduled_network_sink_part_uuid": "b496ac11-fe02-46cb-bc8d-80d19cce3835",
+    "two_phase_total_items": 1728,
+    "escrow": 0,
+    "seed_source": 1664,
+    "seed_sink": 64,
+    "candidate_source": 1600,
+    "candidate_sink": 128,
+    "original_part_identities_persisted": true
+  },
+  "former_explicit_ref_transfer": "Separate previously verified TransferEngine.run explicit-endpoint proof retained; not substituted for the newly observed scheduled graph movement.",
+  "initial_failure": {
+    "run_id": 40828207495,
+    "issue": "Pre-change synthetic negative test hardcoded prior automatic_tick_tested=false, with new positive proof its mutation did not alter receipt.",
+    "fixed_in": "25a7a88ae647511bca66f4df90fe9fa5bae19a72"
+  },
+  "publishing": {
+    "main_publication_workflow": 40828273443,
+    "github_release_step": "SKIPPED_DEVELOPMENT",
+    "curseforge_step": "SKIPPED_DEVELOPMENT",
+    "rc_cleared_targets": 0,
+    "total_targets": 24,
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "curseforge_public_visibility_unverified": true
+  },
+  "limitations": [
+    "This is real installed server-only cable auto-transfer on two previously pinned binary JARs, not two connected installed clients or live GUI.",
+    "No installed optional third-party providers, unloaded/double-inventory alias, arbitrary-world migration or sustained performance qualified.",
+    "The implementation changes only the independent installed acceptance harness, not PL4 production sources; no new production candidate was built.",
+    "23 other exact-target native/RC acceptances remain incomplete and historical Forge 1.6.4 gravel x80 remains causally unresolved."
+  ],
+  "next": "Implement genuine 2-client installed-binary migration with item transfers, permission/ownership checks, GUI/screenshots and client/server logs; then installed provider and unloaded alias adversarial cases; preserve exact-source, native, artifacts and performance evidence before clearance."
+}
