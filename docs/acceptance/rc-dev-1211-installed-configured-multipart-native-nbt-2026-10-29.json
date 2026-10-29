@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-29T03:21:40Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "installed immutable published Minecraft 1.21.1 beta JAR -> pinned previously native qualified development production JAR; actual NeoForge server saved-world byte copy with two configured native PL4 multipart objects",
+  "controller_source_commit": "dbba3ede46033fde1e3d598cffb356794b05a9d2",
+  "implementation_commits": [
+    "7a812669d3df411ce069bacb3fb60ac95c872eef",
+    "9b5d4b86c811382d897489f324fd144ba4049fbf",
+    "d5dceb5cf3ba1693383f656bd8dd8446314cea11",
+    "31be4c27059d0a0e4176ee9bdb98f2a034a60110",
+    "0a1a32e9a859e2200d74d07774a7dec34593d481",
+    "dbba3ede46033fde1e3d598cffb356794b05a9d2"
+  ],
+  "native_jar_provenance": {
+    "published_beta_tag": "v0.2b.0",
+    "published_beta_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "candidate_source_commit": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "candidate_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "candidate_prior_native_run": 40785212711,
+    "candidate_prior_native_tests": "194/194",
+    "candidate_newly_rebuilt_this_run": false
+  },
+  "workflow_results": {
+    "installed_world_migration_run": 40811316320,
+    "installed_world_migration_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40811316320",
+    "outcome": "success",
+    "installed_standalone_server_run": 40811316287,
+    "installed_standalone_server_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40811316287",
+    "standalone_server_jobs_successful": 2,
+    "source_verify_run": 40811316244,
+    "publisher_policy_run": 40811316232,
+    "release_and_upload_steps_skipped": true,
+    "policy_regressions": "16+6+16+9+15=62/62",
+    "failed_attempts_preserved": [
+      40810691142,
+      40810751112,
+      40810878416,
+      40811105647
+    ],
+    "first_failure_causes": [
+      "synthetic test reused isolated server output directory",
+      "native probe Java compiler missing Direction import"
+    ],
+    "final_native_result": "PASS: configured parts persisted through actual installed JAR version upgrade and raw saved region NBT"
+  },
+  "artifact": {
+    "id": 12869549832,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40811316320/artifacts/12869549832",
+    "sha256": "fef32063287e88192efa89a3912b4caff900b464a6fd4f7d36f1b282302291b3",
+    "zip_entries": 25,
+    "zip_crc": "PASS"
+  },
+  "seed_world": {
+    "files": 19,
+    "world_fingerprint": "582e6834d3de1f811c3f8a09c152056211e247359b32841942e1604dd17cc713",
+    "raw_region_sha256": "54da110744c01b6a4e2999fe0b5143c564fed60cdc7b6e210185a42366c647ad",
+    "save_archive_sha256": "308541bdb6d55084472410d00b2b10260fbc8be19c815366cf386a25256445c3"
+  },
+  "restored_world": {
+    "files": 22,
+    "world_fingerprint": "935fc0a8cbd79da80a63e3eab9961c3cdc58111e30d26a3b2ced9a0f12988f07",
+    "raw_region_sha256": "4e893d0c974a416933101b5ff6e7e2796726179ac769c2b9a4c793eefc788091",
+    "save_archive_sha256": "1be7f39860d8fff443ff3299a634af91b9f5f776c8cd705c13b6d808fd621dbe",
+    "candidate_prelaunch_saved_world_copy_matches_seed_fingerprint": true
+  },
+  "persisted_multipart": [
+    {
+      "slot": 5,
+      "kind": "INVENTORY_READER",
+      "face": "EAST",
+      "owner": "3d83227f-3df1-4c66-a188-a2f271bb86b3",
+      "identity": "2dac6f29-5806-41be-a303-5e83c1c8d352"
+    },
+    {
+      "slot": 6,
+      "kind": "DATA_CABLE",
+      "face": "DOWN",
+      "owner": "3d83227f-3df1-4c66-a188-a2f271bb86b3",
+      "identity": "30843a72-5d0a-4a3f-9a2b-c6cd2d54abcd"
+    }
+  ],
+  "barrel_diamonds_each_phase": 128,
+  "limits": {
+    "client_executed": false,
+    "real_item_transfer_tested": false,
+    "installed_optional_provider_tested": false,
+    "authenticated_multiplayer_tested": false,
+    "arbitrary_world_migration_tested": false,
+    "sustained_performance_tested": false,
+    "all_target_rc_clearances": "0/24",
+    "new_github_rc_releases": 0,
+    "new_curseforge_uploads": 0
+  },
+  "next_step": "Implement genuine installed-beta -> installed-candidate two-client world migration including actual node/controller route, item movement and identity/ownership conservation, plus installed provider and unloaded/disconnected aliases. Extend coverage to remaining exact versions without relabeling binary artifacts."
+}
