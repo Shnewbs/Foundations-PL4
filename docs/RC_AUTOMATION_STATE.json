@@ -5,7 +5,14 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-chat-hourly-20261029T1505Z","acquired_at":"2026-10-29T15:07:15.790Z","expires_at":"2026-10-29T15:42:15.790Z","source_branch":"main","base_commit":"493f2c52690d813cbb3f7e88b0d37f5e7a575fdd","task":"RC acceptance: loaded inventory alias/provider identity guard; no publication"},
+  "writer_lease": {
+    "owner": "pl4-chat-hourly-20261029T1542Z",
+    "acquired_at": "2026-10-29T15:42:37.409Z",
+    "expires_at": "2026-10-29T15:59:37.409Z",
+    "source_branch": "main",
+    "base_commit": "0883bf98bd185aecfb6b1d0111045b4d676c1b7b",
+    "task": "Scoped loaded HostEntity alias rejection and exact 1.21.1 native regression, no publication"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -1267,10 +1274,12 @@
     "fixed_zip_timestamps": true
   },
   "last_expired_writer_lease": {
-    "owner": "pl4-chat-hourly-20261028T202305-reobf-repair",
-    "expires_at": "2026-10-28T20:43:05.040Z",
-    "observed_at": "2026-10-28T20:43:28.714Z",
-    "reason": "expired-before-guarded-claim"
+    "owner": "pl4-chat-hourly-20261029T1505Z",
+    "acquired_at": "2026-10-29T15:07:15.790Z",
+    "expires_at": "2026-10-29T15:42:15.790Z",
+    "source_branch": "main",
+    "base_commit": "493f2c52690d813cbb3f7e88b0d37f5e7a575fdd",
+    "task": "RC acceptance: loaded inventory alias/provider identity guard; no publication"
   },
   "latest_26x_native_attestation": {
     "evidence": "docs/acceptance/rc-dev-26x-native-attested-hourly-2026-10-28.json",
