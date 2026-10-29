@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 197,
+  "expected_native_tests": 198,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -66,7 +66,7 @@
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
   },
-  "current_source_notes": "2026-10-29 14:23 UTC: Main 1.21.1 callback-time item owner/host/revocation safety fix and 197/197 native GameTests PASS on 71075e68 (JAR f2409659...). Two installed dedicated-server jobs PASS (40889965154) and two real offline clients each phase PASS v0.2b.0→exact candidate migration with 64+64 scheduled transfers and independent native NBT (40889964749). Final mc/26.3 publisher-guard source 69d9d38 dual-profile native PASS 192/192 PL4 plus one Minecraft test each (40883621654); packaged hashes/retained ZIPs independently reconciled. No RC release/CurseForge upload eligible; 0/24 clearances. Installed optional third-party provider/online-auth, disconnected aliases, sustained performance, other exact versions and all RC clearances remain open.",
+  "current_source_notes": "2026-10-29 item capability backing identity guard: transfer captures exact loaded target block state/entity and rechecks after getSlots, simulation and execution; stale handlers from replaced backing inventories cannot authorize new mutations. Native regression covers replacement during real extraction and quarantined escrow. 198 native GameTests expected; new exact-source CI and installed optional provider tests pending. 0/24 RC clearance.",
   "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
   "previous_candidate_workflow_run": "40848203024"
 }

@@ -491,6 +491,48 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void replacedCapabilityBackingCannotReuseCachedItemHandler(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        BlockPos input=new BlockPos(1,1,1),output=new BlockPos(5,1,1);
+        ChestBlockEntity oldSource=chest(h,input),destination=chest(h,output);
+        oldSource.setItem(0,new ItemStack(Items.DIAMOND,7));
+        HostEntity sourceHost=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
+        HostEntity sinkHost=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        part(sourceHost,Direction.WEST).transferMode=2;
+        part(sinkHost,Direction.EAST).transferMode=1;
+        var source=ref(sourceHost,Direction.WEST);
+        var sink=ref(sinkHost,Direction.EAST);
+        TransferEngine.ItemTarget cached=TransferEngine.itemTarget(server,source);
+        h.assertTrue(cached!=null&&cached.live(server,source)
+            &&TransferEngine.liveItemRoute(server,source,sink),"Initially loaded capability is bound to its original block entity");
+        int[] operations={0};
+        boolean revoked=false;
+        try{
+            ItemTransferSafety.extract(sink,new ItemStack(Items.DIAMOND,7),7,
+                ()->cached.live(server,source)&&TransferEngine.liveItemRoute(server,source,sink),()->{
+                    operations[0]++;
+                    ItemStack taken=oldSource.removeItem(0,7);
+                    h.setBlock(input,Blocks.AIR);
+                    h.setBlock(input,Blocks.CHEST);
+                    return taken;
+                });
+        }catch(IllegalStateException expected){revoked=true;}
+        ChestBlockEntity newSource=(ChestBlockEntity)h.getBlockEntity(input);
+        h.assertTrue(revoked&&operations[0]==1&&newSource!=oldSource&&!cached.live(server,source)
+            &&newSource.getItem(0).isEmpty()&&destination.getItem(0).isEmpty()
+            &&sink.part().pendingItem.getCount()==7&&ItemTransferSafety.blocked(sink.part()),
+            "Replacing backing inventory after real extraction must retain escrow and revoke stale capability");
+        ItemStack denied=ItemTransferSafety.insert(sink,sink.part().pendingItem.copy(),
+            ()->cached.live(server,source),()->{operations[0]++;return ItemStack.EMPTY;});
+        h.assertTrue(denied.getCount()==7&&operations[0]==1,
+            "Stale provider alias must not perform any second mutation");
+        TransferEngine.ItemTarget refreshed=TransferEngine.itemTarget(server,source);
+        h.assertTrue(refreshed!=null&&refreshed.live(server,source)&&refreshed.entity()==newSource,
+            "Replaced inventory requires a newly acquired handler, never a stale alias");
+        h.succeed();
+    }
+
     private static void itemQuarantineChecks(NetworkEngine.Ref owner){
         Part p=owner.part();p.pendingItem=new ItemStack(Items.DIAMOND,8);int[] calls={0};
         boolean failed=false;
