@@ -73,19 +73,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p results/pinned-native
-          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12907239925 > results/pinned-native/artifact-metadata.json
+          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12909794155 > results/pinned-native/artifact-metadata.json
           curl --fail --show-error --silent --location --retry 2 \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12907239925/zip" \
+            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12909794155/zip" \
             --output results/pinned-native/native-artifact.zip
           python3 control/tools/multiplayer-probe/exact_native_candidate.py \
             --artifact-zip results/pinned-native/native-artifact.zip \
             --artifact-metadata results/pinned-native/artifact-metadata.json \
-            --artifact-sha256 d878986be228b7e3c1e04a9fe7efed118d076174a0f7c98cd173e103d08124b1 \
-            --source-sha ef12490f5eca4d801680069469ef9b37c830f27c \
-            --jar-sha256 2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0 \
-            --expected-native-tests 199 \
+            --artifact-sha256 c5fe2246ac5537b71bf108b3bb895910360e8dc40d773a1b0c356619ae5b008c \
+            --source-sha 383c5378457d06725b3597c6051e2cb4c51e4253 \
+            --jar-sha256 51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf \
+            --expected-native-tests 200 \
             --output results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar
       - name: Execute immutable installed beta JAR with two actual GUI clients
         run: |
