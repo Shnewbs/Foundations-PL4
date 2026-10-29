@@ -40,6 +40,20 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
              "owner": gate.PART_OWNER, "identity": "66666666-7777-4888-8999-aaaaaaaaaaaa"},
         ]
 
+    def transfer(self, phase):
+        if phase == "seed":
+            before, after, sink_before, sink_after = 1728, 1664, 0, 64
+        else:
+            before, after, sink_before, sink_after = 1664, 1600, 64, 128
+        return {
+            "engine": "net.foundations.pl4.TransferEngine",
+            "source_before": before, "source_after": after,
+            "sink_before": sink_before, "sink_after": sink_after,
+            "delivered": 64, "total": 1728, "pending_escrow": 0,
+            "source_identity": "12345678-1234-4234-8234-123456789abc",
+            "sink_identity": "abcdefab-abcd-4bcd-8bcd-abcdefabcdef",
+        }
+
     def phase(self, root, phase, jar, sha, copy=None):
         smoke.prepare(self.checkout, jar, root, sha)
         if copy is None:
@@ -63,6 +77,7 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
             "host": gate.HOST, "host_entity": gate.ENTITY,
             "barrel_diamonds": 128, "server_started": True,
             "parts": self.configured_parts(),
+            "transfer": self.transfer(phase),
         }))
         copied = gate.world_fingerprint(copy / "run/world") if copy else None
         return gate.capture_phase(root, phase, sha, copied)
@@ -194,6 +209,72 @@ class InstalledWorldUpgradePolicy(unittest.TestCase):
         proof = json.loads(path.read_text())
         proof["parts"][0]["slot"] = 12
         path.write_text(json.dumps(proof))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_missing_real_transfer_proof_fails(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        del receipt["transfer"]
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_zero_movement_does_not_qualify(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"].update({"source_after": 1664, "sink_after": 64, "delivered": 0})
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_double_counted_diamonds_fail(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"]["sink_after"] = 129
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_booleans_are_not_native_item_counts(self):
+        self.pair()
+        p = self.seed / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"]["delivered"] = True
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_transfer_part_identity_must_survive_restore(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"]["sink_identity"] = "bbbbbbbb-cccc-4ddd-8eee-ffffffffffff"
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_saved_transfer_quantities_cannot_be_rewritten(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"]["source_before"] = 1663
+        receipt["transfer"]["sink_before"] = 65
+        receipt["transfer"]["source_after"] = 1599
+        receipt["transfer"]["sink_after"] = 129
+        p.write_text(json.dumps(receipt))
+        with self.assertRaises(ValueError):
+            gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
+
+    def test_unsupported_transfer_implementation_fails(self):
+        self.pair()
+        p = self.restore / "installed-world-proof.json"
+        receipt = json.loads(p.read_text())
+        receipt["transfer"]["engine"] = "net.minecraft.world.Container"
+        p.write_text(json.dumps(receipt))
         with self.assertRaises(ValueError):
             gate.verify_upgrade(self.seed, self.restore, self.beta_sha, self.candidate_sha)
 

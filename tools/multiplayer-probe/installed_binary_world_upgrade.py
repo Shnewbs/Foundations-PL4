@@ -52,9 +52,42 @@ def check_world_proof(output, phase, expected_sha):
     if not evidence.is_file() or evidence.is_symlink():
         raise ValueError("Missing native installed-JAR configured multipart proof")
     proof = json.loads(evidence.read_text())
-    if (set(proof) != set(expected_proof) | {"parts"}
+    if (set(proof) != set(expected_proof) | {"parts", "transfer"}
             or any(proof.get(name) != value for name, value in expected_proof.items())):
         raise ValueError("Native installed-JAR block entity/inventory proof is absent or altered")
+    transfer = proof.get("transfer")
+    expected_transfer = {
+        "engine", "source_before", "source_after", "sink_before",
+        "sink_after", "delivered", "total", "source_identity",
+        "sink_identity", "pending_escrow",
+    }
+    if not isinstance(transfer, dict) or set(transfer) != expected_transfer:
+        raise ValueError("Native installed-JAR item-transfer proof missing or incomplete")
+    if transfer["engine"] != "net.foundations.pl4.TransferEngine":
+        raise ValueError("Native item delivery did not use the installed PL4 transfer engine")
+    for field in ("source_before", "source_after", "sink_before", "sink_after",
+                  "delivered", "total", "pending_escrow"):
+        value = transfer[field]
+        if type(value) is not int or not 0 <= value <= 1728:
+            raise ValueError("Invalid integer/native installed item-transfer quantity: " + field)
+    if transfer["total"] != 1728 or transfer["pending_escrow"] != 0:
+        raise ValueError("Native PL4 item-transfer total/escrow mismatch")
+    for field in ("source_identity", "sink_identity"):
+        if not isinstance(transfer[field], str) or not re.fullmatch(
+                r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", transfer[field]):
+            raise ValueError("Invalid installed transfer part identity")
+    if transfer["source_identity"] == transfer["sink_identity"]:
+        raise ValueError("Installed PL4 transfer parts share one identity")
+    if (transfer["source_before"] + transfer["sink_before"] != 1728
+            or transfer["source_after"] + transfer["sink_after"] != 1728
+            or not 0 < transfer["delivered"] < transfer["source_before"]
+            or transfer["source_before"] - transfer["source_after"] != transfer["delivered"]
+            or transfer["sink_after"] - transfer["sink_before"] != transfer["delivered"]):
+        raise ValueError("Actual installed-JAR item transfer is missing or non-conserving")
+    if phase == "seed" and (transfer["source_before"] != 1728 or transfer["sink_before"] != 0):
+        raise ValueError("Installed beta did not start with original seeded items")
+    if phase == "restore" and transfer["sink_before"] <= 0:
+        raise ValueError("Installed candidate did not reopen transferred source-world contents")
     parts = proof["parts"]
     if not isinstance(parts, list) or len(parts) != len(PART_LAYOUT):
         raise ValueError("Native installed PL4 world has no configured multipart pieces")
@@ -190,6 +223,13 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
     candidate_parts = check_world_proof(restore, "restore", candidate_sha)["parts"]
     if beta_parts != candidate_parts:
         raise ValueError("Installed PL4 native multipart kind/slot/owner/UUID did not persist across JARs")
+    beta_transfer = check_world_proof(seed, "seed", beta_sha)["transfer"]
+    candidate_transfer = check_world_proof(restore, "restore", candidate_sha)["transfer"]
+    if (beta_transfer["source_after"] != candidate_transfer["source_before"]
+            or beta_transfer["sink_after"] != candidate_transfer["sink_before"]
+            or beta_transfer["source_identity"] != candidate_transfer["source_identity"]
+            or beta_transfer["sink_identity"] != candidate_transfer["sink_identity"]):
+        raise ValueError("Installed candidate transfer did not resume exact native beta saved state/parts")
     if before["world"] != after["copied_input_world"]:
         raise ValueError("Exact saved baseline world was not the candidate's copied input")
     receipt = {
@@ -201,8 +241,12 @@ def verify_upgrade(seed, restore, beta_sha, candidate_sha):
         "candidate_phase_evidence_sha256": digest(restore / "world-phase-evidence.json"),
         "installed_beta_to_candidate_world_smoke": "PASS",
         "configured_multipart_parts_persisted": len(beta_parts),
+        "installed_transfer_engine": beta_transfer["engine"],
+        "beta_delivered_items": beta_transfer["delivered"],
+        "candidate_delivered_items": candidate_transfer["delivered"],
+        "installed_transfer_total_items": 1728,
         "configured_part_identities": [part["identity"] for part in beta_parts],
-        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel. Server-only: no clients, live item transfer, installed optional providers, arbitrary worlds or RC clearance.",
+        "scope": "Two real installed production-JAR dedicated-server lifecycles, two configured PL4 parts with identical owner/UUIDs across world save and restore, and saved 128-item barrel; actual installed TransferEngine moves diamonds through vanilla barrel capabilities in each phase with conservation and unchanged node UUIDs. Explicit endpoint Ref membership bypasses live network discovery. Server-only: no clients, network-topology routing, installed optional providers, arbitrary worlds or RC clearance.",
         "client_executed": False,
         "rc_publication_cleared": False,
     }
