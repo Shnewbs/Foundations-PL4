@@ -1,7 +1,7 @@
-name: Validate and release Minecraft 26.3
+name: Validate native Minecraft 26.3 (no publication)
 on:
   push:
-    paths-ignore: ['.github/workflows/**']
+    paths-ignore: ['.github/workflows/**', 'tools/release_263_policy.py', 'tools/test_release_263_policy.py']
     branches: ['mc/26.3']
   workflow_dispatch:
 permissions:
