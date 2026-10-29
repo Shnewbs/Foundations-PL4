@@ -6,12 +6,12 @@
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
   "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029-1806Z",
-    "acquired_at": "2026-10-29T18:07:06.366Z",
-    "expires_at": "2026-10-29T18:42:06.366Z",
+    "owner": "pl4-hourly-chat-20261029-1909Z-1132-publisher",
+    "acquired_at": "2026-10-29T19:09:25.088Z",
+    "expires_at": "2026-10-29T19:39:25.088Z",
     "source_branch": "main",
-    "base_commit": "e978c6fae14aed0fef6e7200826f58e217e27ae2",
-    "purpose": "guarded PL4 exact-target publishing safety and implementation",
+    "base_commit": "c0aa7e91db7b7c8f0cdbe824130c2b89cba901b3",
+    "purpose": "guarded 1.13.2 publisher safety fixes and exact-target native evidence",
     "status": "active"
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
@@ -1275,12 +1275,13 @@
     "fixed_zip_timestamps": true
   },
   "last_expired_writer_lease": {
-    "owner": "pl4-hourly-chat-20261029-1707Z",
-    "acquired_at": "2026-10-29T17:08:03.757Z",
-    "expires_at": "2026-10-29T17:28:03.757Z",
-    "purpose": "1.21.1 installed provider and unloaded-alias acceptance; native tests and exact-source evidence",
+    "owner": "pl4-hourly-chat-20261029-1806Z",
+    "acquired_at": "2026-10-29T18:07:06.366Z",
+    "expires_at": "2026-10-29T18:42:06.366Z",
     "source_branch": "main",
-    "expected_parent": "2a7f71101d2350d1a42d00bc2dd6801bf221d6cc"
+    "base_commit": "e978c6fae14aed0fef6e7200826f58e217e27ae2",
+    "purpose": "guarded PL4 exact-target publishing safety and implementation",
+    "status": "active"
   },
   "latest_26x_native_attestation": {
     "evidence": "docs/acceptance/rc-dev-26x-native-attested-hourly-2026-10-28.json",
