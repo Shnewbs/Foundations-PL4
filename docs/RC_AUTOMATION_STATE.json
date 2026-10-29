@@ -5,7 +5,15 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "writer": "pl4-hourly-chat-20261029-1209Z",
+    "owner": "ChatGPT PL4 scheduled build session",
+    "claimed_at": "2026-10-29T12:09:17.646Z",
+    "expires_at": "2026-10-29T12:27:17.646Z",
+    "expected_parent": "2366b2db327d961466d8dc6e24691c362ac22c8c",
+    "task": "Guard mc/26.3 CurseForge publisher and continue exact-source PL4 acceptance; no release before explicit clearance",
+    "finite": true
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
