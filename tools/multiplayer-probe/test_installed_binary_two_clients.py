@@ -87,9 +87,9 @@ class InstalledTwoClientPolicy(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             log = Path(temp) / "clientA.log"
             log.write_text(
-                "[main/INFO] [EARLYDISPLAY/]: Requested GL version 4.5 got version 4.5\\n"
+                "[main/INFO] [EARLYDISPLAY/]: Requested GL version 4.5 got version 4.5\n"
                 "[main/INFO] [LaunchServiceHandler/MODLAUNCHER]: "
-                "Launching target 'forgeclientdev' with arguments []\\n"
+                "Launching target 'forgeclientdev' with arguments []\n"
             )
             process = Mock()
             process.poll.return_value = None
