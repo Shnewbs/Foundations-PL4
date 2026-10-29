@@ -8,14 +8,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Bounded server snapshots. Sessions retain identities and item variants, never capabilities. */
 public final class WirelessStorage {
     public static final int PAGE_SIZE=6,MAX_SLOTS=4096,MAX_ENDPOINTS=256;
-    private record Target(Part node,IItemHandler inventory,Part.Link link,NetworkEngine.Ref ref){}
+    private record Target(Part node,IItemHandler inventory,Part.Link link,NetworkEngine.Ref ref,TransferEngine.ItemTarget backing){}
     /** Recheck current server authority after any foreign inventory callback.
      * A retained capability or a prior UI session is never an access grant. */
     static boolean authorizedTarget(ServerPlayer player,Part.Link binding,NetworkEngine.Ref ref){
@@ -32,17 +31,32 @@ public final class WirelessStorage {
         Part.Link link=ref.adjacent();
         return world.hasChunkAt(link.pos())&&world.mayInteract(player,link.pos());
     }
+    /** Cached session capabilities cannot survive target block-entity replacement at the same position. */
+    static boolean liveBackingTarget(ServerPlayer player,Part.Link binding,NetworkEngine.Ref ref,TransferEngine.ItemTarget backing){
+        return backing!=null&&authorizedTarget(player,binding,ref)
+            &&backing.live(player.serverLevel().getServer(),ref);
+    }
     private static boolean live(ServerPlayer player,Part.Link binding,Target target){
-        return authorizedTarget(player,binding,target.ref())&&target.link().equals(target.ref().adjacent());
+        return target.link().equals(target.ref().adjacent())
+            &&liveBackingTarget(player,binding,target.ref(),target.backing());
+    }
+    /** After a provider mutated items, replacement of its backing block is also revocation. */
+    static void requirePostExtractionBackingAuthority(ServerPlayer player,Part.Link binding,
+                                                       NetworkEngine.Ref ref,TransferEngine.ItemTarget backing){
+        if(liveBackingTarget(player,binding,ref,backing))return;
+        sealPostExtractionRevocation(ref);
+    }
+    private static void sealPostExtractionRevocation(NetworkEngine.Ref ref){
+        ref.part().itemTransferFault="Wireless extraction authority changed after provider mutation; manual inspection required";
+        ref.host().setChanged();
+        throw new IllegalStateException("Wireless withdrawal authority revoked during provider mutation");
     }
     /** Preserve the actual extracted stack and seal it when a provider revokes
      * access after mutation. This must execute AFTER extract() journals the result,
      * never from inside the supplier before its result can be recorded. */
     static void requirePostExtractionAuthority(ServerPlayer player,Part.Link binding,NetworkEngine.Ref ref,Part.Link target){
         if(authorizedTarget(player,binding,ref)&&target.equals(ref.adjacent()))return;
-        ref.part().itemTransferFault="Wireless extraction authority changed after provider mutation; manual inspection required";
-        ref.host().setChanged();
-        throw new IllegalStateException("Wireless withdrawal authority revoked during provider mutation");
+        sealPostExtractionRevocation(ref);
     }
     private record Slot(UUID node,int slot){}
     static final class Entry {
@@ -72,10 +86,11 @@ public final class WirelessStorage {
             if(!WirelessItemTransfers.available(ref.part())||ref.host().isRemoved()||!world.hasChunkAt(ref.host().getBlockPos())||!ref.host().canEdit(player)||!world.mayInteract(player,ref.host().getBlockPos())||!ref.part().items)continue;
             if(!PLConfig.CROSS_DIMENSION.get()&&world!=player.serverLevel())continue;
             if(!world.hasChunkAt(link.pos())||!world.mayInteract(player,link.pos()))continue;
-            IItemHandler inventory=world.getCapability(Capabilities.ItemHandler.BLOCK,link.pos(),link.side());
-            if(inventory==null)continue;
+            TransferEngine.ItemTarget backing=TransferEngine.itemTarget(player.serverLevel().getServer(),ref);
+            if(backing==null)continue;
+            IItemHandler inventory=backing.handler();
             int count=inventory.getSlots();
-            Target candidate=new Target(ref.part(),inventory,link,ref);
+            Target candidate=new Target(ref.part(),inventory,link,ref,backing);
             if(!live(player,binding,candidate))return null;
             if(!seen.inventory(world,link,inventory,count))continue;
             result.add(candidate);slots+=Math.min(MAX_SLOTS-slots,Math.max(0,count));
@@ -147,6 +162,7 @@ public final class WirelessStorage {
                     if(!live(player,session.binding(),target))throw new IllegalStateException("Wireless withdrawal authority revoked before provider mutation");
                     return target.inventory().extractItem(source.slot(),requested,false);
                 });
+                requirePostExtractionBackingAuthority(player,session.binding(),target.ref(),target.backing());
                 requirePostExtractionAuthority(player,session.binding(),target.ref(),target.link());
                 if(extracted.isEmpty())continue;int count=WirelessItemTransfers.deliver(target.ref(),stackToPlayer->{player.getInventory().add(stackToPlayer);return stackToPlayer;});moved+=count;remaining-=extracted.getCount();
             }

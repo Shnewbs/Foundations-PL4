@@ -324,6 +324,36 @@ public final class R16GameTests {
         h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void wirelessStorageRevokesReplacedBackingDuringExtraction(GameTestHelper h){
+        var f=storageFixture(h,"PL4-Storage-BackingSwap");
+        var binding=ToolItem.link(f.tool());
+        var ref=new NetworkEngine.Ref(f.host(),f.node());
+        BlockPos location=new BlockPos(1,1,1);
+        f.chest().setItem(0,new ItemStack(Items.DIAMOND,5));
+        TransferEngine.ItemTarget backing=TransferEngine.itemTarget(h.getLevel().getServer(),ref);
+        h.assertTrue(backing!=null&&WirelessStorage.liveBackingTarget(f.player(),binding,ref,backing),
+            "Fresh wireless capability belongs to its originally loaded backing inventory");
+        ItemStack removed=ItemTransferSafety.extract(ref,new ItemStack(Items.DIAMOND,5),5,()->{
+            ItemStack actual=f.chest().removeItem(0,5);
+            h.setBlock(location,Blocks.AIR);h.setBlock(location,Blocks.CHEST);
+            return actual;
+        });
+        boolean sealed=false;
+        try{WirelessStorage.requirePostExtractionBackingAuthority(f.player(),binding,ref,backing);}
+        catch(IllegalStateException expected){sealed=true;}
+        var replacement=h.getBlockEntity(location);
+        h.assertTrue(sealed&&replacement!=f.chest()&&removed.getCount()==5
+            &&f.node().pendingItem.getCount()==5&&ItemTransferSafety.blocked(f.node())
+            &&WirelessStorage.authorizedTarget(f.player(),binding,ref)
+            &&!WirelessStorage.liveBackingTarget(f.player(),binding,ref,backing),
+            "Wireless source with same owner and position must seal extracted escrow after backing swap");
+        var newBacking=TransferEngine.itemTarget(h.getLevel().getServer(),ref);
+        h.assertTrue(newBacking!=null&&newBacking.entity()==replacement
+            &&WirelessStorage.liveBackingTarget(f.player(),binding,ref,newBacking),
+            "Replacement inventory needs new capability discovery; previous extraction remains quarantined");
+        h.succeed();
+    }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void wirelessStorageCapabilityReadCannotKeepRevokedEndpoint(GameTestHelper h){
         var f=networkStorage(h,"PL4-Storage-LiveEndpoint");
         var binding=ToolItem.link(f.first().tool());var ref=new NetworkEngine.Ref(f.secondHost(),f.second());
