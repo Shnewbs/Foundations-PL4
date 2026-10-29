@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T2105Z",
-    "claimed_at": "2026-10-29T21:05:29.998Z",
-    "expires_at": "2026-10-29T21:25:29.998Z",
-    "scope": "main + existing exact mc branches; 1.16.4 artifact qualification and 1.17.1 publisher safety",
-    "expected_parent": "caeab2878a38d68af3b9bb151098c272a44574a7"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29T20:21:30.198Z: 1.16.5 exact final source 4da64cd2 PASS 191/191 real native Forge36 scenarios AND installed stock Java8 production-only JAR boot/shutdown; production JAR SHA-256 573c593b...; verified actual retained ZIP 22/22 and production JAR 982/982 CRC, source/JAR hashes. Policy 12/12 PASS. 1.16.4 final native run pending. 0/24 RC clearance, no GitHub/CurseForge release. Evidence docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
+  "current_checkpoint": "2026-10-29T21:14:17.703Z: Forge 1.16.4 exact a35c5afe PASS 193/193 real native scenarios + production-only launch-profile Forge35/Java8 boot/shutdown (not stock ModLauncher); exact JAR b97f148d and artifact a9c7404c verified 23/23 archive and 982/982 JAR entries. Four more exact version-branch publisher guards 1.17.1, 1.19.2, 1.20.1, 1.19.3; eight policy runs PASS 68/68 checks; no new runtime qualification for workflow-only edits. 0/24 RC cleared and no releases/uploads. Evidence docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect final-source 1.16.4 queued native build run 40946223380, 193 exact scenarios and Forge35 production-only installed JAR startup; avoid duplicate active/frozen jobs and confirm retained source/JAR/artifact SHA-256.",
-    "Using established hourly-builds.yml, qualify changed/failed exact-target sources only; deduplicate retained unchanged successful evidence and preserve exact hashes.",
-    "Implement installed real third-party provider callback revocation and unloaded/disconnected alias acceptance, authenticated multiplayer, arbitrary-world migration and sustained performance by exact target.",
-    "Publish a new immutable exact-version GitHub beta RC and CurseForge beta only after applicable acceptance evidence and explicit rc_publication_cleared true; preserve 1.6.4 x80 gravel blocker."
+    "Review/preserve next hourly exact-source native artifacts for changed workflow sources 1.17.1 and 1.20.1 without duplicating retained successes; current 1.16.4 native production-only evidence is pinned.",
+    "Individually inspect and retire 1.19.4 / 1.20.2 branch-local release and CurseForge paths; native checks remain separate.",
+    "Implement genuine installed optional-provider callback owner-revocation and unloaded/disconnected aliases, authenticated multiplayer, arbitrary migration and sustained performance; keep 1.6.4 terrain x80 incident open.",
+    "Only publish new immutable exact-target GitHub beta RC and CurseForge beta after full recorded rc_publication_cleared true and checked asset/receipt preflight."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -75,7 +69,7 @@
     "release_performed": false,
     "rc_clearance": "0/24"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1144-branch-publisher-safety-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -99,7 +93,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-29 16:24 UTC: Native 200/200 on exact 1.21.1 source 08dee98707765be3a8fbe44150c8bbf39cabd5cf, run 40909149431; production JAR SHA-256 ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b (883 CRC valid entries); native artifact ZIP SHA-256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069. Installed exact production binary dedicated run 40909886467 passed both immutable beta and candidate. Real two-client installed beta->exact candidate world migration 40910091169 passed, 2 offline graphical clients each phase, seven-centre cable, 64+64 automatic diamonds, 60+60 severed ticks, 1,728 conserved and zero escrow with 9 UUIDs and native saved-world NBT preserved; retained archive 12914370394 SHA-256 4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7 (46/46 ZIP CRC). Initial workflow pin 40909886723 failed two stale controller test constants before native phase; repaired in 9111e5a and rerun passed. 0/24 RC cleared, both publisher steps skipped, no new GitHub/CurseForge release.",
+  "previous_checkpoint": "2026-10-29T20:21:30.198Z: 1.16.5 exact final source 4da64cd2 PASS 191/191 real native Forge36 scenarios AND installed stock Java8 production-only JAR boot/shutdown; production JAR SHA-256 573c593b...; verified actual retained ZIP 22/22 and production JAR 982/982 CRC, source/JAR hashes. Policy 12/12 PASS. 1.16.4 final native run pending. 0/24 RC clearance, no GitHub/CurseForge release. Evidence docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -2419,5 +2413,100 @@
     "lease_claim_commit": "0995b9dfb24789345c605dad36b7e72c07c48642",
     "parent": "0995b9dfb24789345c605dad36b7e72c07c48642",
     "evidence": "docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json"
+  },
+  "latest_1164_final_source_native_production_success": {
+    "minecraft": "1.16.4",
+    "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+    "run_id": 40946223380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380",
+    "artifact_id": 12929299190,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380/artifacts/12929299190",
+    "artifact_sha256": "a9c7404c42215863940651d0d72db3b3d7e233aa34d0f9d2930dd42845c42ac4",
+    "outer_zip_entries": 23,
+    "outer_zip_crc": "PASS",
+    "production_jar": "FoundationsPL4-1.16.4-0.2.0-rc.1-dev-java8.jar",
+    "production_jar_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+    "production_jar_zip_entries": 982,
+    "production_jar_zip_crc": "PASS",
+    "native_scenarios": {
+      "total": 193,
+      "passed": 193,
+      "failed": 0,
+      "server_ticks": 1788
+    },
+    "minecraft_runtime": "1.16.4",
+    "forge_loader": "35.1.37",
+    "java_runtime": 8,
+    "production_only_startup": "PASS",
+    "clean_stop": "PASS",
+    "scenario_mod_installed": false,
+    "launcher": "ModLauncher 8.1.3 preferred at launch over stock bundle 8.0.9; stock Forge libraries false",
+    "native_limitations": [
+      "Launcher override is not unmodified stock Forge runtime acceptance",
+      "No installed third-party providers",
+      "No authenticated two-client multiplayer",
+      "No client visual review",
+      "No arbitrary world migration",
+      "No sustained performance evidence"
+    ],
+    "release_eligible": false
+  },
+  "latest_modern_branch_publisher_safety_checkpoint": {
+    "branches": [
+      {
+        "minecraft": "1.17.1",
+        "source_commit": "323722c1ce1a9a6c51a08e1bb42775df45f52fd0",
+        "workflow_runs": [
+          40955073292,
+          40955073102
+        ],
+        "policy_tests_per_workflow": 11
+      },
+      {
+        "minecraft": "1.19.2",
+        "source_commit": "3351ce19f52cc9c4097849b8dd9beac36bed8636",
+        "workflow_runs": [
+          40955250005,
+          40955250065
+        ],
+        "policy_tests_per_workflow": 7
+      },
+      {
+        "minecraft": "1.20.1",
+        "source_commit": "e46adc584b10b79f2a2f50ac9bb67786ef768a5d",
+        "workflow_runs": [
+          40955498996,
+          40955498961
+        ],
+        "policy_tests_per_workflow": 10
+      },
+      {
+        "minecraft": "1.19.3",
+        "source_commit": "74acddee1d418f06bb684fd575692badca4f4e8f",
+        "workflow_runs": [
+          40955643306,
+          40955643287
+        ],
+        "policy_tests_per_workflow": 6
+      }
+    ],
+    "evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json",
+    "policy_executions_passed": 68,
+    "verified_workflows_passed": 8,
+    "rc_cleared": 0
+  },
+  "last_writer_release_20261029_2105": {
+    "owner": "pl4-hourly-chat-20261029T2105Z",
+    "released_at": "2026-10-29T21:14:17.703Z",
+    "expected_parent": "68f70679fcc777c4a28c3b9b7b2b3dde10a310bc",
+    "evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json",
+    "branches": [
+      "mc/1.17.1",
+      "mc/1.19.2",
+      "mc/1.20.1",
+      "mc/1.19.3"
+    ],
+    "writer_lease_released": true,
+    "new_release": false
   }
 }

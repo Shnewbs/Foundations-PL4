@@ -1,0 +1,176 @@
+{
+  "recorded_at": "2026-10-29T21:14:17.703Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "writer_lease_owner": "pl4-hourly-chat-20261029T2105Z",
+  "source_policy": "main and existing exact mc branches only; guarded expected-parent updates; no force pushes",
+  "target_count": 24,
+  "scoped_native_acceptance": {
+    "minecraft": "1.16.4",
+    "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+    "run_id": 40946223380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380",
+    "artifact_id": 12929299190,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380/artifacts/12929299190",
+    "artifact_sha256": "a9c7404c42215863940651d0d72db3b3d7e233aa34d0f9d2930dd42845c42ac4",
+    "outer_zip_entries": 23,
+    "outer_zip_crc": "PASS",
+    "production_jar": "FoundationsPL4-1.16.4-0.2.0-rc.1-dev-java8.jar",
+    "production_jar_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+    "production_jar_zip_entries": 982,
+    "production_jar_zip_crc": "PASS",
+    "native_scenarios": {
+      "total": 193,
+      "passed": 193,
+      "failed": 0,
+      "server_ticks": 1788
+    },
+    "minecraft_runtime": "1.16.4",
+    "forge_loader": "35.1.37",
+    "java_runtime": 8,
+    "production_only_startup": "PASS",
+    "clean_stop": "PASS",
+    "scenario_mod_installed": false,
+    "launcher": "ModLauncher 8.1.3 preferred at launch over stock bundle 8.0.9; stock Forge libraries false",
+    "native_limitations": [
+      "Launcher override is not unmodified stock Forge runtime acceptance",
+      "No installed third-party providers",
+      "No authenticated two-client multiplayer",
+      "No client visual review",
+      "No arbitrary world migration",
+      "No sustained performance evidence"
+    ],
+    "release_eligible": false
+  },
+  "branch_publisher_safeguards": [
+    {
+      "minecraft": "1.17.1",
+      "branch": "mc/1.17.1",
+      "commit": "323722c1ce1a9a6c51a08e1bb42775df45f52fd0",
+      "checks": 11,
+      "workflows": [
+        40955073292,
+        40955073102
+      ],
+      "change": "Retired native push publisher plus wrong-target generic GitHub and direct CurseForge paths; exact immutable native compile/installed check and JAR hash retention preserved",
+      "policy_runs": [
+        {
+          "run_id": 40955073292,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955073292",
+          "status": "success",
+          "tests_passed": 11
+        },
+        {
+          "run_id": 40955073102,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955073102",
+          "status": "success",
+          "tests_passed": 11
+        }
+      ],
+      "verified_policy_execution_count": 22,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.19.2",
+      "branch": "mc/1.19.2",
+      "commit": "3351ce19f52cc9c4097849b8dd9beac36bed8636",
+      "checks": 7,
+      "workflows": [
+        40955250005,
+        40955250065
+      ],
+      "change": "Retired wrong-1.21.1 generic release and direct CurseForge paths; native hourly matrix untouched",
+      "policy_runs": [
+        {
+          "run_id": 40955250005,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955250005",
+          "status": "success",
+          "tests_passed": 7
+        },
+        {
+          "run_id": 40955250065,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955250065",
+          "status": "success",
+          "tests_passed": 7
+        }
+      ],
+      "verified_policy_execution_count": 14,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.20.1",
+      "branch": "mc/1.20.1",
+      "commit": "e46adc584b10b79f2a2f50ac9bb67786ef768a5d",
+      "checks": 10,
+      "workflows": [
+        40955498996,
+        40955498961
+      ],
+      "change": "Retired native push alpha publisher and direct/wrong-target publishers; exact 191-case native workflow, source archive and SHA256 retention preserved",
+      "policy_runs": [
+        {
+          "run_id": 40955498996,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955498996",
+          "status": "success",
+          "tests_passed": 10
+        },
+        {
+          "run_id": 40955498961,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955498961",
+          "status": "success",
+          "tests_passed": 10
+        }
+      ],
+      "verified_policy_execution_count": 20,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.19.3",
+      "branch": "mc/1.19.3",
+      "commit": "74acddee1d418f06bb684fd575692badca4f4e8f",
+      "checks": 6,
+      "workflows": [
+        40955643306,
+        40955643287
+      ],
+      "change": "Retired generic 1.21.1 artifact release and direct CurseForge paths; separate manual native acceptance unchanged",
+      "policy_runs": [
+        {
+          "run_id": 40955643306,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955643306",
+          "status": "success",
+          "tests_passed": 6
+        },
+        {
+          "run_id": 40955643287,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955643287",
+          "status": "success",
+          "tests_passed": 6
+        }
+      ],
+      "verified_policy_execution_count": 12,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    }
+  ],
+  "static_policy_executions_passed": 68,
+  "static_policy_workflows_passed": 8,
+  "static_policy_workflows_total": 8,
+  "publication": {
+    "rc_clearance_count": 0,
+    "rc_target_count": 24,
+    "new_github_rc_releases": 0,
+    "new_curseforge_uploads": 0,
+    "new_public_visibility_confirmed": false,
+    "main_policy_run": 40954792246,
+    "main_publication_steps": "GitHub Release and CurseForge skipped",
+    "existing_release_receipts_untouched": true
+  },
+  "remaining": [
+    "Run 1.17.1 and 1.20.1 changed native workflow at next deduplicated exact hourly build; do not count policy-only workflow pass as native",
+    "Retire remaining 1.19.4 and 1.20.2 unsafe branch-local publisher paths after independent read/guard",
+    "Install actual third-party provider mod with callback revocation and unload/alias probes",
+    "Authenticated multiplayer and arbitrary saved-world migration",
+    "Sustained performance by exact source",
+    "Legacy 1.6.4 x80 gravel/terrain unresolved"
+  ],
+  "new_release_eligible": false
+}

@@ -149,7 +149,17 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 193
+      "observed_native_fixtures": 193,
+      "latest_scoped_native_production_receipt": {
+        "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+        "run_id": 40946223380,
+        "production_jar_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+        "artifact_sha256": "a9c7404c42215863940651d0d72db3b3d7e233aa34d0f9d2930dd42845c42ac4",
+        "scenario_passed": 193,
+        "scenario_total": 193,
+        "production_only_boot": "PASS_with_launcher_override",
+        "full_rc_acceptance": false
+      }
     },
     {
       "minecraft": "1.16.5",
@@ -204,7 +214,17 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 193
+      "observed_native_fixtures": 193,
+      "latest_branch_publisher_safety": {
+        "source_commit": "323722c1ce1a9a6c51a08e1bb42775df45f52fd0",
+        "policy_workflow_runs": [
+          40955073292,
+          40955073102
+        ],
+        "policy_tests_executed": 22,
+        "not_native_acceptance": true,
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.18.1",
@@ -314,7 +334,17 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 191
+      "observed_native_fixtures": 191,
+      "latest_branch_publisher_safety": {
+        "source_commit": "3351ce19f52cc9c4097849b8dd9beac36bed8636",
+        "policy_workflow_runs": [
+          40955250005,
+          40955250065
+        ],
+        "policy_tests_executed": 14,
+        "not_native_acceptance": true,
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.19.3",
@@ -336,7 +366,17 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 191
+      "observed_native_fixtures": 191,
+      "latest_branch_publisher_safety": {
+        "source_commit": "74acddee1d418f06bb684fd575692badca4f4e8f",
+        "policy_workflow_runs": [
+          40955643306,
+          40955643287
+        ],
+        "policy_tests_executed": 12,
+        "not_native_acceptance": true,
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.19.4",
@@ -402,7 +442,17 @@
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
-      "observed_native_fixtures": 191
+      "observed_native_fixtures": 191,
+      "latest_branch_publisher_safety": {
+        "source_commit": "e46adc584b10b79f2a2f50ac9bb67786ef768a5d",
+        "policy_workflow_runs": [
+          40955498996,
+          40955498961
+        ],
+        "policy_tests_executed": 20,
+        "not_native_acceptance": true,
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.20.2",
@@ -1795,7 +1845,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T20:21:30.198Z: 1.16.5 exact final branch 4da64cd2546be267559a7c45bb3e54f26ac39f99 passed 191/191 installed native Forge36/Java 8 scenarios (1,786 server ticks) plus NEW stock production-only installed JAR startup and clean shutdown; production hash 573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614, retained artifact 12928554433 actual ZIP 22 CRC-valid entries (sha b0a8ae...), 982 CRC-valid production JAR entries, policy 12/12. 1.16.4 exact final source 193-case native run 40946223380 pending. 0/24 RC clearances, no release/upload. docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
+  "latest_work": "2026-10-29T21:14:17.703Z: Forge 1.16.4 exact a35c5afe PASS 193/193 real native scenarios + production-only launch-profile Forge35/Java8 boot/shutdown (not stock ModLauncher); exact JAR b97f148d and artifact a9c7404c verified 23/23 archive and 982/982 JAR entries. Four more exact version-branch publisher guards 1.17.1, 1.19.2, 1.20.1, 1.19.3; eight policy runs PASS 68/68 checks; no new runtime qualification for workflow-only edits. 0/24 RC cleared and no releases/uploads. Evidence docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3483,7 +3533,7 @@
     "final_audit_run": 40871592313,
     "release_yml_remaining": "Not a qualified 26.3 publishing path: asset names and clobber need version-specific correction before tag publication"
   },
-  "previous_latest_work": "2026-10-29 16:24 UTC: Native 200/200 on exact 1.21.1 source 08dee98707765be3a8fbe44150c8bbf39cabd5cf, run 40909149431; production JAR SHA-256 ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b (883 CRC valid entries); native artifact ZIP SHA-256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069. Installed exact production binary dedicated run 40909886467 passed both immutable beta and candidate. Real two-client installed beta->exact candidate world migration 40910091169 passed, 2 offline graphical clients each phase, seven-centre cable, 64+64 automatic diamonds, 60+60 severed ticks, 1,728 conserved and zero escrow with 9 UUIDs and native saved-world NBT preserved; retained archive 12914370394 SHA-256 4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7 (46/46 ZIP CRC). Initial workflow pin 40909886723 failed two stale controller test constants before native phase; repaired in 9111e5a and rerun passed. 0/24 RC cleared, both publisher steps skipped, no new GitHub/CurseForge release.",
+  "previous_latest_work": "2026-10-29T20:21:30.198Z: 1.16.5 exact final branch 4da64cd2546be267559a7c45bb3e54f26ac39f99 passed 191/191 installed native Forge36/Java 8 scenarios (1,786 server ticks) plus NEW stock production-only installed JAR startup and clean shutdown; production hash 573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614, retained artifact 12928554433 actual ZIP 22 CRC-valid entries (sha b0a8ae...), 982 CRC-valid production JAR entries, policy 12/12. 1.16.4 exact final source 193-case native run 40946223380 pending. 0/24 RC clearances, no release/upload. docs/acceptance/rc-dev-1165-installed-production-native-success-2026-10-29.json.",
   "latest_1211_passive_item_destination_quarantine": {
     "target": "1.21.1",
     "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
@@ -3952,5 +4002,153 @@
     "production_only_startup": "PASS",
     "clean_stop": "PASS",
     "release_cleared": false
-  }
+  },
+  "latest_1164_native_production_source_acceptance": {
+    "minecraft": "1.16.4",
+    "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+    "run_id": 40946223380,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380",
+    "artifact_id": 12929299190,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40946223380/artifacts/12929299190",
+    "artifact_sha256": "a9c7404c42215863940651d0d72db3b3d7e233aa34d0f9d2930dd42845c42ac4",
+    "outer_zip_entries": 23,
+    "outer_zip_crc": "PASS",
+    "production_jar": "FoundationsPL4-1.16.4-0.2.0-rc.1-dev-java8.jar",
+    "production_jar_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+    "production_jar_zip_entries": 982,
+    "production_jar_zip_crc": "PASS",
+    "native_scenarios": {
+      "total": 193,
+      "passed": 193,
+      "failed": 0,
+      "server_ticks": 1788
+    },
+    "minecraft_runtime": "1.16.4",
+    "forge_loader": "35.1.37",
+    "java_runtime": 8,
+    "production_only_startup": "PASS",
+    "clean_stop": "PASS",
+    "scenario_mod_installed": false,
+    "launcher": "ModLauncher 8.1.3 preferred at launch over stock bundle 8.0.9; stock Forge libraries false",
+    "native_limitations": [
+      "Launcher override is not unmodified stock Forge runtime acceptance",
+      "No installed third-party providers",
+      "No authenticated two-client multiplayer",
+      "No client visual review",
+      "No arbitrary world migration",
+      "No sustained performance evidence"
+    ],
+    "release_eligible": false
+  },
+  "latest_four_branch_publisher_guards": [
+    {
+      "minecraft": "1.17.1",
+      "branch": "mc/1.17.1",
+      "commit": "323722c1ce1a9a6c51a08e1bb42775df45f52fd0",
+      "checks": 11,
+      "workflows": [
+        40955073292,
+        40955073102
+      ],
+      "change": "Retired native push publisher plus wrong-target generic GitHub and direct CurseForge paths; exact immutable native compile/installed check and JAR hash retention preserved",
+      "policy_runs": [
+        {
+          "run_id": 40955073292,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955073292",
+          "status": "success",
+          "tests_passed": 11
+        },
+        {
+          "run_id": 40955073102,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955073102",
+          "status": "success",
+          "tests_passed": 11
+        }
+      ],
+      "verified_policy_execution_count": 22,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.19.2",
+      "branch": "mc/1.19.2",
+      "commit": "3351ce19f52cc9c4097849b8dd9beac36bed8636",
+      "checks": 7,
+      "workflows": [
+        40955250005,
+        40955250065
+      ],
+      "change": "Retired wrong-1.21.1 generic release and direct CurseForge paths; native hourly matrix untouched",
+      "policy_runs": [
+        {
+          "run_id": 40955250005,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955250005",
+          "status": "success",
+          "tests_passed": 7
+        },
+        {
+          "run_id": 40955250065,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955250065",
+          "status": "success",
+          "tests_passed": 7
+        }
+      ],
+      "verified_policy_execution_count": 14,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.20.1",
+      "branch": "mc/1.20.1",
+      "commit": "e46adc584b10b79f2a2f50ac9bb67786ef768a5d",
+      "checks": 10,
+      "workflows": [
+        40955498996,
+        40955498961
+      ],
+      "change": "Retired native push alpha publisher and direct/wrong-target publishers; exact 191-case native workflow, source archive and SHA256 retention preserved",
+      "policy_runs": [
+        {
+          "run_id": 40955498996,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955498996",
+          "status": "success",
+          "tests_passed": 10
+        },
+        {
+          "run_id": 40955498961,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955498961",
+          "status": "success",
+          "tests_passed": 10
+        }
+      ],
+      "verified_policy_execution_count": 20,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    },
+    {
+      "minecraft": "1.19.3",
+      "branch": "mc/1.19.3",
+      "commit": "74acddee1d418f06bb684fd575692badca4f4e8f",
+      "checks": 6,
+      "workflows": [
+        40955643306,
+        40955643287
+      ],
+      "change": "Retired generic 1.21.1 artifact release and direct CurseForge paths; separate manual native acceptance unchanged",
+      "policy_runs": [
+        {
+          "run_id": 40955643306,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955643306",
+          "status": "success",
+          "tests_passed": 6
+        },
+        {
+          "run_id": 40955643287,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40955643287",
+          "status": "success",
+          "tests_passed": 6
+        }
+      ],
+      "verified_policy_execution_count": 12,
+      "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
+    }
+  ],
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json"
 }
