@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T1105Z-callback-auth",
-    "claimed_at": "2026-10-29T11:05:27Z",
-    "expires_at": "2026-10-29T11:25:27Z",
-    "purpose": "Native source safety: revalidate endpoint authorization around provider callbacks; preserve RC publisher gates",
-    "expected_parent_sha": "47a71e7ec6e8d3e59dfb92fd6ec52a64331e9a17"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,14 +14,14 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29 ~10:18 UTC: Installed 1.21.1 owner-isolated dev 195-native-qualified artifact (source 1ea6d95a, JAR fe19eda...) now pinned as exact candidate for both nonpublishing installed-server and two-real-client beta-world-upgrade native workflows; no new installed-JAR server/client successful execution verified at checkpoint. Fixed test controller's concurrent client native bootstrap by staging genuine first ModLauncher launch before second genuine client; underlying LWJGL stb failure 40847578498 root cause unproven. 7 adversarial tests authored, runtime results pending; 20/20 static repository invariants read back. Existing 195/195 GameTests run 40848203024 and artifact ZIP 0cc420... CRC verified; older installed two-client 40841205322 does not qualify new dev JAR. All 24 release clearance flags false, no new eligible release/CurseForge upload; no mc branch changes.",
+  "current_checkpoint": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect exact 195/195-source pinned nonpublishing installed dedicated-server and two-client native CI runs and receipts. Do not count 20/20 static checks or older exact JAR installed evidence as newly accepted; if LWJGL stb crash recurs, preserve failure logs and diagnose actual native loader/environment before another attempt.",
-    "Follow verified installed latest exact JAR migration with two genuine clients, automatic cable transfers and owner-revocation denial; collect client screenshots, saved-world raw NBT, installed optional provider and unloaded/disconnected alias evidence.",
-    "Before any mc/<exact-version> push, inspect branch-local push publication guards; port production physical cable owner isolation only with exact-version native test and JAR checks, never old transforms or neighboring JAR reuse.",
-    "Use hourly-builds.yml source-pinned native deduplication to advance other 23 exact targets, legacy provider aliases, sustained performance, arbitrary-world migration and historical 1.6.4 natural gravel x80 root cause.",
-    "Publish a new immutable GitHub RC and CurseForge beta only when specific exact-tag source passes required installed/native/migration evidence and rc_publication_cleared true. Current 0/24; no upload."
+    "Build native adversarial installed provider that mutates owner or capabilities during simulate/extract/insert, with post-callback quarantine; do not clear old escrow.",
+    "Exercise unloaded/disconnected inventory aliases without force-loading and validate exact source saved-state behavior.",
+    "Guard and correct 26.3 branch-local CurseForge publisher before any future 26.3 branch source change; review all others similarly.",
+    "Use hourly-builds.yml pinned exact native dedup for 24 targets; do not publish until specific rc_publication_cleared true and complete installed/migration/performance receipts.",
+    "No duplicate validation for unchanged exact sources; retained 40863794077 and 40862937491 are authoritative for their tested bytes."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -67,34 +61,14 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T1003Z-installed-client-native-loader",
-    "released_at": "2026-10-29T10:18:50.795Z",
-    "purpose": "Bounded installed 1.21.1 owner-isolation dev JAR provenance and genuine-client native library bootstrap acceptance repairs; no eligible release",
-    "prior_writer_lease_claim": "efc41cfc346ed504a3835b1e84ae9d22ee45e2b0",
-    "source_commits": [
-      "c973f4d1e0e89e0bdd9b9a042ba02c3c54b89809",
-      "898ba73fcca7983d7f553c28d6817d757c16e283",
-      "5cc2ad55d1820dee5ac9b31c25cb8ded19a510a7",
-      "73d5b98519c5eef199da2d0a97e5680539b746af",
-      "b3492cefe624d9f9c278ec5a66ad114bd0bade69",
-      "7e6671d6b6d3becdbf4b23cd153434d31fa098db",
-      "866c58edd57cf5a29da5eff342f61edf07d19b03",
-      "9bcb7a9819d2d583e83e434583bc699207413f41",
-      "858ccd0ac40fe5d013e084cdf4b4146a595ef937"
-    ],
-    "exact_candidate_source": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
-    "native_run": 40848203024,
-    "native_results": "195/195 exact previous verified",
-    "artifact_id": 12885364230,
-    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
-    "new_code_regressions": "7 authored; runtime/CI execution unverified",
-    "static_readback": "20/20",
-    "native_installed_candidate_runtime": "NOT_VERIFIED",
-    "new_rc_releases": 0,
-    "new_curseforge_uploads": 0,
-    "rc_clearance": "0/24",
-    "evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
-    "lease_bounded": true
+    "owner": "pl4-hourly-chat-20261029T1105Z-callback-auth",
+    "released_at": "2026-10-29T11:19:22Z",
+    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "pinned_workflow_commit": "5a84e673555b81c112e9bffe60c32d1e582498d8",
+    "checkpoint_evidence": "docs/acceptance/rc-dev-1211-stale-transfer-plan-native-installed-2026-10-29.json",
+    "writer_lease_released": true,
+    "actual_release": false,
+    "rc_clearance": "0/24"
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
   "latest_branch_publisher_review": {
@@ -1814,5 +1788,56 @@
     "new_github_rc_releases": 0,
     "new_curseforge_uploads": 0,
     "evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json"
+  },
+  "latest_1211_stale_plan_native_and_installed": "docs/acceptance/rc-dev-1211-stale-transfer-plan-native-installed-2026-10-29.json",
+  "latest_1211_stale_plan_native": {
+    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "production_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "native_run": 40862937491,
+    "native": "195/195 PASS",
+    "artifact_id": 12892846080,
+    "artifact_zip_sha256": "ed66f57a7f674c93fb525c293c1e631f10cdc365c132569fe4dd6076ca2f43f8",
+    "installed_server_run": 40863794126,
+    "installed_two_client_run": 40863794077,
+    "installed_two_client_artifact_id": 12892019188,
+    "installed_two_client_zip_sha256": "e66ae458e6933d93463f15675b179e5a86b43b24d188d5f4b3a58ace4f1230c8",
+    "rc_publication_cleared": false
+  },
+  "latest_modern_version_branch_publisher_readonly_finding": {
+    "target": "mc/26.3",
+    "inspected_at_utc": "2026-10-29T11:19:22Z",
+    "warning": "Manual branch curseforge.yml has hardcoded 1.21.1 runtime filename; do not invoke; review and guard on branch before any source push.",
+    "source_modified": false,
+    "lease_policy": "main writer lease held for source/policy edits"
+  },
+  "last_writer_release_before_stale_plan": {
+    "owner": "pl4-hourly-chat-20261029T1003Z-installed-client-native-loader",
+    "released_at": "2026-10-29T10:18:50.795Z",
+    "purpose": "Bounded installed 1.21.1 owner-isolation dev JAR provenance and genuine-client native library bootstrap acceptance repairs; no eligible release",
+    "prior_writer_lease_claim": "efc41cfc346ed504a3835b1e84ae9d22ee45e2b0",
+    "source_commits": [
+      "c973f4d1e0e89e0bdd9b9a042ba02c3c54b89809",
+      "898ba73fcca7983d7f553c28d6817d757c16e283",
+      "5cc2ad55d1820dee5ac9b31c25cb8ded19a510a7",
+      "73d5b98519c5eef199da2d0a97e5680539b746af",
+      "b3492cefe624d9f9c278ec5a66ad114bd0bade69",
+      "7e6671d6b6d3becdbf4b23cd153434d31fa098db",
+      "866c58edd57cf5a29da5eff342f61edf07d19b03",
+      "9bcb7a9819d2d583e83e434583bc699207413f41",
+      "858ccd0ac40fe5d013e084cdf4b4146a595ef937"
+    ],
+    "exact_candidate_source": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+    "native_run": 40848203024,
+    "native_results": "195/195 exact previous verified",
+    "artifact_id": 12885364230,
+    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+    "new_code_regressions": "7 authored; runtime/CI execution unverified",
+    "static_readback": "20/20",
+    "native_installed_candidate_runtime": "NOT_VERIFIED",
+    "new_rc_releases": 0,
+    "new_curseforge_uploads": 0,
+    "rc_clearance": "0/24",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-owner-isolation-candidate-client-bootstrap-2026-10-29.json",
+    "lease_bounded": true
   }
 }

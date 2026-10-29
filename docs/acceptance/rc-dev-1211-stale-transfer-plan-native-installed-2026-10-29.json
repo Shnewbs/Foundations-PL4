@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T11:19:22Z",
+  "repo": "Shnewbs/Foundations-PL4",
+  "writer": "pl4-hourly-chat-20261029T1105Z-callback-auth",
+  "source_branch": "main",
+  "production_fix": {
+    "commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "path": "src/main/java/net/foundations/pl4/TransferEngine.java",
+    "change": "Recheck live source/sink owner equality and original registered host-part identity while selecting cached transfer-plan routes; reject revoked parts before routing.",
+    "test": "R16GameTests.physicalCableRejectsForeignOwnerAfterLiveTransfer",
+    "test_change": "Stale native Plan exercised after sink owner changes and before topology notification; source 12 diamonds and old sink 32 remain unmoved/unescrowed; reconnect restores 44.",
+    "note": "Does NOT yet prove owner revocation during a foreign provider callback or unloading aliases across unresolved provider state."
+  },
+  "native": {
+    "run_id": 40862937491,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40862937491",
+    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "gametests": {
+      "passed": 195,
+      "total": 195
+    },
+    "offline_r16_guards": {
+      "passed": 20,
+      "total": 20
+    },
+    "artifact_id": 12892846080,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40862937491/artifacts/12892846080",
+    "artifact_zip_sha256": "ed66f57a7f674c93fb525c293c1e631f10cdc365c132569fe4dd6076ca2f43f8",
+    "artifact_members": 6,
+    "artifact_crc": "PASS",
+    "production_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "production_jar_members": 882,
+    "production_jar_crc": "PASS",
+    "native_log_sha256": "ff2b56ba97c93cb7feddce634757f2d20e9714096e962fff192179162eb8c106",
+    "followup_main_verify_run": 40863794081,
+    "followup_main_verify": "COMPLETED_SUCCESS"
+  },
+  "pinned_installed_workflows": {
+    "commit": "5a84e673555b81c112e9bffe60c32d1e582498d8",
+    "pinned_source": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "pinned_production_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "workflow_files": [
+      ".github/workflows/installed-beta-binary-smoke.yml",
+      ".github/workflows/installed-binary-two-client-upgrade.yml"
+    ],
+    "control_candidate_constants": "tools/multiplayer-probe/installed_binary_two_clients.py"
+  },
+  "installed_servers": {
+    "workflow_id": 40863794126,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40863794126",
+    "conclusion": "COMPLETED_SUCCESS",
+    "published_beta_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "dev_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "candidate_artifact_id": 12892154481,
+    "candidate_artifact_zip_sha256": "7404bca0e296a7941b307651c4c6f45a1b878af0c05437da50ea4ec0786c1afe",
+    "baseline_artifact_id": 12892687199,
+    "baseline_artifact_zip_sha256": "590cc32c9494981a3916d3b652de106da19ec68e4ac376003ccd8e4dc286e536",
+    "independent_crc": "PASS both archives",
+    "notes": "Individually installed JAR server startup and clean exits; no actual two-client proof from this workflow"
+  },
+  "installed_two_clients": {
+    "workflow_id": 40863794077,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40863794077",
+    "conclusion": "COMPLETED_SUCCESS",
+    "artifact_id": 12892019188,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40863794077/artifacts/12892019188",
+    "artifact_zip_sha256": "e66ae458e6933d93463f15675b179e5a86b43b24d188d5f4b3a58ace4f1230c8",
+    "archive_entries": 46,
+    "archive_crc": "PASS",
+    "baseline_source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "candidate_source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "candidate_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "real_gui_clients_per_phase": 2,
+    "source_beta_saved_world_sha256": "26ce7bdd6027210bf341422807e77e92952000211f910e9f166b1c8713e56e33",
+    "restored_dev_saved_world_sha256": "4a388cd2071ebda13e50ff8006430da0695e0019807c796dd4ff026953313e76",
+    "seed_world_archive_sha256": "0ed7fc8cacb04ba79dcf18818782f2307284340a97d781ae3f2f52550a8c5736",
+    "restore_world_archive_sha256": "f6d13d084ba7bd2a65b7840b41d6d159207e63aa184c998ec3e8d48e5d58ecc1",
+    "source_world_files": 26,
+    "restored_world_files": 30,
+    "world_zip_crc": "PASS both world archives",
+    "native_cable_delivery_each_phase": [
+      64,
+      64
+    ],
+    "native_cable_severed_ticks_each_phase": [
+      60,
+      60
+    ],
+    "inventory_total_conserved": 1728,
+    "escrow": 0,
+    "wireless_request_replay_denied": true,
+    "wireless_player_inventory_each": [
+      17,
+      17
+    ],
+    "wireless_barrel_remaining": 94,
+    "screenshot_count": 4,
+    "screenshot_dimensions": [
+      960,
+      720
+    ],
+    "visual_review": "Native Wireless Storage menu visible in all four; Minecraft toasts/advancement/chat notices partially obscure controls so polished client-visual acceptance remains open."
+  },
+  "exact_version_branch_publisher_readonly_finding": {
+    "target": "mc/26.3",
+    "inspected": ".github/workflows/release.yml and .github/workflows/curseforge.yml",
+    "release_yml": "push-triggered publisher contains development and explicit RC clearance checks; no branch modifications made",
+    "curseforge_yml": "manual workflow hardcodes 1.21.1 JAR name rather than 26.3 and lacks direct exact-tag RC source clearance check; do not invoke or push 26.3 source until reviewed/corrected version-specific publishing guards are proven",
+    "remediation": "Guard version-specific publisher and explicit exact-target checksum/source clearance before a source branch update; preserve existing validated native flows and releases."
+  },
+  "publication": {
+    "rc_cleared": 0,
+    "targets": 24,
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "publisher_run": 40863794115,
+    "publisher_status": "COMPLETED_SUCCESS_DEVELOPMENT_STEPS_SKIPPED",
+    "curseforge_visibility": "NO_NEW_UPLOAD_TO_VERIFY"
+  },
+  "limitations": [
+    "New stale-plan owner guard is scoped to route selection; reentrant callback-time revocation, loaded/unloaded alias and third-party installed capability acceptance remain open.",
+    "Real two-client migration uses offline loopback identities, not authenticated online accounts or arbitrary user worlds.",
+    "Graphics snapshots have toast overlays; full visual polish pending.",
+    "Sustained loaded-server performance and other 23 exact target RC acceptance remain open.",
+    "Original 1.6.4 spontaneous gravel-placement root cause remains unresolved."
+  ],
+  "next_steps": [
+    "Build native adversarial installed provider that mutates owner or capabilities during simulate/extract/insert, with post-callback quarantine; do not clear old escrow.",
+    "Exercise unloaded/disconnected inventory aliases without force-loading and validate exact source saved-state behavior.",
+    "Guard and correct 26.3 branch-local CurseForge publisher before any future 26.3 branch source change; review all others similarly.",
+    "Use hourly-builds.yml pinned exact native dedup for 24 targets; do not publish until specific rc_publication_cleared true and complete installed/migration/performance receipts."
+  ]
+}

@@ -1781,7 +1781,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 10:16 UTC: Investigated failed 1.21.1 installed two-client 40847578498 native LWJGL stb absence (client B, 17-entry failed evidence ZIP hash 331ef01a...): exact root cause not proven. Implemented bounded genuine client A ModLauncher bootstrap before starting real client B (both still connected concurrently); fail closed on early crash/timeout. Re-pinned dedicated installed-JAR server and installed beta->candidate two-client workflows to exact 195/195-native-tested source 1ea6d95a, retained artifact 12885364230, JAR fe19eda..., with exact native 195 log gate and 7 new adversarial cases. 20/20 static readback invariants passed, but no new exact 195 JAR installed-server or 2-client native pass independently verified yet. Prior old-JAR accepted 40841205322 remains scoped to its own binary; all 24 clearance flags false, no new release/upload.",
+  "latest_work": "2026-10-29 11:19 UTC: Main production stale-plan owner/attachment guard 3e9b138 passed 195/195 native GameTests (run 40862937491, JAR e0287799..., ZIP ed66f57...); exact installed beta -> new candidate dedicated servers PASS 40863794126, and two genuine client phases plus 64+64 tick-driven seven-cable transfers across saved-world upgrade PASS 40863794077 (ZIP e66ae458..., 46 CRC valid). 4 screenshots inspected; toasts obscure parts. 0/24 RC cleared, publication skipped; mc/26.3 manual CurseForge hardcoded neighbor-target 1.21.1 JAR found read-only, no version branch pushes.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3443,5 +3443,26 @@
     "rc_publication_cleared": false,
     "source_branch_updates": 0,
     "release_receipts": "NONE"
+  },
+  "latest_1211_stale_plan_native_and_installed": {
+    "evidence": "docs/acceptance/rc-dev-1211-stale-transfer-plan-native-installed-2026-10-29.json",
+    "source_commit": "3e9b1381ad566d2a69da335ab0b1ece4a11478b7",
+    "production_jar_sha256": "e0287799ac0c263f4bdcf1248b807bce0ca4f3f126ff5c229d4e94b4e2a4a799",
+    "native_run": 40862937491,
+    "native_gametests": "195/195 PASS",
+    "installed_server_run": 40863794126,
+    "installed_server": "PASS",
+    "real_two_client_run": 40863794077,
+    "real_two_client": "PASS scoped",
+    "installed_two_client_artifact_sha256": "e66ae458e6933d93463f15675b179e5a86b43b24d188d5f4b3a58ace4f1230c8",
+    "release_eligible": false,
+    "rc_publication_cleared": false
+  },
+  "latest_263_branch_publisher_finding": {
+    "target": "mc/26.3",
+    "inspected": ".github/workflows/release.yml and .github/workflows/curseforge.yml",
+    "release_yml": "push-triggered publisher contains development and explicit RC clearance checks; no branch modifications made",
+    "curseforge_yml": "manual workflow hardcodes 1.21.1 JAR name rather than 26.3 and lacks direct exact-tag RC source clearance check; do not invoke or push 26.3 source until reviewed/corrected version-specific publishing guards are proven",
+    "remediation": "Guard version-specific publisher and explicit exact-target checksum/source clearance before a source branch update; preserve existing validated native flows and releases."
   }
 }
