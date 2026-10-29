@@ -48,5 +48,20 @@
     "Run exact 1.21.1 candidate production JAR from the pinned native artifact in a separate installed production runtime; verify runtime hash and source identity.",
     "Extend isolated binary execution to the two actual clients and original/candidate world seed/restore, then optional installed providers, arbitrary worlds and sustained performance.",
     "Preserve prior unresolved 1.6.4 x80 gravel cause and all exact-target release clearances."
-  ]
+  ],
+  "follow_on_exact_candidate_provenance": {
+    "source": "tools/multiplayer-probe/exact_native_candidate.py",
+    "source_commit": "ad4da818f9725befd7ae0d98147f635fd3cdaf4f",
+    "regression": "tools/multiplayer-probe/test_exact_native_candidate.py",
+    "regression_commit": "1d36db69816d386bf1b102fb0a6e516cc85d110e",
+    "authored_adversarial_test_count": 9,
+    "target": "1.21.1 only, exact source marker and known JAR SHA, no fallback to neighboring JAR",
+    "known_prior_native_run": 40785212711,
+    "known_prior_native_artifact_id": 12859271452,
+    "known_prior_native_artifact_zip_sha256": "357be6c367d5f3e7b0b8a0edde28e57c8be06d4f237d4d3a5f931208109026d7",
+    "known_prior_source_sha256": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "known_prior_production_jar_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "execution": "NOT_RUN_OR_INDEPENDENTLY_VERIFIED_THIS_SESSION",
+    "use": "Next build phase: download retained exact successful native artifact, independently extract and hash-match candidate JAR, then install in source-isolated runtime; do not call this a native pass until actual execution succeeds."
+  }
 }
