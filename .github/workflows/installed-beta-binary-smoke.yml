@@ -93,24 +93,24 @@ jobs:
         run: |
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_exact_native_candidate.py'
           python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_smoke.py'
-      - name: Retrieve independently successful callback-revocation 197-case native candidate artifact
+      - name: Retrieve independently successful backing-inventory 199-case native candidate artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p results/pinned-native
-          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12904491268 > results/pinned-native/artifact-metadata.json
+          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12907239925 > results/pinned-native/artifact-metadata.json
           curl --fail --show-error --silent --location --retry 2 \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12904491268/zip" \
+            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12907239925/zip" \
             --output results/pinned-native/native-artifact.zip
           python3 control/tools/multiplayer-probe/exact_native_candidate.py \
             --artifact-zip results/pinned-native/native-artifact.zip \
             --artifact-metadata results/pinned-native/artifact-metadata.json \
-            --artifact-sha256 4fed595cf1334326a4911eb25f25fce75fa7fbe3e734d67d20e789f5500bee8e \
-            --source-sha 71075e68c4ca7296a5a8e098a00b9a54702161cb \
-            --jar-sha256 f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103 \
-            --expected-native-tests 197 \
+            --artifact-sha256 d878986be228b7e3c1e04a9fe7efed118d076174a0f7c98cd173e103d08124b1 \
+            --source-sha ef12490f5eca4d801680069469ef9b37c830f27c \
+            --jar-sha256 2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0 \
+            --expected-native-tests 199 \
             --output results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar
       - name: Install exact candidate native-qualified production JAR in isolated runtime
         run: |
@@ -118,7 +118,7 @@ jobs:
             --checkout control \
             --jar results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar \
             --output installed-candidate-runtime \
-            --sha256 f2409659d76f3557d344d4773cdea428733e93ecd9d0c98ee116013afd570103
+            --sha256 2ddd2c133cc2749021246521788b37f84ee6a800ae2782f6ac65b5aa78f197a0
       - name: Run genuine candidate production binary in dedicated native server
         run: |
           python3 control/tools/multiplayer-probe/installed_binary_smoke.py run \
