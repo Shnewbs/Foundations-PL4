@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
+import subprocess
 
 import installed_binary_two_clients as gate
 from verify_upgrade_evidence import digest, NAMES, FILES
@@ -81,6 +82,43 @@ class InstalledTwoClientPolicy(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises((OSError, KeyError, ValueError)):
                 gate.verify_phase(tmp, "seed", gate.BASELINE_SOURCE, gate.BASELINE_JAR)
+
+    def test_native_self_shutdown_does_not_attempt_closed_rcon(self):
+        server = Mock()
+        server.poll.return_value = None
+        server.returncode = 0
+        with patch.object(gate.smoke, "_stop_with_retry") as stop:
+            gate._finish_server(server, Path("disposable/server.properties"))
+            stop.assert_not_called()
+        server.wait.assert_called_once_with(timeout=30)
+
+    def test_hanging_native_server_uses_bounded_authenticated_rcon(self):
+        server = Mock()
+        server.poll.return_value = None
+        server.returncode = 0
+        server.wait.side_effect = [subprocess.TimeoutExpired(["native"], 30), 0]
+        with patch.object(gate.smoke, "_stop_with_retry") as stop:
+            gate._finish_server(server, Path("disposable/server.properties"))
+            stop.assert_called_once_with(Path("disposable/server.properties"))
+        self.assertEqual(server.wait.call_count, 2)
+
+    def test_failed_native_exit_remains_rejected(self):
+        server = Mock()
+        server.poll.return_value = 1
+        server.returncode = 1
+        with patch.object(gate.smoke, "_stop_with_retry") as stop:
+            with self.assertRaisesRegex(RuntimeError, "cleanly"):
+                gate._finish_server(server, Path("disposable/server.properties"))
+            stop.assert_not_called()
+
+    def test_unavailable_rcon_after_true_hang_remains_error(self):
+        server = Mock()
+        server.poll.return_value = None
+        server.returncode = None
+        server.wait.side_effect = subprocess.TimeoutExpired(["native"], 30)
+        with patch.object(gate.smoke, "_stop_with_retry", side_effect=RuntimeError("RCON unavailable")):
+            with self.assertRaisesRegex(RuntimeError, "RCON unavailable"):
+                gate._finish_server(server, Path("disposable/server.properties"))
 
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()

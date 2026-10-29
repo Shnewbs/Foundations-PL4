@@ -349,6 +349,22 @@ def _capture(output, phase, source, jar_sha, copied, server_exit, client_exits):
     return verify_phase(output, phase, source, jar_sha)
 
 
+
+def _finish_server(server, properties):
+    """Prefer clean native self-stop over RCON while retaining fail-closed exit."""
+    if server.poll() is None:
+        try:
+            # Native ServerTickEvent shutdown may finish after both clients
+            # have closed, even though RCON is already offline.
+            server.wait(timeout=30)
+        except subprocess.TimeoutExpired:
+            if server.poll() is None:
+                smoke._stop_with_retry(properties)
+                server.wait(timeout=100)
+    if server.returncode != 0:
+        raise RuntimeError("Installed server did not exit cleanly after two client sessions")
+
+
 def run_phase(checkout, jar, output, phase, source, jar_sha, seed=None, timeout=1500):
     output = Path(output).resolve()
     jar = Path(jar).resolve()
@@ -397,13 +413,12 @@ def run_phase(checkout, jar, output, phase, source, jar_sha, seed=None, timeout=
             raise TimeoutError("Two actual installed NeoForge clients did not complete")
         if not (output / "server-multiplayer-proof.json").is_file():
             raise ValueError("Installed binary real clients exited without server permissions/items proof")
-        if server.poll() is None:
-            # Existing native server fixture normally self-terminates after
-            # successful client receipts. RCON is an authenticated fallback.
-            smoke._stop_with_retry(output / "server/run/server.properties")
-        server.wait(timeout=100)
-        if server.returncode != 0:
-            raise RuntimeError("Installed server did not exit cleanly after two client sessions")
+        # The server fixture self-terminates after both native clients report.
+        # Its RCON socket closes before Gradle's wrapper process necessarily
+        # exits; attempting RCON immediately races that clean native shutdown.
+        # Allow bounded natural completion first, then use authenticated RCON
+        # only for a genuinely still-running server.
+        _finish_server(server, output / "server/run/server.properties")
     finally:
         for p in processes.values():
             if p.poll() is None:
