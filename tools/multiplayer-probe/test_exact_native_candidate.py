@@ -127,10 +127,10 @@ class ExactNativeCandidateTests(unittest.TestCase):
 
     def test_exact_195_native_source_requires_195_completion_and_pass(self):
         with zipfile.ZipFile(self.artifact, "w") as z:
-            z.writestr("verification-logs/SOURCE_COMMIT.txt", SOURCE + "\\n")
+            z.writestr("verification-logs/SOURCE_COMMIT.txt", SOURCE + "\n")
             z.writestr("verification-logs/native.log",
-                       "========= 195 GAME TESTS COMPLETE IN 5.621 s ======================\\n"
-                       "All 195 required tests passed :)\\nBUILD SUCCESSFUL\\n")
+                       "========= 195 GAME TESTS COMPLETE IN 5.621 s ======================\n"
+                       "All 195 required tests passed :)\nBUILD SUCCESSFUL\n")
             z.writestr(NAME, self.binary)
         receipt = gate.extract(self.artifact, self.output,
                                digest(self.artifact), SOURCE, self.jar_sha,
