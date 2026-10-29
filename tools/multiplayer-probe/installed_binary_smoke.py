@@ -55,6 +55,14 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BarrelBlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 /** Independent test mod; NEVER contains or compiles PL4 implementation classes. */
 @Mod("pl4_binary_probe")
@@ -80,6 +88,76 @@ public final class InstalledBinaryProbe {
             Files.writeString(proof, json, StandardCharsets.UTF_8);
         } catch (Exception failure) {
             throw new IllegalStateException("Cannot preserve installed-server proof", failure);
+        }
+        // Optional real-world upgrade fixture: executes only with the installed
+        // PL4 production JAR, never source-compiled PL4 implementation classes.
+        String phase = System.getenv("PL4_WORLD_PHASE");
+        if (phase != null) {
+            if (!phase.equals("seed") && !phase.equals("restore")) {
+                throw new IllegalStateException("Invalid installed-binary world phase");
+            }
+            ResourceLocation hostKey = ResourceLocation.fromNamespaceAndPath("foundations_pl4", "multipart_host");
+            Block host = BuiltInRegistries.BLOCK.get(hostKey);
+            if (host == Blocks.AIR || !BuiltInRegistries.BLOCK.getKey(host).equals(hostKey)) {
+                throw new IllegalStateException("Installed PL4 multipart host registry is missing");
+            }
+            var level = event.getServer().overworld();
+            BlockPos hostPos = new BlockPos(0, 80, 0);
+            BlockPos barrelPos = hostPos.east();
+            if (phase.equals("seed")) {
+                for (int x = -4; x <= 4; x++) {
+                    for (int z = -4; z <= 4; z++) {
+                        level.setBlock(new BlockPos(x, 79, z), Blocks.IRON_BLOCK.defaultBlockState(), 3);
+                    }
+                }
+                if (!level.setBlock(hostPos, host.defaultBlockState(), 3)
+                    || !level.setBlock(barrelPos, Blocks.BARREL.defaultBlockState(), 3)) {
+                    throw new IllegalStateException("Could not place native installed-PL4 world fixture");
+                }
+                if (!(level.getBlockEntity(barrelPos) instanceof BarrelBlockEntity)) {
+                    throw new IllegalStateException("Native barrel was not created");
+                }
+                BarrelBlockEntity barrel = (BarrelBlockEntity) level.getBlockEntity(barrelPos);
+                barrel.setItem(0, new ItemStack(Items.DIAMOND, 64));
+                barrel.setItem(1, new ItemStack(Items.DIAMOND, 64));
+                barrel.setChanged();
+            }
+            if (!level.getBlockState(hostPos).is(host)
+                || level.getBlockEntity(hostPos) == null
+                || !(level.getBlockEntity(barrelPos) instanceof BarrelBlockEntity)) {
+                throw new IllegalStateException("Installed PL4 host/block entity lost during " + phase);
+            }
+            BarrelBlockEntity barrel = (BarrelBlockEntity) level.getBlockEntity(barrelPos);
+            int remaining = 0;
+            for (int slot = 0; slot < barrel.getContainerSize(); slot++) {
+                ItemStack stack = barrel.getItem(slot);
+                if (stack.is(Items.DIAMOND)) remaining += stack.getCount();
+            }
+            if (remaining != 128) {
+                throw new IllegalStateException("Native barrel contents changed during " + phase + ": " + remaining);
+            }
+            String hostType = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(
+                level.getBlockEntity(hostPos).getType()).toString();
+            if (!hostType.equals("foundations_pl4:host")) {
+                throw new IllegalStateException("Installed PL4 block entity lost its registered type: " + hostType);
+            }
+            try {
+                String path = System.getenv("PL4_WORLD_PROOF");
+                if (path == null || path.isEmpty()) {
+                    throw new IllegalStateException("Missing isolated native world proof destination");
+                }
+                Path proof = Path.of(path);
+                Files.createDirectories(proof.getParent());
+                String worldJson = "{\"schema\":1,\"phase\":\"" + phase
+                    + "\",\"expected_jar_sha256\":\"" + sha
+                    + "\",\"host\":\"foundations_pl4:multipart_host\""
+                    + ",\"host_entity\":\"foundations_pl4:host\""
+                    + ",\"barrel_diamonds\":128,\"server_started\":true}\n";
+                Files.writeString(proof, worldJson, StandardCharsets.UTF_8);
+            } catch (Exception failure) {
+                throw new IllegalStateException("Cannot preserve installed-JAR world proof", failure);
+            }
+            System.out.println("PL4_INSTALLED_WORLD_" + phase.toUpperCase() + ":" + sha);
         }
         System.out.println("PL4_INSTALLED_BINARY_READY:" + sha);
     }
@@ -309,13 +387,17 @@ def _stop_with_retry(properties):
     raise RuntimeError("Authenticated loopback RCON stop unavailable") from failure
 
 
-def run(output, seconds):
+def run(output, seconds, world_phase=None):
     output = Path(output).resolve()
     manifest = json.loads((output / "prepared-installation.json").read_text())
     expected = manifest["expected_jar_sha256"]
     log_path = output / "installed-server.log"
     proof = output / "installed-server-proof.json"
     env = dict(os.environ, PL4_EXPECTED_JAR_SHA256=expected, PL4_INSTALLED_PROOF=str(proof))
+    if world_phase is not None:
+        if world_phase not in ("seed", "restore"):
+            raise ValueError("Only explicit installed-JAR seed and restore world phases are supported")
+        env.update(PL4_WORLD_PHASE=world_phase, PL4_WORLD_PROOF=str(output / "installed-world-proof.json"))
     with log_path.open("w") as log:
         process = subprocess.Popen(["bash", "gradlew", "--no-daemon", "--console=plain", "runServer"],
                                    cwd=output, env=env, stdin=subprocess.DEVNULL, stdout=log,
@@ -365,6 +447,7 @@ def main():
     b = sub.add_parser("run")
     b.add_argument("--output", required=True)
     b.add_argument("--timeout-seconds", type=int, default=1500)
+    b.add_argument("--world-phase", choices=("seed", "restore"))
     c = sub.add_parser("verify")
     c.add_argument("--output", required=True)
     c.add_argument("--log", required=True)
@@ -374,7 +457,7 @@ def main():
     elif args.action == "run":
         if not 60 <= args.timeout_seconds <= 1800:
             raise ValueError("Native execution timeout outside bounded interval")
-        print(json.dumps(run(args.output, args.timeout_seconds), sort_keys=True))
+        print(json.dumps(run(args.output, args.timeout_seconds, args.world_phase), sort_keys=True))
     else:
         print(json.dumps(verify(args.output, args.log), sort_keys=True))
 
