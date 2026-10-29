@@ -1784,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 16:24 UTC: Native 200/200 on exact 1.21.1 source 08dee98707765be3a8fbe44150c8bbf39cabd5cf, run 40909149431; production JAR SHA-256 ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b (883 CRC valid entries); native artifact ZIP SHA-256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069. Installed exact production binary dedicated run 40909886467 passed both immutable beta and candidate. Real two-client installed beta->exact candidate world migration 40910091169 passed, 2 offline graphical clients each phase, seven-centre cable, 64+64 automatic diamonds, 60+60 severed ticks, 1,728 conserved and zero escrow with 9 UUIDs and native saved-world NBT preserved; retained archive 12914370394 SHA-256 4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7 (46/46 ZIP CRC). Initial workflow pin 40909886723 failed two stale controller test constants before native phase; repaired in 9111e5a and rerun passed. 0/24 RC cleared, both publisher steps skipped, no new GitHub/CurseForge release.",
+  "latest_work": "2026-10-29 17:30 UTC: Protected mc/1.14.4 branch push workflow from auto-transform/source push and direct alpha GitHub release; retired historical generic wrong-1.21.1 assets/--clobber publisher and old direct CurseForge uploader. Exact branch 746bec118e4a2d9d2ccfded8360537513f3abc82; safety CI 40921823088 and 40921823115 both PASS, 25/25 guarded static checks. Java native, 194-case scenarios, stock installed production-only smoke and evidence archiving retained but not re-executed. No production source/JAR changed; 0/24 RC cleared, no new GitHub RC/CurseForge upload.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3472,7 +3472,7 @@
     "final_audit_run": 40871592313,
     "release_yml_remaining": "Not a qualified 26.3 publishing path: asset names and clobber need version-specific correction before tag publication"
   },
-  "previous_latest_work": "2026-10-29T12:25:05.441Z: Fixed passive NODE item quarantine on main; exact source 6219ebf passed 196/196 native run 40872436881, JAR 18f0e54..., 6/6 ZIP and 882/882 JAR CRC. Retired mc/26.3 unsafe manual CurseForge neighbor-target uploader; final read-only branch audit 40871592313 PASS (two earlier self-test failures preserved). Installed provider/client for this exact new JAR pending, 0/24 RC flags, no new release/upload.",
+  "previous_latest_work": "2026-10-29 16:24 UTC: Native 200/200 on exact 1.21.1 source 08dee98707765be3a8fbe44150c8bbf39cabd5cf, run 40909149431; production JAR SHA-256 ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b (883 CRC valid entries); native artifact ZIP SHA-256 1c34154776747f71efb658f5722a3a811d9647c91c2b8bc24d92f7e4b3816069. Installed exact production binary dedicated run 40909886467 passed both immutable beta and candidate. Real two-client installed beta->exact candidate world migration 40910091169 passed, 2 offline graphical clients each phase, seven-centre cable, 64+64 automatic diamonds, 60+60 severed ticks, 1,728 conserved and zero escrow with 9 UUIDs and native saved-world NBT preserved; retained archive 12914370394 SHA-256 4992758c4f133e7ff95ee719b66bf5f6046331e6a8d69012b183a86296a48de7 (46/46 ZIP CRC). Initial workflow pin 40909886723 failed two stale controller test constants before native phase; repaired in 9111e5a and rerun passed. 0/24 RC cleared, both publisher steps skipped, no new GitHub/CurseForge release.",
   "latest_1211_passive_item_destination_quarantine": {
     "target": "1.21.1",
     "source_commit": "6219ebf222187ddbb43f7274c2c3235d05ac3e87",
@@ -3761,5 +3761,16 @@
       "New visual screenshots contain first-run overlays"
     ],
     "rc_publication_cleared": false
+  },
+  "latest_1144_branch_publisher_safety": {
+    "branch": "mc/1.14.4",
+    "branch_head": "746bec118e4a2d9d2ccfded8360537513f3abc82",
+    "policy_workflow_run": 40921823088,
+    "curseforge_retired_workflow_run": 40921823115,
+    "static_guard_tests": "25/25",
+    "native_unchanged": true,
+    "release_created": false,
+    "rc_publication_cleared": false,
+    "evidence": "docs/acceptance/rc-dev-1144-branch-publisher-safety-2026-10-29.json"
   }
 }

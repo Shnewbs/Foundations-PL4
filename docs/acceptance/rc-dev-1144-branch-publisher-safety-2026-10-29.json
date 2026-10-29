@@ -1,0 +1,48 @@
+{
+  "recorded_at_utc": "2026-10-29T17:30:46.016Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "mc/1.14.4 source-preserving branch-local publication safety",
+  "source_branch": "mc/1.14.4",
+  "previous_head": "ab3041b0903189876ba31815094656a925ad94d3",
+  "checkpoint_commit": "746bec118e4a2d9d2ccfded8360537513f3abc82",
+  "commit_url": "https://github.com/Shnewbs/Foundations-PL4/commit/746bec118e4a2d9d2ccfded8360537513f3abc82",
+  "changed_files": [
+    ".github/workflows/forge-native.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/curseforge.yml"
+  ],
+  "remediations": [
+    "Remove automatic source-transform-and-push step from push-triggered Forge 1.14.4 native workflow; archive pinned immutable source instead",
+    "Retire direct alpha/release creation in native workflow while preserving Java compile/reobfuscation, 194-case native scenarios, production-only stock server smoke and retained evidence",
+    "Replace wrong-target generic GitHub release and manual CurseForge workflows with no-secret read-only audits; future qualified exact 1.14.4 RC requires separately validated immutable publisher path"
+  ],
+  "validation": {
+    "offline_static_guard_checks": "25/25 PASS in run script",
+    "policy_workflow": {
+      "id": 40921823088,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40921823088",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "curseforge_retirement_workflow": {
+      "id": 40921823115,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40921823115",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "native_gameplay_and_installed_runtime": "NOT RERUN; NO PRODUCTION SOURCES CHANGED",
+    "retained_native_artifacts": "PRESERVED; NOT REISSUED",
+    "new_git_release": false,
+    "new_curseforge_upload": false
+  },
+  "related_readonly_finding": "Other modern exact branches still contain old generic release workflows with neighboring-version JAR filenames and existing-release clobber plus manual direct CurseForge uploaders; inspect each branch-specific push/native path before source edits",
+  "remaining": [
+    "Implement approved immutable exact-1.14.4 beta RC publisher before eventual full clearance",
+    "Real installed external-provider and unload/multiplayer/migration/performance acceptance per exact version",
+    "Review/harden older branch-local publisher paths before other version-branch code updates",
+    "Historical 1.6.4 gravel causality unresolved"
+  ],
+  "rc_publication_cleared": false,
+  "maintained_targets": 24,
+  "clearances": 0
+}
