@@ -52,7 +52,7 @@ def audit():
     if "  publish:" in p or "contents: write" in p:
         raise ValueError("Native matrix must not publish")
     for n in ("curseforge-26.yml","publish-port-26.yml","curseforge.yml"):
-        declarations=(w/n).read_text().split("      - name: Audit",1)[0]
+        declarations=(w/n).read_text().split("      - name: Confirm safe" if n=="curseforge.yml" else "      - name: Audit",1)[0]
         if "contents: read" not in declarations or any(x in declarations for x in
             ("contents: write","workflow_dispatch:","workflow_run:","secrets.")):
             raise ValueError("Unsafe historical publisher "+n)
