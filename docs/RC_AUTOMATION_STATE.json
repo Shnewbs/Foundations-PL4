@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-202610290202Z-binary-migration",
+    "claimed_at": "2026-10-29T02:03:00Z",
+    "expires_at": "2026-10-29T02:48:00Z",
+    "purpose": "Implement fail-closed installed released-beta to exact native candidate JAR saved-world migration acceptance, with real native validation",
+    "base_commit": "acaf0d4ebe7e75e6fefe256d1843d3ceae0d196d"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
