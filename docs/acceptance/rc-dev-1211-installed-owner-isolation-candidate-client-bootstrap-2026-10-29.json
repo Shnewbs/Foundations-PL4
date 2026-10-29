@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T10:16:34.977Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Minecraft 1.21.1 exact owner-isolated production JAR; nonpublishing installed dedicated-server and two-genuine-client beta-world upgrade qualification",
+  "baseline": {
+    "published_release_tag": "v0.2b.0",
+    "source_commit": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "production_jar_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "binary_changed_this_run": false
+  },
+  "development_candidate": {
+    "source_commit": "1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
+    "qualified_native_run": 40848203024,
+    "qualified_native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024",
+    "native_game_tests": "195/195 PASS on recorded exact source",
+    "verification_artifact_id": 12885364230,
+    "verification_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40848203024/artifacts/12885364230",
+    "artifact_zip_sha256": "0cc4200444044b094a25375cac419206bbbec542665dad942a3c726c355cea8a",
+    "artifact_bytes": 1722842,
+    "artifact_zip_entries": 6,
+    "artifact_zip_crc": "PASS independently downloaded",
+    "production_jar_member": "build/libs/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
+    "production_jar_bytes": 1135853,
+    "production_jar_crc": "PASS independently inspected",
+    "installed_runtime_accepted_for_this_exact_jar": false,
+    "release_maturity": "development",
+    "new_native_production_build_this_run": false
+  },
+  "prior_client_failure": {
+    "run_id": 40847578498,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40847578498",
+    "artifact_id": 12885398453,
+    "artifact_sha256": "331ef01a2a045b9ca19ddc293fcbe07367add04433698cabf0346c35c0ef4158",
+    "artifact_entries": 17,
+    "artifact_zip_crc": "PASS independently downloaded",
+    "failure": "Second actual NeoForge graphical client on Linux exited before completing seed phase; native LWJGL stb extraction/module failure: UnsatisfiedLinkError: Failed to locate library: liblwjgl_stb.so",
+    "diagnosis": "Concurrent Gradle runClient bootstrap/shared NeoForm-LWJGL cache collision is a plausible cause; not demonstrated as root cause. Prior failed client run remains FAILED, not acceptance."
+  },
+  "implementation": {
+    "source_commits": [
+      "c973f4d1e0e89e0bdd9b9a042ba02c3c54b89809",
+      "898ba73fcca7983d7f553c28d6817d757c16e283",
+      "5cc2ad55d1820dee5ac9b31c25cb8ded19a510a7",
+      "73d5b98519c5eef199da2d0a97e5680539b746af",
+      "b3492cefe624d9f9c278ec5a66ad114bd0bade69",
+      "7e6671d6b6d3becdbf4b23cd153434d31fa098db",
+      "866c58edd57cf5a29da5eff342f61edf07d19b03",
+      "9bcb7a9819d2d583e83e434583bc699207413f41",
+      "858ccd0ac40fe5d013e084cdf4b4146a595ef937"
+    ],
+    "client_bootstrap": "First genuine graphical client must reach actual ModLauncher launch marker after LWJGL early bootstrap before second genuine client starts; both then remain real concurrently connected. Early exit/timeout is fatal and no synthetic client is substituted.",
+    "native_artifact_gate": "Exact source/ZIP digest, authentic GitHub artifact metadata, exact production JAR SHA-256 and 195/195 native log markers; old 194/194 callers remain supported only for old exact source.",
+    "new_adversarial_tests_authored": 7,
+    "tests_executed_and_passed_this_run": "NOT_VERIFIED_IN_NATIVE_OR_CI",
+    "static_readback_checks": {
+      "passed": 20,
+      "total": 20,
+      "scope": "Only repository source/workflow wiring and nonpublishing policy invariants, not native Minecraft or regression execution"
+    },
+    "workflows_updated": [
+      ".github/workflows/installed-beta-binary-smoke.yml",
+      ".github/workflows/installed-binary-two-client-upgrade.yml"
+    ],
+    "workflow_runs_new_exact_candidate": "NOT_YET_VERIFIED",
+    "installed_candidate_server_evidence": "PENDING",
+    "installed_2_real_clients_this_candidate": "PENDING"
+  },
+  "release": {
+    "clearances": "0/24",
+    "rc_publication_cleared": false,
+    "github_new_rc_releases": 0,
+    "curseforge_new_uploads": 0,
+    "github_release_url": null,
+    "curseforge_upload_id": null,
+    "curseforge_moderation_public_visibility": "NOT_APPLICABLE_NO_NEW_UPLOAD",
+    "publisher_branch_updates": 0,
+    "publisher_legacy_protection": "mc/1.12.2 and mc/1.6.4 historic generic publishers remain frozen; no mc branch source pushes in this run"
+  },
+  "remaining_acceptance": [
+    "Verify new exact 195-production-JAR server/client Actions run and retained full native log/screenshots, repair actual observed failures without repeated unchanged environmental retries",
+    "Verify callback-time owner revocation and disconnected/unloaded inventory aliases against installed optional providers",
+    "Authenticated online multiplayer, arbitrary modpack world migrations, sustained active-provider/server performance and visuals",
+    "Native exact-source acceptance and release clearance on other 23 maintained target versions; investigate spontaneous Forge 1.6.4 x80 gravel cause"
+  ],
+  "writer_lease_owner": "pl4-hourly-chat-20261029T1003Z-installed-client-native-loader",
+  "release_authorized_only_after_explicit_exact_source_clearance": true
+}
