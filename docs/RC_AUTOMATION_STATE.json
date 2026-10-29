@@ -5,15 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261029T2309Z-rc26-publish-safety",
-    "acquired_at": "2026-10-29T23:09:45Z",
-    "expires_at": "2026-10-29T23:34:45Z",
-    "source_branch": "main",
-    "base_commit": "4db09de516d8f0ddd4fda20c669580afebbbf43e",
-    "purpose": "Guard 26.1 / 26.1.2 / 26.2 unsafe exact-version publishing workflows and verify native artifact selection",
-    "status": "active"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -22,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-29T22:23:11.893Z: Eight existing target branches (1.18, 1.18.1, 1.19, 1.19.1, 1.19.4, 1.20, 1.20.2, 1.20.4) hardened against wrong-target/uncleared GitHub and CurseForge publication; unsafe 1.20 auto source transforms and native direct release paths retired. 16/16 read-only policy workflows PASS, 160/160 static test executions; no new GameTest/JAR/client/provider/sustained runtime acceptance, 0/24 RC cleared, no release/upload. Ledger docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
+  "current_checkpoint": "2026-10-29T23:18:40Z: Retired 23 historical source-mutating/wrong-target publishing workflows in existing mc/1.21.1, mc/26.1, mc/26.1.2 and mc/26.2 branches; all 23 final policy Actions audits PASS (intermediate self-test failure 40971938314 corrected). No new native/JAR/provider/client/performance acceptance, 0/24 RC cleared, no release or CurseForge upload. Evidence docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Review pinned hourly-builds.yml native artifact selection for eight changed exact branch refs; inspect genuine native GameTest totals, complete runtime JAR/source/log SHA256, retained ZIP and production smoke. Do not dispatch duplicate or transfer old qualification.",
-    "Inspect other unguarded exact-version branch-local publisher paths (including 26.x/1.21.1); review unsafe push trigger before any source update.",
-    "Implement and validate actual installed third-party provider owner-revocation, unloaded/cross-owner aliases, authenticated multiplayer, saved-world migration and sustained performance; 1.6.4 x80 gravel root cause still open.",
-    "Only create new immutable exact-version GitHub beta RC and CurseForge beta after exact-source acceptance and explicit rc_publication_cleared=true; preserve existing receipts."
+    "Run pinned hourly-builds.yml selector at its normal schedule, inspect per-target changed-source native counts, packaged production JAR hashes, log and retained ZIP provenance; do not dispatch duplicates or inherit previous source qualification.",
+    "Correct native exact-target 26.1 and 26.2 source/metadata under separate guarded implementation after source audit; do not overwrite with historical 1.21.1 baseline or relabel its runtime.",
+    "Implement real installed optional-provider owner-revocation and unloaded aliases; then authenticated multiplayer, arbitrary migrations and sustained TPS/memory acceptance.",
+    "Resolve intermittent historical 1.6.4 x80 gravel causality. Publish only new immutable exact-tag beta RCs once all applicable gates and explicit per-target clearance pass."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -77,7 +69,7 @@
     "release_performed": false,
     "rc_clearance": "0/24"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -101,7 +93,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-29T21:14:17.703Z: Forge 1.16.4 exact a35c5afe PASS 193/193 real native scenarios + production-only launch-profile Forge35/Java8 boot/shutdown (not stock ModLauncher); exact JAR b97f148d and artifact a9c7404c verified 23/23 archive and 982/982 JAR entries. Four more exact version-branch publisher guards 1.17.1, 1.19.2, 1.20.1, 1.19.3; eight policy runs PASS 68/68 checks; no new runtime qualification for workflow-only edits. 0/24 RC cleared and no releases/uploads. Evidence docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json.",
+  "previous_checkpoint": "2026-10-29T22:23:11.893Z: Eight existing target branches (1.18, 1.18.1, 1.19, 1.19.1, 1.19.4, 1.20, 1.20.2, 1.20.4) hardened against wrong-target/uncleared GitHub and CurseForge publication; unsafe 1.20 auto source transforms and native direct release paths retired. 16/16 read-only policy workflows PASS, 160/160 static test executions; no new GameTest/JAR/client/provider/sustained runtime acceptance, 0/24 RC cleared, no release/upload. Ledger docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,
@@ -2593,5 +2585,70 @@
     "writer_lease_released": true,
     "release_performed": false,
     "rc_clearance": "0/24"
+  },
+  "latest_26x_1211_branch_publisher_retirement": {
+    "recorded_at": "2026-10-29T23:18:40Z",
+    "evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
+    "branch_commits": {
+      "1.21.1": "ee907d41036e13d966764363441634f990cfd05f",
+      "26.1": "5cb1e67adfe4a2eb6b99e8416814a50f42d03803",
+      "26.1.2": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "26.2": "43c08d7f9e8a482dd3bbb1a45be1c175a28b7e26"
+    },
+    "final_policy_runs": {
+      "1.21.1": [
+        40971845281,
+        40971845238,
+        40971845213,
+        40971845188,
+        40971845157,
+        40971845140,
+        40971845115,
+        40971845114,
+        40971845055,
+        40971845053,
+        40971845051,
+        40971845047,
+        40971845029,
+        40971844960
+      ],
+      "26.1": [
+        40971543320,
+        40971543227
+      ],
+      "26.1.2": [
+        40971567458,
+        40971569041,
+        40971567580,
+        40971567467,
+        40972047777
+      ],
+      "26.2": [
+        40971584320,
+        40971584250
+      ]
+    },
+    "final_passed": 23,
+    "intermediate_failed_audit": 40971938314,
+    "intermediate_repaired_run": 40972047777,
+    "new_native_accepted": false,
+    "new_jar": false,
+    "rc_cleared": "0/24",
+    "publication": false
+  },
+  "last_writer_release_20261029_2318": {
+    "owner": "pl4-chat-20261029T2309Z-rc26-publish-safety",
+    "released_at": "2026-10-29T23:18:40Z",
+    "lease_claim_commit": "08e1abd240d289921b0927a9873fd4abdaccd802",
+    "evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
+    "source_commits": {
+      "1.21.1": "ee907d41036e13d966764363441634f990cfd05f",
+      "26.1": "5cb1e67adfe4a2eb6b99e8416814a50f42d03803",
+      "26.1.2": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "26.2": "43c08d7f9e8a482dd3bbb1a45be1c175a28b7e26"
+    },
+    "writer_lease_released": true,
+    "rc_clearance": "0/24",
+    "release_performed": false
   }
 }

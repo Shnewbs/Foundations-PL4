@@ -1,0 +1,231 @@
+{
+  "date_utc": "2026-10-29T23:18:40Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_policy": "Only existing main and mc/<exact-version> refs, guarded expected-parent ref updates, no force pushes or version relabeling",
+  "main_lease_claim_commit": "08e1abd240d289921b0927a9873fd4abdaccd802",
+  "branches": {
+    "1.21.1": {
+      "branch": "mc/1.21.1",
+      "source_commit": "ee907d41036e13d966764363441634f990cfd05f",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/ee907d41036e13d966764363441634f990cfd05f",
+      "replaced_workflows": [
+        ".github/workflows/release.yml",
+        ".github/workflows/complete-02a-ports.yml",
+        ".github/workflows/publish-forge-performance-beta.yml",
+        ".github/workflows/prepare-version.yml",
+        ".github/workflows/rc-development.yml",
+        ".github/workflows/rc-logger-repair.yml",
+        ".github/workflows/rc-repair.yml",
+        ".github/workflows/finish-forge17.yml",
+        ".github/workflows/implement-forge-120.yml",
+        ".github/workflows/implement-forge-older17.yml",
+        ".github/workflows/implement-forge116.yml",
+        ".github/workflows/legacy-energy-completion.yml",
+        ".github/workflows/legacy-fluid-recheck.yml",
+        ".github/workflows/legacy-readers.yml"
+      ],
+      "final_static_audit_runs": [
+        {
+          "id": 40971845281,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845281",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845238,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845238",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845213,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845213",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845188,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845188",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845157,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845157",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845140,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845140",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845115,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845115",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845114,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845114",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845055,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845055",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845053,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845053",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845051,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845051",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845047,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845047",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971845029,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971845029",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971844960,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971844960",
+          "conclusion": "success"
+        }
+      ],
+      "native_new_validation": "NOT_RUN",
+      "new_production_jar_sha256": null,
+      "release_eligible": false
+    },
+    "26.1": {
+      "branch": "mc/26.1",
+      "source_commit": "5cb1e67adfe4a2eb6b99e8416814a50f42d03803",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/5cb1e67adfe4a2eb6b99e8416814a50f42d03803",
+      "replaced_workflows": [
+        ".github/workflows/release.yml",
+        ".github/workflows/curseforge.yml"
+      ],
+      "final_static_audit_runs": [
+        {
+          "id": 40971543320,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971543320",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971543227,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971543227",
+          "conclusion": "success"
+        }
+      ],
+      "native_new_validation": "NOT_RUN",
+      "new_production_jar_sha256": null,
+      "release_eligible": false
+    },
+    "26.1.2": {
+      "branch": "mc/26.1.2",
+      "source_commit": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "replaced_workflows": [
+        ".github/workflows/release.yml",
+        ".github/workflows/curseforge.yml",
+        ".github/workflows/publish-port-26.yml",
+        ".github/workflows/curseforge-26.yml",
+        ".github/workflows/port-26.yml"
+      ],
+      "final_static_audit_runs": [
+        {
+          "id": 40971567458,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971567458",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971569041,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971569041",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971567580,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971567580",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971567467,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971567467",
+          "conclusion": "success"
+        },
+        {
+          "id": 40972047777,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40972047777",
+          "conclusion": "success"
+        }
+      ],
+      "native_new_validation": "NOT_RUN",
+      "new_production_jar_sha256": null,
+      "release_eligible": false
+    },
+    "26.2": {
+      "branch": "mc/26.2",
+      "source_commit": "43c08d7f9e8a482dd3bbb1a45be1c175a28b7e26",
+      "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/43c08d7f9e8a482dd3bbb1a45be1c175a28b7e26",
+      "replaced_workflows": [
+        ".github/workflows/release.yml",
+        ".github/workflows/curseforge.yml"
+      ],
+      "final_static_audit_runs": [
+        {
+          "id": 40971584320,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971584320",
+          "conclusion": "success"
+        },
+        {
+          "id": 40971584250,
+          "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971584250",
+          "conclusion": "success"
+        }
+      ],
+      "native_new_validation": "NOT_RUN",
+      "new_production_jar_sha256": null,
+      "release_eligible": false
+    }
+  },
+  "static_policy_audits": {
+    "final_success": 23,
+    "final_failed": 0,
+    "initial_failed_run": 40971938314,
+    "initial_failed_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40971938314",
+    "initial_failure": "Retired 26.1.2 port-26.yml read-only audit self-matched literal runGameTestServer in its own assertion; corrected source d5b82b4 and verified final audit 40972047777.",
+    "initial_failure_native": false
+  },
+  "findings": [
+    "mc/26.1 and mc/26.2 historical BUILD_STATUS.json still report minecraft=1.21.1 and version=0.0.2a.R1.5; they are not qualified exact-target 26.x runtime sources. Never reuse/rename adjacent-version JARs.",
+    "mc/26.1.2 old port-26.yml attempted 26.3-specific NeoForge native tests, not exact 26.1.2; retired rather than attributing neighboring tests.",
+    "mc/1.21.1 retains the unaffected read-only native/client workflows; 14 legacy mutating/source-aligning and direct publishing paths now audit-only.",
+    "No development/RC can publish from any retired workflow. Qualified future GitHub/CurseForge publication must use validated exact-source publisher/reconciliation policy."
+  ],
+  "main_lease_commit_checks": {
+    "native_main_verify_run": 40971381928,
+    "result": "success",
+    "main_publisher_run": 40971381811,
+    "github_release_step": "skipped",
+    "curseforge_step": "skipped"
+  },
+  "new_native_gametests": 0,
+  "new_jar_sha256": null,
+  "installed_third_party_provider": false,
+  "authenticated_multiplayer": false,
+  "arbitrary_world_migration": false,
+  "sustained_performance": false,
+  "rc_publication_cleared": "0/24",
+  "new_github_release_url": null,
+  "new_curseforge_upload_id": null,
+  "curseforge_visibility_verified": false,
+  "next_steps": [
+    "Run pinned hourly-builds.yml selector at its normal schedule, inspect per-target changed-source native counts, packaged production JAR hashes, log and retained ZIP provenance; do not dispatch duplicates or inherit previous source qualification.",
+    "Correct native exact-target 26.1 and 26.2 source/metadata under separate guarded implementation after source audit; do not overwrite with historical 1.21.1 baseline or relabel its runtime.",
+    "Implement real installed optional-provider owner-revocation and unloaded aliases; then authenticated multiplayer, arbitrary migrations and sustained TPS/memory acceptance.",
+    "Resolve intermittent historical 1.6.4 x80 gravel causality. Publish only new immutable exact-tag beta RCs once all applicable gates and explicit per-target clearance pass."
+  ]
+}

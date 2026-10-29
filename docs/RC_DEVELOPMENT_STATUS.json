@@ -1845,7 +1845,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T22:23:11.893Z: Eight existing target branches (1.18, 1.18.1, 1.19, 1.19.1, 1.19.4, 1.20, 1.20.2, 1.20.4) hardened against wrong-target/uncleared GitHub and CurseForge publication; unsafe 1.20 auto source transforms and native direct release paths retired. 16/16 read-only policy workflows PASS, 160/160 static test executions; no new GameTest/JAR/client/provider/sustained runtime acceptance, 0/24 RC cleared, no release/upload. Ledger docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
+  "latest_work": "2026-10-29T23:18:40Z: Retired 23 historical source-mutating/wrong-target publishing workflows in existing mc/1.21.1, mc/26.1, mc/26.1.2 and mc/26.2 branches; all 23 final policy Actions audits PASS (intermediate self-test failure 40971938314 corrected). No new native/JAR/provider/client/performance acceptance, 0/24 RC cleared, no release or CurseForge upload. Evidence docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -4150,7 +4150,7 @@
       "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
     }
   ],
-  "last_acceptance_evidence": "docs/acceptance/rc-dev-1164-verified-native-and-four-modern-publisher-safeguards-2026-10-29.json",
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
   "latest_eight_branch_publisher_safety": {
     "evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
     "checked_at": "2026-10-29T22:23:11.893Z",
@@ -4208,5 +4208,18 @@
     "workflow_jobs_passed": 16,
     "new_native_qualified": 0,
     "rc_clearance": "0/24"
+  },
+  "latest_26x_1211_branch_publisher_retirement": {
+    "evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
+    "source_commits": {
+      "1.21.1": "ee907d41036e13d966764363441634f990cfd05f",
+      "26.1": "5cb1e67adfe4a2eb6b99e8416814a50f42d03803",
+      "26.1.2": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "26.2": "43c08d7f9e8a482dd3bbb1a45be1c175a28b7e26"
+    },
+    "final_static_policy_audits": "23/23 PASS",
+    "new_native_accepted": false,
+    "release_eligible": false,
+    "rc_publication_cleared": false
   }
 }
