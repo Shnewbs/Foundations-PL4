@@ -136,11 +136,11 @@ public final class InstalledBinaryProbe {
                 }
                 firstIdentity = slot == 5 ? identity : firstIdentity;
                 if (slot == 6) result.append(",");
-                result.append("{\\"slot\\":").append(slot)
-                    .append(",\\"kind\\":\\"").append(kind)
-                    .append("\\",\\"face\\":\\"").append(face.name())
-                    .append("\\",\\"owner\\":\\"").append(owner)
-                    .append("\\",\\"identity\\":\\"").append(identity).append("\\"}");
+                result.append("{\"slot\":").append(slot)
+                    .append(",\"kind\":\"").append(kind)
+                    .append("\",\"face\":\"").append(face.name())
+                    .append("\",\"owner\":\"").append(owner)
+                    .append("\",\"identity\":\"").append(identity).append("\"}");
             }
             return result.append("]").toString();
         } catch (ReflectiveOperationException e) {
