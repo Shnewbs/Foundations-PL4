@@ -6,6 +6,8 @@ on:
       - '.github/workflows/installed-beta-binary-smoke.yml'
       - 'tools/multiplayer-probe/installed_binary_smoke.py'
       - 'tools/multiplayer-probe/test_installed_binary_smoke.py'
+      - 'tools/multiplayer-probe/exact_native_candidate.py'
+      - 'tools/multiplayer-probe/test_exact_native_candidate.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -67,5 +69,68 @@ jobs:
             installed-runtime/installed-server.log
             installed-runtime/run/logs/
             installed-runtime/run/crash-reports/
+          retention-days: 14
+          if-no-files-found: warn
+
+  installed_candidate_server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: control/**/*.gradle*
+      - name: Check exact-source retained native candidate provenance regressions
+        run: |
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_exact_native_candidate.py'
+          python3 -m unittest discover -s control/tools/multiplayer-probe -p 'test_installed_binary_smoke.py'
+      - name: Retrieve exact previously successful and retained native candidate artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p results/pinned-native
+          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12859271452 > results/pinned-native/artifact-metadata.json
+          curl --fail --show-error --silent --location --retry 2 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12859271452/zip" \
+            --output results/pinned-native/native-artifact.zip
+          python3 control/tools/multiplayer-probe/exact_native_candidate.py \
+            --artifact-zip results/pinned-native/native-artifact.zip \
+            --artifact-metadata results/pinned-native/artifact-metadata.json \
+            --artifact-sha256 357be6c367d5f3e7b0b8a0edde28e57c8be06d4f237d4d3a5f931208109026d7 \
+            --source-sha aa9b439b69106b6232ef2c58fdfa155889d0ba1f \
+            --jar-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c \
+            --output results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar
+      - name: Install exact candidate native-qualified production JAR in isolated runtime
+        run: |
+          python3 control/tools/multiplayer-probe/installed_binary_smoke.py prepare \
+            --checkout control \
+            --jar results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar \
+            --output installed-candidate-runtime \
+            --sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c
+      - name: Run genuine candidate production binary in dedicated native server
+        run: |
+          python3 control/tools/multiplayer-probe/installed_binary_smoke.py run \
+            --output installed-candidate-runtime --timeout-seconds 1500
+      - name: Preserve candidate artifact identity and native server proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installed-pinned-candidate-server-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            results/pinned-native/artifact-metadata.json
+            results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar.provenance.json
+            installed-candidate-runtime/prepared-installation.json
+            installed-candidate-runtime/installed-server-proof.json
+            installed-candidate-runtime/installed-server-receipt.json
+            installed-candidate-runtime/installed-server.log
+            installed-candidate-runtime/run/logs/
+            installed-candidate-runtime/run/crash-reports/
           retention-days: 14
           if-no-files-found: warn
