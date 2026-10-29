@@ -1,143 +1,81 @@
-name: Full-feature 1.16 patch port acceptance
+name: Forge 1.16.1 exact-source native and production validation
 on:
   push:
-    paths-ignore: ['.github/workflows/**']
-    branches: ['mc/1.16.1', 'mc/1.16.2', 'mc/1.16.3']
+    branches: ['mc/1.16.1']
+    paths-ignore:
+      - '.github/workflows/**'
+      - 'tools/test_publisher_policy_1161.py'
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: patch-port-${{ github.ref }}
+  group: forge1161-native-validation
   cancel-in-progress: false
 jobs:
   verify:
+    if: github.ref == 'refs/heads/mc/1.16.1'
     runs-on: ubuntu-latest
     timeout-minutes: 35
-    env:
-      GH_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Read publication maturity from exact checked-out source
+      - name: Preserve exact immutable 1.16.1 source (no transforms or branch pushes)
         shell: bash
         run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          """Shared release maturity and explicit RC clearance policy."""
-          import re
-
-
-          def release_type(version):
-              text = version.lower()
-              if re.search(r"(?:^|[.\-_])(?:dev|snapshot|nightly)(?:[.\-_]|$)", text):
-                  raise ValueError("Development snapshots are not qualified releases")
-              if re.search(r"beta|(?:^|[.\-_])rc\d*(?:[.\-_]|$)|\db(?:[.\-_]|$)", text):
-                  return "beta"
-              if re.search(r"alpha|preview|experimental|(?:^|[.\-_])port(?:[.\-_]|$)|\da(?:[.\-_]|$)", text):
-                  return "alpha"
-              return "release"
-
-
-          def is_rc(version):
-              return bool(re.search(r"(?:^|[.\-_])rc\d*(?:[.\-_]|$)", version, re.I))
-
-
-          def require_publication(status, minecraft=None, version=None):
-              if not isinstance(status, dict):
-                  raise ValueError("Missing exact-source build status")
-              actual = status.get("version", "")
-              if not actual or (version is not None and actual != version):
-                  raise ValueError("Build status and release version disagree")
-              if minecraft is not None and status.get("minecraft") != minecraft:
-                  raise ValueError("Build status and exact Minecraft target disagree")
-              maturity = release_type(actual)
-              if status.get("release_channel", "").lower() == "development":
-                  raise ValueError("Development channel is not publishable")
-              if is_rc(actual) and status.get("rc_publication_cleared") is not True:
-                  raise ValueError("RC publication has not been explicitly cleared")
-              return maturity
-
-          status = json.loads(Path('BUILD_STATUS.json').read_text())
-          try:
-              require_publication(status)
-              allowed = True
-          except ValueError as error:
-              allowed = False
-              print('Publication held:', error)
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('PL4_ALLOW_PUBLICATION=' + str(allowed).lower() + '\n')
-          PY
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          TARGET=$(python3 -c 'import json; print(json.load(open("PORT_TARGET.json"))["minecraft"])')
+          test "$TARGET" = '1.16.1'
+          mkdir -p verification-logs
+          git archive --format=zip --output=verification-logs/checked-source.zip "$GITHUB_SHA"
+          printf '%s\n' "$GITHUB_SHA" > verification-logs/SOURCE_COMMIT.txt
+          sha256sum verification-logs/checked-source.zip > verification-logs/SOURCE_ARCHIVE_SHA256SUMS.txt
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: |
             8
             17
-      - name: Adapt exact full-feature source and preserve commit
-        shell: bash
-        run: |
-          set -euo pipefail
-          TARGET=$(python3 -c 'import json; print(json.load(open("PORT_TARGET.json"))["minecraft"])')
-          test "$GITHUB_REF_NAME" = "mc/$TARGET"
-          echo "TARGET=$TARGET" >> "$GITHUB_ENV"
-          python3 tools/prepare_patch_port.py
-          git diff --check
-          git add src/ tools/java8/ tools/run_port_checks.py build.gradle BUILD_STATUS.json README.md docs/FIELD_GUIDE.md docs/JAVA17_RUNTIME.md docs/releases/0.2a-port.1.md
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m "Adapt exact $TARGET source, resources, native fixtures and Java 8 profile"
-            git push origin "HEAD:mc/$TARGET"
-          fi
-          mkdir -p verification-logs
-          git archive --format=zip --output=verification-logs/checked-source.zip HEAD
-      - name: Compile actual target, run portable regressions and reobfuscate Java 8
+      - name: Compile and reobfuscate exact Forge 32 source for Java 8
         shell: bash
         run: |
           set -euo pipefail
           bash gradlew --no-daemon --console=plain clean build 2>&1 | tee verification-logs/build.log
-      - name: Installed native scenarios and separate production-only startup
+      - name: Exact native 193 scenarios and production-only launcher-profile startup
         shell: bash
         run: |
           set -euo pipefail
           python3 tools/java8/runtime.py native 2>&1 | tee verification-logs/native-run.log
-          python3 tools/production_smoke.py
-      - name: Publish only exact-target passing runtime
-        if: env.PL4_ALLOW_PUBLICATION == 'true'
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          report=json.loads(Path('verification-logs/port-scenarios.json').read_text())
+          assert report['minecraft']=='1.16.1' and report['total']==193 and report['passed']==193 and report['failed']==0, report
+          print('PASS: 193 native Forge32 scenarios')
+          PY
+          python3 tools/production_smoke.py 2>&1 | tee verification-logs/production-smoke-step.log
+      - name: Retain exact JAR and runtime log digests
+        if: always()
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test "$(git ls-remote origin "refs/heads/mc/$TARGET" | cut -f1)" = "$(git rev-parse HEAD)"
-          VERSION=$(python3 -c 'import json; print(json.load(open("BUILD_STATUS.json"))["version"])')
-          TAG="mc$TARGET-v$VERSION"
-          if git show-ref --verify --quiet "refs/tags/$TAG"; then
-            git diff --exit-code "$TAG" HEAD -- src/main build.gradle tools/java8 gradle/ gradle.properties settings.gradle
-            gh release view "$TAG"
-            exit 0
+          mkdir -p verification-logs
+          if test -d build/libs; then
+            find build/libs -maxdepth 1 -type f -name '*.jar' -print0 | sort -z | xargs -0 -r sha256sum > verification-logs/JAR_SHA256SUMS.txt
           fi
-          NAME="FoundationsPL4-$TARGET-$VERSION"
-          mkdir -p release-files
-          cp "build/libs/$NAME-java8.jar" "release-files/$NAME.jar"
-          cp "build/libs/$NAME-sources.jar" release-files/
-          git archive --format=zip --output="release-files/$NAME-source.zip" HEAD
-          cp .java8-toolchain/jvmdowngrader-source.zip release-files/JvmDowngrader-2.0.1-source.zip
-          cp tools/java8/forge35_profile.py verification-logs/launch-profile.json release-files/
-          cp verification-logs/installed-native.log verification-logs/java8-summary.json verification-logs/port-scenarios.json verification-logs/production-smoke.json verification-logs/production-smoke.log build/java8/archive-check.json build/java8/toolchain.json release-files/
-          git rev-parse HEAD > release-files/SOURCE_COMMIT.txt
-          (cd release-files && sha256sum * > SHA256SUMS.txt)
-          git tag "$TAG"; git push origin "$TAG"
-          gh release create "$TAG" release-files/* --verify-tag --prerelease --title "Foundations PL4 $TARGET $VERSION - Java 8 compatibility profile" --notes-file "docs/releases/$VERSION.md"
-      - uses: actions/upload-artifact@v4
+          for file in verification-logs/build.log verification-logs/native-run.log verification-logs/port-scenarios.json verification-logs/production-smoke.json verification-logs/production-smoke.log; do
+            if test -f "$file"; then sha256sum "$file"; fi
+          done > verification-logs/LOG_SHA256SUMS.txt
+      - name: Retain exact native results (no development publication)
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: full-patch-${{ github.run_id }}-${{ github.run_attempt }}
+          name: full-patch-1161-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            release-files/
             verification-logs/
+            build/libs/*.jar
             build/java8/*.json
             run-java8/port-scenarios.json
             run-java8/crash-reports/
