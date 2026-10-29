@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-29T07:31:45.130Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "minecraft_version": "1.21.1",
+  "result": "PASS_SCOPED_INSTALLED_JAR_REAL_TWO_CLIENT_MIGRATION",
+  "rc_publication_cleared": false,
+  "immutable_binary_provenance": {
+    "published_beta_tag": "v0.2b.0",
+    "published_beta_source": "7c7c07ff5ae0bce4990bf2f0a739841161ce8f8c",
+    "published_beta_sha256": "7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229",
+    "qualified_candidate_source": "aa9b439b69106b6232ef2c58fdfa155889d0ba1f",
+    "candidate_production_sha256": "cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c",
+    "native_candidate_artifact_id": 12859271452,
+    "native_candidate_original_gametests": "194/194",
+    "source_substitution": false,
+    "test_java_isolated_modid": "pl4_binary_probe",
+    "compiled_pl4_production_sources": false,
+    "development_candidate_recompiled_for_this_installed_client_test": false
+  },
+  "implementation_commits": [
+    "27e09fd36dce4787d18d92b98192de3061af86de",
+    "cf5e554e78e9bae237ad3e524b602abd05b54f02",
+    "773c4b6e7e394ffd42883a661c70d12f62dcabc7",
+    "3e315e4c48d117c5c90c9754e621161e83f73a39"
+  ],
+  "controller_source_sha": "3e315e4c48d117c5c90c9754e621161e83f73a39",
+  "validated_runs": {
+    "installed_two_client_native_run": 40834904056,
+    "installed_two_client_native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40834904056",
+    "installed_two_client_result": "success",
+    "main_native_validation_run": 40834903952,
+    "main_native_validation": "194/194 GameTests PASS",
+    "publication_gate_run": 40834904089,
+    "publication_gate": "GitHub Release and CurseForge upload both skipped",
+    "policy_regressions": "82/82 PASS (21 new installed clients +21 native NBT +16 smoke +9 release preflight +15 candidate provenance)"
+  },
+  "failed_attempts": [
+    {
+      "run": 40834122264,
+      "cause": "Independent probe mod exported net.foundations.pl4 split package alongside installed production module; fixed separate net.foundations.pl4probe package"
+    },
+    {
+      "run": 40834663254,
+      "cause": "Regression test source quote-escaping mismatch, not native runtime failure"
+    },
+    {
+      "run": 40834780735,
+      "cause": "Second source-string quote-escaping mismatch in policy test, not native runtime failure"
+    }
+  ],
+  "retained_artifact": {
+    "id": 12880626553,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40834904056/artifacts/12880626553",
+    "github_and_locally_verified_zip_sha256": "e15519e18281481149742932f77f293aa241ac7ade708677fbef45b0a8420e71",
+    "zip_entries": 44,
+    "zip_crc": "PASS",
+    "nested_saved_world_archives": 2,
+    "nested_zip_crc": "BOTH_PASS",
+    "graphical_screenshots": 4,
+    "screenshot_resolution": "960x720",
+    "screenshot_sha256": {
+      "beta_client_A": "eb95d9daac4aa4624aa1df2c1c2e3b19b4bebba020603eaeb0b52c23dc98e0b3",
+      "beta_client_B": "fec651b7ad51e823048feb3c48c7ec0e256ab42d299e851be5bc260b5d441897",
+      "candidate_client_A": "56b4301a5b141bd0e1c3bc3696a294879f0fdcecaca18c4fb25861aa9fce1102",
+      "candidate_client_B": "8f96ecf8fc9a0638e1b365f65095060d96a760270dea2bc9dbf796a00190f4ab"
+    }
+  },
+  "native_migration": {
+    "two_real_graphical_clients_each_phase": true,
+    "client_names": [
+      "PL4ProbeA",
+      "PL4ProbeB"
+    ],
+    "offline_mode": true,
+    "distinct_persisted_player_uuids": 2,
+    "seed_client_diamond_counts": [
+      17,
+      17
+    ],
+    "candidate_client_diamond_counts": [
+      17,
+      17
+    ],
+    "raw_playerdata_nbt_counts_verified_by_independent_replay": true,
+    "saved_barrel_diamonds_seed": 94,
+    "saved_barrel_diamonds_restored": 94,
+    "raw_region_barrel_nbt_counts_verified": true,
+    "seed_total_items": 128,
+    "candidate_total_items": 128,
+    "seed_duplicate_client_packets_per_account": 2,
+    "candidate_reissued_packets_per_account": 0,
+    "replay_protection_verified": true,
+    "foreign_nonoperator_access_denied_both_phases": true,
+    "explicit_operator_grants_both_phases": true,
+    "installed_pl4_node_identity": "88a3d2e0-9d5d-446f-ad40-afd04a23df4a",
+    "owner_and_multipart_nbt_identity_persisted": true,
+    "seed_world": {
+      "sha256": "382dbbbfecdfee19c37ee49b4177b5af2eacd28af6bfd57c5bf37e3f68a1a9ba",
+      "files": 26,
+      "bytes": 4786966
+    },
+    "candidate_copied_seed_world_sha256": "382dbbbfecdfee19c37ee49b4177b5af2eacd28af6bfd57c5bf37e3f68a1a9ba",
+    "restored_world": {
+      "sha256": "922e9cf0fe0564a45005aa2f88c2b1672d8181a20f9bbb03a87bfd7954f7cf8b",
+      "files": 30,
+      "bytes": 4850741
+    },
+    "clean_server_and_client_exits_both_phases": true,
+    "screenshot_visual_review": "Native Wireless Storage UI and Diamond x94 shown in candidate and beta screenshots; Minecraft toast/chat warnings partially obscure upper-right UI; comprehensive GUI polish NOT accepted"
+  },
+  "limitations": [
+    "Scoped to two offline-mode loopback client identities; no online-auth player account attestation, internet multiplayer or real multi-host latency.",
+    "Two clients used live PL4 wireless StorageRequest and snapshots, but not combined with the separate seven-centre scheduled cable item-transfer topology in one end-to-end client scenario.",
+    "Installed external item/power providers, unloaded/disconnected inventory aliases, double-chest alias providers and sustained performance remain unaccepted.",
+    "Original modpack/user worlds, other display/editor modes, more video resolutions and the remaining 23 exact Minecraft versions not covered.",
+    "Developer candidate is an older independently native-qualified JAR, not a newly published RC; this is not clearance for publication.",
+    "Historical 1.6.4 x80 gravel-placement root cause unresolved."
+  ],
+  "next_work": "Integrate real two-client storage sessions with installed scheduled connected DATA_CABLE transfer and provider capability unload/reload; independent native NBT player/host/barrel verifier in workflow; screenshot polish, arbitrary worlds, sustained performance, and remaining exact-version acceptance.",
+  "releases": {
+    "new_github_rcs": 0,
+    "new_curseforge_uploads": 0,
+    "curseforge_moderation_or_visibility_change": false,
+    "qualified_for_publication": false,
+    "clearances": "0/24"
+  }
+}

@@ -12,7 +12,7 @@
     "advanced legacy editor/multipart; combined-inventory/handler alias fixtures and provider acceptance. Bounded ASCII search, sorting and exact-NBT grouped quantities have scoped exact-source native/stock-client acceptance",
     "installed optional providers and compatible alternatives",
     "other world-display/reader/editor modes, faces, lighting conditions, wider resolutions and exact ports; legacy stock network displays and four storage GUI scales passed separately per port",
-    "broader multiplayer, online profiles, dimensions and other exact targets; 1.21.1 two real loopback clients/reconnect passed",
+    "broader authenticated online multiplayer, dimensions and other exact targets; genuine two installed production-JAR clients per phase now passed 1.21.1 loopback migration with 17+17 player diamond items, 94 barrel items, stable ownership/UUID and screenshots",
     "arbitrary copied user/modpack worlds; generated legacy preview.3 and 1.21.1 released-beta-source worlds passed",
     "sustained full-server and active-provider performance, plus other ports; 1.21.1 native operation measurements were mixed",
     "documented 1.16.1–1.16.4 launcher profiles",
@@ -1774,7 +1774,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T06:20:50Z: Actual installed 1.21.1 NetworkEngine ServerTickEvent.Post physically connected DATA_CABLE movement passed for immutable beta v0.2b.0 and previously qualified candidate aa9b439: 64 items each, 1728 conserved, no escrow/direct run/Ref injection. Saved Anvil NBT seed 1664/64 → restored 1600/128 with stable UUIDs. Source 25a7a88ae, native installed workflow 40828273375 PASS 96/96 policies, GitHub artifact 12877272732 sha256 b7a70f58..., 25/25 archive CRC and both world ZIPs valid; independent main verify 40828273434 PASS 194/194. No new production JAR, installed clients, providers, arbitrary worlds, sustained performance or RC clearance; 0/24 flags, no GitHub/CurseForge release.",
+  "latest_work": "2026-10-29T07:31:45.130Z: Installed immutable 1.21.1 beta JAR and separately native-qualified development JAR each executed TWO real NeoForge graphical clients concurrently on private loopback. Actual StorageRequest 17+17 diamonds and 94 remaining, duplicate-packet replay denied, operator/foreign access enforced, player UUID/owner/node persisted through byte-exact copied world migration. Source 3e315e4, native installed run 40834904056 PASS, 82/82 policy tests, 44/44 artifact CRC, four inspected 960x720 screenshots and independent raw NBT player/barrel counts, main 40834903952 PASS 194/194. Original 26-file copied world → 30-file candidate world; retained ZIP SHA256 e15519e18. Publisher 40834904089 skipped both. No installed optional providers/online auth/other 23 versions/perf or RC clearance. Writer lease released; 0/24.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3250,6 +3250,25 @@
     "saved_region_nbt": true,
     "server_scheduled_tick": true,
     "client_executed": false,
+    "rc_publication_cleared": false
+  },
+  "latest_1211_installed_real_two_client_binary_migration": {
+    "evidence": "docs/acceptance/rc-dev-1211-installed-binary-two-real-client-migration-2026-10-29.json",
+    "source_commit": "3e315e4c48d117c5c90c9754e621161e83f73a39",
+    "native_run": 40834904056,
+    "artifact_id": 12880626553,
+    "artifact_zip_sha256": "e15519e18281481149742932f77f293aa241ac7ade708677fbef45b0a8420e71",
+    "policy_regressions": "82/82",
+    "main_native_run": 40834903952,
+    "main_gametests": "194/194",
+    "two_real_installed_clients": true,
+    "per_phase": true,
+    "raw_nbt_player_counts": true,
+    "raw_nbt_barrel_counts": true,
+    "client_screenshots": 4,
+    "client_screenshot_visual_overlay_limitation": true,
+    "online_authenticated": false,
+    "installed_optional_providers": false,
     "rc_publication_cleared": false
   }
 }
