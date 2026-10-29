@@ -37,6 +37,7 @@ class PublisherPolicy1202(unittest.TestCase):
         self.assertIn("clean build runGameTestServer", self.native)
         self.assertIn("All 191 required tests passed", self.native)
         self.assertIn("retention-days: 14", self.native)
+        self.assertIn("            build/libs/", self.native)
 
     def test_native_real_hash_receipts(self):
         for token in ("SOURCE_ARCHIVE_SHA256SUMS.txt", "LOG_SHA256SUMS.txt", "JAR_SHA256SUMS.txt", "sha256sum -c"):

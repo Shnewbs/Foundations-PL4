@@ -54,7 +54,7 @@ jobs:
         with:
           name: forge1202-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            release-files/
+            build/libs/
             verification-logs/
             run/logs/
             build/reports/
