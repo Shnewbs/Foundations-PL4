@@ -1,0 +1,146 @@
+{
+  "recorded_at_utc": "2026-10-29T20:17:29.179Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "claim_lease_commit": "2f2bd7af61b1b1b164a166ae426f6bb3b78109df",
+  "source_of_truth": "GitHub exact immutable source and Actions",
+  "branches": {
+    "1.16.4": {
+      "ref": "mc/1.16.4",
+      "parent": "8e3786682ab785444b7bb2576261219a261cdecc",
+      "first_commit": "ed4eb6d159fb604c827fe7f93d8b25e2cfd2925b",
+      "final_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+      "native_declared": 193,
+      "final_policy_run": 40946223342,
+      "final_policy_tests": "11/11 PASS",
+      "prior_failed_audit_runs": [
+        40946171816,
+        40946172006
+      ],
+      "prior_audit_blocker": "Regression test was initially committed at 1161 filename instead of required 1164 path; corrected in final commit; earlier audit failure does not implicate production.",
+      "exact_native_run": 40946223380,
+      "exact_native_status": "PENDING_AT_CHECKPOINT",
+      "earlier_native_run": 40946171772,
+      "earlier_native_scope": "superseded intermediate commit, avoid duplicate retry",
+      "smoke": "Existing Forge35 profile production-only JAR smoke retained; not yet qualified at final source",
+      "curseforge_direct": "Retired read-only; last initial-commit audit failed only on missing test path; final publisher policy covers CurseForge string checks."
+    },
+    "1.16.5": {
+      "ref": "mc/1.16.5",
+      "parent": "00f5900963461847e68c82b5afd51c36c90ee95d",
+      "guarded_commit": "94651451dbe883e8f092f38a1851b42885874bb4",
+      "final_commit": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+      "native_declared": 191,
+      "policy_run": 40946814800,
+      "policy_tests": "12/12 PASS",
+      "earlier_policy_run": 40946357364,
+      "earlier_curseforge_audit_run": 40946357346,
+      "exact_native_run": 40946815023,
+      "exact_native_status": "IN_PROGRESS_AT_CHECKPOINT",
+      "smoke": "New stock Forge36 Java 8 production-only installed JAR startup and clean-stop probe after 191 native scenarios; it excludes scenario mod and binds JAR SHA-256; actual runtime result pending.",
+      "curseforge_direct": "Retired read-only; independent initial retirement audit PASSED"
+    }
+  },
+  "previous_hourly_native": {
+    "run_id": 40943369683,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683",
+    "scope": "Exact verified native pass, not installed-provider/client/migration/performance or RC clearance",
+    "status": "COMPLETED_SUCCESS",
+    "source_manifest_and_production_sha256": [
+      {
+        "minecraft": "1.16.1",
+        "source": "c1484e33d781e63bfccfceae8357dd5d831f7565",
+        "passed": 193,
+        "jar_sha256": "a730ca64612e717f62a905a93b72b63777d7771032850b935cd140a0ae90a176",
+        "artifact_id": 12929105242,
+        "zip_sha256": "4875aa565e1bd8c66d65e94fcf9d423db9fbcc400ec6cd5cee8d5679f18a7bc0",
+        "native_result": "193/193 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12929105242"
+      },
+      {
+        "minecraft": "1.16.2",
+        "source": "161fa7f246caf17d75eefcebd5c806f0da4afbb7",
+        "passed": 195,
+        "jar_sha256": "db773146f71dd060516c03a8ab7ac7cd03805814b3d36e734668734f4435b560",
+        "artifact_id": 12927154014,
+        "zip_sha256": "1161f084cdcfae6f55c6f674739b7d10740e9e6adcd96df8a981395a8298e1d8",
+        "native_result": "195/195 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12927154014"
+      },
+      {
+        "minecraft": "1.16.3",
+        "source": "141c00baeb1f3f7ee3aa79468b4647913a7d8045",
+        "passed": 193,
+        "jar_sha256": "ff8304bd899b44b84b304f537ebd837c6c63b61ab2fbe36edc4616fd99538160",
+        "artifact_id": 12927958736,
+        "zip_sha256": "6b4778742ce6eea35436faca17ed88102c1dfe243443bfc9af82bd5c2d9c8ea0",
+        "native_result": "193/193 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12927958736"
+      },
+      {
+        "minecraft": "1.14.4",
+        "source": "746bec118e4a2d9d2ccfded8360537513f3abc82",
+        "passed": 194,
+        "jar_sha256": "1a2f2707e6f20c49d85cc91b3fd26db9372a7a4551073e1f2fc8ee0452527ee3",
+        "artifact_id": 12928920587,
+        "zip_sha256": "68e9494dd05e5478181e22313d92fefb835e46cd9441ea44c57965973cba7753",
+        "native_result": "194/194 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12928920587"
+      },
+      {
+        "minecraft": "1.15.2",
+        "source": "c879cf9f2fabf2c06589ae0210aa39b9d08d9422",
+        "passed": 194,
+        "jar_sha256": "74c972c2aae40ebe497e1317c71922165eb7df31e021257fb16723d2a4395370",
+        "artifact_id": 12929010363,
+        "zip_sha256": "3bb5455969e492935a3d9305892e7cdf824cf910946bb04caa893d0f3979b3bb",
+        "native_result": "194/194 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12929010363"
+      },
+      {
+        "minecraft": "1.18.2",
+        "source": "401599a225a3f7b5a9db4c7c444094b1633a7c57",
+        "passed": 193,
+        "jar_sha256": "f33bdcd4ccdc25dc6e2223c037c8ee639585470c7f83a818f7f27195ec32e99e",
+        "artifact_id": 12927249205,
+        "zip_sha256": "001f3a8074e6a1facc686d1ee18278d4df091e7402509b4299507b88b3378bb4",
+        "native_result": "193/193 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12927249205"
+      },
+      {
+        "minecraft": "1.21.1",
+        "source": "1fb419e5bc05e471550d6d2dde209f037fb96fed",
+        "passed": 200,
+        "jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+        "artifact_id": 12927089294,
+        "zip_sha256": "aae4744f252a9730a88c6bdf0ef5955b1f1a1c380d1535dac91785186a8634c6",
+        "native_result": "200/200 PASS",
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40943369683/artifacts/12927089294"
+      }
+    ],
+    "archive_digest_verified_against_GitHub_artifact_metadata": true,
+    "jar_hash_source": "native job production-artifact SHA-256 manifest and required pass count; no local ZIP CRC recheck claimed"
+  },
+  "publication": {
+    "rc_cleared_count": 0,
+    "targets_total": 24,
+    "release_created": false,
+    "curseforge_uploaded": false,
+    "main_policy_run": 40945981176,
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "maturity": "development; no eligible new RC"
+  },
+  "limitations": [
+    "New 1.16.4 final commit still has no completed native/prod-smoke proof at checkpoint; earlier initial audit failed due missing renamed test file, now repaired.",
+    "New 1.16.5 production-only stock launcher smoke is source-authored and policy-tested, not yet native qualified; 191-case workflow in progress.",
+    "Previously verified seven native sources retain their own exact source and JAR hashes; native success is not installed-provider/client/multiplayer/migration/performance acceptance.",
+    "All maintained targets remain not cleared; 1.21.1 installed third-party provider callbacks, unloaded aliases, authenticated clients, arbitrary worlds, sustained performance, other ports and 1.6.4 x80 gravel remain pending.",
+    "Do not duplicate active native builds or invoke frozen publishers; CurseForge external moderation/public visibility not inferred."
+  ],
+  "next_steps": [
+    "Read final exact 1.16.4 run 40946223380 and 1.16.5 run 40946815023, including real native counts, log marker, production-only smoke and each retained source/JAR/artifact hash; fix demonstrated source/controller failures only.",
+    "Let hourly-builds.yml independently qualify changed exact-source branch heads when not already retained; it will deduplicate unchanged successful targets.",
+    "Extend installed provider callback revocation and chunk unload/alias acceptance, plus authenticated multiplayer, world migration and sustained performance by exact target.",
+    "No publication until explicit per-source rc_publication_cleared true and all applicable acceptance, exact tag, checksums, uniqueness and receipt policy pass."
+  ]
+}

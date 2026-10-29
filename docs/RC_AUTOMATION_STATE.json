@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029-2005Z",
-    "acquired_at": "2026-10-29T20:05:51.483Z",
-    "expires_at": "2026-10-29T20:30:51.483Z",
-    "source_head": "1fb419e5bc05e471550d6d2dde209f037fb96fed",
-    "scope": "finite guarded 1.16.4 and 1.16.5 exact-branch publisher/native safety; global source writer",
-    "purpose": "guard remaining native/CurseForge release paths"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "October 29 2026 UTC: Six guarded exact-version source/publisher workflow repairs (1.13.2, 1.15.2, 1.18.2, 1.16.1, 1.16.2, 1.16.3). 12/12 policy workflows passed with 11/11 static checks each (132 total executions); preserved native validation but no new gameplay/native or installed proof. 0/24 RC clearances, no new release/CurseForge upload. Evidence docs/acceptance/rc-dev-six-modern-branch-publisher-hardening-2026-10-29.json.",
+  "current_checkpoint": "2026-10-29 UTC: guarded rc publisher safety on 1.16.4 final a35c5afe and 1.16.5 final 4da64cd2; policy 11/11 and 12/12 respectively. Added new Forge36 production-only smoke (native execution pending). Independently confirmed seven exact-source native jobs in hourly run 40943369683 with per-target JAR hashes/retained digest; 0/24 RC clearance, no new release. Evidence docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Audit/guard the remaining mc/1.16.4 and mc/1.16.5 branch-local Forge native/direct publisher workflows before any branch source update, preserving their exact native counts and Java 8 runtime profiles.",
-    "Use existing hourly-builds.yml for pinned exact-source native builds; reconcile retained successful artifacts and production SHA-256s, without duplicated unchanged jobs.",
-    "Implement and test installed third-party provider callbacks, unloaded inventory aliases, authenticated multiplayer, migration and sustained performance for exact target acceptance; preserve earlier two-client evidence at its own source hash.",
-    "Only create a new immutable tagged beta RC with explicit exact-target rc_publication_cleared:true, full native/installed qualification and safe GitHub+CurseForge receipts; resolve 1.6.4 gravel x80 and Forge launcher issues."
+    "Inspect running exact-source 1.16.4 native/prod smoke (40946223380) and 1.16.5 191-case native + newly authored stock Forge36 production-only smoke (40946815023); preserve pass/fail counts, complete source/JAR/hash receipts and precise blockers.",
+    "Use hourly-builds.yml native scheduler for changed source refs after respecting active jobs and retained successful artifacts; do not replay same source or changed/failed targets blindly.",
+    "Implement native installed third-party provider callback revocation and unloaded/foreign aliases; then authenticated multiplayer, arbitrary-world migration and sustained performance, with exact-source validation for all 24 ports.",
+    "Only release new immutable exact-tag beta RC after applicable installed, provider and performance requirements and explicit rc_publication_cleared:true. Other old per-branch publishers must be individually guarded; keep 1.6.4 natural gravel x80 investigation open."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -2323,5 +2316,83 @@
     "policy": "12/12 Actions success; 11/11 tests each",
     "native_retested": false,
     "release_eligible": false
+  },
+  "checkpoint_before_1164_1165": "October 29 2026 UTC: Six guarded exact-version source/publisher workflow repairs (1.13.2, 1.15.2, 1.18.2, 1.16.1, 1.16.2, 1.16.3). 12/12 policy workflows passed with 11/11 static checks each (132 total executions); preserved native validation but no new gameplay/native or installed proof. 0/24 RC clearances, no new release/CurseForge upload. Evidence docs/acceptance/rc-dev-six-modern-branch-publisher-hardening-2026-10-29.json.",
+  "latest_1164_1165_branch_safety": {
+    "evidence": "docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json",
+    "branches": {
+      "1.16.4": {
+        "source": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+        "policy_run": 40946223342,
+        "policy_passed": 11,
+        "native_pending_run": 40946223380
+      },
+      "1.16.5": {
+        "source": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+        "policy_run": 40946814800,
+        "policy_passed": 12,
+        "native_pending_run": 40946815023
+      }
+    },
+    "hourly_native_run": 40943369683,
+    "verified_exact_native_targets": [
+      {
+        "minecraft": "1.16.1",
+        "source": "c1484e33d781e63bfccfceae8357dd5d831f7565",
+        "passed": 193,
+        "jar_sha256": "a730ca64612e717f62a905a93b72b63777d7771032850b935cd140a0ae90a176",
+        "artifact_id": 12929105242
+      },
+      {
+        "minecraft": "1.16.2",
+        "source": "161fa7f246caf17d75eefcebd5c806f0da4afbb7",
+        "passed": 195,
+        "jar_sha256": "db773146f71dd060516c03a8ab7ac7cd03805814b3d36e734668734f4435b560",
+        "artifact_id": 12927154014
+      },
+      {
+        "minecraft": "1.16.3",
+        "source": "141c00baeb1f3f7ee3aa79468b4647913a7d8045",
+        "passed": 193,
+        "jar_sha256": "ff8304bd899b44b84b304f537ebd837c6c63b61ab2fbe36edc4616fd99538160",
+        "artifact_id": 12927958736
+      },
+      {
+        "minecraft": "1.14.4",
+        "source": "746bec118e4a2d9d2ccfded8360537513f3abc82",
+        "passed": 194,
+        "jar_sha256": "1a2f2707e6f20c49d85cc91b3fd26db9372a7a4551073e1f2fc8ee0452527ee3",
+        "artifact_id": 12928920587
+      },
+      {
+        "minecraft": "1.15.2",
+        "source": "c879cf9f2fabf2c06589ae0210aa39b9d08d9422",
+        "passed": 194,
+        "jar_sha256": "74c972c2aae40ebe497e1317c71922165eb7df31e021257fb16723d2a4395370",
+        "artifact_id": 12929010363
+      },
+      {
+        "minecraft": "1.18.2",
+        "source": "401599a225a3f7b5a9db4c7c444094b1633a7c57",
+        "passed": 193,
+        "jar_sha256": "f33bdcd4ccdc25dc6e2223c037c8ee639585470c7f83a818f7f27195ec32e99e",
+        "artifact_id": 12927249205
+      },
+      {
+        "minecraft": "1.21.1",
+        "source": "1fb419e5bc05e471550d6d2dde209f037fb96fed",
+        "passed": 200,
+        "jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+        "artifact_id": 12927089294
+      }
+    ],
+    "release_clearances": "0/24"
+  },
+  "latest_1164_1165_checkpoint_lease_release": {
+    "owner": "pl4-hourly-chat-20261029-2005Z",
+    "claimed_commit": "2f2bd7af61b1b1b164a166ae426f6bb3b78109df",
+    "released_at": "2026-10-29T20:17:29.179Z",
+    "source_head_before_checkpoint": "2f2bd7af61b1b1b164a166ae426f6bb3b78109df",
+    "checkpoint": "docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json"
   }
 }

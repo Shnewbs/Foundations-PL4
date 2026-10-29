@@ -1784,7 +1784,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29 17:30 UTC: Protected mc/1.14.4 branch push workflow from auto-transform/source push and direct alpha GitHub release; retired historical generic wrong-1.21.1 assets/--clobber publisher and old direct CurseForge uploader. Exact branch 746bec118e4a2d9d2ccfded8360537513f3abc82; safety CI 40921823088 and 40921823115 both PASS, 25/25 guarded static checks. Java native, 194-case scenarios, stock installed production-only smoke and evidence archiving retained but not re-executed. No production source/JAR changed; 0/24 RC cleared, no new GitHub RC/CurseForge upload.",
+  "latest_work": "2026-10-29T20:17:29.179Z: Fixed the 1.16.4 and 1.16.5 development branch-local GitHub/CurseForge publishing gates, preserving Java8 installed native validation (193 and 191 respectively). New 1.16.5 stock Forge36 production-only JAR smoke gate is policy-qualified but native execution pending. 1.16.4 policy 11/11 and 1.16.5 policy 12/12 PASS; earlier transient 1.16.4 audit filename error corrected. Independently verified 7/7 hourly native exact-source jobs (1.14.4 194, 1.15.2 194, 1.16.1 193, 1.16.2 195, 1.16.3 193, 1.18.2 193, 1.21.1 200), with original source/JAR/ZIP SHA-256 receipts. 0/24 RC clearance, no new releases/uploads; see docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -3830,5 +3830,103 @@
     "new_native_production_evidence": false,
     "new_rc_eligible": false,
     "next_target": "mc/1.16.4"
+  },
+  "latest_work_before_1164_1165_checkpoint": "2026-10-29 17:30 UTC: Protected mc/1.14.4 branch push workflow from auto-transform/source push and direct alpha GitHub release; retired historical generic wrong-1.21.1 assets/--clobber publisher and old direct CurseForge uploader. Exact branch 746bec118e4a2d9d2ccfded8360537513f3abc82; safety CI 40921823088 and 40921823115 both PASS, 25/25 guarded static checks. Java native, 194-case scenarios, stock installed production-only smoke and evidence archiving retained but not re-executed. No production source/JAR changed; 0/24 RC cleared, no new GitHub RC/CurseForge upload.",
+  "latest_1164_1165_branch_safety_and_smoke": {
+    "evidence": "docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json",
+    "branches": {
+      "1.16.4": {
+        "ref": "mc/1.16.4",
+        "parent": "8e3786682ab785444b7bb2576261219a261cdecc",
+        "first_commit": "ed4eb6d159fb604c827fe7f93d8b25e2cfd2925b",
+        "final_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+        "native_declared": 193,
+        "final_policy_run": 40946223342,
+        "final_policy_tests": "11/11 PASS",
+        "prior_failed_audit_runs": [
+          40946171816,
+          40946172006
+        ],
+        "prior_audit_blocker": "Regression test was initially committed at 1161 filename instead of required 1164 path; corrected in final commit; earlier audit failure does not implicate production.",
+        "exact_native_run": 40946223380,
+        "exact_native_status": "PENDING_AT_CHECKPOINT",
+        "earlier_native_run": 40946171772,
+        "earlier_native_scope": "superseded intermediate commit, avoid duplicate retry",
+        "smoke": "Existing Forge35 profile production-only JAR smoke retained; not yet qualified at final source",
+        "curseforge_direct": "Retired read-only; last initial-commit audit failed only on missing test path; final publisher policy covers CurseForge string checks."
+      },
+      "1.16.5": {
+        "ref": "mc/1.16.5",
+        "parent": "00f5900963461847e68c82b5afd51c36c90ee95d",
+        "guarded_commit": "94651451dbe883e8f092f38a1851b42885874bb4",
+        "final_commit": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+        "native_declared": 191,
+        "policy_run": 40946814800,
+        "policy_tests": "12/12 PASS",
+        "earlier_policy_run": 40946357364,
+        "earlier_curseforge_audit_run": 40946357346,
+        "exact_native_run": 40946815023,
+        "exact_native_status": "IN_PROGRESS_AT_CHECKPOINT",
+        "smoke": "New stock Forge36 Java 8 production-only installed JAR startup and clean-stop probe after 191 native scenarios; it excludes scenario mod and binds JAR SHA-256; actual runtime result pending.",
+        "curseforge_direct": "Retired read-only; independent initial retirement audit PASSED"
+      }
+    },
+    "release_clearance": false
+  },
+  "latest_seven_exact_hourly_native_verification": {
+    "run": 40943369683,
+    "evidence": "docs/acceptance/rc-dev-1164-1165-branch-publishers-native-smoke-and-hourly-2026-10-29.json",
+    "targets": [
+      {
+        "minecraft": "1.16.1",
+        "source": "c1484e33d781e63bfccfceae8357dd5d831f7565",
+        "count": 193,
+        "jar_sha256": "a730ca64612e717f62a905a93b72b63777d7771032850b935cd140a0ae90a176",
+        "artifact_id": 12929105242
+      },
+      {
+        "minecraft": "1.16.2",
+        "source": "161fa7f246caf17d75eefcebd5c806f0da4afbb7",
+        "count": 195,
+        "jar_sha256": "db773146f71dd060516c03a8ab7ac7cd03805814b3d36e734668734f4435b560",
+        "artifact_id": 12927154014
+      },
+      {
+        "minecraft": "1.16.3",
+        "source": "141c00baeb1f3f7ee3aa79468b4647913a7d8045",
+        "count": 193,
+        "jar_sha256": "ff8304bd899b44b84b304f537ebd837c6c63b61ab2fbe36edc4616fd99538160",
+        "artifact_id": 12927958736
+      },
+      {
+        "minecraft": "1.14.4",
+        "source": "746bec118e4a2d9d2ccfded8360537513f3abc82",
+        "count": 194,
+        "jar_sha256": "1a2f2707e6f20c49d85cc91b3fd26db9372a7a4551073e1f2fc8ee0452527ee3",
+        "artifact_id": 12928920587
+      },
+      {
+        "minecraft": "1.15.2",
+        "source": "c879cf9f2fabf2c06589ae0210aa39b9d08d9422",
+        "count": 194,
+        "jar_sha256": "74c972c2aae40ebe497e1317c71922165eb7df31e021257fb16723d2a4395370",
+        "artifact_id": 12929010363
+      },
+      {
+        "minecraft": "1.18.2",
+        "source": "401599a225a3f7b5a9db4c7c444094b1633a7c57",
+        "count": 193,
+        "jar_sha256": "f33bdcd4ccdc25dc6e2223c037c8ee639585470c7f83a818f7f27195ec32e99e",
+        "artifact_id": 12927249205
+      },
+      {
+        "minecraft": "1.21.1",
+        "source": "1fb419e5bc05e471550d6d2dde209f037fb96fed",
+        "count": 200,
+        "jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+        "artifact_id": 12927089294
+      }
+    ],
+    "scope": "native only; no installed providers/client/sustained performance"
   }
 }
