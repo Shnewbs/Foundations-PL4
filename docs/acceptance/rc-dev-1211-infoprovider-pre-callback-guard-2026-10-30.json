@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-30T11:12:30Z",
+  "source_commit": "e8c4d680e14b1e5e64633843ce6486ae51e48315",
+  "parent_source_commit": "1ee598de2a78ff3d0721c9652c95cedb39ce089a",
+  "change": "InfoProviders.collect now performs a live-target check before invoking each provider callback, in addition to the existing post-callback backing identity/liveness check.",
+  "rationale": [
+    "Prevents later installed callbacks from running after an earlier callback invalidates or unloads the target.",
+    "Preserves no-force-load behavior; the guard only observes server-thread, dimension, entity identity/removal, chunk-loaded, and block-entity identity state."
+  ],
+  "validation": {
+    "native": "PENDING_PUSH_TRIGGERED",
+    "offline": "NOT_COUNTED_YET",
+    "jar_sha256": null
+  },
+  "publication": {
+    "rc_clearance": false,
+    "github_release": false,
+    "curseforge_upload": false
+  },
+  "next_step": "Inspect push-triggered exact-source verification; then run independent installed optional-provider fixture with callback revocation, entity/block unload or replacement, and explicit no-force-load evidence."
+}
