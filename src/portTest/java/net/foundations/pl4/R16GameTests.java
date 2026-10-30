@@ -804,7 +804,8 @@ public final class R16GameTests {
     public static void installedProviderExceptionDiscardsPartialRows(GameTestHelper h){
         BlockPos position=new BlockPos(2,1,1);
         chest(h,position);
-        var target=new Part.Link(h.getLevel().dimension().location().toString(),position,Direction.UP,null,null);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),h.absolutePos(position),Direction.UP,null,null);
+        h.assertTrue(h.getLevel().getBlockEntity(target.pos())!=null,"Exception fixture must resolve the real absolute-position backing block entity");
         int[] laterCalls={0};
         try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:exception_guard",(context,out)->{
             out.add("partial","Partial sample",1,1,"unit");

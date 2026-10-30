@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-10-30T23:13:05.661Z",
+  "scope": "main exact Minecraft 1.21.1 native provider fixture repair",
+  "prior_native_source": "c67a42a31a32b79d6353dab246442a6f74ce8e02",
+  "prior_native_run": 41135235157,
+  "prior_native_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41135235157",
+  "offline_assertions_passed": 1149451,
+  "native_cases_total": 213,
+  "native_cases_failed": 4,
+  "native_cases_passed": 209,
+  "failed_names": [
+    "inforeaderusesprovidersandtrimsmetrickeys",
+    "infoprovidersboundisolateandunregister",
+    "oldproviderhandlecannotremovereplacement",
+    "installedproviderexceptiondiscardspartialrows"
+  ],
+  "failure_interpretation": "The strict production InfoProviders live-backing-entity guard rejects three historical provider fixtures sampling empty test coordinates; the new exception fixture created its CHEST at a local GameTest coordinate but passed that relative position as an absolute Part.Link. These are native test failures, not accepted gameplay passes.",
+  "changes": [
+    "Install actual CHEST backing block entities for the three older native extension API fixtures and assert backing existence before sampling",
+    "Resolve the R16 provider-exception target via GameTestHelper.absolutePos and assert its backing identity"
+  ],
+  "verification": "PENDING exact-source native run; no JAR/hash or RC clearance promoted",
+  "prior_failed_artifact": {
+    "id": 13016730892,
+    "sha256": "445da2c0d63f2497c2e9d26eec1a7abb58b5fc544e202c377c915a77b9f084b2",
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41135235157/artifacts/13016730892",
+    "qualification": "FAILED_NATIVE_4_OF_213"
+  },
+  "remaining": [
+    "Fresh 213/213 exact-source native and production hash verification",
+    "Installed optional third-party provider real-JAR unload/replacement/no-force-load fixture",
+    "Exact mc/26.1.2 193-case native qualification",
+    "Authenticated multiplayer, arbitrary-world migration and sustained performance",
+    "mc/26.3 manual CurseForge workflow hardcoded 1.21.1 and missing exact-tag clearance checks"
+  ],
+  "rc_publication_cleared": false,
+  "github_rc_release": null,
+  "curseforge_upload_id": null
+}

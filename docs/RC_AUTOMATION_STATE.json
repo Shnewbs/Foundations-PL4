@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T2308Z-native-fixture-repair",
-    "claimed_at": "2026-10-30T23:11:36.854Z",
-    "expires_at": "2026-10-30T23:26:36.854Z",
-    "expected_parent": "c67a42a31a32b79d6353dab246442a6f74ce8e02",
-    "scope": "main native provider fixture repair and exact-source acceptance; no publication"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -23,10 +17,9 @@
   "current_checkpoint": "2026-10-30T22:05:00Z: Repaired stale hardcoded R16 verifier drift with a meaningful >=45 minimum guard; evidence recorded; lease released; fresh exact-source verification still pending; no native/JAR/release evidence counted.",
   "local_validation": "GitHub readback confirmed verifier repair commits 8d729e62 and f6946c22 plus evidence addddb43; no native or packaged-artifact result was promoted.",
   "next_work": [
-    "Inspect the fresh push-triggered verification for the verifier minimum-guard repair and count native/production evidence only on a full pass.",
-    "Continue installed optional-provider unload/replacement/no-force-load evidence and fresh mc/26.1.2 qualification.",
-    "Before any version-branch source push, re-audit its push-triggered publisher and manual CurseForge workflow; current recorded finding remains mc/26.3 manual curseforge.yml hardcoding 1.21.1 and lacking exact-tag RC clearance checks.",
-    "Keep rc_publication_cleared false; do not publish development or uncleared RC artifacts."
+    "Verify four repaired provider GameTests with exact native/production build; no evidence promotion before 213/213 passes",
+    "Independently qualify installed third-party providers and mc/26.1.2 exact source",
+    "Repair mc/26.3 manual CurseForge wrong-target/uncleared publication path before any mc/26.3 source push"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,19 +59,17 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T2200Z",
-    "released_at": "2026-10-30T22:05:00Z",
-    "lease_claim_commit": "95c915af133c4d988aa6fe68cc23e5a85e3a242b",
-    "expected_parent": "07fa8e1d01c2ff6e4df3ff5b78ba040daa498ed0",
-    "source_commits": [
-      "95c915af133c4d988aa6fe68cc23e5a85e3a242b",
-      "8d729e62f97e6f7cf7b0057a726a9018d70b36d6",
-      "f6946c2280a282a385846ff9b4a9f8ca6b16f345",
-      "addddb43e7f49cd9bf31f07a2a04497968f454be"
+    "owner": "pl4-chat-20261030T2308Z-native-fixture-repair",
+    "released_at": "2026-10-30T23:13:05.663Z",
+    "lease_claim_commit": "b09a024027deeb529513f4dad07c8320c9bd531b",
+    "expected_parent": "c67a42a31a32b79d6353dab246442a6f74ce8e02",
+    "source_changes": [
+      "src/portTest/java/net/foundations/pl4/EnergyIntegrationGameTests.java",
+      "src/portTest/java/net/foundations/pl4/R16GameTests.java"
     ],
+    "evidence": "docs/acceptance/rc-dev-1211-provider-native-four-fixture-repair-2026-10-30.json",
     "writer_lease_released": true,
-    "release_performed": false,
-    "evidence": "docs/acceptance/rc-dev-r16-verifier-minimum-guard-2026-10-30.json"
+    "release_performed": false
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-entity-replacement-213-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
@@ -2839,7 +2830,7 @@
     "rc_clearance": "0/24",
     "release_performed": false
   },
-  "next_step": "Inspect push-triggered exact-source verification for 291516dd; exact 211/211 native and production evidence required before any qualification.",
+  "next_step": "Inspect new exact-source 213-case native verification after four fixture repairs; then installed optional-provider and exact mc/26.1.2 acceptance.",
   "last_checkpoint": {
     "timestamp": "2026-10-30T17:10:00Z",
     "source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
@@ -2857,5 +2848,19 @@
     "writer_lease_released": true,
     "release_performed": false,
     "evidence": "docs/acceptance/rc-dev-1211-infoprovider-pre-callback-guard-2026-10-30.json"
+  },
+  "latest_native_provider_fixture_repair": {
+    "evidence": "docs/acceptance/rc-dev-1211-provider-native-four-fixture-repair-2026-10-30.json",
+    "prior_run": 41135235157,
+    "prior_source": "c67a42a31a32b79d6353dab246442a6f74ce8e02",
+    "actual_native": "209/213",
+    "failed_cases": [
+      "inforeaderusesprovidersandtrimsmetrickeys",
+      "infoprovidersboundisolateandunregister",
+      "oldproviderhandlecannotremovereplacement",
+      "installedproviderexceptiondiscardspartialrows"
+    ],
+    "verification": "PENDING_EXACT_SOURCE",
+    "rc_publication_cleared": false
   }
 }

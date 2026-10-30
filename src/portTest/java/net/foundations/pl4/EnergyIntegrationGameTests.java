@@ -220,7 +220,9 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoProvidersBoundIsolateAndUnregister(GameTestHelper h){
+        h.setBlock(new BlockPos(1,1,1),net.minecraft.world.level.block.Blocks.CHEST);
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        h.assertTrue(h.getLevel().getBlockEntity(target.pos())!=null,"Provider budget fixture requires a live backing block entity");
         try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_failing",(context,out)->{if(!context.target().equals(target))return;out.add("partial","Partial",1,1,"");throw new IllegalStateException("Expected provider isolation fixture");});
             var good=net.foundations.pl4.api.InfoProviders.register("pl4_test:b_good",(context,out)->{if(!context.target().equals(target))return;out.add("bad","Bad",Double.NaN,0,"");out.add("bad_capacity","Bad",1,-1,"");out.add("health","Machine health",7,10,"");out.add("health","Duplicate",999,0,"");for(int i=0;i<100;i++)out.add("value"+i,"Value",i,100,"");})){
             var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
@@ -258,7 +260,9 @@ public final class EnergyIntegrationGameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoReaderUsesProvidersAndTrimsMetricKeys(GameTestHelper h){
         var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,Direction.UP);
+        h.setBlock(new BlockPos(3,2,2),net.minecraft.world.level.block.Blocks.CHEST);
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
+        h.assertTrue(h.getLevel().getBlockEntity(target.pos())!=null,"Info Reader extension fixture requires a live backing block entity");
         reader.part().metric=" x, pl4_test:sample/progress ";
         try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:sample",(context,out)->{if(context.target().equals(target))out.add("progress","Progress",25,100,"%");})){
             var rows=DataSampler.sample(h.getLevel().getServer(),reader,List.of(target),1);
@@ -290,7 +294,9 @@ public final class EnergyIntegrationGameTests {
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void oldProviderHandleCannotRemoveReplacement(GameTestHelper h){
+        h.setBlock(new BlockPos(1,1,1),net.minecraft.world.level.block.Blocks.CHEST);
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+        h.assertTrue(h.getLevel().getBlockEntity(target.pos())!=null,"Provider registration fixture requires a live backing block entity");
         net.foundations.pl4.api.InfoProviders.Provider callback=(c,out)->{if(c.target().equals(target))out.add("value","Value",42,100,"");};
         var old=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback);old.close();
         try(var current=net.foundations.pl4.api.InfoProviders.register("pl4_test:reused",callback)){
