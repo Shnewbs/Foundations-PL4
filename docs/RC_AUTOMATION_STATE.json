@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T2007Z",
-    "claimed_at": "2026-10-30T03:08:01.961Z",
-    "expires_at": "2026-10-30T03:33:01.961Z",
-    "expected_parent": "0218d00d0a8999838ecf5846fdcb5985a291eee0",
-    "purpose": "inspect exact 26.1.2 qualification and preserve source-target blockers"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,7 +14,7 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T03:08:01.961Z: Claimed guarded finite writer lease. Re-read main workflow/state/status/roadmap. 26.1.2 exact source 3e341444 remains the highest unfinished native item; mc/26.1 and mc/26.2 BUILD_STATUS still identify 1.21.1 and are not safe to relabel. No duplicate build dispatched from this run; no RC publication eligible.",
+  "current_checkpoint": "2026-10-30T03:08:15.056Z: Released guarded writer lease after checkpoint. No new native build or release was performed in this finite run. Exact 26.1.2 source remains pending next nonduplicate hourly build; 26.1/26.2 remain blocked by genuine source attribution mismatch.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
     "Run a real installed optional third-party capability-provider mod against the 1.21.1 207-case production JAR, proving owner revocation during provider callbacks, same-position backing replacement, chunk-unloaded alias rejection and no force-load.",
@@ -66,18 +60,14 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261030T0202Z",
-    "released_at": "2026-10-30T02:19:42.183Z",
-    "lease_claim_commit": "1c48f228f6bb91a57e683a5f45b11b8c3b2e2c93",
-    "source_commit": "411401924e35ea1c7e085db4afdcd7cc241eeb33",
-    "pinned_control_commit": "3509693c5d1edef35d91fb17150cf25a29a51598",
-    "native_run": 40989902987,
-    "installed_runs": [
-      40990361662,
-      40990361653,
-      40990361834
-    ],
-    "evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
+    "owner": "pl4-hourly-chat-20261029T2007Z",
+    "released_at": "2026-10-30T03:08:15.056Z",
+    "lease_claim_commit": "637e676b302d9dbdea045ceffb29c1a05dadccf7",
+    "source_commit": null,
+    "pinned_control_commit": null,
+    "native_run": null,
+    "installed_runs": [],
+    "evidence": "docs/acceptance/rc-dev-2612-qualification-checkpoint-2026-10-30.json",
     "writer_lease_released": true,
     "rc_clearance": "0/24",
     "release_performed": false
