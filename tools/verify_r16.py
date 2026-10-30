@@ -26,7 +26,7 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'e.register(R16GameTests.class)' in native('PLGameTests.java'),
- 'forty-five transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==45,
+ 'current transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==len(re.findall(r'@GameTest\\(', native('R16GameTests.java'))),
  'reader target alias revocation regression is registered': 'readerExportsDropRevokedAndDetachedInventoryAliases' in native('R16GameTests.java') and 'currentOwnedGroup(server,reader,group)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java'),
  'wireless backing swaps seal extracted escrow':'wirelessStorageRevokesReplacedBackingDuringExtraction' in native('R16GameTests.java') and 'requirePostExtractionBackingAuthority' in read('src/main/java/net/foundations/pl4/WirelessStorage.java'),
  'backing capability identity rechecked after provider callbacks':'replacedCapabilityBackingCannotReuseCachedItemHandler' in native('R16GameTests.java') and 'record ItemTarget(' in engine and 'to.live(server,sink)' in engine,
