@@ -1,3 +1,7 @@
+### October 30, 2026 — stale R16 verifier fixture label repaired; native qualification pending
+
+Run 41052653488 stopped before native execution because `tools/verify_r16.py` still labeled the 43-case assertion as forty-two. Source repair `6c9aa187bd5e31140af1e78aad6f8e8200afcc50` updates the guard label without changing the exact 43-case requirement. No native/JAR/release evidence is counted. Next: inspect push-triggered verification, then proceed to installed-provider callback revocation/unload testing and fresh 26.1.2 qualification.
+
 ### October 30, 2026 — 208/208 exact 1.21.1 native verification passed; no RC
 
 Exact-source verification [41030606887](https://github.com/Shnewbs/Foundations-PL4/actions/runs/41030606887) for main source `872bfc2` passed **1,149,451 offline assertions** and **208/208 native GameTests**. Retained artifact `12966206043` has ZIP digest `sha256:825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626`; production JAR byte hash was not independently recorded in this checkpoint. Publication workflow [41030606867](https://github.com/Shnewbs/Foundations-PL4/actions/runs/41030606867) correctly skipped release and CurseForge upload. **0/24 RC clearances.** Next: independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence; then fresh exact `mc/26.1.2` hourly qualification.
