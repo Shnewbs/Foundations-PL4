@@ -1,0 +1,43 @@
+{
+  "repo": "Shnewbs/Foundations-PL4",
+  "run_at": "2026-10-30T03:07:18Z",
+  "scope": "finite RC work/build/release checkpoint",
+  "source_policy": "main and existing exact-version branches only; no feature branches; no force pushes; no historical R16 attachment",
+  "lease_claim_commit": "637e676b302d9dbdea045ceffb29c1a05dadccf7",
+  "findings": [
+    {
+      "target": "26.1.2",
+      "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+      "expected_native_tests": 193,
+      "status": "PENDING_HOURLY_NATIVE_EXACT_SOURCE",
+      "action": "left unchanged; requires next nonduplicate hourly-builds.yml run"
+    },
+    {
+      "target": "26.1",
+      "branch": "mc/26.1",
+      "observed_BUILD_STATUS_minecraft": "1.21.1",
+      "action": "not relabeled; remains blocked from exact-target qualification"
+    },
+    {
+      "target": "26.2",
+      "branch": "mc/26.2",
+      "observed_BUILD_STATUS_minecraft": "1.21.1",
+      "action": "not relabeled; remains blocked from exact-target qualification"
+    }
+  ],
+  "validation": {
+    "docs_read": [
+      "docs/RC_HOURLY_WORKFLOW.md",
+      "docs/RC_AUTOMATION_STATE.json",
+      "docs/RC_DEVELOPMENT_STATUS.json",
+      "FOUNDATIONS_PL4_MASTER_STATUS_PARITY_ROADMAP.md"
+    ],
+    "active_duplicate_build_check": "No new run dispatched; GitHub-authoritative workflow controller remains the only allowed build path",
+    "release_check": "rc_publication_cleared=false; no GitHub release or CurseForge upload performed"
+  },
+  "blockers": [
+    "No dispatch-capable GitHub Actions tool was available in this runtime, so the already-recorded 26.1.2 exact-source hourly build was not duplicated.",
+    "26.1 and 26.2 source trees still identify 1.21.1 in BUILD_STATUS.json; changing metadata alone would violate the no-relabel policy."
+  ],
+  "next_step": "Use the next nonduplicate hourly-builds.yml selection to build exact 26.1.2 source 3e341444 and preserve source/JAR/run hashes; then repair genuine 26.1/26.2 source attribution before any native qualification."
+}
