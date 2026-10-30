@@ -52,6 +52,43 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    /** Reader telemetry must not leak stale inventory targets across an owner or cable
+     * revocation before the next scheduled network sample. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerExportsDropRevokedAndDetachedInventoryAliases(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        HostEntity readerHost=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.WEST);
+        HostEntity remoteHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
+        Part reader=part(readerHost,Direction.WEST), remote=part(remoteHost,Direction.EAST);
+        BlockPos remoteInventory=remoteHost.getBlockPos().east();
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "Initially connected reader must see its owned network's inventory target");
+        // Do not call changed(): a foreign provider callback can revoke an owner
+        // between scheduled graph samples, leaving a previously valid cached group.
+        remote.owner=UUID.randomUUID();
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .noneMatch(link->link.pos().equals(remoteInventory)),
+            "Unannounced remote owner revocation must hide its old reader target immediately");
+        remote.owner=OWNER;remoteHost.changed();
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "Restored matching owner should rejoin only the live network");
+        Part cable=remoteHost.parts.remove(6);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .noneMatch(link->link.pos().equals(remoteInventory)),
+            "Detached intermediate cable cannot expose the stale remote inventory alias");
+        remoteHost.parts.put(6,cable);remoteHost.changed();
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "Valid reader export must recover after cable reattachment");
+        readerHost.parts.remove(reader.slot());
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).isEmpty(),
+            "Detached reader part cannot reuse cached target exports");
+        h.succeed();
+    }
+
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));

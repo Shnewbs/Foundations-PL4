@@ -150,16 +150,27 @@ public final class NetworkEngine {
         CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }
-    /** Current server-owned endpoints; UI edits never supply arbitrary positions. */
+    /** A cached visual reader export cannot authorize a newly foreign or detached
+     * inventory after a provider callback changes an endpoint without notifying the graph.
+     * Rebuild once rather than leak stale network locations to the reader. */
     public static List<Part.Link> targetsFor(MinecraftServer server,Part reader){
         ensureCurrent(server);
         Group group=cachedMembership.get(reader);
-        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&reader.kind.reader()?group.targets:List.of();
+        if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()||!reader.kind.reader())
+            return List.of();
+        if(!currentOwnedGroup(server,reader,group)){
+            dirty=true;
+            rebuild(server);
+            group=cachedMembership.get(reader);
+            if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()
+                ||!currentOwnedGroup(server,reader,group))return List.of();
+        }
+        return group.targets;
     }
     /** Cached membership is not authority after a host, owner or intermediate cable changes.
      * Rebuild once on rare invalidation so healthy local nodes remain usable, but stale
      * remote aliases cannot survive until the next scheduled network sample. */
-    private static boolean currentStorageGroup(MinecraftServer server,Part anchor,Group group){
+    private static boolean currentOwnedGroup(MinecraftServer server,Part anchor,Group group){
         if(anchor.owner==null)return false;
         boolean anchorAttached=false;
         for(Ref ref:group.parts){
@@ -175,12 +186,12 @@ public final class NetworkEngine {
         ensureCurrent(server);
         Group group=cachedMembership.get(anchor);
         if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get())return List.of();
-        if(!currentStorageGroup(server,anchor,group)){
+        if(!currentOwnedGroup(server,anchor,group)){
             dirty=true;
             rebuild(server);
             group=cachedMembership.get(anchor);
             if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()
-                ||!currentStorageGroup(server,anchor,group))return List.of();
+                ||!currentOwnedGroup(server,anchor,group))return List.of();
         }
         return cachedStorageNodes.getOrDefault(anchor,List.of());
     }
