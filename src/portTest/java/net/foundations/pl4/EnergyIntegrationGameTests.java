@@ -234,6 +234,28 @@ public final class EnergyIntegrationGameTests {
         h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).stream().noneMatch(r->r.key().startsWith("pl4_test:")),"Closing registrations releases providers");h.succeed();
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderRevocationSkipsLaterCallbacks(GameTestHelper h){
+        BlockPos position=new BlockPos(2,1,1);
+        h.setBlock(position,net.minecraft.world.level.block.Blocks.CHEST);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),h.absolutePos(position),Direction.UP,null,null);
+        int[] lateCalls={0};
+        try(var revoke=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_revoke",(context,out)->{
+                if(!context.target().equals(target))return;
+                out.add("stale","Stale",1,1,"");
+                h.getLevel().setBlock(target.pos(),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),3);
+            });
+            var late=net.foundations.pl4.api.InfoProviders.register("pl4_test:z_late",(context,out)->{
+                lateCalls[0]++;
+                out.add("late","Late",2,2,"");
+            })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(lateCalls[0]==0,"A later installed callback is not invoked after an earlier callback revokes the target");
+            h.assertTrue(rows.stream().noneMatch(r->r.key().startsWith("pl4_test:")),"Callback-time revocation discards all installed-provider rows");
+        }
+        h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void infoReaderUsesProvidersAndTrimsMetricKeys(GameTestHelper h){
         var reader=host(h,new BlockPos(2,2,2),Kind.INFO_READER,Direction.UP);
         var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(3,2,2)),Direction.UP,null,null);
