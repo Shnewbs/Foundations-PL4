@@ -9,7 +9,7 @@
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
   "remaining_acceptance": [
-    "repaired 210-fixture installed-provider callback revocation/replacement exact-source verification",
+    "fresh exact 213-fixture installed-provider callback revocation/replacement verification for source c5e6306b02151d338eabcdb192780ff79d0a2dc4",
     "advanced legacy editor/multipart; combined-inventory/handler alias fixtures and provider acceptance. Bounded ASCII search, sorting and exact-NBT grouped quantities have scoped exact-source native/stock-client acceptance",
     "installed optional providers and compatible alternatives",
     "other world-display/reader/editor modes, faces, lighting conditions, wider resolutions and exact ports; legacy stock network displays and four storage GUI scales passed separately per port",
@@ -18,7 +18,7 @@
     "sustained full-server and active-provider performance, plus other ports; 1.21.1 native operation measurements were mixed",
     "documented 1.16.1–1.16.4 launcher profiles",
     "arbitrary pre-save crash/power-loss durability, provider-private state and reviewed recovery; legacy clean and post-save-boundary process restart now have scoped native acceptance",
-    "installed optional providers with callback revocation/unload/replacement and no-force-load evidence",
+    "installed optional providers with callback revocation/unload/replacement, entity UUID replacement, and no-force-load evidence",
     "fresh exact 26.1.2 native qualification; no neighboring-version inheritance"
   ],
   "targets": [
