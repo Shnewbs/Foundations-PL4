@@ -1,3 +1,7 @@
+### October 30, 2026 — stale R16 verifier fixture count repaired; native qualification pending
+
+Run 41061181756 stopped before native execution because `tools/verify_r16.py` still asserted and labeled 43 `@GameTest` registrations while the current `src/portTest/java/net/foundations/pl4/R16GameTests.java` contains 44. Source repair [8bc330d](https://github.com/Shnewbs/Foundations-PL4/commit/8bc330d6ecdd04f06eeb27b2f2a1d710322f65f0) changes only the verifier label/assertion to 44. No native/JAR/release evidence is counted. Lease was claimed in [01d4430](https://github.com/Shnewbs/Foundations-PL4/commit/01d443087254f87443e80d8a68d8350885480601) and released in [237a957](https://github.com/Shnewbs/Foundations-PL4/commit/237a9573cedd0086684f395369ec9c81a4bfe26d). Next: inspect push-triggered verification, then continue the installed-provider revocation/unload fixture and fresh 26.1.2 qualification. **0/24 RC clearances.**
+
 ### October 30, 2026 — stale R16 verifier fixture label repaired; native qualification pending
 
 Run 41052653488 stopped before native execution because `tools/verify_r16.py` still labeled the 43-case assertion as forty-two. Source repair `6c9aa187bd5e31140af1e78aad6f8e8200afcc50` updates the guard label without changing the exact 43-case requirement. No native/JAR/release evidence is counted. Next: inspect push-triggered verification, then proceed to installed-provider callback revocation/unload testing and fresh 26.1.2 qualification.
