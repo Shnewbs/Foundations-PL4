@@ -4451,5 +4451,13 @@
   },
   "current_checkpoint": "2026-10-30T04:12:00Z: Implemented post-callback installed-provider liveness guard on main and added native unload-revocation regression; native run pending.",
   "latest_source_commit": "6b1f81b26028ee61ba32d2d60b8a187c01c86748",
-  "next_step": "Run exact-source hourly build for main; then prove installed optional provider callback revocation, block/entity unload and no-force-load with retained JAR evidence."
+  "next_step": "Run nonduplicate hourly-builds.yml for main source 1ee598de2a78ff3d0721c9652c95cedb39ce089a, then run independent installed-provider callback revocation/unload/replacement fixture.",
+  "last_checkpoint": {
+    "timestamp": "2026-10-30T05:10:00Z",
+    "source_commit": "1ee598de2a78ff3d0721c9652c95cedb39ce089a",
+    "summary": "Extended InfoProvider post-callback guard to exact backing block-entity identity; no native result yet.",
+    "native_validation": "PENDING",
+    "rc_clearance": "0/24",
+    "release": "none"
+  }
 }
