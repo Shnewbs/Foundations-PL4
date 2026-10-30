@@ -4440,5 +4440,13 @@
     "two_client_scope": "PASS_TWO_REAL_OFFLINE_GUI_CLIENTS_EACH_PHASE",
     "installed_optional_providers": "PENDING",
     "rc_publication_cleared": false
+  },
+  "last_run_checkpoint": {
+    "at": "2026-10-30T03:07:18Z",
+    "evidence": "docs/acceptance/rc-dev-2612-qualification-checkpoint-2026-10-30.json",
+    "source_policy": "main and existing exact-version branches only",
+    "native_result": "no new native run; 26.1.2 3e341444 remains pending hourly exact-source qualification",
+    "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
+    "rc_clearance": "0/24"
   }
 }
