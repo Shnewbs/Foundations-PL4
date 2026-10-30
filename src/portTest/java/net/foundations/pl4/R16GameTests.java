@@ -872,4 +872,21 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderSampleIsDiscardedAfterEntityReplacement(GameTestHelper h){
+        BlockPos position=new BlockPos(2,1,1);
+        var original=h.spawn(net.minecraft.world.entity.EntityType.ARMOR_STAND,position);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),position,Direction.UP,original.getUUID(),null);
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:entity_replacement_guard",(context,out)->{
+            context.entity().remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
+            h.spawn(net.minecraft.world.entity.EntityType.ARMOR_STAND,position);
+            out.add("late","Late entity sample",1,1,"unit");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().noneMatch(r->r.key().equals("pl4_test:entity_replacement_guard/late")),
+                "Provider rows collected after entity replacement must not be published");
+        }
+        h.succeed();
+    }
+
 }
