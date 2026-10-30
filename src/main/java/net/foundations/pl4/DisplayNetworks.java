@@ -111,13 +111,25 @@ public final class DisplayNetworks {
     public static void applyLayout(HostEntity host,Part part,Part.DisplaySettings settings,long revision){
         part.applyDisplaySettings(settings,revision);
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part))
-            for(var tile:canvas.tiles)if(tile.part().applyDisplaySettings(settings,revision))tile.host().setChanged();
+            for(var tile:canvas.tiles)if(Objects.equals(tile.part().owner,part.owner)
+                &&currentTile(tile.host(),tile.part())
+                &&tile.part().applyDisplaySettings(settings,revision))tile.host().setChanged();
         host.setChanged();
     }
     public static void layoutEdited(HostEntity host,Part part){applyLayout(host,part,part.displaySettings(),nextLayoutRevision(part));}
+    /** A stale canvas alias is not a read/edit capability for a detached or newly foreign tile. */
+    private static boolean currentTile(HostEntity host,Part part){
+        if(part.owner==null||host.isRemoved()||host.parts.get(part.slot())!=part
+            ||!(host.getLevel() instanceof ServerLevel world)
+            ||!world.hasChunkAt(host.getBlockPos()))return false;
+        return world.getBlockEntity(host.getBlockPos())==host;
+    }
     public static NetworkEngine.Ref controller(HostEntity host,Part part){
         if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
-        return ROOTS.getOrDefault(part,new NetworkEngine.Ref(host,part));
+        NetworkEngine.Ref root=ROOTS.get(part);
+        return root!=null&&currentTile(host,part)
+            &&Objects.equals(root.part().owner,part.owner)
+            &&currentTile(root.host(),root.part())?root:new NetworkEngine.Ref(host,part);
     }
     /** Preflight the possible merged front before any settings are mirrored into neighboring tiles. */
     private static boolean canFlipInto(net.minecraft.server.level.ServerPlayer player,List<NetworkEngine.Ref> tiles,boolean outward){
@@ -177,7 +189,10 @@ public final class DisplayNetworks {
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
         if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
-        for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){
+        if(!currentTile(host,part))return List.of();
+        for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)
+                &&Objects.equals(canvas.root.part().owner,part.owner)
+                &&currentTile(canvas.root.host(),canvas.root.part())){
             var ref=reader(currentReaders(canvas),selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
         }return List.of();
     }

@@ -127,6 +127,41 @@ public final class R7GameTests {
         });
     }
 
+
+    /** A disconnected foreign-owned tile cannot read the prior root's cached reader snapshot. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=140)
+    public static void staleJoinedDisplayTileDropsForeignReaderAlias(GameTestHelper h){
+        BlockPos position=new BlockPos(3,3,3);
+        HostEntity left=host(h,position);
+        put(left,Kind.DATA_CABLE,Direction.DOWN);
+        Part reader=put(left,Kind.INVENTORY_READER,Direction.NORTH);
+        put(left,Kind.NODE,Direction.WEST);
+        chest(h,position.west(),17);
+        Part leftPanel=put(left,Kind.LARGE_DISPLAY,Direction.NORTH);
+        HostEntity right=host(h,position.east());
+        Part rightPanel=put(right,Kind.LARGE_DISPLAY,Direction.NORTH);
+        NetworkEngine.rebuild(h.getLevel().getServer());
+        var controller=DisplayNetworks.controller(left,leftPanel);
+        h.assertTrue(DisplayNetworks.controller(right,rightPanel).part()==controller.part(),
+            "Two same-owner coplanar panels must join one native display canvas");
+        HostEntity otherHost=controller.part()==leftPanel?right:left;
+        Part otherPart=controller.part()==leftPanel?rightPanel:leftPanel;
+        String selector=reader.identity.toString();
+        h.runAtTickTime(45,()->{
+            h.assertTrue(!DisplayNetworks.preview(otherHost,otherPart,selector).isEmpty(),
+                "Owned canvas tile must initially read its connected reader");
+            otherPart.owner=UUID.randomUUID(); // Revoke without topology change notification.
+            h.assertTrue(DisplayNetworks.preview(otherHost,otherPart,selector).isEmpty(),
+                "Newly foreign tile must not read cached source rows via stale canvas alias");
+            h.assertTrue(DisplayNetworks.controller(otherHost,otherPart).part()==otherPart,
+                "Foreign tile must not inherit the previous owner's editor controller");
+            otherPart.owner=OWNER;
+            h.assertTrue(!DisplayNetworks.preview(otherHost,otherPart,selector).isEmpty(),
+                "Restored same-owner tile may read the still valid canvas");
+            h.succeed();
+        });
+    }
+
     private static void isolated(GameTestHelper h,Direction front){
         BlockPos pos=new BlockPos(3,3,3);var input=host(h,pos);put(input,Kind.DATA_CABLE,Direction.DOWN);
         Part reader=put(input,Kind.INVENTORY_READER,front),source=put(input,Kind.TRANSFER_NODE,front.getOpposite());source.transferMode=2;
