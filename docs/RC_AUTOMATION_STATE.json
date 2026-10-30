@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261030T0001Z-r16-guard",
-    "claimed_at": "2026-10-30T07:02:00Z",
-    "expires_at": "2026-10-30T07:17:00Z",
-    "expected_parent": "ad7151281d6fa51c98a821179e5c61e71ed082ce",
-    "purpose": "repair stale R16 source guard count after verified new installed-provider native test addition"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,7 +14,7 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T07:02:00Z: Claimed guarded finite writer lease to repair stale verify_r16.py count (43 actual @GameTest cases after installed-provider regression addition); no native result or release counted.",
+  "current_checkpoint": "2026-10-30T07:06:00Z: Repaired stale R16 verifier count in bc5c2fb and recorded evidence; push-triggered exact-source verification is pending. No native/JAR/release counted.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
     "Inspect exact-source verification for 6c1e11da and preserve native/JAR hashes if passed.",
@@ -66,14 +60,13 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T2302Z",
-    "released_at": "2026-10-30T06:07:00Z",
-    "lease_claim_commit": "5876e0d2538628243094a4f41e7bc5ac4b3c9b47",
-    "source_commit": "6c1e11da28e86fc669cbacb04022ed8e62cf2b6f",
-    "pinned_control_commit": null,
+    "owner": "pl4-hourly-chat-20261030T0001Z-r16-guard",
+    "released_at": "2026-10-30T07:06:00Z",
+    "lease_claim_commit": "cf0f5ff3975df87feba5997a4ea7617d012fabaa",
+    "source_commit": "bc5c2fb58a15c2591f04b980795f2b33e1a0a038",
     "native_run": null,
     "installed_runs": [],
-    "evidence": "docs/RC_HOURLY_WORKFLOW.md",
+    "evidence": "docs/acceptance/rc-dev-r16-guard-count-repair-2026-10-30.json",
     "writer_lease_released": true,
     "rc_clearance": "0/24",
     "release_performed": false
