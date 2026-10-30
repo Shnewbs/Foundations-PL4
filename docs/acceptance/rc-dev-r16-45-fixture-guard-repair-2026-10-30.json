@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-10-30T21:05:00Z",
+  "scope": "exact-source controller repair",
+  "source_commit": "acfb42133c8054ce26d9ebf57777e27d1e8c09f7",
+  "prior_verification_run": 41120463881,
+  "prior_result": "OFFLINE_CHECK_FAILED",
+  "failure": "tools/verify_r16.py asserted 44 registered @GameTest cases while current R16GameTests.java contains 45",
+  "repair": "updated verifier label and exact assertion from 44 to 45; no native/JAR/release evidence promoted",
+  "next": "inspect push-triggered exact-source verification; only count native and production evidence on full pass",
+  "rc_publication_cleared": false
+}
