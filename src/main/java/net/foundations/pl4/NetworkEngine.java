@@ -74,7 +74,14 @@ public final class NetworkEngine {
                 r.part.kind,r.part.face.ordinal(),r.part.blockedFaces));
         }
         var topology=net.foundations.pl4.core.MultipartTopology.plan(nodes);
-        for(var edge:topology.network())sets.union(edge.a(),edge.b());
+        // Physical contact never grants a network edge across independent owners.
+        // The stale cache refresh must keep a valid local Node when a remote owner
+        // changes during a provider callback without notifying the graph.
+        for(var edge:topology.network()){
+            Ref a=refs.get(edge.a()), b=refs.get(edge.b());
+            if(a.part.owner!=null&&a.part.owner.equals(b.part.owner))
+                sets.union(edge.a(),edge.b());
+        }
         topology.cableArms().forEach((i,values)->arms.put(refs.get(i).host,values));
         Map<HostEntity,Integer> leads=new IdentityHashMap<>();
         for(int i:topology.externalLeads()){

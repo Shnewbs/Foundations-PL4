@@ -59,11 +59,11 @@
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "native_compilation": "PASS_FOR_THIS_CANDIDATE",
   "pending_native_candidate": {
-    "source_scope": "Exact Minecraft 26.3 reader and storage cached membership revocation",
+    "source_scope": "Exact Minecraft 26.3 owned physical cable graph and live reader/storage alias revocation",
     "expected_native_tests": 193,
-    "validation": "PENDING_NATIVE_26_3_TWO_PROFILE",
+    "validation": "PENDING_NATIVE_26_3_BOTH_NEOFORGE_PROFILES",
     "installed_providers": "NOT_TESTED",
     "rc_publication_cleared": false
   },
-  "current_source_notes": "2026-10-30: native source changed; live HostEntity identity validation and owner/part/cable group revalidation for storage Nodes plus reader target exports. New PortGameTest checks unannounced owner change, disconnected centre cable and detached reader. Expected 193/193 per loader profile, NOT YET EXECUTED on this source. Prior 192-case dual-loader acceptance is pinned only to earlier source 69d9d38; no RC clearance."
+  "current_source_notes": "2026-10-30: Corrected real native regression: physical MultipartTopology union previously joined foreign-owned cable/node edges, so cached storage revalidation repeatedly invalidated the entire component and broke legitimate local withdrawals. Now skip graph unions unless both ends share nonnull owner. Preserve local attached endpoints, deny newly foreign remote aliases, and verify 193 native cases (including reader revocation and local storage after owner change). New exact-source validation pending. Native failures on prior candidate are recorded; no RC clearance."
 }
