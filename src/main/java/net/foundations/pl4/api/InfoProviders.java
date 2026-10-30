@@ -48,7 +48,7 @@ public final class InfoProviders {
     }
     private static void collect(Entry entry,Context context,List<Part.Row> result,boolean builtin){
         String id=entry.id;Thread owner=Thread.currentThread();
-        Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());
+        Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());\n        Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
         boolean[] active={true};
         try{
             entry.provider.sample(context,(key,name,value,capacity,unit)->{
@@ -58,20 +58,20 @@ public final class InfoProviders {
             });
             // A real installed provider may invalidate or unload its backing target during
             // the callback.  Never publish a sample collected after that authority changed.
-            if (!stillLive(context)) return;
+            if (!stillLive(context,initialBlockEntity)) return;
             result.addAll(pending.values());
         }catch(RuntimeException|LinkageError ex){
             synchronized(entry){if(!entry.warned){entry.warned=true;org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}
         }finally{active[0]=false;}
     }
-    private static boolean stillLive(Context context){
+    private static boolean stillLive(Context context,Object initialBlockEntity){
         ServerLevel level=context.level();Part.Link target=context.target();
         if (!level.getServer().isSameThread() || !level.dimension().location().toString().equals(target.dimension())) return false;
         if (target.entity()!=null) {
             Entity current=level.getEntity(target.entity());
             return current!=null && current==context.entity() && !current.isRemoved();
         }
-        return level.hasChunkAt(target.pos());
+        return level.hasChunkAt(target.pos()) && level.getBlockEntity(target.pos()) == initialBlockEntity;
     }
     private static String clean(String value,int limit){String text=value.replaceAll("[\\p{Cntrl}§]","");return text.substring(0,Math.min(limit,text.length()));}
 }
