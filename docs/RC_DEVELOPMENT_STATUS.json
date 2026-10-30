@@ -4452,7 +4452,7 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-30T17:10:00Z: added installed-provider no-force-load regression on main 291516dd; exact 211-fixture verification pending.",
+  "current_checkpoint": "2026-10-30T19:08:00Z: Added installed-provider exception quarantine regression at source 765439df; BUILD_STATUS requires 212 exact native fixtures; native/JAR/release evidence pending.",
   "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
   "next_step": "Inspect push-triggered exact-source verification; preserve exact JAR/artifact hashes only after full 211/211 native and production pass.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
@@ -4472,5 +4472,24 @@
   },
   "expected_native_fixtures": 211,
   "rc_clearance": "0/24",
-  "release": "none"
+  "release": "none",
+  "next_work": [
+    "Inspect push-triggered exact-source verification for 765439df.",
+    "If 212/212 native and production checks pass, preserve production JAR hash and retained artifact checksum; do not publish because RC clearance remains false.",
+    "Continue fresh mc/26.1.2 qualification and installed optional-provider unload/replacement evidence."
+  ],
+  "writer_lease": null,
+  "last_writer_release": {
+    "owner": "pl4-chat-20261030T1206Z",
+    "released_at": "2026-10-30T19:08:00Z",
+    "lease_claim_commit": "d68bd41f839f059917f6193311cf82ff1f147019",
+    "expected_parent": "169dfb5a94268fba31c01ed3f0c00ee6e83ecc0b",
+    "source_commits": [
+      "765439df41437f86ed52eabc964f9ef8bc277b30",
+      "dd73ac625c21e16f05602924d6d26a962a349e79"
+    ],
+    "writer_lease_released": true,
+    "release_performed": false,
+    "evidence": "pending exact-source verification"
+  }
 }
