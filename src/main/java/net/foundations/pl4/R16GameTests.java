@@ -311,8 +311,20 @@ public final class R16GameTests {
     public static void networkStorageRevokesNewlyForeignEndpoint(GameTestHelper h){
         var f=networkStorage(h,"PL4-Network-B");f.first().chest().setItem(0,new ItemStack(Items.DIAMOND,5));f.secondChest().setItem(0,new ItemStack(Items.DIAMOND,23));
         UUID token=WirelessStorage.open(f.first().player(),net.minecraft.world.InteractionHand.MAIN_HAND);f.second().owner=UUID.randomUUID();
+        var current=NetworkEngine.storageNodes(h.getLevel().getServer(),f.first().node());
+        h.assertTrue(current.stream().anyMatch(r->r.part()==f.first().node())
+                &&current.stream().noneMatch(r->r.part()==f.second()),
+            "Revoked topology must keep the owned local Node and exclude the foreign endpoint; refs="
+                +current.stream().map(r->r.part().kind+":"+r.part().owner).toList());
         WirelessStorage.request(f.first().player(),new PLPackets.StorageRequest(token,"withdraw",0,64));
-        h.assertTrue(f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).getCount()==23,"Every remote Node ownership is rechecked, not just the anchor");h.succeed();
+        int playerDiamonds=0;
+        for(int slot=0;slot<36;slot++)if(f.first().player().getInventory().getItem(slot).is(Items.DIAMOND))
+            playerDiamonds+=f.first().player().getInventory().getItem(slot).getCount();
+        h.assertTrue(f.first().chest().getItem(0).isEmpty()&&f.secondChest().getItem(0).getCount()==23,
+            "Owned local withdrawal after remote revocation failed: local="
+                +f.first().chest().getItem(0).getCount()+", remote="
+                +f.secondChest().getItem(0).getCount()+", player="+playerDiamonds
+                +", current_nodes="+current.size());h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void networkStorageDropsDisconnectedSources(GameTestHelper h){
