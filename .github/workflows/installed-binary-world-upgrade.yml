@@ -58,18 +58,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p results/pinned-native
-          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12859271452 > results/pinned-native/artifact-metadata.json
+          gh api repos/Shnewbs/Foundations-PL4/actions/artifacts/12948304091 > results/pinned-native/artifact-metadata.json
           curl --fail --show-error --silent --location --retry 2 \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12859271452/zip" \
+            "https://api.github.com/repos/Shnewbs/Foundations-PL4/actions/artifacts/12948304091/zip" \
             --output results/pinned-native/native-artifact.zip
           python3 control/tools/multiplayer-probe/exact_native_candidate.py \
             --artifact-zip results/pinned-native/native-artifact.zip \
             --artifact-metadata results/pinned-native/artifact-metadata.json \
-            --artifact-sha256 357be6c367d5f3e7b0b8a0edde28e57c8be06d4f237d4d3a5f931208109026d7 \
-            --source-sha aa9b439b69106b6232ef2c58fdfa155889d0ba1f \
-            --jar-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c \
+            --artifact-sha256 766e57bd47aa926f2a8a471930df8f475e579be1c9b8e666b1097a2a386960dd \
+            --source-sha 411401924e35ea1c7e085db4afdcd7cc241eeb33 \
+            --jar-sha256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc \
+            --expected-native-tests 207 \
             --output results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar
       - name: Start actual published beta server, place PL4 host and save native world
         run: |
@@ -83,7 +84,7 @@ jobs:
           python3 control/tools/multiplayer-probe/installed_binary_world_upgrade.py restore \
             --checkout control \
             --jar results/pinned-native/FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar \
-            --sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c \
+            --sha256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc \
             --seed binary-upgrade/seed \
             --baseline-sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229 \
             --output binary-upgrade/restore --timeout-seconds 1500
@@ -92,13 +93,13 @@ jobs:
           python3 control/tools/multiplayer-probe/installed_binary_world_upgrade.py verify \
             --seed binary-upgrade/seed --restore binary-upgrade/restore \
             --baseline-sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229 \
-            --candidate-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c
+            --candidate-sha256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc
       - name: Independently inspect real saved PL4 multipart NBT from both installed JAR servers
         run: |
           python3 control/tools/multiplayer-probe/verify_native_multipart_nbt.py \
             --seed binary-upgrade/seed --restore binary-upgrade/restore \
             --baseline-sha256 7fa14351e1bbf039846afba040e4b66ce16b98db64103f1b33fc8ce14df0c229 \
-            --candidate-sha256 cee5787af35f95af092a65b4a049276619bf24547b342c60192674cb360f030c
+            --candidate-sha256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc
       - name: Retain original and candidate native-world receipts even on failure
         if: always()
         uses: actions/upload-artifact@v4
