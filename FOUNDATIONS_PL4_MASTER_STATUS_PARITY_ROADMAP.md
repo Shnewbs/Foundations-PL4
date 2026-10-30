@@ -1,3 +1,7 @@
+### October 30, 2026 — installed-provider entity replacement identity regression added; 213-fixture verification queued
+
+Main source `c5e6306b` adds an exact native regression for entity UUID authority across callback-time removal and same-position replacement. The candidate remains pending at 213 fixtures; no RC publication is cleared.
+
 ### October 30, 2026 — installed-provider exception quarantine regression added; 212-fixture verification pending
 
 Main source `765439df` adds an exact native regression proving that a failing installed InfoProvider discards partial rows without preventing later healthy providers from sampling. The candidate is pending fresh exact-source verification at 212 fixtures; no RC publication is cleared. Next: inspect the push-triggered verification and retain exact artifact/JAR hashes only after a full native/production pass.
