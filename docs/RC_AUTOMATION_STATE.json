@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261029T2302Z",
-    "claimed_at": "2026-10-30T06:02:42Z",
-    "expires_at": "2026-10-30T06:17:42Z",
-    "parent_head": "871da2e0ee31301fc800d7037a68dc2c10be132b",
-    "scope": "main source fix and checkpoint",
-    "renewed_at": "2026-10-30T06:02:42Z"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,11 +14,11 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T06:02:42Z: repairing escaped newline in InfoProviders.java after controller-detected offline syntax failure; native verification not yet valid.",
+  "current_checkpoint": "2026-10-30T06:07:00Z: Repaired literal escaped newline in InfoProviders.java after controller-detected syntax failure. Exact-source verification queued on 6c1e11da; no native result yet.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Run nonduplicate hourly-builds.yml for exact main source 1ee598de and preserve native/JAR hashes.",
-    "Execute independent installed optional-provider callback revocation/unload/replacement fixture with no-force-load evidence.",
+    "Inspect exact-source verification for 6c1e11da and preserve native/JAR hashes if passed.",
+    "Run independent installed optional-provider callback revocation/unload/replacement fixture with no-force-load evidence.",
     "Qualify exact mc/26.1.2 source 3e341444 via selected hourly build; do not inherit older 192-case evidence.",
     "Continue authenticated multiplayer, arbitrary-world migration, sustained performance, true 26.1/26.2 source repair and 1.6.4 gravel root cause."
   ],
@@ -67,10 +60,10 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261029T2200Z",
-    "released_at": "2026-10-30T05:10:00Z",
-    "lease_claim_commit": "a530170ac1d2b53ae3b9324b87309fd5eb54d86c",
-    "source_commit": "1ee598de2a78ff3d0721c9652c95cedb39ce089a",
+    "owner": "pl4-hourly-chat-20261029T2302Z",
+    "released_at": "2026-10-30T06:07:00Z",
+    "lease_claim_commit": "5876e0d2538628243094a4f41e7bc5ac4b3c9b47",
+    "source_commit": "6c1e11da28e86fc669cbacb04022ed8e62cf2b6f",
     "pinned_control_commit": null,
     "native_run": null,
     "installed_runs": [],
