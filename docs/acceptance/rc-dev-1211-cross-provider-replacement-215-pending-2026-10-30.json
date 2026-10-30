@@ -29,7 +29,7 @@
     "New native installedProviderReplacementSkipsLaterCallbacks proves replacement really occurred and no stale/later rows publish"
   ],
   "new_expected_native_fixtures": 215,
-  "new_exact_source_validation": "PENDING",
+  "new_exact_source_validation": "PASS_215_OF_215",
   "rc_publication_cleared": false,
   "github_release": null,
   "curseforge_upload_id": null,
@@ -37,5 +37,34 @@
     "Independent installed optional provider JAR, chunk-unload and replacement callbacks",
     "Authenticated multiplayer, arbitrary-world migration, sustained performance",
     "Exact 26.1.2 installed acceptance; 26.1 and 26.2 true source ports"
-  ]
+  ],
+  "final_native": {
+    "minecraft": "1.21.1",
+    "source_commit": "f14b5bf32f8c08fb6299aed0a02637af4727493c",
+    "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/f14b5bf32f8c08fb6299aed0a02637af4727493c",
+    "build_status_blob_sha": "36becfe707f549c377d3b4d6ae5176c43514d88b",
+    "run_id": 41143705764,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143705764",
+    "native_passed": 215,
+    "native_total": 215,
+    "offline_assertions": 1149451,
+    "artifact_id": 13019564054,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143705764/artifacts/13019564054",
+    "artifact_zip_sha256": "16e1c68122bfba2dc5f8777cfe8290c2017ec11b22fba2741fe92aec1aa88f2d",
+    "source_archive_artifact_id": 13019692332,
+    "source_archive_zip_sha256": "0406f4ca5ae4b24a0573ea648859504ef1cc928583aa447c83b1636326e7e981",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "661aa313c5f93f98438d3734c1148cdac471cfcc534b912d66c212a5a0f87637",
+    "sources_jar_sha256": "5961de4df2b13eabd5260a7cc8b8852b69b9aa791556c803d59b53bf62330c06",
+    "native_scenarios_jar_sha256": "d87658cc0f6abc89c656c28bd7030a6c0c3e428989526633e45694c5db143c9f",
+    "archive_files": 6,
+    "archive_crc": "PASS",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "jar_metadata": "foundations_pl4 0.2.0-rc.1-dev, exact Minecraft [1.21.1]",
+    "publication_run": 41143705722,
+    "github_release_step": "SKIPPED",
+    "curseforge_step": "SKIPPED",
+    "scope": "Exact pinned source native and production packaging only. Not independently installed optional third-party providers, authenticated multiplayer, arbitrary-world migration, sustained performance or current docs-only main tip."
+  }
 }

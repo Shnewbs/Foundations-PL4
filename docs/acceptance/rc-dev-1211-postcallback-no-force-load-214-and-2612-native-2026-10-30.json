@@ -10,8 +10,25 @@
     "candidate": "PENDING_214_EXACT_SOURCE",
     "previous_213_run": 41143152015,
     "previous_213_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015",
-    "previous_213_result": "IN_PROGRESS_AT_EVIDENCE_AUTHORING; do not infer pass",
-    "production_jar_sha256": null
+    "previous_213_result": "PASS_213_OF_213",
+    "production_jar_sha256": null,
+    "verified_214": {
+      "minecraft": "1.21.1",
+      "source_commit": "683722364cbce4d53592951bdf713cd468650bef",
+      "run_id": 41143497020,
+      "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143497020",
+      "native_passed": 214,
+      "native_total": 214,
+      "offline_assertions": 1149451,
+      "artifact_id": 13019903057,
+      "artifact_zip_sha256": "039736ac5953803a2db968118832285bc5e2fcca424e7ba289387b68d71bf84a",
+      "production_jar_sha256": "85d8020e0722a2e90e3ff516e237b56f4bdc1cba734f3ba1fd2ab68647435171",
+      "sources_jar_sha256": "97cbc938baed4310010a866077b96fff8ea439912d0e9fbc03c2179bcd39bc27",
+      "native_scenarios_jar_sha256": "c451b7122c4e53a560ee81a6515c0d093abba14c8d58a6d23db9a2e4318d0b26",
+      "archive_crc": "PASS",
+      "production_jar_crc": "PASS",
+      "scope": "Superseded exact 214-case native pass, not 215 source"
+    }
   },
   "native_2612": {
     "minecraft": "26.1.2",
