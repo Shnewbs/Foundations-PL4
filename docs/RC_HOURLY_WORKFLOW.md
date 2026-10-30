@@ -1,3 +1,7 @@
+### October 30, 2026 — installed-provider exception quarantine regression added; 212-fixture verification pending
+
+Main source `765439df` adds `installedProviderExceptionDiscardsPartialRows`: a throwing installed provider must not publish partial rows, while a later healthy provider remains callable. `BUILD_STATUS.json` now requires 212 exact native fixtures. No native/JAR/release evidence is counted until fresh exact-source verification passes. **0/24 RC clearances.** Next: inspect the push-triggered 212-fixture verification and preserve exact artifact/JAR hashes only on a full pass.
+
 ### October 30, 2026 — exact 1.21.1 no-force-load provider regression added; 211-fixture verification pending
 
 Main source `291516dd` adds `providerApiRejectsUnloadedTargetWithoutForceLoading`: an unloaded target must not invoke installed providers, must return no rows, and must not make the target chunk resident. `BUILD_STATUS.json` now requires 211 exact native fixtures. No native/JAR/release evidence is counted until the fresh exact-source verification passes. Lease claim `4c6df729` remains active for this checkpoint; next inspect the push-triggered verification, then preserve exact artifact/JAR hashes only on a full 211/211 pass. **0/24 RC clearances.**
