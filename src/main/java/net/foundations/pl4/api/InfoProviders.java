@@ -38,22 +38,25 @@ public final class InfoProviders {
         if(!level.dimension().location().toString().equals(target.dimension()))return List.of();
         Entity entity=target.entity()==null?null:level.getEntity(target.entity());
         if(target.entity()!=null?entity==null:!level.hasChunkAt(target.pos()))return List.of();
+        // Pin the original backing identity across ALL providers, not just each
+        // callback. A provider may replace a block entity at the same position;
+        // subsequent providers must not silently read the replacement.
+        Object originalBacking=target.entity()==null?level.getBlockEntity(target.pos()):null;
         Context context=new Context(level,target,entity);List<Part.Row> result=new ArrayList<>();
-        collect(VANILLA,context,result,true);
+        collect(VANILLA,context,result,true,originalBacking);
         for(var entry:snapshot){
             if(result.size()>=256)break;
-            collect(entry,context,result,false);
+            collect(entry,context,result,false,originalBacking);
         }
         return List.copyOf(result);
     }
-    private static void collect(Entry entry,Context context,List<Part.Row> result,boolean builtin){
+    private static void collect(Entry entry,Context context,List<Part.Row> result,boolean builtin,Object initialBlockEntity){
         String id=entry.id;Thread owner=Thread.currentThread();
         Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());
         // An earlier installed callback can unload a chunk before this provider's turn.
         // Check residency BEFORE querying its block entity; the lookup must never
         // re-admit or force-load a target revoked by an earlier callback.
         if(context.entity()==null && !context.level().hasChunkAt(context.target().pos()))return;
-        Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
         boolean[] active={true};
         // Do not invoke an installed provider after an earlier provider or callback has
         // already invalidated the target. This keeps callback-time revocation from

@@ -4472,9 +4472,9 @@
   },
   "current_checkpoint": "Verifier/controller repair completed: stale hardcoded R16 exact fixture-count guard now uses a meaningful >=45 minimum; fresh exact-source verification pending; no native/JAR/release evidence counted.",
   "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
-  "next_step": "Inspect 214-case exact 1.21.1 native/production verification, then independent installed third-party provider and 26.1.2 installed-client/performance acceptance.",
+  "next_step": "Inspect 215-case exact-source verification for cross-provider replacement; preserve production JAR hash only on native PASS, then independent installed third-party provider acceptance.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
-  "native_validation": "PENDING_EXACT_SOURCE_214",
+  "native_validation": "PENDING_EXACT_SOURCE_215",
   "rc_publication_cleared": false,
   "last_verified_checkpoint": "2026-10-30T09:05:10Z: main source 872bfc2 passed 208/208 native GameTests and 1,149,451 offline assertions in run 41030606887; no release/upload.",
   "latest_native_validation": {
@@ -4488,14 +4488,14 @@
     "artifact_sha256": "825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626",
     "production_jar_sha256": "NOT_INDEPENDENTLY_RECORDED"
   },
-  "expected_native_fixtures": 214,
+  "expected_native_fixtures": 215,
   "rc_clearance": "0/24",
   "release": "none",
   "next_work": [
-    "Validate new 214-case 1.21.1 source with exact native and packaged-JAR hashes",
-    "Build independent installed optional-provider callback unload/replacement/no-force-load acceptance",
-    "Extend exact 26.1.2 193-case native PASS with installed-provider, client, multiplayer, migration and sustained performance; no RC clearance yet",
-    "Keep mc/26.3 retired publisher retired and use exact-tag guarded path only when eligible"
+    "Verify 215 exact native cases and packaged 1.21.1 production JAR on new source",
+    "Run installed optional-provider JAR callback unload/replacement/no-force-load acceptance",
+    "Extend exact 26.1.2 native PASS to installed client/provider/multiplayer/migration/performance acceptance",
+    "No publication until per-target RC clearance explicitly true"
   ],
   "writer_lease": null,
   "last_writer_release": {
@@ -4559,6 +4559,31 @@
     "expected_native_fixtures": 214,
     "validation": "PENDING_EXACT_SOURCE",
     "evidence": "docs/acceptance/rc-dev-1211-postcallback-no-force-load-214-and-2612-native-2026-10-30.json",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_verified_213": {
+    "source_commit": "12739444fdb2875ec47bdaf094cd2488bb94ffd7",
+    "workflow_run": 41143152015,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015",
+    "actual_native_passed": 213,
+    "actual_native_total": 213,
+    "offline_assertions_passed": 1149451,
+    "artifact_id": 13019057401,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015/artifacts/13019057401",
+    "artifact_zip_sha256": "c01de737e340e0e4c150c8170cbad8fa5ca52822203f592704b77b711971bb94",
+    "production_jar_sha256": "4773a85e9b9479c9e971bbaec2ac8b947b9aa6a796e519f6c67700b02ffbb497",
+    "sources_jar_sha256": "d019f54f3cf6226ec175c4196a68dfdce94d3a0e067daa0ed63fd8eb003902a6",
+    "scenario_jar_sha256": "25f8554f1c4e3f28dc5b02b162fee79d2563a4e17a0644fce6e9de2d6d78b61c",
+    "archive_entries": 6,
+    "archive_crc": "PASS",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "scope": "Native and packaged exact-source pass only; installed third-party providers, authenticated clients, migration and sustained performance remain unaccepted"
+  },
+  "latest_cross_provider_replacement_candidate": {
+    "expected_native_fixtures": 215,
+    "validation": "PENDING_EXACT_SOURCE",
+    "evidence": "docs/acceptance/rc-dev-1211-cross-provider-replacement-215-pending-2026-10-30.json",
     "rc_publication_cleared": false
   }
 }

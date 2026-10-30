@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-10-30T23:18:29.391Z",
+  "scope": "Main exact 1.21.1 cross-provider backing identity and 215th native regression",
+  "previous_213_native_verified": {
+    "source_commit": "12739444fdb2875ec47bdaf094cd2488bb94ffd7",
+    "workflow_run": 41143152015,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015",
+    "actual_native_passed": 213,
+    "actual_native_total": 213,
+    "offline_assertions_passed": 1149451,
+    "artifact_id": 13019057401,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015/artifacts/13019057401",
+    "artifact_zip_sha256": "c01de737e340e0e4c150c8170cbad8fa5ca52822203f592704b77b711971bb94",
+    "production_jar_sha256": "4773a85e9b9479c9e971bbaec2ac8b947b9aa6a796e519f6c67700b02ffbb497",
+    "sources_jar_sha256": "d019f54f3cf6226ec175c4196a68dfdce94d3a0e067daa0ed63fd8eb003902a6",
+    "scenario_jar_sha256": "25f8554f1c4e3f28dc5b02b162fee79d2563a4e17a0644fce6e9de2d6d78b61c",
+    "archive_entries": 6,
+    "archive_crc": "PASS",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "scope": "Native and packaged exact-source pass only; installed third-party providers, authenticated clients, migration and sustained performance remain unaccepted"
+  },
+  "previous_214_source": "683722364cbce4d53592951bdf713cd468650bef",
+  "previous_214_run": 41143497020,
+  "previous_214_result": "IN_PROGRESS_AT_CHECKPOINT; do not infer pass",
+  "new_source_changes": [
+    "Capture original block entity once at InfoProviders.sample admission and carry that identity through every provider",
+    "Suppress later provider callbacks when a prior provider replaces the block entity at the same position",
+    "New native installedProviderReplacementSkipsLaterCallbacks proves replacement really occurred and no stale/later rows publish"
+  ],
+  "new_expected_native_fixtures": 215,
+  "new_exact_source_validation": "PENDING",
+  "rc_publication_cleared": false,
+  "github_release": null,
+  "curseforge_upload_id": null,
+  "remaining": [
+    "Independent installed optional provider JAR, chunk-unload and replacement callbacks",
+    "Authenticated multiplayer, arbitrary-world migration, sustained performance",
+    "Exact 26.1.2 installed acceptance; 26.1 and 26.2 true source ports"
+  ]
+}

@@ -800,6 +800,36 @@ public final class R16GameTests {
         if(!ItemTransferSafety.blocked(p)||p.pendingItem.getCount()!=8||actual[0]!=15)throw new IllegalStateException("Uncertain player delivery must remain fenced");
         p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
     }
+    /** A same-position replacement must not re-admit later installed callbacks. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderReplacementSkipsLaterCallbacks(GameTestHelper h){
+        BlockPos local=new BlockPos(2,1,1);
+        chest(h,local);
+        BlockPos absolute=h.absolutePos(local);
+        var original=h.getLevel().getBlockEntity(absolute);
+        h.assertTrue(original!=null,"Replacement fixture needs a real original backing block entity");
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),absolute,Direction.UP,null,null);
+        int[] laterCalls={0};
+        try(var first=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_replace_cross",(context,out)->{
+            h.getLevel().removeBlockEntity(absolute);
+            h.getLevel().setBlock(absolute,Blocks.AIR.defaultBlockState(),3);
+            h.getLevel().setBlock(absolute,Blocks.CHEST.defaultBlockState(),3);
+            out.add("stale","Stale",1,1,"");
+        });var later=net.foundations.pl4.api.InfoProviders.register("pl4_test:z_after_replace",(context,out)->{
+            laterCalls[0]++;
+            out.add("late","Late",2,2,"");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(h.getLevel().getBlockEntity(absolute)!=null&&h.getLevel().getBlockEntity(absolute)!=original,
+                "Callback must really replace the backing block entity at the same position");
+            h.assertTrue(laterCalls[0]==0,
+                "Original target revocation must suppress all later installed callbacks even if a replacement is live");
+            h.assertTrue(rows.stream().noneMatch(row->row.key().startsWith("pl4_test:")),
+                "No installed rows from the revoked original target may escape");
+        }
+        h.succeed();
+    }
+
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void installedProviderExceptionDiscardsPartialRows(GameTestHelper h){
         BlockPos position=new BlockPos(2,1,1);

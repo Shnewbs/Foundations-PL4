@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T2318Z-cross-provider-backing-identity",
-    "claimed_at": "2026-10-30T23:17:57.513Z",
-    "expires_at": "2026-10-30T23:32:57.513Z",
-    "expected_parent": "683722364cbce4d53592951bdf713cd468650bef",
-    "scope": "cross-provider original backing identity and native regression"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -23,10 +17,10 @@
   "current_checkpoint": "2026-10-30T22:05:00Z: Repaired stale hardcoded R16 verifier drift with a meaningful >=45 minimum guard; evidence recorded; lease released; fresh exact-source verification still pending; no native/JAR/release evidence counted.",
   "local_validation": "GitHub readback confirmed verifier repair commits 8d729e62 and f6946c22 plus evidence addddb43; no native or packaged-artifact result was promoted.",
   "next_work": [
-    "Validate new 214-case 1.21.1 source with exact native and packaged-JAR hashes",
-    "Build independent installed optional-provider callback unload/replacement/no-force-load acceptance",
-    "Extend exact 26.1.2 193-case native PASS with installed-provider, client, multiplayer, migration and sustained performance; no RC clearance yet",
-    "Keep mc/26.3 retired publisher retired and use exact-tag guarded path only when eligible"
+    "Verify 215 exact native cases and packaged 1.21.1 production JAR on new source",
+    "Run installed optional-provider JAR callback unload/replacement/no-force-load acceptance",
+    "Extend exact 26.1.2 native PASS to installed client/provider/multiplayer/migration/performance acceptance",
+    "No publication until per-target RC clearance explicitly true"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,11 +60,11 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T2316Z-postcallback-no-force-load",
-    "released_at": "2026-10-30T23:16:25.173Z",
-    "lease_claim_commit": "9093beeb1e0ebfbd6e0b047b99f02c24c745b631",
-    "expected_parent": "12739444fdb2875ec47bdaf094cd2488bb94ffd7",
-    "evidence": "docs/acceptance/rc-dev-1211-postcallback-no-force-load-214-and-2612-native-2026-10-30.json",
+    "owner": "pl4-chat-20261030T2318Z-cross-provider-backing-identity",
+    "released_at": "2026-10-30T23:18:29.391Z",
+    "lease_claim_commit": "e1be43fb87cc2a18a5cc3b31500cce4e97053b83",
+    "expected_parent": "683722364cbce4d53592951bdf713cd468650bef",
+    "evidence": "docs/acceptance/rc-dev-1211-cross-provider-replacement-215-pending-2026-10-30.json",
     "writer_lease_released": true,
     "release_performed": false
   },
@@ -2833,7 +2827,7 @@
     "rc_clearance": "0/24",
     "release_performed": false
   },
-  "next_step": "Inspect 214-case exact 1.21.1 native/production verification, then independent installed third-party provider and 26.1.2 installed-client/performance acceptance.",
+  "next_step": "Inspect 215-case exact-source verification for cross-provider replacement; preserve production JAR hash only on native PASS, then independent installed third-party provider acceptance.",
   "last_checkpoint": {
     "timestamp": "2026-10-30T17:10:00Z",
     "source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
@@ -2899,6 +2893,31 @@
     "expected_native_fixtures": 214,
     "validation": "PENDING_EXACT_SOURCE",
     "evidence": "docs/acceptance/rc-dev-1211-postcallback-no-force-load-214-and-2612-native-2026-10-30.json",
+    "rc_publication_cleared": false
+  },
+  "latest_1211_verified_213": {
+    "source_commit": "12739444fdb2875ec47bdaf094cd2488bb94ffd7",
+    "workflow_run": 41143152015,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015",
+    "actual_native_passed": 213,
+    "actual_native_total": 213,
+    "offline_assertions_passed": 1149451,
+    "artifact_id": 13019057401,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015/artifacts/13019057401",
+    "artifact_zip_sha256": "c01de737e340e0e4c150c8170cbad8fa5ca52822203f592704b77b711971bb94",
+    "production_jar_sha256": "4773a85e9b9479c9e971bbaec2ac8b947b9aa6a796e519f6c67700b02ffbb497",
+    "sources_jar_sha256": "d019f54f3cf6226ec175c4196a68dfdce94d3a0e067daa0ed63fd8eb003902a6",
+    "scenario_jar_sha256": "25f8554f1c4e3f28dc5b02b162fee79d2563a4e17a0644fce6e9de2d6d78b61c",
+    "archive_entries": 6,
+    "archive_crc": "PASS",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "scope": "Native and packaged exact-source pass only; installed third-party providers, authenticated clients, migration and sustained performance remain unaccepted"
+  },
+  "latest_cross_provider_replacement_candidate": {
+    "expected_native_fixtures": 215,
+    "validation": "PENDING_EXACT_SOURCE",
+    "evidence": "docs/acceptance/rc-dev-1211-cross-provider-replacement-215-pending-2026-10-30.json",
     "rc_publication_cleared": false
   }
 }
