@@ -56,10 +56,22 @@ public final class InfoProviders {
                 String fullKey=builtin?key:id+"/"+key;
                 pending.putIfAbsent(fullKey,new Part.Row(fullKey,clean(name,96),value,capacity,clean(unit,24)));
             });
+            // A real installed provider may invalidate or unload its backing target during
+            // the callback.  Never publish a sample collected after that authority changed.
+            if (!stillLive(context)) return;
             result.addAll(pending.values());
         }catch(RuntimeException|LinkageError ex){
             synchronized(entry){if(!entry.warned){entry.warned=true;org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}
         }finally{active[0]=false;}
+    }
+    private static boolean stillLive(Context context){
+        ServerLevel level=context.level();Part.Link target=context.target();
+        if (!level.getServer().isSameThread() || !level.dimension().location().toString().equals(target.dimension())) return false;
+        if (target.entity()!=null) {
+            Entity current=level.getEntity(target.entity());
+            return current!=null && current==context.entity() && !current.isRemoved();
+        }
+        return level.hasChunkAt(target.pos());
     }
     private static String clean(String value,int limit){String text=value.replaceAll("[\\p{Cntrl}§]","");return text.substring(0,Math.min(limit,text.length()));}
 }
