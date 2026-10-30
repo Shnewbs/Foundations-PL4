@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 207,
+  "expected_native_tests": 208,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -67,7 +67,7 @@
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json",
     "latest_207_native_installed": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json"
   },
-  "current_source_notes": "2026-10-30 2026-10-30T02:19:42.183Z: Exact 1.21.1 source 411401924 fixed fluid/FE provider callback-time authority/backing revocation, +3 native tests, 207/207 actual GameTests in 40989902987 (also 207/207 in 40990361572), production JAR SHA256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc. Exact artifact pin 3509693c5 enabled installed dedicated-server 40990361662, real saved-world upgrade 40990361653 and two offline graphical clients per phase 40990361834, all PASS; screenshots and native NBT reviewed, 64+64 cable items, 1728 conserved, 0 escrow. Actual third-party installed providers, online auth, arbitrary worlds, sustained perf and other exact ports pending. 0/24 RC clearance, GH/CF publication skipped. Evidence docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json.",
+  "current_source_notes": "2026-10-30: Exact-source verification 41017673385 reached 1,149,451 offline assertions and failed at verifyBuildStatus because this metadata still declared 207 while the current native fixture count is 208. No native GameTests or JAR is counted from that run; repaired for the next exact-source verification.",
   "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
   "previous_candidate_workflow_run": "40848203024",
   "pending_native_candidate": {
