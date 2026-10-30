@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-20261030T2316Z-postcallback-no-force-load",
+    "claimed_at": "2026-10-30T23:15:48.146Z",
+    "expires_at": "2026-10-30T23:30:48.146Z",
+    "expected_parent": "12739444fdb2875ec47bdaf094cd2488bb94ffd7",
+    "scope": "main post-callback chunk no-force-load guard and native fixture"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
