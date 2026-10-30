@@ -51,6 +51,10 @@ public final class InfoProviders {
         Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());
         Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
         boolean[] active={true};
+        // Do not invoke an installed provider after an earlier provider or callback has
+        // already invalidated the target. This keeps callback-time revocation from
+        // becoming an observable side effect and preserves the no-force-load contract.
+        if (!stillLive(context,initialBlockEntity)) return;
         try{
             entry.provider.sample(context,(key,name,value,capacity,unit)->{
                 if(Thread.currentThread()!=owner||!active[0]||pending.size()>=budget||key==null||key.isBlank()||key.length()>48||!key.matches("[a-zA-Z0-9_.-]+")||name==null||unit==null||!Double.isFinite(value)||!Double.isFinite(capacity)||capacity<0)return;
