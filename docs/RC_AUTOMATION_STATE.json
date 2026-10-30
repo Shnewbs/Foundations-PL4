@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T1109Z",
-    "claimed_at": "2026-10-30T18:09:30Z",
-    "expires_at": "2026-10-30T18:39:30Z",
-    "expected_parent": "1b005f92a248f9a9f4b007b4faa62d244f0b65bd",
-    "purpose": "InfoProviders empty-backing guard and exact test checkpoint"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,12 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T17:12:00Z: committed no-force-load provider regression 291516dd and advanced exact manifest to 211; lease released; fresh exact-source verification pending.",
-  "local_validation": "Source/test readback passed via GitHub API: new no-force-load GameTest asserts unloaded target, zero provider callbacks, and no chunk residency change. BUILD_STATUS expected_native_tests=211. No native/JAR result counted.",
+  "current_checkpoint": "2026-10-30T18:10:00Z: InfoProviders now rejects block-target sampling without a live backing block entity; replacement fixture asserts real backing entity. Native/JAR/release evidence pending.",
+  "local_validation": "GitHub API readback passed for source commits fb466034 and 281ebe709. No native or packaged artifact result counted.",
   "next_work": [
-    "Inspect push-triggered exact-source verification for repaired 211-fixture candidate; count native/JAR evidence only after full pass.",
-    "If native passes, preserve exact production JAR hash and retained artifact checksum; do not publish because RC publication remains uncleared.",
-    "Continue independent installed optional-provider unload/replacement evidence and fresh exact mc/26.1.2 qualification.",
-    "Continue authenticated multiplayer, arbitrary-world migration, sustained performance, true 26.1/26.2 source repair and 1.6.4 gravel root cause."
+    "Inspect push-triggered exact-source verification for the provider guard checkpoint.",
+    "If exact native passes, preserve production JAR hash and retained artifact checksum; do not publish because RC clearance remains false.",
+    "Continue fresh mc/26.1.2 qualification and installed optional-provider unload/replacement evidence."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,17 +59,17 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T1005Z",
-    "released_at": "2026-10-30T17:12:00Z",
-    "lease_claim_commit": "4c6df7299980f5c38eb76ec6602e67a52604aeec",
-    "expected_parent": "37a932dc422b99120f96856f5981263f472e2d20",
+    "owner": "pl4-chat-20261030T1109Z",
+    "released_at": "2026-10-30T18:10:00Z",
+    "lease_claim_commit": "1d820def3d84f675ba15b259d572429b3b2ff531",
+    "expected_parent": "1b005f92a248f9a9f4b007b4faa62d244f0b65bd",
     "source_commits": [
-      "291516dd515d841ae8c0ea52fc227dce4afb4471",
-      "e4f2746f891877065f85e07a331c6a3358493fd2"
+      "fb4660346726d136399d902161bf9ae5ca3ca569",
+      "281ebe70913c9faa96a5d85f23abd07bbebaa58a"
     ],
     "writer_lease_released": true,
     "release_performed": false,
-    "evidence": "docs/acceptance/rc-dev-1211-provider-no-force-load-211-pending-2026-10-30.json"
+    "evidence": "pending exact-source verification"
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-no-force-load-211-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
