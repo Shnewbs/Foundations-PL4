@@ -1,0 +1,318 @@
+{
+  "recorded_at": "2026-10-30T00:31:06.416Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "session_owner": "pl4-chat-20261030T0011Z-rc-acceptance",
+  "scope": "Exact source implementation, real native acceptance, binary/archive SHA and current release eligibility; no automatic clearance promotion",
+  "main": {
+    "minecraft": "1.21.1",
+    "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+    "game_tests": "201/201",
+    "run_id": 40978813923,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923",
+    "artifact_id": 12944550119,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923/artifacts/12944550119",
+    "production_jar_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987",
+    "artifact_zip_sha256": "950e92c8f6a0554e1e0a1d05f5d79025236b0606f531a69c572a5890bac1b0e8",
+    "archive_entries": 6,
+    "jar_entries": 883,
+    "zip_crc": "PASS",
+    "jar_crc": "PASS",
+    "source_repair_commit": "0aca335fbc7faa1c3df2ba0bd15935a1f1503d91",
+    "verifier_fix_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+    "prior_failed_run": 40978429082,
+    "rc_publication_cleared": false
+  },
+  "port_263": {
+    "minecraft": "26.3",
+    "source_commit": "977cffc5e69530ad2613ae36f80b88673894991d",
+    "native_pl4_tests_per_profile": 193,
+    "aggregate_tests_per_profile": 194,
+    "run_id": 40979525138,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138",
+    "production_jar_sha256": "147a90049d6558668e0c6176a846d27925de210bec6ad3df2f317fc5eabf9540",
+    "jar_entries": 961,
+    "jar_crc": "PASS",
+    "profiles": [
+      {
+        "neoforge": "26.3.0.23-beta",
+        "result": "PASS",
+        "artifact_id": 12944257452,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944257452",
+        "archive_sha256": "8096708fadf0c9551d0058185c8e4d487adb917549e48ac8050040b97f78c931",
+        "archive_entries": 19,
+        "archive_crc": "PASS"
+      },
+      {
+        "neoforge": "26.3.0.39-beta",
+        "result": "PASS",
+        "artifact_id": 12944426802,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944426802",
+        "archive_sha256": "527bbed7cb1623b2b5d5912684e0b62398ab7b19a2ecbe00dfbb97a5c30b336b",
+        "archive_entries": 19,
+        "archive_crc": "PASS"
+      }
+    ],
+    "previous_failures": [
+      {
+        "run": 40978629741,
+        "reason": "stale R16 source-verifier 29-case count; native not executed"
+      },
+      {
+        "run": 40978923071,
+        "reason": "real 1/193 failure: foreign-owned physical network union denied healthy local storage"
+      },
+      {
+        "run": 40979341886,
+        "reason": "diagnostic 1/193 failure showed refs=[] after owner mutation, confirmed root cause"
+      }
+    ],
+    "final_fix": "owner-matching nonnull physical edge union; live host identity/reader and storage aliases",
+    "rc_publication_cleared": false
+  },
+  "port_2612": {
+    "minecraft": "26.1.2",
+    "current_source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+    "expected_native_pl4_tests": 193,
+    "new_source_native": "NOT_YET_RUN",
+    "old_verified_source": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+    "old_hourly_run": 40978242203,
+    "old_native_tests": "192/192 PL4 plus 1 vanilla",
+    "note": "No neighboring target JAR relabeling; hourly pinned native required",
+    "rc_publication_cleared": false
+  },
+  "hourly_run": {
+    "id": 40978242203,
+    "result": "PASS",
+    "head_sha": "b433e5ae71816617fdba7c5af44388981556f270",
+    "matrix_targets_run": 15,
+    "successes": 15,
+    "source_pinned": true,
+    "targets": [
+      {
+        "minecraft": "1.19.1",
+        "source_commit": "8f3b02a3bd5e037a233bdd4b8e3ef8b83b0272ce",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "adb8a9ad33d7012501c8a2c5b30472c1cfd46591657e9fa0336549ac30e7e8f7",
+        "artifact_id": 12942639863,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12942639863",
+        "artifact_zip_sha256": "16ef232b4ae61a21a647504975ecfc614209b58f2df6db45c812c4f8ad7e19ad",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.16.5",
+        "source_commit": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "ec80c3ac8042e26b4025cc2e0563a876ece2c06dfc6bdbfb30c81c99c0526265",
+        "artifact_id": 12943612790,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943612790",
+        "artifact_zip_sha256": "86bf2b7c302278e266b5536ddfca85537f9603cc14e5775c30b27c1b3e3d27d9",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.16.4",
+        "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+        "native_pl4_count": 193,
+        "production_jar_sha256": "0ec19da8710ea3cdee46b0b4e64c92ce50092708a2fd1a3935ade8d516f5ea06",
+        "artifact_id": 12944106329,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944106329",
+        "artifact_zip_sha256": "ffab9a6f127987aa0295cd52b804ef2312e3abbbcb753a096d19c3493d95be61",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.20.2",
+        "source_commit": "5322aebea368cde66d7fa90298d40f7a21769b69",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "c029494986674ca828a34703e275588edfa848f9baba618fe201b2a8933d8ba2",
+        "artifact_id": 12944181898,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944181898",
+        "artifact_zip_sha256": "9d556573e6a62a2a9f7875eb92663791bb538dae8bea5bd601a7dbd7fc77be43",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.18.1",
+        "source_commit": "602e55d7c0cd3c16c1a5a42c64270ffd0cdb9c8b",
+        "native_pl4_count": 193,
+        "production_jar_sha256": "0ca31688c8bbcdb319d40f3c2757029a92951928f6a36674421fd555561bf55a",
+        "artifact_id": 12943314080,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943314080",
+        "artifact_zip_sha256": "4c296d5a1d92e0e0665239c7a360612b706bdf6cd06a08dab76816b0066a34c1",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.19",
+        "source_commit": "efbb1b08457434ac291acfb033e74432a6860d0b",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "3d84c354fd38dde28da2b9f69e9b604927e97ba1e14eb0f260b6477eb74f91fd",
+        "artifact_id": 12944016654,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944016654",
+        "artifact_zip_sha256": "9f2c0292d9d63c796119d1986d5ff26fb6891d4c458327bd3125f4a2ff962827",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.19.2",
+        "source_commit": "3351ce19f52cc9c4097849b8dd9beac36bed8636",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "dfa3f6ad8ab8de84bf01ea5969c4d3db5bc843834c1db63045708f312829910c",
+        "artifact_id": 12944380582,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944380582",
+        "artifact_zip_sha256": "9a1ed17e46b74c5b3e6f46a931931c4d9f34994ff9836fbea345edb37ffab5d3",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.17.1",
+        "source_commit": "323722c1ce1a9a6c51a08e1bb42775df45f52fd0",
+        "native_pl4_count": 193,
+        "production_jar_sha256": "daa61a367c4f3de74c457f6baf6ecb93f3b7e91162b229bed81af7790e3ccbed",
+        "artifact_id": 12943981932,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943981932",
+        "artifact_zip_sha256": "63cb6de2b1b0f8daf6f39c2a7efe8033e49f840935de182adb77235c038080d0",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.19.3",
+        "source_commit": "74acddee1d418f06bb684fd575692badca4f4e8f",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "308b258b03fdb61654eefd55a2a84e233bcf07cc7a7a099f27c482bfb57f940c",
+        "artifact_id": 12943414333,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943414333",
+        "artifact_zip_sha256": "5b277f7d239b902e4c47bea3e983067a9e84e8e6ca4fba02015490a7d1b4d664",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.20.4",
+        "source_commit": "4c357b2d3ef07c72e4b9435dae9653dcaf79f2ce",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "27b12a5246ef86142ef20034c2b0fe936535918c45be2300331be4c0a50acaab",
+        "artifact_id": 12943393439,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943393439",
+        "artifact_zip_sha256": "bbb30ba42c05dd73a1356cd6eb923dc2f15ee1a97753bf90834b89c664cba6b1",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "26.1.2",
+        "source_commit": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+        "native_pl4_count": 192,
+        "production_jar_sha256": "847bd064c999fb220f926441a6de547ec6bf2a277d4fa2e1df93845ae0cbacf7",
+        "artifact_id": 12944251753,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944251753",
+        "artifact_zip_sha256": "06f6c029a370729af4376b6d7aefa47604c84ddfcc8e713640ec554c8a2a2f1d",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.20",
+        "source_commit": "0a56b8593312974368c2de0253303048d4e269aa",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "f4053de9ef88d566596c96048fd4df33b82198b451f7dd575bc3578b25f63242",
+        "artifact_id": 12943708047,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943708047",
+        "artifact_zip_sha256": "1565e3e0a438a825bd657a4f733e80ab8acdcca8c3523a168a747f8673f895c4",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.19.4",
+        "source_commit": "57c118e9ed757bfa953d546c074860cbb00c4f28",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "edf932e8841ac72eeb0f4d610e17edaf0c264e4e9b80a4b48df7e58eda9aafb8",
+        "artifact_id": 12943428044,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12943428044",
+        "artifact_zip_sha256": "aa8330773e0edc4e0cd95026b86c485a8daa1ca2399497e0f0b5b809c49ac8a0",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.21.1",
+        "source_commit": "b433e5ae71816617fdba7c5af44388981556f270",
+        "native_pl4_count": 200,
+        "production_jar_sha256": "ed6e71a2a57b6ec3dd5d1fe8acd0149784ea6594008af7d9c0fc03c4cf1cf38b",
+        "artifact_id": 12944107257,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944107257",
+        "artifact_zip_sha256": "a7861313cc40963af66d915f5f24e37edf8093590660b46ff1a8ed5e882516d3",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      },
+      {
+        "minecraft": "1.20.1",
+        "source_commit": "e46adc584b10b79f2a2f50ac9bb67786ef768a5d",
+        "native_pl4_count": 191,
+        "production_jar_sha256": "bcf49c218625eb36751f09f585e57e235e62947939dd848e7df7f52ae5777f95",
+        "artifact_id": 12944121953,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978242203/artifacts/12944121953",
+        "artifact_zip_sha256": "14ae4dbeefc688ec758d2b781deabb26fa4ab54c1124f97eba4fa7541a8be65d",
+        "job_run": 40978242203,
+        "qualified_native_on_that_source_only": true,
+        "rc_publication_cleared": false
+      }
+    ],
+    "uncounted_targets": "Not attempted in this specific run due deduplication; not a failure or new clearance"
+  },
+  "repeated_binary_reproducibility": [
+    {
+      "minecraft": "1.16.4",
+      "source_commit": "a35c5afe7bccc32a3b68ac881ccfb88504b451f7",
+      "previous_artifact": 12929299190,
+      "current_artifact": 12944106329,
+      "java8_installed_jar_sha256": "b97f148d545b75c7aaefe7d1d2d206e571205eb56fc71f430669ef98525ab548",
+      "development_jar_sha256": "0ec19da8710ea3cdee46b0b4e64c92ce50092708a2fd1a3935ade8d516f5ea06",
+      "all_six_matching_jar_hashes": true
+    },
+    {
+      "minecraft": "1.16.5",
+      "source_commit": "4da64cd2546be267559a7c45bb3e54f26ac39f99",
+      "previous_artifact": 12928554433,
+      "current_artifact": 12943612790,
+      "java8_installed_jar_sha256": "573c593b1a99645f3587e35f75727e7a8f1b401e75fd2d039451b49e98fc4614",
+      "development_jar_sha256": "ec80c3ac8042e26b4025cc2e0563a876ece2c06dfc6bdbfb30c81c99c0526265",
+      "all_six_matching_jar_hashes": true
+    }
+  ],
+  "incorrect_historical_ports": {
+    "sources": [
+      "mc/26.1",
+      "mc/26.2"
+    ],
+    "finding": "BUILD_STATUS.json says Minecraft 1.21.1; Gradle Java21 and NeoForge 21.1.250 (not genuine 26.x). Native RC qualification blocked; never relabel Java21/JAR."
+  },
+  "publisher": {
+    "main_run_id": 40978813884,
+    "main_result": "PASS policy; GitHub release creation skipped; CurseForge upload skipped",
+    "new_github_release_url": null,
+    "new_curseforge_upload_id": null,
+    "curseforge_public_visibility": "NO_NEW_UPLOAD",
+    "all_24_rc_clearances": false,
+    "stable_release_claim": false
+  },
+  "limitations": [
+    "Installed real third-party inventory provider callback/unload not yet accepted on new 201/193 source",
+    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/memory, and representative client screenshots still pending",
+    "26.1.2 new 193-case graph fix has no new exact-source native evidence yet",
+    "26.1 and 26.2 source remain incorrectly attributed to 1.21.1 and must be genuinely ported",
+    "Experimental 1.6.4 x80 gravel causality unresolved"
+  ],
+  "next_implementation": "Finish exact-source 26.1.2 193-game-test native hourly qualification; then installed third-party provider callback revocation and unloaded inventory aliases, authenticated multiplayer, migration and sustained performance."
+}

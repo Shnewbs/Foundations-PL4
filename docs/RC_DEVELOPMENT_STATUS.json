@@ -501,7 +501,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 200,
+      "expected_native_fixtures": 201,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -510,16 +510,16 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PASS_200_OF_200_EXACT_SOURCE_NO_RC_CLEARANCE",
+      "native_gate": "PASS_201_OF_201_EXACT_SOURCE_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
-      "workflow_run": 40904509128,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40904509128",
+      "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+      "workflow_run": 40978813923,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
       "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
-      "observed_native_fixtures": 200,
-      "runtime_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf",
+      "observed_native_fixtures": 201,
+      "runtime_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -634,12 +634,37 @@
         "production_jar_sha256": "fe19eda765f324e74f0d6d60abde5b532b0afd6fdfc67b95f368ccc9ff7f796d",
         "installed_binary_accepted": false
       },
-      "latest_scoped_installed_client_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json"
+      "latest_scoped_installed_client_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
+      "previous_native_gate_snapshot": {
+        "source_commit": "383c5378457d06725b3597c6051e2cb4c51e4253",
+        "native_gate": "PASS_200_OF_200_EXACT_SOURCE_NO_RC_CLEARANCE",
+        "workflow_run": 40904509128,
+        "runtime_sha256": "51e474f271ffd19a459e8a1822485992b4a062f2b8f1028b2c4280c2524e6baf"
+      },
+      "latest_exact_source_native": {
+        "minecraft": "1.21.1",
+        "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+        "game_tests": "201/201",
+        "run_id": 40978813923,
+        "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923",
+        "artifact_id": 12944550119,
+        "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923/artifacts/12944550119",
+        "production_jar_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987",
+        "artifact_zip_sha256": "950e92c8f6a0554e1e0a1d05f5d79025236b0606f531a69c572a5890bac1b0e8",
+        "archive_entries": 6,
+        "jar_entries": 883,
+        "zip_crc": "PASS",
+        "jar_crc": "PASS",
+        "source_repair_commit": "0aca335fbc7faa1c3df2ba0bd15935a1f1503d91",
+        "verifier_fix_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+        "prior_failed_run": 40978429082,
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "26.1.2",
       "source_ref": "mc/26.1.2",
-      "expected_native_fixtures": 192,
+      "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -648,9 +673,9 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PASS",
+      "native_gate": "PENDING_193_CASE_EXACT_SOURCE_NATIVE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+      "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
       "build_status_blob_sha": "74cdfda6051834c7ac26966580790a4a4f03407d",
       "workflow_run": "40205878290",
       "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40205878290",
@@ -676,12 +701,28 @@
           }
         },
         "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
+      },
+      "previous_native_gate_snapshot": {
+        "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+        "native_gate": "PASS",
+        "workflow_run": "40205878290"
+      },
+      "pending_exact_source_native": {
+        "minecraft": "26.1.2",
+        "current_source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+        "expected_native_pl4_tests": 193,
+        "new_source_native": "NOT_YET_RUN",
+        "old_verified_source": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+        "old_hourly_run": 40978242203,
+        "old_native_tests": "192/192 PL4 plus 1 vanilla",
+        "note": "No neighboring target JAR relabeling; hourly pinned native required",
+        "rc_publication_cleared": false
       }
     },
     {
       "minecraft": "26.3",
       "source_ref": "mc/26.3",
-      "expected_native_fixtures": 192,
+      "expected_native_fixtures": 193,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -694,12 +735,12 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PASS_192_PL4_EACH_OF_TWO_PROFILES_NO_RC_CLEARANCE",
+      "native_gate": "PASS_193_OF_193_TWO_NEOFORGE_PROFILES_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+      "source_commit": "977cffc5e69530ad2613ae36f80b88673894991d",
       "build_status_blob_sha": "410085959dd0b60b682e5eabb31c036305689e05",
-      "workflow_run": 40883621654,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40883621654",
+      "workflow_run": 40979525138,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138",
       "wireless_safety_native_fixtures": "PASS",
       "hourly_native_evidence": "acceptance/rc-dev-legacy-sorting-native-2026-10-25.json",
       "observed_native_fixtures": 193,
@@ -729,8 +770,61 @@
         },
         "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
       },
-      "runtime_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591",
-      "latest_scoped_native_two_profile_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json"
+      "runtime_sha256": "147a90049d6558668e0c6176a846d27925de210bec6ad3df2f317fc5eabf9540",
+      "latest_scoped_native_two_profile_evidence": "docs/acceptance/rc-dev-1211-callback-revocation-two-clients-and-263-native-2026-10-29.json",
+      "previous_native_gate_snapshot": {
+        "source_commit": "69d9d38b443dfcbfb86b5999ad4b30b7b12528c9",
+        "native_gate": "PASS_192_PL4_EACH_OF_TWO_PROFILES_NO_RC_CLEARANCE",
+        "workflow_run": 40883621654,
+        "runtime_sha256": "12c78fc5dae35299b46243339bc097e30eeb93d2f96895f2991817689217e591"
+      },
+      "latest_exact_source_native": {
+        "minecraft": "26.3",
+        "source_commit": "977cffc5e69530ad2613ae36f80b88673894991d",
+        "native_pl4_tests_per_profile": 193,
+        "aggregate_tests_per_profile": 194,
+        "run_id": 40979525138,
+        "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138",
+        "production_jar_sha256": "147a90049d6558668e0c6176a846d27925de210bec6ad3df2f317fc5eabf9540",
+        "jar_entries": 961,
+        "jar_crc": "PASS",
+        "profiles": [
+          {
+            "neoforge": "26.3.0.23-beta",
+            "result": "PASS",
+            "artifact_id": 12944257452,
+            "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944257452",
+            "archive_sha256": "8096708fadf0c9551d0058185c8e4d487adb917549e48ac8050040b97f78c931",
+            "archive_entries": 19,
+            "archive_crc": "PASS"
+          },
+          {
+            "neoforge": "26.3.0.39-beta",
+            "result": "PASS",
+            "artifact_id": 12944426802,
+            "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944426802",
+            "archive_sha256": "527bbed7cb1623b2b5d5912684e0b62398ab7b19a2ecbe00dfbb97a5c30b336b",
+            "archive_entries": 19,
+            "archive_crc": "PASS"
+          }
+        ],
+        "previous_failures": [
+          {
+            "run": 40978629741,
+            "reason": "stale R16 source-verifier 29-case count; native not executed"
+          },
+          {
+            "run": 40978923071,
+            "reason": "real 1/193 failure: foreign-owned physical network union denied healthy local storage"
+          },
+          {
+            "run": 40979341886,
+            "reason": "diagnostic 1/193 failure showed refs=[] after owner mutation, confirmed root cause"
+          }
+        ],
+        "final_fix": "owner-matching nonnull physical edge union; live host identity/reader and storage aliases",
+        "rc_publication_cleared": false
+      }
     },
     {
       "minecraft": "1.12.2",
@@ -1845,7 +1939,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-29T23:18:40Z: Retired 23 historical source-mutating/wrong-target publishing workflows in existing mc/1.21.1, mc/26.1, mc/26.1.2 and mc/26.2 branches; all 23 final policy Actions audits PASS (intermediate self-test failure 40971938314 corrected). No new native/JAR/provider/client/performance acceptance, 0/24 RC cleared, no release or CurseForge upload. Evidence docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
+  "latest_work": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -4150,7 +4244,7 @@
       "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
     }
   ],
-  "last_acceptance_evidence": "docs/acceptance/rc-dev-261-2612-262-1211-publisher-retirement-2026-10-29.json",
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json",
   "latest_eight_branch_publisher_safety": {
     "evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
     "checked_at": "2026-10-29T22:23:11.893Z",
@@ -4221,5 +4315,93 @@
     "new_native_accepted": false,
     "release_eligible": false,
     "rc_publication_cleared": false
+  },
+  "latest_reader_storage_owner_20261030": {
+    "main": {
+      "minecraft": "1.21.1",
+      "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+      "game_tests": "201/201",
+      "run_id": 40978813923,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923",
+      "artifact_id": 12944550119,
+      "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923/artifacts/12944550119",
+      "production_jar_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987",
+      "artifact_zip_sha256": "950e92c8f6a0554e1e0a1d05f5d79025236b0606f531a69c572a5890bac1b0e8",
+      "archive_entries": 6,
+      "jar_entries": 883,
+      "zip_crc": "PASS",
+      "jar_crc": "PASS",
+      "source_repair_commit": "0aca335fbc7faa1c3df2ba0bd15935a1f1503d91",
+      "verifier_fix_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+      "prior_failed_run": 40978429082,
+      "rc_publication_cleared": false
+    },
+    "port_263": {
+      "minecraft": "26.3",
+      "source_commit": "977cffc5e69530ad2613ae36f80b88673894991d",
+      "native_pl4_tests_per_profile": 193,
+      "aggregate_tests_per_profile": 194,
+      "run_id": 40979525138,
+      "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138",
+      "production_jar_sha256": "147a90049d6558668e0c6176a846d27925de210bec6ad3df2f317fc5eabf9540",
+      "jar_entries": 961,
+      "jar_crc": "PASS",
+      "profiles": [
+        {
+          "neoforge": "26.3.0.23-beta",
+          "result": "PASS",
+          "artifact_id": 12944257452,
+          "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944257452",
+          "archive_sha256": "8096708fadf0c9551d0058185c8e4d487adb917549e48ac8050040b97f78c931",
+          "archive_entries": 19,
+          "archive_crc": "PASS"
+        },
+        {
+          "neoforge": "26.3.0.39-beta",
+          "result": "PASS",
+          "artifact_id": 12944426802,
+          "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40979525138/artifacts/12944426802",
+          "archive_sha256": "527bbed7cb1623b2b5d5912684e0b62398ab7b19a2ecbe00dfbb97a5c30b336b",
+          "archive_entries": 19,
+          "archive_crc": "PASS"
+        }
+      ],
+      "previous_failures": [
+        {
+          "run": 40978629741,
+          "reason": "stale R16 source-verifier 29-case count; native not executed"
+        },
+        {
+          "run": 40978923071,
+          "reason": "real 1/193 failure: foreign-owned physical network union denied healthy local storage"
+        },
+        {
+          "run": 40979341886,
+          "reason": "diagnostic 1/193 failure showed refs=[] after owner mutation, confirmed root cause"
+        }
+      ],
+      "final_fix": "owner-matching nonnull physical edge union; live host identity/reader and storage aliases",
+      "rc_publication_cleared": false
+    },
+    "port_2612": {
+      "minecraft": "26.1.2",
+      "current_source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+      "expected_native_pl4_tests": 193,
+      "new_source_native": "NOT_YET_RUN",
+      "old_verified_source": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+      "old_hourly_run": 40978242203,
+      "old_native_tests": "192/192 PL4 plus 1 vanilla",
+      "note": "No neighboring target JAR relabeling; hourly pinned native required",
+      "rc_publication_cleared": false
+    },
+    "hourly_15_run": 40978242203,
+    "evidence": "docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json",
+    "all_rc_cleared": false
+  },
+  "latest_hourly_15_exact_sources": {
+    "run_id": 40978242203,
+    "results": "PASS_15_OF_15_SELECTED",
+    "head_sha": "b433e5ae71816617fdba7c5af44388981556f270",
+    "evidence": "docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json"
   }
 }
