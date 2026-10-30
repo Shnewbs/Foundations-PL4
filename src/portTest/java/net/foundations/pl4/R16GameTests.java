@@ -801,6 +801,28 @@ public final class R16GameTests {
         p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
     }
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderExceptionDiscardsPartialRows(GameTestHelper h){
+        BlockPos position=new BlockPos(2,1,1);
+        chest(h,position);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),position,Direction.UP,null,null);
+        int[] laterCalls={0};
+        try(var failing=net.foundations.pl4.api.InfoProviders.register("pl4_test:exception_guard",(context,out)->{
+            out.add("partial","Partial sample",1,1,"unit");
+            throw new IllegalStateException("intentional provider failure");
+        });var healthy=net.foundations.pl4.api.InfoProviders.register("pl4_test:exception_followup",(context,out)->{
+            laterCalls[0]++;
+            out.add("healthy","Healthy sample",2,2,"unit");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().noneMatch(r->r.key().equals("pl4_test:exception_guard/partial")),
+                "Provider rows collected before an exception must be discarded");
+            h.assertTrue(rows.stream().anyMatch(r->r.key().equals("pl4_test:exception_followup/healthy"))&&laterCalls[0]==1,
+                "A failing provider must not prevent later healthy providers from sampling");
+        }
+        h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void installedProviderSampleIsDiscardedAfterEntityUnload(GameTestHelper h){
         var entity=h.spawn(net.minecraft.world.entity.EntityType.ARMOR_STAND,new BlockPos(2,1,1));
         var target=new Part.Link(h.getLevel().dimension().location().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null);
