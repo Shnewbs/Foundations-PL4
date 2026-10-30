@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-30T15:16:00Z",
+  "source_commit": "dd8dc2183c7f4626dc9f86f6ec5e7e65714e5ae6",
+  "parent_source_commit": "9f8169dadf6604c7cc06c6e3ad0b318231ef3784",
+  "change": "Added native GameTest installedProviderRevocationSkipsLaterCallbacks. The first installed provider removes the target block entity during its callback; a later provider must not be invoked and all installed-provider rows must be discarded.",
+  "expected_native_tests": 210,
+  "native_validation": "PENDING_EXACT_SOURCE",
+  "offline_validation": "PENDING_PUSH_TRIGGERED",
+  "installed_provider_fixture": "NOT_YET_EXECUTED",
+  "no_force_load_evidence": "NOT_YET_EXECUTED",
+  "rc_publication_cleared": false,
+  "release_created": false,
+  "curseforge_upload_created": false,
+  "limitations": [
+    "No native GameTest or production JAR result is counted until exact-source verification passes.",
+    "This source fixture does not by itself prove third-party installed-provider runtime compatibility or no-force-load behavior."
+  ],
+  "next_step": "Inspect push-triggered exact-source verification for the 210-fixture candidate, then run the independent installed optional-provider revocation/unload/replacement fixture."
+}
