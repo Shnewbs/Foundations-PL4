@@ -816,6 +816,24 @@ public final class R16GameTests {
     }
 
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void providerApiRejectsUnloadedTargetWithoutForceLoading(GameTestHelper h){
+        int[] calls={0};
+        BlockPos far=new BlockPos(1024,1,1024);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),far,Direction.UP,null,null);
+        h.assertTrue(!h.getLevel().hasChunkAt(far),"Fixture target must begin outside the loaded test chunks");
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:no_force_load",(context,out)->{
+            calls[0]++;
+            out.add("unexpected","Unexpected sample",1,1,"unit");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.isEmpty()&&calls[0]==0,
+                "Unloaded targets return no rows without invoking providers or force-loading chunks");
+        }
+        h.assertTrue(!h.getLevel().hasChunkAt(far),"Sampling must not force-load the target chunk");
+        h.succeed();
+    }
+
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void installedProviderSampleIsDiscardedAfterBlockEntityReplacement(GameTestHelper h){
         BlockPos position=new BlockPos(2,1,1);
         h.setBlock(position,Blocks.CHEST);
