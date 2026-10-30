@@ -20,12 +20,12 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T17:05:00Z: finite writer lease claimed against main 37a932d; inspecting repaired 210-fixture verification and preparing next exact-source acceptance checkpoint.",
-  "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet. Native run 41078284797 offline checks passed 1,149,451, but 2 provider revocation/replacement tests failed; fixtures repaired in 8b0339c3 and ef5984c0, no native/JAR evidence counted.",
+  "current_checkpoint": "2026-10-30T17:10:00Z: added no-force-load installed-provider regression on main 291516d; exact 211-fixture verification pending; lease remains held for state/evidence checkpoint.",
+  "local_validation": "Source/test readback passed via GitHub API: new no-force-load GameTest asserts unloaded target, zero provider callbacks, and no chunk residency change. BUILD_STATUS expected_native_tests=211. No native/JAR result counted.",
   "next_work": [
-    "Inspect push-triggered exact-source verification for repaired 210-fixture candidate; count native/JAR evidence only after full pass.",
-    "Run independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence.",
-    "Qualify exact mc/26.1.2 source 3e341444 via selected hourly build; do not inherit older 192-case evidence.",
+    "Inspect push-triggered exact-source verification for repaired 211-fixture candidate; count native/JAR evidence only after full pass.",
+    "If native passes, preserve exact production JAR hash and retained artifact checksum; do not publish because RC publication remains uncleared.",
+    "Continue independent installed optional-provider unload/replacement evidence and fresh exact mc/26.1.2 qualification.",
     "Continue authenticated multiplayer, arbitrary-world migration, sustained performance, true 26.1/26.2 source repair and 1.6.4 gravel root cause."
   ],
   "rc_publication_cleared": false,
@@ -78,7 +78,7 @@
     "release_performed": false,
     "evidence": "docs/acceptance/rc-dev-1211-provider-fixture-determinism-2026-10-30.json"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-callback-revocation-210-pending-2026-10-30.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-no-force-load-211-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -2837,11 +2837,11 @@
     "rc_clearance": "0/24",
     "release_performed": false
   },
-  "next_step": "Inspect the push-triggered exact-source verification for f455960a; count native/JAR only on full 209/209 pass, then run the independent installed optional-provider fixture with callback revocation, unload/replacement, and explicit no-force-load evidence.",
+  "next_step": "Inspect push-triggered exact-source verification for 291516dd; exact 211/211 native and production evidence required before any qualification.",
   "last_checkpoint": {
-    "timestamp": "2026-10-30T12:08:00Z",
-    "source_commit": "f455960a2f15d7e56ea28a55bce5706e8ee86dfb",
-    "summary": "Added native InfoProvider same-position block-entity replacement regression and updated exact native bookkeeping to 209 fixtures.",
+    "timestamp": "2026-10-30T17:10:00Z",
+    "source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
+    "summary": "Added installed-provider no-force-load regression and advanced exact native manifest to 211.",
     "native_validation": "PENDING",
     "rc_clearance": "0/24",
     "release": "none"
