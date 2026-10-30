@@ -48,7 +48,8 @@ public final class InfoProviders {
     }
     private static void collect(Entry entry,Context context,List<Part.Row> result,boolean builtin){
         String id=entry.id;Thread owner=Thread.currentThread();
-        Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());\n        Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
+        Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());
+        Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
         boolean[] active={true};
         try{
             entry.provider.sample(context,(key,name,value,capacity,unit)->{
