@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-30T14:06:00Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_commit": "8bc330d6ecdd04f06eeb27b2f2a1d710322f65f0",
+  "triggering_run": 41061181756,
+  "result": "CONTROLLER_GUARD_REPAIRED_BEFORE_NATIVE",
+  "failure": "tools/verify_r16.py still asserted and labeled 43 GameTests while src/portTest/java/net/foundations/pl4/R16GameTests.java contains 44 @GameTest registrations.",
+  "repair": "Updated verifier label and exact assertion from 43 to 44; no native or JAR evidence promoted.",
+  "lease_claim_commit": "01d443087254f87443e80d8a68d8350885480601",
+  "lease_release_commit": "237a9573cedd0086684f395369ec9c81a4bfe26d",
+  "next": "Inspect push-triggered verification for the repaired exact source; then run installed optional-provider revocation/unload/replacement fixture with explicit no-force-load evidence."
+}
