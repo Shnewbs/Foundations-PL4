@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-20261030T1603Z",
+    "claimed_at": "2026-10-30T16:03:30Z",
+    "expires_at": "2026-10-30T16:23:30Z",
+    "expected_parent": "5bcf72a56377c3c231968546c244934b184a6823",
+    "purpose": "repair deterministic installed-provider revocation fixtures after native failure in 41078284797"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
