@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-30T22:00:21Z",
+  "scope": "main exact 1.21.1 controller/verifier",
+  "source_commits": [
+    "8d729e62f97e6f7cf7b0057a726a9018d70b36d6",
+    "f6946c2280a282a385846ff9b4a9f8ca6b16f345"
+  ],
+  "change": "Repaired stale hardcoded R16 fixture-count verifier drift by replacing exact ==45 assertion with a meaningful >=45 minimum guard, preventing controller failure from future additive native fixtures without lowering the acceptance floor.",
+  "validation": "Source readback confirmed the verifier remains wired into offline checks; no native or packaged-artifact result was promoted in this checkpoint.",
+  "native_result": "PENDING_FRESH_EXACT_SOURCE_VERIFICATION",
+  "rc_publication_cleared": false,
+  "release_created": false,
+  "curseforge_upload": false,
+  "next": "Inspect fresh push-triggered verification for the repaired verifier, then continue installed optional-provider unload/replacement/no-force-load evidence and exact mc/26.1.2 qualification."
+}
