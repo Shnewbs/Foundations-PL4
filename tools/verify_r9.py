@@ -16,7 +16,9 @@ assert 'part.readerChoices.stream()' in packet and 'Map<ServerPlayer,Rate> EDIT_
 assert 't.putString("displayMode"' in part and 't.putInt("displayPage"' in part and 't.putString("type",spec.type().name())' in part
 assert 't.hasUUID("id")' in part and 'legacy?' in part and 'Part.DisplaySettings' in packet
 assert 'List.copyOf(elements)' in part and 'sourceRows' in part
-assert 'Only already-visible readers' in net and 'reader(canvas.readers,selector)' in net and 'budget=256' in net
+assert ('Only already-visible readers' in net and 'List<NetworkEngine.Ref> readers=currentReaders(canvas)' in net
+        and 'reader(readers,selector)' in net and 'reader(currentReaders(canvas),selector)' in net
+        and 'owner.equals(ref.part().owner)' in net and 'budget=256' in net)
 assert 'root.sourceRows.size()>=8' in net and 'Math.min(64,budget)' in net
 assert 'MonitorPresentation.automatic' in painter and 'DisplayElements.plan(spec,rows)' in painter
 for op in ['DisplayElements.Icon','DisplayElements.Liquid','DisplayElements.Box','DisplayElements.Text']:assert op in painter
