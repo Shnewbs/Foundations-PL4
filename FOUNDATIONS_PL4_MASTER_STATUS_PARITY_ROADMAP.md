@@ -1,3 +1,7 @@
+### October 30, 2026 — exact 1.21.1 no-force-load provider regression added; 211-fixture verification pending
+
+Main source `291516dd` adds an exact native regression proving an unloaded InfoProvider target cannot invoke installed callbacks or force-load a chunk. `BUILD_STATUS.json` now requires 211 exact native fixtures. Native/JAR evidence remains pending; no RC publication is cleared. Next: inspect exact-source verification, then continue installed-provider unload/replacement evidence and fresh `mc/26.1.2` qualification.
+
 ### October 30, 2026 — stale R16 verifier fixture count repaired; native qualification pending
 
 Run 41061181756 stopped before native execution because `tools/verify_r16.py` still asserted and labeled 43 `@GameTest` registrations while the current `src/portTest/java/net/foundations/pl4/R16GameTests.java` contains 44. Source repair [8bc330d](https://github.com/Shnewbs/Foundations-PL4/commit/8bc330d6ecdd04f06eeb27b2f2a1d710322f65f0) changes only the verifier label/assertion to 44. No native/JAR/release evidence is counted. Lease was claimed in [01d4430](https://github.com/Shnewbs/Foundations-PL4/commit/01d443087254f87443e80d8a68d8350885480601) and released in [237a957](https://github.com/Shnewbs/Foundations-PL4/commit/237a9573cedd0086684f395369ec9c81a4bfe26d). Next: inspect push-triggered verification, then continue the installed-provider revocation/unload fixture and fresh 26.1.2 qualification. **0/24 RC clearances.**
