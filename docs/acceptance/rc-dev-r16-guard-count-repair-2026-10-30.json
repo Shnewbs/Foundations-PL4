@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-10-30T07:05:00Z",
+  "source_commit": "bc5c2fb58a15c2591f04b980795f2b33e1a0a038",
+  "parent_source_commit": "6c1e11da28e86fc669cbacb04022ed8e62cf2b6f",
+  "change": "Updated tools/verify_r16.py expected native GameTest registration count from 42 to 43 after the installedProviderSampleIsDiscardedAfterEntityUnload regression was added.",
+  "preflight": {
+    "failed_run": 41011856611,
+    "failed_before_native": true,
+    "reason": "stale verifier count; offline guard failure, no gameplay/native execution"
+  },
+  "expected_next": "push-triggered verify/native build; preserve JAR/hash only if exact-source native and production checks pass",
+  "rc_clearance": "0/24",
+  "release_performed": false
+}
