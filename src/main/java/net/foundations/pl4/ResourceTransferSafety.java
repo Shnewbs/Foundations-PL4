@@ -2,6 +2,7 @@ package net.foundations.pl4;
 import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.function.Supplier;
 import java.util.function.LongSupplier;
+import java.util.function.BooleanSupplier;
 
 /** Persistent uncertainty fence. Clear only after a validated result is settled in escrow. */
 public final class ResourceTransferSafety {
@@ -29,22 +30,54 @@ public final class ResourceTransferSafety {
         if(!(a.getFluid()==b.getFluid()&&java.util.Objects.equals(a.getComponentsPatch(),b.getComponentsPatch())))throw new IllegalStateException("Unexpected fluid variant");
         return true;
     }
+    /** An actual foreign callback cannot clear escrow if its backing or route changed. */
     public static FluidStack extractFluid(NetworkEngine.Ref owner,FluidStack request,Supplier<FluidStack> operation){
+        return extractFluid(owner,request,()->true,operation);
+    }
+    public static FluidStack extractFluid(NetworkEngine.Ref owner,FluidStack request,BooleanSupplier authorized,Supplier<FluidStack> operation){
+        if(!authorized.getAsBoolean())return FluidStack.EMPTY;
         FluidStack expected=request.copy();enter(owner,"Fluid extraction");FluidStack actual=operation.get();
-        if(actual!=null&&!actual.isEmpty()){owner.part().pendingFluid=actual.copy();owner.host().setChanged();}
+        if(actual!=null&&!actual.isEmpty()){
+            owner.part().pendingFluid=actual.copy();owner.host().setChanged();
+        }
+        if(!authorized.getAsBoolean())
+            throw new IllegalStateException("Fluid extraction route or backing revoked during provider callback; escrow quarantined");
         if(!fluidTrial(expected,actual,expected.getAmount())){completed(owner);return FluidStack.EMPTY;}
         completed(owner);return actual.copy();
     }
     public static int insertFluid(NetworkEngine.Ref owner,FluidStack offered,Supplier<Integer> operation){
-        int maximum=offered.getAmount();enter(owner,"Fluid insertion");return (int)amount(operation.get(),maximum);
+        return insertFluid(owner,offered,()->true,operation);
+    }
+    public static int insertFluid(NetworkEngine.Ref owner,FluidStack offered,BooleanSupplier authorized,Supplier<Integer> operation){
+        if(!authorized.getAsBoolean())return 0;
+        int maximum=offered.getAmount();enter(owner,"Fluid insertion");
+        int accepted=(int)amount(operation.get(),maximum);
+        if(!authorized.getAsBoolean())
+            throw new IllegalStateException("Fluid insertion route or backing revoked during provider callback; escrow quarantined");
+        return accepted;
     }
     public static int extractEnergy(NetworkEngine.Ref owner,int maximum,LongSupplier operation){
+        return extractEnergy(owner,maximum,()->true,operation);
+    }
+    public static int extractEnergy(NetworkEngine.Ref owner,int maximum,BooleanSupplier authorized,LongSupplier operation){
+        if(!authorized.getAsBoolean())return 0;
         enter(owner,"FE extraction");long actual=operation.getAsLong();
-        if(actual>0&&actual<=Integer.MAX_VALUE){owner.part().pendingEnergy=(int)actual;owner.host().setChanged();}
+        if(actual>0&&actual<=Integer.MAX_VALUE){
+            owner.part().pendingEnergy=(int)actual;owner.host().setChanged();
+        }
+        if(!authorized.getAsBoolean())
+            throw new IllegalStateException("FE extraction route or backing revoked during provider callback; escrow quarantined");
         amount(actual,maximum);completed(owner);return (int)actual;
     }
     public static int insertEnergy(NetworkEngine.Ref owner,int maximum,LongSupplier operation){
-        return (int)mutate(owner,"FE insertion",maximum,operation);
+        return insertEnergy(owner,maximum,()->true,operation);
+    }
+    public static int insertEnergy(NetworkEngine.Ref owner,int maximum,BooleanSupplier authorized,LongSupplier operation){
+        if(!authorized.getAsBoolean())return 0;
+        enter(owner,"FE insertion");int accepted=(int)amount(operation.getAsLong(),maximum);
+        if(!authorized.getAsBoolean())
+            throw new IllegalStateException("FE insertion route or backing revoked during provider callback; escrow quarantined");
+        return accepted;
     }
     private ResourceTransferSafety(){}
 }

@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 204,
+  "expected_native_tests": 207,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -66,12 +66,12 @@
     "generated_world_upgrade": "docs/acceptance/rc-dev-1.21.1-generated-beta-world-upgrade.json",
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json"
   },
-  "current_source_notes": "2026-10-30: Pending main-source reader-export authorization fix: targetsFor now revalidates current loaded host/part/owner/cable membership before returning cached inventory target locations and rebuilds once on revocation. New exact Minecraft 1.21.1 GameTest covers unannounced foreign-owner change, intermediate cable detach/rejoin and detached reader. 201 native fixtures EXPECTED, NOT yet verified; previously successful 200-fixture/JAR evidence remains strictly source-pinned. Installed third-party providers, authenticated clients, arbitrary migrations, sustained performance and 0/24 RC clearance remain outstanding.",
+  "current_source_notes": "2026-10-30: Development candidate adds live owner/part/loaded backing validation before and after fluid/FE provider simulations and mutations, persistent quarantine on callback-time revocation, and 3 new native GameTests (207 expected). Not yet native-qualified; prior 204-case source and JAR remain the most recent native receipt. Installed third-party providers, authenticated multiplayer, arbitrary migration, sustained performance and 0/24 release clearance remain outstanding.",
   "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
   "previous_candidate_workflow_run": "40848203024",
   "pending_native_candidate": {
-    "change": "Live reader target export revocation and cable-detachment guard",
-    "expected_native_tests": 201,
+    "change": "Fluid and FE provider callbacks now revalidate live route and exact block backing; three new native regressions",
+    "expected_native_tests": 207,
     "native_result": "PENDING_EXACT_SOURCE_CI",
     "rc_publication_cleared": false
   }

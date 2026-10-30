@@ -640,6 +640,103 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    /** Foreign fluid callbacks must not automatically settle escrow if ownership changed mid-call. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void fluidCallbackOwnerRevocationQuarantinesEscrow(GameTestHelper h){
+        chest(h,new BlockPos(1,1,1));chest(h,new BlockPos(5,1,1));
+        HostEntity sourceHost=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),
+            sinkHost=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        part(sourceHost,Direction.WEST).transferMode=2;
+        part(sinkHost,Direction.EAST).transferMode=1;
+        var source=ref(sourceHost,Direction.WEST);var sink=ref(sinkHost,Direction.EAST);
+        var server=h.getLevel().getServer();
+        var water=new net.neoforged.neoforge.fluids.FluidStack(net.minecraft.world.level.material.Fluids.WATER,500);
+        h.assertTrue(TransferEngine.liveItemRoute(server,source,sink),"Fresh fluid route must be live");
+        boolean revoked=false;
+        try{
+            ResourceTransferSafety.extractFluid(sink,water,
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    source.part().owner=UUID.randomUUID();return water.copy();
+                });
+        }catch(IllegalStateException expected){revoked=true;}
+        h.assertTrue(revoked&&ResourceTransferSafety.blocked(sink.part())&&sink.part().pendingFluid.getAmount()==500,
+            "Fluid extraction after owner revocation must retain the uncertain 500 mB in escrow");
+        int[] callbacks={0};
+        int denied=ResourceTransferSafety.insertFluid(sink,water,
+            ()->TransferEngine.liveItemRoute(server,source,sink),()->{callbacks[0]++;return 500;});
+        h.assertTrue(denied==0&&callbacks[0]==0&&sink.part().pendingFluid.getAmount()==500,
+            "Revoked route must not invoke another fluid provider callback");
+        source.part().owner=OWNER;sink.part().resourceTransferFault="";
+        boolean insertionRevoked=false;
+        try{
+            ResourceTransferSafety.insertFluid(sink,water,
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    source.part().owner=UUID.randomUUID();return 500;
+                });
+        }catch(IllegalStateException expected){insertionRevoked=true;}
+        h.assertTrue(insertionRevoked&&ResourceTransferSafety.blocked(sink.part())&&sink.part().pendingFluid.getAmount()==500,
+            "Fluid insertion owner revocation must preserve escrow for manual resolution");
+        h.succeed();
+    }
+
+    /** FE callbacks obey the same live-route fence as item and fluid callbacks. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void energyCallbackOwnerRevocationQuarantinesEscrow(GameTestHelper h){
+        chest(h,new BlockPos(1,1,1));chest(h,new BlockPos(5,1,1));
+        HostEntity sourceHost=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),
+            sinkHost=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        part(sourceHost,Direction.WEST).transferMode=2;
+        part(sinkHost,Direction.EAST).transferMode=1;
+        var source=ref(sourceHost,Direction.WEST);var sink=ref(sinkHost,Direction.EAST);
+        var server=h.getLevel().getServer();
+        h.assertTrue(TransferEngine.liveItemRoute(server,source,sink),"Fresh FE route must be live");
+        boolean revoked=false;
+        try{
+            ResourceTransferSafety.extractEnergy(sink,300,
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    source.part().owner=UUID.randomUUID();return 200L;
+                });
+        }catch(IllegalStateException expected){revoked=true;}
+        h.assertTrue(revoked&&ResourceTransferSafety.blocked(sink.part())&&sink.part().pendingEnergy==200,
+            "Revoked FE extraction must retain 200 FE as uncertain escrow");
+        int[] callbacks={0};
+        int denied=ResourceTransferSafety.insertEnergy(sink,200,
+            ()->TransferEngine.liveItemRoute(server,source,sink),()->{callbacks[0]++;return 200L;});
+        h.assertTrue(denied==0&&callbacks[0]==0&&sink.part().pendingEnergy==200,
+            "Revoked FE route must not call a second provider");
+        source.part().owner=OWNER;sink.part().resourceTransferFault="";
+        boolean insertionRevoked=false;
+        try{
+            ResourceTransferSafety.insertEnergy(sink,200,
+                ()->TransferEngine.liveItemRoute(server,source,sink),()->{
+                    source.part().owner=UUID.randomUUID();return 200L;
+                });
+        }catch(IllegalStateException expected){insertionRevoked=true;}
+        h.assertTrue(insertionRevoked&&ResourceTransferSafety.blocked(sink.part())&&sink.part().pendingEnergy==200,
+            "FE acceptance after owner revocation must leave escrow quarantined");
+        h.succeed();
+    }
+
+    /** A replaced block entity cannot reuse even the same-position resource backing identity. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void resourceBackingRejectsSamePositionReplacement(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        BlockPos backingPos=new BlockPos(1,1,1);
+        ChestBlockEntity oldChest=chest(h,backingPos);
+        HostEntity host=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
+        var endpoint=ref(host,Direction.WEST);
+        TransferEngine.ResourceBacking initial=TransferEngine.resourceBacking(server,endpoint);
+        h.assertTrue(initial!=null&&initial.live(server,endpoint),"Attached loaded resource backing initially valid");
+        h.setBlock(backingPos,Blocks.AIR);h.setBlock(backingPos,Blocks.CHEST);
+        ChestBlockEntity replacement=(ChestBlockEntity)h.getBlockEntity(backingPos);
+        h.assertTrue(replacement!=oldChest&&!initial.live(server,endpoint),
+            "Replacing a block entity at identical coordinates must invalidate cached capability backing");
+        TransferEngine.ResourceBacking refreshed=TransferEngine.resourceBacking(server,endpoint);
+        h.assertTrue(refreshed!=null&&refreshed.live(server,endpoint),
+            "Newly captured resource backing must recover without reauthorizing the stale handle");
+        h.succeed();
+    }
+
     private static void itemQuarantineChecks(NetworkEngine.Ref owner){
         Part p=owner.part();p.pendingItem=new ItemStack(Items.DIAMOND,8);int[] calls={0};
         boolean failed=false;

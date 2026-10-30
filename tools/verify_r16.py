@@ -26,7 +26,7 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'e.register(R16GameTests.class)' in native('PLGameTests.java'),
- 'thirty-nine transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==39,
+ 'forty-two transfer, automation and network storage native tests':native('R16GameTests.java').count('@GameTest(')==42,
  'reader target alias revocation regression is registered': 'readerExportsDropRevokedAndDetachedInventoryAliases' in native('R16GameTests.java') and 'currentOwnedGroup(server,reader,group)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java'),
  'wireless backing swaps seal extracted escrow':'wirelessStorageRevokesReplacedBackingDuringExtraction' in native('R16GameTests.java') and 'requirePostExtractionBackingAuthority' in read('src/main/java/net/foundations/pl4/WirelessStorage.java'),
  'backing capability identity rechecked after provider callbacks':'replacedCapabilityBackingCannotReuseCachedItemHandler' in native('R16GameTests.java') and 'record ItemTarget(' in engine and 'to.live(server,sink)' in engine,
@@ -44,6 +44,12 @@ checks={
      'BooleanSupplier authorized' in read('src/main/java/net/foundations/pl4/ItemTransferSafety.java')
      and 'liveItemRoute(server,source,sink)' in engine
      and 'itemProviderCallbackRevocationRetainsEscrow' in native('R16GameTests.java')),
+ 'live resource backing and callback authorization regressions':(
+     'record ResourceBacking(' in engine
+     and 'fluidCallbackOwnerRevocationQuarantinesEscrow' in native('R16GameTests.java')
+     and 'energyCallbackOwnerRevocationQuarantinesEscrow' in native('R16GameTests.java')
+     and 'resourceBackingRejectsSamePositionReplacement' in native('R16GameTests.java')
+     and 'BooleanSupplier authorized' in read('src/main/java/net/foundations/pl4/ResourceTransferSafety.java')),
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
 }

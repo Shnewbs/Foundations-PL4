@@ -202,6 +202,41 @@ public final class TransferEngine {
         ItemTarget result=new ItemTarget(handler,level,link.pos(),state,entity);
         return result.live(server,ref)?result:null;
     }
+    /** Exact live backing identity, not just a coordinate or a cached capability handle. */
+    static record ResourceBacking(ServerLevel level,BlockPos pos,BlockState state,BlockEntity entity){
+        boolean live(MinecraftServer server,NetworkEngine.Ref ref){
+            if(!liveItemEndpoint(server,ref))return false;
+            Part.Link link=ref.adjacent();
+            return NetworkEngine.level(server,link)==level&&link.pos().equals(pos)
+                &&level.hasChunkAt(pos)&&level.getBlockState(pos)==state&&level.getBlockEntity(pos)==entity;
+        }
+    }
+    static ResourceBacking resourceBacking(MinecraftServer server,NetworkEngine.Ref ref){
+        if(!liveItemEndpoint(server,ref))return null;
+        Part.Link link=ref.adjacent();ServerLevel level=NetworkEngine.level(server,link);
+        if(level==null||!level.hasChunkAt(link.pos()))return null;
+        return new ResourceBacking(level,link.pos(),level.getBlockState(link.pos()),level.getBlockEntity(link.pos()));
+    }
+    private record FluidTarget(IFluidHandler handler,ResourceBacking backing){
+        boolean live(MinecraftServer server,NetworkEngine.Ref ref){return backing.live(server,ref);}
+    }
+    private record EnergyTarget(IEnergyStorage handler,ResourceBacking backing){
+        boolean live(MinecraftServer server,NetworkEngine.Ref ref){return backing.live(server,ref);}
+    }
+    private static FluidTarget fluidTarget(MinecraftServer server,NetworkEngine.Ref ref){
+        ResourceBacking backing=resourceBacking(server,ref);
+        if(backing==null)return null;
+        IFluidHandler handler=fluidHandler(server,ref);
+        FluidTarget result=handler==null?null:new FluidTarget(handler,backing);
+        return result!=null&&result.live(server,ref)?result:null;
+    }
+    private static EnergyTarget energyTarget(MinecraftServer server,NetworkEngine.Ref ref){
+        ResourceBacking backing=resourceBacking(server,ref);
+        if(backing==null)return null;
+        IEnergyStorage handler=energyHandler(server,ref);
+        EnergyTarget result=handler==null?null:new EnergyTarget(handler,backing);
+        return result!=null&&result.live(server,ref)?result:null;
+    }
     private static boolean itemAllowed(ItemStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.items(stack,ref.part(),input);}
     private static boolean fluidAllowed(FluidStack stack,NetworkEngine.Ref ref,boolean input){return TransferFilters.fluids(stack,ref.part(),input);}
     private static boolean energyAllowed(NetworkEngine.Ref ref){return ref.part().kind!=Kind.TRANSFER_NODE||ref.part().energy;}
@@ -293,42 +328,220 @@ public final class TransferEngine {
 
     // ------------------------------------------------------------ fluids
     private static void pushFluids(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;boolean hadPending=!p.pendingFluid.isEmpty();if(hadPending){flushFluid(server,source,sinks,budgets,pairs,received);return;}if(received.contains(target(source)))return;
-        IFluidHandler from=fluidHandler(server,source);if(from==null)return;int sourceBudget=budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get());if(sourceBudget<=0)return;
-        for(int tank=0;tank<Math.min(from.getTanks(),65536);tank++){
-            FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source,false))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),sourceBudget));
-            FluidStack trial=from.drain(request,IFluidHandler.FluidAction.SIMULATE);if(!ResourceTransferSafety.fluidTrial(request,trial,request.getAmount()))continue;int space=fluidSpace(server,trial,sinks,source,budgets,pairs);if(space<=0)continue;request=trial.copy();request.setAmount(Math.min(space,trial.getAmount()));
-            FluidStack mutationRequest=request.copy();FluidStack extracted=ResourceTransferSafety.extractFluid(source,mutationRequest,()->from.drain(mutationRequest,IFluidHandler.FluidAction.EXECUTE));if(extracted.isEmpty())continue;p.pendingFluid=extracted;budgets.use(budgets.fluids,source,extracted.getAmount());source.host().setChanged();p.ticks++;
+        Part p=source.part();
+        if(ResourceTransferSafety.blocked(p)||!liveItemEndpoint(server,source))return;
+        if(!p.pendingFluid.isEmpty()){flushFluid(server,source,sinks,budgets,pairs,received);return;}
+        if(received.contains(target(source)))return;
+        FluidTarget from=fluidTarget(server,source);if(from==null)return;
+        int sourceBudget=budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get());
+        if(sourceBudget<=0)return;
+        int tanks=from.handler().getTanks();if(!from.live(server,source))return;
+        for(int tank=0;tank<Math.min(tanks,65536);tank++){
+            FluidStack shown=from.handler().getFluidInTank(tank);
+            if(!from.live(server,source))return;
+            if(shown.isEmpty()||!fluidAllowed(shown,source,false))continue;
+            FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),sourceBudget));
+            FluidStack trial=from.handler().drain(request,IFluidHandler.FluidAction.SIMULATE);
+            if(!from.live(server,source))return;
+            if(!ResourceTransferSafety.fluidTrial(request,trial,request.getAmount()))continue;
+            int space=fluidSpace(server,trial,sinks,source,budgets,pairs);
+            if(!from.live(server,source))return;
+            if(space<=0)continue;
+            FluidStack mutationRequest=trial.copy();mutationRequest.setAmount(Math.min(space,trial.getAmount()));
+            FluidStack extracted=ResourceTransferSafety.extractFluid(source,mutationRequest,
+                ()->from.live(server,source),()->from.handler().drain(mutationRequest,IFluidHandler.FluidAction.EXECUTE));
+            if(extracted.isEmpty())continue;
+            p.pendingFluid=extracted;budgets.use(budgets.fluids,source,extracted.getAmount());
+            source.host().setChanged();p.ticks++;
             flushFluid(server,source,sinks,budgets,pairs,received);break;
         }
     }
     private static int fluidSpace(MinecraftServer server,FluidStack stack,List<NetworkEngine.Ref> sinks,NetworkEngine.Ref source,Budgets budgets,Set<PairKey> pairs){
-        int remaining=stack.getAmount();for(NetworkEngine.Ref sink:sinks){if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!fluidAllowed(stack,sink,true))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=stack.copy();send.setAmount(Math.min(remaining,budget));remaining-=(int)ResourceTransferSafety.amount(to.fill(send,IFluidHandler.FluidAction.SIMULATE),send.getAmount());}return stack.getAmount()-remaining;
+        int remaining=stack.getAmount();
+        for(NetworkEngine.Ref sink:sinks){
+            if(remaining<=0)break;
+            if(pairs.contains(pair(source,sink))||!fluidAllowed(stack,sink,true)||!liveItemRoute(server,source,sink))continue;
+            int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;
+            FluidTarget to=fluidTarget(server,sink);
+            if(to==null||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            FluidStack send=stack.copy();send.setAmount(Math.min(remaining,budget));
+            int simulated=(int)ResourceTransferSafety.amount(to.handler().fill(send,IFluidHandler.FluidAction.SIMULATE),send.getAmount());
+            if(!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            remaining-=simulated;
+        }
+        return stack.getAmount()-remaining;
     }
     private static void flushFluid(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;for(NetworkEngine.Ref sink:sinks){if(p.pendingFluid.isEmpty())break;if(pairs.contains(pair(source,sink))||!fluidAllowed(p.pendingFluid,sink,true))continue;int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;IFluidHandler to=fluidHandler(server,sink);if(to==null)continue;FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));int accepted=ResourceTransferSafety.insertFluid(source,send,()->to.fill(send,IFluidHandler.FluidAction.EXECUTE));if(accepted>0){p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);budgets.delivered(budgets.fluids,accepted);pairs.add(pair(source,sink));received.add(target(sink));source.host().setChanged();sink.host().setChanged();}ResourceTransferSafety.completed(source);}
+        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;
+        for(NetworkEngine.Ref sink:sinks){
+            if(p.pendingFluid.isEmpty())break;
+            if(pairs.contains(pair(source,sink))||!fluidAllowed(p.pendingFluid,sink,true)||!liveItemRoute(server,source,sink))continue;
+            int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)continue;
+            FluidTarget to=fluidTarget(server,sink);if(to==null||!liveItemRoute(server,source,sink))continue;
+            FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));
+            int accepted=ResourceTransferSafety.insertFluid(source,send,
+                ()->to.live(server,sink)&&liveItemRoute(server,source,sink),
+                ()->to.handler().fill(send,IFluidHandler.FluidAction.EXECUTE));
+            if(accepted>0){
+                p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);
+                budgets.delivered(budgets.fluids,accepted);pairs.add(pair(source,sink));
+                received.add(target(sink));source.host().setChanged();sink.host().setChanged();
+            }
+            ResourceTransferSafety.completed(source);
+        }
     }
     private static void pullFluids(MinecraftServer server,NetworkEngine.Ref sink,List<NetworkEngine.Ref> sources,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=sink.part();if(ResourceTransferSafety.blocked(p))return;IFluidHandler to=fluidHandler(server,sink);if(to==null)return;boolean hadPending=!p.pendingFluid.isEmpty();if(hadPending){int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));int accepted=ResourceTransferSafety.insertFluid(sink,send,()->to.fill(send,IFluidHandler.FluidAction.EXECUTE));if(accepted>0){p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);budgets.delivered(budgets.fluids,accepted);received.add(target(sink));sink.host().setChanged();}ResourceTransferSafety.completed(sink);return;}
-        for(NetworkEngine.Ref source:sources){if(budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())<=0)break;if(ResourceTransferSafety.blocked(source.part())||received.contains(target(source))||pairs.contains(pair(source,sink)))continue;int limit=Math.min(budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get()),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get()));if(limit<=0)continue;IFluidHandler from=fluidHandler(server,source);if(from==null)continue;
-            for(int tank=0;tank<Math.min(from.getTanks(),65536);tank++){FluidStack shown=from.getFluidInTank(tank);if(shown.isEmpty()||!fluidAllowed(shown,source,false)||!fluidAllowed(shown,sink,true))continue;FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),limit));FluidStack trial=from.drain(request,IFluidHandler.FluidAction.SIMULATE);if(!ResourceTransferSafety.fluidTrial(request,trial,request.getAmount()))continue;int accepted=(int)ResourceTransferSafety.amount(to.fill(trial.copy(),IFluidHandler.FluidAction.SIMULATE),trial.getAmount());if(accepted<=0)continue;request=trial.copy();request.setAmount(accepted);FluidStack mutationRequest=request.copy();FluidStack extracted=ResourceTransferSafety.extractFluid(sink,mutationRequest,()->from.drain(mutationRequest,IFluidHandler.FluidAction.EXECUTE));if(extracted.isEmpty())continue;p.pendingFluid=extracted.copy();sink.host().setChanged();source.host().setChanged();FluidStack offered=extracted.copy();offered.setAmount(Math.min(offered.getAmount(),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())));int inserted=ResourceTransferSafety.insertFluid(sink,offered,()->to.fill(offered,IFluidHandler.FluidAction.EXECUTE));budgets.use(budgets.fluids,source,extracted.getAmount());budgets.use(budgets.fluids,sink,extracted.getAmount());pairs.add(pair(source,sink));if(inserted>0){budgets.delivered(budgets.fluids,inserted);received.add(target(sink));}p.pendingFluid.shrink(inserted);ResourceTransferSafety.completed(sink);sink.host().setChanged();source.host().setChanged();p.ticks++;break;}
+        Part p=sink.part();if(ResourceTransferSafety.blocked(p)||!liveItemEndpoint(server,sink))return;
+        FluidTarget to=fluidTarget(server,sink);if(to==null)return;
+        if(!p.pendingFluid.isEmpty()){
+            int budget=budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get());if(budget<=0)return;
+            FluidStack send=p.pendingFluid.copy();send.setAmount(Math.min(send.getAmount(),budget));
+            int accepted=ResourceTransferSafety.insertFluid(sink,send,()->to.live(server,sink),
+                ()->to.handler().fill(send,IFluidHandler.FluidAction.EXECUTE));
+            if(accepted>0){
+                p.pendingFluid.shrink(accepted);budgets.use(budgets.fluids,sink,accepted);
+                budgets.delivered(budgets.fluids,accepted);received.add(target(sink));sink.host().setChanged();
+            }
+            ResourceTransferSafety.completed(sink);return;
+        }
+        for(NetworkEngine.Ref source:sources){
+            if(budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())<=0)break;
+            if(ResourceTransferSafety.blocked(source.part())||received.contains(target(source))
+                ||pairs.contains(pair(source,sink))||!liveItemRoute(server,source,sink))continue;
+            int limit=Math.min(budgets.remaining(budgets.fluids,source,PLConfig.FLUID_RATE.get()),
+                budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get()));
+            if(limit<=0)continue;
+            FluidTarget from=fluidTarget(server,source);
+            if(from==null||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            int tanks=from.handler().getTanks();
+            if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            for(int tank=0;tank<Math.min(tanks,65536);tank++){
+                FluidStack shown=from.handler().getFluidInTank(tank);
+                if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))break;
+                if(shown.isEmpty()||!fluidAllowed(shown,source,false)||!fluidAllowed(shown,sink,true))continue;
+                FluidStack request=shown.copy();request.setAmount(Math.min(request.getAmount(),limit));
+                FluidStack trial=from.handler().drain(request,IFluidHandler.FluidAction.SIMULATE);
+                if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))break;
+                if(!ResourceTransferSafety.fluidTrial(request,trial,request.getAmount()))continue;
+                int accepted=(int)ResourceTransferSafety.amount(
+                    to.handler().fill(trial.copy(),IFluidHandler.FluidAction.SIMULATE),trial.getAmount());
+                if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))break;
+                if(accepted<=0)continue;
+                FluidStack mutationRequest=trial.copy();mutationRequest.setAmount(accepted);
+                FluidStack extracted=ResourceTransferSafety.extractFluid(sink,mutationRequest,
+                    ()->from.live(server,source)&&to.live(server,sink)&&liveItemRoute(server,source,sink),
+                    ()->from.handler().drain(mutationRequest,IFluidHandler.FluidAction.EXECUTE));
+                if(extracted.isEmpty())continue;
+                p.pendingFluid=extracted.copy();sink.host().setChanged();source.host().setChanged();
+                FluidStack offered=extracted.copy();
+                offered.setAmount(Math.min(offered.getAmount(),budgets.remaining(budgets.fluids,sink,PLConfig.FLUID_RATE.get())));
+                int inserted=ResourceTransferSafety.insertFluid(sink,offered,
+                    ()->from.live(server,source)&&to.live(server,sink)&&liveItemRoute(server,source,sink),
+                    ()->to.handler().fill(offered,IFluidHandler.FluidAction.EXECUTE));
+                budgets.use(budgets.fluids,source,extracted.getAmount());
+                budgets.use(budgets.fluids,sink,extracted.getAmount());pairs.add(pair(source,sink));
+                if(inserted>0){budgets.delivered(budgets.fluids,inserted);received.add(target(sink));}
+                p.pendingFluid.shrink(inserted);ResourceTransferSafety.completed(sink);
+                sink.host().setChanged();source.host().setChanged();p.ticks++;break;
+            }
             if(!p.pendingFluid.isEmpty())break;
         }
     }
 
     // ------------------------------------------------------------ FE
     private static void pushEnergy(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;boolean hadPending=p.pendingEnergy>0;if(hadPending){flushEnergy(server,source,sinks,budgets,pairs,received);return;}if(received.contains(target(source)))return;IEnergyStorage from=energyHandler(server,source);if(from==null)return;int sourceBudget=budgets.remaining(budgets.energy,source,PLConfig.ENERGY_RATE.get());int trial=(int)ResourceTransferSafety.amount(from.extractEnergy(sourceBudget,true),sourceBudget);if(trial<=0)return;int space=energySpace(server,trial,sinks,source,budgets,pairs);if(space<=0)return;int request=Math.min(trial,space);int extracted=ResourceTransferSafety.extractEnergy(source,request,()->from.extractEnergy(request,false));if(extracted<=0)return;p.pendingEnergy=extracted;budgets.use(budgets.energy,source,extracted);source.host().setChanged();p.ticks++;flushEnergy(server,source,sinks,budgets,pairs,received);
+        Part p=source.part();if(ResourceTransferSafety.blocked(p)||!liveItemEndpoint(server,source))return;
+        if(p.pendingEnergy>0){flushEnergy(server,source,sinks,budgets,pairs,received);return;}
+        if(received.contains(target(source)))return;
+        EnergyTarget from=energyTarget(server,source);if(from==null)return;
+        int sourceBudget=budgets.remaining(budgets.energy,source,PLConfig.ENERGY_RATE.get());
+        int trial=(int)ResourceTransferSafety.amount(from.handler().extractEnergy(sourceBudget,true),sourceBudget);
+        if(!from.live(server,source))return;
+        if(trial<=0)return;
+        int space=energySpace(server,trial,sinks,source,budgets,pairs);
+        if(!from.live(server,source)||space<=0)return;
+        int request=Math.min(trial,space);
+        int extracted=ResourceTransferSafety.extractEnergy(source,request,()->from.live(server,source),
+            ()->from.handler().extractEnergy(request,false));
+        if(extracted<=0)return;
+        p.pendingEnergy=extracted;budgets.use(budgets.energy,source,extracted);
+        source.host().setChanged();p.ticks++;flushEnergy(server,source,sinks,budgets,pairs,received);
     }
     private static int energySpace(MinecraftServer server,int amount,List<NetworkEngine.Ref> sinks,NetworkEngine.Ref source,Budgets budgets,Set<PairKey> pairs){
-        int remaining=amount;for(NetworkEngine.Ref sink:sinks){if(remaining<=0)break;if(pairs.contains(pair(source,sink))||!energyAllowed(sink))continue;int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(budget<=0)continue;IEnergyStorage to=energyHandler(server,sink);if(to==null)continue;int offered=Math.min(remaining,budget);remaining-=(int)ResourceTransferSafety.amount(to.receiveEnergy(offered,true),offered);}return amount-remaining;
+        int remaining=amount;
+        for(NetworkEngine.Ref sink:sinks){
+            if(remaining<=0)break;
+            if(pairs.contains(pair(source,sink))||!energyAllowed(sink)||!liveItemRoute(server,source,sink))continue;
+            int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(budget<=0)continue;
+            EnergyTarget to=energyTarget(server,sink);if(to==null||!liveItemRoute(server,source,sink))continue;
+            int offered=Math.min(remaining,budget);
+            int accepted=(int)ResourceTransferSafety.amount(to.handler().receiveEnergy(offered,true),offered);
+            if(!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            remaining-=accepted;
+        }
+        return amount-remaining;
     }
     private static void flushEnergy(MinecraftServer server,NetworkEngine.Ref source,List<NetworkEngine.Ref> sinks,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;for(NetworkEngine.Ref sink:sinks){if(p.pendingEnergy<=0)break;if(pairs.contains(pair(source,sink))||!energyAllowed(sink))continue;int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(budget<=0)continue;IEnergyStorage to=energyHandler(server,sink);if(to==null)continue;int offered=Math.min(p.pendingEnergy,budget);int accepted=ResourceTransferSafety.insertEnergy(source,offered,()->to.receiveEnergy(offered,false));if(accepted>0){p.pendingEnergy-=accepted;budgets.use(budgets.energy,sink,accepted);budgets.delivered(budgets.energy,accepted);pairs.add(pair(source,sink));received.add(target(sink));source.host().setChanged();sink.host().setChanged();}ResourceTransferSafety.completed(source);}
+        Part p=source.part();if(ResourceTransferSafety.blocked(p))return;
+        for(NetworkEngine.Ref sink:sinks){
+            if(p.pendingEnergy<=0)break;
+            if(pairs.contains(pair(source,sink))||!energyAllowed(sink)||!liveItemRoute(server,source,sink))continue;
+            int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(budget<=0)continue;
+            EnergyTarget to=energyTarget(server,sink);if(to==null)continue;
+            int offered=Math.min(p.pendingEnergy,budget);
+            int accepted=ResourceTransferSafety.insertEnergy(source,offered,
+                ()->to.live(server,sink)&&liveItemRoute(server,source,sink),
+                ()->to.handler().receiveEnergy(offered,false));
+            if(accepted>0){
+                p.pendingEnergy-=accepted;budgets.use(budgets.energy,sink,accepted);
+                budgets.delivered(budgets.energy,accepted);pairs.add(pair(source,sink));
+                received.add(target(sink));source.host().setChanged();sink.host().setChanged();
+            }
+            ResourceTransferSafety.completed(source);
+        }
     }
     private static void pullEnergy(MinecraftServer server,NetworkEngine.Ref sink,List<NetworkEngine.Ref> sources,Budgets budgets,Set<PairKey> pairs,Set<TargetKey> received){
-        Part p=sink.part();if(ResourceTransferSafety.blocked(p))return;IEnergyStorage to=energyHandler(server,sink);if(to==null)return;boolean hadPending=p.pendingEnergy>0;if(hadPending){int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());int offered=Math.min(p.pendingEnergy,budget);int accepted=ResourceTransferSafety.insertEnergy(sink,offered,()->to.receiveEnergy(offered,false));if(accepted>0){p.pendingEnergy-=accepted;budgets.use(budgets.energy,sink,accepted);budgets.delivered(budgets.energy,accepted);received.add(target(sink));sink.host().setChanged();}ResourceTransferSafety.completed(sink);return;}
-        for(NetworkEngine.Ref source:sources){int sinkBudget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(sinkBudget<=0)break;if(ResourceTransferSafety.blocked(source.part())||received.contains(target(source))||pairs.contains(pair(source,sink))||!energyAllowed(source))continue;int limit=Math.min(sinkBudget,budgets.remaining(budgets.energy,source,PLConfig.ENERGY_RATE.get()));if(limit<=0)continue;IEnergyStorage from=energyHandler(server,source);if(from==null)continue;int trial=(int)ResourceTransferSafety.amount(from.extractEnergy(limit,true),limit);if(trial<=0)continue;int accepted=(int)ResourceTransferSafety.amount(to.receiveEnergy(trial,true),trial);if(accepted<=0)continue;int extracted=ResourceTransferSafety.extractEnergy(sink,accepted,()->from.extractEnergy(accepted,false));if(extracted<=0)continue;p.pendingEnergy=extracted;sink.host().setChanged();source.host().setChanged();int offered=Math.min(extracted,budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get()));int inserted=ResourceTransferSafety.insertEnergy(sink,offered,()->to.receiveEnergy(offered,false));budgets.use(budgets.energy,source,extracted);budgets.use(budgets.energy,sink,extracted);pairs.add(pair(source,sink));if(inserted>0){budgets.delivered(budgets.energy,inserted);received.add(target(sink));}p.pendingEnergy=extracted-inserted;ResourceTransferSafety.completed(sink);sink.host().setChanged();source.host().setChanged();p.ticks++;
+        Part p=sink.part();if(ResourceTransferSafety.blocked(p)||!liveItemEndpoint(server,sink))return;
+        EnergyTarget to=energyTarget(server,sink);if(to==null)return;
+        if(p.pendingEnergy>0){
+            int budget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(budget<=0)return;
+            int offered=Math.min(p.pendingEnergy,budget);
+            int accepted=ResourceTransferSafety.insertEnergy(sink,offered,()->to.live(server,sink),
+                ()->to.handler().receiveEnergy(offered,false));
+            if(accepted>0){
+                p.pendingEnergy-=accepted;budgets.use(budgets.energy,sink,accepted);
+                budgets.delivered(budgets.energy,accepted);received.add(target(sink));sink.host().setChanged();
+            }
+            ResourceTransferSafety.completed(sink);return;
+        }
+        for(NetworkEngine.Ref source:sources){
+            int sinkBudget=budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get());if(sinkBudget<=0)break;
+            if(ResourceTransferSafety.blocked(source.part())||received.contains(target(source))
+                ||pairs.contains(pair(source,sink))||!energyAllowed(source)||!liveItemRoute(server,source,sink))continue;
+            int limit=Math.min(sinkBudget,budgets.remaining(budgets.energy,source,PLConfig.ENERGY_RATE.get()));
+            if(limit<=0)continue;
+            EnergyTarget from=energyTarget(server,source);
+            if(from==null||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            int trial=(int)ResourceTransferSafety.amount(from.handler().extractEnergy(limit,true),limit);
+            if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            if(trial<=0)continue;
+            int accepted=(int)ResourceTransferSafety.amount(to.handler().receiveEnergy(trial,true),trial);
+            if(!from.live(server,source)||!to.live(server,sink)||!liveItemRoute(server,source,sink))continue;
+            if(accepted<=0)continue;
+            int extracted=ResourceTransferSafety.extractEnergy(sink,accepted,
+                ()->from.live(server,source)&&to.live(server,sink)&&liveItemRoute(server,source,sink),
+                ()->from.handler().extractEnergy(accepted,false));
+            if(extracted<=0)continue;
+            p.pendingEnergy=extracted;sink.host().setChanged();source.host().setChanged();
+            int offered=Math.min(extracted,budgets.remaining(budgets.energy,sink,PLConfig.ENERGY_RATE.get()));
+            int inserted=ResourceTransferSafety.insertEnergy(sink,offered,
+                ()->from.live(server,source)&&to.live(server,sink)&&liveItemRoute(server,source,sink),
+                ()->to.handler().receiveEnergy(offered,false));
+            budgets.use(budgets.energy,source,extracted);
+            budgets.use(budgets.energy,sink,extracted);pairs.add(pair(source,sink));
+            if(inserted>0){budgets.delivered(budgets.energy,inserted);received.add(target(sink));}
+            p.pendingEnergy=extracted-inserted;ResourceTransferSafety.completed(sink);
+            sink.host().setChanged();source.host().setChanged();p.ticks++;
         }
     }
 
