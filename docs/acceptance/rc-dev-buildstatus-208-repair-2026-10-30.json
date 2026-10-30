@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-10-30T08:05:00Z",
+  "scope": "main exact 1.21.1 source verification",
+  "observed_run": {
+    "id": 41017673385,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41017673385",
+    "result": "FAILED_BEFORE_NATIVE",
+    "reason": "verifyBuildStatus rejected BUILD_STATUS.json expected_native_tests=207 while current fixture count is 208",
+    "offline_assertions": 1149451,
+    "native_game_tests_counted": 0,
+    "production_jar_counted": false
+  },
+  "repair": {
+    "commit": "cb04c01865444f4d99c59128589ab19637f3fa94",
+    "file": "BUILD_STATUS.json",
+    "change": "expected_native_tests 207 -> 208",
+    "source_parent": "75b63a9d41a75f8288b1a612f24d8271a8095d56"
+  },
+  "lease": {
+    "claim_commit": "622a0fadb53a03d595f0430c4627815c457a754c",
+    "release_commit": "77708d1e689add92125a9a743e5e8f18d03b5124",
+    "released": true
+  },
+  "release_status": {
+    "rc_clearance": "0/24",
+    "github_release": false,
+    "curseforge_upload": false
+  },
+  "next_step": "Inspect push-triggered exact-source verification for cb04c018 and preserve native/JAR hashes only if native and production checks pass."
+}
