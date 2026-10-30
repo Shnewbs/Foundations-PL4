@@ -501,7 +501,7 @@
     {
       "minecraft": "1.21.1",
       "source_ref": "main",
-      "expected_native_fixtures": 201,
+      "expected_native_fixtures": 204,
       "rc_publication_cleared": false,
       "scope": "Modern development baseline with persistent item/fluid/FE/native-energy uncertainty fences and staged Wireless Storage handoffs",
       "item_safety_native_fixtures": "PASS",
@@ -510,16 +510,16 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39781194528",
         "result": "PASS"
       },
-      "native_gate": "PASS_201_OF_201_EXACT_SOURCE_NO_RC_CLEARANCE",
+      "native_gate": "PASS_204_OF_204_EXACT_SOURCE_NO_RC_CLEARANCE",
       "resource_safety_native_fixtures": "PASS",
-      "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
-      "workflow_run": 40978813923,
-      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40978813923",
+      "source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
+      "workflow_run": 40984702117,
+      "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40984702117",
       "wireless_safety_native_fixtures": "PASS",
-      "hourly_native_evidence": "docs/acceptance/rc-dev-1211-stale-registered-host-alias-native-2026-10-29.json",
-      "build_status_blob_sha": "a294afd0648ddab0ceb841f24f73f558d1450302",
-      "observed_native_fixtures": 201,
-      "runtime_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987",
+      "hourly_native_evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+      "build_status_blob_sha": "55679b7f276f4a710995c9d26da5e6564edaceaf",
+      "observed_native_fixtures": 204,
+      "runtime_sha256": "a508e99710df8595cfcf67edde195a7eac4b6ca60f337f9f21d5a9438a6e56d7",
       "previous_process_restart_candidate": {
         "source_commit": "7c5bccbc8fc4c7661fa49b1cff18827cd589e5f5",
         "runtime_sha256": "4325adacd93add2a26ef71435f47fe8d1e1e2722cd5832523c79c3929cf8955b",
@@ -659,6 +659,13 @@
         "verifier_fix_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
         "prior_failed_run": 40978429082,
         "rc_publication_cleared": false
+      },
+      "previous_native_visual_201": {
+        "source_commit": "c7a40d5de989a1df0818560a6f8fc9c1d073477e",
+        "run_id": 40978813923,
+        "expected": 201,
+        "passed": 201,
+        "runtime_sha256": "ca4d4c4f9e72bd3778cf73493702f809e338165ef08852e97cac339f19080987"
       }
     },
     {
@@ -1939,7 +1946,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
+  "latest_work": "2026-10-30T01:19:02.501Z: Verified 1.21.1 exact 98bfaea8 source 204/204 native (run 40984702117), JAR a508e997, artifact ZIP 491c7b2f. Fixed cross-owner visual-only exports, paired panel reader visibility, stale non-root canvas tile owner/controller/preview. Earlier native 203/203 at b4509ea, two obsolete offline source guards repaired. 0/24 RC cleared, no new release/upload. Evidence docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -4244,7 +4251,7 @@
       "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
     }
   ],
-  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json",
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
   "latest_eight_branch_publisher_safety": {
     "evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
     "checked_at": "2026-10-29T22:23:11.893Z",
@@ -4403,5 +4410,17 @@
     "results": "PASS_15_OF_15_SELECTED",
     "head_sha": "b433e5ae71816617fdba7c5af44388981556f270",
     "evidence": "docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json"
+  },
+  "previous_latest_work_1211_visual": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
+  "latest_1211_visual_owner_isolation_204_native": {
+    "source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
+    "native_run": 40984702117,
+    "expected": 204,
+    "observed": 204,
+    "production_jar_sha256": "a508e99710df8595cfcf67edde195a7eac4b6ca60f337f9f21d5a9438a6e56d7",
+    "artifact_id": 12945784065,
+    "artifact_sha256": "491c7b2fddd4ba020925a65b130d906d04a7e8148fc0d769df17e66fe2a9f7d2",
+    "evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+    "rc_publication_cleared": false
   }
 }

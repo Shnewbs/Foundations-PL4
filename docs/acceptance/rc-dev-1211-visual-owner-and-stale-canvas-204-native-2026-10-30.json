@@ -1,0 +1,108 @@
+{
+  "recorded_at_utc": "2026-10-30T01:19:02.501Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "purpose": "Native-verified live visual reader authority and joined-display tile isolation; not RC clearance",
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261030T0105Z",
+    "claim_commit": "ee70f265b945d25a0199b6601e837abb953f125b",
+    "released_in_checkpoint": true
+  },
+  "exact_source": {
+    "final_source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
+    "minecraft": "1.21.1",
+    "loader": "NeoForge 21.x",
+    "expected_native_tests": 204,
+    "source_paths": [
+      "src/main/java/net/foundations/pl4/NetworkEngine.java",
+      "src/main/java/net/foundations/pl4/DisplayNetworks.java",
+      "src/portTest/java/net/foundations/pl4/R7GameTests.java",
+      "BUILD_STATUS.json"
+    ],
+    "summary": "Prevent cross-owner visual-only export, same-host reader-to-panel cross-owner feed, stale display reader rows/choices, joined-canvas foreign tile preview/controller and stale layout propagation.",
+    "newly_registered_native_fixtures": [
+      "foreignVisualBusCannotReadOwnedInventory",
+      "foreignPairedPanelCannotReadOwnedInventory",
+      "staleJoinedDisplayTileDropsForeignReaderAlias"
+    ],
+    "implementation_commits": [
+      "0b942e5098b584910df03fc4bf50e76cacf42653",
+      "994e186a3107dc704cdc71e63c14b191db4422be",
+      "b4509ea08739a76c1252dedc094c5dfd40e109b5",
+      "98bfaea83e55231c1ceb3be122913b7c075c2592"
+    ]
+  },
+  "native_verification": {
+    "result": "PASS",
+    "source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
+    "workflow_run_id": 40984702117,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40984702117",
+    "actual_game_tests_started": 204,
+    "actual_game_tests_completed": 204,
+    "actual_game_tests_passed": 204,
+    "offline_checks": "PASS",
+    "native_game_test_run": "PASS",
+    "verified_artifact_id": 12945784065,
+    "verified_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/40984702117/artifacts/12945784065",
+    "artifact_zip_sha256": "491c7b2fddd4ba020925a65b130d906d04a7e8148fc0d769df17e66fe2a9f7d2",
+    "verified_zip_entries": 6,
+    "zip_crc_valid": true,
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "a508e99710df8595cfcf67edde195a7eac4b6ca60f337f9f21d5a9438a6e56d7",
+    "production_jar_size_bytes": 1140744,
+    "production_jar_entries": 883,
+    "production_jar_crc_valid": true,
+    "native_scenarios_jar_sha256": "ac2d5cc4529ac61ddc1420acf5f46ba92094198196e69abc70932773ef227d37",
+    "source_jar_sha256": "f7be0b029ea5f08e27f8918c507b63bfb42708858aade12445099cf3f35825fa",
+    "evidence_inspection": "Downloaded GitHub Actions artifact; compared SHA-256 with GitHub artifact digest, verified 6 ZIP and all 883 production JAR CRC entries and native completion markers.",
+    "scope_limitations": [
+      "No installed real optional third-party provider/callback/unloaded alias acceptance for this exact JAR",
+      "No authenticated live multiplayer with this exact JAR",
+      "No arbitrary-world migration or sustained TPS/memory/performance report",
+      "Native visuals test access control, not client framebuffer or screenshot acceptance"
+    ]
+  },
+  "earlier_native_verification": {
+    "result": "PASS",
+    "source_commit": "b4509ea08739a76c1252dedc094c5dfd40e109b5",
+    "run_id": 40984404114,
+    "game_tests_passed": 203,
+    "expected": 203,
+    "artifact_id": 12945329780,
+    "artifact_zip_sha256": "35a629e2db81c58f85f11d17ff256b12e4ce0f7ff04044f7299679b47753ec3a",
+    "production_jar_sha256": "2e71c02e85b6131668fba2931b249998bf7afa6bf987f13e2bcf53e3e41239dc",
+    "artifact_crc_valid": true,
+    "production_jar_entries": 883
+  },
+  "failure_history": [
+    {
+      "run_id": 40984139093,
+      "source_commit": "0b942e5098b584910df03fc4bf50e76cacf42653",
+      "phase": "offline",
+      "reason": "R9 source assertion hardcoded raw canvas.reader selector, rejected safer currentReaders source; native skipped",
+      "fixed_in": "994e186a3107dc704cdc71e63c14b191db4422be"
+    },
+    {
+      "run_id": 40984304112,
+      "source_commit": "994e186a3107dc704cdc71e63c14b191db4422be",
+      "phase": "offline",
+      "reason": "R16 source assertion hardcoded inline physical owner predicate moved to sharedOwner helper; native skipped",
+      "fixed_in": "b4509ea08739a76c1252dedc094c5dfd40e109b5"
+    }
+  ],
+  "publisher": {
+    "github_release_created": false,
+    "curseforge_upload_created": false,
+    "release_clearance": "0/24",
+    "run_id": 40984702221,
+    "github_publisher_step": "SKIPPED",
+    "curseforge_publisher_step": "SKIPPED",
+    "moderation_visibility": "not applicable; no new upload"
+  },
+  "next_work": [
+    "Run an installed real optional third-party item capability provider against exact 204-case production JAR, covering owner revocation during provider callbacks, same-position backing replacement and chunk-unloaded alias without force-load.",
+    "Use hourly-builds.yml next nonduplicate exact-target build to qualify mc/26.1.2 source 3e341444..., preserving its true 193-case result or precise blocker; keep all 24 RC clearances false until complete acceptance.",
+    "Exercise authenticated two-client migration, client screenshot and sustained TPS/memory acceptance for new exact production JAR; continue per-target certification.",
+    "Repair real 26.1/26.2 sources instead of relabeling 1.21.1, resolve 1.6.4 gravel, and use immutable beta publisher paths only when explicit exact-source RC clearance true."
+  ]
+}
