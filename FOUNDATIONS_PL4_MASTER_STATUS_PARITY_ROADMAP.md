@@ -1,3 +1,7 @@
+### October 30, 2026 — installed-provider exception quarantine regression added; 212-fixture verification pending
+
+Main source `765439df` adds an exact native regression proving that a failing installed InfoProvider discards partial rows without preventing later healthy providers from sampling. The candidate is pending fresh exact-source verification at 212 fixtures; no RC publication is cleared. Next: inspect the push-triggered verification and retain exact artifact/JAR hashes only after a full native/production pass.
+
 ### October 30, 2026 — exact 1.21.1 no-force-load provider regression added; 211-fixture verification pending
 
 Main source `291516dd` adds an exact native regression proving an unloaded InfoProvider target cannot invoke installed callbacks or force-load a chunk. `BUILD_STATUS.json` now requires 211 exact native fixtures. Native/JAR evidence remains pending; no RC publication is cleared. Next: inspect exact-source verification, then continue installed-provider unload/replacement evidence and fresh `mc/26.1.2` qualification.
