@@ -4448,5 +4448,8 @@
     "native_result": "no new native run; 26.1.2 3e341444 remains pending hourly exact-source qualification",
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
-  }
+  },
+  "current_checkpoint": "2026-10-30T04:12:00Z: Implemented post-callback installed-provider liveness guard on main and added native unload-revocation regression; native run pending.",
+  "latest_source_commit": "6b1f81b26028ee61ba32d2d60b8a187c01c86748",
+  "next_step": "Run exact-source hourly build for main; then prove installed optional provider callback revocation, block/entity unload and no-force-load with retained JAR evidence."
 }
