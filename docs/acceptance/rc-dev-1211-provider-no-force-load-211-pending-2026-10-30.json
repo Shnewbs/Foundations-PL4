@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-10-30T17:10:00Z",
+  "scope": "main / exact 1.21.1",
+  "source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
+  "change": "Added native installed-provider no-force-load regression: an unloaded target must return no rows, invoke zero installed providers, and remain unloaded.",
+  "expected_native_fixtures": 211,
+  "native_validation": "PENDING_EXACT_SOURCE",
+  "prior_failed_run": 41078284797,
+  "prior_failure_scope": "two provider revocation/replacement fixtures failed before deterministic backing removal repair; no native/JAR evidence counted.",
+  "publication": "NOT_ELIGIBLE",
+  "rc_publication_cleared": false,
+  "next_step": "Run push-triggered exact-source verification and count native/JAR evidence only if offline, native, and production checks all pass."
+}
