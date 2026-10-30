@@ -40,7 +40,8 @@ public final class NetworkEngine {
     }
     public static boolean loaded(MinecraftServer server,Part.Link link){ServerLevel l=level(server,link);return l!=null&&l.hasChunkAt(link.pos());}
     private static boolean loadedHost(HostEntity h,MinecraftServer s){
-        return !h.isRemoved()&&h.getLevel() instanceof ServerLevel l&&l.getServer()==s&&l.hasChunkAt(h.getBlockPos());
+        return !h.isRemoved()&&h.getLevel() instanceof ServerLevel l&&l.getServer()==s
+            &&l.hasChunkAt(h.getBlockPos())&&l.getBlockEntity(h.getBlockPos())==h;
     }
     public static List<Ref> all(MinecraftServer s){
         List<Ref> result=new ArrayList<>();
@@ -141,18 +142,47 @@ public final class NetworkEngine {
         CableGeometry.refresh(anchor);
         deferDirtyRebuild=true;
     }
-    /** Current server-owned endpoints; UI edits never supply arbitrary positions. */
+    /** Cached reader targets are not authorization after host, part, cable or owner revocation.
+     * Revalidate loaded physical membership and rebuild once before exporting target positions. */
     public static List<Part.Link> targetsFor(MinecraftServer server,Part reader){
         ensureCurrent(server);
         Group group=cachedMembership.get(reader);
-        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()&&reader.kind.reader()?group.targets:List.of();
+        if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()||!reader.kind.reader())
+            return List.of();
+        if(!currentOwnedGroup(server,reader,group)){
+            dirty=true;
+            rebuild(server);
+            group=cachedMembership.get(reader);
+            if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()
+                ||!currentOwnedGroup(server,reader,group))return List.of();
+        }
+        return group.targets;
+    }
+    /** No stale loaded or newly foreign part can remain a cached inventory alias. */
+    private static boolean currentOwnedGroup(MinecraftServer server,Part anchor,Group group){
+        if(anchor.owner==null)return false;
+        boolean attached=false;
+        for(Ref ref:group.parts){
+            if(!loadedHost(ref.host,server)
+                ||ref.host.parts.get(ref.part.slot())!=ref.part
+                ||!anchor.owner.equals(ref.part.owner))return false;
+            if(ref.part==anchor)attached=true;
+        }
+        return attached;
     }
     /** Physical data network only: visual reader exports never grant inventory access. */
     public static List<Ref> storageNodes(MinecraftServer server,Part anchor){
         ensureCurrent(server);
         Group group=cachedMembership.get(anchor);
-        return group!=null&&!group.redstone&&group.hostCount<=PLConfig.MAX_NETWORK.get()
-            ?cachedStorageNodes.get(anchor):List.of();
+        if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get())return List.of();
+        if(!currentOwnedGroup(server,anchor,group)){
+            dirty=true;
+            rebuild(server);
+            group=cachedMembership.get(anchor);
+            if(group==null||group.redstone||group.hostCount>PLConfig.MAX_NETWORK.get()
+                ||!currentOwnedGroup(server,anchor,group))return List.of();
+        }
+        return cachedStorageNodes.getOrDefault(anchor,List.of());
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
     public static void tick(ServerTickEvent.Post e){

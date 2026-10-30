@@ -21,6 +21,41 @@ public final class R16GameTests {
     private static ChestBlockEntity chest(GameTestHelper h,BlockPos p){h.setBlock(p,Blocks.CHEST);return (ChestBlockEntity)h.getLevel().getBlockEntity(h.absolutePos(p));}
     private static NetworkEngine.Ref ref(HostEntity h,Direction face){return new NetworkEngine.Ref(h,part(h,face));}
 
+    /** Native installed topology cannot reuse an owner's stale visual or storage aliases
+     * after a provider silently revokes ownership or disconnects an intermediate cable. */
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerExportsDropRevokedAndDetachedInventoryAliases(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        HostEntity readerHost=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.WEST);
+        HostEntity remoteHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
+        Part reader=part(readerHost,Direction.WEST), remote=part(remoteHost,Direction.EAST);
+        BlockPos remoteInventory=remoteHost.getBlockPos().east();
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "Initially connected native reader must see its owned inventory target");
+        remote.owner=UUID.randomUUID(); // No topology notification before access.
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .noneMatch(link->link.pos().equals(remoteInventory)),
+            "Unannounced foreign-owner change must revoke the stale reader target immediately");
+        remote.owner=OWNER;remoteHost.changed();
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "A reauthorized loaded endpoint should rejoin");
+        Part cable=remoteHost.parts.remove(6);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .noneMatch(link->link.pos().equals(remoteInventory)),
+            "Disconnected centre cable must revoke cached remote target");
+        remoteHost.parts.put(6,cable);remoteHost.changed();
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream()
+                .anyMatch(link->link.pos().equals(remoteInventory)),
+            "Reattached owned cable should restore reader target");
+        readerHost.parts.remove(reader.slot());
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).isEmpty(),
+            "Detached reader must not reuse cached network targets");
+        h.succeed();
+    }
+
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
