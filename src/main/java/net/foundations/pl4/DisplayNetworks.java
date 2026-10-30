@@ -158,6 +158,18 @@ public final class DisplayNetworks {
         newRoot.host().changed();for(var tile:tiles)tile.host().changed();
         return true;
     }
+    /** Cached display canvases never grant a stale or foreign reader authority between rebuilds. */
+    private static List<NetworkEngine.Ref> currentReaders(Canvas canvas){
+        UUID owner=canvas.root.part().owner;
+        if(owner==null)return List.of();
+        return canvas.readers.stream().filter(ref->{
+            if(!owner.equals(ref.part().owner))return false;
+            HostEntity host=ref.host();
+            if(host.isRemoved()||host.parts.get(ref.part().slot())!=ref.part())return false;
+            ServerLevel world=ref.level();
+            return world.hasChunkAt(host.getBlockPos())&&world.getBlockEntity(host.getBlockPos())==host;
+        }).toList();
+    }
     private static NetworkEngine.Ref reader(List<NetworkEngine.Ref> readers,String selector){
         if(selector.isEmpty())return readers.isEmpty()?null:readers.getFirst();
         var exact=readers.stream().filter(r->r.part().identity.toString().equals(selector)).findFirst();if(exact.isPresent())return exact.get();
@@ -166,20 +178,20 @@ public final class DisplayNetworks {
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
         if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){
-            var ref=reader(canvas.readers,selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
+            var ref=reader(currentReaders(canvas),selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
         }return List.of();
     }
     public static void sample(){
         for(var canvas:canvases){
-            Part root=canvas.root.part();var source=reader(canvas.readers,root.selected);
+            Part root=canvas.root.part();List<NetworkEngine.Ref> readers=currentReaders(canvas);var source=reader(readers,root.selected);
             root.rows.clear();if(source!=null)root.rows.addAll(source.part().rows);
             root.status=source==null?"No unique selected reader":source.part().title();
-            root.readerChoices.clear();for(var option:canvas.readers.stream().limit(64).toList())root.readerChoices.add(new Part.ReaderChoice(option.part().identity.toString(),option.part().title(),option.part().kind.id));
+            root.readerChoices.clear();for(var option:readers.stream().limit(64).toList())root.readerChoices.add(new Part.ReaderChoice(option.part().identity.toString(),option.part().title(),option.part().kind.id));
             root.sourceRows.clear();int budget=256;
             // Only already-visible readers may satisfy bindings. Never resolve a global reader name/UUID.
             for(var element:root.elements){
                 String selector=element.reader();if(selector.isBlank()||root.sourceRows.containsKey(selector)||root.sourceRows.size()>=8)continue;
-                var bound=reader(canvas.readers,selector);List<Part.Row> values=bound==null?List.of():List.copyOf(bound.part().rows.subList(0,Math.min(Math.min(64,budget),bound.part().rows.size())));
+                var bound=reader(readers,selector);List<Part.Row> values=bound==null?List.of():List.copyOf(bound.part().rows.subList(0,Math.min(Math.min(64,budget),bound.part().rows.size())));
                 root.sourceRows.put(selector,values);budget-=values.size();
             }
             if(canvas.tiles.size()>1)root.status+=" ("+root.canvasWidth+" x "+root.canvasHeight+")";

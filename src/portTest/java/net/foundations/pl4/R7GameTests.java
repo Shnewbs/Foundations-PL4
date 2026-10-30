@@ -58,6 +58,75 @@ public final class R7GameTests {
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearWest(GameTestHelper h){compact(h,Direction.WEST,true);}
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100) public static void bareRearEast(GameTestHelper h){compact(h,Direction.EAST,true);}
 
+
+    /** A remote visual bus can display telemetry only from a reader with the same live owner. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=160)
+    public static void foreignVisualBusCannotReadOwnedInventory(GameTestHelper h){
+        BlockPos pos=new BlockPos(3,3,3);
+        HostEntity input=host(h,pos);
+        put(input,Kind.DATA_CABLE,Direction.DOWN);
+        Part reader=put(input,Kind.INVENTORY_READER,Direction.EAST);
+        put(input,Kind.TRANSFER_NODE,Direction.WEST);
+        chest(h,pos.west(),17);
+        HostEntity output=host(h,pos.east());
+        Part cable=put(output,Kind.DATA_CABLE,Direction.DOWN);
+        Part display=put(output,Kind.DISPLAY,Direction.DOWN);
+        display.selected=reader.identity.toString();
+        UUID foreign=UUID.randomUUID();
+        cable.owner=foreign;display.owner=foreign;output.changed();
+        h.runAtTickTime(45,()->{
+            h.assertTrue(amount(reader,17),"Owner's native reader must still sample its local inventory");
+            h.assertTrue(display.rows.isEmpty()&&display.readerChoices.isEmpty(),
+                "Foreign visual cable and screen must not enumerate or display private reader data");
+            cable.owner=OWNER;display.owner=OWNER;output.changed();
+        });
+        h.runAtTickTime(85,()->{
+            h.assertTrue(amount(display,17),"Restoring matching ownership must restore legitimate visual output");
+            display.owner=foreign; // No changed() event: queued read must check current owner.
+            DisplayNetworks.sample();
+            h.assertTrue(display.rows.isEmpty()&&display.readerChoices.isEmpty()
+                    &&DisplayNetworks.preview(output,display,reader.identity.toString()).isEmpty(),
+                "Unannounced screen ownership revocation must hide cached reader data immediately");
+            output.changed();
+        });
+        h.runAtTickTime(125,()->{
+            h.assertTrue(display.rows.isEmpty(),"Foreign screen remains isolated after topology rebuild");
+            h.succeed();
+        });
+    }
+    /** The shortcut from a reader to a same-host panel is also an ownership boundary. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=160)
+    public static void foreignPairedPanelCannotReadOwnedInventory(GameTestHelper h){
+        BlockPos pos=new BlockPos(3,3,3);
+        HostEntity host=host(h,pos);
+        put(host,Kind.DATA_CABLE,Direction.DOWN);
+        Part reader=put(host,Kind.INVENTORY_READER,Direction.EAST);
+        put(host,Kind.TRANSFER_NODE,Direction.WEST);
+        chest(h,pos.west(),17);
+        Part display=put(host,Kind.LARGE_DISPLAY,Direction.EAST);
+        display.selected=reader.identity.toString();
+        UUID foreign=UUID.randomUUID();
+        display.owner=foreign;host.changed();
+        h.runAtTickTime(45,()->{
+            h.assertTrue(amount(reader,17),"Healthy owned reader must still report the inventory");
+            h.assertTrue(display.rows.isEmpty()&&display.readerChoices.isEmpty(),
+                "Foreign paired panel must not bypass reader-owner isolation");
+            display.owner=OWNER;host.changed();
+        });
+        h.runAtTickTime(85,()->{
+            h.assertTrue(amount(display,17),"Restoring same-owner panel must restore its local display");
+            display.owner=foreign;
+            DisplayNetworks.sample();
+            h.assertTrue(display.rows.isEmpty()&&display.readerChoices.isEmpty(),
+                "Live owner revocation must clear paired-panel telemetry without a topology event");
+            host.changed();
+        });
+        h.runAtTickTime(125,()->{
+            h.assertTrue(display.rows.isEmpty(),"Revoked paired panel remains isolated");
+            h.succeed();
+        });
+    }
+
     private static void isolated(GameTestHelper h,Direction front){
         BlockPos pos=new BlockPos(3,3,3);var input=host(h,pos);put(input,Kind.DATA_CABLE,Direction.DOWN);
         Part reader=put(input,Kind.INVENTORY_READER,front),source=put(input,Kind.TRANSFER_NODE,front.getOpposite());source.transferMode=2;

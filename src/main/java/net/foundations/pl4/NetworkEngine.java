@@ -49,6 +49,10 @@ public final class NetworkEngine {
         for(HostEntity h:LOADED)if(loadedHost(h,s))h.parts.values().forEach(p->result.add(new Ref(h,p)));
         return result;
     }
+    /** A physical or visual connection is not authority across ownership boundaries. */
+    private static boolean sharedOwner(Ref source,Ref destination){
+        return source.part.owner!=null&&source.part.owner.equals(destination.part.owner);
+    }
     /** Server-only loaded-part graph with typed NETWORK inputs and separate VISUAL exports. */
     public static void rebuild(MinecraftServer server){
         List<Ref> refs=new ArrayList<>();
@@ -80,7 +84,7 @@ public final class NetworkEngine {
         // NetworkEngine.tick even though wireless linking checks ownership.
         for(var edge:topology.network()){
             Ref a=refs.get(edge.a()), b=refs.get(edge.b());
-            if(a.part.owner!=null&&a.part.owner.equals(b.part.owner))
+            if(sharedOwner(a,b))
                 sets.union(edge.a(),edge.b());
         }
         topology.cableArms().forEach((i,values)->arms.put(refs.get(i).host,values));
@@ -122,12 +126,15 @@ public final class NetworkEngine {
         }
         for(var export:topology.visual()){
             int from=sets.find(export.reader()),to=sets.find(export.cable());
-            if(usable.contains(from)&&usable.contains(to))busReaders.get(to).add(refs.get(export.reader()));
+            if(usable.contains(from)&&usable.contains(to)
+                &&sharedOwner(refs.get(export.reader()),refs.get(export.cable())))
+                busReaders.get(to).add(refs.get(export.reader()));
         }
         Map<Part,List<Ref>> visible=new IdentityHashMap<>();
         topology.displayFeeds().forEach((display,source)->{
             Ref feed=refs.get(source);int bus=sets.find(source);
-            if(usable.contains(bus))visible.put(refs.get(display).part,feed.part.kind.reader()?List.of(feed):List.copyOf(busReaders.get(bus)));
+            if(usable.contains(bus)&&sharedOwner(refs.get(display),feed))
+                visible.put(refs.get(display).part,feed.part.kind.reader()?List.of(feed):List.copyOf(busReaders.get(bus)));
         });
         DisplayNetworks.rebuild(refs,visible);
         arms.forEach((host,values)->{host.setConnections(values);host.setExternalLeads(leads.getOrDefault(host,0));});
