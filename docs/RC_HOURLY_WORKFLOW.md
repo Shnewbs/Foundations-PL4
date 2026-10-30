@@ -1,3 +1,7 @@
+### October 30, 2026 — installed-provider entity replacement identity regression added; 213-fixture verification queued
+
+Main source `c5e6306b` adds `installedProviderSampleIsDiscardedAfterEntityReplacement`: a provider removes the original entity, spawns a replacement at the same position, and emits a late row; the original UUID target must publish no late rows. `BUILD_STATUS.json` now requires 213 exact native fixtures. Verification run [41120463881](https://github.com/Shnewbs/Foundations-PL4/actions/runs/41120463881) is queued. No native/JAR/release evidence is counted until a fresh exact-source pass. **0/24 RC clearances.**
+
 ### October 30, 2026 — installed-provider exception quarantine regression added; 212-fixture verification pending
 
 Main source `765439df` adds `installedProviderExceptionDiscardsPartialRows`: a throwing installed provider must not publish partial rows, while a later healthy provider remains callable. `BUILD_STATUS.json` now requires 212 exact native fixtures. No native/JAR/release evidence is counted until fresh exact-source verification passes. **0/24 RC clearances.** Next: inspect the push-triggered 212-fixture verification and preserve exact artifact/JAR hashes only on a full pass.
