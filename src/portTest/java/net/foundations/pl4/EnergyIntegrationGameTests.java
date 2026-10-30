@@ -242,7 +242,7 @@ public final class EnergyIntegrationGameTests {
         try(var revoke=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_revoke",(context,out)->{
                 if(!context.target().equals(target))return;
                 out.add("stale","Stale",1,1,"");
-                h.getLevel().setBlock(target.pos(),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),3);
+                h.getLevel().removeBlockEntity(target.pos());h.getLevel().setBlock(target.pos(),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),3);
             });
             var late=net.foundations.pl4.api.InfoProviders.register("pl4_test:z_late",(context,out)->{
                 lateCalls[0]++;
