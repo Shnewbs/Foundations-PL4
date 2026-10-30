@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-20261030T2200Z",
+    "claimed_at": "2026-10-30T22:00:21Z",
+    "expires_at": "2026-10-30T22:20:21Z",
+    "expected_parent": "07fa8e1d01c2ff6e4df3ff5b78ba040daa498ed0",
+    "scope": "repair stale hardcoded R16 fixture-count guard to derive current exact registrations; update pending verification evidence"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,7 +20,7 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T21:07:00Z: Repaired stale verify_r16.py assertion from 44 to 45 for current R16GameTests.java; fresh exact-source verification pending; no native/JAR/release evidence counted.",
+  "current_checkpoint": "2026-10-30T22:00:21Z: finite writer lease claimed against observed main parent 07fa8e1d; repairing hardcoded R16 fixture-count verifier drift before fresh exact-source verification.",
   "local_validation": "GitHub readback confirmed prior verification 41120463881 failed before native execution on stale 44-case guard; source repair acfb4213 and evidence c2bde1f are present; lease released after docs checkpoint.",
   "next_work": [
     "Inspect push-triggered verification for acfb4213 and count native/production evidence only on full pass.",
