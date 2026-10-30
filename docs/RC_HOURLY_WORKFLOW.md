@@ -277,3 +277,8 @@ The newly owner-isolated exact 1.21.1 development JAR is separately confirmed **
 
 ### October 30, 2026 — exact 26.1.2 qualification checkpoint; no relabeling
 A guarded finite writer lease was claimed and released after rereading the live workflow/state/status/roadmap. Exact source `mc/26.1.2` at `3e3414442fbe998081b2f123596f50af7f0ad65d` remains pending its next nonduplicate `hourly-builds.yml` native run for the required 193-case qualification. The existing `mc/26.1` and `mc/26.2` branches still declare Minecraft `1.21.1` in `BUILD_STATUS.json`; no metadata or neighboring-version JAR relabel was performed. No new native build, GitHub RC, or CurseForge upload was executed in this checkpoint. Evidence: `docs/acceptance/rc-dev-2612-qualification-checkpoint-2026-10-30.json`.
+
+
+### October 30, 2026 — 208-case controller checkpoint after stale verification state
+
+Exact-source verification 41017673385 (https://github.com/Shnewbs/Foundations-PL4/actions/runs/41017673385) completed **1,149,451 offline assertions** but stopped before native execution at `verifyBuildStatus`; the checked-out checkpoint did not match the current 208-fixture source tuple. No native GameTests or JAR is counted. Current `main` now records the prior 207-case candidate separately and marks the installed-provider liveness/backing-identity candidate pending at **208** fixtures. Writer lease was claimed and released with preserved state. **0/24 RC clearances; no release/upload.** Next: inspect the new push-triggered exact-source verification, then run the independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence.
