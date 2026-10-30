@@ -9,7 +9,7 @@
     "owner": "pl4-chat-20261030T1509Z",
     "claimed_at": "2026-10-30T15:09:18Z",
     "expires_at": "2026-10-30T15:39:18Z",
-    "expected_parent": "9f8169dadf6604c7cc06c6e3ad0b318231ef3784",
+    "expected_parent": "3c40510a5f083014ec84f8b973acbd95e593edfe",
     "purpose": "Add exact native regression for provider callback revocation/pre-callback guard; no publication."
   },
   "build_workflow": ".github/workflows/hourly-builds.yml",
@@ -20,10 +20,10 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T14:05:00Z: repaired stale R16 verifier fixture guard after run 41061181756. Current R16GameTests.java contains 44 @GameTest registrations; verifier now asserts and labels 44. No native/JAR evidence counted yet. Lease released.",
+  "current_checkpoint": "2026-10-30T15:16:00Z: added exact installed-provider callback revocation regression; source now requires 210 native fixtures. Native/JAR/release evidence still pending.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect push-triggered exact-source verification for 8bc330d6ecdd04f06eeb27b2f2a1d710322f65f0; count native/JAR evidence only after full pass.",
+    "Inspect push-triggered exact-source verification for the 210-fixture candidate; count native/JAR evidence only after full pass.",
     "Run independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence.",
     "Qualify exact mc/26.1.2 source 3e341444 via selected hourly build; do not inherit older 192-case evidence.",
     "Continue authenticated multiplayer, arbitrary-world migration, sustained performance, true 26.1/26.2 source repair and 1.6.4 gravel root cause."
@@ -65,17 +65,8 @@
   },
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
-  "last_writer_release": {
-    "owner": "pl4-chat-20261030T1404Z",
-    "released_at": "2026-10-30T14:06:00Z",
-    "lease_claim_commit": "01d443087254f87443e80d8a68d8350885480601",
-    "expected_parent": "040dec68ba8f9fb725e5fb5f75efe1ce70644ae8",
-    "source_commit": "8bc330d6ecdd04f06eeb27b2f2a1d710322f65f0",
-    "writer_lease_released": true,
-    "release_performed": false,
-    "evidence": "docs/acceptance/rc-dev-r16-44-fixture-guard-repair-2026-10-30.json"
-  },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-provider-208-native-2026-10-30.json",
+  "last_writer_release": null,
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-callback-revocation-210-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
