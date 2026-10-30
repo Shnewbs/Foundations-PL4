@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 192,
+  "expected_native_tests": 193,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -61,5 +61,13 @@
   "resource_provider_uncertainty": "PERSISTENT_FLUID_FE_NATIVE_ENERGY_QUARANTINE",
   "candidate_resource_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
-  "native_compilation": "PASS_FOR_THIS_CANDIDATE"
+  "native_compilation": "PASS_FOR_THIS_CANDIDATE",
+  "pending_native_candidate": {
+    "source_scope": "Exact Minecraft 26.1.2 loaded HostEntity identity and owned reader/storage alias revocation",
+    "expected_native_tests": 193,
+    "validation": "PENDING_EXACT_SOURCE_PINNED_NATIVE",
+    "installed_providers": "NOT_TESTED",
+    "rc_publication_cleared": false
+  },
+  "current_source_notes": "2026-10-30: Native source now requires loaded HostEntity identity and revalidates owner, part attachment, intermediate cable before serving reader or storage inventory aliases, with 193rd PortGameTest testing silent owner/cable and reader detachment. Expected 193 native tests, not yet run. Exact 26.1.2 JAR must be built separately; never infer it from 26.3. Prior 192-case provenance remains historical. RC uncleared."
 }
