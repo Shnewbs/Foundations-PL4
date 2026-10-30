@@ -1946,7 +1946,7 @@
       }
     }
   ],
-  "latest_work": "2026-10-30T01:19:02.501Z: Verified 1.21.1 exact 98bfaea8 source 204/204 native (run 40984702117), JAR a508e997, artifact ZIP 491c7b2f. Fixed cross-owner visual-only exports, paired panel reader visibility, stale non-root canvas tile owner/controller/preview. Earlier native 203/203 at b4509ea, two obsolete offline source guards repaired. 0/24 RC cleared, no new release/upload. Evidence docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+  "latest_work": "2026-10-30 2026-10-30T02:19:42.183Z: Exact 1.21.1 source 411401924 fixed fluid/FE provider callback-time authority/backing revocation, +3 native tests, 207/207 actual GameTests in 40989902987 (also 207/207 in 40990361572), production JAR SHA256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc. Exact artifact pin 3509693c5 enabled installed dedicated-server 40990361662, real saved-world upgrade 40990361653 and two offline graphical clients per phase 40990361834, all PASS; screenshots and native NBT reviewed, 64+64 cable items, 1728 conserved, 0 escrow. Actual third-party installed providers, online auth, arbitrary worlds, sustained perf and other exact ports pending. 0/24 RC clearance, GH/CF publication skipped. Evidence docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json.",
   "partial_1211_acceptance": {
     "source_commit": "1cb1ee0eec9813a1e167c78258f361edf8278921",
     "client_visual": "acceptance/rc-dev-1.21.1-client-visual.json",
@@ -4251,7 +4251,7 @@
       "native_runtime_validation_for_new_workflow": "NOT EXECUTED; workflow-only change, native evidence not transferred"
     }
   ],
-  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
   "latest_eight_branch_publisher_safety": {
     "evidence": "docs/acceptance/rc-dev-eight-branch-release-safety-2026-10-29.json",
     "checked_at": "2026-10-29T22:23:11.893Z",
@@ -4421,6 +4421,24 @@
     "artifact_id": 12945784065,
     "artifact_sha256": "491c7b2fddd4ba020925a65b130d906d04a7e8148fc0d769df17e66fe2a9f7d2",
     "evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+    "rc_publication_cleared": false
+  },
+  "previous_latest_work_1211_resource": "2026-10-30T01:19:02.501Z: Verified 1.21.1 exact 98bfaea8 source 204/204 native (run 40984702117), JAR a508e997, artifact ZIP 491c7b2f. Fixed cross-owner visual-only exports, paired panel reader visibility, stale non-root canvas tile owner/controller/preview. Earlier native 203/203 at b4509ea, two obsolete offline source guards repaired. 0/24 RC cleared, no new release/upload. Evidence docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+  "latest_1211_fluid_fe_callback_and_installed_207": {
+    "evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
+    "source_commit": "411401924e35ea1c7e085db4afdcd7cc241eeb33",
+    "native_run": 40989902987,
+    "control_source_commit": "3509693c5d1edef35d91fb17150cf25a29a51598",
+    "native_retest_run": 40990361572,
+    "game_tests": "207/207",
+    "production_jar_sha256": "8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc",
+    "native_artifact_id": 12948304091,
+    "native_artifact_sha256": "766e57bd47aa926f2a8a471930df8f475e579be1c9b8e666b1097a2a386960dd",
+    "installed_server_run": 40990361662,
+    "installed_world_upgrade_run": 40990361653,
+    "two_client_installed_run": 40990361834,
+    "two_client_scope": "PASS_TWO_REAL_OFFLINE_GUI_CLIENTS_EACH_PHASE",
+    "installed_optional_providers": "PENDING",
     "rc_publication_cleared": false
   }
 }

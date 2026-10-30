@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-chat-20261030T0202Z",
-    "claimed_at": "2026-10-30T02:02:47.372Z",
-    "expires_at": "2026-10-30T02:25:47.372Z",
-    "purpose": "PL4 exact-source implementation, acceptance and checkpoint; guarded global writer",
-    "claim_base_sha": "bd07a0643ca331ba36daf79d397b41caf4b5cbe7"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -23,10 +17,10 @@
   "current_checkpoint": "2026-10-30T01:19:02.501Z: Verified 1.21.1 exact 98bfaea8 source 204/204 native (run 40984702117), JAR a508e997, artifact ZIP 491c7b2f. Fixed cross-owner visual-only exports, paired panel reader visibility, stale non-root canvas tile owner/controller/preview. Earlier native 203/203 at b4509ea, two obsolete offline source guards repaired. 0/24 RC cleared, no new release/upload. Evidence docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Run an installed real optional third-party item capability provider against exact 204-case production JAR, covering owner revocation during provider callbacks, same-position backing replacement and chunk-unloaded alias without force-load.",
-    "Use hourly-builds.yml next nonduplicate exact-target build to qualify mc/26.1.2 source 3e341444..., preserving its true 193-case result or precise blocker; keep all 24 RC clearances false until complete acceptance.",
-    "Exercise authenticated two-client migration, client screenshot and sustained TPS/memory acceptance for new exact production JAR; continue per-target certification.",
-    "Repair real 26.1/26.2 sources instead of relabeling 1.21.1, resolve 1.6.4 gravel, and use immutable beta publisher paths only when explicit exact-source RC clearance true."
+    "Run a real installed optional third-party capability-provider mod against the 1.21.1 207-case production JAR, proving owner revocation during provider callbacks, same-position backing replacement, chunk-unloaded alias rejection and no force-load.",
+    "Qualify exact mc/26.1.2 source 3e341444... in the next nonduplicate hourly-builds.yml run; preserve exact 193-case source/JAR/run hashes or precise dependency/runner blocker.",
+    "Extend authenticated online multiplayer, arbitrary copied/modpack-world migrations and sustained server TPS/heap/active-provider performance; review clean client GUI screenshots beyond overlay-obscured captures.",
+    "Repair real 26.1/26.2 native sources rather than relabel 1.21.1, resolve 1.6.4 gravel and all 24 exact-target acceptance; publish immutable beta RC only when the exact target has recorded clearance."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -66,13 +60,19 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261030T0105Z",
-    "released_at": "2026-10-30T01:19:02.501Z",
-    "lease_claim_commit": "ee70f265b945d25a0199b6601e837abb953f125b",
-    "source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
-    "evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+    "owner": "pl4-hourly-chat-20261030T0202Z",
+    "released_at": "2026-10-30T02:19:42.183Z",
+    "lease_claim_commit": "1c48f228f6bb91a57e683a5f45b11b8c3b2e2c93",
+    "source_commit": "411401924e35ea1c7e085db4afdcd7cc241eeb33",
+    "pinned_control_commit": "3509693c5d1edef35d91fb17150cf25a29a51598",
+    "native_run": 40989902987,
+    "installed_runs": [
+      40990361662,
+      40990361653,
+      40990361834
+    ],
+    "evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
     "writer_lease_released": true,
-    "native_run": 40984702117,
     "rc_clearance": "0/24",
     "release_performed": false
   },
@@ -895,7 +895,7 @@
     "evidence": "docs/acceptance/rc-dev-164-terrain-log-binding-2026-10-28.json"
   },
   "latest_handheld_root_callback_candidate": "docs/acceptance/rc-dev-164-bound-root-callback-2026-10-28.json",
-  "latest_work": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
+  "latest_work": "2026-10-30 2026-10-30T02:19:42.183Z: Exact 1.21.1 source 411401924 fixed fluid/FE provider callback-time authority/backing revocation, +3 native tests, 207/207 actual GameTests in 40989902987 (also 207/207 in 40990361572), production JAR SHA256 8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc. Exact artifact pin 3509693c5 enabled installed dedicated-server 40990361662, real saved-world upgrade 40990361653 and two offline graphical clients per phase 40990361834, all PASS; screenshots and native NBT reviewed, 64+64 cable items, 1728 conserved, 0 escrow. Actual third-party installed providers, online auth, arbitrary worlds, sustained perf and other exact ports pending. 0/24 RC clearance, GH/CF publication skipped. Evidence docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json.",
   "latest_164_placement_log_binding": {
     "source": "84d4d035a8bf0ae7436217f7cad94da092d47b65",
     "workflow_run": 40703299815,
@@ -2802,6 +2802,36 @@
       "26.1.2": "3e3414442fbe998081b2f123596f50af7f0ad65d"
     },
     "writer_lease_released": true,
+    "rc_clearance": "0/24",
+    "release_performed": false
+  },
+  "previous_latest_work_1211_resource": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
+  "last_acceptance_evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
+  "latest_1211_fluid_fe_callback_and_installed_207": {
+    "evidence": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json",
+    "source_commit": "411401924e35ea1c7e085db4afdcd7cc241eeb33",
+    "native_run": 40989902987,
+    "control_source_commit": "3509693c5d1edef35d91fb17150cf25a29a51598",
+    "native_retest_run": 40990361572,
+    "game_tests": "207/207",
+    "production_jar_sha256": "8e30b7da03de049e1f0342c515db5f3dabaf9d4d7629efb088b3b47dc927c2bc",
+    "native_artifact_id": 12948304091,
+    "native_artifact_sha256": "766e57bd47aa926f2a8a471930df8f475e579be1c9b8e666b1097a2a386960dd",
+    "installed_server_run": 40990361662,
+    "installed_world_upgrade_run": 40990361653,
+    "two_client_installed_run": 40990361834,
+    "two_client_scope": "PASS_TWO_REAL_OFFLINE_GUI_CLIENTS_EACH_PHASE",
+    "installed_optional_providers": "PENDING",
+    "rc_publication_cleared": false
+  },
+  "previous_last_writer_release_1211_resource": {
+    "owner": "pl4-hourly-chat-20261030T0105Z",
+    "released_at": "2026-10-30T01:19:02.501Z",
+    "lease_claim_commit": "ee70f265b945d25a0199b6601e837abb953f125b",
+    "source_commit": "98bfaea83e55231c1ceb3be122913b7c075c2592",
+    "evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+    "writer_lease_released": true,
+    "native_run": 40984702117,
     "rc_clearance": "0/24",
     "release_performed": false
   }
