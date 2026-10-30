@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-10-30T12:08:00Z",
+  "source_commit": "f455960a2f15d7e56ea28a55bce5706e8ee86dfb",
+  "parent_source_commit": "e8c4d680e14b1e5e64633843ce6486ae51e48315",
+  "change": "Added native GameTest installedProviderSampleIsDiscardedAfterBlockEntityReplacement. Provider replaces the same-position block entity during sampling; InfoProviders must discard late rows because backing identity changed.",
+  "expected_native_tests": 209,
+  "native_validation": "PENDING_EXACT_SOURCE",
+  "rc_publication_cleared": false,
+  "limitations": [
+    "No native result or production JAR counted yet.",
+    "Installed third-party provider, authenticated multiplayer, arbitrary-world migration, sustained performance and other exact targets remain open."
+  ],
+  "next_step": "Inspect push-triggered exact-source verification; only count native/JAR after a full 209/209 exact-source pass."
+}
