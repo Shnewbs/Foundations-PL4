@@ -14,11 +14,10 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T09:02:06Z: Inspected exact-source verification 41017673385. It passed 1,149,451 offline assertions but its checked-out checkpoint still failed verifyBuildStatus before native execution because the BUILD_STATUS/notes tuple did not match the 208-fixture source. Updated current BUILD_STATUS to preserve the prior 207 evidence while marking the 208-case source pending. No native/JAR/release counted.",
+  "current_checkpoint": "2026-10-30T09:05:10Z: Exact-source verification 41030606887 passed 1,149,451 offline assertions and 208/208 native GameTests on main source 872bfc2. Retained verification artifact 12966206043 (ZIP digest sha256:825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626). No release/upload; installed optional-provider acceptance still outstanding.",
   "local_validation": "Verified exact e567fe3 hourly ZIP 5178ef8619adea22595e15585cd7c6a69f60785e8485f5d1ce0e7628d00659df, 155 members ZIP CRC, 5 JAR hashes, 392/392 native, 1536/40 distinct decode JVMs+20 saved worlds, 188/4 registered-provider JVMs, 60/3 historical JVMs, production boot and preview.3 upgrade; 791a94d source, unique new fixture and branch publisher guard readback pass, no 393-case native/JAR pass yet.",
   "next_work": [
-    "Inspect the new push-triggered exact-source verification after the BUILD_STATUS checkpoint repair; count native/JAR only if the 208-case source and production checks pass.",
-    "Run the independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence.",
+    "Run independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence.",
     "Qualify exact mc/26.1.2 source 3e341444 via selected hourly build; do not inherit older 192-case evidence.",
     "Continue authenticated multiplayer, arbitrary-world migration, sustained performance, true 26.1/26.2 source repair and 1.6.4 gravel root cause."
   ],
@@ -30,6 +29,7 @@
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "latest_native_runs": [
+    41030606887,
     40770696373,
     40766042082,
     40723840470,
@@ -46,8 +46,7 @@
     40630703237,
     40448042043,
     40567666803,
-    40571895345,
-    40610348219
+    40571895345
   ],
   "last_verified_legacy_native_runs": {
     "1.12.2": 40766042082,
@@ -60,18 +59,18 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-chat-20261030T0202Z",
-    "released_at": "2026-10-30T09:08:00Z",
-    "lease_claim_commit": "505662f16b437a73b18e7438b155e48927e1afeb",
-    "source_commit": "cafe76076adde94e06ccbd77d4fe04516b953731",
-    "native_run": null,
+    "owner": "pl4-hourly-chat-20261030T0304Z",
+    "released_at": "2026-10-30T09:07:00Z",
+    "lease_claim_commit": "not-recorded",
+    "source_commit": "872bfc2aedf0e05842be7ea7e14c68d2e1c39342",
+    "native_run": 41030606887,
     "installed_runs": [],
-    "evidence": "docs/acceptance/rc-dev-buildstatus-208-checkpoint-2026-10-30.json",
+    "evidence": "docs/acceptance/rc-dev-1211-installed-provider-208-native-2026-10-30.json",
     "writer_lease_released": true,
     "rc_clearance": "0/24",
     "release_performed": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-installed-provider-208-native-2026-10-30.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
