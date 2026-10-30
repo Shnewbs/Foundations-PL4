@@ -1,3 +1,7 @@
+### October 30, 2026 — R16 verifier minimum guard repaired; native qualification still pending
+
+Main controller repair commits `8d729e62` and `f6946c22` replaced stale hardcoded equality with a meaningful `>=45` native fixture floor. This removes a controller-only stop before native execution while preserving the acceptance floor. Evidence: `docs/acceptance/rc-dev-r16-verifier-minimum-guard-2026-10-30.json`. No native/JAR/release evidence promoted; **0/24 RC clearances**. Next: inspect fresh verification, then continue installed optional-provider and `mc/26.1.2` work.
+
 ### October 30, 2026 — installed-provider entity replacement identity regression added; 213-fixture verification queued
 
 Main source `c5e6306b` adds an exact native regression for entity UUID authority across callback-time removal and same-position replacement. The candidate remains pending at 213 fixtures; no RC publication is cleared.
