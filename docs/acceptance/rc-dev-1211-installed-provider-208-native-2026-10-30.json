@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-10-30T09:05:10Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "source_commit": "872bfc2aedf0e05842be7ea7e14c68d2e1c39342",
+  "exact_target": "1.21.1",
+  "verification_run": 41030606887,
+  "verification_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41030606887",
+  "offline_assertions": 1149451,
+  "offline_result": "PASS",
+  "native_tests": {
+    "passed": 208,
+    "total": 208,
+    "result": "PASS"
+  },
+  "production_artifacts": {
+    "artifact_id": 12966206043,
+    "artifact_sha256": "sha256:825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626",
+    "production_jar": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "note": "Retained verification artifact contains production, sources, native-scenarios JARs and logs; exact production JAR byte hash not yet independently recorded in this checkpoint."
+  },
+  "publication": {
+    "rc_clearance": false,
+    "github_release": false,
+    "curseforge_upload": false
+  },
+  "next_step": "Run independent installed optional-provider callback revocation/unload/replacement fixture with explicit no-force-load evidence; then qualify mc/26.1.2 via hourly-builds.yml."
+}
