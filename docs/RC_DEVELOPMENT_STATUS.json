@@ -4452,11 +4452,11 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-30T09:08:00Z: Exact-source verification 41017673385 passed 1,149,451 offline assertions but stopped before native execution at verifyBuildStatus against the prior checkpoint. Current main BUILD_STATUS now preserves prior 207 evidence separately and marks the 208-case installed-provider guard candidate pending. Writer lease released; 0/24 RC; no release/upload.",
-  "latest_source_commit": "1ee598de2a78ff3d0721c9652c95cedb39ce089a",
-  "next_step": "Inspect push-triggered verification for 6c9aa187bd5e31140af1e78aad6f8e8200afcc50.",
+  "current_checkpoint": "2026-10-30T17:10:00Z: added installed-provider no-force-load regression on main 291516dd; exact 211-fixture verification pending.",
+  "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
+  "next_step": "Inspect push-triggered exact-source verification; preserve exact JAR/artifact hashes only after full 211/211 native and production pass.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
-  "native_validation": "PENDING_208_EXACT_SOURCE",
+  "native_validation": "PENDING_EXACT_SOURCE_211",
   "rc_publication_cleared": false,
   "last_verified_checkpoint": "2026-10-30T09:05:10Z: main source 872bfc2 passed 208/208 native GameTests and 1,149,451 offline assertions in run 41030606887; no release/upload.",
   "latest_native_validation": {
@@ -4469,5 +4469,8 @@
     "artifact_id": 12966206043,
     "artifact_sha256": "825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626",
     "production_jar_sha256": "NOT_INDEPENDENTLY_RECORDED"
-  }
+  },
+  "expected_native_fixtures": 211,
+  "rc_clearance": "0/24",
+  "release": "none"
 }
