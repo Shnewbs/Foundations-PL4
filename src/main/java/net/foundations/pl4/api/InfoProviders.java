@@ -76,7 +76,7 @@ public final class InfoProviders {
             Entity current=level.getEntity(target.entity());
             return current!=null && current==context.entity() && !current.isRemoved();
         }
-        return level.hasChunkAt(target.pos()) && level.getBlockEntity(target.pos()) == initialBlockEntity;
+        return initialBlockEntity != null && level.hasChunkAt(target.pos()) && level.getBlockEntity(target.pos()) == initialBlockEntity;
     }
     private static String clean(String value,int limit){String text=value.replaceAll("[\\p{Cntrl}§]","");return text.substring(0,Math.min(limit,text.length()));}
 }
