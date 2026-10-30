@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-chat-20261030T0202Z",
+    "claimed_at": "2026-10-30T09:02:06Z",
+    "expires_at": "2026-10-30T09:32:06Z",
+    "scope": "main controller/buildstatus evidence repair only",
+    "lease_claim_parent": "fb0176a6c603086882c951f8a1e5f050d0abe3ca"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
