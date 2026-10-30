@@ -63,11 +63,11 @@
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "native_compilation": "PASS_FOR_THIS_CANDIDATE",
   "pending_native_candidate": {
-    "source_scope": "Exact Minecraft 26.1.2 loaded HostEntity identity and owned reader/storage alias revocation",
+    "source_scope": "Exact Minecraft 26.1.2 owned physical cable graph and live reader/storage alias revocation",
     "expected_native_tests": 193,
-    "validation": "PENDING_EXACT_SOURCE_PINNED_NATIVE",
+    "validation": "PENDING_HOURLY_NATIVE_EXACT_SOURCE",
     "installed_providers": "NOT_TESTED",
     "rc_publication_cleared": false
   },
-  "current_source_notes": "2026-10-30: Native source now requires loaded HostEntity identity and revalidates owner, part attachment, intermediate cable before serving reader or storage inventory aliases, with 193rd PortGameTest testing silent owner/cable and reader detachment. Expected 193 native tests, not yet run. Exact 26.1.2 JAR must be built separately; never infer it from 26.3. Prior 192-case provenance remains historical. RC uncleared."
+  "current_source_notes": "2026-10-30: Corrected native port graph's unconditional foreign-owner physical union. Now revalidate loaded host and owner/part membership, partition graph by matching nonnull owners and keep legitimate local storage usable. Included native reader alias revocation and local withdrawal tests. Expected 193 scenarios are NOT native-executed at this new source; previous 192 case qualification belongs to previous pinned source. No RC clearance."
 }

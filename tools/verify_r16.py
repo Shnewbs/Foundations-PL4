@@ -26,6 +26,7 @@ checks={
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'R16GameTests.class' in read('src/main/java/net/foundations/pl4/PortTestInstance.java'),
  'thirty transfer, automation and storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==30,
+ 'physical cable partitions newly foreign owners': 'a.part.owner!=null&&a.part.owner.equals(b.part.owner)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java'),
  'live reader alias revocation fixture is registered':'readerExportsDropRevokedAndDetachedInventoryAliases' in read('src/main/java/net/foundations/pl4/R16GameTests.java') and 'currentOwnedGroup(server,reader,group)' in read('src/main/java/net/foundations/pl4/NetworkEngine.java'),
  'R16 verifier wired':"verify-r16-rules.gradle" in read('build.gradle'),
  'guide edition matches current version':book['edition'].endswith(re.search(r"^version = '([^']+)'$",read('build.gradle'),re.M).group(1)),
