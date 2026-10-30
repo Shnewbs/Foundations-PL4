@@ -1,0 +1,18 @@
+{
+  "recorded_date": "2026-10-30",
+  "source_commits": [
+    "fb4660346726d136399d902161bf9ae5ca3ca569",
+    "281ebe70913c9faa96a5d85f23abd07bbebaa58a"
+  ],
+  "target": "1.21.1",
+  "change": "InfoProviders rejects block-target sampling without a live backing block entity; replacement fixture asserts real backing entity before provider callback.",
+  "native_validation": "PENDING",
+  "production_jar_sha256": null,
+  "artifact_sha256": null,
+  "rc_publication_cleared": false,
+  "limitations": [
+    "No native workflow result yet",
+    "No release or CurseForge upload"
+  ],
+  "next_step": "Inspect push-triggered exact-source verification and count evidence only after full pass."
+}
