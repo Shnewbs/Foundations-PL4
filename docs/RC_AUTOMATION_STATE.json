@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T1404Z",
-    "claimed_at": "2026-10-30T21:04:00Z",
-    "expires_at": "2026-10-30T21:34:00Z",
-    "expected_parent": "c5e6306b02151d338eabcdb192780ff79d0a2dc4",
-    "purpose": "repair stale R16 verifier count and checkpoint next exact-source verification"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,12 +14,12 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T20:05:06Z: Added c5e6306b installed-provider entity replacement identity regression; BUILD_STATUS now requires 213 exact fixtures; verification 41120463881 queued; no native/JAR/release evidence counted.",
-  "local_validation": "GitHub API readback passed for lease claim 1b40080b, source c5e6306b, BUILD_STATUS 8e6b50d6, and docs checkpoints. Native verification is queued.",
+  "current_checkpoint": "2026-10-30T21:07:00Z: Repaired stale verify_r16.py assertion from 44 to 45 for current R16GameTests.java; fresh exact-source verification pending; no native/JAR/release evidence counted.",
+  "local_validation": "GitHub readback confirmed prior verification 41120463881 failed before native execution on stale 44-case guard; source repair acfb4213 and evidence c2bde1f are present; lease released after docs checkpoint.",
   "next_work": [
-    "Inspect queued verification 41120463881 for exact 213-fixture native and production results.",
-    "If exact native passes, preserve production JAR hash and retained artifact checksum; do not publish because rc_publication_cleared remains false.",
-    "Continue fresh mc/26.1.2 qualification and installed optional-provider unload/replacement/no-force-load evidence."
+    "Inspect push-triggered verification for acfb4213 and count native/production evidence only on full pass.",
+    "Continue installed optional-provider unload/replacement/no-force-load evidence and fresh mc/26.1.2 qualification.",
+    "Keep rc_publication_cleared false; do not publish development or uncleared RC artifacts."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -65,17 +59,19 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T1304Z",
-    "released_at": "2026-10-30T20:06:00Z",
-    "lease_claim_commit": "1b40080bad9628a06a89648dcd14f81cf7e42d6f",
-    "expected_parent": "b4cef766fdc00e8608e4622bb0bdb93e33774e30",
+    "owner": "pl4-chat-20261030T1404Z",
+    "released_at": "2026-10-30T21:07:00Z",
+    "lease_claim_commit": "1364d9dad58bb7460613eddc5ebf6037bb947ea3",
+    "expected_parent": "c5e6306b02151d338eabcdb192780ff79d0a2dc4",
     "source_commits": [
-      "c5e6306b02151d338eabcdb192780ff79d0a2dc4",
-      "8e6b50d6312cf521b12521fb17d9285092fcd687"
+      "acfb42133c8054ce26d9ebf57777e27d1e8c09f7",
+      "c2bde1fac306f8920939cfe32059d558c6b3f7ac",
+      "9bebe9c62871c1ed6546440218ea8043fd0374b0",
+      "5e1816422192327b5906e80c42b63597aa8369ff"
     ],
     "writer_lease_released": true,
     "release_performed": false,
-    "evidence": "pending exact-source verification 41120463881"
+    "evidence": "pending exact-source verification after verifier count repair"
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-entity-replacement-213-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
