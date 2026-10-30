@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-10-30T23:16:25.173Z",
+  "main_source_parent": "9093beeb1e0ebfbd6e0b047b99f02c24c745b631",
+  "scope": "Exact 1.21.1 provider callback no-force-load hardening, 26.1.2 recovered exact native qualification and 26.3 publisher audit",
+  "changes": [
+    "Check chunk residency before each InfoProviders block entity lookup, including after earlier callbacks",
+    "Add loaded-air native regression to reject callbacks with no backing block entity; expected exact native count 214"
+  ],
+  "native_1211": {
+    "candidate": "PENDING_214_EXACT_SOURCE",
+    "previous_213_run": 41143152015,
+    "previous_213_run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41143152015",
+    "previous_213_result": "IN_PROGRESS_AT_EVIDENCE_AUTHORING; do not infer pass",
+    "production_jar_sha256": null
+  },
+  "native_2612": {
+    "minecraft": "26.1.2",
+    "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+    "workflow_run": 41013493027,
+    "job_id": 123924540970,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41013493027",
+    "status": "PASS_EXACT_SOURCE_NATIVE_PRODUCTION_ONLY",
+    "native_pl4_passed": 193,
+    "native_other_passed": 1,
+    "total_required_passed": 194,
+    "native_log_sha256": "dbea8e239ad810d3097fa89905b3800fb92598243c8d12afa5f6e443cec37843",
+    "production_jar_name": "FoundationsPL4-26.1.2-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "0771189cd78c0db5fb5d5a00de31e987e5f7afbd0460981d82d215900233f586",
+    "sources_jar_sha256": "060311c7e84361d461863d467f232060cdf5f53afd70e5317b196f34daee3a4c",
+    "retained_artifact_id": 12957634516,
+    "retained_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41013493027/artifacts/12957634516",
+    "retained_artifact_zip_sha256": "e59502a3bd6ea5d87a14c079a9d64a660b4a859fa0bb35151d6e8c2c9c3b4331",
+    "limitations": "No installed third-party providers, authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots or sustained performance; no RC clearance."
+  },
+  "publisher_263": {
+    "branch": "mc/26.3",
+    "current_head": "977cffc5e69530ad2613ae36f80b88673894991d",
+    "manual_curseforge_workflow_blob": "65adf4164d8396bc2176598ce4ad02e4fbc0d4dc",
+    "finding": "Historical manual workflow hardcoded 1.21.1 and lacked exact-tag RC clearance",
+    "current_resolution": "Already retired in branch source: .github/workflows/curseforge.yml is read-only audit with contents:read, no workflow_dispatch, no secrets or upload steps. curseforge-26.yml and publish-port-26.yml are read-only audits; port-26.yml validates native without publishing. release.yml requires exact 26.3 tag, RC beta clearance, native tests, hashes, and immutable new-release preflight. No branch change needed.",
+    "historical_policy_audit_run": 40871592313,
+    "existing_release_end_to_end_qualified": false,
+    "release_eligible": false
+  },
+  "acceptance_limits": [
+    "1.21.1 214-case source not yet native-qualified",
+    "26.1.2 exact native success is not installed-provider/client/multiplayer/migration/performance acceptance",
+    "26.3 branch manual publisher already retired; do not resurrect historical frozen jobs"
+  ],
+  "rc_publication_cleared": false,
+  "github_release": null,
+  "curseforge_upload_id": null
+}

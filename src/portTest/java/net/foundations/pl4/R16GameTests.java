@@ -838,6 +838,26 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    /** Loaded air is not a valid installed-provider backing target, even when its chunk is resident. */
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void providerApiRejectsLoadedAirWithoutInvokingAddons(GameTestHelper h){
+        BlockPos local=new BlockPos(2,1,1);
+        h.setBlock(local,Blocks.AIR);
+        BlockPos absolute=h.absolutePos(local);
+        h.assertTrue(h.getLevel().hasChunkAt(absolute)&&h.getLevel().getBlockEntity(absolute)==null,
+            "Loaded air fixture must have a resident chunk but no backing block entity");
+        int[] calls={0};
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:loaded_air_guard",(context,out)->{
+            calls[0]++;
+            out.add("stale","Stale",1,1,"");
+        })){
+            var target=new Part.Link(h.getLevel().dimension().location().toString(),absolute,Direction.UP,null,null);
+            h.assertTrue(net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target).isEmpty()&&calls[0]==0,
+                "Loaded air must not invoke optional callbacks or publish stale provider rows");
+        }
+        h.succeed();
+    }
+
     @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void providerApiRejectsUnloadedTargetWithoutForceLoading(GameTestHelper h){
         int[] calls={0};

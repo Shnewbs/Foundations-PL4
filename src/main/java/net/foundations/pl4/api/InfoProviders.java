@@ -49,6 +49,10 @@ public final class InfoProviders {
     private static void collect(Entry entry,Context context,List<Part.Row> result,boolean builtin){
         String id=entry.id;Thread owner=Thread.currentThread();
         Map<String,Part.Row> pending=new LinkedHashMap<>();int budget=Math.min(builtin?64:32,256-result.size());
+        // An earlier installed callback can unload a chunk before this provider's turn.
+        // Check residency BEFORE querying its block entity; the lookup must never
+        // re-admit or force-load a target revoked by an earlier callback.
+        if(context.entity()==null && !context.level().hasChunkAt(context.target().pos()))return;
         Object initialBlockEntity=context.entity()==null?context.level().getBlockEntity(context.target().pos()):null;
         boolean[] active={true};
         // Do not invoke an installed provider after an earlier provider or callback has

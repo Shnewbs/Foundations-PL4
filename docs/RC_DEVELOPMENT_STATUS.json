@@ -683,7 +683,7 @@
         "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/39783257087",
         "result": "PASS"
       },
-      "native_gate": "PENDING_193_CASE_EXACT_SOURCE_NATIVE",
+      "native_gate": "PASS_EXACT_SOURCE_193_PL4_PLUS_1_VANILLA",
       "resource_safety_native_fixtures": "PASS",
       "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
       "build_status_blob_sha": "74cdfda6051834c7ac26966580790a4a4f03407d",
@@ -697,6 +697,40 @@
       "native_count_attribution": "192 PL4 fixtures plus 1 minecraft:default environment test per loader profile",
       "native_count_evidence": "acceptance/rc-dev-26x-native-count-attribution.json",
       "latest_attested_native": {
+        "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+        "run_id": 41013493027,
+        "artifact_id": 12957634516,
+        "artifact_zip_sha256": "e59502a3bd6ea5d87a14c079a9d64a660b4a859fa0bb35151d6e8c2c9c3b4331",
+        "runtime_jar_sha256": "0771189cd78c0db5fb5d5a00de31e987e5f7afbd0460981d82d215900233f586",
+        "native_profiles": {
+          "default": {
+            "pl4_tests": 193,
+            "other_tests": 1,
+            "total_native_passed": 194,
+            "log_sha256": "dbea8e239ad810d3097fa89905b3800fb92598243c8d12afa5f6e443cec37843"
+          }
+        },
+        "scope": "Exact native/packaged JAR only; not full RC acceptance"
+      },
+      "previous_native_gate_snapshot": {
+        "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
+        "native_gate": "PASS",
+        "workflow_run": "40205878290"
+      },
+      "pending_exact_source_native": {
+        "minecraft": "26.1.2",
+        "current_source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+        "expected_native_pl4_tests": 193,
+        "new_source_native": "PASS_EXACT_SOURCE_NATIVE_193_PL4_PLUS_1_VANILLA",
+        "old_verified_source": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
+        "old_hourly_run": 40978242203,
+        "old_native_tests": "192/192 PL4 plus 1 vanilla",
+        "note": "No neighboring target JAR relabeling; hourly pinned native required",
+        "rc_publication_cleared": false,
+        "qualifying_run": 41013493027,
+        "qualifying_artifact": 12957634516
+      },
+      "previous_latest_attested_native": {
         "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
         "run_id": 40766042082,
         "artifact_id": 12849783549,
@@ -711,22 +745,6 @@
           }
         },
         "scope": "Exact installed native GameTest runner, log/JAR hash attestations only, no RC clearance"
-      },
-      "previous_native_gate_snapshot": {
-        "source_commit": "d6a6948541a551a362eff997054ad5e3b53394ed",
-        "native_gate": "PASS",
-        "workflow_run": "40205878290"
-      },
-      "pending_exact_source_native": {
-        "minecraft": "26.1.2",
-        "current_source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
-        "expected_native_pl4_tests": 193,
-        "new_source_native": "NOT_YET_RUN",
-        "old_verified_source": "d5b82b498a3fd8f7502a9162267ef89e5df798b4",
-        "old_hourly_run": 40978242203,
-        "old_native_tests": "192/192 PL4 plus 1 vanilla",
-        "note": "No neighboring target JAR relabeling; hourly pinned native required",
-        "rc_publication_cleared": false
       }
     },
     {
@@ -4454,9 +4472,9 @@
   },
   "current_checkpoint": "Verifier/controller repair completed: stale hardcoded R16 exact fixture-count guard now uses a meaningful >=45 minimum; fresh exact-source verification pending; no native/JAR/release evidence counted.",
   "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
-  "next_step": "Inspect new exact-source 213-case native verification after four fixture repairs; then installed optional-provider and exact mc/26.1.2 acceptance.",
+  "next_step": "Inspect 214-case exact 1.21.1 native/production verification, then independent installed third-party provider and 26.1.2 installed-client/performance acceptance.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
-  "native_validation": "PENDING_EXACT_SOURCE_211",
+  "native_validation": "PENDING_EXACT_SOURCE_214",
   "rc_publication_cleared": false,
   "last_verified_checkpoint": "2026-10-30T09:05:10Z: main source 872bfc2 passed 208/208 native GameTests and 1,149,451 offline assertions in run 41030606887; no release/upload.",
   "latest_native_validation": {
@@ -4470,13 +4488,14 @@
     "artifact_sha256": "825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626",
     "production_jar_sha256": "NOT_INDEPENDENTLY_RECORDED"
   },
-  "expected_native_fixtures": 211,
+  "expected_native_fixtures": 214,
   "rc_clearance": "0/24",
   "release": "none",
   "next_work": [
-    "Verify four repaired provider GameTests with exact native/production build; no evidence promotion before 213/213 passes",
-    "Independently qualify installed third-party providers and mc/26.1.2 exact source",
-    "Repair mc/26.3 manual CurseForge wrong-target/uncleared publication path before any mc/26.3 source push"
+    "Validate new 214-case 1.21.1 source with exact native and packaged-JAR hashes",
+    "Build independent installed optional-provider callback unload/replacement/no-force-load acceptance",
+    "Extend exact 26.1.2 193-case native PASS with installed-provider, client, multiplayer, migration and sustained performance; no RC clearance yet",
+    "Keep mc/26.3 retired publisher retired and use exact-tag guarded path only when eligible"
   ],
   "writer_lease": null,
   "last_writer_release": {
@@ -4505,6 +4524,41 @@
     "offline_assertions_passed": 1149451,
     "repair": "three historical backing entity fixture setups plus R16 absolute target",
     "validation": "PENDING_NEW_EXACT_SOURCE",
+    "rc_publication_cleared": false
+  },
+  "latest_2612_exact_native_recovered": {
+    "minecraft": "26.1.2",
+    "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+    "workflow_run": 41013493027,
+    "job_id": 123924540970,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41013493027",
+    "status": "PASS_EXACT_SOURCE_NATIVE_PRODUCTION_ONLY",
+    "native_pl4_passed": 193,
+    "native_other_passed": 1,
+    "total_required_passed": 194,
+    "native_log_sha256": "dbea8e239ad810d3097fa89905b3800fb92598243c8d12afa5f6e443cec37843",
+    "production_jar_name": "FoundationsPL4-26.1.2-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "0771189cd78c0db5fb5d5a00de31e987e5f7afbd0460981d82d215900233f586",
+    "sources_jar_sha256": "060311c7e84361d461863d467f232060cdf5f53afd70e5317b196f34daee3a4c",
+    "retained_artifact_id": 12957634516,
+    "retained_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41013493027/artifacts/12957634516",
+    "retained_artifact_zip_sha256": "e59502a3bd6ea5d87a14c079a9d64a660b4a859fa0bb35151d6e8c2c9c3b4331",
+    "limitations": "No installed third-party providers, authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots or sustained performance; no RC clearance."
+  },
+  "latest_263_publisher_finding_reconciled": {
+    "branch": "mc/26.3",
+    "current_head": "977cffc5e69530ad2613ae36f80b88673894991d",
+    "manual_curseforge_workflow_blob": "65adf4164d8396bc2176598ce4ad02e4fbc0d4dc",
+    "finding": "Historical manual workflow hardcoded 1.21.1 and lacked exact-tag RC clearance",
+    "current_resolution": "Already retired in branch source: .github/workflows/curseforge.yml is read-only audit with contents:read, no workflow_dispatch, no secrets or upload steps. curseforge-26.yml and publish-port-26.yml are read-only audits; port-26.yml validates native without publishing. release.yml requires exact 26.3 tag, RC beta clearance, native tests, hashes, and immutable new-release preflight. No branch change needed.",
+    "historical_policy_audit_run": 40871592313,
+    "existing_release_end_to_end_qualified": false,
+    "release_eligible": false
+  },
+  "latest_postcallback_no_force_load_candidate": {
+    "expected_native_fixtures": 214,
+    "validation": "PENDING_EXACT_SOURCE",
+    "evidence": "docs/acceptance/rc-dev-1211-postcallback-no-force-load-214-and-2612-native-2026-10-30.json",
     "rc_publication_cleared": false
   }
 }
