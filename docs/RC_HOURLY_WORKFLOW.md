@@ -1,3 +1,7 @@
+### October 30, 2026 — stale R16 verifier minimum guard repaired; fresh exact-source verification pending
+
+Main controller repair replaces the stale hardcoded `==45` fixture-count assertion with a meaningful `>=45` minimum guard. This prevents additive native fixtures from stopping offline verification before native execution while preserving the acceptance floor. Source commits `8d729e62` and `f6946c22`; evidence `docs/acceptance/rc-dev-r16-verifier-minimum-guard-2026-10-30.json`. No native/JAR/release evidence is counted until a fresh exact-source pass. **0/24 RC clearances.** Next: inspect the fresh push-triggered verification, then continue installed optional-provider unload/replacement/no-force-load evidence and exact `mc/26.1.2` qualification.
+
 ### October 30, 2026 — installed-provider entity replacement identity regression added; 213-fixture verification queued
 
 Main source `c5e6306b` adds `installedProviderSampleIsDiscardedAfterEntityReplacement`: a provider removes the original entity, spawns a replacement at the same position, and emits a late row; the original UUID target must publish no late rows. `BUILD_STATUS.json` now requires 213 exact native fixtures. Verification run [41120463881](https://github.com/Shnewbs/Foundations-PL4/actions/runs/41120463881) is queued. No native/JAR/release evidence is counted until a fresh exact-source pass. **0/24 RC clearances.**
