@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-10-30T16:08:00Z",
+  "source_commits": [
+    "8b0339c3a60165e059c4475cd01d841d9ba872af",
+    "ef5984c05da47f479211eac1d96dc374303cebcf"
+  ],
+  "parent_source_commit": "5bcf72a56377c3c231968546c244934b184a6823",
+  "failed_run": 41078284797,
+  "failure": "Native 210-fixture run failed only installedProviderRevocationSkipsLaterCallbacks and installedProviderSampleIsDiscardedAfterBlockEntityReplacement. Offline assertions passed 1,149,451. Callback fixtures used setBlock without explicit block-entity removal, so native replacement/revocation was not deterministic.",
+  "change": "Both fixtures now explicitly remove the backing block entity before setting AIR / restoring CHEST, ensuring a fresh backing identity and deterministic callback-time revocation.",
+  "expected_native_tests": 210,
+  "native_validation": "PENDING_EXACT_SOURCE",
+  "rc_publication_cleared": false,
+  "next_step": "Inspect push-triggered 210-fixture verification; count native/JAR evidence only after full pass."
+}
