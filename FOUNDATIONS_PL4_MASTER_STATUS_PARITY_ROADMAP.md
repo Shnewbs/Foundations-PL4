@@ -1,3 +1,7 @@
+### October 30, 2026 — stale R16 verifier fixture label repaired; native qualification pending
+
+Run 41052653488 stopped before native execution because `tools/verify_r16.py` still labeled the 43-case assertion as forty-two. Source repair `6c9aa187bd5e31140af1e78aad6f8e8200afcc50` updates the guard label without changing the exact 43-case requirement. No native/JAR/release evidence is counted. Next: inspect push-triggered verification, then proceed to installed-provider callback revocation/unload testing and fresh 26.1.2 qualification.
+
 ### October 30, 2026 — exact 1.21.1 208-case native checkpoint
 
 Main source `872bfc2aedf0e05842be7ea7e14c68d2e1c39342` passed 1,149,451 offline assertions and 208/208 native GameTests in verification run 41030606887. Retained artifact 12966206043 is preserved with ZIP digest `sha256:825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626`; no release/upload was eligible, and installed third-party provider, authenticated multiplayer, arbitrary-world migration, sustained-performance and exact 26.1.2/26.1/26.2 gaps remain open.
