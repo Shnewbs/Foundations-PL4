@@ -815,4 +815,21 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderSampleIsDiscardedAfterBlockEntityReplacement(GameTestHelper h){
+        BlockPos position=new BlockPos(2,1,1);
+        h.setBlock(position,Blocks.CHEST);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),position,Direction.UP,null,null);
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:block_replacement_guard",(context,out)->{
+            h.setBlock(position,Blocks.AIR);
+            h.setBlock(position,Blocks.CHEST);
+            out.add("late","Late block sample",1,1,"unit");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().noneMatch(r->r.key().equals("pl4_test:block_replacement_guard/late")),
+                "Provider rows collected after same-position block-entity replacement must not be published");
+        }
+        h.succeed();
+    }
+
 }
