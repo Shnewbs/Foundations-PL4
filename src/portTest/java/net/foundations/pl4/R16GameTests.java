@@ -800,4 +800,19 @@ public final class R16GameTests {
         if(!ItemTransferSafety.blocked(p)||p.pendingItem.getCount()!=8||actual[0]!=15)throw new IllegalStateException("Uncertain player delivery must remain fenced");
         p.itemTransferFault="";p.pendingItem=ItemStack.EMPTY;p.itemEscrowCount=0;
     }
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void installedProviderSampleIsDiscardedAfterEntityUnload(GameTestHelper h){
+        var entity=h.spawn(net.minecraft.world.entity.EntityType.ARMOR_STAND,new BlockPos(2,1,1));
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null);
+        try(var provider=net.foundations.pl4.api.InfoProviders.register("pl4_test:unload_guard",(context,out)->{
+            context.entity().remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
+            out.add("late","Late sample",1,1,"unit");
+        })){
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(rows.stream().noneMatch(r->r.key().equals("pl4_test:unload_guard/late")),
+                "Provider rows collected after entity unload must not be published");
+        }
+        h.succeed();
+    }
+
 }
