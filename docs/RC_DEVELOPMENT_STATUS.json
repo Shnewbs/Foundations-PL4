@@ -4452,9 +4452,9 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-30T19:08:00Z: Added installed-provider exception quarantine regression at source 765439df; BUILD_STATUS requires 212 exact native fixtures; native/JAR/release evidence pending.",
+  "current_checkpoint": "Verifier/controller repair completed: stale hardcoded R16 exact fixture-count guard now uses a meaningful >=45 minimum; fresh exact-source verification pending; no native/JAR/release evidence counted.",
   "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
-  "next_step": "Inspect push-triggered exact-source verification; preserve exact JAR/artifact hashes only after full 211/211 native and production pass.",
+  "next_step": "Inspect fresh push-triggered verification, then continue installed optional-provider unload/replacement/no-force-load acceptance and exact mc/26.1.2 qualification.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
   "native_validation": "PENDING_EXACT_SOURCE_211",
   "rc_publication_cleared": false,
@@ -4491,5 +4491,10 @@
     "writer_lease_released": true,
     "release_performed": false,
     "evidence": "pending exact-source verification"
+  },
+  "last_update": "2026-10-30T22:05:00Z",
+  "rc_clearances": {
+    "total": 24,
+    "cleared": 0
   }
 }
