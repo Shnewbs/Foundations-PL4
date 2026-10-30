@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T1304Z",
-    "claimed_at": "2026-10-30T20:04:33Z",
-    "expires_at": "2026-10-30T20:34:33Z",
-    "purpose": "add installed-provider entity replacement identity regression and checkpoint state",
-    "expected_parent": "b4cef766fdc00e8608e4622bb0bdb93e33774e30"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,12 +14,12 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T18:10:00Z: InfoProviders now rejects block-target sampling without a live backing block entity; replacement fixture asserts real backing entity. Native/JAR/release evidence pending.",
-  "local_validation": "GitHub API readback passed for source commits fb466034 and 281ebe709. No native or packaged artifact result counted.",
+  "current_checkpoint": "2026-10-30T20:05:06Z: Added c5e6306b installed-provider entity replacement identity regression; BUILD_STATUS now requires 213 exact fixtures; verification 41120463881 queued; no native/JAR/release evidence counted.",
+  "local_validation": "GitHub API readback passed for lease claim 1b40080b, source c5e6306b, BUILD_STATUS 8e6b50d6, and docs checkpoints. Native verification is queued.",
   "next_work": [
-    "Inspect push-triggered exact-source verification for the provider guard checkpoint.",
-    "If exact native passes, preserve production JAR hash and retained artifact checksum; do not publish because RC clearance remains false.",
-    "Continue fresh mc/26.1.2 qualification and installed optional-provider unload/replacement evidence."
+    "Inspect queued verification 41120463881 for exact 213-fixture native and production results.",
+    "If exact native passes, preserve production JAR hash and retained artifact checksum; do not publish because rc_publication_cleared remains false.",
+    "Continue fresh mc/26.1.2 qualification and installed optional-provider unload/replacement/no-force-load evidence."
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -65,19 +59,19 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T1109Z",
-    "released_at": "2026-10-30T18:10:00Z",
-    "lease_claim_commit": "1d820def3d84f675ba15b259d572429b3b2ff531",
-    "expected_parent": "1b005f92a248f9a9f4b007b4faa62d244f0b65bd",
+    "owner": "pl4-chat-20261030T1304Z",
+    "released_at": "2026-10-30T20:06:00Z",
+    "lease_claim_commit": "1b40080bad9628a06a89648dcd14f81cf7e42d6f",
+    "expected_parent": "b4cef766fdc00e8608e4622bb0bdb93e33774e30",
     "source_commits": [
-      "fb4660346726d136399d902161bf9ae5ca3ca569",
-      "281ebe70913c9faa96a5d85f23abd07bbebaa58a"
+      "c5e6306b02151d338eabcdb192780ff79d0a2dc4",
+      "8e6b50d6312cf521b12521fb17d9285092fcd687"
     ],
     "writer_lease_released": true,
     "release_performed": false,
-    "evidence": "pending exact-source verification"
+    "evidence": "pending exact-source verification 41120463881"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-no-force-load-211-pending-2026-10-30.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-entity-replacement-213-pending-2026-10-30.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
