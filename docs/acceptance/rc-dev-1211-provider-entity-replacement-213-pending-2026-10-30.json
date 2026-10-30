@@ -1,0 +1,16 @@
+{
+  "recorded_date": "2026-10-30",
+  "minecraft": "1.21.1",
+  "source_commit": "c5e6306b02151d338eabcdb192780ff79d0a2dc4",
+  "change": "Added installed-provider entity replacement identity regression.",
+  "native_fixture_expected": 213,
+  "native_workflow_run": 41120463881,
+  "native_result": "PENDING",
+  "production_jar_sha256": null,
+  "artifact_sha256": null,
+  "rc_publication_cleared": false,
+  "limitations": [
+    "No native or packaged JAR evidence counted until fresh exact-source verification passes.",
+    "Installed third-party provider, authenticated multiplayer, arbitrary-world migration and sustained-performance gates remain open."
+  ]
+}
