@@ -1,0 +1,44 @@
+# Independent installed InfoProvider probe — exact Minecraft 1.21.1
+
+This is a **separate NeoForge test mod**, not a PL4 source-set test, production
+feature, or release artifact. It uses reflection against the installed
+Foundations PL4 production JAR and never compiles, shades, or packages PL4
+implementation classes. It is deliberately restricted to 1.21.1/NeoForge
+21.1.250 and Java 21; do not relabel it for another exact Minecraft target.
+
+## Isolated local execution (no GitHub Actions)
+
+Obtain the production 1.21.1 JAR from an independently retained exact-source
+verification artifact and check its SHA-256. Keep the original artifact and
+source/commit receipt. From the PL4 checkout:
+
+    python tools/provider-probe/run_provider_probe.py prepare \
+      --checkout . --jar /path/to/FoundationsPL4-1.21.1.jar \
+      --sha256 <verified-64-hex-production-jar-sha256> \
+      --source-sha <verified-40-hex-source-commit> \
+      --output /path/to/new-disposable-probe-run
+
+    python tools/provider-probe/run_provider_probe.py run \
+      --output /path/to/new-disposable-probe-run \
+      --timeout-seconds 1500
+
+The script copies the pinned Gradle wrapper, standalone probe source, and
+production PL4 JAR into a **new** isolated directory, configures an offline
+loopback-only disposable server with ephemeral RCON shutdown credentials, builds
+the separate probe JAR, runs NeoForge, checks both JARs and native proof, and
+retains logs/JSON/checksums. It refuses to overwrite an existing directory.
+
+Tests use a deliberately loaded chest fixture, but separately verify that a
+far-away unloaded chunk remains unloaded before/after sampling. The installed
+provider callbacks test same-position backing replacement, later-provider
+registration closure, exception partial-row quarantine, and no-force-load.
+Counters, output rows, and registration cleanup must all match. A callback
+throws intentionally during exception quarantine; a logged provider warning
+therefore does not mean the test failed.
+
+The receipt is **installed-provider-only evidence**, not full RC acceptance.
+It cannot qualify online authenticated multiplayer, arbitrary user-world
+migration, sustained TPS/heap, client screenshots, or other exact versions.
+The source SHA is a caller-supplied attribution and must be independently
+matched to the retained production-JAR artifact; a JAR checksum alone does
+not prove its source commit. Never publish either development JAR as an RC.
