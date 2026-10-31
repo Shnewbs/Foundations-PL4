@@ -5,12 +5,21 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
+  "writer_lease": null,
+  "last_writer_release_20261031_1316": {
     "owner": "pl4-hourly-20261031T1307Z-runtime-constraints",
     "claimed_at": "2026-10-31T13:07:30Z",
-    "expires_at": "2026-10-31T13:25:00Z",
-    "scope": "main: installed-provider runtime configuration invariants and regression tests",
-    "release_performed": false
+    "released_at": "2026-10-31T13:16:00Z",
+    "lease_claim_commit": "8e05437182d8c6e7179779c4b8cd65f1080fe6bf",
+    "source_commits": [
+      "772b7584466bea827acd2f0f26c6af01c7825d26",
+      "01be502b5bb7acb37202f3b4babc6c97c4e39ab9"
+    ],
+    "documentation_commit": "5b9406a6f7f7c26453a4330d3d87fb520c124905",
+    "evidence": "docs/acceptance/rc-dev-provider-runtime-conditions-2026-10-31-1313.json",
+    "writer_lease_released": true,
+    "release_performed": false,
+    "rc_clearance": "0/24"
   },
   "last_writer_release_20261031_1108": {
     "owner": "pl4-hourly-20261031T1107Z-doc-clarity",
@@ -47,8 +56,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T12:11:00Z: strict Java-properties grammar and EULA post-run ambiguity gate pushed to main (6770abd,c3bb434,9c5b0b8), isolated 3 positive/8 negative parser cases passed, repository Python/Gradle/native NOT RUN; prior d6c409f 217/217 native remains earlier-source only; 26.4 Snapshot 6, no NeoForge 26.4 loader; 0/24 RC, no release. Writer lease released.",
-  "local_validation": "Current source: GitHub source readback and isolated copied-helper Python 3 positive/8 negative parser cases PASS. Full repository Python, Java, Gradle, native installed-provider NOT RUN (local GitHub DNS and Gradle cache unavailable). Prior 217/217 native and Python suite pass belong to older exact source.",
+  "current_checkpoint": "2026-10-31T13:16:00Z: pinned independent installed-provider flat-world/view/simulation/RCON credential conditions on main (772b758,01be502); GitHub source readback PASS; 12/12 isolated copied-helper cases PASS; full Python/Gradle/native NOT RUN; prior d6c409f 217/217 native earlier-source only; 26.4 Snapshot 6, no NeoForge 26.4 loader; 0/24 RC, no release/upload; writer lease released.",
+  "local_validation": "Current source: GitHub source readback PASS, 12/12 isolated copied runtime-condition cases PASS. Full repository Python, Java/Gradle, 217 native GameTests and installed-provider runtime NOT RUN (local GitHub DNS unavailable and Gradle dependencies uncached). Prior d6c409f 217/217 native pass is earlier-source only.",
   "next_work": [
     "Compile/run separate installed provider mod with clean-exit attestation against pinned 1.21.1 JAR 45556e30, preserving nonce/log/proof/JAR hashes and checking server.properties normalization",
     "Complete authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots and sustained TPS/heap on exact sources",
@@ -57,7 +66,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-provider-properties-grammar-2026-10-31-1205.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-provider-runtime-conditions-2026-10-31-1313.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
