@@ -32,6 +32,19 @@ class DirectUploadValidationTests(unittest.TestCase):
             archive.writestr(metadata_path, metadata)
             archive.writestr("net/foundations/pl4/FoundationsPL4.class", class_bytes)
 
+    def make_receipt(self, **overrides):
+        receipt = {
+            "project_id": "1716767", "file_id": 12345,
+            "minecraft": "1.21.1", "version": "0.97.0.rev1-beta",
+            "loader": "NeoForge",
+            "sha256": hashlib.sha256(self.jar.read_bytes()).hexdigest(),
+            "upload_status": "accepted_by_api_not_moderation_verified",
+        }
+        receipt.update(overrides)
+        self.jar.with_suffix(".curseforge.json").write_text(
+            json.dumps(receipt), encoding="utf-8")
+        return receipt
+
     @staticmethod
     def metadata(version, target):
         return (f'[[mods]]\nmodId="foundations_pl4"\nversion="{version}"\n'
@@ -42,6 +55,30 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.make_jar()
         self.assertEqual(inspect(self.jar, self.notes), ("1.21.1", "0.97.0.rev1-beta", "NeoForge"))
 
+
+    def test_valid_receipt_prevents_duplicate_upload_without_claiming_moderation(self):
+        self.make_jar()
+        self.make_receipt()
+        self.dry_run()  # Existing accepted API receipt; no second upload.
+
+    def test_rejects_missing_or_invalid_receipt_file_ids(self):
+        self.make_jar()
+        for file_id in (None, True, False, "12345", 0, -1, [], {}):
+            with self.subTest(file_id=file_id):
+                self.make_receipt(file_id=file_id)
+                with self.assertRaisesRegex(ValueError, "valid file ID"):
+                    self.dry_run()
+
+    def test_rejects_receipt_without_api_acceptance_or_matching_artifact(self):
+        self.make_jar()
+        for status in (None, "", "published", "pending"):
+            with self.subTest(status=status):
+                self.make_receipt(upload_status=status)
+                with self.assertRaisesRegex(ValueError, "API-acceptance status"):
+                    self.dry_run()
+        self.make_receipt(sha256="0" * 64)
+        with self.assertRaisesRegex(ValueError, "differs from the JAR"):
+            self.dry_run()
 
     def test_rejects_fake_pl4_classfile(self):
         self.make_jar(class_bytes=b"class")
