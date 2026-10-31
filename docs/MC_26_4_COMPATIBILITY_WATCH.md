@@ -48,3 +48,8 @@ The [Mojang snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360
 ## October 31 11:05 PDT — official loader and snapshot recheck
 
 The [Mojang Java snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) continues to list **26.4 Snapshot 6** (October 27) as newest. The [NeoForge Maven release index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains `26.3.0.99` but **no 26.4 coordinate**. Maintain the existing 24 exact targets and do not create a 26.4 branch, publish a JAR or assert compatibility. Keep the documented Vulkan/OpenGL, source/flowing-fluid state, login-handshake/mod-list, migration and pinned-heap acceptance gates; they must be exercised with a real supported loader when available.
+
+
+## October 31 12:05 PDT — Java 25 classfile packaging preflight
+
+The [Mojang Java snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) still lists **26.4 Snapshot 6**, dated **October 27**; the [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) still lists **no 26.4 loader**. A shared direct-publisher preflight now checks PL4 classfile headers and rejects bytecode newer than the target Java runtime (26.x: Java 25, class major 69; 1.21.1: Java 21, major 65). This is forward-compatible packaging validation, **not** a 26.4 port or proof of 26.4 compatibility. Retain the Vulkan/OpenGL, fluid-source, handshake, migration and pinned-heap gates before any future 26.4 acceptance.
