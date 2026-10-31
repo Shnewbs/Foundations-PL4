@@ -5,7 +5,12 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T2305Z-archive-resource-bounds",
+    "claimed_at": "2026-10-31T23:05:00Z",
+    "scope": "tools/direct_curseforge_upload.py, tools/test_direct_curseforge_upload.py, docs/DIRECT_CURSEFORGE_UPLOAD.md, docs/acceptance and compatibility watch",
+    "purpose": "Bound archive preflight work before ZIP decompression and add regression coverage"
+  },
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
