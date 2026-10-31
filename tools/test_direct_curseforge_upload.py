@@ -1,8 +1,14 @@
 from pathlib import Path
+import hashlib
+import json
+import os
+import sys
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 
+import direct_curseforge_upload as direct
 from direct_curseforge_upload import inspect
 
 
@@ -58,6 +64,58 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.jar = self.root / "FoundationsPL4-1.16.5-0.2a-port.2.jar"
         with self.assertRaisesRegex(ValueError, "converted"):
             inspect(self.jar, self.notes)
+
+
+    def dry_run(self):
+        original = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", ["direct_curseforge_upload.py", str(self.jar), str(self.notes)]), \
+                 patch.object(direct, "request_json") as api:
+                try:
+                    direct.main()
+                finally:
+                    api.assert_not_called()
+        finally:
+            os.chdir(original)
+
+    def test_rejects_neoforge_minecraft_version_range(self):
+        metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
+        self.make_jar(metadata.replace('versionRange="[1.21.1]"',
+                                       'versionRange="[1.21.1,1.22)"'))
+        with self.assertRaisesRegex(ValueError, "exact Minecraft target"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_development_even_with_matching_receipt(self):
+        self.jar = self.root / "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar"
+        self.make_jar(self.metadata("0.2.0-rc.1-dev", "1.21.1"))
+        digest = hashlib.sha256(self.jar.read_bytes()).hexdigest()
+        self.jar.with_suffix(".curseforge.json").write_text(json.dumps({
+            "project_id": "1716767", "minecraft": "1.21.1",
+            "version": "0.2.0-rc.1-dev", "loader": "NeoForge",
+            "sha256": digest, "file_id": 123
+        }))
+        with self.assertRaisesRegex(ValueError, "Development snapshots"):
+            self.dry_run()
+
+    def test_rc_requires_exact_target_status_and_clearance(self):
+        self.jar = self.root / "FoundationsPL4-1.21.1-0.2.0-rc.1.jar"
+        self.make_jar(self.metadata("0.2.0-rc.1", "1.21.1"))
+        with self.assertRaisesRegex(ValueError, "BUILD_STATUS.json"):
+            self.dry_run()
+        status = {"version": "0.2.0-rc.1", "minecraft": "1.21.1",
+                  "release_channel": "beta", "rc_publication_cleared": False}
+        (self.root / "BUILD_STATUS.json").write_text(json.dumps(status))
+        with self.assertRaisesRegex(ValueError, "not been explicitly cleared"):
+            self.dry_run()
+        status["rc_publication_cleared"] = True
+        status["minecraft"] = "26.3"
+        (self.root / "BUILD_STATUS.json").write_text(json.dumps(status))
+        with self.assertRaisesRegex(ValueError, "exact Minecraft target disagree"):
+            self.dry_run()
+        status["minecraft"] = "1.21.1"
+        (self.root / "BUILD_STATUS.json").write_text(json.dumps(status))
+        self.dry_run()
 
 
 if __name__ == "__main__":
