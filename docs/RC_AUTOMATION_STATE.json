@@ -5,7 +5,11 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T1602Z-direct-upload-policy",
+    "claimed_at": "2026-10-31T16:02:29Z",
+    "scope": "tools/direct_curseforge_upload.py, tests, 26.4 watch; no builds or releases without exact-source clearance"
+  },
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
