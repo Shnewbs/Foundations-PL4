@@ -1,0 +1,70 @@
+{
+  "recorded_at_utc": "2026-10-31T06:11:17.709Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "main independent 1.21.1 installed InfoProvider probe acceptance harness, not PL4 production binary",
+  "source_commits": [
+    "a4821cf262bbcc5d63941bc98b1e0b97b4f283be",
+    "2ecc6d232413c5f6009f572d944fed812a5f6ffd"
+  ],
+  "source_head_before_evidence": "2ecc6d232413c5f6009f572d944fed812a5f6ffd",
+  "changes": [
+    "Hash entire generated server.properties and eula.txt in prepared manifest; reject post-preparation changes before Gradle and at receipt verification",
+    "Reject external/symlinked server log substitution in native receipt verification",
+    "Add negative Python tests for unchecked server settings, EULA mutation, external log substitution"
+  ],
+  "validation": {
+    "github_source_contract_checks": {
+      "passed": 10,
+      "total": 10,
+      "kind": "static source readback only"
+    },
+    "python_unit_tests": "NOT_RUN: local checkout/dependency imports unavailable; source-only static checks do not imply execution",
+    "java_gradle_compile": "NOT_RUN: GitHub DNS unavailable; Gradle dependencies uncached",
+    "native_217_gametests": "NOT_RUN on this exact source",
+    "independent_installed_provider": "NOT_RUN; no native proof/receipt"
+  },
+  "previous_exact_native_evidence": [
+    {
+      "target": "1.21.1",
+      "source": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+      "run_id": 41153518219,
+      "passed": 216,
+      "total": 216,
+      "scope": "older source only"
+    },
+    {
+      "target": "26.1.2",
+      "source": "3e341444",
+      "run_id": 41013493027,
+      "passed": 193,
+      "total": 193,
+      "scope": "older source only"
+    }
+  ],
+  "latest_observed_hourly": {
+    "run_id": 41161047494,
+    "source": "ba3165d218ef744316ec3a573bb423487c009f57",
+    "result": "success",
+    "note": "prior source; no duplicate run launched"
+  },
+  "minecraft_26_4": {
+    "latest_official_snapshot": "Snapshot 6, published 2026-10-27",
+    "neoforge_26_4_maven_coordinate": "none observed at 2026-10-31 check",
+    "action": "No unsupported port or relabeled JAR"
+  },
+  "publication": {
+    "rc_clearances": 0,
+    "maintained_exact_targets": 24,
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "new_validated_production_jar_hashes": 0,
+    "rc_publication_cleared": false
+  },
+  "local_cleanup": "No disposable local builds downloaded or removed",
+  "next_steps": [
+    "Run actual Python unittest for provider-probe and address failures, then compile separate installed provider mod against exact pinned production JAR",
+    "Check whether native Minecraft rewrites server.properties on startup; if it does, preserve prepared vs runtime-normalized config evidence without weakening network isolation",
+    "Execute pinned exact native 217 and independent provider proof; preserve JAR/log/proof/nonce hashes",
+    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, remaining exact-version ports and legacy gravel investigation"
+  ]
+}

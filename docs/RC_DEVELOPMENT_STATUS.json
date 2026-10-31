@@ -20,7 +20,8 @@
     "installed optional providers with callback revocation/unload/replacement, entity UUID replacement, and no-force-load evidence",
     "26.1.2 exact 193/193 native PASS at source 3e341444 and run 41013493027; broader RC acceptance and any newer source remain unqualified; no neighboring-version inheritance",
     "1.21.1 exact 216/216 native PASS at source 4ab66dc and run 41153518219; separately installed optional-provider JAR native probe remains unexecuted; no RC clearance",
-    "Independent installed-provider probe nonce/immutable-receipt source updates eaefad2/e0503a9 require offline Python test execution, Gradle compilation, native callback proof and retained exact hashes; static source checks alone do not clear RC."
+    "Independent installed-provider probe nonce/immutable-receipt source updates eaefad2/e0503a9 require offline Python test execution, Gradle compilation, native callback proof and retained exact hashes; static source checks alone do not clear RC.",
+    "Independent provider probe server.properties/EULA full-file hashes and in-runtime log binding at source 2ecc6d2 are source-only; 10/10 static checks, no Python/native/installed execution. Validate server.properties normalization on first boot."
   ],
   "targets": [
     {
@@ -4508,8 +4509,8 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-31T05:07:59.064Z: independent installed-provider measured proof and exclusive receipt/log/proof source 2d0415a5; 12/12 static checks, 4/4 isolated helper checks; repository Python/Gradle/native 217 and installed probe not executed; 0/24 RC clearances, no release.",
-  "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
+  "current_checkpoint": "2026-10-31T06:11:17.709Z: source-only provider probe config/log attestation hardening 2ecc6d23; 10/10 static contracts, Python/native/Gradle not executed; 0/24 cleared, no new release.",
+  "latest_source_commit": "2ecc6d232413c5f6009f572d944fed812a5f6ffd",
   "next_step": "Run actual tools/provider-probe/test_run_provider_probe.py tests in a local checkout and compile separate provider probe against pinned exact 1.21.1 JAR; preserve hashes and nonce-bound real proof",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
   "native_validation": "PASS_PINNED_215_AT_F14B5BF; DOCS_CHECKPOINT_HAS_NEW_SHA",
@@ -4548,7 +4549,7 @@
     "release_performed": false,
     "evidence": "pending exact-source verification"
   },
-  "last_update": "2026-10-31T05:07:59.064Z",
+  "last_update": "2026-10-31T06:11:17.709Z",
   "rc_clearances": {
     "total": 24,
     "cleared": 0
@@ -4733,5 +4734,17 @@
     "installed_provider_jar": "NOT_COMPILED_OR_EXECUTED",
     "release_eligible": false,
     "evidence": "docs/acceptance/rc-dev-provider-probe-measured-evidence-exclusive-receipts-2026-10-31.json"
+  },
+  "latest_provider_probe_config_attestation": {
+    "evidence": "docs/acceptance/rc-dev-provider-probe-complete-config-log-attestation-2026-10-31.json",
+    "source_commits": [
+      "a4821cf262bbcc5d63941bc98b1e0b97b4f283be",
+      "2ecc6d232413c5f6009f572d944fed812a5f6ffd"
+    ],
+    "static_checks": "10/10 PASS",
+    "python_tests": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false
   }
 }
