@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1506Z-benchmark-proof-contract",
-    "claimed_at": "2026-10-31T15:06:10Z",
-    "scope": "tools/benchmarks native report validation and tests; disable automatic GitHub Actions triggers across existing workflows (manual-only retained)",
-    "base_commit": "7e35d2ab4c46651384f889bcf14ae164e70e33e7"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
@@ -78,17 +73,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31: non-destructive native benchmark safety changes on main 1027418, dbaab08, 0acbac8; source readback 9/9, isolated mirrored helper cases 8/8 PASS; full Python/Gradle/native NOT RUN; previous d6c409f 217/217 native is earlier-source only; official 26.4 Snapshot 6 (Oct 27), no NeoForge 26.4 loader; 0/24 RC; no new JAR/CurseForge upload; writer lease released.",
-  "local_validation": "GitHub source readback 9/9 PASS; isolated mirrored Python helper cases 8/8 PASS, not repository suite. No full Python, Gradle/Java or native test execution (local GitHub DNS and Gradle dependencies unavailable). Prior 217/217 native belongs to d6c409f.",
+  "current_checkpoint": "2026-10-31 15:11 UTC: native benchmark proof schema validation and tests on main; 32/32 GitHub Actions workflows changed to manual-only (no push/schedule/release/workflow_run triggers); 11/11 GitHub source-contract checks, 3/3 isolated Python test methods with 15 negative cases; no repository Gradle/native execution due to DNS/dependency blockers; 26.4 Snapshot 6 Oct 27, no official NeoForge 26.4 loader; 0/24 RC, no JAR/GitHub release/CurseForge upload.",
+  "local_validation": "PASS 11/11 GitHub source checks; PASS 3/3 isolated copied-helper Python tests with 15 negative mutations; PASS 32/32 workflow trigger readback. Full repository Python, Gradle/Java, native and installed provider NOT RUN; prior 217/217 belongs to d6c409f.",
   "next_work": [
-    "Compile/run separate installed provider mod with clean-exit attestation against pinned 1.21.1 JAR 45556e30, preserving nonce/log/proof/JAR hashes and checking server.properties normalization",
-    "Complete authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots and sustained TPS/heap on exact sources",
-    "Continue native parity/acceptance for remaining exact versions; no 26.4 branch until an official compatible NeoForge loader exists"
+    "Use dependency-capable local/external builder; GitHub Actions automatic triggers are disabled and must not be invoked",
+    "Run full Python suite, native benchmark with strict comparable receipts, exact 217 GameTests and independent installed provider against pinned production JAR",
+    "Complete authenticated multiplayer, arbitrary saved-world migration, client visual and sustained TPS/heap acceptance",
+    "Continue exact-version parity; 26.4 watch only until official NeoForge loader; publish qualified GitHub/CurseForge artifacts without Actions"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-benchmark-disposable-world-safety-2026-10-31.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-proof-and-external-ci-2026-10-31.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3327,5 +3323,29 @@
     "writer_lease_released": true,
     "release_performed": false,
     "rc_clearance": "0/24"
+  },
+  "last_writer_release_20261031_1511": {
+    "owner": "pl4-hourly-20261031T1506Z-benchmark-proof-contract",
+    "claimed_at": "2026-10-31T15:06:10Z",
+    "released_at": "2026-10-31T15:11:26Z",
+    "source_commits": [
+      "0b9b85722b971109d6b9371e68a7520c6133e25b",
+      "13da07906f9fe3ea1ee724f800e274d14340fab0"
+    ],
+    "workflow_policy_commits": [
+      "7541008c14a2ca48bdc6c07fdc277ff0530b0e44",
+      "32815342304ffa3722ea2a06ffeed3a33f7e9ecf",
+      "550f8b1dd217258af0f3ae13f6ad62cfde4fbda6",
+      "58ec25b73ee776b30906593fd035ee329b8f5f8d",
+      "1556b010efca8c73c298f1a6c14b12301c0b3ac9",
+      "7d41ffa534eee4149239242c214a4b80a30a4ba1"
+    ],
+    "policy": "docs/EXTERNAL_BUILD_POLICY.md",
+    "evidence_commit": "7e12fe3a2e121016e4640fd1d66598613f2f99ec",
+    "evidence": "docs/acceptance/rc-dev-native-benchmark-proof-and-external-ci-2026-10-31.json",
+    "validation": "11/11 GitHub source-contract checks, 3/3 isolated Python test methods with 15 negative mutations, 32/32 manual-only workflow headers; repository/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
   }
 }
