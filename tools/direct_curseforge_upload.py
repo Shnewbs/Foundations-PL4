@@ -6,6 +6,7 @@ The receipt is kept beside the JAR so a repeat invocation cannot duplicate it.
 
 import argparse
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -96,7 +97,7 @@ def verify_local_receipt(previous, digest, project, minecraft, version, loader):
     return file_id
 
 
-def inspect(jar, notes):
+def inspect(jar, notes, jar_bytes=None):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
     match = NAME.fullmatch(normalized_name)
@@ -114,7 +115,7 @@ def inspect(jar, notes):
     loader = "NeoForge" if minecraft == "1.21.1" or minecraft.startswith("26.") else "Forge"
     if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
         raise ValueError("A nonempty, version-specific changelog is required")
-    with zipfile.ZipFile(jar) as archive:
+    with zipfile.ZipFile(io.BytesIO(jar_bytes) if jar_bytes is not None else jar) as archive:
         verify_archive_integrity(archive)
         names = set(archive.namelist())
         verify_pl4_bytecode(archive, names, minecraft)
@@ -156,14 +157,17 @@ def main():
     parser.add_argument("notes", type=Path)
     parser.add_argument("--upload", action="store_true", help="Submit to CurseForge (default: validate only)")
     args = parser.parse_args()
-    minecraft, version, loader = inspect(args.jar, args.notes)
+    # Pin one immutable byte snapshot across archive validation, hashing and upload.
+    # A build replacing the on-disk JAR mid-publication cannot change uploaded bytes.
+    jar_bytes = args.jar.read_bytes()
+    minecraft, version, loader = inspect(args.jar, args.notes, jar_bytes=jar_bytes)
     maturity = release_type(version)  # Reject dev/nightly builds, even when a receipt already exists.
     if is_rc(version):
         status_path = Path("BUILD_STATUS.json")
         if not status_path.is_file():
             raise ValueError("RC publication requires exact-target BUILD_STATUS.json")
         require_publication(json.loads(status_path.read_text(encoding="utf-8")), minecraft, version)
-    digest = hashlib.sha256(args.jar.read_bytes()).hexdigest()
+    digest = hashlib.sha256(jar_bytes).hexdigest()
     project = os.environ.get("CURSEFORGE_PROJECT_ID", "1716767")
     if not project.isdecimal() or int(project) <= 0:
         raise ValueError("CURSEFORGE_PROJECT_ID must be a positive integer")
@@ -189,7 +193,7 @@ def main():
     token = os.environ.get("CURSEFORGE_API_TOKEN", "")
     if not token:
         raise ValueError("CURSEFORGE_API_TOKEN is required for direct upload")
-    data, content_type = multipart(metadata, args.jar)
+    data, content_type = multipart(metadata, args.jar, jar_bytes=jar_bytes)
     result = request_json(f"/projects/{project}/upload-file", token, data, content_type)
     file_id = result.get("id")
     if isinstance(file_id, bool) or not isinstance(file_id, int) or file_id <= 0:
