@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-31T22:05:00Z",
+  "scope": "Direct CurseForge publisher approved 26.x exact-target fail-closed gate",
+  "source_commits": [
+    "de2bb87e6cbe6438189bba9331d7e392c1be5cd3",
+    "3e3243c52494dc2f851ea21794f999bcbb5b26b1",
+    "0ff7acb4648ef638fbd5154e342fe2f7030f3fa2"
+  ],
+  "paths": [
+    "tools/direct_curseforge_upload.py",
+    "tools/test_direct_curseforge_upload.py",
+    "docs/DIRECT_CURSEFORGE_UPLOAD.md"
+  ],
+  "approved_26x_targets": [
+    "26.1.2",
+    "26.3"
+  ],
+  "blocked_examples": [
+    "26.1",
+    "26.2",
+    "26.4",
+    "26.4.1"
+  ],
+  "official_watch": {
+    "minecraft_latest_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "minecraft_source": "https://feedback.minecraft.net/hc/en-us/sections/360002267532",
+    "neoforge_26_4_coordinate_observed": false,
+    "neoforge_source": "https://maven.neoforged.net/releases/net/neoforged/neoforge",
+    "watch_checked_at": "2026-10-31"
+  },
+  "validation": {
+    "github_source_readback": "PASS: 8/8 source-contract checks",
+    "isolated_python_helper": "PASS: 2 methods, 9 subcases, copied helper only",
+    "new_repository_regression_methods": 3,
+    "new_repository_regression_execution": "NOT_RUN",
+    "complete_python_suite": "NOT_RUN",
+    "gradle_build": "NOT_RUN",
+    "native_gametests": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "multiplayer_migration_tps_heap": "NOT_RUN"
+  },
+  "publication": {
+    "rc_clearances": 0,
+    "rc_target_count": 24,
+    "github_releases": "NO_NEW_RELEASE; 79 existing release records inspected, no 26.4 tag",
+    "curseforge_upload": "NOT_ATTEMPTED",
+    "github_actions": "NOT_INVOKED",
+    "retained_local_builds_deleted": 0
+  },
+  "blockers": [
+    "Container cannot resolve github.com or services.gradle.org for local source checkout/dependencies",
+    "Gradle 9.2.1 dependencies not cached; Java 25 not available",
+    "Exact-source native and installed runtime acceptance still pending",
+    "No official NeoForge 26.4 coordinate in checked Maven index"
+  ],
+  "notes": "Guard is a release-preflight safeguard, not a full 26.4 port or native compatibility claim. Do not promote any source-only or isolated helper test to RC clearance."
+}
