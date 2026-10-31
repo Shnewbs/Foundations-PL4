@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-31",
+  "local_time": "11:05 PDT",
+  "scope": "direct CurseForge uploader embedded mod and dependency metadata",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "source_commits": [
+    "a0bd27c00523113780efa852cb5dc2028f89e84f",
+    "a3e2eda2dfe1c9ae1f9fedd4f02c20b9fc33cc52",
+    "e2dc9114fabcb61c72c29c8241f77bc979be98bd"
+  ],
+  "validation": {
+    "github_source_readback": "PASS: code and five regression methods present; TOML fixture escaping inspected",
+    "isolated_python": "PASS 8/8 mirrored metadata validation cases (valid, duplicated mod, duplicated Minecraft, duplicated loader, mixed loader, malformed dependency, range, mismatched version)",
+    "full_repository_python": "NOT RUN: full checkout unavailable",
+    "gradle_build": "NOT RUN: Gradle distribution/dependencies unavailable",
+    "native_game_tests": "NOT RUN on this source",
+    "installed_provider": "NOT RUN on this source",
+    "authenticated_multiplayer": "NOT RUN",
+    "migration": "NOT RUN",
+    "sustained_performance": "NOT RUN"
+  },
+  "official_26_4": {
+    "mojang": "26.4 Snapshot 6, published 2026-10-27, latest listed on 2026-10-31",
+    "neoforge": "No 26.4 coordinate; 26.3.0.99 present",
+    "references": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "rc_clearance": "0/24",
+    "production_jar_built": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "retained_builds_deleted": false
+  },
+  "blockers": [
+    "github.com DNS resolution unavailable from execution container",
+    "Gradle distribution and dependencies not cached",
+    "No exact-source native and independently installed-provider receipts",
+    "No authenticated multiplayer, migration or sustained-performance clearance"
+  ],
+  "note": "Mirrored isolated Python cases are not a substitute for running the committed repository test suite. No JAR or destination receipt was verified or deleted."
+}
