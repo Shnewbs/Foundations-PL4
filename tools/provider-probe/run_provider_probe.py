@@ -133,10 +133,11 @@ def prepare(checkout, jar, output, expected, source_sha):
     shutil.copyfile(jar, installed)
     require(digest(installed) == expected, "Installed copy changed during preparation")
     (output / "run" / "eula.txt").write_text("eula=true\n")
+    rcon_password = secrets.token_urlsafe(32)
     (output / "run" / "server.properties").write_text(
         "server-ip=127.0.0.1\nserver-port=25588\nonline-mode=false\n"
         "max-players=1\nlevel-type=minecraft:flat\nview-distance=3\nsimulation-distance=3\n"
-        "enable-rcon=true\nrcon.port=25589\nrcon.password=" + secrets.token_urlsafe(32) + "\n"
+        "enable-rcon=true\nrcon.port=25589\nrcon.password=" + rcon_password + "\n"
     )
     protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
                  "gradle/wrapper/gradle-wrapper.properties", *PROJECT,
@@ -146,6 +147,7 @@ def prepare(checkout, jar, output, expected, source_sha):
         "pl4_source_attribution": "caller supplied; corroborate against retained build artifact",
         "installed_pl4_sha256": expected, "installed_pl4_name": jar.name,
         "run_nonce": secrets.token_hex(16),
+        "rcon_password_sha256": hashlib.sha256(rcon_password.encode("utf-8")).hexdigest(),
         "protected_files": {p: digest(output / p) for p in protected},
         "rc_publication_cleared": False, "runtime_executed": False,
     }
@@ -189,7 +191,8 @@ def validate_prepared_installation(output, manifest, allow_runtime_config_change
     require(manifest.get("schema") == 1 and manifest.get("target") == "1.21.1" and
             manifest.get("rc_publication_cleared") is False and
             SHA.fullmatch(expected) is not None and
-            re.fullmatch(r"[0-9a-f]{40}", manifest.get("pl4_source_commit", "")) is not None,
+            re.fullmatch(r"[0-9a-f]{40}", manifest.get("pl4_source_commit", "")) is not None and
+            SHA.fullmatch(manifest.get("rcon_password_sha256", "")) is not None,
             "Unsafe/invalid prepared installation or source attribution")
     protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
                  "gradle/wrapper/gradle-wrapper.properties", *PROJECT,
@@ -228,8 +231,15 @@ def validate_prepared_installation(output, manifest, allow_runtime_config_change
     props = parse_strict_properties(props_path, "server")
     for key, value in {"server-ip": "127.0.0.1", "server-port": "25588",
                        "online-mode": "false", "max-players": "1",
-                       "enable-rcon": "true", "rcon.port": "25589"}.items():
-        require(props.get(key) == value, "Server network isolation changed: " + key)
+                       "enable-rcon": "true", "rcon.port": "25589",
+                       "level-type": "minecraft:flat", "view-distance": "3",
+                       "simulation-distance": "3"}.items():
+        require(props.get(key) == value, "Server probe condition changed: " + key)
+    # Minecraft may rewrite comments/default properties, but not the RCON
+    # credential used to shut down this isolated acceptance server.
+    require(hashlib.sha256(props.get("rcon.password", "").encode("utf-8")).hexdigest() ==
+            manifest["rcon_password_sha256"],
+            "RCON shutdown credential changed during provider probe")
     eula = output / "run/eula.txt"
     require(eula.is_file() and not eula.is_symlink(),
             "Disposable server EULA missing/untrusted")
