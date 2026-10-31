@@ -181,8 +181,19 @@ def verify(output, log):
         "not_tested": ["authenticated multiplayer", "arbitrary-world migration",
                        "sustained TPS/heap", "other Minecraft versions", "client screenshots"],
     }
-    (output / "provider-probe-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    write_immutable_receipt(output / "provider-probe-receipt.json", receipt)
     return receipt
+
+
+def write_immutable_receipt(path, receipt):
+    """A repeat verification may confirm, but never replace, a retained receipt."""
+    path = Path(path)
+    content = json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+    if path.exists():
+        require(path.is_file() and path.read_text() == content,
+                "Refusing to overwrite a different retained provider receipt")
+    else:
+        path.write_text(content)
 
 
 def require_fresh_run(output):

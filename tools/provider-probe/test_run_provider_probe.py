@@ -86,6 +86,17 @@ class ProviderReceiptTests(unittest.TestCase):
                     probe.require_fresh_run(root)
                 path.unlink()
 
+    def test_receipt_is_immutable_and_reverification_idempotent(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "receipt.json"
+            probe.write_immutable_receipt(path, {"status": "PENDING", "source": "pinned"})
+            original = path.read_bytes()
+            probe.write_immutable_receipt(path, {"status": "PENDING", "source": "pinned"})
+            self.assertEqual(path.read_bytes(), original)
+            with self.assertRaises(ValueError):
+                probe.write_immutable_receipt(path, {"status": "PASS", "source": "different"})
+            self.assertEqual(path.read_bytes(), original)
+
     def test_probe_jar_cannot_embed_pl4_implementation(self):
         with tempfile.TemporaryDirectory() as temp:
             jar = Path(temp) / "probe.jar"
