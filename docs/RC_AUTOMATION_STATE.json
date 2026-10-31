@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2305Z-archive-resource-bounds",
-    "claimed_at": "2026-10-31T23:05:00Z",
-    "scope": "tools/direct_curseforge_upload.py, tools/test_direct_curseforge_upload.py, docs/DIRECT_CURSEFORGE_UPLOAD.md, docs/acceptance and compatibility watch",
-    "purpose": "Bound archive preflight work before ZIP decompression and add regression coverage"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 22:05 UTC: Direct CurseForge publisher now rejects unapproved 26.x targets including 26.4 and audit-only 26.1/26.2. Source/tests/docs pushed; 8/8 GitHub readback checks, 2 isolated helper methods/9 cases. Full repository/native unexecuted due DNS/Gradle. Official 26.4 Snapshot 6 latest, no NeoForge 26.4 coordinate. RC 0/24; no JAR, release, upload, Actions or retained deletion.",
-  "local_validation": "8/8 GitHub source checks; 2/2 isolated copied-helper Python methods (9 cases); 3 new repo regression methods committed but not executed; full Python/Gradle/native/installed provider not run.",
+  "current_checkpoint": "2026-10-31 23:04 UTC: Bounded direct publisher ZIP resource preflight and five regression methods pushed; 10/10 GitHub readback checks and 7/7 mirrored local smoke cases. Full repository/native tests blocked by DNS/Gradle/JDK25. 26.4 Snapshot 6 remains latest; NeoForge Maven has no 26.4 loader. RC 0/24; no JAR, release, CurseForge upload, Actions or retained deletion.",
+  "local_validation": "10/10 GitHub source checks; 7/7 isolated copied-helper Python scenarios; five new repo regression methods committed but not executed; full Python/Gradle/native/installed provider not run.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-26x-approved-target-gate-2026-10-31-1505-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-archive-resource-bounds-2026-10-31-1605-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3475,6 +3470,22 @@
     "evidence_commit": "6500a048dff1f0e92d1f2e81a76dacd568428019",
     "evidence": "docs/acceptance/rc-dev-direct-upload-26x-approved-target-gate-2026-10-31-1505-pdt.json",
     "validation": "8/8 GitHub source checks; 2/2 isolated copied-helper Python methods, 9 cases; repository/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_archive_resource_bounds": {
+    "owner": "pl4-hourly-20261031T2305Z-archive-resource-bounds",
+    "claimed_at": "2026-10-31T23:05:00Z",
+    "released_at": "2026-10-31T23:04:00Z",
+    "source_commits": [
+      "78466703b3676568f0c9e5dc699b0bebc700cc92",
+      "7b0e8d95574df8a3ff940117467510e35fbed439",
+      "dc0d4534c140a9b0b701d700144030bdc3f9ff7b"
+    ],
+    "evidence_commit": "b6eb93b85adb691a8778bd591428d463bf3091a8",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-archive-resource-bounds-2026-10-31-1605-pdt.json",
+    "validation": "10/10 GitHub source readback checks; 7/7 copied-helper local smoke cases; new repo tests and native not executed",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
