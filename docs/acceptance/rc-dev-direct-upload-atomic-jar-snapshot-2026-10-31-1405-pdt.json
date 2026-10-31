@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-31T21:05:10Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Direct CurseForge uploader binds archive validation, SHA-256 receipt and multipart bytes to the same immutable in-memory JAR snapshot",
+  "branch": "main",
+  "lease_claim_commit": "23be545ac92f44f5552b58f1d6139b3818e308b4",
+  "source_commits": {
+    "shared_multipart": "c27504ecc515b226e4445314496275c7f0180c50",
+    "direct_uploader": "28ed60cfc2dca06cadeed9a13fbb08de4a06915b",
+    "regression_tests": "65edfd00e1e6ab312f167589b6a58e6f32821215"
+  },
+  "docs_commits": [
+    "f51913fb0472f3847cc265e443d7cd36f150644f",
+    "a18c24030083cc355b5c5608e88826ea7e9b4564"
+  ],
+  "validation": {
+    "github_source_readback": "8/8 static assertions passed against actual main file contents",
+    "isolated_python_snapshot_smoke": "2/2 passed using standalone reproduced transport boundary, not the repository suite",
+    "new_repository_regression_methods": "2 committed; not executed",
+    "repository_python_suite": "not executed",
+    "gradle_native_gametests": "not executed",
+    "installed_provider_multiplayer_migration_performance": "not executed"
+  },
+  "official_26_4_watch": {
+    "snapshot": "Minecraft Java 26.4 Snapshot 6, October 27, 2026, latest on official Java snapshot index as checked October 31",
+    "neoforge": "No 26.4 loader in official NeoForge Maven index as checked October 31",
+    "port_created": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "new_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "No local repository checkout/dependency-capable Gradle builder; github.com and services.gradle.org DNS unavailable in container",
+    "Current-source native 217 GameTests, independent installed provider, authenticated multiplayer, migration, sustained TPS/heap pending",
+    "CurseForge publication requires exact-target acceptance and destination-verified artifact receipts"
+  ],
+  "note": "Source changes are release preflight hardening only. No runtime compatibility, remote upload, or release success is claimed."
+}
