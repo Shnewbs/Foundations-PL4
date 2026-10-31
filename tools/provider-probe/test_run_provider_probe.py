@@ -63,6 +63,41 @@ class ProviderReceiptTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     probe.validate_proof(evidence, EXPECTED, NONCE)
 
+    def test_numeric_proof_fields_reject_boolean_and_float_substitutions(self):
+        # JSON booleans compare equal to Python 0/1; 1.0 also compares equal.
+        # Neither represents an observed integer callback count.
+        for section, keys in (
+            ("replacement", ("first", "later", "stale_rows")),
+            ("registration_close", ("first", "later", "first_rows")),
+            ("self_close", ("calls", "rows", "healthy_calls")),
+            ("exception_quarantine", ("failing", "healthy", "partial_rows")),
+            ("unloaded", ("callbacks", "rows")),
+        ):
+            for key in keys:
+                for replacement in (False, True, float(valid_proof()[section][key])):
+                    with self.subTest(section=section, key=key, replacement=replacement):
+                        evidence = valid_proof()
+                        evidence[section][key] = replacement
+                        with self.assertRaises(ValueError):
+                            probe.validate_proof(evidence, EXPECTED, NONCE)
+
+    def test_proof_metadata_and_chunk_residency_reject_numeric_surrogates(self):
+        for field, value in (("schema", 2.0), ("api_version", True),
+                             ("api_version", 1.0), ("registration_leaks", False),
+                             ("registration_leaks", 0.0)):
+            with self.subTest(field=field, value=value):
+                evidence = valid_proof()
+                evidence[field] = value
+                with self.assertRaises(ValueError):
+                    probe.validate_proof(evidence, EXPECTED, NONCE)
+        for key in ("before_loaded", "after_loaded"):
+            for value in (0, 0.0, 1, 1.0):
+                with self.subTest(key=key, value=value):
+                    evidence = valid_proof()
+                    evidence["unloaded"][key] = value
+                    with self.assertRaises(ValueError):
+                        probe.validate_proof(evidence, EXPECTED, NONCE)
+
     def test_wrong_jar_and_unsafe_release_claim_rejected(self):
         with self.assertRaises(ValueError):
             probe.validate_proof(valid_proof(), "b" * 64, NONCE)

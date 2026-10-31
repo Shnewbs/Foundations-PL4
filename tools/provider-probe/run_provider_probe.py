@@ -62,6 +62,28 @@ def verify_probe_jar(path):
 
 
 def validate_proof(proof, expected, nonce):
+    # Python treats True == 1 and False == 0; JSON numeric evidence must not
+    # be satisfied by booleans or integral-looking floating point values.
+    require(type(proof.get("schema")) is int and
+            type(proof.get("api_version")) is int and
+            type(proof.get("registration_leaks")) is int,
+            "Native proof schema/API/leak counters must be exact integers")
+    for section, keys in (
+        ("replacement", ("first", "later", "stale_rows")),
+        ("registration_close", ("first", "later", "first_rows")),
+        ("self_close", ("calls", "rows", "healthy_calls")),
+        ("exception_quarantine", ("failing", "healthy", "partial_rows")),
+        ("unloaded", ("callbacks", "rows")),
+    ):
+        values = proof.get(section)
+        require(type(values) is dict and
+                all(type(values.get(key)) is int for key in keys),
+                "Native proof counters must be exact integers: " + section)
+    unloaded = proof.get("unloaded")
+    require(type(unloaded) is dict and
+            all(type(unloaded.get(key)) is bool
+                for key in ("before_loaded", "after_loaded")),
+            "Native chunk residency must be boolean, not a numeric surrogate")
     require(NONCE.fullmatch(nonce) is not None and
             proof.get("run_nonce") == nonce and
             proof.get("schema") == 2 and proof.get("target") == "1.21.1" and
