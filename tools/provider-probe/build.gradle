@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+version = '1.0.0-probe'
+group = 'net.foundations.pl4providerprobe'
+base { archivesName = 'PL4-Installed-Provider-Probe' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21) }
+neoForge {
+    enable {
+        version = '21.1.250'
+        disableRecompilation = true
+    }
+    mods { pl4_provider_probe { sourceSet sourceSets.main } }
+    runs {
+        server { server(); programArgument '--nogui'; jvmArguments.addAll('-Xms256m', '-Xmx768m') }
+        configureEach { logLevel = org.slf4j.event.Level.INFO }
+    }
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.register('verifyProbeIsolation') {
+    dependsOn tasks.named('jar')
+    doLast {
+        def artifact = tasks.named('jar').get().archiveFile.get().asFile
+        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+            def forbidden = zip.entries().findAll { it.name.startsWith('net/foundations/pl4/') ||
+                it.name.contains('GameTests') || it.name.endsWith('.jar') }.collect { it.name }
+            if (!forbidden.empty) throw new GradleException('Independent provider probe contains PL4/native bytecode: ' + forbidden)
+            if (zip.getEntry('net/foundations/pl4providerprobe/InstalledProviderProbe.class') == null)
+                throw new GradleException('Independent provider probe entrypoint missing')
+        }
+    }
+}
