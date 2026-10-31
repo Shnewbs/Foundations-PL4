@@ -247,6 +247,42 @@ class DirectUploadValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "symbolic-link archive entry"):
             inspect(self.jar, self.notes)
 
+    def test_rejects_archive_entry_count_limit(self):
+        self.make_jar()
+        with patch.object(direct, "MAX_JAR_ENTRIES", 1):
+            with self.assertRaisesRegex(ValueError, "archive entry count limit"):
+                inspect(self.jar, self.notes)
+
+    def test_rejects_archive_total_uncompressed_size_limit(self):
+        self.make_jar()
+        with patch.object(direct, "MAX_JAR_UNCOMPRESSED_BYTES", 64):
+            with self.assertRaisesRegex(ValueError, "total uncompressed size limit"):
+                inspect(self.jar, self.notes)
+
+    def test_rejects_archive_member_size_limit(self):
+        self.make_jar()
+        with patch.object(direct, "MAX_JAR_MEMBER_BYTES", 64):
+            with self.assertRaisesRegex(ValueError, "member size limit"):
+                inspect(self.jar, self.notes)
+
+    def test_rejects_excessive_compression_ratio(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("assets/pl4/repeated.txt", b"A" * (2 * 1024 * 1024),
+                             compress_type=zipfile.ZIP_DEFLATED)
+        with patch.object(direct, "MAX_JAR_COMPRESSION_RATIO", 50):
+            with self.assertRaisesRegex(ValueError, "compression ratio limit"):
+                inspect(self.jar, self.notes)
+
+    def test_rejects_windows_drive_and_ambiguous_archive_paths(self):
+        for path in ("C:/outside.txt", "assets//pl4/texture.png"):
+            with self.subTest(path=path):
+                self.make_jar()
+                with zipfile.ZipFile(self.jar, "a") as archive:
+                    archive.writestr(path, b"unsafe")
+                with self.assertRaisesRegex(ValueError, "unsafe archive entry path"):
+                    inspect(self.jar, self.notes)
+
     def test_rejects_corrupt_class_crc(self):
         self.make_jar()
         with zipfile.ZipFile(self.jar) as archive:
