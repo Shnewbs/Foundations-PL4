@@ -1,0 +1,75 @@
+{
+  "recorded_at_utc": "2026-10-31T15:10:36Z",
+  "target": "1.21.1 native benchmark proof; repository-wide GitHub Actions policy",
+  "prior_main": "7e35d2ab4c46651384f889bcf14ae164e70e33e7",
+  "source_changes": [
+    {
+      "commit": "0b9b85722b971109d6b9371e68a7520c6133e25b",
+      "path": "tools/benchmarks/run_native_comparison.py",
+      "description": "Reject missing, duplicate, mismatched, non-integer or non-positive timing evidence before aggregating native performance results; compare operation counts, workloads and rounds across revisions/trials"
+    },
+    {
+      "commit": "13da07906f9fe3ea1ee724f800e274d14340fab0",
+      "path": "tools/benchmarks/test_run_native_comparison.py",
+      "description": "Positive, mutation and cross-revision comparability regression methods"
+    }
+  ],
+  "actions_policy": {
+    "automatic_triggers_disabled": true,
+    "workflows_total": 32,
+    "workflows_verified_manual_only": 32,
+    "workflow_commits": [
+      "7541008c14a2ca48bdc6c07fdc277ff0530b0e44",
+      "32815342304ffa3722ea2a06ffeed3a33f7e9ecf",
+      "550f8b1dd217258af0f3ae13f6ad62cfde4fbda6",
+      "58ec25b73ee776b30906593fd035ee329b8f5f8d",
+      "1556b010efca8c73c298f1a6c14b12301c0b3ac9",
+      "7d41ffa534eee4149239242c214a4b80a30a4ba1"
+    ],
+    "manual_workflow_dispatch_retained": true,
+    "manual_dispatch_performed": false,
+    "no_actions_runs_started_by_this_work": true,
+    "policy_document": "docs/EXTERNAL_BUILD_POLICY.md"
+  },
+  "validation": {
+    "isolated_local_python": "PASS: 3/3 test methods including 15 malformed-receipt mutations and cross-revision mismatch; copied exact helper, not repository checkout",
+    "github_source_readback": "PASS: 11/11 source-contract checks on modified GitHub blobs",
+    "workflow_trigger_readback": "PASS: 32/32 workflow headers show only workflow_dispatch",
+    "repository_python_suite": "NOT RUN: repository cannot be cloned locally due to GitHub DNS",
+    "java_gradle": "NOT RUN: Gradle 9.2.1 and dependencies unavailable; services.gradle.org DNS fails",
+    "native_performance": "NOT RUN",
+    "independent_installed_provider": "NOT RUN",
+    "prior_native": "217/217 at source d6c409f, run 41190598603; does not certify current main",
+    "rc_clearances": "0/24"
+  },
+  "compatibility": {
+    "minecraft": "Minecraft 26.4 Snapshot 6, 2026-10-27, latest verified official snapshot",
+    "neoforge": "Official Maven index rechecked 2026-10-31; no 26.4 loader coordinate",
+    "watch": "docs/MC_26_4_COMPATIBILITY_WATCH.md",
+    "new_branch": false,
+    "exact_targets_unchanged": 24
+  },
+  "publication": {
+    "new_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "reason": "Exact-source native, installed provider, authenticated multiplayer, migration, visuals and sustained performance acceptance not cleared"
+  },
+  "cleanup": {
+    "isolated_temporary_test_files_removed": true,
+    "retained_jars_deleted": false,
+    "worlds_deleted": false,
+    "reason": "No new verified replacement/upload; preserve retained evidence"
+  },
+  "blockers": [
+    "Container cannot resolve github.com or services.gradle.org",
+    "No cached Gradle 9.2.1/dependencies or exact-version external builder",
+    "No exact-source installed-provider and sustained-performance evidence"
+  ],
+  "next": [
+    "Run full repository Python tests and native benchmark on a dependency-capable external/local builder",
+    "Compile and run independent installed-provider probe against exact production JAR with clean-exit receipt",
+    "Complete authenticated multiplayer, arbitrary-world migration, client visuals and TPS/heap gates",
+    "Publish only qualified exact targets using local GitHub and CurseForge tooling; never GitHub Actions"
+  ]
+}
