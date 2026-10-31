@@ -72,6 +72,46 @@ class DirectUploadValidationTests(unittest.TestCase):
         finally:
             os.chdir(original)
 
+    def test_multipart_uses_inspected_bytes_even_if_disk_jar_changes(self):
+        self.make_jar()
+        original = self.jar.read_bytes()
+        self.jar.write_bytes(b"replacement is not the inspected runtime")
+        with patch.object(Path, "read_bytes", side_effect=AssertionError("JAR reread")):
+            body, content_type = direct.multipart(
+                {"changelog": "verified"}, self.jar, jar_bytes=original)
+        self.assertIn(original, body)
+        self.assertNotIn(b"replacement is not the inspected runtime", body)
+        self.assertIn("multipart/form-data", content_type)
+
+    def test_upload_receipt_hash_matches_bytes_sent_after_disk_replacement(self):
+        self.make_jar()
+        original = self.jar.read_bytes()
+        original_inspect = direct.inspect
+
+        def replace_disk_after_inspection(jar, notes, jar_bytes=None):
+            outcome = original_inspect(jar, notes, jar_bytes=jar_bytes)
+            self.jar.write_bytes(b"unverified replacement")
+            return outcome
+
+        old_cwd = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar), str(self.notes), "--upload"]), \
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \
+                 patch.object(direct, "inspect", side_effect=replace_disk_after_inspection), \
+                 patch.object(direct, "request_json", return_value={"id": 54321}) as api:
+                direct.main()
+                api.assert_called_once()
+                sent_body = api.call_args.args[2]
+                self.assertIn(original, sent_body)
+                self.assertNotIn(b"unverified replacement", sent_body)
+        finally:
+            os.chdir(old_cwd)
+        receipt = json.loads(self.jar.with_suffix(".curseforge.json").read_text(encoding="utf-8"))
+        self.assertEqual(receipt["sha256"], hashlib.sha256(original).hexdigest())
+        self.assertEqual(receipt["file_id"], 54321)
+
     def test_rejects_missing_or_invalid_receipt_file_ids(self):
         self.make_jar()
         for file_id in (None, True, False, "12345", 0, -1, [], {}):
