@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-31",
+  "time_zone": "America/Los_Angeles",
+  "run": "PL4 direct publisher archive resource bounds",
+  "branch": "main",
+  "source_before": "cb35efa20f45fe340a677ff4373125da995d8e10",
+  "source_commits": {
+    "implementation": "78466703b3676568f0c9e5dc699b0bebc700cc92",
+    "regression_tests": "7b0e8d95574df8a3ff940117467510e35fbed439",
+    "documentation": "dc0d4534c140a9b0b701d700144030bdc3f9ff7b"
+  },
+  "change": "Bounded ZIP resource preflight before CRC decompression; reject drive-prefixed and ambiguous paths",
+  "limits": {
+    "max_entries": 50000,
+    "max_single_member_uncompressed_bytes": 134217728,
+    "max_total_uncompressed_bytes": 536870912,
+    "max_expansion_ratio": 10000,
+    "ratio_applies_at_bytes": 1048576
+  },
+  "validation": {
+    "github_source_readback": "PASS: 10/10 static source/test/documentation checks",
+    "local_mirrored_helper": "PASS: 7/7 fixture scenarios (valid, entry count, total size, single member, compression ratio, drive path, double slash)",
+    "committed_repo_tests": "5 new methods committed; NOT EXECUTED",
+    "full_repository_python": "NOT EXECUTED; source not available in local container",
+    "gradle_build": "NOT EXECUTED; Gradle distribution/dependencies unavailable",
+    "native_game_tests": "NOT EXECUTED for current source",
+    "installed_optional_provider": "NOT EXECUTED for current source",
+    "multiplayer_migration_performance": "PENDING"
+  },
+  "official_26_4_watch": {
+    "checked_date": "2026-10-31",
+    "latest_java_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "official_snapshot_index": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "official_neoforge_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "neoforge_26_4_loader_found": false,
+    "latest_listed_26_3": "26.3.0.99",
+    "compatibility_status": "watch only; no supported loader or approved port; 24-target ledger unchanged"
+  },
+  "rc_clearance": "0/24",
+  "release_artifacts_created": false,
+  "github_release_published": false,
+  "curseforge_upload_performed": false,
+  "github_actions_invoked": false,
+  "retained_builds_deleted": false,
+  "blockers": [
+    "GitHub DNS unavailable in local container",
+    "Gradle 9.2.1 distribution/dependencies unavailable",
+    "Java 25 unavailable for 26.x",
+    "No exact-source native, installed-provider, multiplayer, migration or sustained performance receipts"
+  ],
+  "next": [
+    "Run complete Python suite on dependency-capable builder",
+    "Compile exact-source JAR and execute 217 GameTests on supported main target",
+    "Complete installed-provider and live acceptance",
+    "Only then publish exact-target artifacts and verify destinations before cleanup"
+  ]
+}
