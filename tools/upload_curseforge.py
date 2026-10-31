@@ -60,13 +60,13 @@ def request_json(path, token, data=None, content_type=None):
         raise RuntimeError("CurseForge connection failed. Check the project file list before retrying an upload; the request may have succeeded.") from None
 
 
-def multipart(metadata, jar):
+def multipart(metadata, jar, jar_bytes=None):
     boundary = "pl4-" + uuid.uuid4().hex
     part = b"--" + boundary.encode()
     body = part + b'\r\nContent-Disposition: form-data; name="metadata"\r\nContent-Type: application/json\r\n\r\n'
     body += json.dumps(metadata).encode() + b"\r\n"
     body += part + f'\r\nContent-Disposition: form-data; name="file"; filename="{jar.name}"\r\nContent-Type: application/java-archive\r\n\r\n'.encode()
-    body += jar.read_bytes() + b"\r\n" + part + b"--\r\n"
+    body += (jar.read_bytes() if jar_bytes is None else jar_bytes) + b"\r\n" + part + b"--\r\n"
     return body, "multipart/form-data; boundary=" + boundary
 
 
