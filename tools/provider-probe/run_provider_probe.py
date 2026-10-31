@@ -153,11 +153,13 @@ def prepare(checkout, jar, output, expected, source_sha):
     return manifest
 
 
-def validate_prepared_installation(output, manifest):
+def validate_prepared_installation(output, manifest, allow_runtime_config_changes=False):
     """Fail closed on local input mutation BEFORE invoking Gradle or a native server.
 
-    Verification repeats the same gate after execution, so a passing receipt
-    requires both the prepared inputs and the final retained inputs to match.
+    Before execution every input must match its prepared SHA-256. Minecraft may
+    rewrite server.properties/eula.txt during normal startup; after execution
+    those two runtime files may differ in bytes, but must remain regular files,
+    retain safe settings, and be pinned by the clean-exit attestation.
     """
     output = Path(output)
     expected = manifest.get("installed_pl4_sha256", "")
@@ -174,11 +176,14 @@ def validate_prepared_installation(output, manifest):
     hashes = manifest.get("protected_files")
     require(isinstance(hashes, dict) and set(hashes) == set(protected),
             "Incomplete/extra protected probe input manifest")
+    runtime_config = {"run/server.properties", "run/eula.txt"}
     for name in protected:
         path = output / name
         require(path.is_file() and not path.is_symlink() and
-                SHA.fullmatch(hashes[name]) is not None and digest(path) == hashes[name],
-                "Probe source or wrapper changed: " + name)
+                SHA.fullmatch(hashes[name]) is not None and
+                (allow_runtime_config_changes and name in runtime_config or
+                 digest(path) == hashes[name]),
+                "Probe source, wrapper or prepared configuration changed: " + name)
     require(sorted(p.relative_to(output).as_posix()
                    for p in (output / "src/main/java").rglob("*.java")) == [JAVA],
             "Unexpected PL4/other source in independent probe")
@@ -199,8 +204,10 @@ def validate_prepared_installation(output, manifest):
     props_path = output / "run/server.properties"
     require(props_path.is_file() and not props_path.is_symlink(),
             "Missing/untrusted loopback server configuration")
-    props = dict(line.split("=", 1) for line in props_path.read_text().splitlines()
-                 if "=" in line and not line.startswith("#"))
+    entries = [line.split("=", 1) for line in props_path.read_text().splitlines()
+               if "=" in line and not line.startswith("#")]
+    props = dict(entries)
+    require(len(entries) == len(props), "Duplicate server property keys are unsafe")
     for key, value in {"server-ip": "127.0.0.1", "server-port": "25588",
                        "online-mode": "false", "max-players": "1",
                        "enable-rcon": "true", "rcon.port": "25589"}.items():
@@ -220,7 +227,8 @@ def validate_exit_attestation(exit_data, manifest, log, proof_path):
     emitted only after the local runner observes process exit code zero.
     """
     fields = {"schema", "run_nonce", "pl4_source_commit", "installed_pl4_sha256",
-              "exit_code", "native_server_log_sha256", "native_provider_proof_sha256"}
+              "exit_code", "native_server_log_sha256", "native_provider_proof_sha256",
+              "runtime_server_properties_sha256", "runtime_eula_sha256"}
     require(type(exit_data) is dict and set(exit_data) == fields,
             "Missing/extra native process-exit attestation fields")
     require(type(exit_data["schema"]) is int and exit_data["schema"] == 1 and
@@ -229,7 +237,9 @@ def validate_exit_attestation(exit_data, manifest, log, proof_path):
             exit_data["pl4_source_commit"] == manifest["pl4_source_commit"] and
             exit_data["installed_pl4_sha256"] == manifest["installed_pl4_sha256"] and
             exit_data["native_server_log_sha256"] == digest(log) and
-            exit_data["native_provider_proof_sha256"] == digest(proof_path),
+            exit_data["native_provider_proof_sha256"] == digest(proof_path) and
+            exit_data["runtime_server_properties_sha256"] == digest(log.parent / "run/server.properties") and
+            exit_data["runtime_eula_sha256"] == digest(log.parent / "run/eula.txt"),
             "Native process did not attest clean exit and exact retained evidence")
 
 
@@ -239,7 +249,8 @@ def verify(output, log):
             not log.is_symlink(),
             "Native log must be the prepared runtime server log, not an external file")
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
-    expected, nonce = validate_prepared_installation(output, manifest)
+    expected, nonce = validate_prepared_installation(
+        output, manifest, allow_runtime_config_changes=True)
     proof_path = output / "provider-proof.json"
     require(proof_path.is_file() and not proof_path.is_symlink() and
             log.is_file() and not log.is_symlink(),
@@ -267,6 +278,8 @@ def verify(output, log):
         "native_server_log_sha256": digest(log),
         "native_provider_proof_sha256": digest(proof_path),
         "native_exit_attestation_sha256": digest(exit_path),
+        "runtime_server_properties_sha256": digest(output / "run/server.properties"),
+        "runtime_eula_sha256": digest(output / "run/eula.txt"),
         "prepared_manifest_sha256": digest(output / "provider-probe-prepared.json"),
         "scenarios": proof, "rc_publication_cleared": False,
         "not_tested": ["authenticated multiplayer", "arbitrary-world migration",
@@ -344,6 +357,10 @@ def run(output, timeout):
                 except subprocess.TimeoutExpired:
                     os.killpg(process.pid, signal.SIGKILL)
                     process.wait()
+    # Vanilla may normalize server.properties/eula.txt on startup. Check their
+    # safety-critical values after shutdown, then bind their final bytes to the
+    # clean-exit evidence instead of requiring the prepared bytes to survive.
+    validate_prepared_installation(output, manifest, allow_runtime_config_changes=True)
     # Written only after the native server has returned zero; a marker/proof
     # from a process that later crashed must never become an accepted receipt.
     write_immutable_receipt(output / "provider-exit.json", {
@@ -352,6 +369,8 @@ def run(output, timeout):
         "installed_pl4_sha256": expected, "exit_code": process.returncode,
         "native_server_log_sha256": digest(log),
         "native_provider_proof_sha256": digest(proof),
+        "runtime_server_properties_sha256": digest(output / "run/server.properties"),
+        "runtime_eula_sha256": digest(output / "run/eula.txt"),
     })
     return verify(output, log)
 
