@@ -67,18 +67,30 @@ def inspect(jar, notes):
             raise ValueError(f"JAR lacks {metadata_name} for {loader}")
         metadata = tomllib.loads(archive.read(metadata_name).decode("utf-8"))
         mods = metadata.get("mods", [])
-        if not any(mod.get("modId") == "foundations_pl4" and mod.get("version") == version
-                   for mod in mods):
-            raise ValueError("JAR mod ID or release version differs from its filename")
-        dependencies = metadata.get("dependencies", {}).get("foundations_pl4", [])
-        target = next((dep.get("versionRange", "") for dep in dependencies
-                       if dep.get("modId") == "minecraft"), "")
-        if not target.startswith("[" + minecraft) or target[len(minecraft) + 1:len(minecraft) + 2] not in ("]", ","):
+        if not isinstance(mods, list) or not all(isinstance(mod, dict) for mod in mods):
+            raise ValueError("JAR contains invalid mod metadata")
+        pl4_mods = [mod for mod in mods if mod.get("modId") == "foundations_pl4"]
+        if len(pl4_mods) != 1 or pl4_mods[0].get("version") != version:
+            raise ValueError("JAR mod ID or release version differs from its filename or is duplicated")
+        dependency_tables = metadata.get("dependencies", {})
+        if not isinstance(dependency_tables, dict):
+            raise ValueError("JAR contains invalid dependency metadata")
+        dependencies = dependency_tables.get("foundations_pl4", [])
+        if not isinstance(dependencies, list) or not all(isinstance(dep, dict) for dep in dependencies):
+            raise ValueError("JAR contains invalid dependency metadata")
+        minecraft_deps = [dep for dep in dependencies if dep.get("modId") == "minecraft"]
+        loader_deps = [dep for dep in dependencies if dep.get("modId") == loader.lower()]
+        if len(minecraft_deps) != 1 or len(loader_deps) != 1:
+            raise ValueError("JAR must declare exactly one Minecraft and loader dependency")
+        if any(dep.get("modId") in ("forge", "neoforge") and dep.get("modId") != loader.lower()
+               for dep in dependencies):
+            raise ValueError("JAR dependency metadata includes conflicting loaders")
+        target = minecraft_deps[0].get("versionRange", "")
+        if not isinstance(target, str) or not target.startswith("[" + minecraft) or (
+                target[len(minecraft) + 1:len(minecraft) + 2] not in ("]", ",")):
             raise ValueError("JAR metadata does not identify the exact target Minecraft version")
         if loader == "NeoForge" and target != f"[{minecraft}]":
             raise ValueError("NeoForge JAR must declare an exact Minecraft target, not a range")
-        if not any(dep.get("modId") == loader.lower() for dep in dependencies):
-            raise ValueError("JAR dependency metadata does not match its loader")
     return minecraft, version, loader
 
 
