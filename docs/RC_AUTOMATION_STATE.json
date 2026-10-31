@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-hourly-20261031T0710Z-proof-type-safety","claimed_at":"2026-10-31T07:10:37.589Z","expires_at":"2026-10-31T07:30:37.589Z","expected_parent":"3c6f07305467b75cfbc7ea2abab6bde63d4dac99","purpose":"independent provider native proof exact numeric types and regression tests"},
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T06:11:17.709Z: source-only provider probe config/log attestation hardening 2ecc6d23; 10/10 static contracts, Python/native/Gradle not executed; 0/24 cleared, no new release.",
-  "local_validation": "10/10 static GitHub readback checks passed; repository Python tests, Gradle/native 217 and independent installed-provider run NOT executed (no local GitHub DNS/dependency cache).",
+  "current_checkpoint": "2026-10-31T07:13:08.478Z: provider installed native-proof strict integer/boolean evidence guard pushed 3811bd2; isolated 4 methods / 59 cases passed; repository Python/Gradle/native 217/installed probe NOT RUN; 0/24 cleared, no release.",
+  "local_validation": "GitHub exact source readback PASS; isolated extracted Python contract 4 unittest methods / 59 cases PASS; actual repository Python unittest, Java/Gradle, 217 native GameTests and installed provider runtime NOT RUN (local GitHub DNS and Gradle cache unavailable).",
   "next_work": [
-    "Run actual Python unittest for provider-probe and address failures, then compile separate installed provider mod against exact pinned production JAR",
-    "Check whether native Minecraft rewrites server.properties on startup; if it does, preserve prepared vs runtime-normalized config evidence without weakening network isolation",
-    "Execute pinned exact native 217 and independent provider proof; preserve JAR/log/proof/nonce hashes",
-    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, remaining exact-version ports and legacy gravel investigation"
+    "Execute actual tools/provider-probe/test_run_provider_probe.py Python unittest on a complete source checkout; resolve any failures",
+    "Compile separately installed provider JAR against exact pinned 1.21.1 production JAR, observe native server.properties normalization, preserve prepared/runtime log/nonce/proof/JAR hashes",
+    "Run pinned exact 217 native GameTests and independently installed provider callback/no-force-load acceptance, without promoting prior 216-case source",
+    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, remaining exact-version port work and legacy gravel investigation"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -63,15 +63,18 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0610Z-provider-config",
-    "claimed_at": "2026-10-31T06:09:37.721Z",
-    "released_at": "2026-10-31T06:11:17.709Z",
-    "lease_claim_commit": "8d6e9440cf8a1d1bde41f988e849de64a18b9f8c",
+    "owner": "pl4-hourly-20261031T0710Z-proof-type-safety",
+    "claimed_at": "2026-10-31T07:10:37.589Z",
+    "released_at": "2026-10-31T07:13:08.478Z",
+    "lease_claim_commit": "34a252a0c7cf15d69eb523cbae49f30403beff9c",
     "source_commits": [
-      "a4821cf262bbcc5d63941bc98b1e0b97b4f283be",
-      "2ecc6d232413c5f6009f572d944fed812a5f6ffd"
+      "3811bd263d85e1d040723079434cdad23321fabf"
     ],
-    "evidence": "docs/acceptance/rc-dev-provider-probe-complete-config-log-attestation-2026-10-31.json",
+    "documentation_commits": [
+      "47d66517c5cde8f38c19e04f367bb0be2dcac2d0",
+      "661ee0197152181b009c06859c188025dfd269f6"
+    ],
+    "evidence": "docs/acceptance/rc-dev-provider-probe-exact-counter-types-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
   },
@@ -3124,6 +3127,29 @@
     ],
     "static_checks": "10/10 PASS",
     "python_tests": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false
+  },
+  "prior_writer_release_20261031_0611": {
+    "owner": "pl4-hourly-20261031T0610Z-provider-config",
+    "claimed_at": "2026-10-31T06:09:37.721Z",
+    "released_at": "2026-10-31T06:11:17.709Z",
+    "lease_claim_commit": "8d6e9440cf8a1d1bde41f988e849de64a18b9f8c",
+    "source_commits": [
+      "a4821cf262bbcc5d63941bc98b1e0b97b4f283be",
+      "2ecc6d232413c5f6009f572d944fed812a5f6ffd"
+    ],
+    "evidence": "docs/acceptance/rc-dev-provider-probe-complete-config-log-attestation-2026-10-31.json",
+    "writer_lease_released": true,
+    "release_performed": false
+  },
+  "latest_installed_provider_exact_counter_types": {
+    "source_commit": "3811bd263d85e1d040723079434cdad23321fabf",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-exact-counter-types-2026-10-31.json",
+    "github_source_readback": "PASS",
+    "isolated_python_contract": "4 methods / 59 cases PASS (copied contract, not repository suite)",
+    "repository_python": "NOT_RUN",
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_clearance": false
