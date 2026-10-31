@@ -1,11 +1,7 @@
 name: Build and release
 
+# Automatic GitHub Actions triggers disabled; use external local builders and manual release tooling.
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v*"
   workflow_dispatch:
 
 permissions:

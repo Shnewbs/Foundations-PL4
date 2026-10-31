@@ -1,9 +1,7 @@
 name: Verify source and native build
 
+# Automatic GitHub Actions triggers disabled; use external local builders and manual release tooling.
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:

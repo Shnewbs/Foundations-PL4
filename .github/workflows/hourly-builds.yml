@@ -1,16 +1,13 @@
 name: Hourly exact-version native builds
+# Automatic GitHub Actions triggers disabled; use external local builders and manual release tooling.
 on:
-  schedule:
-    - cron: '37 * * * *'
-  push:
-    branches: [main]
-    paths: ['.github/workflows/hourly-builds.yml', 'tools/hourly_builds.py', 'tools/ports/validate_rc_candidate.py', 'tools/ports/native_26_coverage.py', 'tools/test_native_26_coverage.py', 'tools/test_hourly_builds.py', 'tools/test_legacy_*.py', 'tools/test_preupgrade_item_fault_gate.py', 'tools/test_historical_provider_outcomes.py']
   workflow_dispatch:
     inputs:
       force:
         description: Rebuild even unchanged source with a retained successful artifact
         type: boolean
         default: false
+
 permissions:
   contents: read
   actions: read

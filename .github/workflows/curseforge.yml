@@ -2,19 +2,8 @@ name: Mirror verified Minecraft releases to CurseForge
 
 # Releases published with GitHub Actions' GITHUB_TOKEN do not trigger
 # downstream workflows. An hourly reconciliation covers those releases.
+# Automatic GitHub Actions triggers disabled; use external local builders and manual release tooling.
 on:
-  release:
-    types: [published]
-  schedule:
-    - cron: '17 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/curseforge.yml'
-      - 'tools/upload_curseforge.py'
-      - 'tools/curseforge_sync.py'
-      - 'tools/test_curseforge_publish.py'
-      - 'tools/publication_policy.py'
   workflow_dispatch:
     inputs:
       tag:
