@@ -3,6 +3,7 @@
 These tests do not run Gradle or qualify native performance/RC releases.
 """
 import importlib.util
+import copy
 from pathlib import Path
 import tempfile
 import unittest
@@ -99,6 +100,61 @@ class DisposableWorkspaceTests(unittest.TestCase):
             bench.replace_owned_run(self.baseline, 1, "a" * 40)
         self.assertEqual((outside / "level.dat").read_bytes(), b"keep")
 
+
+
+def sample_native_report():
+    return {
+        "source_commit": "a" * 40, "trial": "1",
+        "workloads": [{
+            "network": "wired", "host_count": 4096, "endpoint_count": 128,
+            "measurements": [{
+                "operation": "lookup", "operations_per_round": 10000,
+                "warmup_operations": 2000,
+                "elapsed_ns": [300, 400, 500],
+                "cpu_ns": [100, 200, 300],
+                "allocated_bytes": [0, 16, 32],
+            }],
+        }],
+    }
+
+
+class NativeReportValidationTests(unittest.TestCase):
+    def test_valid_native_report_matches_across_trials(self):
+        report = sample_native_report()
+        schema = bench.validate_native_report(report, "a" * 40, 1)
+        self.assertEqual(schema, bench.validate_native_report(report, "a" * 40, 1, schema))
+
+    def test_malformed_native_reports_are_rejected(self):
+        edits = [
+            ("wrong source", lambda r: r.update(source_commit="b" * 40)),
+            ("wrong trial", lambda r: r.update(trial="2")),
+            ("missing workloads", lambda r: r.update(workloads=[])),
+            ("duplicate network", lambda r: r["workloads"].append(copy.deepcopy(r["workloads"][0]))),
+            ("missing operation", lambda r: r["workloads"][0]["measurements"][0].update(operation="")),
+            ("duplicate operation", lambda r: r["workloads"][0]["measurements"].append(copy.deepcopy(r["workloads"][0]["measurements"][0]))),
+            ("bool operations", lambda r: r["workloads"][0]["measurements"][0].update(operations_per_round=True)),
+            ("zero operations", lambda r: r["workloads"][0]["measurements"][0].update(operations_per_round=0)),
+            ("bool hosts", lambda r: r["workloads"][0].update(host_count=True)),
+            ("missing cpu", lambda r: r["workloads"][0]["measurements"][0].pop("cpu_ns")),
+            ("short cpu", lambda r: r["workloads"][0]["measurements"][0].update(cpu_ns=[1])),
+            ("unequal rounds", lambda r: r["workloads"][0]["measurements"][0].update(cpu_ns=[1, 2, 3, 4])),
+            ("negative allocations", lambda r: r["workloads"][0]["measurements"][0].update(allocated_bytes=[0, -1, 2])),
+            ("bool cpu", lambda r: r["workloads"][0]["measurements"][0].update(cpu_ns=[1, True, 2])),
+            ("zero elapsed", lambda r: r["workloads"][0]["measurements"][0].update(elapsed_ns=[1, 0, 3])),
+        ]
+        for name, edit in edits:
+            with self.subTest(case=name):
+                report = sample_native_report()
+                edit(report)
+                with self.assertRaises(ValueError):
+                    bench.validate_native_report(report, "a" * 40, 1)
+
+    def test_cross_revision_measurement_schema_must_match(self):
+        schema = bench.validate_native_report(sample_native_report(), "a" * 40, 1)
+        report = sample_native_report()
+        report["workloads"][0]["measurements"][0]["operations_per_round"] = 100
+        with self.assertRaisesRegex(ValueError, "differ"):
+            bench.validate_native_report(report, "a" * 40, 1, schema)
 
 if __name__ == "__main__":
     unittest.main()
