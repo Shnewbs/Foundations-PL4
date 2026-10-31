@@ -55,7 +55,10 @@ not prove its source commit. Never publish either development JAR as an RC.
 Before invoking Gradle, the runner verifies every pinned wrapper/build/Java source
 hash, the exact installed PL4 JAR, a single installed mod, the run nonce and
 source attribution, and the disposable server's loopback-only RCON/offline
-configuration. The same checks run again when verifying the retained proof.
+configuration. After native shutdown, immutable code/wrapper/JAR hashes are checked again;
+Minecraft-normalized runtime configuration is validated for safe values and
+pinned to the clean-exit attestation rather than incorrectly requiring the
+original byte-for-byte server.properties representation.
 `verifyProbeIsolation` executes **before** `runServer`, so an unverified
 standalone probe JAR cannot be launched first. Negative unit tests cover
 wrapper tampering, changed online-mode, extra mods and missing hash entries.
@@ -77,14 +80,18 @@ and exact source/JAR/proof/log hashes are required before acceptance.
 
 ## Pinned native server configuration (October 31)
 
-The preparation manifest now hashes the **entire** generated `run/server.properties`
-and `run/eula.txt`, in addition to the wrapper and independent source.
-Preflight and post-run verification reject any changed setting (including RCON
-credentials, world settings, and simulation/view distances), not merely changes
-to the previously enumerated network-isolation keys. The RCON secret itself is
-never written into the manifest or receipt. Offline negative tests exercise
-changes to previously unchecked server settings and the EULA. This is a
-source-level integrity improvement; it is **not** an installed native PASS.
+The preparation manifest hashes the **entire** generated `run/server.properties`
+and `run/eula.txt` before Gradle starts. Any preflight change (including RCON
+credentials, world settings and simulation/view distances) is rejected.
+Minecraft can rewrite these files during normal server startup, so post-run
+verification accepts changed bytes **only** for these two runtime files while
+still requiring the loopback-only/offline/RCON settings, accepted EULA, unique
+property keys, regular non-symlink files and immutable wrapper/source/JAR.
+The final runtime configuration SHA-256 values are bound to the native
+clean-exit attestation and retained receipt, preventing later substitution.
+The RCON secret is not written into the manifest or receipt. Negative tests
+cover harmless normalization, unsafe settings, duplicate keys and tampered
+post-exit hashes. These changes are source-only and **not** a native PASS.
 
 The verifier also refuses an external `--log` path: the accepted native server
 log must be the non-symlinked `provider-server.log` inside the prepared runtime.
