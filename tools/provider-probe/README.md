@@ -74,3 +74,14 @@ verification remains idempotent. New negative Python tests cover an existing
 log and a symlinked receipt. **These source changes have not yet been compiled
 or executed against the independent installed production JAR**; a native PASS
 and exact source/JAR/proof/log hashes are required before acceptance.
+
+## Pinned native server configuration (October 31)
+
+The preparation manifest now hashes the **entire** generated `run/server.properties`
+and `run/eula.txt`, in addition to the wrapper and independent source.
+Preflight and post-run verification reject any changed setting (including RCON
+credentials, world settings, and simulation/view distances), not merely changes
+to the previously enumerated network-isolation keys. The RCON secret itself is
+never written into the manifest or receipt. Offline negative tests exercise
+changes to previously unchecked server settings and the EULA. This is a
+source-level integrity improvement; it is **not** an installed native PASS.

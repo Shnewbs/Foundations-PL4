@@ -117,7 +117,8 @@ def prepare(checkout, jar, output, expected, source_sha):
         "enable-rcon=true\nrcon.port=25589\nrcon.password=" + secrets.token_urlsafe(32) + "\n"
     )
     protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
-                 "gradle/wrapper/gradle-wrapper.properties", *PROJECT]
+                 "gradle/wrapper/gradle-wrapper.properties", *PROJECT,
+                 "run/server.properties", "run/eula.txt"]
     manifest = {
         "schema": 1, "target": "1.21.1", "pl4_source_commit": source_sha,
         "pl4_source_attribution": "caller supplied; corroborate against retained build artifact",
@@ -146,7 +147,8 @@ def validate_prepared_installation(output, manifest):
             re.fullmatch(r"[0-9a-f]{40}", manifest.get("pl4_source_commit", "")) is not None,
             "Unsafe/invalid prepared installation or source attribution")
     protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
-                 "gradle/wrapper/gradle-wrapper.properties", *PROJECT]
+                 "gradle/wrapper/gradle-wrapper.properties", *PROJECT,
+                 "run/server.properties", "run/eula.txt"]
     hashes = manifest.get("protected_files")
     require(isinstance(hashes, dict) and set(hashes) == set(protected),
             "Incomplete/extra protected probe input manifest")

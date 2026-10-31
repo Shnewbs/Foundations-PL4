@@ -156,7 +156,8 @@ class ProviderReceiptTests(unittest.TestCase):
                              "enable-rcon=true\nrcon.port=25589\n")
             (root / "run/eula.txt").write_text("eula=true\n")
             protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
-                         "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT]
+                         "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT,
+                         "run/server.properties", "run/eula.txt"]
             manifest = {
                 "schema": 1, "target": "1.21.1", "run_nonce": NONCE,
                 "installed_pl4_sha256": EXPECTED, "installed_pl4_name": "PL4-1.21.1.jar",
@@ -176,6 +177,20 @@ class ProviderReceiptTests(unittest.TestCase):
                     probe.validate_prepared_installation(root, manifest)
                 props.write_text(props.read_text().replace("online-mode=true",
                                                            "online-mode=false"))
+                # Previously unpinned fields could silently change test conditions
+                # while every enumerated network-isolation key remained correct.
+                props.write_text(props.read_text().replace("view-distance=3", "view-distance=12")
+                                 if "view-distance=3" in props.read_text()
+                                 else props.read_text() + "view-distance=12\n")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                props.write_text("server-ip=127.0.0.1\nserver-port=25588\n"
+                                 "online-mode=false\nmax-players=1\n"
+                                 "enable-rcon=true\nrcon.port=25589\n")
+                (root / "run/eula.txt").write_text("eula=false\n")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                (root / "run/eula.txt").write_text("eula=true\n")
                 (mods / "unapproved.jar").write_bytes(b"extra mod")
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
