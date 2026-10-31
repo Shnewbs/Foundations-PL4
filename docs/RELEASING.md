@@ -1,5 +1,7 @@
 # Building and releasing versions
 
+> **Current policy (October 31, 2026):** GitHub Actions automatic triggers have been disabled across all 32 workflows. The Actions-based instructions below are retained as historical documentation and must **not** be used for hourly builds or publication. Follow [external-only build and release policy](EXTERNAL_BUILD_POLICY.md) and [direct CurseForge upload](DIRECT_CURSEFORGE_UPLOAD.md) after exact-version acceptance. No Actions dispatch or scheduled CI is authorized.
+
 Each published version gets a tagged Windows/Java 21 build and a GitHub Release containing the mod JAR, sources JAR and SHA-256 checksums. The release workflow verifies that the tag version exactly matches Gradle's `version`, then runs `clean build runGameTestServer`; it publishes nothing if any build, asset, rule or native GameTest gate fails.
 
 Pushing a new Gradle version to `main` automatically builds, tests, tags and publishes it to GitHub and the configured CurseForge project. Main updates whose version already has a tag skip publication. Tag pushes and manual dispatch remain supported.
