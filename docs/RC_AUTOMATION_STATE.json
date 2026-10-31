@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-hourly-20261031T0110Z-installed-provider-probe","claimed_at":"2026-10-31T01:11:01.151Z","expires_at":"2026-10-31T01:33:01.151Z","expected_parent":"1085a25bc1b8079dee7140cf080c7cb5e2eb6982","scope":"main installed optional-provider independent probe + 216 native receipt; no release"},
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T01:09Z: 216 native run 41148739682 failed 2 provider fixtures after 1,149,451 offline assertions; repaired missing backing and registration cleanup on exact source 4ab66dc; new run 41153518219 pending; 26.4 watch updated; lease released; no native/JAR/RC evidence promoted.",
-  "local_validation": "Native run 41148739682: 214/216 passed, 2 required fixture failures. Source 4ab66dc fixes live backing and try-with-resources cleanup; static source inspection PASS, new exact-source native verification pending. No local Gradle runtime/network available. 26.4 official snapshots reviewed; NeoForge Maven lacks 26.4 as checked 2026-10-30.",
+  "current_checkpoint": "2026-10-31T01:14:09.227Z: 1.21.1 216/216 exact native PASS on 4ab66dc, retained production JAR d6e39c49, independent installed-provider probe source/runner committed but not built/run; 0/24 RC clearances; no release.",
+  "local_validation": "PASS: independently inspected 216/216 native run 41153518219 and artifact 13024755329 (6 ZIP entries CRC valid, production JAR 886 entries CRC valid, SHA256 d6e39c49...). Independent probe Python/Java not executed locally because no network/cached Gradle dependencies.",
   "next_work": [
-    "Build separate optional NeoForge probe mod/JAR (not in-process PL4 GameTests) and install beside exact PL4 production JAR; register callbacks that replace/unload backing targets and verify later callbacks suppressed, no forced chunk load and no stale rows",
-    "Retain exact provider/PL4 JAR SHA-256, server run logs, callback counters and loaded-chunk before/after evidence; no installed-provider acceptance until real installed pass",
-    "Continue authenticated two-client multiplayer, arbitrary-world migration and sustained TPS/heap/provider performance on each exact target",
-    "Repair genuine 26.1/26.2 source attribution and 1.6.4 gravel root cause; no relabeling or release without clearance"
+    "Compile and execute the separate tools/provider-probe native NeoForge 1.21.1 project against exact pinned production JAR d6e39c49; record probe JAR hash, callback counts, unloaded chunk before/after, logs and receipt; never infer pass from source alone",
+    "After independent provider acceptance, test authenticated multiplayer, arbitrary-world migration and sustained TPS/heap per exact version",
+    "Repair real 26.1 and 26.2 source attribution and 1.6.4 gravel cause; no relabeling",
+    "Continue 26.4 official loader watch; no snapshot promotion or unsupported branch"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -63,16 +63,17 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T1709Z-installed-provider-registration-guard",
-    "released_at": "2026-10-31T00:18:00Z",
-    "lease_claim_commit": "8a43dfcaaf05397da19e40492c6edb63826c9d39",
-    "expected_parent": "77bde66ce3535851574e44bdb3825769fde1e39d",
-    "evidence": "docs/acceptance/rc-dev-1211-provider-registration-revocation-216-pending-2026-10-31.json",
+    "owner": "pl4-hourly-20261031T0110Z-installed-provider-probe",
+    "claimed_at": "2026-10-31T01:11:01.151Z",
+    "released_at": "2026-10-31T01:14:09.227Z",
+    "lease_claim_commit": "4c0258c53a32287612c17713c9f510b0bf29f085",
+    "expected_parent": "1085a25bc1b8079dee7140cf080c7cb5e2eb6982",
+    "evidence": "docs/acceptance/rc-dev-1211-216-native-pass-independent-provider-probe-pending-2026-10-31.json",
     "writer_lease_released": true,
-    "release_performed": true,
+    "release_performed": false,
     "docs_only_checkpoint": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-216-native-pass-independent-provider-probe-pending-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -2997,5 +2998,66 @@
     "release_performed": false,
     "rc_clearance": "0/24"
   },
-  "latest_264_compatibility_watch": {"date":"2026-10-30","document":"docs/MC_26_4_COMPATIBILITY_WATCH.md","latest_snapshot":"26.4-snapshot-6","neoforge_26_4_listed":false,"new_exact_target_added":false}
+  "latest_264_compatibility_watch": {
+    "checked_at": "2026-10-31T01:14:09.227Z",
+    "neoforge_264_build_observed": false,
+    "source": "https://maven.neoforged.net/releases/net/neoforged/neoforge",
+    "exact_port_created": false
+  },
+  "latest_216_native_verified": {
+    "source_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "run_id": 41153518219,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41153518219",
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "observed_game_tests": 216,
+    "passed_game_tests": 216,
+    "failed_game_tests": 0,
+    "offline_assertions": 1149451,
+    "java": 21,
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.250",
+    "artifact_id": 13024755329,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41153518219/artifacts/13024755329",
+    "artifact_zip_sha256": "151c2bf0254e96bbd22c0ef3762d878de6dc1661de23a7637f9d44747bbbab40",
+    "artifact_entries": 6,
+    "artifact_crc": "PASS",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "native_scenario_jar_sha256": "cef1654d60c48561037d58c013132954cce611ec310ab8f61e4d3d1ae39b8cd9",
+    "native_log_sha256": "87a3c895a24d7746d080ffc9ffb72d1c4e3306eb4bf1b07b52ea8495ec68bd60",
+    "evidence_limitations": [
+      "No independent installed third-party provider mod executed",
+      "No authenticated online multiplayer",
+      "No arbitrary user-world migration",
+      "No sustained server TPS/heap",
+      "Development JAR is not an RC release"
+    ]
+  },
+  "latest_installed_provider_probe_candidate": {
+    "source_commits": [
+      "2da5dc55ee8bdfdb6e4b09c53de33f77bb7c74ba",
+      "f438794636118d172e52f0ca6e2697568ec64ab4",
+      "772c0743fff54cd75f61bb6d321ac4ee792e83c3"
+    ],
+    "directory": "tools/provider-probe",
+    "kind": "separate NeoForge 1.21.1 test mod",
+    "scenarios": [
+      "callback-time block-entity replacement",
+      "provider registration closure suppresses later callback",
+      "throwing provider partial-row quarantine",
+      "unloaded target before/after no-force-load",
+      "registration cleanup"
+    ],
+    "source_isolation": "PL4 API accessed by reflection; no PL4 source compiled or shaded",
+    "source_committed": true,
+    "python_negative_tests_committed": true,
+    "python_tests_executed": false,
+    "gradle_compile_executed": false,
+    "native_server_executed": false,
+    "installed_provider_accepted": false,
+    "blocker": "This runner cannot resolve GitHub/Gradle hosts; local environment has no populated Gradle dependency cache. An isolated external NeoForge runtime is required for the separate probe JAR."
+  }
 }

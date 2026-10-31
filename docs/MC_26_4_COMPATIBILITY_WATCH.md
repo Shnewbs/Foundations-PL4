@@ -1,4 +1,4 @@
-# Minecraft 26.4 / NeoForge compatibility watch — 2026-10-30
+# Minecraft 26.4 / NeoForge compatibility watch — 2026-10-31
 
 This is a **readiness watch**, not a new PL4 maintained target, build, compatibility claim, or release clearance. The existing 24 exact targets and their branches remain unchanged.
 
@@ -15,3 +15,7 @@ This is a **readiness watch**, not a new PL4 maintained target, build, compatibi
 2. On first official loader availability, create or update an exact version branch only under the owner's branch policy; pin Java 25, exact Minecraft and loader, data/resource pack formats, and protocol. Do not inherit 26.3 native hashes.
 3. Add tests for login handshake, fluid capability/tag isolation, provider no-force-load, client rendering under Vulkan, world migration, multiplayer and sustained TPS/heap.
 4. Continue current 24 exact-version acceptance work independently; this watch does not clear any existing target or authorize a release.
+
+## October 31 recheck
+
+The [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge) was checked again on **October 31, 2026 (UTC)**: no `26.4` build entry was present. Mojang's [October 27 game-drop testing overview](https://www.minecraft.net/en-us/article/drop-4-2026-testing) continues to identify the fourth 2026 drop as preview/snapshot testing. No 26.4 source port, target count change, binary compatibility claim, or release is authorized. Existing snapshot-specific handshake, Vulkan, fluid-tag, and worldgen acceptance gates remain mandatory.

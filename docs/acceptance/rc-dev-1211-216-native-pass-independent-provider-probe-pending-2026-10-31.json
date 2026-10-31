@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-31T01:14:09.227Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "release_eligible": false,
+  "rc_publication_cleared": false,
+  "rc_clearances": 0,
+  "native_1211": {
+    "source_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "run_id": 41153518219,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41153518219",
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "observed_game_tests": 216,
+    "passed_game_tests": 216,
+    "failed_game_tests": 0,
+    "offline_assertions": 1149451,
+    "java": 21,
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.250",
+    "artifact_id": 13024755329,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41153518219/artifacts/13024755329",
+    "artifact_zip_sha256": "151c2bf0254e96bbd22c0ef3762d878de6dc1661de23a7637f9d44747bbbab40",
+    "artifact_entries": 6,
+    "artifact_crc": "PASS",
+    "production_jar_name": "FoundationsPL4-1.21.1-0.2.0-rc.1-dev.jar",
+    "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "native_scenario_jar_sha256": "cef1654d60c48561037d58c013132954cce611ec310ab8f61e4d3d1ae39b8cd9",
+    "native_log_sha256": "87a3c895a24d7746d080ffc9ffb72d1c4e3306eb4bf1b07b52ea8495ec68bd60",
+    "evidence_limitations": [
+      "No independent installed third-party provider mod executed",
+      "No authenticated online multiplayer",
+      "No arbitrary user-world migration",
+      "No sustained server TPS/heap",
+      "Development JAR is not an RC release"
+    ]
+  },
+  "independent_provider_probe": {
+    "source_commits": [
+      "2da5dc55ee8bdfdb6e4b09c53de33f77bb7c74ba",
+      "f438794636118d172e52f0ca6e2697568ec64ab4",
+      "772c0743fff54cd75f61bb6d321ac4ee792e83c3"
+    ],
+    "directory": "tools/provider-probe",
+    "kind": "separate NeoForge 1.21.1 test mod",
+    "scenarios": [
+      "callback-time block-entity replacement",
+      "provider registration closure suppresses later callback",
+      "throwing provider partial-row quarantine",
+      "unloaded target before/after no-force-load",
+      "registration cleanup"
+    ],
+    "source_isolation": "PL4 API accessed by reflection; no PL4 source compiled or shaded",
+    "source_committed": true,
+    "python_negative_tests_committed": true,
+    "python_tests_executed": false,
+    "gradle_compile_executed": false,
+    "native_server_executed": false,
+    "installed_provider_accepted": false,
+    "blocker": "This runner cannot resolve GitHub/Gradle hosts; local environment has no populated Gradle dependency cache. An isolated external NeoForge runtime is required for the separate probe JAR."
+  },
+  "official_264_watch": {
+    "checked_at": "2026-10-31T01:14:09.227Z",
+    "mojang": "26.4 remains snapshot/testing line as of this check",
+    "neoforge_maven_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge",
+    "neoforge_264_build_observed": false,
+    "exact_port_created": false,
+    "impact": "No 26.4 release/branch; retain separate Vulkan, handshake, fluid-tag and migration gates"
+  },
+  "publishing": {
+    "github_new_release": null,
+    "curseforge_new_upload_id": null,
+    "moderation_visibility_reverified": false,
+    "reason": "0/24 explicit RC clearances; development sources ineligible"
+  },
+  "next_step": "Build and run the independent tools/provider-probe project locally against retained 1.21.1 production JAR d6e39c...; verify actual probe JAR, native callbacks/log and before/after unloaded-chunk receipt; then continue authenticated multiplayer/migration/performance and genuine 26.1/26.2 source repairs."
+}

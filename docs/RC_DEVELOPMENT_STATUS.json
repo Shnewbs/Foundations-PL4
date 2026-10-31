@@ -4499,23 +4499,22 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "Two exact source-native passes with independently verified ZIP/JAR CRC/hash evidence; 215 1.21.1 and 193 PL4 26.1.2. Documentation-only checkpoint is not a new native-qualified source.",
+  "current_checkpoint": "2026-10-31T01:14:09.227Z: 1.21.1 216/216 exact native PASS on 4ab66dc, retained production JAR d6e39c49, independent installed-provider probe source/runner committed but not built/run; 0/24 RC clearances; no release.",
   "latest_source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
-  "next_step": "Build and install independent optional-provider probe JAR beside exact 1.21.1 production JAR; prove callback unload/replacement/no-force-load with exact logs/hashes; then per-target multiplayer, migration and sustained performance.",
+  "next_step": "Build and run the independent tools/provider-probe project locally against retained 1.21.1 production JAR d6e39c...; verify actual probe JAR, native callbacks/log and before/after unloaded-chunk receipt; then continue authenticated multiplayer/migration/performance and genuine 26.1/26.2 source repairs.",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
   "native_validation": "PASS_PINNED_215_AT_F14B5BF; DOCS_CHECKPOINT_HAS_NEW_SHA",
   "rc_publication_cleared": false,
   "last_verified_checkpoint": "2026-10-30T09:05:10Z: main source 872bfc2 passed 208/208 native GameTests and 1,149,451 offline assertions in run 41030606887; no release/upload.",
   "latest_native_validation": {
-    "source_commit": "872bfc2aedf0e05842be7ea7e14c68d2e1c39342",
-    "minecraft": "1.21.1",
-    "run_id": 41030606887,
-    "passed": 208,
-    "total": 208,
-    "offline_assertions": 1149451,
-    "artifact_id": 12966206043,
-    "artifact_sha256": "825238d3aa64053a58a7e364e756593b0819d08a4e3d3f3eb3f5edb0679ec626",
-    "production_jar_sha256": "NOT_INDEPENDENTLY_RECORDED"
+    "target": "1.21.1",
+    "source": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "run": 41153518219,
+    "passed": 216,
+    "total": 216,
+    "jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+    "artifact_sha256": "151c2bf0254e96bbd22c0ef3762d878de6dc1661de23a7637f9d44747bbbab40",
+    "rc_publication_cleared": false
   },
   "expected_native_fixtures": 215,
   "rc_clearance": "0/24",
@@ -4672,7 +4671,31 @@
     "visibility_or_moderation": "NOT_INDEPENDENTLY_VERIFIED",
     "note": "All 24 were prior submitted/recorded versions, not new accepted RCs"
   },
-  "latest_checkpoint": "2026-10-31: installed-provider registration liveness guard added; 216 exact native fixtures pending verification; no release/upload",
-  "latest_216_fixture_repair": {"failed_run":41148739682,"failed_native":2,"total_native":216,"offline_assertions_passed":1149451,"repair_commit":"4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8","fresh_run":41153518219,"native_result":"PENDING","rc_clearances":0,"evidence":"docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json"},
-  "latest_264_watch": {"document":"docs/MC_26_4_COMPATIBILITY_WATCH.md","new_target":false,"release_eligible":false}
+  "latest_checkpoint": "2026-10-31T01:14:09.227Z: 1.21.1 216/216 exact native PASS on 4ab66dc, retained production JAR d6e39c49, independent installed-provider probe source/runner committed but not built/run; 0/24 RC clearances; no release.",
+  "latest_216_fixture_repair": {
+    "failed_run": 41148739682,
+    "failed_native": 2,
+    "total_native": 216,
+    "offline_assertions_passed": 1149451,
+    "repair_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "fresh_run": 41153518219,
+    "native_result": "PENDING",
+    "rc_clearances": 0,
+    "evidence": "docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json"
+  },
+  "latest_264_watch": {
+    "document": "docs/MC_26_4_COMPATIBILITY_WATCH.md",
+    "new_target": false,
+    "release_eligible": false
+  },
+  "latest_installed_provider_probe": {
+    "source_commits": [
+      "2da5dc55ee8bdfdb6e4b09c53de33f77bb7c74ba",
+      "f438794636118d172e52f0ca6e2697568ec64ab4",
+      "772c0743fff54cd75f61bb6d321ac4ee792e83c3"
+    ],
+    "source_committed": true,
+    "native_executed": false,
+    "rc_publication_cleared": false
+  }
 }
