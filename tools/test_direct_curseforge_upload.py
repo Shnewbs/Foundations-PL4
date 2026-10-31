@@ -2,6 +2,8 @@ from pathlib import Path
 import hashlib
 import json
 import os
+import stat
+import warnings
 import sys
 import tempfile
 import unittest
@@ -58,6 +60,45 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.make_jar()
         self.notes.write_text("   ", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "changelog"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_duplicate_jar_metadata(self):
+        self.make_jar()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            with zipfile.ZipFile(self.jar, "a") as archive:
+                archive.writestr("META-INF/neoforge.mods.toml",
+                                 self.metadata("0.97.0.rev1-beta", "1.21.1"))
+        with self.assertRaisesRegex(ValueError, "duplicate archive entry"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_unsafe_jar_entry_path(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("../outside.txt", "not a runtime entry")
+        with self.assertRaisesRegex(ValueError, "unsafe archive entry path"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_jar_symlink(self):
+        self.make_jar()
+        link = zipfile.ZipInfo("net/foundations/pl4/alias.class")
+        link.create_system = 3
+        link.external_attr = (stat.S_IFLNK | 0o777) << 16
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr(link, "FoundationsPL4.class")
+        with self.assertRaisesRegex(ValueError, "symbolic-link archive entry"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_corrupt_class_crc(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar) as archive:
+            entry = archive.getinfo("net/foundations/pl4/FoundationsPL4.class")
+            payload_offset = (entry.header_offset + 30
+                              + len(entry.filename.encode("utf-8")) + len(entry.extra))
+        data = bytearray(self.jar.read_bytes())
+        data[payload_offset] ^= 0x01
+        self.jar.write_bytes(data)
+        with self.assertRaisesRegex(ValueError, "corrupt archive entry"):
             inspect(self.jar, self.notes)
 
     def test_rejects_unconverted_legacy_runtime(self):
