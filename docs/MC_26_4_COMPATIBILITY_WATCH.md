@@ -35,3 +35,7 @@ The [official NeoForge Maven directory](https://maven.neoforged.net/releases/net
 ## October 31 latest compatibility recheck
 
 The [official Mojang snapshot list](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) still tops out at **26.4 Snapshot 6 (October 27)**; the [NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains no `26.4` coordinate. Preserve Vulkan, fluid-source, mod-list, handshake and migration gates. No new target, branch or release is authorized.
+
+## October 31 11:06 UTC — default-heap performance comparability gate
+
+Mojang's [26.4 Snapshot 6](https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6) (October 27) now chooses the game's default Java heap from system RAM (up to 25%, capped at 4 GB). For any future exact 26.4 PL4 performance acceptance, **pin explicit `-Xms`/`-Xmx` and report heap, GC pauses, server TPS and JVM version**. Do not compare an auto-sized 26.4 run against a fixed-heap 26.3 baseline or treat a changed default as a PL4 regression. The [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) still has **no 26.4 loader entry** at the October 31 check; no 26.4 port or binary is authorized.
