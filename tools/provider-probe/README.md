@@ -32,7 +32,10 @@ Tests use a deliberately loaded chest fixture, but separately verify that a
 far-away unloaded chunk remains unloaded before/after sampling. The installed
 provider callbacks test same-position backing replacement, later-provider
 registration closure, exception partial-row quarantine, and no-force-load.
-Counters, output rows, and registration cleanup must all match. The prepared
+A provider that closes its own registration mid-callback must also lose its
+buffered rows while a later healthy provider continues. The installed proof
+schema is 2, with an explicit self-close scenario. Counters, output rows,
+and registration cleanup must all match. The prepared
 run carries a random nonce through the server environment, native proof, and
 server-log PASS marker, so an old proof or marker cannot qualify a different
 preparation. The runner refuses to overwrite any prior log, proof, or receipt;

@@ -343,6 +343,39 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void providerSelfRevocationDiscardsPendingRows(GameTestHelper h){
+        BlockPos fixturePos=new BlockPos(1,1,1);
+        h.setBlock(fixturePos,Blocks.CHEST);
+        var target=new Part.Link(h.getLevel().dimension().location().toString(),h.absolutePos(fixturePos),Direction.UP,null,null);
+        h.assertTrue(h.getLevel().getBlockEntity(target.pos())!=null,"Self-revocation fixture needs a real backing block entity");
+        int[] revokedCalls={0},healthyCalls={0};
+        net.foundations.pl4.api.InfoProviders.Registration[] selfHandle={null};
+        try(var self=net.foundations.pl4.api.InfoProviders.register("pl4_test:a_self_close",(context,out)->{
+            if(!context.target().equals(target))return;
+            revokedCalls[0]++;
+            out.add("revoked","Revoked",1,1,"u");
+            selfHandle[0].close();
+        })){
+            selfHandle[0]=self;
+            try(var healthy=net.foundations.pl4.api.InfoProviders.register("pl4_test:z_after_self_close",(context,out)->{
+                if(!context.target().equals(target))return;
+                healthyCalls[0]++;
+                out.add("healthy","Healthy",2,2,"u");
+            })){
+                var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+                h.assertTrue(revokedCalls[0]==1&&healthyCalls[0]==1,"Self-closing provider runs once and does not suppress a healthy later provider");
+                h.assertTrue(rows.stream().noneMatch(row->row.key().equals("pl4_test:a_self_close/revoked")),
+                    "Self-revoked provider cannot publish rows buffered before closing its own registration");
+                h.assertTrue(rows.stream().anyMatch(row->row.key().equals("pl4_test:z_after_self_close/healthy")),
+                    "Healthy later provider still publishes its own row");
+            }
+        }
+        h.assertTrue(!net.foundations.pl4.api.InfoProviders.registeredIds().contains("pl4_test:a_self_close"),
+            "Self-closed provider must not leak into other GameTests");
+        h.succeed();
+    }
+
     private record StorageFixture(HostEntity host,Part node,ChestBlockEntity chest,net.minecraft.server.level.ServerPlayer player,ItemStack tool){}
     private static StorageFixture storageFixture(GameTestHelper h,String name){
         ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));HostEntity host=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);Part node=part(host,Direction.WEST);

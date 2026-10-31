@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 216,
+  "expected_native_tests": 217,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PARTIAL_DEV_CLIENT_THREE_VIEWS_FOUR_GUI_SCALES",
@@ -49,7 +49,7 @@
   "measured_performance_acceptance": "PARTIAL_NATIVE_OPERATIONS_MEASURED_MIXED_RESULTS",
   "migration_acceptance": "PENDING_EXACT_211_JAR",
   "performance_baseline": "indexed-network-membership-and-cycle-endpoint-keys",
-  "candidate_native_validation": "PENDING_EXACT_SOURCE_216",
+  "candidate_native_validation": "PENDING_EXACT_SOURCE_217",
   "candidate_workflow_run": null,
   "rc_publication_cleared": false,
   "native_fixture_source": "src/portTest",
@@ -67,13 +67,13 @@
     "native_operation_measurements": "docs/acceptance/rc-dev-1.21.1-native-performance.json",
     "latest_207_native_installed": "docs/acceptance/rc-dev-1211-fluid-fe-callback-207-native-installed-two-clients-2026-10-30.json"
   },
-  "current_source_notes": "2026-10-31: Installed-provider registration liveness is rechecked immediately before callback invocation. If an earlier callback closes a later provider registration, the later provider is skipped and cannot publish rows. Native regression providerRegistrationCloseSuppressesLateCallback adds case 216. Full exact-source verification is pending.",
+  "current_source_notes": "2026-10-31: Self-closing installed InfoProvider callbacks now discard their own buffered rows after registration revocation; native regression providerSelfRevocationDiscardsPendingRows adds fixture 217. Previous 216/216 native PASS remains pinned to source 4ab66dc and run 41153518219; new source pending local exact-native verification.",
   "previous_candidate_native_validation": "PASS_195_OF_195_EXACT_SOURCE_1ea6d95a8503c8f4b430f77c3ca1ed5ee30d65d5",
   "previous_candidate_workflow_run": "40848203024",
   "pending_native_candidate": {
-    "change": "Installed-provider callback registration revocation, backing identity, explicit no-force-load, exception partial-row quarantine and entity replacement quarantine",
-    "source_commit": "cd5e59a95c14a80ced78ef259c5ddf5c57ba7869",
-    "expected_native_tests": 216,
+    "change": "Installed-provider self-registration revocation after callback row emission; later healthy provider continues",
+    "source_commit": null,
+    "expected_native_tests": 217,
     "native_result": "PENDING",
     "native_workflow_run": null,
     "rc_publication_cleared": false

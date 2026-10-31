@@ -76,6 +76,10 @@ public final class InfoProviders {
             // A real installed provider may invalidate or unload its backing target during
             // the callback.  Never publish a sample collected after that authority changed.
             if (!stillLive(context,initialBlockEntity)) return;
+            // Closing a registration during its own callback revokes its pending
+            // rows too. The immutable iteration snapshot must not grant a
+            // provider permission to publish after its handle was closed.
+            if (!builtin && !isRegistered(entry)) return;
             result.addAll(pending.values());
         }catch(RuntimeException|LinkageError ex){
             synchronized(entry){if(!entry.warned){entry.warned=true;org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}

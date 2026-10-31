@@ -56,17 +56,19 @@ public final class InstalledProviderProbe {
             level.getChunkAt(FIXTURE);
             int[] replacement = replacement(level);
             int[] closed = registrationRevocation(level);
+            int[] selfClosed = selfRevocation(level);
             int[] exception = exceptionQuarantine(level);
             int[] unloaded = noForceLoad(level);
             @SuppressWarnings("unchecked")
             List<String> registered = (List<String>) api.getMethod("registeredIds").invoke(null);
             require(registered.stream().noneMatch(id -> id.startsWith(PREFIX)), "Leaked provider registration");
 
-            String proof = "{\"schema\":1,\"target\":\"1.21.1\",\"api_version\":1,"
+            String proof = "{\"schema\":2,\"target\":\"1.21.1\",\"api_version\":1,"
                 + "\"installed_pl4_sha256\":\"" + actual + "\","
                 + "\"run_nonce\":\"" + nonce + "\","
                 + "\"replacement\":{\"first\":" + replacement[0] + ",\"later\":" + replacement[1] + ",\"stale_rows\":0},"
                 + "\"registration_close\":{\"first\":" + closed[0] + ",\"later\":" + closed[1] + ",\"first_rows\":1},"
+                + "\"self_close\":{\"calls\":" + selfClosed[0] + ",\"rows\":0,\"healthy_calls\":" + selfClosed[1] + "},"
                 + "\"exception_quarantine\":{\"failing\":" + exception[0] + ",\"healthy\":" + exception[1] + ",\"partial_rows\":0},"
                 + "\"unloaded\":{\"callbacks\":" + unloaded[0] + ",\"rows\":0,\"before_loaded\":false,\"after_loaded\":false},"
                 + "\"registration_leaks\":0,\"rc_publication_cleared\":false}\n";
@@ -153,6 +155,33 @@ public final class InstalledProviderProbe {
             } finally { z.close(); }
         } finally { a.close(); }
         return new int[]{failing.get(), healthy.get()};
+    }
+
+    private static int[] selfRevocation(ServerLevel level) throws Exception {
+        chest(level);
+        AtomicInteger revoked = new AtomicInteger(), healthy = new AtomicInteger();
+        AutoCloseable[] selfHandle = new AutoCloseable[1];
+        AutoCloseable a = register("pl4_probe:a_self_close", (context, sink) -> {
+            revoked.incrementAndGet();
+            emit(sink, "revoked");
+            try { selfHandle[0].close(); }
+            catch (Exception failure) { throw new IllegalStateException(failure); }
+        });
+        selfHandle[0] = a;
+        try {
+            AutoCloseable z = register("pl4_probe:z_after_self_close", (context, sink) -> {
+                healthy.incrementAndGet();
+                emit(sink, "healthy");
+            });
+            try {
+                List<?> rows = sample(level, FIXTURE);
+                require(revoked.get() == 1 && healthy.get() == 1
+                    && providerRows(rows, "pl4_probe:a_self_close/") == 0
+                    && providerRows(rows, "pl4_probe:z_after_self_close/") == 1,
+                    "Self-revoked provider published buffered rows or suppressed a healthy callback");
+            } finally { z.close(); }
+        } finally { a.close(); }
+        return new int[]{revoked.get(), healthy.get()};
     }
 
     private static int[] noForceLoad(ServerLevel level) throws Exception {

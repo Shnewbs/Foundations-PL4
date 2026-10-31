@@ -19,10 +19,11 @@ NONCE = "b" * 32
 
 def valid_proof():
     return {
-        "schema": 1, "target": "1.21.1", "api_version": 1,
+        "schema": 2, "target": "1.21.1", "api_version": 1,
         "installed_pl4_sha256": EXPECTED, "run_nonce": NONCE,
         "replacement": {"first": 1, "later": 0, "stale_rows": 0},
         "registration_close": {"first": 1, "later": 0, "first_rows": 1},
+        "self_close": {"calls": 1, "rows": 0, "healthy_calls": 1},
         "exception_quarantine": {"failing": 1, "healthy": 1, "partial_rows": 0},
         "unloaded": {"callbacks": 0, "rows": 0,
                      "before_loaded": False, "after_loaded": False},
@@ -48,6 +49,9 @@ class ProviderReceiptTests(unittest.TestCase):
             ("replacement", "later", 1),
             ("replacement", "stale_rows", 1),
             ("registration_close", "later", 1),
+            ("self_close", "calls", 0),
+            ("self_close", "rows", 1),
+            ("self_close", "healthy_calls", 0),
             ("exception_quarantine", "partial_rows", 1),
             ("exception_quarantine", "healthy", 0),
         ]:

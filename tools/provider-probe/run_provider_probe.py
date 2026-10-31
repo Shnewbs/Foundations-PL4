@@ -64,7 +64,7 @@ def verify_probe_jar(path):
 def validate_proof(proof, expected, nonce):
     require(NONCE.fullmatch(nonce) is not None and
             proof.get("run_nonce") == nonce and
-            proof.get("schema") == 1 and proof.get("target") == "1.21.1" and
+            proof.get("schema") == 2 and proof.get("target") == "1.21.1" and
             proof.get("api_version") == 1 and
             proof.get("installed_pl4_sha256") == expected and
             proof.get("rc_publication_cleared") is False,
@@ -73,6 +73,9 @@ def validate_proof(proof, expected, nonce):
             "Installed provider replacement proof failed")
     require(proof.get("registration_close") == {"first": 1, "later": 0, "first_rows": 1},
             "Installed provider registration-revocation proof failed")
+    require(proof.get("self_close") ==
+            {"calls": 1, "rows": 0, "healthy_calls": 1},
+            "Installed provider self-revocation proof failed")
     require(proof.get("exception_quarantine") ==
             {"failing": 1, "healthy": 1, "partial_rows": 0},
             "Installed provider partial-row quarantine proof failed")
