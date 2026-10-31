@@ -276,6 +276,38 @@ class ProviderReceiptTests(unittest.TestCase):
                 finally:
                     mods.unlink()
                     original.rename(mods)
+                # Vanilla may normalize server.properties and eula.txt on first boot.
+                # Post-run attestation permits harmless normalization only.
+                props.write_text(props.read_text() + "motd=normalized by Minecraft\n")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                self.assertEqual(
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True),
+                    (EXPECTED, NONCE))
+                props.write_text(props.read_text().replace(
+                    "online-mode=false", "online-mode=true"))
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True)
+                props.write_text(props.read_text().replace(
+                    "online-mode=true", "online-mode=false"))
+                props.write_text(props.read_text() + "online-mode=false\n")
+                with self.assertRaisesRegex(ValueError, "Duplicate server property keys"):
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True)
+                props.write_text(props.read_text().rsplit("online-mode=false\n", 1)[0])
+                eula = root / "run/eula.txt"
+                eula.write_text("eula=true\n# normalized\n")
+                self.assertEqual(
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True),
+                    (EXPECTED, NONCE))
+                eula.write_text("eula=false\n")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True)
+                eula.write_text("eula=true\n")
                 manifest["protected_files"].pop("gradlew")
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
@@ -287,11 +319,19 @@ class ProviderReceiptTests(unittest.TestCase):
             proof = root / "proof.json"
             log.write_text("native server log\n")
             proof.write_text("native proof\n")
+            runtime = root / "run"
+            runtime.mkdir()
+            props = runtime / "server.properties"
+            eula = runtime / "eula.txt"
+            props.write_text("online-mode=false\nmotd=normalized\n")
+            eula.write_text("eula=true\n")
             manifest = {"run_nonce": NONCE, "pl4_source_commit": "c" * 40,
                         "installed_pl4_sha256": EXPECTED}
             attested = {"schema": 1, **manifest, "exit_code": 0,
                         "native_server_log_sha256": probe.digest(log),
-                        "native_provider_proof_sha256": probe.digest(proof)}
+                        "native_provider_proof_sha256": probe.digest(proof),
+                        "runtime_server_properties_sha256": probe.digest(props),
+                        "runtime_eula_sha256": probe.digest(eula)}
             probe.validate_exit_attestation(attested, manifest, log, proof)
             for field, bad in (("exit_code", 1), ("exit_code", True),
                                ("exit_code", 0.0), ("schema", True),
@@ -299,7 +339,9 @@ class ProviderReceiptTests(unittest.TestCase):
                                ("pl4_source_commit", "0" * 40),
                                ("installed_pl4_sha256", "0" * 64),
                                ("native_server_log_sha256", "0" * 64),
-                               ("native_provider_proof_sha256", "0" * 64)):
+                               ("native_provider_proof_sha256", "0" * 64),
+                               ("runtime_server_properties_sha256", "0" * 64),
+                               ("runtime_eula_sha256", "0" * 64)):
                 with self.subTest(field=field, bad=bad):
                     with self.assertRaises(ValueError):
                         probe.validate_exit_attestation({**attested, field: bad},
@@ -308,6 +350,14 @@ class ProviderReceiptTests(unittest.TestCase):
                 probe.validate_exit_attestation({**attested, "extra": True},
                                                 manifest, log, proof)
             log.write_text("native log changed\n")
+            with self.assertRaises(ValueError):
+                probe.validate_exit_attestation(attested, manifest, log, proof)
+            log.write_text("native server log\n")
+            props.write_text("online-mode=true\n")
+            with self.assertRaises(ValueError):
+                probe.validate_exit_attestation(attested, manifest, log, proof)
+            props.write_text("online-mode=false\nmotd=normalized\n")
+            eula.write_text("eula=false\n")
             with self.assertRaises(ValueError):
                 probe.validate_exit_attestation(attested, manifest, log, proof)
 
