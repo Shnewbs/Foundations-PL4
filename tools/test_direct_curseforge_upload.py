@@ -161,35 +161,35 @@ class DirectUploadValidationTests(unittest.TestCase):
 
     def test_rejects_duplicate_pl4_mod_table(self):
         metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
-        metadata += '[[mods]]\\nmodId="foundations_pl4"\\nversion="wrong"\\n'
+        metadata += '[[mods]]\nmodId="foundations_pl4"\nversion="wrong"\n'
         self.make_jar(metadata)
         with self.assertRaisesRegex(ValueError, "duplicated"):
             inspect(self.jar, self.notes)
 
     def test_rejects_duplicate_minecraft_dependency(self):
         metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
-        metadata += '[[dependencies.foundations_pl4]]\\nmodId="minecraft"\\nversionRange="[26.3]"\\n'
+        metadata += '[[dependencies.foundations_pl4]]\nmodId="minecraft"\nversionRange="[26.3]"\n'
         self.make_jar(metadata)
         with self.assertRaisesRegex(ValueError, "exactly one Minecraft"):
             inspect(self.jar, self.notes)
 
     def test_rejects_duplicate_loader_dependency(self):
         metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
-        metadata += '[[dependencies.foundations_pl4]]\\nmodId="neoforge"\\nversionRange="[26,)"\\n'
+        metadata += '[[dependencies.foundations_pl4]]\nmodId="neoforge"\nversionRange="[26,)"\n'
         self.make_jar(metadata)
         with self.assertRaisesRegex(ValueError, "exactly one Minecraft and loader"):
             inspect(self.jar, self.notes)
 
     def test_rejects_conflicting_loader_dependency(self):
         metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
-        metadata += '[[dependencies.foundations_pl4]]\\nmodId="forge"\\nversionRange="[47,)"\\n'
+        metadata += '[[dependencies.foundations_pl4]]\nmodId="forge"\nversionRange="[47,)"\n'
         self.make_jar(metadata)
         with self.assertRaisesRegex(ValueError, "conflicting loaders"):
             inspect(self.jar, self.notes)
 
     def test_rejects_invalid_dependency_shape(self):
-        metadata = ('[[mods]]\\nmodId="foundations_pl4"\\nversion="0.97.0.rev1-beta"\\n'
-                    '[dependencies]\\nfoundations_pl4="not a dependency list"\\n')
+        metadata = ('[[mods]]\nmodId="foundations_pl4"\nversion="0.97.0.rev1-beta"\n'
+                    '[dependencies]\nfoundations_pl4="not a dependency list"\n')
         self.make_jar(metadata)
         with self.assertRaisesRegex(ValueError, "invalid dependency metadata"):
             inspect(self.jar, self.notes)
