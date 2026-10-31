@@ -264,6 +264,37 @@ class ProviderReceiptTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
 
+    def test_native_exit_attestation_requires_zero_exit_and_pinned_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            log = root / "server.log"
+            proof = root / "proof.json"
+            log.write_text("native server log\n")
+            proof.write_text("native proof\n")
+            manifest = {"run_nonce": NONCE, "pl4_source_commit": "c" * 40,
+                        "installed_pl4_sha256": EXPECTED}
+            attested = {"schema": 1, **manifest, "exit_code": 0,
+                        "native_server_log_sha256": probe.digest(log),
+                        "native_provider_proof_sha256": probe.digest(proof)}
+            probe.validate_exit_attestation(attested, manifest, log, proof)
+            for field, bad in (("exit_code", 1), ("exit_code", True),
+                               ("exit_code", 0.0), ("schema", True),
+                               ("run_nonce", "0" * 32),
+                               ("pl4_source_commit", "0" * 40),
+                               ("installed_pl4_sha256", "0" * 64),
+                               ("native_server_log_sha256", "0" * 64),
+                               ("native_provider_proof_sha256", "0" * 64)):
+                with self.subTest(field=field, bad=bad):
+                    with self.assertRaises(ValueError):
+                        probe.validate_exit_attestation({**attested, field: bad},
+                                                        manifest, log, proof)
+            with self.assertRaises(ValueError):
+                probe.validate_exit_attestation({**attested, "extra": True},
+                                                manifest, log, proof)
+            log.write_text("native log changed\n")
+            with self.assertRaises(ValueError):
+                probe.validate_exit_attestation(attested, manifest, log, proof)
+
     def test_runserver_depends_on_probe_isolation(self):
         # Gradle must enforce this in its task graph, not just CLI argument order.
         gradle = Path(__file__).with_name("build.gradle").read_text()

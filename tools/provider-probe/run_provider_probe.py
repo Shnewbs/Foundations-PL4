@@ -212,6 +212,27 @@ def validate_prepared_installation(output, manifest):
     return expected, nonce
 
 
+def validate_exit_attestation(exit_data, manifest, log, proof_path):
+    """Require a runner-observed clean native shutdown before accepting offline proof.
+
+    A native PASS marker alone is insufficient: the server may subsequently
+    crash, be killed, or fail to persist the test world. This attestation is
+    emitted only after the local runner observes process exit code zero.
+    """
+    fields = {"schema", "run_nonce", "pl4_source_commit", "installed_pl4_sha256",
+              "exit_code", "native_server_log_sha256", "native_provider_proof_sha256"}
+    require(type(exit_data) is dict and set(exit_data) == fields,
+            "Missing/extra native process-exit attestation fields")
+    require(type(exit_data["schema"]) is int and exit_data["schema"] == 1 and
+            type(exit_data["exit_code"]) is int and exit_data["exit_code"] == 0 and
+            exit_data["run_nonce"] == manifest["run_nonce"] and
+            exit_data["pl4_source_commit"] == manifest["pl4_source_commit"] and
+            exit_data["installed_pl4_sha256"] == manifest["installed_pl4_sha256"] and
+            exit_data["native_server_log_sha256"] == digest(log) and
+            exit_data["native_provider_proof_sha256"] == digest(proof_path),
+            "Native process did not attest clean exit and exact retained evidence")
+
+
 def verify(output, log):
     output, log = Path(output), Path(log)
     require(log.resolve() == (output / "provider-server.log").resolve() and
@@ -225,6 +246,10 @@ def verify(output, log):
             "Missing/untrusted native proof or server log")
     proof = json.loads(proof_path.read_text())
     validate_proof(proof, expected, nonce)
+    exit_path = output / "provider-exit.json"
+    require(exit_path.is_file() and not exit_path.is_symlink(),
+            "Missing/untrusted native clean-exit attestation")
+    validate_exit_attestation(json.loads(exit_path.read_text()), manifest, log, proof_path)
     matching = [line for line in log.read_text(errors="replace").splitlines()
                 if MARKER in line]
     require(len(matching) == 1 and matching[0].endswith(MARKER + expected + ":" + nonce),
@@ -241,6 +266,7 @@ def verify(output, log):
         "independent_probe_jar_sha256": probe_hash,
         "native_server_log_sha256": digest(log),
         "native_provider_proof_sha256": digest(proof_path),
+        "native_exit_attestation_sha256": digest(exit_path),
         "prepared_manifest_sha256": digest(output / "provider-probe-prepared.json"),
         "scenarios": proof, "rc_publication_cleared": False,
         "not_tested": ["authenticated multiplayer", "arbitrary-world migration",
@@ -266,7 +292,7 @@ def write_immutable_receipt(path, receipt):
 
 def require_fresh_run(output):
     """Never overwrite a prior native attempt or its receipt; use a new prepared directory."""
-    for name in ("provider-server.log", "provider-proof.json", "provider-probe-receipt.json"):
+    for name in ("provider-server.log", "provider-proof.json", "provider-exit.json", "provider-probe-receipt.json"):
         require(not (Path(output) / name).exists(),
                 "Refusing to overwrite existing native evidence: " + name)
 
@@ -318,6 +344,15 @@ def run(output, timeout):
                 except subprocess.TimeoutExpired:
                     os.killpg(process.pid, signal.SIGKILL)
                     process.wait()
+    # Written only after the native server has returned zero; a marker/proof
+    # from a process that later crashed must never become an accepted receipt.
+    write_immutable_receipt(output / "provider-exit.json", {
+        "schema": 1, "run_nonce": nonce,
+        "pl4_source_commit": manifest["pl4_source_commit"],
+        "installed_pl4_sha256": expected, "exit_code": process.returncode,
+        "native_server_log_sha256": digest(log),
+        "native_provider_proof_sha256": digest(proof),
+    })
     return verify(output, log)
 
 
