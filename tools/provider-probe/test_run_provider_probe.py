@@ -103,6 +103,14 @@ class ProviderReceiptTests(unittest.TestCase):
                 probe.write_immutable_receipt(path, {"status": "PASS", "source": "different"})
             self.assertEqual(path.read_bytes(), original)
 
+    def test_external_native_log_cannot_be_substituted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            outside = root / "external.log"
+            outside.write_text("PL4_INSTALLED_PROVIDER_PASS:" + EXPECTED + ":" + NONCE)
+            with self.assertRaisesRegex(ValueError, "prepared runtime server log"):
+                probe.verify(root / "prepared", outside)
+
     def test_native_log_is_exclusively_created(self):
         with tempfile.TemporaryDirectory() as temp:
             log = Path(temp) / "provider-server.log"

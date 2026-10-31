@@ -85,3 +85,7 @@ to the previously enumerated network-isolation keys. The RCON secret itself is
 never written into the manifest or receipt. Offline negative tests exercise
 changes to previously unchecked server settings and the EULA. This is a
 source-level integrity improvement; it is **not** an installed native PASS.
+
+The verifier also refuses an external `--log` path: the accepted native server
+log must be the non-symlinked `provider-server.log` inside the prepared runtime.
+This blocks accidentally mixing proof and log files from separate runs.

@@ -183,6 +183,9 @@ def validate_prepared_installation(output, manifest):
 
 def verify(output, log):
     output, log = Path(output), Path(log)
+    require(log.resolve() == (output / "provider-server.log").resolve() and
+            not log.is_symlink(),
+            "Native log must be the prepared runtime server log, not an external file")
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
     expected, nonce = validate_prepared_installation(output, manifest)
     proof_path = output / "provider-proof.json"
