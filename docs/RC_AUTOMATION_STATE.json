@@ -5,8 +5,27 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
-  "last_writer_release_20261031_metadata_uniqueness": {"owner":"pl4-hourly-20261031T1805Z-metadata-uniqueness","claimed_at":"2026-10-31T18:05:00Z","released_at":"2026-10-31T18:12:00Z","source_commits":["a0bd27c00523113780efa852cb5dc2028f89e84f","a3e2eda2dfe1c9ae1f9fedd4f02c20b9fc33cc52","e2dc9114fabcb61c72c29c8241f77bc979be98bd"],"evidence":"docs/acceptance/rc-dev-direct-upload-metadata-uniqueness-2026-10-31-1105-pdt.json","validation":"8/8 mirrored isolated Python cases and GitHub source readback; full repo/native not run","rc_clearance":"0/24","release_performed":false,"writer_lease_released":true},
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T1901Z-bytecode-preflight",
+    "claimed_at": "2026-10-31T19:01:46Z",
+    "scope": "tools/direct_curseforge_upload.py; tools/test_direct_curseforge_upload.py; compatibility and acceptance documentation",
+    "policy": "no actions; no new branches; no binary upload without full acceptance"
+  },
+  "last_writer_release_20261031_metadata_uniqueness": {
+    "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
+    "claimed_at": "2026-10-31T18:05:00Z",
+    "released_at": "2026-10-31T18:12:00Z",
+    "source_commits": [
+      "a0bd27c00523113780efa852cb5dc2028f89e84f",
+      "a3e2eda2dfe1c9ae1f9fedd4f02c20b9fc33cc52",
+      "e2dc9114fabcb61c72c29c8241f77bc979be98bd"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-metadata-uniqueness-2026-10-31-1105-pdt.json",
+    "validation": "8/8 mirrored isolated Python cases and GitHub source readback; full repo/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
