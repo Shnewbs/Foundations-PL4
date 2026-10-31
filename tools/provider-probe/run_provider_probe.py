@@ -184,7 +184,9 @@ def verify(output, log):
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
     expected, nonce = validate_prepared_installation(output, manifest)
     proof_path = output / "provider-proof.json"
-    require(proof_path.is_file() and log.is_file(), "Missing native proof or server log")
+    require(proof_path.is_file() and not proof_path.is_symlink() and
+            log.is_file() and not log.is_symlink(),
+            "Missing/untrusted native proof or server log")
     proof = json.loads(proof_path.read_text())
     validate_proof(proof, expected, nonce)
     matching = [line for line in log.read_text(errors="replace").splitlines()
@@ -216,11 +218,14 @@ def write_immutable_receipt(path, receipt):
     """A repeat verification may confirm, but never replace, a retained receipt."""
     path = Path(path)
     content = json.dumps(receipt, indent=2, sort_keys=True) + "\n"
-    if path.exists():
-        require(path.is_file() and path.read_text() == content,
-                "Refusing to overwrite a different retained provider receipt")
-    else:
-        path.write_text(content)
+    try:
+        # Exclusive create closes the exists-check/write race between writers.
+        with path.open("x", encoding="utf-8") as stream:
+            stream.write(content)
+    except FileExistsError:
+        require(path.is_file() and not path.is_symlink() and
+                path.read_text() == content,
+                "Refusing to overwrite a different or untrusted provider receipt")
 
 
 def require_fresh_run(output):
@@ -228,6 +233,11 @@ def require_fresh_run(output):
     for name in ("provider-server.log", "provider-proof.json", "provider-probe-receipt.json"):
         require(not (Path(output) / name).exists(),
                 "Refusing to overwrite existing native evidence: " + name)
+
+
+def open_immutable_log(path):
+    """Exclusive creation prevents a second native attempt from truncating evidence."""
+    return Path(path).open("x", encoding="utf-8")
 
 
 def run(output, timeout):
@@ -241,7 +251,7 @@ def run(output, timeout):
     env = dict(os.environ, PL4_PROVIDER_RUN_NONCE=nonce,
                PL4_EXPECTED_JAR_SHA256=expected,
                PL4_INSTALLED_JAR=str(installed), PL4_PROVIDER_PROOF=str(proof))
-    with log.open("w") as stream:
+    with open_immutable_log(log) as stream:
         process = subprocess.Popen(["bash", "gradlew", "--no-daemon", "--console=plain",
                                     "verifyProbeIsolation", "runServer"],
                                    cwd=output, env=env, stdin=subprocess.DEVNULL,

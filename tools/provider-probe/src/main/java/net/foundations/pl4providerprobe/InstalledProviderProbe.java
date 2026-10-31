@@ -61,20 +61,22 @@ public final class InstalledProviderProbe {
             int[] unloaded = noForceLoad(level);
             @SuppressWarnings("unchecked")
             List<String> registered = (List<String>) api.getMethod("registeredIds").invoke(null);
-            require(registered.stream().noneMatch(id -> id.startsWith(PREFIX)), "Leaked provider registration");
+            long leaked = registered.stream().filter(id -> id.startsWith(PREFIX)).count();
+            require(leaked == 0, "Leaked provider registration");
 
             String proof = "{\"schema\":2,\"target\":\"1.21.1\",\"api_version\":1,"
                 + "\"installed_pl4_sha256\":\"" + actual + "\","
                 + "\"run_nonce\":\"" + nonce + "\","
-                + "\"replacement\":{\"first\":" + replacement[0] + ",\"later\":" + replacement[1] + ",\"stale_rows\":0},"
-                + "\"registration_close\":{\"first\":" + closed[0] + ",\"later\":" + closed[1] + ",\"first_rows\":1},"
-                + "\"self_close\":{\"calls\":" + selfClosed[0] + ",\"rows\":0,\"healthy_calls\":" + selfClosed[1] + "},"
-                + "\"exception_quarantine\":{\"failing\":" + exception[0] + ",\"healthy\":" + exception[1] + ",\"partial_rows\":0},"
-                + "\"unloaded\":{\"callbacks\":" + unloaded[0] + ",\"rows\":0,\"before_loaded\":false,\"after_loaded\":false},"
-                + "\"registration_leaks\":0,\"rc_publication_cleared\":false}\n";
+                + "\"replacement\":{\"first\":" + replacement[0] + ",\"later\":" + replacement[1] + ",\"stale_rows\":" + replacement[2] + "},"
+                + "\"registration_close\":{\"first\":" + closed[0] + ",\"later\":" + closed[1] + ",\"first_rows\":" + closed[2] + "},"
+                + "\"self_close\":{\"calls\":" + selfClosed[0] + ",\"rows\":" + selfClosed[2] + ",\"healthy_calls\":" + selfClosed[1] + "},"
+                + "\"exception_quarantine\":{\"failing\":" + exception[0] + ",\"healthy\":" + exception[1] + ",\"partial_rows\":" + exception[2] + "},"
+                + "\"unloaded\":{\"callbacks\":" + unloaded[0] + ",\"rows\":" + unloaded[1] + ",\"before_loaded\":" + (unloaded[2] != 0) + ",\"after_loaded\":" + (unloaded[3] != 0) + "},"
+                + "\"registration_leaks\":" + leaked + ",\"rc_publication_cleared\":false}\n";
             Path output = Path.of(requiredEnv("PL4_PROVIDER_PROOF"));
             Files.createDirectories(output.toAbsolutePath().getParent());
-            Files.writeString(output, proof);
+            Files.writeString(output, proof, java.nio.file.StandardOpenOption.CREATE_NEW,
+                java.nio.file.StandardOpenOption.WRITE);
             System.out.println(MARKER + actual + ":" + nonce);
         } catch (Exception failure) {
             throw new IllegalStateException("Installed independent provider probe FAILED", failure);
@@ -99,11 +101,12 @@ public final class InstalledProviderProbe {
             });
             try {
                 List<?> rows = sample(level, FIXTURE);
-                require(first.get() == 1 && later.get() == 0 && providerRows(rows, PREFIX) == 0,
+                int staleRows = providerRows(rows, PREFIX);
+                require(first.get() == 1 && later.get() == 0 && staleRows == 0,
                     "Replacement admitted a later callback or stale row");
+                return new int[]{first.get(), later.get(), staleRows};
             } finally { z.close(); }
         } finally { a.close(); }
-        return new int[]{first.get(), later.get()};
     }
 
     private static int[] registrationRevocation(ServerLevel level) throws Exception {
@@ -124,13 +127,14 @@ public final class InstalledProviderProbe {
             closeLater[0] = z;
             try {
                 List<?> rows = sample(level, FIXTURE);
+                int firstRows = providerRows(rows, "pl4_probe:a_close/");
+                int lateRows = providerRows(rows, "pl4_probe:z_closed/");
                 require(first.get() == 1 && later.get() == 0
-                    && providerRows(rows, "pl4_probe:a_close/") == 1
-                    && providerRows(rows, "pl4_probe:z_closed/") == 0,
+                    && firstRows == 1 && lateRows == 0,
                     "Closed provider was invoked or first provider row missing");
+                return new int[]{first.get(), later.get(), firstRows};
             } finally { z.close(); }
         } finally { a.close(); }
-        return new int[]{first.get(), later.get()};
     }
 
     private static int[] exceptionQuarantine(ServerLevel level) throws Exception {
@@ -148,13 +152,14 @@ public final class InstalledProviderProbe {
             });
             try {
                 List<?> rows = sample(level, FIXTURE);
+                int partialRows = providerRows(rows, "pl4_probe:a_throws/");
+                int healthyRows = providerRows(rows, "pl4_probe:z_healthy/");
                 require(failing.get() == 1 && healthy.get() == 1
-                    && providerRows(rows, "pl4_probe:a_throws/") == 0
-                    && providerRows(rows, "pl4_probe:z_healthy/") == 1,
+                    && partialRows == 0 && healthyRows == 1,
                     "Partial failure rows escaped or healthy provider was suppressed");
+                return new int[]{failing.get(), healthy.get(), partialRows};
             } finally { z.close(); }
         } finally { a.close(); }
-        return new int[]{failing.get(), healthy.get()};
     }
 
     private static int[] selfRevocation(ServerLevel level) throws Exception {
@@ -175,17 +180,19 @@ public final class InstalledProviderProbe {
             });
             try {
                 List<?> rows = sample(level, FIXTURE);
+                int revokedRows = providerRows(rows, "pl4_probe:a_self_close/");
+                int healthyRows = providerRows(rows, "pl4_probe:z_after_self_close/");
                 require(revoked.get() == 1 && healthy.get() == 1
-                    && providerRows(rows, "pl4_probe:a_self_close/") == 0
-                    && providerRows(rows, "pl4_probe:z_after_self_close/") == 1,
+                    && revokedRows == 0 && healthyRows == 1,
                     "Self-revoked provider published buffered rows or suppressed a healthy callback");
+                return new int[]{revoked.get(), healthy.get(), revokedRows};
             } finally { z.close(); }
         } finally { a.close(); }
-        return new int[]{revoked.get(), healthy.get()};
     }
 
     private static int[] noForceLoad(ServerLevel level) throws Exception {
-        require(!level.hasChunkAt(UNLOADED), "Unloaded fixture was already resident");
+        boolean beforeLoaded = level.hasChunkAt(UNLOADED);
+        require(!beforeLoaded, "Unloaded fixture was already resident");
         AtomicInteger callbacks = new AtomicInteger();
         AutoCloseable reg = register("pl4_probe:unloaded", (context, sink) -> {
             callbacks.incrementAndGet();
@@ -193,10 +200,11 @@ public final class InstalledProviderProbe {
         });
         try {
             List<?> rows = sample(level, UNLOADED);
-            require(rows.isEmpty() && callbacks.get() == 0 && !level.hasChunkAt(UNLOADED),
+            boolean afterLoaded = level.hasChunkAt(UNLOADED);
+            require(rows.isEmpty() && callbacks.get() == 0 && !afterLoaded,
                 "Unloaded target invoked a provider, returned rows or force-loaded its chunk");
+            return new int[]{callbacks.get(), rows.size(), beforeLoaded ? 1 : 0, afterLoaded ? 1 : 0};
         } finally { reg.close(); }
-        return new int[]{callbacks.get()};
     }
 
     private static BlockEntity chest(ServerLevel level) {

@@ -103,6 +103,27 @@ class ProviderReceiptTests(unittest.TestCase):
                 probe.write_immutable_receipt(path, {"status": "PASS", "source": "different"})
             self.assertEqual(path.read_bytes(), original)
 
+    def test_native_log_is_exclusively_created(self):
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "provider-server.log"
+            with probe.open_immutable_log(log) as stream:
+                stream.write("retained original")
+            with self.assertRaises(FileExistsError):
+                with probe.open_immutable_log(log):
+                    pass
+            self.assertEqual(log.read_text(), "retained original")
+
+    def test_receipt_symlink_cannot_overwrite_external_file(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            external = root / "external.json"
+            external.write_text("protected external content")
+            link = root / "receipt.json"
+            link.symlink_to(external)
+            with self.assertRaises(ValueError):
+                probe.write_immutable_receipt(link, {"status": "PASS"})
+            self.assertEqual(external.read_text(), "protected external content")
+
     def test_probe_jar_cannot_embed_pl4_implementation(self):
         with tempfile.TemporaryDirectory() as temp:
             jar = Path(temp) / "probe.jar"
