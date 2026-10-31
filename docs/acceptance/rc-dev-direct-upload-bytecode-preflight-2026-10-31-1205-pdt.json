@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-31",
+  "local_time": "12:05 PDT",
+  "scope": "Direct CurseForge exact-target PL4 Java classfile header and runtime-version preflight",
+  "branch": "main",
+  "source_commits": [
+    "598d1c7047572f3dc0481474ad79c818d7acbabd",
+    "4773583312ab40465ef449944a0f4444600fc454",
+    "f72a98ed322a9087ece61ad336057e0cf67462e9"
+  ],
+  "docs_commits": [
+    "e4f00bf25a0d72a8649b887a4b60ce5af7f503e2",
+    "95f12f69eaac2aff0ef5e00e894cad3cee505cea"
+  ],
+  "source_checks": {
+    "github_readback": "14/14 source-contract assertions passed",
+    "isolated_local": "2 unittest methods passed: 7 positive target/version scenarios and 5 negative malformed/preview/newer-bytecode scenarios",
+    "full_repository_python": "NOT_RUN",
+    "gradle_compile": "NOT_RUN",
+    "native_gametests": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "real_multiplayer": "NOT_RUN",
+    "migration": "NOT_RUN",
+    "sustained_performance": "NOT_RUN"
+  },
+  "limitations": [
+    "Isolated tests used a mirrored copy of the bytecode helper, not the complete repository test module.",
+    "Header validation is not full JVM classfile parsing or source-to-JAR provenance.",
+    "Local git clone fails: could not resolve github.com; Gradle 9.2.1 distribution/dependencies unavailable."
+  ],
+  "official_watch": {
+    "minecraft_snapshot": "26.4 Snapshot 6, published 2026-10-27",
+    "minecraft_url": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+    "neoforge": "No 26.4 loader entry; 26.3.0.99 latest listed 26.3 coordinate",
+    "neoforge_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "jar_built": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "actions_invoked": false,
+    "retained_builds_deleted": false,
+    "reason": "No exact-source native, installed-provider and live acceptance for this revision"
+  },
+  "next": [
+    "Run full repository Python tests on dependency-capable builder",
+    "Build exact-source production JAR and execute native 217 GameTests plus independent installed-provider probe",
+    "Complete multiplayer, migration and sustained TPS/heap gates",
+    "Only then publish and verify GitHub/CurseForge artifacts before deleting redundant builds"
+  ]
+}
