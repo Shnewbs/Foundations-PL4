@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-31",
+  "kind": "acceptance_checkpoint",
+  "scope": "Minecraft 1.21.1 exact source",
+  "source_commit": "cd5e59a95c14a80ced78ef259c5ddf5c57ba7869",
+  "implementation_commit": "1b2288b98eca00c96f44989ec7ae6fd145a2a97c",
+  "fixture_count": 216,
+  "change": "InfoProviders now rechecks installed-provider registration immediately before callback invocation; a provider closed by an earlier callback is skipped and cannot publish rows.",
+  "native_fixture": "providerRegistrationCloseSuppressesLateCallback",
+  "native_result": "PENDING",
+  "prior_native_evidence_preserved": [
+    {
+      "source": "f14b5bf32f8c08fb6299aed0a02637af4727493c",
+      "run": 41143705764,
+      "cases": "215/215",
+      "jar_sha256": "661aa313c5f93f98438d3734c1148cdac471cfcc534b912d66c212a5a0f87637"
+    }
+  ],
+  "rc_publication_cleared": false,
+  "release_or_upload": "NONE",
+  "next_step": "Inspect fresh push-triggered exact-source verification; promote native/JAR hashes only after full 216/216 offline/native/production pass, then continue separately installed optional-provider JAR acceptance."
+}
