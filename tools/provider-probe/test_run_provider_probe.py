@@ -212,7 +212,9 @@ class ProviderReceiptTests(unittest.TestCase):
             props = root / "run/server.properties"
             props.write_text("server-ip=127.0.0.1\nserver-port=25588\n"
                              "online-mode=false\nmax-players=1\n"
-                             "enable-rcon=true\nrcon.port=25589\n")
+                             "enable-rcon=true\nrcon.port=25589\n"
+                             "level-type=minecraft:flat\nview-distance=3\n"
+                             "simulation-distance=3\nrcon.password=test-secret\n")
             (root / "run/eula.txt").write_text("eula=true\n")
             protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
                          "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT,
@@ -221,6 +223,7 @@ class ProviderReceiptTests(unittest.TestCase):
                 "schema": 1, "target": "1.21.1", "run_nonce": NONCE,
                 "installed_pl4_sha256": EXPECTED, "installed_pl4_name": "PL4-1.21.1.jar",
                 "pl4_source_commit": "c" * 40, "rc_publication_cleared": False,
+                "rcon_password_sha256": probe.hashlib.sha256(b"test-secret").hexdigest(),
                 "protected_files": {name: probe.digest(root / name) for name in protected},
             }
             with mock.patch.object(probe.binary_smoke, "validate_binary"):
@@ -245,7 +248,9 @@ class ProviderReceiptTests(unittest.TestCase):
                     probe.validate_prepared_installation(root, manifest)
                 props.write_text("server-ip=127.0.0.1\nserver-port=25588\n"
                                  "online-mode=false\nmax-players=1\n"
-                                 "enable-rcon=true\nrcon.port=25589\n")
+                                 "enable-rcon=true\nrcon.port=25589\n"
+                             "level-type=minecraft:flat\nview-distance=3\n"
+                             "simulation-distance=3\nrcon.password=test-secret\n")
                 (root / "run/eula.txt").write_text("eula=false\n")
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
@@ -285,6 +290,26 @@ class ProviderReceiptTests(unittest.TestCase):
                     probe.validate_prepared_installation(
                         root, manifest, allow_runtime_config_changes=True),
                     (EXPECTED, NONCE))
+                # Post-startup normalization may add defaults/comments, but
+                # it cannot change the test world's flat generator, distances
+                # or the credential needed for an orderly RCON shutdown.
+                safe_runtime_props = props.read_text()
+                for key, changed in (
+                    ("level-type", "minecraft:normal"),
+                    ("view-distance", "12"),
+                    ("simulation-distance", "12"),
+                    ("rcon.password", "replaced-secret"),
+                ):
+                    with self.subTest(runtime_property=key):
+                        line = next(line for line in safe_runtime_props.splitlines()
+                                    if line.startswith(key + "="))
+                        props.write_text(safe_runtime_props.replace(
+                            line, key + "=" + changed, 1))
+                        with self.assertRaisesRegex(
+                                ValueError, "Server probe condition changed|RCON shutdown credential changed"):
+                            probe.validate_prepared_installation(
+                                root, manifest, allow_runtime_config_changes=True)
+                props.write_text(safe_runtime_props)
                 props.write_text(props.read_text().replace(
                     "online-mode=false", "online-mode=true"))
                 with self.assertRaises(ValueError):
@@ -330,6 +355,11 @@ class ProviderReceiptTests(unittest.TestCase):
                 manifest["protected_files"].pop("gradlew")
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
+                manifest["protected_files"]["gradlew"] = probe.digest(root / "gradlew")
+                manifest.pop("rcon_password_sha256")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(
+                        root, manifest, allow_runtime_config_changes=True)
 
     def test_native_exit_attestation_requires_zero_exit_and_pinned_evidence(self):
         with tempfile.TemporaryDirectory() as temp:
