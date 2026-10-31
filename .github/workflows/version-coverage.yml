@@ -1,12 +1,8 @@
 name: Audit all final-version coverage gaps
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/version-coverage.yml'
-      - 'tools/audit_version_coverage.py'
-      - 'tools/test_version_coverage.py'
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

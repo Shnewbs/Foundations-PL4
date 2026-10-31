@@ -1,14 +1,13 @@
 name: Repair failed RC development port gates
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  workflow_run:
-    workflows: ['Align and validate all RC development ports']
-    types: [completed]
   workflow_dispatch:
     inputs:
       run_id:
         description: Native development run whose failed targets should be retried
         required: true
         type: string
+
 permissions:
   contents: write
   actions: read

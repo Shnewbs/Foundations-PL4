@@ -1,9 +1,8 @@
 name: Upgrade released-beta world with two real clients
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/real-world-upgrade-probe.yml']
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
