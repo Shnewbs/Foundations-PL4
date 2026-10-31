@@ -43,6 +43,8 @@ public final class InstalledProviderProbe {
             if (!level.getServer().isSameThread()) throw new IllegalStateException("Not server thread");
             String expected = requiredEnv("PL4_EXPECTED_JAR_SHA256");
             if (!expected.matches("[0-9a-f]{64}")) throw new IllegalStateException("Invalid pinned SHA-256");
+            String nonce = requiredEnv("PL4_PROVIDER_RUN_NONCE");
+            require(nonce.matches("[0-9a-f]{32}"), "Invalid per-preparation nonce");
             String actual = digest(Path.of(requiredEnv("PL4_INSTALLED_JAR")));
             require(actual.equals(expected), "Installed PL4 bytes differ from pinned production JAR");
             Class<?> api = Class.forName(API);
@@ -62,6 +64,7 @@ public final class InstalledProviderProbe {
 
             String proof = "{\"schema\":1,\"target\":\"1.21.1\",\"api_version\":1,"
                 + "\"installed_pl4_sha256\":\"" + actual + "\","
+                + "\"run_nonce\":\"" + nonce + "\","
                 + "\"replacement\":{\"first\":" + replacement[0] + ",\"later\":" + replacement[1] + ",\"stale_rows\":0},"
                 + "\"registration_close\":{\"first\":" + closed[0] + ",\"later\":" + closed[1] + ",\"first_rows\":1},"
                 + "\"exception_quarantine\":{\"failing\":" + exception[0] + ",\"healthy\":" + exception[1] + ",\"partial_rows\":0},"
@@ -70,7 +73,7 @@ public final class InstalledProviderProbe {
             Path output = Path.of(requiredEnv("PL4_PROVIDER_PROOF"));
             Files.createDirectories(output.toAbsolutePath().getParent());
             Files.writeString(output, proof);
-            System.out.println(MARKER + actual);
+            System.out.println(MARKER + actual + ":" + nonce);
         } catch (Exception failure) {
             throw new IllegalStateException("Installed independent provider probe FAILED", failure);
         }

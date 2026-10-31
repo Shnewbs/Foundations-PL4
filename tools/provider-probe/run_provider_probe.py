@@ -27,6 +27,7 @@ TOML = "src/main/resources/META-INF/neoforge.mods.toml"
 PROJECT = ["build.gradle", "settings.gradle", "gradle.properties", JAVA, TOML]
 MARKER = "PL4_INSTALLED_PROVIDER_PASS:"
 SHA = re.compile(r"[0-9a-f]{64}\Z")
+NONCE = re.compile(r"[0-9a-f]{32}\Z")
 
 
 def digest(path):
@@ -60,8 +61,10 @@ def verify_probe_jar(path):
     return digest(path)
 
 
-def validate_proof(proof, expected):
-    require(proof.get("schema") == 1 and proof.get("target") == "1.21.1" and
+def validate_proof(proof, expected, nonce):
+    require(NONCE.fullmatch(nonce) is not None and
+            proof.get("run_nonce") == nonce and
+            proof.get("schema") == 1 and proof.get("target") == "1.21.1" and
             proof.get("api_version") == 1 and
             proof.get("installed_pl4_sha256") == expected and
             proof.get("rc_publication_cleared") is False,
@@ -116,6 +119,7 @@ def prepare(checkout, jar, output, expected, source_sha):
         "schema": 1, "target": "1.21.1", "pl4_source_commit": source_sha,
         "pl4_source_attribution": "caller supplied; corroborate against retained build artifact",
         "installed_pl4_sha256": expected, "installed_pl4_name": jar.name,
+        "run_nonce": secrets.token_hex(16),
         "protected_files": {p: digest(output / p) for p in protected},
         "rc_publication_cleared": False, "runtime_executed": False,
     }
@@ -127,6 +131,8 @@ def verify(output, log):
     output, log = Path(output), Path(log)
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
     expected = manifest["installed_pl4_sha256"]
+    nonce = manifest.get("run_nonce", "")
+    require(NONCE.fullmatch(nonce) is not None, "Missing/invalid per-preparation nonce")
     require(manifest.get("schema") == 1 and manifest.get("target") == "1.21.1" and
             manifest.get("rc_publication_cleared") is False and
             SHA.fullmatch(expected) is not None,
@@ -153,10 +159,10 @@ def verify(output, log):
     proof_path = output / "provider-proof.json"
     require(proof_path.is_file() and log.is_file(), "Missing native proof or server log")
     proof = json.loads(proof_path.read_text())
-    validate_proof(proof, expected)
+    validate_proof(proof, expected, nonce)
     matching = [line for line in log.read_text(errors="replace").splitlines()
                 if MARKER in line]
-    require(len(matching) == 1 and matching[0].endswith(MARKER + expected),
+    require(len(matching) == 1 and matching[0].endswith(MARKER + expected + ":" + nonce),
             "Missing/duplicate/mismatched native installed provider pass marker")
     jars = sorted((output / "build/libs").glob("PL4-Installed-Provider-Probe-*.jar"))
     jars = [p for p in jars if not p.name.endswith("-sources.jar")]
@@ -179,15 +185,26 @@ def verify(output, log):
     return receipt
 
 
+def require_fresh_run(output):
+    """Never overwrite a prior native attempt or its receipt; use a new prepared directory."""
+    for name in ("provider-server.log", "provider-proof.json", "provider-probe-receipt.json"):
+        require(not (Path(output) / name).exists(),
+                "Refusing to overwrite existing native evidence: " + name)
+
+
 def run(output, timeout):
     output = Path(output).resolve()
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
     expected = manifest["installed_pl4_sha256"]
+    nonce = manifest.get("run_nonce", "")
+    require(NONCE.fullmatch(nonce) is not None, "Missing/invalid per-preparation nonce")
     installed = output / "run/mods" / manifest["installed_pl4_name"]
     require(digest(installed) == expected, "PL4 JAR changed before launch")
     log = output / "provider-server.log"
     proof = output / "provider-proof.json"
-    env = dict(os.environ, PL4_EXPECTED_JAR_SHA256=expected,
+    require_fresh_run(output)
+    env = dict(os.environ, PL4_PROVIDER_RUN_NONCE=nonce,
+               PL4_EXPECTED_JAR_SHA256=expected,
                PL4_INSTALLED_JAR=str(installed), PL4_PROVIDER_PROOF=str(proof))
     with log.open("w") as stream:
         process = subprocess.Popen(["bash", "gradlew", "--no-daemon", "--console=plain",
@@ -201,7 +218,7 @@ def run(output, timeout):
             while time.monotonic() < deadline:
                 if process.poll() is not None:
                     break
-                if log.exists() and MARKER + expected in log.read_text(errors="replace"):
+                if log.exists() and MARKER + expected + ":" + nonce in log.read_text(errors="replace"):
                     ready = True
                     break
                 time.sleep(3)

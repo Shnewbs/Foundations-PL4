@@ -32,7 +32,11 @@ Tests use a deliberately loaded chest fixture, but separately verify that a
 far-away unloaded chunk remains unloaded before/after sampling. The installed
 provider callbacks test same-position backing replacement, later-provider
 registration closure, exception partial-row quarantine, and no-force-load.
-Counters, output rows, and registration cleanup must all match. A callback
+Counters, output rows, and registration cleanup must all match. The prepared
+run carries a random nonce through the server environment, native proof, and
+server-log PASS marker, so an old proof or marker cannot qualify a different
+preparation. The runner refuses to overwrite any prior log, proof, or receipt;
+use a new prepared output directory for each native attempt. A callback
 throws intentionally during exception quarantine; a logged provider warning
 therefore does not mean the test failed.
 

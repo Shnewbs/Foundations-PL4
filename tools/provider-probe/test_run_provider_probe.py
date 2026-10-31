@@ -14,12 +14,13 @@ probe = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(probe)
 
 EXPECTED = "a" * 64
+NONCE = "b" * 32
 
 
 def valid_proof():
     return {
         "schema": 1, "target": "1.21.1", "api_version": 1,
-        "installed_pl4_sha256": EXPECTED,
+        "installed_pl4_sha256": EXPECTED, "run_nonce": NONCE,
         "replacement": {"first": 1, "later": 0, "stale_rows": 0},
         "registration_close": {"first": 1, "later": 0, "first_rows": 1},
         "exception_quarantine": {"failing": 1, "healthy": 1, "partial_rows": 0},
@@ -31,7 +32,7 @@ def valid_proof():
 
 class ProviderReceiptTests(unittest.TestCase):
     def test_exact_proof_passes(self):
-        probe.validate_proof(valid_proof(), EXPECTED)
+        probe.validate_proof(valid_proof(), EXPECTED, NONCE)
 
     def test_unloaded_chunk_rejection_is_mandatory(self):
         for field, value in [("callbacks", 1), ("rows", 1),
@@ -40,7 +41,7 @@ class ProviderReceiptTests(unittest.TestCase):
                 evidence = valid_proof()
                 evidence["unloaded"][field] = value
                 with self.assertRaises(ValueError):
-                    probe.validate_proof(evidence, EXPECTED)
+                    probe.validate_proof(evidence, EXPECTED, NONCE)
 
     def test_provider_callback_and_partial_row_rejections(self):
         for section, key, value in [
@@ -54,15 +55,36 @@ class ProviderReceiptTests(unittest.TestCase):
                 evidence = valid_proof()
                 evidence[section][key] = value
                 with self.assertRaises(ValueError):
-                    probe.validate_proof(evidence, EXPECTED)
+                    probe.validate_proof(evidence, EXPECTED, NONCE)
 
     def test_wrong_jar_and_unsafe_release_claim_rejected(self):
         with self.assertRaises(ValueError):
-            probe.validate_proof(valid_proof(), "b" * 64)
+            probe.validate_proof(valid_proof(), "b" * 64, NONCE)
         evidence = valid_proof()
         evidence["rc_publication_cleared"] = True
         with self.assertRaises(ValueError):
-            probe.validate_proof(evidence, EXPECTED)
+            probe.validate_proof(evidence, EXPECTED, NONCE)
+
+    def test_wrong_or_missing_run_nonce_rejected(self):
+        for value in ("c" * 32, "", "invalid"):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    probe.validate_proof(valid_proof(), EXPECTED, value)
+        evidence = valid_proof()
+        del evidence["run_nonce"]
+        with self.assertRaises(ValueError):
+            probe.validate_proof(evidence, EXPECTED, NONCE)
+
+    def test_existing_native_evidence_is_never_overwritten(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            probe.require_fresh_run(root)
+            for name in ("provider-server.log", "provider-proof.json", "provider-probe-receipt.json"):
+                path = root / name
+                path.write_text("retained native evidence")
+                with self.assertRaises(ValueError):
+                    probe.require_fresh_run(root)
+                path.unlink()
 
     def test_probe_jar_cannot_embed_pl4_implementation(self):
         with tempfile.TemporaryDirectory() as temp:
