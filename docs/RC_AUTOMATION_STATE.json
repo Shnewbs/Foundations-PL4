@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2105Z-upload-snapshot",
-    "claimed_at": "2026-10-31T21:05:10Z",
-    "expires_at": "2026-10-31T21:35:10Z",
-    "scope": "Atomic inspected JAR snapshot for direct CurseForge multipart publication; source and regression tests on main; no release"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 19:15 UTC: Direct publisher now validates every PL4 classfile header and target Java bytecode ceiling (Java 8/16/17/21/25). Source and regression tests committed on main; 14/14 readback assertions and 12 mirrored helper scenarios passed; full repo/native blocked by local GitHub DNS and uncached Gradle. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader. RC 0/24, no new binary/release/upload or retained deletion.",
-  "local_validation": "14/14 GitHub source readback checks and 12/12 isolated mirrored helper scenarios passed; complete repository Python/Gradle/native, installed-provider, multiplayer and performance not run.",
+  "current_checkpoint": "2026-10-31 21:14 UTC: Direct CurseForge uploader now binds archive validation, SHA-256 receipt and multipart body to one immutable JAR byte snapshot; 2 regression methods committed, 8/8 source checks and 2/2 isolated transport smoke passed. Full repo/native blocked by local DNS/dependencies. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader. RC 0/24, no new JAR/release/upload or retained deletion.",
+  "local_validation": "8/8 GitHub source readback; 2/2 isolated standalone transport smoke; two new repo regression methods not executed; full Python/Gradle/native/installed provider not executed.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-bytecode-preflight-2026-10-31-1205-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-atomic-jar-snapshot-2026-10-31-1405-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3445,5 +3440,21 @@
     "writer_lease_released": true,
     "rc_clearance": "0/24",
     "release_performed": false
+  },
+  "last_writer_release_20261031_atomic_upload_snapshot": {
+    "owner": "pl4-hourly-20261031T2105Z-upload-snapshot",
+    "claimed_at": "2026-10-31T21:05:10Z",
+    "released_at": "2026-10-31T21:14:00Z",
+    "lease_claim_commit": "23be545ac92f44f5552b58f1d6139b3818e308b4",
+    "source_commits": [
+      "c27504ecc515b226e4445314496275c7f0180c50",
+      "28ed60cfc2dca06cadeed9a13fbb08de4a06915b",
+      "65edfd00e1e6ab312f167589b6a58e6f32821215"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-atomic-jar-snapshot-2026-10-31-1405-pdt.json",
+    "validation": "8/8 GitHub source-readback checks, 2/2 standalone mirrored Python smoke; repository/native not executed",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
   }
 }
