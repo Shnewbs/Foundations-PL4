@@ -1,5 +1,5 @@
 {
-  "recorded_date": "2026-10-30",
+  "recorded_date": "2026-10-31",
   "timezone": "America/Los_Angeles",
   "scope": "24 currently published exact Minecraft target tracks; unpublished gaps are excluded",
   "version": "0.2.0-rc.1-dev",
@@ -9,7 +9,6 @@
   "stable_rc_published": false,
   "curseforge_rc_submitted": false,
   "remaining_acceptance": [
-    "fresh exact 213-fixture installed-provider callback revocation/replacement verification for source c5e6306b02151d338eabcdb192780ff79d0a2dc4",
     "advanced legacy editor/multipart; combined-inventory/handler alias fixtures and provider acceptance. Bounded ASCII search, sorting and exact-NBT grouped quantities have scoped exact-source native/stock-client acceptance",
     "installed optional providers and compatible alternatives",
     "other world-display/reader/editor modes, faces, lighting conditions, wider resolutions and exact ports; legacy stock network displays and four storage GUI scales passed separately per port",
@@ -19,7 +18,8 @@
     "documented 1.16.1–1.16.4 launcher profiles",
     "arbitrary pre-save crash/power-loss durability, provider-private state and reviewed recovery; legacy clean and post-save-boundary process restart now have scoped native acceptance",
     "installed optional providers with callback revocation/unload/replacement, entity UUID replacement, and no-force-load evidence",
-    "fresh exact 26.1.2 native qualification; no neighboring-version inheritance"
+    "fresh exact 26.1.2 native qualification; no neighboring-version inheritance",
+    "fresh exact 216-fixture installed-provider registration revocation verification for source cd5e59a95c14a80ced78ef259c5ddf5c57ba7869"
   ],
   "targets": [
     {
@@ -4671,5 +4671,6 @@
     "artifact_zip_sha256": "de979887edf8bc27488c4c2d044c2a9fbab91f9dcde2cc32eebf42b7da7efa62",
     "visibility_or_moderation": "NOT_INDEPENDENTLY_VERIFIED",
     "note": "All 24 were prior submitted/recorded versions, not new accepted RCs"
-  }
+  },
+  "latest_checkpoint": "2026-10-31: installed-provider registration liveness guard added; 216 exact native fixtures pending verification; no release/upload"
 }
