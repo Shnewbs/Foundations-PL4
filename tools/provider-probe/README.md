@@ -116,3 +116,21 @@ build and inspect the independent JAR before launching the server, regardless
 of CLI task ordering. A source-contract regression checks the edge; the
 actual Gradle task graph and installed native runtime remain unexecuted until
 dependencies are available. This does not qualify an RC release.
+
+## Java properties grammar and EULA ambiguity gate (October 31, 12:05 UTC)
+
+The post-startup configuration verifier now accepts only Minecraft-generated
+plain `key=value` properties and comment/blank lines. Java's actual properties
+parser also recognizes colon/whitespace separators, escaped keys and
+continuations; the old equals-only dictionary could overlook conflicting
+`online-mode` or other security-relevant aliases. The new verifier rejects
+these ambiguous forms and duplicate keys. It also requires the EULA file to
+contain exactly one `eula=true` entry, rather than merely containing that
+line alongside an overriding `eula=false` entry. Minecraft's harmless
+normalization (new default properties and comments) remains allowed.
+
+Negative regression cases were added for colon, whitespace and escaped-key
+aliases and contradictory EULA entries. An isolated copy of the parser passed
+3 positive and 8 negative local cases; **the full repository Python suite,
+Gradle task graph and independent native provider runtime remain unexecuted
+on this exact source**. No RC clearance or release is implied.
