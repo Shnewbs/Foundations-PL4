@@ -1,9 +1,8 @@
 name: Validate legacy display lighting and storage
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/legacy-readers.yml']
   workflow_dispatch:
+
 permissions:
   contents: write
 concurrency:

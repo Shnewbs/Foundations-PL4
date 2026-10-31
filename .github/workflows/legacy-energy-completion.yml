@@ -1,11 +1,8 @@
 name: Complete legacy energy ports
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/legacy-energy-completion.yml'
-      - 'tools/legacy-energy-update/**'
   workflow_dispatch:
+
 permissions:
   contents: write
 concurrency:

@@ -1,12 +1,8 @@
 name: Verify published legacy fluid runtimes
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/legacy-fluid-recheck.yml'
-      - 'tools/legacy-fluid-update/finish_validation.py'
-      - 'tools/legacy-fluid-update/check_legacy_fluid_verification.py'
   workflow_dispatch:
+
 permissions:
   contents: write
 concurrency:

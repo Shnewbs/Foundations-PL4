@@ -1,9 +1,8 @@
 name: Resolve isolated Forge 1.6.4
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/legacy-164-toolchain.yml']
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
