@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1602Z-direct-upload-policy",
-    "claimed_at": "2026-10-31T16:02:29Z",
-    "scope": "tools/direct_curseforge_upload.py, tests, 26.4 watch; no builds or releases without exact-source clearance"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
@@ -77,18 +73,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 15:11 UTC: native benchmark proof schema validation and tests on main; 32/32 GitHub Actions workflows changed to manual-only (no push/schedule/release/workflow_run triggers); 11/11 GitHub source-contract checks, 3/3 isolated Python test methods with 15 negative cases; no repository Gradle/native execution due to DNS/dependency blockers; 26.4 Snapshot 6 Oct 27, no official NeoForge 26.4 loader; 0/24 RC, no JAR/GitHub release/CurseForge upload.",
-  "local_validation": "PASS 11/11 GitHub source checks; PASS 3/3 isolated copied-helper Python tests with 15 negative mutations; PASS 32/32 workflow trigger readback. Full repository Python, Gradle/Java, native and installed provider NOT RUN; prior 217/217 belongs to d6c409f.",
+  "current_checkpoint": "2026-10-31 16:10 UTC: direct CurseForge uploader enforces RC exact-target BUILD_STATUS clearance, rejects dev even with existing receipt, rejects broad NeoForge Minecraft metadata; regression methods added. GitHub readback passed, 8/8 isolated mirrored policy cases passed, repository/native not run. Mojang 26.4 Snapshot 6, no NeoForge 26.4 coordinate. 0/24 RC; no JAR, release, upload or retained artifact deletion.",
+  "local_validation": "PASS GitHub readback; PASS 8/8 isolated mirrored policy checks; repository Python, Gradle/native, installed provider and live acceptance NOT RUN due DNS/dependencies.",
   "next_work": [
-    "Use dependency-capable local/external builder; GitHub Actions automatic triggers are disabled and must not be invoked",
-    "Run full Python suite, native benchmark with strict comparable receipts, exact 217 GameTests and independent installed provider against pinned production JAR",
-    "Complete authenticated multiplayer, arbitrary saved-world migration, client visual and sustained TPS/heap acceptance",
-    "Continue exact-version parity; 26.4 watch only until official NeoForge loader; publish qualified GitHub/CurseForge artifacts without Actions"
+    "Execute full repository Python tests for new direct uploader regression methods on a dependency-capable local builder",
+    "Run exact-source native 217 GameTests and installed-provider runtime, authenticated multiplayer, saved-world migration and controlled TPS/heap performance",
+    "Publish exact-target GitHub/CurseForge assets only when RC clearance is explicit and hashes verified",
+    "Watch official Minecraft 26.4 snapshot and NeoForge loader; do not create unsupported branch"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-proof-and-external-ci-2026-10-31.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-rc-clearance-2026-10-31-0902-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3348,6 +3344,26 @@
     "evidence_commit": "7e12fe3a2e121016e4640fd1d66598613f2f99ec",
     "evidence": "docs/acceptance/rc-dev-native-benchmark-proof-and-external-ci-2026-10-31.json",
     "validation": "11/11 GitHub source-contract checks, 3/3 isolated Python test methods with 15 negative mutations, 32/32 manual-only workflow headers; repository/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_direct_upload": {
+    "owner": "pl4-hourly-20261031T1602Z-direct-upload-policy",
+    "claimed_at": "2026-10-31T16:02:29Z",
+    "released_at": "2026-10-31T16:10:00Z",
+    "lease_claim_commit": "c159e5edf61c6904fbfcd0ad0a52669a538bd06a",
+    "source_commits": [
+      "124e7ce90d9e7938fa15e86e4acaa6281540acab",
+      "589dfd139e01e12d4681eabe5a5d8553ff414f8a"
+    ],
+    "documentation_commits": [
+      "901d13d5cd3f66929b6a523a8995f1d739656336",
+      "84ca7c7ddaa304cdb1ced5357d3d15bf184c1fef"
+    ],
+    "evidence_commit": "39dd6974fec17c8397fb6467c82d79bf9650b744",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-rc-clearance-2026-10-31-0902-pdt.json",
+    "validation": "GitHub source readback passed; 8/8 isolated mirrored policy checks; repository Python/Gradle/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
