@@ -43,3 +43,8 @@ Mojang's [26.4 Snapshot 6](https://www.minecraft.net/fi-fi/article/minecraft-26-
 ## October 31 09:02 PDT — official recheck
 
 The [Mojang snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) still lists **26.4 Snapshot 6** as the newest Java snapshot; the [NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains **no `26.4` coordinate**, with `26.3.0.99` present. No 26.4 branch, binary or release is authorized. Keep exact NeoForge Minecraft dependency metadata for existing ports and retain the Vulkan, fluid-source/tag, handshake, migration and controlled-heap gates for future 26.4 acceptance.
+
+
+## October 31 11:05 PDT — official loader and snapshot recheck
+
+The [Mojang Java snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) continues to list **26.4 Snapshot 6** (October 27) as newest. The [NeoForge Maven release index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains `26.3.0.99` but **no 26.4 coordinate**. Maintain the existing 24 exact targets and do not create a 26.4 branch, publish a JAR or assert compatibility. Keep the documented Vulkan/OpenGL, source/flowing-fluid state, login-handshake/mod-list, migration and pinned-heap acceptance gates; they must be exercised with a real supported loader when available.
