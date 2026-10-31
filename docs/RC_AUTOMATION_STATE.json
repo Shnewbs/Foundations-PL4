@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-chat-20261030T1709Z-installed-provider-registration-guard",
+    "claimed_at": "2026-10-31T00:10:00Z",
+    "expires_at": "2026-10-31T00:40:00Z",
+    "expected_parent": "77bde66ce3535851574e44bdb3825769fde1e39d",
+    "purpose": "Implement installed-provider registration-liveness guard and exact native regression; no release publication"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,8 +20,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-30T22:05:00Z: Repaired stale hardcoded R16 verifier drift with a meaningful >=45 minimum guard; evidence recorded; lease released; fresh exact-source verification still pending; no native/JAR/release evidence counted.",
-  "local_validation": "GitHub readback confirmed verifier repair commits 8d729e62 and f6946c22 plus evidence addddb43; no native or packaged-artifact result was promoted.",
+  "current_checkpoint": "2026-10-31T00:10:00Z: finite writer lease claimed against main 77bde66; implementing installed-provider registration-liveness guard and exact native regression; no native/JAR/release evidence promoted yet.",
+  "local_validation": "Lease claim guarded by expected parent 77bde66; active native/publisher duplicate checks reviewed from latest runs; current 215/215 and 26.1.2 193/193 evidence preserved as source-scoped.",
   "next_work": [
     "Build separate optional NeoForge probe mod/JAR (not in-process PL4 GameTests) and install beside exact PL4 production JAR; register callbacks that replace/unload backing targets and verify later callbacks suppressed, no forced chunk load and no stale rows",
     "Retain exact provider/PL4 JAR SHA-256, server run logs, callback counters and loaded-chunk before/after evidence; no installed-provider acceptance until real installed pass",
