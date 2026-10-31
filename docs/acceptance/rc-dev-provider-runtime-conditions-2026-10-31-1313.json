@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-31T13:13:00Z",
+  "scope": "1.21.1 independent installed InfoProvider acceptance runner; not PL4 runtime feature or RC release",
+  "writer_lease_owner": "pl4-hourly-20261031T1307Z-runtime-constraints",
+  "source_changes": [
+    {
+      "commit": "772b7584466bea827acd2f0f26c6af01c7825d26",
+      "path": "tools/provider-probe/run_provider_probe.py",
+      "description": "Pin flat-world level type, view/simulation distance and SHA-256 of generated RCON shutdown password across post-startup server.properties normalization."
+    },
+    {
+      "commit": "01be502b5bb7acb37202f3b4babc6c97c4e39ab9",
+      "path": "tools/provider-probe/test_run_provider_probe.py",
+      "description": "Add negative post-run config drift cases and require RCON digest in prepared manifest."
+    }
+  ],
+  "validation": {
+    "github_source_readback": "PASS: current source and tests fetched after push; expected changes inspected",
+    "static_contract": "PASS: 11/12 initial string checks; one false negative from overly specific substring; manually read back the generated password line and confirmed correct. No source failure.",
+    "isolated_runtime_constraints": "12/12 PASS on copied parser and conditions, not the repository Python suite",
+    "repository_python_suite": "NOT_RUN: checkout unavailable in local container due github.com DNS failure",
+    "gradle_compilation": "NOT_RUN: Gradle distribution and dependencies unavailable locally",
+    "native_game_tests": "NOT_RUN on changed source",
+    "installed_provider_native": "NOT_RUN",
+    "retained_prior_native": {
+      "target": "Minecraft 1.21.1 / NeoForge 21.1.250",
+      "source": "d6c409f761b675d9c665b0b36638d4ed98e11405",
+      "run": 41190598603,
+      "result": "217/217 PASS on earlier exact source only"
+    }
+  },
+  "compatibility_watch": {
+    "checked_at": "2026-10-31",
+    "minecraft": "26.4 Snapshot 6 published October 27, 2026",
+    "minecraft_url": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge": "Official Maven index has no 26.4 coordinate; 26.3.0.99 latest shown",
+    "neoforge_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "new_port_created": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "github_release_created": false,
+    "curseforge_uploaded": false,
+    "github_actions_manually_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No exact-source native installed-provider acceptance or remaining multiplayer/migration/performance clearances"
+  },
+  "blockers": [
+    "Local GitHub DNS resolution fails; source was changed using authenticated GitHub connector instead of a local clone.",
+    "No cached Gradle 9.2.1 distribution or NeoForge dependencies for local Java/native builds.",
+    "Independent installed-provider execution, authenticated multiplayer, world migration, client rendering and sustained TPS/heap remain open."
+  ],
+  "next": [
+    "Run full repository Python suite and Gradle task graph on dependency-capable local builder.",
+    "Compile installed-provider probe against pinned production JAR and retain nonce/hash/clean-exit evidence.",
+    "Continue exact-version port acceptance and performance/migration gates; no unsupported 26.4 release."
+  ]
+}
