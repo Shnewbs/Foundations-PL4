@@ -158,6 +158,29 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.assertEqual(inspect(self.jar, self.notes),
                          ("26.3", "0.97.0.rev1-beta", "NeoForge"))
 
+    def test_accepts_approved_26_1_2_neoforge_target(self):
+        self.jar = self.root / "FoundationsPL4-26.1.2-0.97.0.rev1-beta.jar"
+        self.make_jar(self.metadata("0.97.0.rev1-beta", "26.1.2"),
+                      class_bytes=bytes.fromhex("cafebabe000000450001"))
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("26.1.2", "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_rejects_audit_only_and_unreleased_26x_targets(self):
+        for target in ("26.1", "26.2", "26.4", "26.4.1"):
+            with self.subTest(target=target):
+                self.jar = self.root / f"FoundationsPL4-{target}-0.97.0.rev1-beta.jar"
+                self.make_jar(self.metadata("0.97.0.rev1-beta", target),
+                              class_bytes=bytes.fromhex("cafebabe000000450001"))
+                with self.assertRaisesRegex(ValueError, "not an approved exact NeoForge release target"):
+                    inspect(self.jar, self.notes)
+
+    def test_dry_run_rejects_26_4_before_publication(self):
+        self.jar = self.root / "FoundationsPL4-26.4-0.97.0.rev1-beta.jar"
+        self.make_jar(self.metadata("0.97.0.rev1-beta", "26.4"),
+                      class_bytes=bytes.fromhex("cafebabe000000450001"))
+        with self.assertRaisesRegex(ValueError, "not an approved exact NeoForge release target"):
+            self.dry_run()
+
     def test_rejects_java21_classfile_for_java17_forge(self):
         self.jar = self.root / "FoundationsPL4-1.20.1-0.97.0.rev1-beta.jar"
         metadata = self.metadata("0.97.0.rev1-beta", "1.20.1").replace(
