@@ -54,7 +54,8 @@ def mark_owned_run(root, trial, source):
     runtime = root / "run"
     if runtime.is_symlink() or not runtime.is_dir():
         raise ValueError("Native benchmark did not create a regular run directory")
-    (runtime / ".pl4-benchmark-owned").open("x").write(f"{source}:{trial}\n")
+    with (runtime / ".pl4-benchmark-owned").open("x") as marker:
+        marker.write(f"{source}:{trial}\n")
 
 
 def main():
