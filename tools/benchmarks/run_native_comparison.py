@@ -58,12 +58,60 @@ def mark_owned_run(root, trial, source):
         marker.write(f"{source}:{trial}\n")
 
 
+
+def validate_native_report(report, source, trial, reference_schema=None):
+    """Reject malformed or incomparable native timing receipts before summarizing."""
+    if not isinstance(report, dict) or report.get('source_commit') != source or report.get('trial') != str(trial):
+        raise ValueError('Native probe source/trial mismatch')
+    workloads = report.get('workloads')
+    if not isinstance(workloads, list) or not workloads:
+        raise ValueError('Native probe has no workloads')
+    schema = {}
+    seen_networks = set()
+    for workload in workloads:
+        if not isinstance(workload, dict):
+            raise ValueError('Malformed native workload')
+        network = workload.get('network')
+        if not isinstance(network, str) or not network or network in seen_networks:
+            raise ValueError('Missing or duplicate native network')
+        seen_networks.add(network)
+        for count_key in ('host_count', 'endpoint_count'):
+            value = workload.get(count_key)
+            if type(value) is not int or value <= 0:
+                raise ValueError('Invalid native workload ' + count_key)
+        measurements = workload.get('measurements')
+        if not isinstance(measurements, list) or not measurements:
+            raise ValueError('Native workload has no measurements')
+        for measurement in measurements:
+            if not isinstance(measurement, dict):
+                raise ValueError('Malformed native measurement')
+            operation = measurement.get('operation')
+            key = (network, operation)
+            if not isinstance(operation, str) or not operation or key in schema:
+                raise ValueError('Missing or duplicate native operation')
+            operations = measurement.get('operations_per_round')
+            warmup = measurement.get('warmup_operations')
+            if type(operations) is not int or operations <= 0 or type(warmup) is not int or warmup < 0:
+                raise ValueError('Invalid native operation counts')
+            rounds = None
+            for metric in ('elapsed_ns', 'cpu_ns', 'allocated_bytes'):
+                values = measurement.get(metric)
+                if not isinstance(values, list) or len(values) < 3 or (rounds is not None and len(values) != rounds):
+                    raise ValueError('Missing or mismatched native metric rounds: ' + metric)
+                if any(type(value) is not int or value < (1 if metric == 'elapsed_ns' else 0) for value in values):
+                    raise ValueError('Invalid native metric values: ' + metric)
+                rounds = len(values)
+            schema[key] = (workload['host_count'], workload['endpoint_count'], operations, warmup, rounds)
+    if reference_schema is not None and schema != reference_schema:
+        raise ValueError('Native benchmark workloads/operations differ across revisions or trials')
+    return schema
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
     args=parser.parse_args();roots,out=require_disposable_workspaces(args.baseline,args.candidate,args.output);out.mkdir(parents=True,exist_ok=False)
     fixture=Path(__file__).with_name('ReleasePerformanceGameTests.java').read_text()
-    records=[];sources={}
+    records=[];sources={};reference_schema=None
     for label,root in [('baseline',roots[0]),('candidate',roots[1])]:
         source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip();sources[label]=source
         if json.loads((root/'BUILD_STATUS.json').read_text())['minecraft']!='1.21.1':raise ValueError('Exact Minecraft target required')
@@ -88,7 +136,8 @@ def main():
             paths=list(root.glob('**/verification-logs/performance-probe.json'))
             if len(paths)!=1:raise ValueError(f'Expected one native probe report, found {paths}')
             report=json.loads(paths[0].read_text());report.update(label=label,fixture_sha256=hashlib.sha256(fixture.encode()).hexdigest())
-            if report['source_commit']!=sources[label] or report['trial']!=str(trial):raise ValueError('Stale probe report')
+            schema=validate_native_report(report,sources[label],trial,reference_schema)
+            if reference_schema is None:reference_schema=schema
             target=out/f'{trial}-{label}.json';target.write_text(json.dumps(report,indent=2)+'\n');records.append(report);paths[0].unlink()
     summaries=[]
     for workload in records[0]['workloads']:
