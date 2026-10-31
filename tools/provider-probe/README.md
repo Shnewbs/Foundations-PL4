@@ -134,3 +134,19 @@ aliases and contradictory EULA entries. An isolated copy of the parser passed
 3 positive and 8 negative local cases; **the full repository Python suite,
 Gradle task graph and independent native provider runtime remain unexecuted
 on this exact source**. No RC clearance or release is implied.
+
+## Runtime world and RCON invariants (October 31, 13:13 UTC)
+
+The prepared manifest now stores **only a SHA-256 digest** of the ephemeral RCON
+shutdown password, never its plaintext. Both preflight and post-startup checks
+require the same password and fixed flat-world generator, view distance 3 and
+simulation distance 3, in addition to the existing loopback/offline/port
+restrictions. Minecraft may still rewrite comments, property order and other
+defaults, but it may not silently change the acceptance workload or the
+credential used to stop the server cleanly.
+
+Regression tests reject changed world type, distances, RCON credentials and
+missing manifest digest. An isolated copy of the relevant runtime conditions
+passed 12/12 local cases; **this is not the repository Python suite, Gradle
+compilation or native installed-provider execution**. No RC clearance is
+granted by these source-only checks.
