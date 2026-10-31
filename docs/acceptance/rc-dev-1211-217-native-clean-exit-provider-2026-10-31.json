@@ -1,0 +1,92 @@
+{
+  "recorded_at_utc": "2026-10-31T10:08:49Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "native_validation": {
+    "minecraft": "1.21.1",
+    "source_commit": "d6c409f761b675d9c665b0b36638d4ed98e11405",
+    "workflow_run": 41190598603,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41190598603",
+    "artifact_id": 13038237757,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41190598603/artifacts/13038237757",
+    "artifact_zip_sha256": "68f3f120049cee4bd1c34cf83eaa017fe08b5c76f2591508c7720ccfa11e12c9",
+    "artifact_entries": 11,
+    "artifact_crc": "PASS",
+    "source_archive_sha256": "1f221c904ebdadd20da4ade8becb51b9532b1213dc88e5060f919991632d45f1",
+    "native_log_sha256": "dd725f713e1a8fb49585a924a8127400dd66da1fd80d2c0492a8ef3aa247e390",
+    "offline_log_sha256": "9f0c35fe585e8d82e3942fcdb29351dcf532f591c80c5e56c1c07b6b540adcae",
+    "production_jar_sha256": "45556e30004c7850a14a424ea4a7c08f2f80c6ce723fa14258aeef5e5e1c2311",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "83069d7c9c29964bdae400bbd0984d5346d29d89a6ac23fa969e3cecd6845dfa",
+    "native_scenarios_jar_sha256": "3d2f2dcbf068661fa2235af30d304a7790ab294c97d904b7410ebe28b67e6437",
+    "native_passed": 217,
+    "native_total": 217,
+    "offline_assertions": 1149451,
+    "rc_publication_cleared": false
+  },
+  "source_and_offline_tests": {
+    "commits": [
+      "113dc011fcda7a3bcc3b0b82a0a630b67f458e93",
+      "3eaa3d63f8d1c4fad11a2d856bb20958e657ad3e"
+    ],
+    "scope": "Independent installed-provider probe runner requires a process exit code 0 attestation pinned to nonce, source, installed PL4 JAR and native log/proof hashes; offline verify rejects missing, forged or tampered clean-exit proof. Production PL4 classes unchanged.",
+    "runner_git_blob": "2ec8e6333437e8711614716c132890563ab3fcd7",
+    "test_git_blob": "c7853aeae74dadf5ec5c8eaa3b6a23f2365263cc",
+    "python_main_suite": {
+      "passed": 277,
+      "total": 277,
+      "log_sha256": "79f0b82beaf17936eb04bbcf764408616aab79a9c176766ed75cc700a3ee3048"
+    },
+    "python_provider_suite": {
+      "passed": 18,
+      "total": 18,
+      "log_sha256": "2ca01b395e1430576463ddf19b56bd5b58c56406e3ba46218be355b043a4e24d"
+    },
+    "python_multiplayer_suite": {
+      "passed": 168,
+      "total": 168,
+      "log_sha256": "08c06630cd9a57f5f93fdfb650423c0fc9cdfc695cbe387a99882060e277d674"
+    },
+    "local_source_provenance": "Exact 217-native checked-source archive extracted from retained artifact; only two patched provider files differ, and local git hash-object equals pushed Git blobs. All tests executed locally without GitHub Actions.",
+    "local_gradle": "BLOCKED: Gradle 9.2.1 wrapper distribution absent; services.gradle.org UnknownHostException on one bounded --offline help attempt. No repeated retry.",
+    "local_gradle_log_sha256": "11dbb5a1b6468636d20b32ea80a7913dca6e491c1fb385b49e2a22ba257dc8d5",
+    "installed_provider_native_execution": "NOT_RUN",
+    "new_source_native_build": "NOT_RUN"
+  },
+  "curseforge_reconciliation": {
+    "run_id": 41178732645,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41178732645",
+    "artifact_id": 13034425612,
+    "artifact_zip_sha256": "9077efc26de37295bd02d25aecfd253472c337f93e70c2539bb6c6b5828565b0",
+    "records": 24,
+    "already_submitted": 24,
+    "new_uploads": 0,
+    "public_visibility": "NOT_INDEPENDENTLY_VERIFIED"
+  },
+  "compatibility_26_4": {
+    "latest_official_snapshot": "26.4-snapshot-6",
+    "published": "2026-10-27",
+    "official_url": "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+    "neoforge_index_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "loader_26_4_observed": false,
+    "port_created": false,
+    "carry_forward_gates": [
+      "Vulkan graphics path",
+      "mod_list/intention/transfer handshake",
+      "fluid source property replaces flowing fluid types",
+      "saved-world migration and client rendering"
+    ]
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "github_new_rc": false,
+    "curseforge_new_upload": false,
+    "publication_eligible": false
+  },
+  "blockers": [
+    "Independent installed provider JAR not compiled/executed",
+    "Local Gradle distribution unavailable due DNS, so no local native server/Gradle task graph",
+    "Authenticated multiplayer, arbitrary-world migration, client screenshots and sustained TPS/heap remain incomplete for RC"
+  ],
+  "next_step": "Run independent installed provider probe against pinned 217 native production JAR with clean-exit, nonce, proof, log and installed-JAR hashes on dependency-capable local builder; then continue authenticated multiplayer, arbitrary migration and sustained performance."
+}

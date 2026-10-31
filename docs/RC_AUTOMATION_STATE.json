@@ -19,21 +19,22 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T09:10:28.907Z: b5846d6 rejects extra/nested/symlinked independent installed-provider mods; GitHub readback 9/9 and isolated Python inventory 6/6 PASS; repository unittest, Gradle, 217 native and installed probe NOT RUN; 0/24 RC; no release.",
-  "local_validation": "9/9 source-readback checks PASS; 6/6 isolated copied Python inventory cases PASS. Full repository unittest, Gradle/Java, 217 native GameTests and installed-provider runtime NOT RUN (GitHub DNS unavailable and Gradle dependencies uncached).",
+  "current_checkpoint": "2026-10-31T10:08:49Z: 1.21.1 exact d6c409f 217/217 native PASS; retained artifact/JAR CRC+SHA independently verified; local Python 277+18+168 PASS; clean-exit installed provider guard pushed 113dc/3eaa, native probe NOT RUN; 0/24 RC, no new release.",
+  "local_validation": "Exact 217 native PASS on prior d6c409f from scheduled retained run; local Python 277 tools + 18 provider + 168 multiplayer PASS on exact extracted source with pushed provider-file Git blobs; Gradle 9.2.1 wrapper blocked by services.gradle.org DNS; installed provider native NOT RUN.",
   "next_work": [
-    "Execute repository Python unittest and Gradle task graph locally when dependency resolution works; verify runServer depends on verifyProbeIsolation",
-    "Compile independent installed probe against pinned production JAR and inspect server.properties normalization, native proof, nonce and hashes",
-    "Run 217 native GameTests at exact current source; continue authenticated multiplayer, arbitrary migration, sustained TPS/heap, exact ports"
+    "Compile/run separate installed provider mod with clean-exit attestation against pinned 1.21.1 JAR 45556e30, preserving nonce/log/proof/JAR hashes and checking server.properties normalization",
+    "Complete authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots and sustained TPS/heap on exact sources",
+    "Continue native parity/acceptance for remaining exact versions; no 26.4 branch until an official compatible NeoForge loader exists"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-1211-visual-owner-and-stale-canvas-204-native-2026-10-30.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
   "latest_native_runs": [
+    41190598603,
     41143705764,
     41143497020,
     41143152015,
@@ -78,7 +79,7 @@
     "writer_lease_released": true,
     "release_performed": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-self-revocation-217-pending-2026-10-31.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -3004,10 +3005,11 @@
     "rc_clearance": "0/24"
   },
   "latest_264_compatibility_watch": {
-    "checked_at": "2026-10-31T01:14:09.227Z",
+    "checked_at": "2026-10-31T10:08:49Z",
+    "latest_official_snapshot": "26.4-snapshot-6",
     "neoforge_264_build_observed": false,
-    "source": "https://maven.neoforged.net/releases/net/neoforged/neoforge",
-    "exact_port_created": false
+    "exact_port_created": false,
+    "source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
   },
   "latest_216_native_verified": {
     "source_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
@@ -3186,5 +3188,68 @@
     "evidence": "docs/acceptance/rc-dev-provider-probe-strict-mod-inventory-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
+  },
+  "latest_217_native_verified": {
+    "minecraft": "1.21.1",
+    "source_commit": "d6c409f761b675d9c665b0b36638d4ed98e11405",
+    "workflow_run": 41190598603,
+    "workflow_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41190598603",
+    "artifact_id": 13038237757,
+    "artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41190598603/artifacts/13038237757",
+    "artifact_zip_sha256": "68f3f120049cee4bd1c34cf83eaa017fe08b5c76f2591508c7720ccfa11e12c9",
+    "artifact_entries": 11,
+    "artifact_crc": "PASS",
+    "source_archive_sha256": "1f221c904ebdadd20da4ade8becb51b9532b1213dc88e5060f919991632d45f1",
+    "native_log_sha256": "dd725f713e1a8fb49585a924a8127400dd66da1fd80d2c0492a8ef3aa247e390",
+    "offline_log_sha256": "9f0c35fe585e8d82e3942fcdb29351dcf532f591c80c5e56c1c07b6b540adcae",
+    "production_jar_sha256": "45556e30004c7850a14a424ea4a7c08f2f80c6ce723fa14258aeef5e5e1c2311",
+    "production_jar_entries": 886,
+    "production_jar_crc": "PASS",
+    "sources_jar_sha256": "83069d7c9c29964bdae400bbd0984d5346d29d89a6ac23fa969e3cecd6845dfa",
+    "native_scenarios_jar_sha256": "3d2f2dcbf068661fa2235af30d304a7790ab294c97d904b7410ebe28b67e6437",
+    "native_passed": 217,
+    "native_total": 217,
+    "offline_assertions": 1149451,
+    "rc_publication_cleared": false
+  },
+  "latest_installed_provider_clean_exit_guard": {
+    "commits": [
+      "113dc011fcda7a3bcc3b0b82a0a630b67f458e93",
+      "3eaa3d63f8d1c4fad11a2d856bb20958e657ad3e"
+    ],
+    "scope": "Independent installed-provider probe runner requires a process exit code 0 attestation pinned to nonce, source, installed PL4 JAR and native log/proof hashes; offline verify rejects missing, forged or tampered clean-exit proof. Production PL4 classes unchanged.",
+    "runner_git_blob": "2ec8e6333437e8711614716c132890563ab3fcd7",
+    "test_git_blob": "c7853aeae74dadf5ec5c8eaa3b6a23f2365263cc",
+    "python_main_suite": {
+      "passed": 277,
+      "total": 277,
+      "log_sha256": "79f0b82beaf17936eb04bbcf764408616aab79a9c176766ed75cc700a3ee3048"
+    },
+    "python_provider_suite": {
+      "passed": 18,
+      "total": 18,
+      "log_sha256": "2ca01b395e1430576463ddf19b56bd5b58c56406e3ba46218be355b043a4e24d"
+    },
+    "python_multiplayer_suite": {
+      "passed": 168,
+      "total": 168,
+      "log_sha256": "08c06630cd9a57f5f93fdfb650423c0fc9cdfc695cbe387a99882060e277d674"
+    },
+    "local_source_provenance": "Exact 217-native checked-source archive extracted from retained artifact; only two patched provider files differ, and local git hash-object equals pushed Git blobs. All tests executed locally without GitHub Actions.",
+    "local_gradle": "BLOCKED: Gradle 9.2.1 wrapper distribution absent; services.gradle.org UnknownHostException on one bounded --offline help attempt. No repeated retry.",
+    "local_gradle_log_sha256": "11dbb5a1b6468636d20b32ea80a7913dca6e491c1fb385b49e2a22ba257dc8d5",
+    "installed_provider_native_execution": "NOT_RUN",
+    "new_source_native_build": "NOT_RUN",
+    "evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json"
+  },
+  "latest_curseforge_reconciliation_20261031": {
+    "run_id": 41178732645,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41178732645",
+    "artifact_id": 13034425612,
+    "artifact_zip_sha256": "9077efc26de37295bd02d25aecfd253472c337f93e70c2539bb6c6b5828565b0",
+    "records": 24,
+    "already_submitted": 24,
+    "new_uploads": 0,
+    "public_visibility": "NOT_INDEPENDENTLY_VERIFIED"
   }
 }
