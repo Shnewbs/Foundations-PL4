@@ -64,7 +64,7 @@ def verify_pl4_bytecode(archive, names, minecraft):
     for name in classes:
         with archive.open(name) as stream:
             header = stream.read(10)
-        if (len(header) != 10 or header[:4] != b"\\xca\\xfe\\xba\\xbe"
+        if (len(header) != 10 or header[:4] != bytes.fromhex("cafebabe")
                 or int.from_bytes(header[8:10], "big") == 0):
             raise ValueError(f"JAR contains an invalid PL4 classfile header: {name}")
         minor = int.from_bytes(header[4:6], "big")
