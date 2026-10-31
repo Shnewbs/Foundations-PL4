@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2205Z-26x-publisher-gate",
-    "acquired_at": "2026-10-31T22:05:00Z",
-    "scope": "tools/direct_curseforge_upload.py; tools/test_direct_curseforge_upload.py; docs/DIRECT_CURSEFORGE_UPLOAD.md; docs/acceptance"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -92,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 21:14 UTC: Direct CurseForge uploader now binds archive validation, SHA-256 receipt and multipart body to one immutable JAR byte snapshot; 2 regression methods committed, 8/8 source checks and 2/2 isolated transport smoke passed. Full repo/native blocked by local DNS/dependencies. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader. RC 0/24, no new JAR/release/upload or retained deletion.",
-  "local_validation": "8/8 GitHub source readback; 2/2 isolated standalone transport smoke; two new repo regression methods not executed; full Python/Gradle/native/installed provider not executed.",
+  "current_checkpoint": "2026-10-31 22:05 UTC: Direct CurseForge publisher now rejects unapproved 26.x targets including 26.4 and audit-only 26.1/26.2. Source/tests/docs pushed; 8/8 GitHub readback checks, 2 isolated helper methods/9 cases. Full repository/native unexecuted due DNS/Gradle. Official 26.4 Snapshot 6 latest, no NeoForge 26.4 coordinate. RC 0/24; no JAR, release, upload, Actions or retained deletion.",
+  "local_validation": "8/8 GitHub source checks; 2/2 isolated copied-helper Python methods (9 cases); 3 new repo regression methods committed but not executed; full Python/Gradle/native/installed provider not run.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -103,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-atomic-jar-snapshot-2026-10-31-1405-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-26x-approved-target-gate-2026-10-31-1505-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3081,7 +3077,7 @@
     "rc_clearance": "0/24"
   },
   "latest_264_compatibility_watch": {
-    "checked_at": "2026-10-31T10:08:49Z",
+    "checked_at": "2026-10-31T22:05:00Z",
     "latest_official_snapshot": "26.4-snapshot-6",
     "neoforge_264_build_observed": false,
     "exact_port_created": false,
@@ -3457,6 +3453,23 @@
     ],
     "evidence": "docs/acceptance/rc-dev-direct-upload-atomic-jar-snapshot-2026-10-31-1405-pdt.json",
     "validation": "8/8 GitHub source-readback checks, 2/2 standalone mirrored Python smoke; repository/native not executed",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_1505_26x_publisher_gate": {
+    "owner": "pl4-hourly-20261031T2205Z-26x-publisher-gate",
+    "claimed_at": "2026-10-31T22:05:00Z",
+    "released_at": "2026-10-31T22:11:00Z",
+    "lease_claim_commit": "d5ffa4fe4dbacfb2897cfa49e5f7c32e9f1a182e",
+    "source_commits": [
+      "de2bb87e6cbe6438189bba9331d7e392c1be5cd3",
+      "3e3243c52494dc2f851ea21794f999bcbb5b26b1",
+      "0ff7acb4648ef638fbd5154e342fe2f7030f3fa2"
+    ],
+    "evidence_commit": "6500a048dff1f0e92d1f2e81a76dacd568428019",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-26x-approved-target-gate-2026-10-31-1505-pdt.json",
+    "validation": "8/8 GitHub source checks; 2/2 isolated copied-helper Python methods, 9 cases; repository/native NOT RUN",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
