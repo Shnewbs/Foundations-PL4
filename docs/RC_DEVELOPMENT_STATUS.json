@@ -21,7 +21,8 @@
     "26.1.2 exact 193/193 native PASS at source 3e341444 and run 41013493027; broader RC acceptance and any newer source remain unqualified; no neighboring-version inheritance",
     "1.21.1 exact 216/216 native PASS at source 4ab66dc and run 41153518219; separately installed optional-provider JAR native probe remains unexecuted; no RC clearance",
     "Independent installed-provider probe nonce/immutable-receipt source updates eaefad2/e0503a9 require offline Python test execution, Gradle compilation, native callback proof and retained exact hashes; static source checks alone do not clear RC.",
-    "Independent provider probe server.properties/EULA full-file hashes and in-runtime log binding at source 2ecc6d2 are source-only; 10/10 static checks, no Python/native/installed execution. Validate server.properties normalization on first boot."
+    "Independent provider probe server.properties/EULA full-file hashes and in-runtime log binding at source 2ecc6d2 are source-only; 10/10 static checks, no Python/native/installed execution. Validate server.properties normalization on first boot.",
+    "Provider native proof exact JSON type checks added at 3811bd2; 4 isolated tests/59 cases only, repository Python and 217 native/installed runtime NOT RUN; no RC clearance."
   ],
   "targets": [
     {
@@ -4746,5 +4747,14 @@
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_clearance": false
+  },
+  "latest_provider_probe_exact_counter_types": {
+    "source_commit": "3811bd263d85e1d040723079434cdad23321fabf",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-exact-counter-types-2026-10-31.json",
+    "isolated_tests": "4 methods / 59 cases PASS",
+    "repository_python": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_publication_cleared": false
   }
 }

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-31T07:12:24.556Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "source_commit": "3811bd263d85e1d040723079434cdad23321fabf",
+  "source_files": [
+    "tools/provider-probe/run_provider_probe.py",
+    "tools/provider-probe/test_run_provider_probe.py"
+  ],
+  "change": "Fail-closed exact JSON numeric typing for independent installed provider proof: callback counts/schema/API/leaks require Python int, chunk residency requires Python bool; reject bool/float numeric surrogates.",
+  "validation": {
+    "github_source_readback": "PASS: exact integer/boolean guards and both new negative test methods present; previous preflight tests retained",
+    "isolated_python_contract": "PASS: 4 unittest methods, 59 positive/negative cases against manually extracted validation logic; not repository test suite",
+    "repository_python_unittest": "NOT_RUN: complete checkout/import dependency unavailable through local GitHub DNS",
+    "gradle_java": "NOT_RUN: uncached Gradle dependencies and local GitHub DNS unavailable",
+    "native_217": "NOT_RUN",
+    "installed_provider_runtime": "NOT_RUN"
+  },
+  "existing_native_evidence": [
+    {
+      "target": "1.21.1",
+      "source": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+      "run": 41153518219,
+      "passed": 216,
+      "total": 216,
+      "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+      "new_source_qualified": false
+    },
+    {
+      "target": "26.1.2",
+      "source": "3e341444",
+      "run": 41013493027,
+      "passed": 193,
+      "total": 193,
+      "new_source_qualified": false
+    }
+  ],
+  "latest_retained_hourly_artifact": {
+    "run": 41161047494,
+    "artifact_id": 13027685062,
+    "source": "ba3165d218ef744316ec3a573bb423487c009f57",
+    "expired": false,
+    "exact_new_source_qualified": false
+  },
+  "publication": {
+    "rc_clearances": 0,
+    "maintained_targets": 24,
+    "rc_publication_cleared": false,
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "manual_actions_launched": 0
+  },
+  "compatibility_26_4": {
+    "official_snapshot": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "neoforge_26_4_loader": "NOT_LISTED in official Maven index at 2026-10-31 check",
+    "new_branch": false,
+    "source": "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+    "maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+  },
+  "blockers": [
+    "No network-capable local Gradle dependency cache or full checkout to execute repository Python/Java/native tests",
+    "Native server.properties normalization still unobserved; retain fail-closed prepared input hashes until actual native evidence",
+    "Independent installed-provider callback proof, authenticated multiplayer, migration, sustained performance and per-version RC clearance remain pending"
+  ],
+  "next_step": "Run complete repository Python suite and compile/install independent provider probe against pinned exact 1.21.1 JAR; inspect real server property normalization; then 217 native and online/migration/performance evidence. Never publish uncleared development builds."
+}
