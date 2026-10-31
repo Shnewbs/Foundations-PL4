@@ -293,10 +293,20 @@ class ProviderReceiptTests(unittest.TestCase):
                 props.write_text(props.read_text().replace(
                     "online-mode=true", "online-mode=false"))
                 props.write_text(props.read_text() + "online-mode=false\n")
-                with self.assertRaisesRegex(ValueError, "Duplicate server property keys"):
+                with self.assertRaisesRegex(ValueError, "Duplicate server property key"):
                     probe.validate_prepared_installation(
                         root, manifest, allow_runtime_config_changes=True)
                 props.write_text(props.read_text().rsplit("online-mode=false\n", 1)[0])
+                # Java Properties accepts aliases an equals-only parser misses.
+                safe_props = props.read_text()
+                for alias in ("online-mode:true\n", " online-mode=true\n",
+                              "online\\-mode=true\n", "online-mode true\n"):
+                    with self.subTest(alias=alias):
+                        props.write_text(safe_props + alias)
+                        with self.assertRaisesRegex(ValueError, "Unsafe server property syntax"):
+                            probe.validate_prepared_installation(
+                                root, manifest, allow_runtime_config_changes=True)
+                props.write_text(safe_props)
                 eula = root / "run/eula.txt"
                 eula.write_text("eula=true\n# normalized\n")
                 self.assertEqual(
@@ -307,6 +317,15 @@ class ProviderReceiptTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(
                         root, manifest, allow_runtime_config_changes=True)
+                eula.write_text("eula=true\n")
+                for ambiguous in ("eula=true\neula=false\n",
+                                  "eula=true\neula:false\n",
+                                  "eula=true\n eula=false\n"):
+                    with self.subTest(eula=ambiguous):
+                        eula.write_text(ambiguous)
+                        with self.assertRaises(ValueError):
+                            probe.validate_prepared_installation(
+                                root, manifest, allow_runtime_config_changes=True)
                 eula.write_text("eula=true\n")
                 manifest["protected_files"].pop("gradlew")
                 with self.assertRaises(ValueError):
