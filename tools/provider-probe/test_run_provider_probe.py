@@ -242,6 +242,12 @@ class ProviderReceiptTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
 
+    def test_runserver_depends_on_probe_isolation(self):
+        # Gradle must enforce this in its task graph, not just CLI argument order.
+        gradle = Path(__file__).with_name("build.gradle").read_text()
+        self.assertIn("tasks.matching { it.name == 'runServer' }.configureEach", gradle)
+        self.assertIn("dependsOn tasks.named('verifyProbeIsolation')", gradle)
+
     def test_gradle_jar_is_checked_before_server_launch(self):
         source = inspect.getsource(probe.run)
         self.assertLess(source.index('"verifyProbeIsolation"'),

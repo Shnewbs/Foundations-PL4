@@ -31,3 +31,9 @@ tasks.register('verifyProbeIsolation') {
         }
     }
 }
+
+// A CLI task list is not a dependency edge: enforce the JAR isolation gate
+// even when a caller invokes runServer directly or Gradle reorders tasks.
+tasks.matching { it.name == 'runServer' }.configureEach {
+    dependsOn tasks.named('verifyProbeIsolation')
+}
