@@ -61,3 +61,16 @@ standalone probe JAR cannot be launched first. Negative unit tests cover
 wrapper tampering, changed online-mode, extra mods and missing hash entries.
 These are source-level safeguards; they do not replace compiling and running
 the independent probe on a network-capable local NeoForge installation.
+
+## Measured native proof and immutable evidence (October 31)
+
+The Java probe now writes the **observed** callback counts, published/discarded
+rows, before/after chunk residency and registration leak count into schema 2.
+It still requires every expected value before issuing a PASS marker; expected
+values are not substituted into the JSON receipt. The native proof uses
+exclusive file creation, as do the Python server log and retained receipt.
+Symlinked proof/log inputs are rejected, and repeated identical receipt
+verification remains idempotent. New negative Python tests cover an existing
+log and a symlinked receipt. **These source changes have not yet been compiled
+or executed against the independent installed production JAR**; a native PASS
+and exact source/JAR/proof/log hashes are required before acceptance.

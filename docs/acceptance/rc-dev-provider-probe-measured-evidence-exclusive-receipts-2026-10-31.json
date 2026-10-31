@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-10-31T05:07:59.064Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "exact_target": "1.21.1",
+  "channel": "development",
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T0504Z-immutable-probe",
+    "claim_commit": "96fd8a13e4032ef339d4849b34ecf570fd9afbfc",
+    "source_commit": "2d0415a54bae29011157834b3e2c256c3cb7a075",
+    "release_at_checkpoint": true
+  },
+  "source_changes": {
+    "commit": "2d0415a54bae29011157834b3e2c256c3cb7a075",
+    "files": [
+      "tools/provider-probe/src/main/java/net/foundations/pl4providerprobe/InstalledProviderProbe.java",
+      "tools/provider-probe/run_provider_probe.py",
+      "tools/provider-probe/test_run_provider_probe.py"
+    ],
+    "description": "Native provider proof now serializes actual callback, row, chunk residency and registration-leak observations rather than hard-coded expected results. Native proof, server log and receipt are created exclusively; symlinked proof/log inputs are rejected. Two new negative Python tests cover log overwrite and symlink receipt.",
+    "production_pl4_source_changed": false,
+    "native_fixture_count_changed": false,
+    "expected_native_fixtures": 217
+  },
+  "validation": {
+    "github_source_readback_contracts": {
+      "passed": 12,
+      "total": 12,
+      "scope": "Static checks against GitHub main source; not Python/Java execution"
+    },
+    "isolated_local_python_helper_checks": {
+      "passed": 4,
+      "total": 4,
+      "scope": "Locally reproduced exclusive-create helper bodies; NOT imported repository unit tests"
+    },
+    "repository_python_unit_tests": "NOT_EXECUTED",
+    "java_gradle_compilation": "NOT_EXECUTED",
+    "native_217_tests": "NOT_EXECUTED",
+    "independent_installed_provider_probe": "NOT_COMPILED_OR_EXECUTED",
+    "blocker": "Local GitHub DNS unavailable, no Gradle executable/cache or NeoForge dependencies; Java 21 present; cannot honestly claim native or repository unit-test pass"
+  },
+  "prior_verified_native": {
+    "1.21.1": {
+      "source_commit": "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06",
+      "run_id": 41158564367,
+      "game_tests_passed": 216,
+      "game_tests_total": 216,
+      "artifact_id": 13026248357,
+      "scope": "Earlier exact source; log confirmed 216 required tests passed; production JAR hash not independently reverified in this checkpoint"
+    },
+    "1.21.1_hourly": {
+      "source_commit": "ba3165d218ef744316ec3a573bb423487c009f57",
+      "run_id": 41161047494,
+      "game_tests_passed": 216,
+      "game_tests_total": 216,
+      "artifact_id": 13027685062,
+      "scope": "Earlier source; not current 217-case candidate"
+    },
+    "26.1.2": {
+      "source_commit": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+      "run_id": 41013493027,
+      "game_tests_passed": 193,
+      "game_tests_total": 193,
+      "scope": "Previously verified exact branch source"
+    }
+  },
+  "actions": {
+    "manually_launched": 0,
+    "latest_existing_hourly_run": 41161047494,
+    "latest_existing_hourly_status": "success",
+    "duplicate_build_started": false
+  },
+  "minecraft_26_4": {
+    "latest_official_snapshot": "Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "neoforge_maven_26_4_entry_observed": false,
+    "checked_at_utc": "2026-10-31T05:07:59.064Z",
+    "compatibility_notes": "Snapshot 1 mod-list/intention, Snapshot 4 fluid source state, Snapshot 5 handshake and Vulkan remain future exact-version gates; no 26.4 branch or binary created",
+    "sources": [
+      "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "publication": {
+    "rc_clearances": 0,
+    "targets": 24,
+    "new_github_releases": 0,
+    "new_curseforge_uploads": 0,
+    "rc_publication_cleared": false
+  },
+  "next_work": [
+    "Execute repository Python negative tests on a dependency-capable local checkout, then compile the standalone probe and run installed exact 1.21.1 production JAR against it",
+    "Retain real native provider callback, rows, no-force-load, registration leak, source/JAR/proof/log/receipt hashes",
+    "Continue authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, exact 26.1/26.2 attribution and remaining ports; inspect branch-local publishers before version-branch source changes"
+  ]
+}

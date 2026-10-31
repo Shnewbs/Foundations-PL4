@@ -5,15 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T0504Z-immutable-probe",
-    "acquired_at": "2026-10-31T05:04:41.763Z",
-    "expires_at": "2026-10-31T05:16:41.763Z",
-    "source_branch": "main",
-    "base_commit": "5fec568f25a71aa628fc9d80ad9ffa625585719c",
-    "purpose": "Independent installed-provider evidence immutability and real native counter attribution",
-    "status": "active"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -22,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T04:06:06.206Z: independent provider runner preflight and jar-before-server source changes c3cfaa2; 8/8 static source contracts PASS; Python/Gradle/native 217 and installed probe not run; 0/24 RC clearances; no release.",
-  "local_validation": "6/6 static source-contract checks via GitHub connector; no local Python, Gradle, native, installed-provider execution due to GitHub DNS and missing Gradle dependencies. Previous 216/216 native PASS pinned to 4ab66dc/run 41153518219; scheduled 41161047494 pre-change only.",
+  "current_checkpoint": "2026-10-31T05:07:59.064Z: independent installed-provider measured proof and exclusive receipt/log/proof source 2d0415a5; 12/12 static checks, 4/4 isolated helper checks; repository Python/Gradle/native 217 and installed probe not executed; 0/24 RC clearances, no release.",
+  "local_validation": "12/12 static source contracts via GitHub readback and 4/4 isolated local helper reproductions; actual repository Python tests, Java/Gradle, native 217 and independent installed-provider execution NOT run due to GitHub DNS/no Gradle cache.",
   "next_work": [
-    "Run provider-probe Python negative tests locally; compile exact 1.21.1 217-case source and independent installed-provider probe without GitHub Actions; preserve exact source/JAR/log/proof/receipt hashes",
-    "Run provider probe against installed exact production JAR: replacement, registration revocation, self-close, exception quarantine and unloaded no-force-load",
-    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap per exact maintained target",
-    "Repair genuine 26.1/26.2 source attribution and 1.6.4 gravel root cause; watch official 26.4 NeoForge loader and protocol/Vulkan/fluid changes without unsupported publication"
+    "Run actual tools/provider-probe/test_run_provider_probe.py tests in a local checkout and compile separate provider probe against pinned exact 1.21.1 JAR; preserve hashes and nonce-bound real proof",
+    "Run exact 217-case 1.21.1 native verification locally without GitHub Actions; no release before native/installed/multiplayer/migration/performance clearance",
+    "Continue authenticated multiplayer, arbitrary-world migration, sustained performance and genuine 26.1/26.2 attribution; investigate 1.6.4 gravel causality; watch official 26.4 loader",
+    "Before any mc/<exact-version> source push, inspect and guard that branch's own push-triggered publisher (notably 1.16.4/1.16.5 finding)"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -71,15 +63,14 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0404Z-probe-preflight",
-    "claimed_at": "2026-10-31T04:04:10.505Z",
-    "released_at": "2026-10-31T04:06:06.206Z",
-    "lease_claim_commit": "e10acbffad24473181bf4368ad2fbe5c287f9333",
+    "owner": "pl4-hourly-20261031T0504Z-immutable-probe",
+    "claimed_at": "2026-10-31T05:04:41.763Z",
+    "released_at": "2026-10-31T05:07:59.064Z",
+    "lease_claim_commit": "96fd8a13e4032ef339d4849b34ecf570fd9afbfc",
     "source_commits": [
-      "cdfa71098f35a697ad9f8a06b9e025a1bacf450c",
-      "c3cfaa29328aaa92f7c3110ea801fbd7085a0799"
+      "2d0415a54bae29011157834b3e2c256c3cb7a075"
     ],
-    "evidence": "docs/acceptance/rc-dev-provider-probe-preflight-2026-10-31.json",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-measured-evidence-exclusive-receipts-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
   },
@@ -3086,6 +3077,30 @@
     "static_checks": "8/8 PASS",
     "python_tests": "NOT_EXECUTED",
     "native_installed": "NOT_EXECUTED",
+    "rc_publication_cleared": false
+  },
+  "previous_writer_release_20261031_0406": {
+    "owner": "pl4-hourly-20261031T0404Z-probe-preflight",
+    "claimed_at": "2026-10-31T04:04:10.505Z",
+    "released_at": "2026-10-31T04:06:06.206Z",
+    "lease_claim_commit": "e10acbffad24473181bf4368ad2fbe5c287f9333",
+    "source_commits": [
+      "cdfa71098f35a697ad9f8a06b9e025a1bacf450c",
+      "c3cfaa29328aaa92f7c3110ea801fbd7085a0799"
+    ],
+    "evidence": "docs/acceptance/rc-dev-provider-probe-preflight-2026-10-31.json",
+    "writer_lease_released": true,
+    "release_performed": false
+  },
+  "latest_installed_provider_measured_evidence": {
+    "source_commit": "2d0415a54bae29011157834b3e2c256c3cb7a075",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-measured-evidence-exclusive-receipts-2026-10-31.json",
+    "static_checks": "12/12 PASS",
+    "isolated_helper_checks": "4/4 PASS (reproduced helper bodies, not repository tests)",
+    "repository_python_tests": "NOT_EXECUTED",
+    "java_gradle": "NOT_EXECUTED",
+    "native_217": "NOT_EXECUTED",
+    "installed_provider": "NOT_EXECUTED",
     "rc_publication_cleared": false
   }
 }
