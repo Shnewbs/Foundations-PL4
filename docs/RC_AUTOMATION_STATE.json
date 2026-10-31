@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1901Z-bytecode-preflight",
-    "claimed_at": "2026-10-31T19:01:46Z",
-    "scope": "tools/direct_curseforge_upload.py; tools/test_direct_curseforge_upload.py; compatibility and acceptance documentation",
-    "policy": "no actions; no new branches; no binary upload without full acceptance"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,18 +88,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 18:12 UTC: Direct CurseForge uploader now rejects duplicate PL4 mod metadata, duplicate Minecraft/loader dependencies, mixed loaders and malformed dependency tables. Five regression methods pushed, 8/8 isolated mirrored checks and GitHub source readback passed; full repo/native unavailable due DNS/Gradle. Official 26.4 Snapshot 6 remains latest and no NeoForge 26.4 loader exists. RC 0/24; no production JAR/release/upload or retained build deletion.",
-  "local_validation": "PASS GitHub source readback and 8/8 mirrored isolated Python checks; full Python, Gradle/native, installed-provider and live acceptance NOT RUN due DNS/dependencies.",
+  "current_checkpoint": "2026-10-31 19:15 UTC: Direct publisher now validates every PL4 classfile header and target Java bytecode ceiling (Java 8/16/17/21/25). Source and regression tests committed on main; 14/14 readback assertions and 12 mirrored helper scenarios passed; full repo/native blocked by local GitHub DNS and uncached Gradle. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader. RC 0/24, no new binary/release/upload or retained deletion.",
+  "local_validation": "14/14 GitHub source readback checks and 12/12 isolated mirrored helper scenarios passed; complete repository Python/Gradle/native, installed-provider, multiplayer and performance not run.",
   "next_work": [
-    "Run full repository Python tests including new archive integrity regressions on a dependency-capable local builder",
-    "Run exact-source native 217 GameTests and installed-provider runtime, authenticated multiplayer, saved-world migration and controlled TPS/heap performance",
-    "Publish exact-target GitHub/CurseForge assets only when RC clearance is explicit and hashes verified",
-    "Watch official Minecraft 26.4 snapshot and NeoForge loader; do not create unsupported branch"
+    "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
+    "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
+    "Publish exact-target GitHub/CurseForge artifacts only after clearance and hash-verify before deleting redundant builds",
+    "Watch 26.4 loader and snapshot; no unsupported branch or release"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-metadata-uniqueness-2026-10-31-1105-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-bytecode-preflight-2026-10-31-1205-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3401,6 +3396,21 @@
     "evidence_commit": "be330664590051acfb75183196bb89a9431f03dd",
     "evidence": "docs/acceptance/rc-dev-direct-upload-jar-integrity-2026-10-31-1004-pdt.json",
     "validation": "5/5 isolated mirrored archive integrity cases; GitHub source readback; repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_bytecode_preflight": {
+    "owner": "pl4-hourly-20261031T1901Z-bytecode-preflight",
+    "claimed_at": "2026-10-31T19:01:46Z",
+    "released_at": "2026-10-31T19:15:00Z",
+    "source_commits": [
+      "598d1c7047572f3dc0481474ad79c818d7acbabd",
+      "4773583312ab40465ef449944a0f4444600fc454",
+      "f72a98ed322a9087ece61ad336057e0cf67462e9"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-bytecode-preflight-2026-10-31-1205-pdt.json",
+    "validation": "14/14 GitHub readback checks; 12/12 mirrored local bytecode helper scenarios; full repo/native unexecuted",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
