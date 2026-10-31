@@ -20,6 +20,25 @@ from publication_policy import is_rc, require_publication
 NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<version>[A-Za-z0-9][A-Za-z0-9._-]*)\.jar\Z")
 
 
+
+def verify_archive_integrity(archive):
+    """Reject ambiguous, unsafe, or corrupt JAR entries before publication."""
+    seen = set()
+    for entry in archive.infolist():
+        name = entry.filename
+        if name in seen:
+            raise ValueError(f"JAR contains duplicate archive entry: {name}")
+        seen.add(name)
+        if (not name or name.startswith("/") or "\\" in name
+                or any(part in (".", "..") for part in name.split("/"))):
+            raise ValueError(f"JAR contains unsafe archive entry path: {name}")
+        if ((entry.external_attr >> 16) & 0o170000) == 0o120000:
+            raise ValueError(f"JAR contains symbolic-link archive entry: {name}")
+    corrupt = archive.testzip()
+    if corrupt is not None:
+        raise ValueError(f"JAR contains corrupt archive entry: {corrupt}")
+
+
 def inspect(jar, notes):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -39,6 +58,7 @@ def inspect(jar, notes):
     if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
         raise ValueError("A nonempty, version-specific changelog is required")
     with zipfile.ZipFile(jar) as archive:
+        verify_archive_integrity(archive)
         names = set(archive.namelist())
         if not any(n.startswith("net/foundations/pl4/") and n.endswith(".class") for n in names):
             raise ValueError("JAR contains no compiled PL4 classes")
