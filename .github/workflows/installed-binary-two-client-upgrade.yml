@@ -1,25 +1,8 @@
 name: Installed 1.21.1 production-JAR two-client saved-world upgrade
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/installed-binary-two-client-upgrade.yml'
-      - 'tools/multiplayer-probe/installed_binary_two_clients.py'
-      - 'tools/multiplayer-probe/test_installed_binary_two_clients.py'
-      - 'tools/multiplayer-probe/MultiplayerServerProbe.java'
-      - 'tools/multiplayer-probe/MultiplayerClientProbe.java'
-      - 'tools/multiplayer-probe/test_installed_binary_world_upgrade.py'
-      - 'tools/multiplayer-probe/installed_binary_smoke.py'
-      - 'tools/multiplayer-probe/exact_native_candidate.py'
-      - 'tools/multiplayer-probe/release_binary_preflight.py'
-      - 'tools/multiplayer-probe/verify_upgrade_evidence.py'
-      - 'tools/multiplayer-probe/verify_native_multipart_nbt.py'
-      - 'tools/multiplayer-probe/test_verify_native_multipart_nbt.py'
-      - 'tools/multiplayer-probe/verify_installed_client_nbt.py'
-      - 'tools/multiplayer-probe/test_verify_installed_client_nbt.py'
-      - 'tools/multiplayer-probe/verify_installed_cable_client_nbt.py'
-      - 'tools/multiplayer-probe/test_verify_installed_cable_client_nbt.py'
   workflow_dispatch:
+
 permissions:
   contents: read
   actions: read

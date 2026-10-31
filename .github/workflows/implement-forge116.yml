@@ -1,9 +1,8 @@
 name: Implement and validate Forge 1.16.5
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/implement-forge116.yml']
   workflow_dispatch:
+
 permissions:
   contents: write
   actions: read
