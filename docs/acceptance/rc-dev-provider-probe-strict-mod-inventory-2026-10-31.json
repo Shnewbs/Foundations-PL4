@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "date": "2026-10-31",
+  "source_commit": "b5846d6933669196c202e47546a61c97927ade48",
+  "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/b5846d6933669196c202e47546a61c97927ade48",
+  "branch": "main",
+  "scope": "Independent installed-provider preflight and receipt verification",
+  "change": [
+    "Reject non-JAR and nested mod entries",
+    "Reject symlinked runtime/mod directories",
+    "Add negative regression cases"
+  ],
+  "validation": {
+    "github_source_contracts": "9/9 PASS",
+    "isolated_copied_python_inventory": "6/6 PASS; NOT repository suite",
+    "repository_python": "NOT_RUN",
+    "gradle_java": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "authenticated_multiplayer": "NOT_RUN",
+    "migration": "NOT_RUN",
+    "sustained_performance": "NOT_RUN"
+  },
+  "prior_native_evidence": {
+    "minecraft_1_21_1": "216/216 at older source 4ab66dc, run 41153518219",
+    "minecraft_26_1_2": "193/193 at older source 3e341444, run 41013493027"
+  },
+  "latest_hourly": {
+    "run": 41161047494,
+    "source": "ba3165d218ef744316ec3a573bb423487c009f57",
+    "manually_triggered": false
+  },
+  "minecraft_26_4": {
+    "snapshot": "6 (October 27)",
+    "neoforge_loader": "not found in official Maven index October 31",
+    "port_created": false
+  },
+  "release": {
+    "cleared": 0,
+    "targets": 24,
+    "new_github": 0,
+    "new_curseforge": 0
+  },
+  "blockers": [
+    "github.com DNS resolution fails in container",
+    "Gradle and dependencies unavailable"
+  ],
+  "next": [
+    "Run actual repository Python suite and Gradle task graph",
+    "Run exact 217 native fixtures and separate installed provider JAR",
+    "Collect authenticated multiplayer, migration and sustained performance evidence"
+  ],
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T0908Z-provider-mod-inventory",
+    "claim_commit": "99167e23c4967d7dbdce4987c4fadc034a76037c",
+    "released": true
+  }
+}

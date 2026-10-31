@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-hourly-20261031T0908Z-provider-mod-inventory","claimed_at":"2026-10-31T09:08:40.245Z","expires_at":"2026-10-31T09:28:40.245Z","source_branch":"main","base_commit":"908d966e92b79eea44af59a461fdd90c0713da7e","purpose":"Guarded independent installed-provider inventory validation and exact-target acceptance","status":"active"},
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,8 +14,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T08:05:05.666Z: provider Gradle runServer isolation dependency source 870ab18; 6/6 source contracts passed; repository Python/Gradle/217 native/installed probe NOT RUN; 0/24 cleared, no release.",
-  "local_validation": "GitHub exact source readback PASS, 6/6 source-contract and negative-mutation checks PASS; repository Python unittest, Gradle task graph, Java compile, 217 native GameTests and independent installed-provider runtime NOT RUN (local GitHub DNS unavailable; Gradle absent).",
+  "current_checkpoint": "2026-10-31T09:10:28.907Z: b5846d6 rejects extra/nested/symlinked independent installed-provider mods; GitHub readback 9/9 and isolated Python inventory 6/6 PASS; repository unittest, Gradle, 217 native and installed probe NOT RUN; 0/24 RC; no release.",
+  "local_validation": "9/9 source-readback checks PASS; 6/6 isolated copied Python inventory cases PASS. Full repository unittest, Gradle/Java, 217 native GameTests and installed-provider runtime NOT RUN (GitHub DNS unavailable and Gradle dependencies uncached).",
   "next_work": [
     "Execute repository Python unittest and Gradle task graph locally when dependency resolution works; verify runServer depends on verifyProbeIsolation",
     "Compile independent installed probe against pinned production JAR and inspect server.properties normalization, native proof, nonce and hashes",
@@ -2832,7 +2832,7 @@
     "rc_clearance": "0/24",
     "release_performed": false
   },
-  "next_step": "Build and install independent optional-provider probe JAR beside exact 1.21.1 production JAR; prove callback unload/replacement/no-force-load with exact logs/hashes; then per-target multiplayer, migration and sustained performance.",
+  "next_step": "Run full repository Python and Gradle task graph on dependency-capable builder, then 217 exact native GameTests and independent installed provider JAR; authenticated multiplayer, migration, sustained performance and remaining ports follow.",
   "last_checkpoint": {
     "timestamp": "2026-10-30T17:10:00Z",
     "source_commit": "291516dd515d841ae8c0ea52fc227dce4afb4471",
@@ -3158,5 +3158,28 @@
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_clearance": false
+  },
+  "latest_provider_probe_mod_inventory": {
+    "source_commit": "b5846d6933669196c202e47546a61c97927ade48",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-strict-mod-inventory-2026-10-31.json",
+    "github_source_contracts": "9/9 PASS",
+    "isolated_python": "6/6 PASS copied function only",
+    "repository_python": "NOT_RUN",
+    "gradle": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false
+  },
+  "latest_writer_release_20261031_0908": {
+    "owner": "pl4-hourly-20261031T0908Z-provider-mod-inventory",
+    "claimed_at": "2026-10-31T09:08:40.245Z",
+    "released_at": "2026-10-31T09:10:28.907Z",
+    "lease_claim_commit": "99167e23c4967d7dbdce4987c4fadc034a76037c",
+    "source_commits": [
+      "b5846d6933669196c202e47546a61c97927ade48"
+    ],
+    "evidence": "docs/acceptance/rc-dev-provider-probe-strict-mod-inventory-2026-10-31.json",
+    "writer_lease_released": true,
+    "release_performed": false
   }
 }

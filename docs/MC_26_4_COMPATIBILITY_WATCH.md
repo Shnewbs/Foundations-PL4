@@ -31,3 +31,7 @@ Mojang's [26.4 Snapshot 1](https://www.minecraft.net/da-dk/article/minecraft-26-
 ## October 31 08:05 UTC recheck
 
 The [official NeoForge Maven directory](https://maven.neoforged.net/releases/net/neoforged/neoforge/) still contains `26.3.0.99` and no `26.4` coordinate; Mojang's [Snapshot 6](https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6) from October 27 remains the latest listed snapshot. No new exact port or release is authorized; preserve the prior Vulkan, fluid-state, and authenticated handshake gates.
+
+## October 31 latest compatibility recheck
+
+The [official Mojang snapshot list](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) still tops out at **26.4 Snapshot 6 (October 27)**; the [NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains no `26.4` coordinate. Preserve Vulkan, fluid-source, mod-list, handshake and migration gates. No new target, branch or release is authorized.

@@ -2001,12 +2001,14 @@
   ],
   "latest_work": {
     "date": "2026-10-31",
-    "source_commit": "870ab18066008d54198e7b190aabd69980111932",
-    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
-    "change": "Enforced runServer Gradle dependency on verifyProbeIsolation, added source-contract regression",
-    "static_checks": "6/6 PASS",
-    "python_unittest": "NOT_RUN",
+    "source_commit": "b5846d6933669196c202e47546a61c97927ade48",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-strict-mod-inventory-2026-10-31.json",
+    "change": "Fail closed on unapproved non-JAR, nested and symlinked independent installed-provider mod entries",
+    "github_source_contracts": "9/9 PASS",
+    "isolated_python": "6/6 PASS (copied logic, not full suite)",
+    "repository_python": "NOT_RUN",
     "native": "PENDING_EXACT_SOURCE_217",
+    "installed_provider": "NOT_RUN",
     "release": "NOT_ELIGIBLE"
   },
   "partial_1211_acceptance": {
@@ -4766,5 +4768,17 @@
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_clearance": false
+  },
+  "latest_provider_probe_mod_inventory": {
+    "source_commit": "b5846d6933669196c202e47546a61c97927ade48",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-strict-mod-inventory-2026-10-31.json",
+    "github_source_contracts": "9/9 PASS",
+    "isolated_python": "6/6 PASS copied function only",
+    "repository_python": "NOT_RUN",
+    "gradle": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false,
+    "publication": "No new GitHub/CurseForge release or upload"
   }
 }
