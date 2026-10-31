@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {"owner":"pl4-hourly-20261031T1805Z-metadata-uniqueness","claimed_at":"2026-10-31T18:05:00Z","scope":"tools/direct_curseforge_upload.py, its tests, and evidence; direct API writes only","status":"active"},
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
