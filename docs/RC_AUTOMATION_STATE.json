@@ -5,7 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {"owner":"pl4-hourly-20261031T0105Z-native-216-fixture-repair","acquired_at":"2026-10-31T01:04:05.788Z","expires_at":"2026-10-31T01:29:05.788Z","source_branch":"main","base_commit":"271abae508fd79ac5278921cef281caaa1f8a6c4","purpose":"Repair exact 1.21.1 native 216-fixture failure, preserve failed evidence and 26.4 compatibility watch","status":"active"},
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -14,8 +14,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T00:18:00Z: Implemented installed-provider registration-liveness guard and added exact native regression providerRegistrationCloseSuppressesLateCallback; BUILD_STATUS now requires 216 fixtures; evidence and docs recorded; lease released; fresh exact-source verification pending; no native/JAR/release evidence promoted.",
-  "local_validation": "Source commits 1b2288b9 and cd5e59a9 plus 216-fixture BUILD_STATUS/evidence/docs checkpointed on main. Prior 215/215 and 26.1.2 193/193 hashes remain preserved and source-scoped. No publication attempted.",
+  "current_checkpoint": "2026-10-31T01:09Z: 216 native run 41148739682 failed 2 provider fixtures after 1,149,451 offline assertions; repaired missing backing and registration cleanup on exact source 4ab66dc; new run 41153518219 pending; 26.4 watch updated; lease released; no native/JAR/RC evidence promoted.",
+  "local_validation": "Native run 41148739682: 214/216 passed, 2 required fixture failures. Source 4ab66dc fixes live backing and try-with-resources cleanup; static source inspection PASS, new exact-source native verification pending. No local Gradle runtime/network available. 26.4 official snapshots reviewed; NeoForge Maven lacks 26.4 as checked 2026-10-30.",
   "next_work": [
     "Build separate optional NeoForge probe mod/JAR (not in-process PL4 GameTests) and install beside exact PL4 production JAR; register callbacks that replace/unload backing targets and verify later callbacks suppressed, no forced chunk load and no stale rows",
     "Retain exact provider/PL4 JAR SHA-256, server run logs, callback counters and loaded-chunk before/after evidence; no installed-provider acceptance until real installed pass",
@@ -72,7 +72,7 @@
     "release_performed": true,
     "docs_only_checkpoint": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-registration-revocation-216-pending-2026-10-31.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -2984,5 +2984,18 @@
     "artifact_zip_sha256": "de979887edf8bc27488c4c2d044c2a9fbab91f9dcde2cc32eebf42b7da7efa62",
     "visibility_or_moderation": "NOT_INDEPENDENTLY_VERIFIED",
     "note": "All 24 were prior submitted/recorded versions, not new accepted RCs"
-  }
+  },
+  "latest_216_fixture_repair": {
+    "owner": "pl4-hourly-20261031T0105Z-native-216-fixture-repair",
+    "acquired_at": "2026-10-31T01:04:05.788Z",
+    "released_at": "2026-10-31T01:06:09.091Z",
+    "lease_claim_commit": "baa23050fdb97587c13072065deb3a5910bfdac0",
+    "expected_parent": "271abae508fd79ac5278921cef281caaa1f8a6c4",
+    "source_fix_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "evidence": "docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json",
+    "writer_lease_released": true,
+    "release_performed": false,
+    "rc_clearance": "0/24"
+  },
+  "latest_264_compatibility_watch": {"date":"2026-10-30","document":"docs/MC_26_4_COMPATIBILITY_WATCH.md","latest_snapshot":"26.4-snapshot-6","neoforge_26_4_listed":false,"new_exact_target_added":false}
 }

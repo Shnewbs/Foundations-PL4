@@ -19,7 +19,7 @@
     "arbitrary pre-save crash/power-loss durability, provider-private state and reviewed recovery; legacy clean and post-save-boundary process restart now have scoped native acceptance",
     "installed optional providers with callback revocation/unload/replacement, entity UUID replacement, and no-force-load evidence",
     "fresh exact 26.1.2 native qualification; no neighboring-version inheritance",
-    "fresh exact 216-fixture installed-provider registration revocation verification for source cd5e59a95c14a80ced78ef259c5ddf5c57ba7869"
+    "fresh exact 216-fixture native requalification after source 4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8 repairs live-backing and leaked registration fixture failures from run 41148739682"
   ],
   "targets": [
     {
@@ -4672,5 +4672,7 @@
     "visibility_or_moderation": "NOT_INDEPENDENTLY_VERIFIED",
     "note": "All 24 were prior submitted/recorded versions, not new accepted RCs"
   },
-  "latest_checkpoint": "2026-10-31: installed-provider registration liveness guard added; 216 exact native fixtures pending verification; no release/upload"
+  "latest_checkpoint": "2026-10-31: installed-provider registration liveness guard added; 216 exact native fixtures pending verification; no release/upload",
+  "latest_216_fixture_repair": {"failed_run":41148739682,"failed_native":2,"total_native":216,"offline_assertions_passed":1149451,"repair_commit":"4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8","fresh_run":41153518219,"native_result":"PENDING","rc_clearances":0,"evidence":"docs/acceptance/rc-dev-1211-provider-registration-native-216-fixture-repair-2026-10-31.json"},
+  "latest_264_watch": {"document":"docs/MC_26_4_COMPATIBILITY_WATCH.md","new_target":false,"release_eligible":false}
 }

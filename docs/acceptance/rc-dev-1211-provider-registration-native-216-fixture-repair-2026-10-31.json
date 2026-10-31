@@ -1,0 +1,60 @@
+{
+  "date_utc": "2026-10-31",
+  "repository": "Shnewbs/Foundations-PL4",
+  "failed_source": "271abae508fd79ac5278921cef281caaa1f8a6c4",
+  "failed_native": {
+    "run_id": 41148739682,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41148739682",
+    "job_id": 124379909673,
+    "status": "FAIL",
+    "offline_assertions_passed": 1149451,
+    "native_total": 216,
+    "native_failed": 2,
+    "native_passed": 214,
+    "failed_tests": [
+      "providerRegistrationCloseSuppressesLateCallback",
+      "infoProvidersBoundIsolateAndUnregister"
+    ],
+    "observed_errors": [
+      "First installed provider must be invoked once",
+      "Closing registrations releases providers"
+    ],
+    "retained_artifact_id": 13021479527,
+    "retained_artifact_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41148739682/artifacts/13021479527",
+    "artifact_zip_sha256_reported_by_runner": "4f17a2c32be67903fab1b17eb6b765d95ed025e5741a1fa03ca0e3012dda259a",
+    "independent_artifact_integrity_check": false
+  },
+  "diagnosis": "New fixture sampled an empty location without a backing block entity, so the production no-force-load/identity guard correctly suppressed callbacks. Its second registration handle was not scoped for cleanup when an assertion failed; this can contaminate later tests. The second failure is consistent with that leaked provider; not independently proven.",
+  "source_fix": {
+    "commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "path": "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+    "changes": [
+      "Create a real chest backing and assert it is present before sample",
+      "Use dimension of test level and match exact target",
+      "Scope both provider handles with try-with-resources even if assertions fail",
+      "Assert revoked registration does not remain in global registry"
+    ],
+    "expected_native_fixtures": 216,
+    "static_inspection": "PASS; Java source has live chest, backing assertion, scoped registration cleanup and liveness checks",
+    "native_verification": "PENDING",
+    "production_jar_sha256": null
+  },
+  "fresh_verification": {
+    "run_id": 41153518219,
+    "url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41153518219",
+    "status_at_checkpoint": "IN_PROGRESS",
+    "release_workflow_run": 41153518226
+  },
+  "release": {
+    "rc_clearances": 0,
+    "eligible_new_releases": 0,
+    "github_release_url": null,
+    "curseforge_upload_id": null,
+    "curseforge_visibility_verified": false
+  },
+  "next": [
+    "Inspect 216-fixture pinned native run; do not promote native/JAR evidence until full pass and artifact hash inspection",
+    "Build separately installed optional-provider test mod/JAR and prove callbacks/unload/replacement/no-force-load",
+    "Authenticated two-client, arbitrary-world migration, sustained performance, and remaining exact-version source repairs"
+  ]
+}
