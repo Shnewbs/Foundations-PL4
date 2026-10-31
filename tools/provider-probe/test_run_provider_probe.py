@@ -4,6 +4,7 @@ These do not claim a native run, JAR compilation, or RC acceptance.
 """
 import importlib.util
 import inspect
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -120,7 +121,7 @@ class ProviderReceiptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             probe.require_fresh_run(root)
-            for name in ("provider-server.log", "provider-proof.json", "provider-probe-receipt.json"):
+            for name in ("provider-server.log", "provider-proof.json", "provider-exit.json", "provider-probe-receipt.json"):
                 path = root / name
                 path.write_text("retained native evidence")
                 with self.assertRaises(ValueError):
@@ -145,6 +146,21 @@ class ProviderReceiptTests(unittest.TestCase):
             outside.write_text("PL4_INSTALLED_PROVIDER_PASS:" + EXPECTED + ":" + NONCE)
             with self.assertRaisesRegex(ValueError, "prepared runtime server log"):
                 probe.verify(root / "prepared", outside)
+
+    def test_offline_verify_rejects_missing_clean_exit_attestation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            log = root / "provider-server.log"
+            log.write_text(probe.MARKER + EXPECTED + ":" + NONCE + "\n")
+            (root / "provider-proof.json").write_text(json.dumps(valid_proof()))
+            (root / "provider-probe-prepared.json").write_text(json.dumps({
+                "run_nonce": NONCE, "pl4_source_commit": "c" * 40,
+                "installed_pl4_sha256": EXPECTED,
+            }))
+            with mock.patch.object(probe, "validate_prepared_installation",
+                                   return_value=(EXPECTED, NONCE)):
+                with self.assertRaisesRegex(ValueError, "clean-exit attestation"):
+                    probe.verify(root, log)
 
     def test_native_log_is_exclusively_created(self):
         with tempfile.TemporaryDirectory() as temp:
