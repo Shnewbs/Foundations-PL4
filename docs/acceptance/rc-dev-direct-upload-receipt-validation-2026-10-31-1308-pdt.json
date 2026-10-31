@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-31T20:10:00Z",
+  "scope": "Direct CurseForge local receipt fail-closed validation; no release clearance",
+  "source_base": "fcb4908b5964a4a4a26ba0d79e030b07b1f28df8",
+  "commits": {
+    "lease_claim": "b81a4ff93f1293781733ed7cebe8029cca239b76",
+    "implementation": "d00e27027adc7341a626d6daa5e1b8e81341723b",
+    "regressions": "7d8d848d54294c7fda8b0448a914c4f8f9bf5811",
+    "stronger_upload_test": "615745f2e844a1a2ec1437a92e2bc78f8a03a3f3",
+    "documentation": "de45b6f371af216095cf407941872b51f76f156f"
+  },
+  "change": "Validate existing local CurseForge receipt as dict with positive integer non-Boolean file ID, exact artifact/project/loader/version and explicit accepted-by-API status before suppressing an upload; avoid implying moderation or remote existence",
+  "validation": {
+    "github_source_readback": "PASS: exact implementation, 3 new regression methods, and documentation verified through GitHub connector",
+    "isolated_python": "PASS: 5/5 mirrored helper test methods with 19 positive/negative cases; not the full repository test suite",
+    "full_repository_python": "NOT RUN: full checkout unavailable in local execution environment",
+    "gradle_java": "NOT RUN: Gradle 9.2.1 distribution/dependencies unavailable; local Java 21 only",
+    "native_217": "NOT RUN at current main; prior 217/217 applies to d6c409f only",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "saved_world_migration": "NOT RUN",
+    "sustained_tps_heap": "NOT RUN"
+  },
+  "compatibility_watch": {
+    "checked_at": "2026-10-31T20:08:30Z",
+    "minecraft_latest_official": "26.4 Snapshot 6 (2026-10-27)",
+    "minecraft_source": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "neoforge_latest_observed": "26.3.0.99",
+    "neoforge_26_4_observed": false,
+    "neoforge_source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "action": "No unsupported 26.4 branch or binary; preserve existing Vulkan, fluid-state, handshake, migration, Java 25 and pinned-heap gates"
+  },
+  "publication": {
+    "rc_clearance": "0/24",
+    "github_actions_invoked": false,
+    "github_release_created": false,
+    "curseforge_upload_attempted": false,
+    "retained_builds_deleted": false
+  },
+  "blockers": [
+    "No local GitHub DNS for checkout",
+    "No cached Gradle 9.2.1 or dependencies",
+    "Exact-source native and installed-provider acceptance not run",
+    "No release-qualified production JAR or remote receipt verification"
+  ]
+}
