@@ -57,6 +57,11 @@ public final class InfoProviders {
         // Check residency BEFORE querying its block entity; the lookup must never
         // re-admit or force-load a target revoked by an earlier callback.
         if(context.entity()==null && !context.level().hasChunkAt(context.target().pos()))return;
+        // A provider may be unregistered by an earlier callback.  The snapshot is
+        // intentionally stable for deterministic iteration, but registration liveness
+        // is checked again immediately before invocation so a closed optional provider
+        // cannot receive a late callback in the same sample pass.
+        if(!builtin && !isRegistered(entry))return;
         boolean[] active={true};
         // Do not invoke an installed provider after an earlier provider or callback has
         // already invalidated the target. This keeps callback-time revocation from
@@ -75,6 +80,10 @@ public final class InfoProviders {
         }catch(RuntimeException|LinkageError ex){
             synchronized(entry){if(!entry.warned){entry.warned=true;org.slf4j.LoggerFactory.getLogger("FoundationsPL4").warn("Info provider {} failed; its partial sample was discarded",id,ex);}}
         }finally{active[0]=false;}
+    }
+    private static boolean isRegistered(Entry entry){
+        for(var current:snapshot)if(current==entry)return true;
+        return false;
     }
     private static boolean stillLive(Context context,Object initialBlockEntity){
         ServerLevel level=context.level();Part.Link target=context.target();
