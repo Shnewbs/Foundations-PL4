@@ -5,16 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2008Z-receipt-validation",
-    "claimed_at": "2026-10-31T20:08:30Z",
-    "scope": [
-      "tools/direct_curseforge_upload.py",
-      "tools/test_direct_curseforge_upload.py",
-      "docs/DIRECT_CURSEFORGE_UPLOAD.md"
-    ],
-    "expires_at": "2026-10-31T21:08:30Z"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -3423,5 +3414,31 @@
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
+  },
+  "latest_direct_upload_receipt_validation": {
+    "source_commits": [
+      "d00e27027adc7341a626d6daa5e1b8e81341723b",
+      "7d8d848d54294c7fda8b0448a914c4f8f9bf5811",
+      "615745f2e844a1a2ec1437a92e2bc78f8a03a3f3"
+    ],
+    "docs_commit": "de45b6f371af216095cf407941872b51f76f156f",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-receipt-validation-2026-10-31-1308-pdt.json",
+    "validation": "GitHub source readback PASS; 5/5 isolated mirrored Python methods, 19 cases; full repo/native NOT RUN",
+    "rc_publication_cleared": false,
+    "release_performed": false
+  },
+  "last_writer_release_20261031_1308_receipt_validation": {
+    "owner": "pl4-hourly-20261031T2008Z-receipt-validation",
+    "claimed_at": "2026-10-31T20:08:30Z",
+    "released_at": "2026-10-31T20:11:00Z",
+    "source_commits": [
+      "d00e27027adc7341a626d6daa5e1b8e81341723b",
+      "7d8d848d54294c7fda8b0448a914c4f8f9bf5811",
+      "615745f2e844a1a2ec1437a92e2bc78f8a03a3f3"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-receipt-validation-2026-10-31-1308-pdt.json",
+    "writer_lease_released": true,
+    "rc_clearance": "0/24",
+    "release_performed": false
   }
 }
