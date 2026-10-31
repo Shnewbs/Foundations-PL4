@@ -1,9 +1,7 @@
 name: Complete reviewed 0.2a native ports
 
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['tools/prepare_02a_ports.py', '.github/workflows/complete-02a-ports.yml']
   workflow_dispatch:
 
 permissions:
