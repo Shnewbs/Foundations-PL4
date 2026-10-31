@@ -1,0 +1,48 @@
+{
+  "recorded_date": "2026-10-31",
+  "target": "1.21.1",
+  "scope": "Non-destructive native performance benchmark harness; no runtime PL4 feature or port changes",
+  "source_commits": [
+    "1027418e2923fc4685e3ccafc7eabd028e5c3f14",
+    "dbaab087f5bc5d6420d4c125be079cc25ef04376",
+    "0acbac87c6b10740b2162bd69ccf4ff4d6350dc4"
+  ],
+  "changes": [
+    "Require two distinct clean disposable Git checkouts and a fresh results directory; reject active control checkout",
+    "Reject pre-existing run/world directories rather than deleting them",
+    "Only remove a prior trial run when a matching source-and-trial ownership marker is present",
+    "Reject symlinked or altered run markers and preserve unrelated world data",
+    "Create logs and comparison receipt exclusively instead of overwriting prior evidence",
+    "Add seven offline repository regression methods covering clean/dirty workspaces, existing worlds/results, symlinks and owned/unowned trial cleanup"
+  ],
+  "validation": {
+    "github_readback": "PASS: exact modified source and test blobs fetched; 9 source-contract checks passed",
+    "local_isolated_python": "PASS: 8/8 independently mirrored helper scenarios on Python 3.13.5; not the checked-out repository test suite",
+    "repository_python_suite": "NOT_RUN: repository checkout unavailable locally because github.com DNS resolution failed",
+    "gradle_compilation": "NOT_RUN: Gradle 9.2.1/dependencies not cached and network DNS unavailable",
+    "native_performance_comparison": "NOT_RUN: no two pinned local checkout builds",
+    "native_217": "PRIOR_SOURCE_ONLY: 217/217 at d6c409f, run 41190598603",
+    "installed_provider": "NOT_RUN: separate installed provider proof still pending",
+    "rc_clearances": "0/24"
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27; no newer official snapshot verified",
+    "neoforge": "Official Maven index checked 2026-10-31; no 26.4 coordinate",
+    "new_26_4_branch": false,
+    "existing_24_targets_unchanged": true
+  },
+  "publication": {
+    "new_jar": false,
+    "new_github_release": false,
+    "new_curseforge_upload": false,
+    "reason": "No exact-source native acceptance, installed provider, multiplayer, migration or sustained TPS/heap evidence",
+    "github_actions": "No manual dispatch; existing push-triggered workflows automatically started on main commits. Further checkpoint commits use [skip ci].",
+    "local_cleanup": "Only isolated temporary helper test directory removed after PASS; no user builds or world saves deleted"
+  },
+  "next": [
+    "Run full repository Python suite on a dependency-capable checkout",
+    "Build and execute pinned independent installed-provider JAR",
+    "Run native benchmark in disposable clean checkouts and measure sustained TPS/heap",
+    "Complete exact-version RC acceptance before publication"
+  ]
+}
