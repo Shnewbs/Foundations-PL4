@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-31T12:05:00Z",
+  "target": "Minecraft 1.21.1 / NeoForge 21.1.250 independent installed InfoProvider probe",
+  "scope": "Source-level acceptance verifier hardening; not a new PL4 runtime feature or RC clearance",
+  "source_changes": [
+    {
+      "commit": "6770abd74de687fbcbf958b69849c096f1481087",
+      "path": "tools/provider-probe/run_provider_probe.py",
+      "change": "Strict generated Java-properties parser rejects colon, whitespace, escaped keys and duplicates; EULA requires exactly one eula=true"
+    },
+    {
+      "commit": "c3bb4340ca70d7459ec96a3b8a5c3ac98839d96e",
+      "path": "tools/provider-probe/test_run_provider_probe.py",
+      "change": "Regression cases for disguised online-mode aliases and conflicting EULA"
+    },
+    {
+      "commit": "9c5b0b88155fb210122caf271ea2b2d0861cd53c",
+      "path": "tools/provider-probe/README.md",
+      "change": "Documents strict parser and remaining validation"
+    }
+  ],
+  "validation": {
+    "github_source_readback": "PASS: both changed Python files read back and inspected for parser and regression cases",
+    "isolated_local_parser": "PASS: 3 positive and 8 negative cases on copied helper logic; not the repository Python suite",
+    "repository_python_suite": "NOT_RUN: GitHub checkout inaccessible locally",
+    "gradle_compilation": "NOT_RUN: Gradle distribution/dependencies unavailable locally",
+    "native_game_tests": "NOT_RUN on this exact source",
+    "installed_provider_native": "NOT_RUN",
+    "retained_prior_native": {
+      "target": "1.21.1",
+      "source": "d6c409f761b675d9c665b0b36638d4ed98e11405",
+      "result": "217/217 PASS",
+      "workflow_run": 41190598603,
+      "attribution": "Prior exact-source result only; cannot qualify these changes"
+    }
+  },
+  "compatibility_watch": {
+    "checked_at": "2026-10-31",
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27",
+    "minecraft_source": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge": "No 26.4 loader entry in official Maven directory",
+    "neoforge_source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "port_created": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "github_release_created": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "Local GitHub DNS unavailable",
+    "No cached Gradle 9.2.1 distribution or NeoForge dependencies",
+    "Installed-provider native probe, authenticated multiplayer, migration and sustained TPS/heap still require exact-source execution"
+  ]
+}
