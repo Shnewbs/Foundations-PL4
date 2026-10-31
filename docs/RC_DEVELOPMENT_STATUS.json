@@ -4509,7 +4509,7 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-31T10:08:49Z: 1.21.1 exact d6c409f 217/217 native PASS; retained artifact/JAR CRC+SHA independently verified; local Python 277+18+168 PASS; clean-exit installed provider guard pushed 113dc/3eaa, native probe NOT RUN; 0/24 RC, no new release.",
+  "current_checkpoint": "2026-10-31T10:08:49Z: 1.21.1 exact d6c409f 217/217 native PASS; retained artifact/JAR CRC+SHA independently verified; local Python 277+18+168 PASS; clean-exit installed provider guard pushed 113dc/3eaa, native probe NOT RUN; 0/24 RC, no new release. Writer lease released at 10:10Z.",
   "latest_source_commit": "870ab18066008d54198e7b190aabd69980111932",
   "next_step": "Run actual tools/provider-probe/test_run_provider_probe.py tests in a local checkout and compile separate provider probe against pinned exact 1.21.1 JAR; preserve hashes and nonce-bound real proof",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
@@ -4536,17 +4536,18 @@
   ],
   "writer_lease": null,
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T1206Z",
-    "released_at": "2026-10-30T19:08:00Z",
-    "lease_claim_commit": "d68bd41f839f059917f6193311cf82ff1f147019",
-    "expected_parent": "169dfb5a94268fba31c01ed3f0c00ee6e83ecc0b",
+    "owner": "pl4-hourly-20261031T1004Z-native217-evidence",
+    "claimed_at": "2026-10-31T10:04:00Z",
+    "released_at": "2026-10-31T10:10:00Z",
+    "lease_claim_commit": "1d19a756f0163f54b91da36c65f246b2634b93f5",
     "source_commits": [
-      "765439df41437f86ed52eabc964f9ef8bc277b30",
-      "dd73ac625c21e16f05602924d6d26a962a349e79"
+      "113dc011fcda7a3bcc3b0b82a0a630b67f458e93",
+      "3eaa3d63f8d1c4fad11a2d856bb20958e657ad3e"
     ],
+    "evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false,
-    "evidence": "pending exact-source verification"
+    "rc_clearance": "0/24"
   },
   "last_update": "2026-10-31T10:08:49Z",
   "rc_clearances": {

@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1004Z-native217-evidence",
-    "claimed_at": "2026-10-31T10:04:00Z",
-    "expires_at": "2026-10-31T10:24:00Z",
-    "purpose": "Reconcile exact 217/217 native artifact and acceptance state; inspect independent provider probe; no releases until cleared"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -19,7 +14,7 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T10:08:49Z: 1.21.1 exact d6c409f 217/217 native PASS; retained artifact/JAR CRC+SHA independently verified; local Python 277+18+168 PASS; clean-exit installed provider guard pushed 113dc/3eaa, native probe NOT RUN; 0/24 RC, no new release.",
+  "current_checkpoint": "2026-10-31T10:08:49Z: 1.21.1 exact d6c409f 217/217 native PASS; retained artifact/JAR CRC+SHA independently verified; local Python 277+18+168 PASS; clean-exit installed provider guard pushed 113dc/3eaa, native probe NOT RUN; 0/24 RC, no new release. Writer lease released at 10:10Z.",
   "local_validation": "Exact 217 native PASS on prior d6c409f from scheduled retained run; local Python 277 tools + 18 provider + 168 multiplayer PASS on exact extracted source with pushed provider-file Git blobs; Gradle 9.2.1 wrapper blocked by services.gradle.org DNS; installed provider native NOT RUN.",
   "next_work": [
     "Compile/run separate installed provider mod with clean-exit attestation against pinned 1.21.1 JAR 45556e30, preserving nonce/log/proof/JAR hashes and checking server.properties normalization",
@@ -68,16 +63,18 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0803Z-provider-gradle-dependency",
-    "claimed_at": "2026-10-31T08:03:48.362Z",
-    "released_at": "2026-10-31T08:05:05.666Z",
-    "lease_claim_commit": "736ef214801aed84975f5be1a9f85be0d656a93d",
+    "owner": "pl4-hourly-20261031T1004Z-native217-evidence",
+    "claimed_at": "2026-10-31T10:04:00Z",
+    "released_at": "2026-10-31T10:10:00Z",
+    "lease_claim_commit": "1d19a756f0163f54b91da36c65f246b2634b93f5",
     "source_commits": [
-      "870ab18066008d54198e7b190aabd69980111932"
+      "113dc011fcda7a3bcc3b0b82a0a630b67f458e93",
+      "3eaa3d63f8d1c4fad11a2d856bb20958e657ad3e"
     ],
-    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
+    "evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json",
     "writer_lease_released": true,
-    "release_performed": false
+    "release_performed": false,
+    "rc_clearance": "0/24"
   },
   "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-217-native-clean-exit-provider-2026-10-31.json",
   "latest_branch_publisher_review": {
