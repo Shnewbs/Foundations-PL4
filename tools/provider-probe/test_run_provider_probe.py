@@ -238,6 +238,28 @@ class ProviderReceiptTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)
                 (mods / "unapproved.jar").unlink()
+                # A JAR-only glob used to miss non-JAR and nested mod entries.
+                extra = mods / "unapproved.txt"
+                extra.write_text("unapproved")
+                with self.assertRaisesRegex(ValueError, "no extra mod entries"):
+                    probe.validate_prepared_installation(root, manifest)
+                extra.unlink()
+                nested = mods / "nested-mods"
+                nested.mkdir()
+                with self.assertRaisesRegex(ValueError, "no extra mod entries"):
+                    probe.validate_prepared_installation(root, manifest)
+                nested.rmdir()
+                # A symlinked mods directory must not make an external mod
+                # inventory appear to belong to the prepared installation.
+                original = root / "mods-original"
+                mods.rename(original)
+                mods.symlink_to(original, target_is_directory=True)
+                try:
+                    with self.assertRaisesRegex(ValueError, "missing/untrusted"):
+                        probe.validate_prepared_installation(root, manifest)
+                finally:
+                    mods.unlink()
+                    original.rename(mods)
                 manifest["protected_files"].pop("gradlew")
                 with self.assertRaises(ValueError):
                     probe.validate_prepared_installation(root, manifest)

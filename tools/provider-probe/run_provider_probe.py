@@ -182,10 +182,19 @@ def validate_prepared_installation(output, manifest):
     require(sorted(p.relative_to(output).as_posix()
                    for p in (output / "src/main/java").rglob("*.java")) == [JAVA],
             "Unexpected PL4/other source in independent probe")
-    mods = sorted((output / "run/mods").glob("*.jar"))
+    # A *.jar glob silently ignores nested mods, disabled archives and other
+    # unapproved files. The independent acceptance runtime must have exactly
+    # one regular installed mod, not merely one matching JAR.
+    run_dir, mods_dir = output / "run", output / "run/mods"
+    require(output.is_dir() and not output.is_symlink() and
+            run_dir.is_dir() and not run_dir.is_symlink() and
+            mods_dir.is_dir() and not mods_dir.is_symlink(),
+            "Probe runtime or mods directory is missing/untrusted")
+    mods = sorted(mods_dir.iterdir())
     require(len(mods) == 1 and mods[0].is_file() and not mods[0].is_symlink() and
+            mods[0].suffix == ".jar" and
             mods[0].name == manifest.get("installed_pl4_name"),
-            "Expected exactly one installed PL4 production JAR")
+            "Expected exactly one regular installed PL4 production JAR and no extra mod entries")
     binary_smoke.validate_binary(mods[0], expected)
     props_path = output / "run/server.properties"
     require(props_path.is_file() and not props_path.is_symlink(),
