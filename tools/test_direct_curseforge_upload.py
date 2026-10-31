@@ -23,12 +23,14 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.notes.write_text("# Verified changes\n", encoding="utf-8")
         self.jar = self.root / "FoundationsPL4-1.21.1-0.97.0.rev1-beta.jar"
 
-    def make_jar(self, metadata=None):
+    def make_jar(self, metadata=None, class_bytes=None, metadata_path="META-INF/neoforge.mods.toml"):
         if metadata is None:
             metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
+        if class_bytes is None:
+            class_bytes = bytes.fromhex("cafebabe000000410001")  # Java 21 classfile header
         with zipfile.ZipFile(self.jar, "w") as archive:
-            archive.writestr("META-INF/neoforge.mods.toml", metadata)
-            archive.writestr("net/foundations/pl4/FoundationsPL4.class", b"class")
+            archive.writestr(metadata_path, metadata)
+            archive.writestr("net/foundations/pl4/FoundationsPL4.class", class_bytes)
 
     @staticmethod
     def metadata(version, target):
@@ -39,6 +41,51 @@ class DirectUploadValidationTests(unittest.TestCase):
     def test_accepts_matching_runtime_and_changelog(self):
         self.make_jar()
         self.assertEqual(inspect(self.jar, self.notes), ("1.21.1", "0.97.0.rev1-beta", "NeoForge"))
+
+
+    def test_rejects_fake_pl4_classfile(self):
+        self.make_jar(class_bytes=b"class")
+        with self.assertRaisesRegex(ValueError, "invalid PL4 classfile header"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_java25_classfile_for_java21_target(self):
+        self.make_jar(class_bytes=bytes.fromhex("cafebabe000000450001"))
+        with self.assertRaisesRegex(ValueError, "incompatible PL4 bytecode"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_preview_classfile(self):
+        self.make_jar(class_bytes=bytes.fromhex("cafebabeffff00410001"))
+        with self.assertRaisesRegex(ValueError, "incompatible PL4 bytecode"):
+            inspect(self.jar, self.notes)
+
+    def test_rejects_zero_constant_pool(self):
+        self.make_jar(class_bytes=bytes.fromhex("cafebabe000000410000"))
+        with self.assertRaisesRegex(ValueError, "invalid PL4 classfile header"):
+            inspect(self.jar, self.notes)
+
+    def test_accepts_java25_classfile_for_26_3(self):
+        self.jar = self.root / "FoundationsPL4-26.3-0.97.0.rev1-beta.jar"
+        self.make_jar(self.metadata("0.97.0.rev1-beta", "26.3"),
+                      class_bytes=bytes.fromhex("cafebabe000000450001"))
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("26.3", "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_rejects_java21_classfile_for_java17_forge(self):
+        self.jar = self.root / "FoundationsPL4-1.20.1-0.97.0.rev1-beta.jar"
+        metadata = self.metadata("0.97.0.rev1-beta", "1.20.1").replace(
+            'modId="neoforge"', 'modId="forge"')
+        self.make_jar(metadata, metadata_path="META-INF/mods.toml")
+        with self.assertRaisesRegex(ValueError, "incompatible PL4 bytecode"):
+            inspect(self.jar, self.notes)
+
+    def test_accepts_converted_java8_for_1_16_5(self):
+        self.jar = self.root / "FoundationsPL4-1.16.5-0.97.0.rev1-beta-java8.jar"
+        metadata = self.metadata("0.97.0.rev1-beta", "1.16.5").replace(
+            'modId="neoforge"', 'modId="forge"')
+        self.make_jar(metadata, class_bytes=bytes.fromhex("cafebabe000000340001"),
+                      metadata_path="META-INF/mods.toml")
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.16.5", "0.97.0.rev1-beta", "Forge"))
 
     def test_rejects_wrong_target_or_version(self):
         self.make_jar(self.metadata("0.2a", "1.21.1"))
