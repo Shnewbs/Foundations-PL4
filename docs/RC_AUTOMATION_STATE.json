@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1704Z-archive-integrity",
-    "claimed_at": "2026-10-31T17:04:15Z",
-    "purpose": "Harden direct CurseForge runtime JAR archive integrity checks and regressions; official 26.4 watch",
-    "release_publication_allowed": false
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_benchmark_safety": {
     "owner": "pl4-hourly-20261031T1409Z-benchmark-workspace-safety",
     "claimed_at": "2026-10-31T14:09:41Z",
@@ -78,10 +73,10 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 16:10 UTC: direct CurseForge uploader enforces RC exact-target BUILD_STATUS clearance, rejects dev even with existing receipt, rejects broad NeoForge Minecraft metadata; regression methods added. GitHub readback passed, 8/8 isolated mirrored policy cases passed, repository/native not run. Mojang 26.4 Snapshot 6, no NeoForge 26.4 coordinate. 0/24 RC; no JAR, release, upload or retained artifact deletion.",
-  "local_validation": "PASS GitHub readback; PASS 8/8 isolated mirrored policy checks; repository Python, Gradle/native, installed provider and live acceptance NOT RUN due DNS/dependencies.",
+  "current_checkpoint": "2026-10-31 17:04 UTC: Direct CurseForge uploader rejects duplicate ZIP names, unsafe paths, symlinks and corrupt CRC entries before publication. Four regression methods committed; 5/5 isolated mirrored archive cases and GitHub source readback passed, full repo/native not run due DNS/Gradle. Official 26.4 Snapshot 6 remains latest; no NeoForge 26.4 loader. 0/24 RC; no JAR/release/upload or retained build deletion.",
+  "local_validation": "PASS GitHub source readback and 5/5 mirrored archive checks; full Python, Gradle/native, installed-provider and live acceptance NOT RUN due DNS/dependencies.",
   "next_work": [
-    "Execute full repository Python tests for new direct uploader regression methods on a dependency-capable local builder",
+    "Run full repository Python tests including new archive integrity regressions on a dependency-capable local builder",
     "Run exact-source native 217 GameTests and installed-provider runtime, authenticated multiplayer, saved-world migration and controlled TPS/heap performance",
     "Publish exact-target GitHub/CurseForge assets only when RC clearance is explicit and hashes verified",
     "Watch official Minecraft 26.4 snapshot and NeoForge loader; do not create unsupported branch"
@@ -89,7 +84,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-rc-clearance-2026-10-31-0902-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-jar-integrity-2026-10-31-1004-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3369,6 +3364,23 @@
     "evidence_commit": "39dd6974fec17c8397fb6467c82d79bf9650b744",
     "evidence": "docs/acceptance/rc-dev-direct-upload-rc-clearance-2026-10-31-0902-pdt.json",
     "validation": "GitHub source readback passed; 8/8 isolated mirrored policy checks; repository Python/Gradle/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_1004_archive_integrity": {
+    "owner": "pl4-hourly-20261031T1704Z-archive-integrity",
+    "claimed_at": "2026-10-31T17:04:15Z",
+    "released_date": "2026-10-31",
+    "lease_claim_commit": "0d627eda279b190629099d4f4b7ea55be6b37d50",
+    "source_commits": [
+      "984e775f9604e4cd03faf586610e3e86c75a9107",
+      "33cfe32f0214f0c0973e592504157affebfa476a"
+    ],
+    "documentation_commit": "e48f4910ccb0273752c0a167d1ce80b91dbd222b",
+    "evidence_commit": "be330664590051acfb75183196bb89a9431f03dd",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-jar-integrity-2026-10-31-1004-pdt.json",
+    "validation": "5/5 isolated mirrored archive integrity cases; GitHub source readback; repository/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
