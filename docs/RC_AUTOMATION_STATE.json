@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1205Z-strict-properties",
-    "claimed_at": "2026-10-31T12:05:00Z",
-    "scope": "1.21.1 installed-provider Java-properties grammar/eula ambiguity regression only; no releases",
-    "expires_at": "2026-10-31T12:55:00Z"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_1108": {
     "owner": "pl4-hourly-20261031T1107Z-doc-clarity",
     "claimed_at": "2026-10-31T11:07:00Z",
@@ -46,8 +41,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T11:06:21Z: independent installed-provider runtime config normalization fixed on main (d015b25,209e1e3), 8/8 GitHub source-readback checks; native Python/Gradle/installed-provider NOT RUN this cycle; prior exact d6c409f 217/217 native remains valid only for its source; 26.4 Snapshot 6 and no NeoForge 26.4 loader; 0/24 RC, no release. Writer lease released.",
-  "local_validation": "Current source: 8/8 static source-contract checks only. No new Python, Java, Gradle or native runtime execution; Java 21 available but local DNS/Gradle dependencies unavailable. Earlier 277+18+168 Python and 217/217 native passes remain tied to their prior exact source.",
+  "current_checkpoint": "2026-10-31T12:11:00Z: strict Java-properties grammar and EULA post-run ambiguity gate pushed to main (6770abd,c3bb434,9c5b0b8), isolated 3 positive/8 negative parser cases passed, repository Python/Gradle/native NOT RUN; prior d6c409f 217/217 native remains earlier-source only; 26.4 Snapshot 6, no NeoForge 26.4 loader; 0/24 RC, no release. Writer lease released.",
+  "local_validation": "Current source: GitHub source readback and isolated copied-helper Python 3 positive/8 negative parser cases PASS. Full repository Python, Java, Gradle, native installed-provider NOT RUN (local GitHub DNS and Gradle cache unavailable). Prior 217/217 native and Python suite pass belong to older exact source.",
   "next_work": [
     "Compile/run separate installed provider mod with clean-exit attestation against pinned 1.21.1 JAR 45556e30, preserving nonce/log/proof/JAR hashes and checking server.properties normalization",
     "Complete authenticated multiplayer, arbitrary saved-world migration, reviewed client screenshots and sustained TPS/heap on exact sources",
@@ -56,7 +51,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-provider-runtime-config-normalization-2026-10-31-1106.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-provider-properties-grammar-2026-10-31-1205.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3280,5 +3275,20 @@
     "already_submitted": 24,
     "new_uploads": 0,
     "public_visibility": "NOT_INDEPENDENTLY_VERIFIED"
+  },
+  "last_writer_release_20261031_1205": {
+    "owner": "pl4-hourly-20261031T1205Z-strict-properties",
+    "claimed_at": "2026-10-31T12:05:00Z",
+    "released_at": "2026-10-31T12:11:00Z",
+    "lease_claim_commit": "1837d152f88b7bb407c5e7039c6b196bd596765f",
+    "source_commits": [
+      "6770abd74de687fbcbf958b69849c096f1481087",
+      "c3bb4340ca70d7459ec96a3b8a5c3ac98839d96e",
+      "9c5b0b88155fb210122caf271ea2b2d0861cd53c"
+    ],
+    "evidence": "docs/acceptance/rc-dev-provider-properties-grammar-2026-10-31-1205.json",
+    "writer_lease_released": true,
+    "release_performed": false,
+    "rc_clearance": "0/24"
   }
 }
