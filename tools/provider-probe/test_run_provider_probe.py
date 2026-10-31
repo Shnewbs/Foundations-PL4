@@ -4,7 +4,6 @@ These do not claim a native run, JAR compilation, or RC acceptance.
 """
 import importlib.util
 import inspect
-import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -131,10 +130,10 @@ class ProviderReceiptTests(unittest.TestCase):
             mods.mkdir(parents=True)
             (mods / "PL4-1.21.1.jar").write_bytes(b"mocked binary")
             props = root / "run/server.properties"
-            props.write_text("server-ip=127.0.0.1\\nserver-port=25588\\n"
-                             "online-mode=false\\nmax-players=1\\n"
-                             "enable-rcon=true\\nrcon.port=25589\\n")
-            (root / "run/eula.txt").write_text("eula=true\\n")
+            props.write_text("server-ip=127.0.0.1\nserver-port=25588\n"
+                             "online-mode=false\nmax-players=1\n"
+                             "enable-rcon=true\nrcon.port=25589\n")
+            (root / "run/eula.txt").write_text("eula=true\n")
             protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
                          "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT]
             manifest = {
