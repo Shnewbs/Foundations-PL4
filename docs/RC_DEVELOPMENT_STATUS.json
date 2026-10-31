@@ -18,8 +18,9 @@
     "documented 1.16.1–1.16.4 launcher profiles",
     "arbitrary pre-save crash/power-loss durability, provider-private state and reviewed recovery; legacy clean and post-save-boundary process restart now have scoped native acceptance",
     "installed optional providers with callback revocation/unload/replacement, entity UUID replacement, and no-force-load evidence",
-    "fresh exact 26.1.2 native qualification; no neighboring-version inheritance",
-    "fresh exact 216-fixture native requalification after source 4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8 repairs live-backing and leaked registration fixture failures from run 41148739682"
+    "26.1.2 exact 193/193 native PASS at source 3e341444 and run 41013493027; broader RC acceptance and any newer source remain unqualified; no neighboring-version inheritance",
+    "1.21.1 exact 216/216 native PASS at source 4ab66dc and run 41153518219; separately installed optional-provider JAR native probe remains unexecuted; no RC clearance",
+    "Independent installed-provider probe nonce/immutable-receipt source updates eaefad2/e0503a9 require offline Python test execution, Gradle compilation, native callback proof and retained exact hashes; static source checks alone do not clear RC."
   ],
   "targets": [
     {
@@ -4696,6 +4697,12 @@
     ],
     "source_committed": true,
     "native_executed": false,
+    "rc_publication_cleared": false
+  },
+  "last_provider_probe_integrity": {
+    "source_commit": "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06",
+    "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
+    "tests": "PENDING_LOCAL_EXECUTION",
     "rc_publication_cleared": false
   }
 }

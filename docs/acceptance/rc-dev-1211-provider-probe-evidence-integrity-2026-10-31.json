@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "date_utc": "2026-10-31T02:08:21.100Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Independent installed InfoProvider probe runner/test-mod integrity; Minecraft 1.21.1 only",
+  "source_commits": [
+    "eaefad209eb88963589bff96676cce64f12ab5d8",
+    "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06"
+  ],
+  "changes": [
+    "Per-preparation cryptographic random 128-bit nonce is passed to installed native probe, embedded in its JSON proof and server PASS marker, and verified against the immutable preparation manifest",
+    "Native run refuses to overwrite an existing server log, proof or receipt; a fresh prepared directory is required",
+    "Repeat receipt verification is idempotent and refuses to replace a different retained receipt",
+    "Two additional negative Python test methods for nonce rejection, stale evidence, and one receipt immutability test"
+  ],
+  "validation": {
+    "source_diff_review": "PASS: GitHub commit diffs reviewed for Python/Java marker, nonce, and receipt contract",
+    "static_contract_checks": "PASS: nonce environment, proof, marker, strict receipt and negative-test definitions matched",
+    "python_unit_tests": "NOT_EXECUTED: repository source cannot be cloned locally (DNS failure), and local dependencies not materialized",
+    "java_compilation": "NOT_EXECUTED: Gradle wrapper/dependencies unavailable in this runtime",
+    "native_installed_provider": "NOT_EXECUTED: separate installed probe has not produced a native proof",
+    "last_verified_production_native": {
+      "minecraft": "1.21.1",
+      "source_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+      "run_id": 41153518219,
+      "scenarios_passed": 216,
+      "scenarios_total": 216,
+      "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+      "artifact_id": 13024755329,
+      "scope": "previously verified unchanged PL4 production source; not new installed-probe acceptance"
+    },
+    "recent_push_triggered_workflows_observed": [
+      41158564367,
+      41158564355,
+      41158488286,
+      41158488278
+    ],
+    "no_manual_actions_dispatch": true
+  },
+  "compatibility_26_4": {
+    "checked_utc": "2026-10-31T02:08:21.100Z",
+    "official_maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "observed": "No 26.4 entry in current official index; Minecraft snapshot features remain watch-only",
+    "port_created": false
+  },
+  "release": {
+    "rc_clearances": 0,
+    "maintained_targets": 24,
+    "new_eligible_rc": false,
+    "new_github_release": null,
+    "new_curseforge_upload": null,
+    "rc_publication_cleared": false
+  },
+  "limitations": [
+    "No network access to GitHub/Gradle from local shell; connector used for guarded source pushes",
+    "No independently built installed probe JAR, native callback logs, or before/after unloaded-chunk receipt",
+    "Authenticated multiplayer, arbitrary-world migration, sustained performance and remaining exact target parity remain open"
+  ],
+  "next_step": "On a network-capable local builder, compile the separate probe with the pinned verified 1.21.1 JAR, execute its offline native server and the expanded negative tests, verify nonce/log/proof/JAR hashes, then pursue broader acceptance; do not publish development artifacts."
+}

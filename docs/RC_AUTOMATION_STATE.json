@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T0204Z-independent-probe-integrity",
-    "claimed_at": "2026-10-31T02:05:38.510Z",
-    "expires_at": "2026-10-31T02:35:38.510Z",
-    "expected_parent": "0b9cd1eb102e7c92b2376e282408caf578a05782",
-    "scope": "main: independent installed-provider probe evidence integrity; no release or version-branch writes"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T01:14:09.227Z: 1.21.1 216/216 exact native PASS on 4ab66dc, retained production JAR d6e39c49, independent installed-provider probe source/runner committed but not built/run; 0/24 RC clearances; no release.",
-  "local_validation": "PASS: independently inspected 216/216 native run 41153518219 and artifact 13024755329 (6 ZIP entries CRC valid, production JAR 886 entries CRC valid, SHA256 d6e39c49...). Independent probe Python/Java not executed locally because no network/cached Gradle dependencies.",
+  "current_checkpoint": "2026-10-31T02:08:21.100Z: independent installed-provider probe evidence nonce and immutable receipt source fixes pushed; native probe not compiled/executed; 0/24 RC clearances; no release.",
+  "local_validation": "Static GitHub source/diff/contract checks only for separate probe changes eaefad2/e0503a9; no local Python/Gradle/native run. Prior 1.21.1 production 216/216 pass remains source-pinned to 4ab66dc.",
   "next_work": [
-    "Compile and execute the separate tools/provider-probe native NeoForge 1.21.1 project against exact pinned production JAR d6e39c49; record probe JAR hash, callback counts, unloaded chunk before/after, logs and receipt; never infer pass from source alone",
-    "After independent provider acceptance, test authenticated multiplayer, arbitrary-world migration and sustained TPS/heap per exact version",
-    "Repair real 26.1 and 26.2 source attribution and 1.6.4 gravel cause; no relabeling",
-    "Continue 26.4 official loader watch; no snapshot promotion or unsupported branch"
+    "Compile and run the separate tools/provider-probe on a network-capable local builder using exact 1.21.1 JAR SHA256 d6e39c49; run expanded offline negative tests; verify per-run nonce, callback counts, no-force-load, immutable receipt and native logs; no release until full RC clearance",
+    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap acceptance for exact versions",
+    "Repair true 26.1/26.2 source attribution and 1.6.4 gravel root cause; do not relabel neighbors",
+    "Watch official 26.4 Minecraft/NeoForge coordinates; no unsupported target or release"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -69,17 +63,19 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0110Z-installed-provider-probe",
-    "claimed_at": "2026-10-31T01:11:01.151Z",
-    "released_at": "2026-10-31T01:14:09.227Z",
-    "lease_claim_commit": "4c0258c53a32287612c17713c9f510b0bf29f085",
-    "expected_parent": "1085a25bc1b8079dee7140cf080c7cb5e2eb6982",
-    "evidence": "docs/acceptance/rc-dev-1211-216-native-pass-independent-provider-probe-pending-2026-10-31.json",
+    "owner": "pl4-hourly-20261031T0204Z-independent-probe-integrity",
+    "claimed_at": "2026-10-31T02:05:38.510Z",
+    "released_at": "2026-10-31T02:08:21.100Z",
+    "lease_claim_commit": "44a79591f195d0e0106d22db19ccb67366a9d078",
+    "source_commits": [
+      "eaefad209eb88963589bff96676cce64f12ab5d8",
+      "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06"
+    ],
+    "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
     "writer_lease_released": true,
-    "release_performed": false,
-    "docs_only_checkpoint": false
+    "release_performed": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-216-native-pass-independent-provider-probe-pending-2026-10-31.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -3065,5 +3061,15 @@
     "native_server_executed": false,
     "installed_provider_accepted": false,
     "blocker": "This runner cannot resolve GitHub/Gradle hosts; local environment has no populated Gradle dependency cache. An isolated external NeoForge runtime is required for the separate probe JAR."
+  },
+  "latest_installed_provider_probe_integrity": {
+    "source_commits": [
+      "eaefad209eb88963589bff96676cce64f12ab5d8",
+      "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06"
+    ],
+    "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
+    "offline_tests": "NOT_EXECUTED",
+    "native_installed_test": "NOT_EXECUTED",
+    "rc_publication_cleared": false
   }
 }
