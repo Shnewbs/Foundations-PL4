@@ -19,3 +19,7 @@ This is a **readiness watch**, not a new PL4 maintained target, build, compatibi
 ## October 31 recheck
 
 The [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge) was checked again on **October 31, 2026 (UTC)**: no `26.4` build entry was present. Mojang's [October 27 game-drop testing overview](https://www.minecraft.net/en-us/article/drop-4-2026-testing) continues to identify the fourth 2026 drop as preview/snapshot testing. No 26.4 source port, target count change, binary compatibility claim, or release is authorized. Existing snapshot-specific handshake, Vulkan, fluid-tag, and worldgen acceptance gates remain mandatory.
+
+## October 31 fluid-state API migration gate (Snapshot 4)
+
+Mojang's [26.4 Snapshot 4](https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-4), published **October 13, 2026**, removed the separate `flowing_water` and `flowing_lava` fluid types and added a Boolean `source` fluid-state property alongside the `level` integer. A future exact 26.4 PL4 port must resolve fluid identity from the new state model, test source versus flowing blocks and capability adapters, and verify persisted fluid identifiers and migration before acceptance. Do **not** infer compatible fluid storage/transfer behavior from `#swimmable` alone. Rechecked the [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) on October 31: no `26.4` coordinate appears. Snapshot 6 (October 27) remains the latest listed official snapshot; no branch, binary, or release created.

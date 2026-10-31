@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T0305Z-self-revocation",
-    "claimed_at": "2026-10-31T03:05:47.628Z",
-    "expires_at": "2026-10-31T03:35:47.628Z",
-    "source_parent": "ba3165d218ef744316ec3a573bb423487c009f57",
-    "purpose": "Implement post-callback provider self-revocation guard, native and independent installed tests; no publication"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T02:08:21.100Z: independent installed-provider probe evidence nonce and immutable receipt source fixes pushed; native probe not compiled/executed; 0/24 RC clearances; no release.",
-  "local_validation": "Static GitHub source/diff/contract checks only for separate probe changes eaefad2/e0503a9; no local Python/Gradle/native run. Prior 1.21.1 production 216/216 pass remains source-pinned to 4ab66dc.",
+  "current_checkpoint": "2026-10-31T03:07:32.824Z: main 28ef5cfd implements provider self-revocation quarantine and 217th native fixture; schema-2 installed probe; 6/6 static checks; native/Gradle/Python not run; 0/24 RC clearances; no release.",
+  "local_validation": "6/6 static source-contract checks via GitHub connector; no local Python, Gradle, native, installed-provider execution due to GitHub DNS and missing Gradle dependencies. Previous 216/216 native PASS pinned to 4ab66dc/run 41153518219; scheduled 41161047494 pre-change only.",
   "next_work": [
-    "Compile and run the separate tools/provider-probe on a network-capable local builder using exact 1.21.1 JAR SHA256 d6e39c49; run expanded offline negative tests; verify per-run nonce, callback counts, no-force-load, immutable receipt and native logs; no release until full RC clearance",
-    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap acceptance for exact versions",
-    "Repair true 26.1/26.2 source attribution and 1.6.4 gravel root cause; do not relabel neighbors",
-    "Watch official 26.4 Minecraft/NeoForge coordinates; no unsupported target or release"
+    "On a network-capable local builder (no GitHub Actions), compile and run exact 1.21.1 217-case native source and independent installed-provider probe proof schema 2; preserve source/JAR/run/receipt hashes",
+    "Run provider-probe Python negative tests; check self-close callbacks, no-force-load, replacement, exception quarantine and registration leaks against actual installed JAR",
+    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap acceptance per exact target",
+    "Repair true 26.1/26.2 attribution and 1.6.4 gravel root cause; watch official 26.4 loader/handshake/Vulkan/fluid-source changes without unsupported release"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -69,19 +63,18 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0204Z-independent-probe-integrity",
-    "claimed_at": "2026-10-31T02:05:38.510Z",
-    "released_at": "2026-10-31T02:08:21.100Z",
-    "lease_claim_commit": "44a79591f195d0e0106d22db19ccb67366a9d078",
+    "owner": "pl4-hourly-20261031T0305Z-self-revocation",
+    "claimed_at": "2026-10-31T03:05:47.628Z",
+    "released_at": "2026-10-31T03:07:32.824Z",
+    "lease_claim_commit": "9ee648145b8c511af961ad478a3b2055c53a3b63",
     "source_commits": [
-      "eaefad209eb88963589bff96676cce64f12ab5d8",
-      "e0503a971e7ee3ae8aa090a6f6cc9eb52152af06"
+      "28ef5cfd23729dc21c829a447c3984121748bed4"
     ],
-    "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
+    "evidence": "docs/acceptance/rc-dev-1211-provider-self-revocation-217-pending-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-self-revocation-217-pending-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
@@ -105,7 +98,7 @@
       "prior_failure_preserved": 40442840965
     }
   },
-  "previous_checkpoint": "2026-10-30T00:31:06.416Z: 1.21.1 exact main source c7a40d5de passed 201/201 native (run 40978813923, jar ca4d4c4f); 26.3 exact source 977cffc5 passed 193/193 PL4 on each NeoForge 26.3.0.23/.39 (run 40979525138, same JAR 147a9004). Fixed real foreign-owner physical graph union/local-storage regression and stale cached reader aliases. 26.1.2 source 3e341444 requires fresh exact native run. Hourly run 40978242203 passed 15/15 selected pinned targets (mostly earlier source revisions), 0/24 RC clearance, no new release/upload. Evidence docs/acceptance/rc-dev-1211-2612-263-reader-authority-and-hourly-2026-10-30.json.",
+  "previous_checkpoint": "2026-10-31T02:08:21.100Z: independent installed-provider probe evidence nonce and immutable receipt source fixes pushed; native probe not compiled/executed; 0/24 RC clearances; no release.",
   "completed_live_mutation_checkpoint": {
     "evidence": "docs/acceptance/rc-dev-legacy-live-evidence-2026-10-26.json",
     "native_cases_per_port": 8,

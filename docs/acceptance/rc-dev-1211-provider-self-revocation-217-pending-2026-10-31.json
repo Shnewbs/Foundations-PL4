@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-31T03:07:32.824Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "writer_lease_claim_commit": "9ee648145b8c511af961ad478a3b2055c53a3b63",
+  "source_commit": "28ef5cfd23729dc21c829a447c3984121748bed4",
+  "source_url": "https://github.com/Shnewbs/Foundations-PL4/commit/28ef5cfd23729dc21c829a447c3984121748bed4",
+  "change": "Discard pending InfoProvider rows when a provider closes its own registration during callback; preserve later healthy callbacks.",
+  "source_paths": [
+    "src/main/java/net/foundations/pl4/api/InfoProviders.java",
+    "src/portTest/java/net/foundations/pl4/R16GameTests.java",
+    "tools/provider-probe/src/main/java/net/foundations/pl4providerprobe/InstalledProviderProbe.java",
+    "tools/provider-probe/run_provider_probe.py",
+    "tools/provider-probe/test_run_provider_probe.py",
+    "tools/provider-probe/README.md",
+    "BUILD_STATUS.json"
+  ],
+  "native_candidate": {
+    "minecraft": "1.21.1",
+    "expected_native_cases": 217,
+    "execution": "NOT_RUN_FOR_CHANGED_SOURCE",
+    "compiled_production_jar_sha256": null,
+    "source_qualification": "PENDING"
+  },
+  "independent_installed_provider_probe": {
+    "proof_schema": 2,
+    "added_scenario": "self_close",
+    "required_values": {
+      "calls": 1,
+      "rows": 0,
+      "healthy_calls": 1
+    },
+    "gradle_compilation": "NOT_RUN",
+    "installed_execution": "NOT_RUN",
+    "receipt": null
+  },
+  "static_source_checks": {
+    "passed": 6,
+    "failed": 0,
+    "scope": "Source text contract/fixture/schema checks via GitHub connector; not Python execution or Java/native compilation",
+    "r16_gametest_annotations": 51
+  },
+  "previous_verified_native": {
+    "minecraft": "1.21.1",
+    "source_commit": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+    "run_id": 41153518219,
+    "passed": 216,
+    "total": 216,
+    "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c",
+    "source_only_scope": true
+  },
+  "latest_existing_hourly_run": {
+    "run_id": 41161047494,
+    "head_sha": "ba3165d218ef744316ec3a573bb423487c009f57",
+    "conclusion": "success",
+    "built_targets": [
+      "1.21.1"
+    ],
+    "artifact_id": 13027685062,
+    "note": "Pre-change source; no promotion to 217-case candidate."
+  },
+  "local_environment": {
+    "java": "21.0.12.1",
+    "python": "3.13.5",
+    "gradle_installed": false,
+    "github_dns_resolution": "FAILED",
+    "native_gradle_dependencies": "UNAVAILABLE"
+  },
+  "compatibility_26_4": {
+    "latest_official_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "loader_maven_entry_26_4": false,
+    "additional_port_note": "Snapshot 4 removed flowing_water/flowing_lava fluid types and added source Boolean; test exact fluid identity/source-level semantics when supported",
+    "new_branch_created": false
+  },
+  "releases": {
+    "rc_cleared_targets": 0,
+    "maintained_targets": 24,
+    "github_release_created": false,
+    "curseforge_upload_created": false,
+    "eligible_new_release": false
+  },
+  "unresolved": [
+    "Compile and execute 217-case native exact source without GitHub Actions on network-capable builder",
+    "Compile independent probe, execute schema-2 self-revocation/other installed callbacks and retain exact receipt",
+    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, exact 26.1/26.2 attribution, 1.6.4 gravel root cause"
+  ],
+  "next_step": "On network-capable local builder, run offline negative Python tests then exact 1.21.1 native 217-case build and independent installed-provider probe; retain hashes and receipts before further acceptance."
+}
