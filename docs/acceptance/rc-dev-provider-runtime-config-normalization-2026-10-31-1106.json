@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-31T11:06:21Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "1.21.1 independent installed InfoProvider probe acceptance controller only; PL4 production code unchanged",
+  "lease_owner": "pl4-hourly-20261031T1103Z-config-normalization",
+  "source_commits": {
+    "lease_claim": "071ae971485de14f5967efebb54001ab51b8c809",
+    "runner": "d015b258e408c722f945f070a500c2db6cb27acf",
+    "negative_tests": "209e1e33b1b277695ef8e59f2a194d3760fa2474",
+    "compatibility_watch": "cbfd81d7d669362c0b49e9512f4497cb0265aed5"
+  },
+  "github_source_readback": {
+    "runner_blob": "5d20963030c6cf59694375dadb3e7a47a68118d4",
+    "tests_blob": "24cb2b927d374b306fd2cfb4ba4ac189a89c7554",
+    "static_contract_checks": {
+      "passed": 8,
+      "total": 8
+    },
+    "scope": "No Python, Java or native tests executed in this run"
+  },
+  "fix": {
+    "problem": "Minecraft normalizes server.properties and possibly eula.txt on startup; prior strict byte equality after a native server run could reject an otherwise successful installed-provider probe.",
+    "preflight": "All prepared files including server.properties and eula.txt remain SHA-256 pinned before launching Gradle.",
+    "postflight": "Allow byte changes only for those two runtime config files; still require regular nonsymlink files, safe loopback/offline/RCON settings, accepted EULA, unique server property keys, and unchanged code/wrapper/installed JAR.",
+    "attestation": "Bind final runtime server.properties/eula.txt SHA-256 values to clean process-exit attestation and immutable receipt.",
+    "negative_regressions": "Reject preflight normalization, unsafe online-mode mutation, duplicate server properties, missing EULA and post-exit runtime hash mutation."
+  },
+  "prior_verified_native": {
+    "target": "1.21.1",
+    "source_commit": "d6c409f761b675d9c665b0b36638d4ed98e11405",
+    "native_passed": 217,
+    "native_total": 217,
+    "run_url": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41190598603",
+    "production_jar_sha256": "45556e30004c7850a14a424ea4a7c08f2f80c6ce723fa14258aeef5e5e1c2311",
+    "qualification_transfer_to_new_source": false
+  },
+  "native_execution": {
+    "python_repository_tests": "NOT_RUN_THIS_CYCLE",
+    "gradle_java": "NOT_RUN",
+    "independent_installed_provider": "NOT_RUN",
+    "reason": "Container has Java 21 but no installed Gradle or cached Gradle wrapper distribution; github.com and services.gradle.org DNS unavailable."
+  },
+  "compatibility_26_4": {
+    "official_snapshot": "26.4 Snapshot 6",
+    "snapshot_published": "2026-10-27",
+    "snapshot_url": "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+    "neoforge_maven_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "neoforge_26_4_loader_observed": false,
+    "additional_gate": "Snapshot 6 auto-sizes default heap up to 25% RAM / 4 GB; pin explicit JVM heap and compare equivalent GC/TPS conditions.",
+    "new_port_created": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "new_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "manual_github_actions_launched": false,
+    "local_builds_removed": 0
+  },
+  "next_steps": [
+    "Execute repository Python tests and native Gradle task graph on a dependency-capable local builder",
+    "Compile/install the independent provider JAR against pinned exact 1.21.1 production JAR; retain normalized config hashes, nonce, native proof/log and clean-exit receipt",
+    "Continue authenticated multiplayer, arbitrary-world migration, client rendering and sustained TPS/heap; keep version-specific release gates"
+  ]
+}
