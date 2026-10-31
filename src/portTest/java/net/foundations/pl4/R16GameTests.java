@@ -310,6 +310,28 @@ public final class R16GameTests {
         h.assertTrue(!net.foundations.pl4.api.InfoProviders.registeredIds().contains("pl4_test:alpha_dimension"),"Closing provider removes its diagnostic entry");h.succeed();
     }
 
+    @GameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void providerRegistrationCloseSuppressesLateCallback(GameTestHelper h){
+        int[] firstCalls={0},secondCalls={0};
+        net.foundations.pl4.api.InfoProviders.Registration[] secondRegistration={null};
+        try(var first=net.foundations.pl4.api.InfoProviders.register("pl4_test:close_first",(context,out)->{
+            firstCalls[0]++;
+            if(secondRegistration[0]!=null)secondRegistration[0].close();
+            out.add("first","First",1,1,"u");
+        })){
+            secondRegistration[0]=net.foundations.pl4.api.InfoProviders.register("pl4_test:close_second",(context,out)->{
+                secondCalls[0]++;
+                out.add("second","Second",2,2,"u");
+            });
+            var target=new Part.Link("minecraft:overworld",h.absolutePos(new BlockPos(1,1,1)),Direction.UP,null,null);
+            var rows=net.foundations.pl4.api.InfoProviders.sample(h.getLevel(),target);
+            h.assertTrue(firstCalls[0]==1,"First installed provider must be invoked once");
+            h.assertTrue(secondCalls[0]==0,"Provider closed by an earlier callback must not receive a late callback");
+            h.assertTrue(rows.stream().noneMatch(row->row.key().equals("pl4_test:close_second/second")),"Closed provider rows must never be published");
+        }
+        h.succeed();
+    }
+
     private record StorageFixture(HostEntity host,Part node,ChestBlockEntity chest,net.minecraft.server.level.ServerPlayer player,ItemStack tool){}
     private static StorageFixture storageFixture(GameTestHelper h,String name){
         ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));HostEntity host=host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);Part node=part(host,Direction.WEST);
