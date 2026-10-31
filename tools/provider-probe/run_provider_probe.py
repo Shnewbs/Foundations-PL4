@@ -130,35 +130,59 @@ def prepare(checkout, jar, output, expected, source_sha):
     return manifest
 
 
-def verify(output, log):
-    output, log = Path(output), Path(log)
-    manifest = json.loads((output / "provider-probe-prepared.json").read_text())
-    expected = manifest["installed_pl4_sha256"]
+def validate_prepared_installation(output, manifest):
+    """Fail closed on local input mutation BEFORE invoking Gradle or a native server.
+
+    Verification repeats the same gate after execution, so a passing receipt
+    requires both the prepared inputs and the final retained inputs to match.
+    """
+    output = Path(output)
+    expected = manifest.get("installed_pl4_sha256", "")
     nonce = manifest.get("run_nonce", "")
     require(NONCE.fullmatch(nonce) is not None, "Missing/invalid per-preparation nonce")
     require(manifest.get("schema") == 1 and manifest.get("target") == "1.21.1" and
             manifest.get("rc_publication_cleared") is False and
-            SHA.fullmatch(expected) is not None,
-            "Unsafe/invalid prepared installation")
-    for name, sha in manifest["protected_files"].items():
-        require((output / name).is_file() and digest(output / name) == sha,
+            SHA.fullmatch(expected) is not None and
+            re.fullmatch(r"[0-9a-f]{40}", manifest.get("pl4_source_commit", "")) is not None,
+            "Unsafe/invalid prepared installation or source attribution")
+    protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
+                 "gradle/wrapper/gradle-wrapper.properties", *PROJECT]
+    hashes = manifest.get("protected_files")
+    require(isinstance(hashes, dict) and set(hashes) == set(protected),
+            "Incomplete/extra protected probe input manifest")
+    for name in protected:
+        path = output / name
+        require(path.is_file() and not path.is_symlink() and
+                SHA.fullmatch(hashes[name]) is not None and digest(path) == hashes[name],
                 "Probe source or wrapper changed: " + name)
     require(sorted(p.relative_to(output).as_posix()
                    for p in (output / "src/main/java").rglob("*.java")) == [JAVA],
             "Unexpected PL4/other source in independent probe")
     mods = sorted((output / "run/mods").glob("*.jar"))
-    require(len(mods) == 1 and mods[0].name == manifest["installed_pl4_name"],
+    require(len(mods) == 1 and mods[0].is_file() and not mods[0].is_symlink() and
+            mods[0].name == manifest.get("installed_pl4_name"),
             "Expected exactly one installed PL4 production JAR")
     binary_smoke.validate_binary(mods[0], expected)
-    props = dict(line.split("=", 1) for line in
-                 (output / "run/server.properties").read_text().splitlines()
+    props_path = output / "run/server.properties"
+    require(props_path.is_file() and not props_path.is_symlink(),
+            "Missing/untrusted loopback server configuration")
+    props = dict(line.split("=", 1) for line in props_path.read_text().splitlines()
                  if "=" in line and not line.startswith("#"))
     for key, value in {"server-ip": "127.0.0.1", "server-port": "25588",
                        "online-mode": "false", "max-players": "1",
                        "enable-rcon": "true", "rcon.port": "25589"}.items():
         require(props.get(key) == value, "Server network isolation changed: " + key)
-    require("eula=true" in (output / "run/eula.txt").read_text().splitlines(),
+    eula = output / "run/eula.txt"
+    require(eula.is_file() and not eula.is_symlink() and
+            "eula=true" in eula.read_text().splitlines(),
             "Disposable server EULA missing")
+    return expected, nonce
+
+
+def verify(output, log):
+    output, log = Path(output), Path(log)
+    manifest = json.loads((output / "provider-probe-prepared.json").read_text())
+    expected, nonce = validate_prepared_installation(output, manifest)
     proof_path = output / "provider-proof.json"
     require(proof_path.is_file() and log.is_file(), "Missing native proof or server log")
     proof = json.loads(proof_path.read_text())
@@ -209,11 +233,8 @@ def require_fresh_run(output):
 def run(output, timeout):
     output = Path(output).resolve()
     manifest = json.loads((output / "provider-probe-prepared.json").read_text())
-    expected = manifest["installed_pl4_sha256"]
-    nonce = manifest.get("run_nonce", "")
-    require(NONCE.fullmatch(nonce) is not None, "Missing/invalid per-preparation nonce")
+    expected, nonce = validate_prepared_installation(output, manifest)
     installed = output / "run/mods" / manifest["installed_pl4_name"]
-    require(digest(installed) == expected, "PL4 JAR changed before launch")
     log = output / "provider-server.log"
     proof = output / "provider-proof.json"
     require_fresh_run(output)
@@ -222,7 +243,7 @@ def run(output, timeout):
                PL4_INSTALLED_JAR=str(installed), PL4_PROVIDER_PROOF=str(proof))
     with log.open("w") as stream:
         process = subprocess.Popen(["bash", "gradlew", "--no-daemon", "--console=plain",
-                                    "runServer", "verifyProbeIsolation"],
+                                    "verifyProbeIsolation", "runServer"],
                                    cwd=output, env=env, stdin=subprocess.DEVNULL,
                                    stdout=stream, stderr=subprocess.STDOUT,
                                    start_new_session=True)

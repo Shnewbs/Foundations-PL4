@@ -3,9 +3,12 @@
 These do not claim a native run, JAR compilation, or RC acceptance.
 """
 import importlib.util
+import inspect
+import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 import zipfile
 
 MODULE = Path(__file__).with_name("run_provider_probe.py")
@@ -114,6 +117,60 @@ class ProviderReceiptTests(unittest.TestCase):
                 archive.writestr("net/foundations/pl4/InfoProviders.class", b"forbidden")
             with self.assertRaises(ValueError):
                 probe.verify_probe_jar(jar)
+
+
+    def test_preflight_rejects_tampering_before_native_execution(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for name in ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
+                         "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT]:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"pinned test fixture")
+            mods = root / "run/mods"
+            mods.mkdir(parents=True)
+            (mods / "PL4-1.21.1.jar").write_bytes(b"mocked binary")
+            props = root / "run/server.properties"
+            props.write_text("server-ip=127.0.0.1\\nserver-port=25588\\n"
+                             "online-mode=false\\nmax-players=1\\n"
+                             "enable-rcon=true\\nrcon.port=25589\\n")
+            (root / "run/eula.txt").write_text("eula=true\\n")
+            protected = ["gradlew", "gradle/wrapper/gradle-wrapper.jar",
+                         "gradle/wrapper/gradle-wrapper.properties", *probe.PROJECT]
+            manifest = {
+                "schema": 1, "target": "1.21.1", "run_nonce": NONCE,
+                "installed_pl4_sha256": EXPECTED, "installed_pl4_name": "PL4-1.21.1.jar",
+                "pl4_source_commit": "c" * 40, "rc_publication_cleared": False,
+                "protected_files": {name: probe.digest(root / name) for name in protected},
+            }
+            with mock.patch.object(probe.binary_smoke, "validate_binary"):
+                self.assertEqual(probe.validate_prepared_installation(root, manifest),
+                                 (EXPECTED, NONCE))
+                (root / "gradlew").write_bytes(b"tampered wrapper")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                (root / "gradlew").write_bytes(b"pinned test fixture")
+                props.write_text(props.read_text().replace("online-mode=false",
+                                                           "online-mode=true"))
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                props.write_text(props.read_text().replace("online-mode=true",
+                                                           "online-mode=false"))
+                (mods / "unapproved.jar").write_bytes(b"extra mod")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+                (mods / "unapproved.jar").unlink()
+                manifest["protected_files"].pop("gradlew")
+                with self.assertRaises(ValueError):
+                    probe.validate_prepared_installation(root, manifest)
+
+    def test_gradle_jar_is_checked_before_server_launch(self):
+        source = inspect.getsource(probe.run)
+        self.assertLess(source.index('"verifyProbeIsolation"'),
+                        source.index('"runServer"'))
+        self.assertLess(source.index("validate_prepared_installation("),
+                        source.index("subprocess.Popen("))
+
 
 
 if __name__ == "__main__":
