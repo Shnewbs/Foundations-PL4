@@ -75,6 +75,27 @@ def verify_pl4_bytecode(archive, names, minecraft):
                 f"(class {major}.{minor}; maximum {maximum}.0)")
 
 
+
+def verify_local_receipt(previous, digest, project, minecraft, version, loader):
+    """Validate a local API receipt before suppressing a repeat upload.
+
+    This is not a remote CurseForge lookup or moderation/publication proof.
+    A damaged or untrusted receipt requires manual destination reconciliation.
+    """
+    if not isinstance(previous, dict):
+        raise ValueError("Existing CurseForge receipt is not an object; reconcile the destination")
+    file_id = previous.get("file_id")
+    if isinstance(file_id, bool) or not isinstance(file_id, int) or file_id <= 0:
+        raise ValueError("Existing CurseForge receipt has no valid file ID; reconcile the destination")
+    if previous.get("upload_status") != "accepted_by_api_not_moderation_verified":
+        raise ValueError("Existing CurseForge receipt lacks an API-acceptance status; reconcile the destination")
+    if (previous.get("sha256") != digest or str(previous.get("project_id")) != project
+            or previous.get("minecraft") != minecraft or previous.get("version") != version
+            or previous.get("loader") != loader):
+        raise ValueError("Existing receipt differs from the JAR or project; inspect the upload")
+    return file_id
+
+
 def inspect(jar, notes):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -149,11 +170,9 @@ def main():
     receipt = args.jar.with_suffix(".curseforge.json")
     if receipt.exists():
         previous = json.loads(receipt.read_text(encoding="utf-8"))
-        if (previous.get("sha256") != digest or str(previous.get("project_id")) != project
-                or previous.get("minecraft") != minecraft or previous.get("version") != version
-                or previous.get("loader") != loader):
-            raise ValueError("Existing receipt differs from the JAR or project; inspect the upload")
-        print(f"Already submitted as CurseForge file {previous['file_id']}; no upload attempted")
+        file_id = verify_local_receipt(previous, digest, project, minecraft, version, loader)
+        print(f"Local receipt records API acceptance for CurseForge file {file_id}; "
+              "verify its destination status before treating it as published. No upload attempted.")
         return
     metadata = {
         "changelog": args.notes.read_text(encoding="utf-8"),
