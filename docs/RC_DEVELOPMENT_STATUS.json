@@ -2001,10 +2001,11 @@
   ],
   "latest_work": {
     "date": "2026-10-31",
-    "source_commit": "28ef5cfd23729dc21c829a447c3984121748bed4",
-    "evidence": "docs/acceptance/rc-dev-1211-provider-self-revocation-217-pending-2026-10-31.json",
-    "change": "Installed-provider self-registration revocation drops buffered rows; native fixture 217 and independent schema-2 probe added",
+    "source_commit": "870ab18066008d54198e7b190aabd69980111932",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
+    "change": "Enforced runServer Gradle dependency on verifyProbeIsolation, added source-contract regression",
     "static_checks": "6/6 PASS",
+    "python_unittest": "NOT_RUN",
     "native": "PENDING_EXACT_SOURCE_217",
     "release": "NOT_ELIGIBLE"
   },
@@ -4510,8 +4511,8 @@
     "blocker": "mc/26.1 and mc/26.2 BUILD_STATUS.json still identify 1.21.1; no metadata relabel performed",
     "rc_clearance": "0/24"
   },
-  "current_checkpoint": "2026-10-31T06:11:17.709Z: source-only provider probe config/log attestation hardening 2ecc6d23; 10/10 static contracts, Python/native/Gradle not executed; 0/24 cleared, no new release.",
-  "latest_source_commit": "2ecc6d232413c5f6009f572d944fed812a5f6ffd",
+  "current_checkpoint": "2026-10-31T08:05:05.666Z: provider Gradle runServer isolation dependency source 870ab18; 6/6 source contracts passed; repository Python/Gradle/217 native/installed probe NOT RUN; 0/24 cleared, no release.",
+  "latest_source_commit": "870ab18066008d54198e7b190aabd69980111932",
   "next_step": "Run actual tools/provider-probe/test_run_provider_probe.py tests in a local checkout and compile separate provider probe against pinned exact 1.21.1 JAR; preserve hashes and nonce-bound real proof",
   "last_checkpoint": "2026-10-30T13:12:00Z: repaired stale verify_r16.py fixture label/count guard after run 41052653488; no native/JAR/release evidence counted.",
   "native_validation": "PASS_PINNED_215_AT_F14B5BF; DOCS_CHECKPOINT_HAS_NEW_SHA",
@@ -4531,10 +4532,9 @@
   "rc_clearance": "0/24",
   "release": "none",
   "next_work": [
-    "On a network-capable local builder (no GitHub Actions), compile and run exact 1.21.1 217-case native source and independent installed-provider probe proof schema 2; preserve source/JAR/run/receipt hashes",
-    "Run provider-probe Python negative tests; check self-close callbacks, no-force-load, replacement, exception quarantine and registration leaks against actual installed JAR",
-    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap acceptance per exact target",
-    "Repair true 26.1/26.2 attribution and 1.6.4 gravel root cause; watch official 26.4 loader/handshake/Vulkan/fluid-source changes without unsupported release"
+    "Execute repository Python unittest and Gradle task graph locally when dependency resolution works; verify runServer depends on verifyProbeIsolation",
+    "Compile independent installed probe against pinned production JAR and inspect server.properties normalization, native proof, nonce and hashes",
+    "Run 217 native GameTests at exact current source; continue authenticated multiplayer, arbitrary migration, sustained TPS/heap, exact ports"
   ],
   "writer_lease": null,
   "last_writer_release": {
@@ -4756,5 +4756,15 @@
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_publication_cleared": false
+  },
+  "latest_provider_probe_gradle_dependency": {
+    "source_commit": "870ab18066008d54198e7b190aabd69980111932",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
+    "source_contracts": "6/6 PASS",
+    "python_unittest": "NOT_RUN",
+    "gradle": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false
   }
 }

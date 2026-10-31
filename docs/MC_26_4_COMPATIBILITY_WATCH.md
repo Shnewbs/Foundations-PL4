@@ -27,3 +27,7 @@ Mojang's [26.4 Snapshot 4](https://www.minecraft.net/en-us/article/minecraft-26-
 ## October 31 protocol watch — Snapshot 1 mod list and intent parameters
 
 Mojang's [26.4 Snapshot 1](https://www.minecraft.net/da-dk/article/minecraft-26-4-snapshot-1) adds a `minecraft:mod_list` configuration-phase payload and permits URI-style parameters in the serverbound `minecraft:intention` host field. These values are **diagnostic/routing inputs, not authentication**; Mojang explicitly warns that the intent packet is unencrypted. On an actual supported 26.4 NeoForge port, validate PL4 channel/mod-list negotiation across vanilla, PL4-only and mismatched mod clients; reject unknown or malformed routing parameters without trusting them for owner identity, permission or secret-bearing tokens. Repeat the Snapshot 5 acknowledged login-handshake tests under authenticated multiplayer. This is a future exact-version acceptance requirement only: the official Maven index still had **no 26.4 loader** at the October 31 check, and no 26.4 branch/JAR/release is created.
+
+## October 31 08:05 UTC recheck
+
+The [official NeoForge Maven directory](https://maven.neoforged.net/releases/net/neoforged/neoforge/) still contains `26.3.0.99` and no `26.4` coordinate; Mojang's [Snapshot 6](https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6) from October 27 remains the latest listed snapshot. No new exact port or release is authorized; preserve the prior Vulkan, fluid-state, and authenticated handshake gates.

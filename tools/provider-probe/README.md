@@ -100,3 +100,12 @@ match expected counters. New negative tests cover each scenario counter and
 metadata/residency type. Four isolated contract tests passed (59 cases), but
 the **repository Python suite and installed native probe have not run**.
 [Evidence](../../docs/acceptance/rc-dev-provider-probe-exact-counter-types-2026-10-31.json).
+
+## Native Gradle task dependency (October 31)
+
+`runServer` now declares a lazy `dependsOn verifyProbeIsolation` edge in the
+standalone probe Gradle build. Invoking `runServer` directly must therefore
+build and inspect the independent JAR before launching the server, regardless
+of CLI task ordering. A source-contract regression checks the edge; the
+actual Gradle task graph and installed native runtime remain unexecuted until
+dependencies are available. This does not qualify an RC release.

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "date": "2026-10-31",
+  "target": "1.21.1",
+  "scope": "source-only independent installed InfoProvider probe controller",
+  "main_source_commit": "870ab18066008d54198e7b190aabd69980111932",
+  "lease_claim_commit": "736ef214801aed84975f5be1a9f85be0d656a93d",
+  "source_changes": [
+    "tools/provider-probe/build.gradle",
+    "tools/provider-probe/test_run_provider_probe.py"
+  ],
+  "source_blob_shas": {
+    "tools/provider-probe/build.gradle": "49f6b9cbedf7efd15447692659d5a358fec1248f",
+    "tools/provider-probe/test_run_provider_probe.py": "7ffa1bb193e8e6d772c1bd0c2fca18604c8eb70d"
+  },
+  "finding": "CLI order of verifyProbeIsolation and runServer was not an explicit Gradle task dependency; direct runServer invocation could bypass JAR isolation verification.",
+  "repair": "runServer now has an explicit lazy dependsOn verifyProbeIsolation task graph edge; offline regression asserts the declared edge.",
+  "validation": {
+    "github_source_readback": "PASS",
+    "static_contract_checks": {
+      "passed": 6,
+      "total": 6,
+      "negative_mutations": [
+        "dependency removed",
+        "wrong run task",
+        "missing isolation task"
+      ]
+    },
+    "repository_python_unittest": "NOT_RUN",
+    "gradle_task_graph_execution": "NOT_RUN",
+    "java_compile": "NOT_RUN",
+    "native_217_gametests": "NOT_RUN",
+    "installed_provider_runtime": "NOT_RUN",
+    "production_jar_sha256": null
+  },
+  "environment": {
+    "java": "OpenJDK 21.0.12.1",
+    "gradle": "not installed",
+    "git_clone": "FAILED: Could not resolve host github.com",
+    "local_gradle_dependency_cache": "not available"
+  },
+  "prior_pinned_evidence": {
+    "native_1211_216": {
+      "run_id": 41153518219,
+      "source": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8"
+    },
+    "native_2612_193": {
+      "run_id": 41013493027,
+      "source": "3e3414442fbe998081b2f123596f50af7f0ad65d"
+    },
+    "hourly_older_source": {
+      "run_id": 41161047494,
+      "source": "ba3165d218ef744316ec3a573bb423487c009f57"
+    }
+  },
+  "official_264_watch": {
+    "latest_listed_snapshot": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "neoforge_maven_checked": "2026-10-31",
+    "loader_264_present": false,
+    "source_urls": [
+      "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "release": {
+    "rc_clearances": 0,
+    "maintained_targets": 24,
+    "new_github_rc": false,
+    "new_curseforge_upload": false,
+    "existing_releases_unchanged": true
+  },
+  "next": [
+    "Execute repository Python unittest and Gradle task graph locally when dependency resolution works; verify runServer depends on verifyProbeIsolation",
+    "Compile independent installed probe against pinned production JAR and inspect server.properties normalization, native proof, nonce and hashes",
+    "Run 217 native GameTests at exact current source; continue authenticated multiplayer, arbitrary migration, sustained TPS/heap, exact ports"
+  ],
+  "recorded_at": "2026-10-31T08:05:05.666Z"
+}

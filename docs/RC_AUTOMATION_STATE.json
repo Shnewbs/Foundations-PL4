@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T0803Z-provider-gradle-dependency",
-    "claimed_at": "2026-10-31T08:03:48.362Z",
-    "expires_at": "2026-10-31T08:18:48.362Z",
-    "expected_parent": "cde26262dccd465679d0c7e2520c9b3829812eb2",
-    "scope": "main tools/provider-probe task ordering and offline regression only; no version branches/releases"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,13 +14,12 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T07:13:08.478Z: provider installed native-proof strict integer/boolean evidence guard pushed 3811bd2; isolated 4 methods / 59 cases passed; repository Python/Gradle/native 217/installed probe NOT RUN; 0/24 cleared, no release.",
-  "local_validation": "GitHub exact source readback PASS; isolated extracted Python contract 4 unittest methods / 59 cases PASS; actual repository Python unittest, Java/Gradle, 217 native GameTests and installed provider runtime NOT RUN (local GitHub DNS and Gradle cache unavailable).",
+  "current_checkpoint": "2026-10-31T08:05:05.666Z: provider Gradle runServer isolation dependency source 870ab18; 6/6 source contracts passed; repository Python/Gradle/217 native/installed probe NOT RUN; 0/24 cleared, no release.",
+  "local_validation": "GitHub exact source readback PASS, 6/6 source-contract and negative-mutation checks PASS; repository Python unittest, Gradle task graph, Java compile, 217 native GameTests and independent installed-provider runtime NOT RUN (local GitHub DNS unavailable; Gradle absent).",
   "next_work": [
-    "Execute actual tools/provider-probe/test_run_provider_probe.py Python unittest on a complete source checkout; resolve any failures",
-    "Compile separately installed provider JAR against exact pinned 1.21.1 production JAR, observe native server.properties normalization, preserve prepared/runtime log/nonce/proof/JAR hashes",
-    "Run pinned exact 217 native GameTests and independently installed provider callback/no-force-load acceptance, without promoting prior 216-case source",
-    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap, remaining exact-version port work and legacy gravel investigation"
+    "Execute repository Python unittest and Gradle task graph locally when dependency resolution works; verify runServer depends on verifyProbeIsolation",
+    "Compile independent installed probe against pinned production JAR and inspect server.properties normalization, native proof, nonce and hashes",
+    "Run 217 native GameTests at exact current source; continue authenticated multiplayer, arbitrary migration, sustained TPS/heap, exact ports"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -69,18 +62,14 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0710Z-proof-type-safety",
-    "claimed_at": "2026-10-31T07:10:37.589Z",
-    "released_at": "2026-10-31T07:13:08.478Z",
-    "lease_claim_commit": "34a252a0c7cf15d69eb523cbae49f30403beff9c",
+    "owner": "pl4-hourly-20261031T0803Z-provider-gradle-dependency",
+    "claimed_at": "2026-10-31T08:03:48.362Z",
+    "released_at": "2026-10-31T08:05:05.666Z",
+    "lease_claim_commit": "736ef214801aed84975f5be1a9f85be0d656a93d",
     "source_commits": [
-      "3811bd263d85e1d040723079434cdad23321fabf"
+      "870ab18066008d54198e7b190aabd69980111932"
     ],
-    "documentation_commits": [
-      "47d66517c5cde8f38c19e04f367bb0be2dcac2d0",
-      "661ee0197152181b009c06859c188025dfd269f6"
-    ],
-    "evidence": "docs/acceptance/rc-dev-provider-probe-exact-counter-types-2026-10-31.json",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
   },
@@ -3156,6 +3145,16 @@
     "github_source_readback": "PASS",
     "isolated_python_contract": "4 methods / 59 cases PASS (copied contract, not repository suite)",
     "repository_python": "NOT_RUN",
+    "native_217": "NOT_RUN",
+    "installed_probe": "NOT_RUN",
+    "rc_clearance": false
+  },
+  "latest_provider_probe_gradle_dependency": {
+    "source_commit": "870ab18066008d54198e7b190aabd69980111932",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-gradle-task-edge-2026-10-31.json",
+    "source_contracts": "6/6 PASS",
+    "python_unittest": "NOT_RUN",
+    "gradle": "NOT_RUN",
     "native_217": "NOT_RUN",
     "installed_probe": "NOT_RUN",
     "rc_clearance": false
