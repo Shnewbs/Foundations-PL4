@@ -39,6 +39,42 @@ def verify_archive_integrity(archive):
         raise ValueError(f"JAR contains corrupt archive entry: {corrupt}")
 
 
+
+def java_classfile_limit(minecraft):
+    """Maximum PL4 bytecode version for the exact target's Java runtime."""
+    if minecraft.startswith("26."):
+        return 69  # Java 25
+    parts = tuple(int(part) for part in minecraft.split("."))
+    if parts[1] > 20 or (parts[1] == 20 and len(parts) > 2 and parts[2] >= 5):
+        return 65  # Java 21
+    if parts[1] >= 18:
+        return 61  # Java 17
+    if parts[1] == 17:
+        return 60  # Java 16
+    return 52  # Java 8
+
+
+def verify_pl4_bytecode(archive, names, minecraft):
+    """Reject missing, fake, preview, or too-new PL4 classfile headers."""
+    classes = sorted(name for name in names
+                     if name.startswith("net/foundations/pl4/") and name.endswith(".class"))
+    if not classes:
+        raise ValueError("JAR contains no compiled PL4 classes")
+    maximum = java_classfile_limit(minecraft)
+    for name in classes:
+        with archive.open(name) as stream:
+            header = stream.read(10)
+        if (len(header) != 10 or header[:4] != b"\\xca\\xfe\\xba\\xbe"
+                or int.from_bytes(header[8:10], "big") == 0):
+            raise ValueError(f"JAR contains an invalid PL4 classfile header: {name}")
+        minor = int.from_bytes(header[4:6], "big")
+        major = int.from_bytes(header[6:8], "big")
+        if minor != 0 or not 45 <= major <= maximum:
+            raise ValueError(
+                f"JAR contains incompatible PL4 bytecode for {minecraft}: {name} "
+                f"(class {major}.{minor}; maximum {maximum}.0)")
+
+
 def inspect(jar, notes):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -60,8 +96,7 @@ def inspect(jar, notes):
     with zipfile.ZipFile(jar) as archive:
         verify_archive_integrity(archive)
         names = set(archive.namelist())
-        if not any(n.startswith("net/foundations/pl4/") and n.endswith(".class") for n in names):
-            raise ValueError("JAR contains no compiled PL4 classes")
+        verify_pl4_bytecode(archive, names, minecraft)
         metadata_name = "META-INF/neoforge.mods.toml" if loader == "NeoForge" else "META-INF/mods.toml"
         if metadata_name not in names:
             raise ValueError(f"JAR lacks {metadata_name} for {loader}")
