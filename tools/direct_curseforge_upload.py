@@ -14,6 +14,7 @@ import tomllib
 import zipfile
 
 from upload_curseforge import multipart, release_type, request_json
+from publication_policy import is_rc, require_publication
 
 
 NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<version>[A-Za-z0-9][A-Za-z0-9._-]*)\.jar\Z")
@@ -54,6 +55,8 @@ def inspect(jar, notes):
                        if dep.get("modId") == "minecraft"), "")
         if not target.startswith("[" + minecraft) or target[len(minecraft) + 1:len(minecraft) + 2] not in ("]", ","):
             raise ValueError("JAR metadata does not identify the exact target Minecraft version")
+        if loader == "NeoForge" and target != f"[{minecraft}]":
+            raise ValueError("NeoForge JAR must declare an exact Minecraft target, not a range")
         if not any(dep.get("modId") == loader.lower() for dep in dependencies):
             raise ValueError("JAR dependency metadata does not match its loader")
     return minecraft, version, loader
@@ -66,6 +69,12 @@ def main():
     parser.add_argument("--upload", action="store_true", help="Submit to CurseForge (default: validate only)")
     args = parser.parse_args()
     minecraft, version, loader = inspect(args.jar, args.notes)
+    maturity = release_type(version)  # Reject dev/nightly builds, even when a receipt already exists.
+    if is_rc(version):
+        status_path = Path("BUILD_STATUS.json")
+        if not status_path.is_file():
+            raise ValueError("RC publication requires exact-target BUILD_STATUS.json")
+        require_publication(json.loads(status_path.read_text(encoding="utf-8")), minecraft, version)
     digest = hashlib.sha256(args.jar.read_bytes()).hexdigest()
     project = os.environ.get("CURSEFORGE_PROJECT_ID", "1716767")
     if not project.isdecimal() or int(project) <= 0:
@@ -84,7 +93,7 @@ def main():
         "changelogType": "markdown",
         "displayName": f"Foundations PL4 {minecraft} {version} ({loader})",
         "gameVersionNames": [minecraft, loader, "Client", "Server"],
-        "releaseType": release_type(version),
+        "releaseType": maturity,
     }
     print(json.dumps({"jar": str(args.jar), "sha256": digest, "project": project,
                       "metadata": {k: v for k, v in metadata.items() if k != "changelog"},
