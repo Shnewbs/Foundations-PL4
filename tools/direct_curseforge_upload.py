@@ -25,6 +25,14 @@ NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<ve
 # Add a future target only after official loader availability and owner approval.
 SUPPORTED_26X_RELEASE_TARGETS = frozenset(("26.1.2", "26.3"))
 
+# Check resource ceilings before ZipFile.testzip() decompresses every member.
+# These limits are generous for PL4 runtime JARs, but reject ZIP bombs.
+MAX_JAR_ENTRIES = 50_000
+MAX_JAR_MEMBER_BYTES = 128 * 1024 * 1024
+MAX_JAR_UNCOMPRESSED_BYTES = 512 * 1024 * 1024
+MAX_JAR_COMPRESSION_RATIO = 10_000
+
+
 
 def require_supported_26x_target(minecraft):
     """Fail closed before upload when a 26.x target is not in the release ledger."""
@@ -38,17 +46,32 @@ def require_supported_26x_target(minecraft):
 
 def verify_archive_integrity(archive):
     """Reject ambiguous, unsafe, or corrupt JAR entries before publication."""
+    entries = archive.infolist()
+    if len(entries) > MAX_JAR_ENTRIES:
+        raise ValueError("JAR exceeds archive entry count limit")
     seen = set()
-    for entry in archive.infolist():
+    total_uncompressed = 0
+    for entry in entries:
         name = entry.filename
         if name in seen:
             raise ValueError(f"JAR contains duplicate archive entry: {name}")
         seen.add(name)
-        if (not name or name.startswith("/") or "\\" in name
+        if (not name or name.startswith("/") or "\\" in name or "//" in name
+                or re.match(r"^[A-Za-z]:", name)
+                or any(ord(char) < 32 for char in name)
                 or any(part in (".", "..") for part in name.split("/"))):
             raise ValueError(f"JAR contains unsafe archive entry path: {name}")
         if ((entry.external_attr >> 16) & 0o170000) == 0o120000:
             raise ValueError(f"JAR contains symbolic-link archive entry: {name}")
+        if entry.file_size > MAX_JAR_MEMBER_BYTES:
+            raise ValueError(f"JAR exceeds member size limit: {name}")
+        total_uncompressed += entry.file_size
+        if total_uncompressed > MAX_JAR_UNCOMPRESSED_BYTES:
+            raise ValueError("JAR exceeds total uncompressed size limit")
+        if (entry.file_size >= 1024 * 1024 and
+                (entry.compress_size == 0 or
+                 entry.file_size > entry.compress_size * MAX_JAR_COMPRESSION_RATIO)):
+            raise ValueError(f"JAR exceeds compression ratio limit: {name}")
     corrupt = archive.testzip()
     if corrupt is not None:
         raise ValueError(f"JAR contains corrupt archive entry: {corrupt}")
