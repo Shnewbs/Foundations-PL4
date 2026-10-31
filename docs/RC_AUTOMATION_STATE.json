@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T0204Z-independent-probe-integrity",
+    "claimed_at": "2026-10-31T02:05:38.510Z",
+    "expires_at": "2026-10-31T02:35:38.510Z",
+    "expected_parent": "0b9cd1eb102e7c92b2376e282408caf578a05782",
+    "scope": "main: independent installed-provider probe evidence integrity; no release or version-branch writes"
+  },
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
