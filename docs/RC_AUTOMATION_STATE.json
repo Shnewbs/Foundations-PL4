@@ -5,7 +5,13 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T1307Z-runtime-constraints",
+    "claimed_at": "2026-10-31T13:07:30Z",
+    "expires_at": "2026-10-31T13:25:00Z",
+    "scope": "main: installed-provider runtime configuration invariants and regression tests",
+    "release_performed": false
+  },
   "last_writer_release_20261031_1108": {
     "owner": "pl4-hourly-20261031T1107Z-doc-clarity",
     "claimed_at": "2026-10-31T11:07:00Z",
