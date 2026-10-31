@@ -59,7 +59,18 @@ class DirectUploadValidationTests(unittest.TestCase):
     def test_valid_receipt_prevents_duplicate_upload_without_claiming_moderation(self):
         self.make_jar()
         self.make_receipt()
-        self.dry_run()  # Existing accepted API receipt; no second upload.
+        original = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar), str(self.notes), "--upload"]), \
+                 patch.object(direct, "request_json") as api, \
+                 patch.object(direct, "multipart") as multipart:
+                direct.main()
+                api.assert_not_called()
+                multipart.assert_not_called()
+        finally:
+            os.chdir(original)
 
     def test_rejects_missing_or_invalid_receipt_file_ids(self):
         self.make_jar()
