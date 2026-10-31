@@ -153,6 +153,27 @@ def prepare(checkout, jar, output, expected, source_sha):
     return manifest
 
 
+def parse_strict_properties(path, label):
+    """Accept only unambiguous Minecraft-generated Java properties.
+
+    java.util.Properties also accepts colon/whitespace separators, escaped
+    keys and line continuations. A dict made from lines containing "=" would
+    silently ignore those aliases and could approve unsafe runtime settings.
+    Minecraft's generated files use plain key=value and comment lines.
+    """
+    result = {}
+    for line_number, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
+        if not line or line.startswith(("#", "!")):
+            continue
+        match = re.fullmatch(r"([A-Za-z0-9_.-]+)=(.*)", line)
+        require(match is not None,
+                f"Unsafe {label} property syntax at line {line_number}")
+        key, value = match.groups()
+        require(key not in result, "Duplicate " + label + " property key: " + key)
+        result[key] = value
+    return result
+
+
 def validate_prepared_installation(output, manifest, allow_runtime_config_changes=False):
     """Fail closed on local input mutation BEFORE invoking Gradle or a native server.
 
@@ -204,18 +225,16 @@ def validate_prepared_installation(output, manifest, allow_runtime_config_change
     props_path = output / "run/server.properties"
     require(props_path.is_file() and not props_path.is_symlink(),
             "Missing/untrusted loopback server configuration")
-    entries = [line.split("=", 1) for line in props_path.read_text().splitlines()
-               if "=" in line and not line.startswith("#")]
-    props = dict(entries)
-    require(len(entries) == len(props), "Duplicate server property keys are unsafe")
+    props = parse_strict_properties(props_path, "server")
     for key, value in {"server-ip": "127.0.0.1", "server-port": "25588",
                        "online-mode": "false", "max-players": "1",
                        "enable-rcon": "true", "rcon.port": "25589"}.items():
         require(props.get(key) == value, "Server network isolation changed: " + key)
     eula = output / "run/eula.txt"
-    require(eula.is_file() and not eula.is_symlink() and
-            "eula=true" in eula.read_text().splitlines(),
-            "Disposable server EULA missing")
+    require(eula.is_file() and not eula.is_symlink(),
+            "Disposable server EULA missing/untrusted")
+    require(parse_strict_properties(eula, "EULA") == {"eula": "true"},
+            "Disposable server EULA is missing, ambiguous or unaccepted")
     return expected, nonce
 
 
