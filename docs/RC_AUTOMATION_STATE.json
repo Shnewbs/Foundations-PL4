@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-chat-20261030T1709Z-installed-provider-registration-guard",
-    "claimed_at": "2026-10-31T00:10:00Z",
-    "expires_at": "2026-10-31T00:40:00Z",
-    "expected_parent": "77bde66ce3535851574e44bdb3825769fde1e39d",
-    "purpose": "Implement installed-provider registration-liveness guard and exact native regression; no release publication"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -20,8 +14,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T00:10:00Z: finite writer lease claimed against main 77bde66; implementing installed-provider registration-liveness guard and exact native regression; no native/JAR/release evidence promoted yet.",
-  "local_validation": "Lease claim guarded by expected parent 77bde66; active native/publisher duplicate checks reviewed from latest runs; current 215/215 and 26.1.2 193/193 evidence preserved as source-scoped.",
+  "current_checkpoint": "2026-10-31T00:18:00Z: Implemented installed-provider registration-liveness guard and added exact native regression providerRegistrationCloseSuppressesLateCallback; BUILD_STATUS now requires 216 fixtures; evidence and docs recorded; lease released; fresh exact-source verification pending; no native/JAR/release evidence promoted.",
+  "local_validation": "Source commits 1b2288b9 and cd5e59a9 plus 216-fixture BUILD_STATUS/evidence/docs checkpointed on main. Prior 215/215 and 26.1.2 193/193 hashes remain preserved and source-scoped. No publication attempted.",
   "next_work": [
     "Build separate optional NeoForge probe mod/JAR (not in-process PL4 GameTests) and install beside exact PL4 production JAR; register callbacks that replace/unload backing targets and verify later callbacks suppressed, no forced chunk load and no stale rows",
     "Retain exact provider/PL4 JAR SHA-256, server run logs, callback counters and loaded-chunk before/after evidence; no installed-provider acceptance until real installed pass",
@@ -69,16 +63,16 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-chat-20261030T2322Z-final-native-evidence",
-    "released_at": "2026-10-30T23:23:00.841Z",
-    "lease_claim_commit": "ac4b8186ee7aea2f9207c3d7ac56592ed92eeed9",
-    "expected_parent": "f14b5bf32f8c08fb6299aed0a02637af4727493c",
-    "evidence": "docs/acceptance/rc-dev-1211-215-native-2612-193-reconciled-2026-10-30.json",
+    "owner": "pl4-chat-20261030T1709Z-installed-provider-registration-guard",
+    "released_at": "2026-10-31T00:18:00Z",
+    "lease_claim_commit": "8a43dfcaaf05397da19e40492c6edb63826c9d39",
+    "expected_parent": "77bde66ce3535851574e44bdb3825769fde1e39d",
+    "evidence": "docs/acceptance/rc-dev-1211-provider-registration-revocation-216-pending-2026-10-31.json",
     "writer_lease_released": true,
-    "release_performed": false,
-    "docs_only_checkpoint": true
+    "release_performed": true,
+    "docs_only_checkpoint": false
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-215-native-2612-193-reconciled-2026-10-30.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-1211-provider-registration-revocation-216-pending-2026-10-31.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
