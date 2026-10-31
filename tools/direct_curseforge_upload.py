@@ -20,6 +20,20 @@ from publication_policy import is_rc, require_publication
 
 NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<version>[A-Za-z0-9][A-Za-z0-9._-]*)\.jar\Z")
 
+# These are the two independently maintained 26.x NeoForge release tracks.
+# mc/26.1 and mc/26.2 are audit-only; 26.4 is a snapshot compatibility watch.
+# Add a future target only after official loader availability and owner approval.
+SUPPORTED_26X_RELEASE_TARGETS = frozenset(("26.1.2", "26.3"))
+
+
+def require_supported_26x_target(minecraft):
+    """Fail closed before upload when a 26.x target is not in the release ledger."""
+    if minecraft.startswith("26.") and minecraft not in SUPPORTED_26X_RELEASE_TARGETS:
+        raise ValueError(
+            f"Minecraft {minecraft} is not an approved exact NeoForge release target; "
+            "do not publish a snapshot or audit-only port")
+
+
 
 
 def verify_archive_integrity(archive):
@@ -104,6 +118,7 @@ def inspect(jar, notes, jar_bytes=None):
     if not match or jar.name.endswith("-sources.jar"):
         raise ValueError("Expected an exact-target runtime FoundationsPL4-<minecraft>-<version>.jar")
     minecraft, version = match.group("minecraft", "version")
+    require_supported_26x_target(minecraft)
     if minecraft in ("1.16.4", "1.16.5") and not converted_java8:
         raise ValueError("This Forge target requires the converted -java8.jar runtime")
     if minecraft not in ("1.16.4", "1.16.5") and converted_java8:
