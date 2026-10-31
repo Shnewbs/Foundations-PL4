@@ -1,9 +1,8 @@
 name: Exercise packaged legacy 1.6.4 storage in a stock client
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/legacy164-client-probe.yml', 'tools/legacy-client-probe/run_stock_client.py', 'tools/legacy-client-probe/qualified_artifact.py', 'tools/legacy-client-probe/Legacy164WirelessClientProbe.java']
   workflow_dispatch:
+
 permissions:
   contents: read
   actions: read

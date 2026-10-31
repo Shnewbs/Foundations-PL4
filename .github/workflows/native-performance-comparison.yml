@@ -1,10 +1,9 @@
 name: Measure loaded-network performance against released baseline
 # Extended warm-up records the candidate including persistent wireless player handoffs.
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/native-performance-comparison.yml']
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

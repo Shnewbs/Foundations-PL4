@@ -1,9 +1,7 @@
 name: Prepare consistent release version
 
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['release-version.txt']
   workflow_dispatch:
 
 permissions:

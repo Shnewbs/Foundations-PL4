@@ -1,10 +1,9 @@
 name: Align and validate all RC development ports
 # Wireless handoffs stage node escrow before player/provider mutations; exact-port fixtures verify uncertainty.
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/rc-development.yml']
   workflow_dispatch:
+
 permissions:
   contents: write
 concurrency:

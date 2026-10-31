@@ -1,9 +1,8 @@
 name: Reconcile Forge performance beta releases
+# Automatic triggers disabled; external builders and publishers only.
 on:
-  push:
-    branches: [main]
-    paths: [.github/workflows/publish-forge-performance-beta.yml]
   workflow_dispatch:
+
 permissions:
   contents: write
 jobs:
