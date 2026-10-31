@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-31",
+  "local_time": "09:02 PDT",
+  "scope": "Direct CurseForge publication guard and official 26.4 compatibility watch",
+  "branch": "main",
+  "source_before": "470f6f5207ed906c3dce253131b845549bd40de3",
+  "source_changes": [
+    {
+      "commit": "124e7ce90d9e7938fa15e86e4acaa6281540acab",
+      "path": "tools/direct_curseforge_upload.py",
+      "details": [
+        "Reject dev/nightly versions before checking prior receipts",
+        "Require exact-target BUILD_STATUS and explicit RC clearance before RC dry run or upload",
+        "Reject non-exact NeoForge Minecraft dependency ranges"
+      ]
+    },
+    {
+      "commit": "589dfd139e01e12d4681eabe5a5d8553ff414f8a",
+      "path": "tools/test_direct_curseforge_upload.py",
+      "details": [
+        "Regression for broad NeoForge dependency range",
+        "Regression for dev with matching prior receipt",
+        "Regression for missing, uncleared, mismatched and cleared RC status"
+      ]
+    }
+  ],
+  "documentation_commits": [
+    "901d13d5cd3f66929b6a523a8995f1d739656336",
+    "84ca7c7ddaa304cdb1ced5357d3d15bf184c1fef"
+  ],
+  "validation": {
+    "github_source_readback": "PASS: changed implementation and regression methods present",
+    "isolated_mirrored_policy_tests": "8/8 passed using independently copied policy predicates, not repository suite",
+    "repository_python_tests": "NOT RUN: container cannot resolve github.com",
+    "gradle_native": "NOT RUN: Gradle 9.2.1/dependencies unavailable",
+    "installed_provider": "NOT RUN",
+    "real_client_multiplayer_migration_performance": "NOT RUN"
+  },
+  "compatibility_26_4": {
+    "latest_official_snapshot": "Snapshot 6 (2026-10-27)",
+    "loader_26_4_available": false,
+    "source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "mojang": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "new_port_created": false
+  },
+  "publication": {
+    "rc_cleared_targets": 0,
+    "total_targets": 24,
+    "new_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "github_actions_invoked": false,
+    "local_retained_artifacts_deleted": false
+  },
+  "next_steps": [
+    "Run full repository Python tests against main on a dependency-capable local builder",
+    "Execute exact-source native GameTests and installed optional-provider probe, then authenticated multiplayer, migration and performance gates",
+    "Publish only qualified exact-target immutable GitHub Release and CurseForge artifact, verify SHA-256 before cleanup"
+  ]
+}
