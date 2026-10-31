@@ -4712,5 +4712,15 @@
     "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
     "tests": "PENDING_LOCAL_EXECUTION",
     "rc_publication_cleared": false
+  },
+  "latest_provider_probe_preflight": {
+    "checked_at": "2026-10-31T04:06:06.206Z",
+    "source_commit": "c3cfaa29328aaa92f7c3110ea801fbd7085a0799",
+    "source_contract_checks": "8/8 PASS (static GitHub readback)",
+    "python_unit_tests": "NOT_EXECUTED",
+    "native_217": "NOT_EXECUTED",
+    "installed_provider_jar": "NOT_COMPILED_OR_EXECUTED",
+    "release_eligible": false,
+    "evidence": "docs/acceptance/rc-dev-provider-probe-preflight-2026-10-31.json"
   }
 }

@@ -49,3 +49,15 @@ migration, sustained TPS/heap, client screenshots, or other exact versions.
 The source SHA is a caller-supplied attribution and must be independently
 matched to the retained production-JAR artifact; a JAR checksum alone does
 not prove its source commit. Never publish either development JAR as an RC.
+
+## Preflight integrity gate (October 31)
+
+Before invoking Gradle, the runner verifies every pinned wrapper/build/Java source
+hash, the exact installed PL4 JAR, a single installed mod, the run nonce and
+source attribution, and the disposable server's loopback-only RCON/offline
+configuration. The same checks run again when verifying the retained proof.
+`verifyProbeIsolation` executes **before** `runServer`, so an unverified
+standalone probe JAR cannot be launched first. Negative unit tests cover
+wrapper tampering, changed online-mode, extra mods and missing hash entries.
+These are source-level safeguards; they do not replace compiling and running
+the independent probe on a network-capable local NeoForge installation.

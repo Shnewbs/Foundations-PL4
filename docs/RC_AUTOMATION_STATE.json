@@ -5,14 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T0404Z-probe-preflight",
-    "claimed_at": "2026-10-31T04:04:10.505Z",
-    "expires_at": "2026-10-31T04:16:10.505Z",
-    "expected_parent": "84879f379a122767d644d22442e556ab1f9db9f4",
-    "scope": "main installed-provider independent runner preflight + validation",
-    "release_policy": "No release without explicit RC clearance"
-  },
+  "writer_lease": null,
   "build_workflow": ".github/workflows/hourly-builds.yml",
   "publication_workflow": ".github/workflows/curseforge.yml",
   "last_verified_native_targets": 24,
@@ -21,13 +14,13 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31T03:07:32.824Z: main 28ef5cfd implements provider self-revocation quarantine and 217th native fixture; schema-2 installed probe; 6/6 static checks; native/Gradle/Python not run; 0/24 RC clearances; no release.",
+  "current_checkpoint": "2026-10-31T04:06:06.206Z: independent provider runner preflight and jar-before-server source changes c3cfaa2; 8/8 static source contracts PASS; Python/Gradle/native 217 and installed probe not run; 0/24 RC clearances; no release.",
   "local_validation": "6/6 static source-contract checks via GitHub connector; no local Python, Gradle, native, installed-provider execution due to GitHub DNS and missing Gradle dependencies. Previous 216/216 native PASS pinned to 4ab66dc/run 41153518219; scheduled 41161047494 pre-change only.",
   "next_work": [
-    "On a network-capable local builder (no GitHub Actions), compile and run exact 1.21.1 217-case native source and independent installed-provider probe proof schema 2; preserve source/JAR/run/receipt hashes",
-    "Run provider-probe Python negative tests; check self-close callbacks, no-force-load, replacement, exception quarantine and registration leaks against actual installed JAR",
-    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap acceptance per exact target",
-    "Repair true 26.1/26.2 attribution and 1.6.4 gravel root cause; watch official 26.4 loader/handshake/Vulkan/fluid-source changes without unsupported release"
+    "Run provider-probe Python negative tests locally; compile exact 1.21.1 217-case source and independent installed-provider probe without GitHub Actions; preserve exact source/JAR/log/proof/receipt hashes",
+    "Run provider probe against installed exact production JAR: replacement, registration revocation, self-close, exception quarantine and unloaded no-force-load",
+    "Authenticated multiplayer, arbitrary-world migration and sustained TPS/heap per exact maintained target",
+    "Repair genuine 26.1/26.2 source attribution and 1.6.4 gravel root cause; watch official 26.4 NeoForge loader and protocol/Vulkan/fluid changes without unsupported publication"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
@@ -70,14 +63,15 @@
   "latest_count_attribution_evidence": "docs/acceptance/rc-dev-26x-native-count-attribution.json",
   "native_main_source_commit": "ec532e31d9fd48a384efb0e4c9de83b47a0cf9f3",
   "last_writer_release": {
-    "owner": "pl4-hourly-20261031T0305Z-self-revocation",
-    "claimed_at": "2026-10-31T03:05:47.628Z",
-    "released_at": "2026-10-31T03:07:32.824Z",
-    "lease_claim_commit": "9ee648145b8c511af961ad478a3b2055c53a3b63",
+    "owner": "pl4-hourly-20261031T0404Z-probe-preflight",
+    "claimed_at": "2026-10-31T04:04:10.505Z",
+    "released_at": "2026-10-31T04:06:06.206Z",
+    "lease_claim_commit": "e10acbffad24473181bf4368ad2fbe5c287f9333",
     "source_commits": [
-      "28ef5cfd23729dc21c829a447c3984121748bed4"
+      "cdfa71098f35a697ad9f8a06b9e025a1bacf450c",
+      "c3cfaa29328aaa92f7c3110ea801fbd7085a0799"
     ],
-    "evidence": "docs/acceptance/rc-dev-1211-provider-self-revocation-217-pending-2026-10-31.json",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-preflight-2026-10-31.json",
     "writer_lease_released": true,
     "release_performed": false
   },
@@ -3076,6 +3070,14 @@
     "evidence": "docs/acceptance/rc-dev-1211-provider-probe-evidence-integrity-2026-10-31.json",
     "offline_tests": "NOT_EXECUTED",
     "native_installed_test": "NOT_EXECUTED",
+    "rc_publication_cleared": false
+  },
+  "latest_installed_provider_probe_preflight": {
+    "source_commit": "c3cfaa29328aaa92f7c3110ea801fbd7085a0799",
+    "evidence": "docs/acceptance/rc-dev-provider-probe-preflight-2026-10-31.json",
+    "static_checks": "8/8 PASS",
+    "python_tests": "NOT_EXECUTED",
+    "native_installed": "NOT_EXECUTED",
     "rc_publication_cleared": false
   }
 }

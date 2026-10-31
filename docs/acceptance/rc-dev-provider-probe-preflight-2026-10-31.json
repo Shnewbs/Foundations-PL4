@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-31T04:06:06.206Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "implementation_commits": [
+    "cdfa71098f35a697ad9f8a06b9e025a1bacf450c",
+    "c3cfaa29328aaa92f7c3110ea801fbd7085a0799"
+  ],
+  "source_scope": "independent installed-provider probe runner and negative tests; no PL4 production code or target branch changed",
+  "static_source_contract_checks": {
+    "passed": 8,
+    "total": 8,
+    "checks": {
+      "preflightDefined": true,
+      "preflightInRun": true,
+      "preflightInVerify": true,
+      "wrapperHashGuard": true,
+      "modCountGuard": true,
+      "loopbackGuard": true,
+      "jarTaskBeforeServer": true,
+      "negativeTests": true
+    }
+  },
+  "local_python_tests": "NOT_EXECUTED",
+  "gradle_compilation": "NOT_EXECUTED",
+  "native_217": "NOT_EXECUTED",
+  "installed_provider_execution": "NOT_EXECUTED",
+  "blocker": "Local shell cannot resolve github.com and has no populated Gradle dependencies; no network-capable native runtime in this session.",
+  "retained_prior_native": {
+    "minecraft_1_21_1": {
+      "source": "4ab66dc11bb5a584f6ace4a9ac54d085cb34f9e8",
+      "passed": 216,
+      "total": 216,
+      "run_id": 41153518219,
+      "production_jar_sha256": "d6e39c490d2e11b0c67c67d881369bbf3a38b0a432ee42ef352b62a1beeef06c"
+    },
+    "minecraft_26_1_2": {
+      "source": "3e3414442fbe998081b2f123596f50af7f0ad65d",
+      "passed": 193,
+      "total": 193,
+      "run_id": 41013493027,
+      "production_jar_sha256": "0771189cd78c0db5fb5d5a00de31e987e5f7afbd0460981d82d215900233f586"
+    }
+  },
+  "latest_scheduled_run_observed": {
+    "run_id": 41161047494,
+    "source": "ba3165d218ef744316ec3a573bb423487c009f57",
+    "status": "completed",
+    "conclusion": "success",
+    "not_this_source": true
+  },
+  "minecraft_26_4": {
+    "latest_official_snapshot": "26.4 Snapshot 6",
+    "date": "2026-10-27",
+    "neoforge_26_4_loader": "NOT_LISTED_IN_OFFICIAL_MAVEN_INDEX",
+    "future_protocol_gate": "mod_list configuration payload and untrusted intention host parameters"
+  },
+  "rc_clearances": 0,
+  "maintained_targets": 24,
+  "rc_publication_cleared": false,
+  "new_production_jar_sha256": null,
+  "new_github_release": null,
+  "new_curseforge_upload_id": null,
+  "no_github_actions_manually_started": true,
+  "local_cleanup": "No local compiled binaries or downloaded archives to delete",
+  "next_work": [
+    "Run local Python negative tests and exact 217-case native build",
+    "Compile and run separate installed provider probe with exact JAR and immutable receipt",
+    "Authenticated multiplayer, arbitrary-world migration, sustained TPS/heap and genuine exact 26.1/26.2 ports"
+  ]
+}
