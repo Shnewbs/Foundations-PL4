@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T1803PDT-bounded-jar-snapshot",
-    "claimed_at": "2026-11-01T01:03:45Z",
-    "purpose": "Bound direct CurseForge runtime JAR snapshot memory; regression tests and docs",
-    "source_head": "4c75e343d00c36849d57ff96c50532ae90776806"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -3511,6 +3506,20 @@
     "rc_clearance": "0/24",
     "release_performed": false,
     "retained_builds_deleted": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_1805_bounded_input": {
+    "owner": "pl4-hourly-20261031T1803PDT-bounded-jar-snapshot",
+    "claimed_at": "2026-11-01T01:03:45Z",
+    "released_at": "2026-11-01T01:07:00Z",
+    "source_commits": [
+      "302445c203535f0fc299d0967893863e481a4a87",
+      "c2b191753ba901153a808297d0fd43cd8aa62032"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-bounded-input-snapshot-2026-10-31-1805-pdt.json",
+    "validation": "3/3 isolated mirrored local scenarios; GitHub readback passed; full repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
     "writer_lease_released": true
   }
 }
