@@ -46,6 +46,29 @@ class DisposableWorkspaceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "new output"):
             self.validate()
 
+    def test_nested_checkouts_are_rejected_before_any_git_or_world_mutation(self):
+        nested = self.baseline / "nested-candidate"
+        (nested / ".git").mkdir(parents=True)
+        retained = nested / "level.dat"
+        retained.write_bytes(b"untouched nested checkout")
+        with mock.patch.object(bench.subprocess, "check_output") as git:
+            with self.assertRaisesRegex(ValueError, "non-nested checkouts"):
+                bench.require_disposable_workspaces(
+                    self.baseline, nested, self.output)
+            git.assert_not_called()
+        self.assertEqual(retained.read_bytes(), b"untouched nested checkout")
+        self.assertFalse(self.output.exists())
+
+    def test_reverse_nested_checkouts_are_rejected(self):
+        nested = self.baseline / "nested-candidate"
+        (nested / ".git").mkdir(parents=True)
+        with mock.patch.object(bench.subprocess, "check_output") as git:
+            with self.assertRaisesRegex(ValueError, "non-nested checkouts"):
+                bench.require_disposable_workspaces(
+                    nested, self.baseline, self.output)
+            git.assert_not_called()
+        self.assertFalse(self.output.exists())
+
     def test_preexisting_world_is_never_deleted(self):
         world = self.baseline / "run" / "world"
         world.mkdir(parents=True)
