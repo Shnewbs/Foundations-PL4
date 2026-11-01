@@ -332,6 +332,30 @@ def preflight_native_checkouts(roots):
         raise ValueError('Native comparison requires distinct source commits')
     return plans
 
+def native_trial_environment(source, trial, inherited=None):
+    """Pin a reproducible GameTest heap without overriding user JVM heap flags.
+
+    JAVA_TOOL_OPTIONS reaches the forked game JVM, unlike Gradle-only heap
+    settings. The native report still verifies measured initial/max heap.
+    """
+    env = dict(os.environ if inherited is None else inherited)
+    raw = env.pop('PL4_BENCHMARK_HEAP_MB', '2048')
+    if not isinstance(raw, str) or not re.fullmatch(r'[0-9]+', raw):
+        raise ValueError('PL4_BENCHMARK_HEAP_MB must be an integer number of MiB')
+    heap_mb = int(raw)
+    if not 512 <= heap_mb <= 16384:
+        raise ValueError('PL4_BENCHMARK_HEAP_MB must be between 512 and 16384 MiB')
+    for key in ('JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', '_JAVA_OPTIONS'):
+        options = env.get(key, '')
+        if re.search(r'(?<!\\S)(?:-Xm[sx]\\S*|-XX:(?:InitialHeapSize|MaxHeapSize|InitialRAMPercentage|MaxRAMPercentage)=\\S+)', options):
+            raise ValueError('Conflicting inherited JVM heap option in ' + key)
+    env['JAVA_TOOL_OPTIONS'] = (env.get('JAVA_TOOL_OPTIONS', '').strip() +
+                                f' -Xms{heap_mb}m -Xmx{heap_mb}m').strip()
+    env['PL4_BENCHMARK_SOURCE'] = source
+    env['PL4_BENCHMARK_TRIAL'] = str(trial)
+    return env
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
@@ -352,7 +376,7 @@ def main():
         if trial%2==0:order.reverse()
         for label,root in order:
             root=root.resolve();replace_owned_run(root,trial-1,sources[label])
-            env=dict(os.environ,PL4_BENCHMARK_SOURCE=sources[label],PL4_BENCHMARK_TRIAL=str(trial))
+            env=native_trial_environment(sources[label], trial)
             log=out/f'{trial}-{label}.log';print(f'RUN trial {trial} {label} {sources[label]}',flush=True)
             with log.open('x') as output:
                 run=subprocess.run(['bash','gradlew','--no-daemon','--console=plain','runGameTestServer'],cwd=root,env=env,stdout=output,stderr=subprocess.STDOUT,timeout=1800)
