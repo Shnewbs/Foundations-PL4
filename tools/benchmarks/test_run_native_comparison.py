@@ -825,6 +825,37 @@ class NativeMetricSummaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'no trial records'):
             bench.summarize_native_measurements([])
 
+    def test_duplicate_trial_receipt_cannot_replace_missing_trial(self):
+        records = self.records([0, 0, 0], [16, 16, 16])
+        records[1]['trial'] = '1'
+        with self.assertRaisesRegex(ValueError, 'Duplicate native benchmark trial'):
+            bench.summarize_native_measurements(records)
+
+    def test_unknown_trial_or_label_is_rejected(self):
+        for field, value in (('trial', '4'), ('label', 'unreviewed')):
+            with self.subTest(field=field):
+                records = self.records([0, 0, 0], [16, 16, 16])
+                records[0][field] = value
+                with self.assertRaisesRegex(ValueError, 'Unexpected native benchmark trial'):
+                    bench.summarize_native_measurements(records)
+
+    def test_trial_range_exposes_unstable_elapsed_measurements(self):
+        records = self.records([0, 0, 0], [16, 16, 16])
+        records[1]['workloads'][0]['measurements'][0]['elapsed_ns'] = [600, 800, 1000]
+        records[2]['workloads'][0]['measurements'][0]['elapsed_ns'] = [900, 1200, 1500]
+        row = bench.summarize_native_measurements(records)[0]
+        self.assertAlmostEqual(row['baseline_elapsed_ns_trial_relative_range'], 1.0)
+        self.assertAlmostEqual(
+            row['baseline_elapsed_ns_trial_range'],
+            row['baseline_elapsed_ns_per_operation'])
+        self.assertEqual(row['candidate_elapsed_ns_trial_relative_range'], 0)
+
+    def test_zero_baseline_metric_reports_no_relative_spread(self):
+        row = bench.summarize_native_measurements(
+            self.records([0, 0, 0], [16, 16, 16]))[0]
+        self.assertIsNone(row['baseline_allocated_bytes_trial_relative_range'])
+        self.assertEqual(row['baseline_allocated_bytes_trial_range'], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
