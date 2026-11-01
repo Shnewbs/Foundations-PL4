@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 194,
+  "expected_native_tests": 195,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -63,9 +63,9 @@
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "native_compilation": "PENDING_REVALIDATION_FOR_CURRENT_SOURCE",
   "pending_native_candidate": {
-    "source_scope": "Exact Minecraft 26.1.2 owned physical cable graph, live reader/storage alias revocation, and cross-owner visual reader/display isolation",
-    "expected_native_tests": 194,
-    "validation": "PENDING_NATIVE_26_1_2_CURRENT_SOURCE_JAVA25",
+    "source_scope": "Exact Minecraft 26.1.2 owned physical cable graph, live reader/storage alias revocation, and cross-owner visual reader/display isolation, cross-owner transfer-route rejection and detached-part route guards",
+    "expected_native_tests": 195,
+    "validation": "PENDING_NATIVE_26_1_2_195_TESTS_JAVA25",
     "installed_providers": "NOT_TESTED",
     "rc_publication_cleared": false
   },
