@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1005Z-native-benchmark-preflight",
-    "claimed_at": "2026-11-01T10:05:00Z",
-    "expires_at": "2026-11-01T11:00:00Z",
-    "scope": "tools/benchmarks/run_native_comparison.py, regression tests, compatibility watch and evidence; main only; no Actions or release"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 01:08 PDT: exact NeoForge loader metadata gate committed on main; reviewed 1.21.1, 26.1.2, 26.3 dependency ranges and required dependency types. 10/10 GitHub source-contract checks and 8/8 mirrored Python/TOML scenarios passed; actual repository Python/Gradle/native/installed tests NOT RUN due to DNS, missing Gradle and JDK25. 26.4 Snapshot 6 latest; official NeoForge Maven no 26.4 loader. RC 0/24; no JAR/release/Actions/deletion.",
-  "local_validation": "10/10 committed GitHub source-contract checks PASS; 8/8 isolated mirrored Python/TOML scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 02:16 PST: native performance benchmark now validates both exact-source checkouts and rejects identical commits before any source mutation/results creation. 5/5 GitHub source-contract checks, 6/6 isolated copied-helper Python smoke scenarios. Committed unittest and Gradle/native/installed performance NOT RUN (GitHub DNS, uncached Gradle, Java25 absent). 26.4 Snapshot 6 latest; no official NeoForge 26.4 loader. 0/24 RC clearances; no release, Actions or deletions.",
+  "local_validation": "5/5 committed GitHub source-contract checks PASS; 6/6 isolated copied-helper Python scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-neoforge-loader-metadata-gate-2026-11-01-0108-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-dual-preflight-2026-11-01-0205-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3609,6 +3604,23 @@
     ],
     "evidence": "docs/acceptance/rc-dev-neoforge-loader-metadata-gate-2026-11-01-0108-pdt.json",
     "validation": "10/10 GitHub source-contract checks; 8/8 mirrored Python/TOML scenarios; full repo/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_benchmark_preflight": {
+    "owner": "pl4-hourly-20261101T1005Z-native-benchmark-preflight",
+    "claimed_at": "2026-11-01T10:05:00Z",
+    "released_at": "2026-11-01T10:16:00Z",
+    "source_commits": [
+      "8a2ab7eb5ac20048da1a011b8a346bb9f57cf349"
+    ],
+    "test_commits": [
+      "8339b22700d015988adb11b237d44b2fc2106926",
+      "96392dec73b9ba519798f98597bb403ed673584c"
+    ],
+    "evidence": "docs/acceptance/rc-dev-native-benchmark-dual-preflight-2026-11-01-0205-pst.json",
+    "validation": "5/5 GitHub source-contract checks; 6/6 isolated copied-helper Python smoke cases; actual repository/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
