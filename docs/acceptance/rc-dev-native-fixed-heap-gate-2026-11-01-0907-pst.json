@@ -1,0 +1,54 @@
+{
+  "recorded_date": "2026-11-01",
+  "recorded_local": "2026-11-01 09:07 PST",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "1.21.1 disposable native performance comparator; shared 26.4 readiness only; no RC qualification",
+  "source_commits": {
+    "fixed_heap_gate": "173866ee82d45c5f47f1a26b887af28c62daebf2",
+    "regression_tests": "6f8439dc0d070c8663f0e163ea7717abd2af8f52",
+    "performance_documentation": "157cb27aee80bb8f4c55c1f1dd5fa2f70e64990b",
+    "compatibility_watch": "b81dc127fb0a5dce2c0c0dbf60d20c3b89e3036e"
+  },
+  "change": "Require measured initial heap to equal maximum heap for each native GameTest trial; reject identical auto-sized heap profiles and preserve raw report/world when invalid. New regression cases cover rejection and preservation.",
+  "validation": {
+    "github_source_readback": "PASS: four updated files and source-contract anchors verified",
+    "isolated_python_validator": "5/5 scenarios passed using manually mirrored validator logic, not the committed repository suite",
+    "committed_python_regressions": "NOT RUN",
+    "full_gradle_build": "NOT RUN",
+    "native_217_gametests": "NOT RUN",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "migration": "NOT RUN",
+    "sustained_tps_gc_heap": "NOT RUN"
+  },
+  "toolchain": {
+    "local_java": "21.0.12.1",
+    "required_java_for_26x": 25,
+    "git_dns": "FAILED: Could not resolve github.com from local build container",
+    "gradle": "No installed Gradle or cached wrapper distribution",
+    "local_artifacts": 0
+  },
+  "compatibility_watch": {
+    "latest_official_minecraft": "26.4 Snapshot 6",
+    "snapshot_publication_date": "2026-10-27",
+    "neoforge_latest_observed": "26.3.0.99",
+    "neoforge_26_4_loader": "No coordinate in official Maven index as checked 2026-11-01",
+    "action": "No unsupported branch, artifact, or compatibility claim"
+  },
+  "release": {
+    "rc_clearances": 0,
+    "total_exact_targets": 24,
+    "qualified_new_jar": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No exact-current-source native build, installed-provider acceptance, or production artifact; preserve all release gates"
+  },
+  "next": [
+    "Execute actual committed Python regression module on a dependency-capable checkout",
+    "Configure GameTest JVM -Xms/-Xmx equally, execute interleaved exact-source native benchmarks and capture TPS/GC/heap evidence",
+    "Complete per-target native/installed-provider, multiplayer and migration gates before verified direct publication"
+  ]
+}
