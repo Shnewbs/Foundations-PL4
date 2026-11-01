@@ -94,6 +94,23 @@ public final class PLGameTests {
         HostEntity screen=host(h,new BlockPos(5,1,1),Kind.DISPLAY,Direction.DOWN);Part display=screen.parts.get(7+Direction.DOWN.ordinal());
         h.runAtTickTime(45,()->{h.assertTrue(display.rows.stream().anyMatch(r->r.key().equals("minecraft:diamond")&&r.value()==17),"Display must receive reader data across connected hosts");h.succeed();});
     }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
+    public static void foreignOwnerDisplayCannotReadConnectedNetwork(GameTestHelper h){
+        ChestBlockEntity chest=chest(h,new BlockPos(1,1,1));chest.setItem(0,new ItemStack(Items.DIAMOND,17));
+        host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
+        host(h,new BlockPos(3,1,1),Kind.DATA_CABLE,Direction.DOWN);
+        HostEntity readerHost=host(h,new BlockPos(4,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        HostEntity screen=host(h,new BlockPos(5,1,1),Kind.DISPLAY,Direction.DOWN);
+        Part reader=readerHost.parts.get(Direction.DOWN.ordinal());
+        Part display=screen.parts.get(7+Direction.DOWN.ordinal());
+        display.owner=UUID.randomUUID();
+        h.runAtTickTime(45,()->{
+            h.assertTrue(reader.rows.stream().anyMatch(r->r.key().equals("minecraft:diamond")&&r.value()==17),
+                "Owned reader must sample the connected inventory");
+            h.assertTrue(display.rows.isEmpty(),"A foreign-owned display must not receive reader telemetry");
+            h.succeed();
+        });
+    }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void upstreamCraftingRecipesLoad(GameTestHelper h){
         String[] ids={"plguide","datacable","redstonecable","inforeader","inventoryreader","fluidreader","energyreader","networkreader","hammer","node","array","entitynode","transfernode","displayscreen","minidisplay","largedisplayscreen","holographicdisplay","advancedholographicdisplay","dataemitter","datareceiver","redstoneemitter","redstonereceiver","redstonenode","redstonesignaller","clock","operator","transceiver","entitytransceiver","wirelessstorage"};
