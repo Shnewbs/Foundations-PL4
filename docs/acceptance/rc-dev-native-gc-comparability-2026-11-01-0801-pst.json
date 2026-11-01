@@ -1,0 +1,54 @@
+{
+  "recorded_date": "2026-11-01",
+  "recorded_local": "2026-11-01 08:01 PST",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "1.21.1 disposable native performance comparison; not production or RC qualification",
+  "source_commits": {
+    "java_probe": "d188cfb393df0ccaae0f84245e302b0ed0efd421",
+    "python_gate": "7056867237c3220f0b2fddc30fbba31b183a61b9",
+    "tests": "b5457048add912a900631bab7566fcfbcb8d8d1f",
+    "world_preservation_test": "842bdaace434467c935ccc1e57535e6de90ff457"
+  },
+  "change": "Capture exact JVM vendor and VM name plus sorted GC collector MXBean names; reject malformed/changed GC fingerprints across native benchmark trials before writing comparison reports or sealing/deleting generated worlds.",
+  "validation": {
+    "github_source_readback": "PASS: Java probe, Python validator, test fixtures and negative cases present on main",
+    "isolated_python_logic": "6/6 passed using manually copied exact validator function and focused scenarios, not the repository suite",
+    "isolated_java_syntax": "PASS: extracted GC environment statement compiled and executed on available Java 21; full Minecraft GameTest Java source NOT compiled",
+    "committed_python_tests": "NOT RUN",
+    "gradle_native": "NOT RUN",
+    "native_217_gametests": "NOT RUN",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "world_migration": "NOT RUN",
+    "sustained_tps_heap": "NOT RUN"
+  },
+  "toolchain": {
+    "local_java": "21.0.12.1",
+    "required_java_26x": "25",
+    "github_git_dns": "FAILED: Could not resolve host github.com",
+    "gradle_9_2_1": "not available locally; uncached"
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6",
+    "minecraft_publication_date": "2026-10-27",
+    "neoforge_26_4_maven_coordinate": "none observed 2026-11-01",
+    "neoforge_26_3_latest_observed": "26.3.0.99",
+    "action": "Watch only; no unsupported 26.4 branch/JAR/release"
+  },
+  "release": {
+    "rc_clearances": 0,
+    "total_targets": 24,
+    "qualified_new_jar": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No exact-current-source native or installed-provider RC acceptance; no eligible production artifact"
+  },
+  "next": [
+    "Execute committed Python tests and native benchmark on a dependency-capable builder with fixed heap/GC flags",
+    "Complete exact-source GameTests and installed-provider, multiplayer, migration, sustained performance acceptance",
+    "Only publish qualified version-specific runtime/source/checksums and verify destination hashes before deleting redundant builds"
+  ]
+}
