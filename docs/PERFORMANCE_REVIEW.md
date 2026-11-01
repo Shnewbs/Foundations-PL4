@@ -25,3 +25,12 @@ Four additional native GameTests exercise:
 - 2,000 item/tag matches using one compiled filter, plus whitelist, filter-string, exact-ID, fluid-ID, fluid-tag and blank-filter behavior.
 
 These are operation-count and correctness checks, not FPS or milliseconds-per-tick benchmarks. Full Java 21 compilation, the offline regressions and native GameTests run in the PR workflow. A representative modpack/world profile is still needed to measure the real speedup. Cable-heavy networks should benefit most from synchronization and membership changes; filtered inventory/tank scans benefit from compiled filters. Client mesh batching and incremental graph rebuilding require separate profiling and broader rendering/topology work.
+
+
+## October 31, 2026 — isolated native benchmark world preservation
+
+The independent \`tools/benchmarks/run_native_comparison.py\` runner is **not** a production performance result. It intentionally creates disposable Minecraft \`run\` worlds in separate clean checkouts and must never delete an unrelated or subsequently changed world. Prior cleanup relied on a source/trial marker alone; that marker remained valid even if a user or another tool added a world or edited a file after a trial.
+
+The runner now records a SHA-256 inventory of generated directories, relative paths, file sizes and file contents when a native trial exits. Before removing the prior trial's \`run\` directory, it requires both the exact source/trial marker and an unchanged complete inventory. It refuses nested symbolic links, special files, unreadable directories, new world files, modified saves and malformed markers. Any refusal preserves the runtime for manual inspection. The existing clean-checkout, nonexisting output, and preexisting-world checks remain mandatory.
+
+Five new repository regression methods cover added worlds, modified saves, nested links, invalid markers and unreadable inventory traversal. GitHub source readback passed 14/14 contract checks; eight local isolated scenarios using the same helper logic passed. **The committed repository test module, Gradle native probe and TPS/heap benchmark have not run in this container.** These protections are not evidence of a speedup or RC qualification; exact-source native comparison remains pending on a dependency-capable external builder.
