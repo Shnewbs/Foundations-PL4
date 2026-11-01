@@ -25,6 +25,28 @@ NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<ve
 # Add a future target only after official loader availability and owner approval.
 SUPPORTED_26X_RELEASE_TARGETS = frozenset(("26.1.2", "26.3"))
 
+# The three NeoForge branches publish with reviewed, exact loader dependency
+# bounds. Filename/Minecraft metadata alone cannot prove loader compatibility:
+# a 26.3 JAR accidentally packaged with a 21.1 NeoForge dependency must fail.
+# Update these values only with an audited branch metadata/loader change.
+NEOFORGE_LOADER_RANGES = {
+    "1.21.1": "[21.1.250,21.2)",
+    "26.1.2": "[26.1.2.114,26.2)",
+    "26.3": "[26.3.0.23-beta,26.4)",
+}
+
+
+def require_neoforge_loader_metadata(minecraft, dependency):
+    """Fail closed on a mismatched or optional NeoForge loader dependency."""
+    expected = NEOFORGE_LOADER_RANGES.get(minecraft)
+    if expected is None or dependency.get("versionRange") != expected:
+        raise ValueError(
+            f"NeoForge loader version range does not match reviewed {minecraft} "
+            "branch metadata; rebuild and revalidate the exact target")
+    if dependency.get("type") != "required":
+        raise ValueError("NeoForge loader dependency must be required")
+
+
 # Exact currently published tracks eligible for this modern metadata publisher.
 # The other two published tracks (1.6.4 and 1.12.2) use their own legacy
 # mcmod.info publishers; 1.13.2 is an unfinished port, not a release target.
@@ -270,6 +292,10 @@ def inspect(jar, notes, jar_bytes=None):
             raise ValueError("JAR metadata does not identify the exact target Minecraft version")
         if loader == "NeoForge" and target != f"[{minecraft}]":
             raise ValueError("NeoForge JAR must declare an exact Minecraft target, not a range")
+        if loader == "NeoForge":
+            require_neoforge_loader_metadata(minecraft, loader_deps[0])
+            if minecraft_deps[0].get("type") != "required":
+                raise ValueError("NeoForge Minecraft dependency must be required")
     return minecraft, version, loader
 
 
