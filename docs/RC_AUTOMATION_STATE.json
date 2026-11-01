@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2207PDT-bytecode-coverage",
-    "claimed_at": "2026-11-01T05:07:05Z",
-    "scope": "tools/direct_curseforge_upload.py, tools/test_direct_curseforge_upload.py, documentation/acceptance",
-    "base_commit": "c62f47c7e9a38de5c9f42f8a9b5fc1902eb69f1b",
-    "status": "active"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -94,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 21:03 PDT: fixed native benchmark report-consumption ordering (c796d882), added four regression methods (7315f5f). GitHub readback 7/7; isolated mirrored Python smoke 4/4. Repository Python and native/installed tests not run (local DNS/Gradle/JDK25). Official 26.4 Snapshot 6 latest, no NeoForge 26.4 Maven loader. RC 0/24; no production JAR, GitHub/CurseForge release, Actions or deletion.",
-  "local_validation": "GitHub exact-source readback checks 7/7 PASS; 4/4 isolated mirrored Python smoke PASS. Committed repository Python/Gradle/native NOT RUN.",
+  "current_checkpoint": "2026-10-31 22:07 PDT: direct uploader now verifies target-JVM-selectable bundled/shaded class bytecode and multi-release entries; 7 repository tests added. GitHub source readback 15/15, isolated mirrored Python 7/7. Full repository Python/Gradle/native/installed tests NOT RUN due to local DNS/Gradle/JDK25. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 Maven loader. RC 0/24; no JAR, release, Actions or deletion.",
+  "local_validation": "15/15 GitHub exact-source contract checks PASS; 7/7 isolated mirrored Python scenarios PASS. Committed repository Python/Gradle/native NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -105,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-report-seal-order-2026-10-31-2103-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-bundled-bytecode-2026-10-31-2207-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3548,6 +3542,31 @@
     ],
     "evidence": "docs/acceptance/rc-dev-native-benchmark-report-seal-order-2026-10-31-2103-pdt.json",
     "validation": "7/7 GitHub exact-source static readback checks; 4/4 isolated mirrored Python smoke scenarios; committed regression and native suite not executed",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_2207": {
+    "owner": "pl4-hourly-20261031T2207PDT-bytecode-coverage",
+    "claimed_at": "2026-11-01T05:07:05Z",
+    "released_at": "2026-11-01T05:20:00Z",
+    "lease_claim_commit": "ef70b1ea4000ecc60034f020aaba10e126523723",
+    "source_commits": [
+      "7eb85131cba5b560e72afcb87b11b8d49ddf40a0",
+      "164120d02d20a079b18201c1c8a94291a4ccbe23",
+      "35c09ea984da21eede9c91c706143ca28acd47b7"
+    ],
+    "test_commits": [
+      "84d9a7c87d50ca5616fc6fb531cfdc414335e177",
+      "518d97ebb97332b864c2bd12b3131ba7d49860d1"
+    ],
+    "documentation_commits": [
+      "c4a922ce23b0fcafe2969841dc6cab6378f53092",
+      "b380f2e07a457f92f49a1e0bdaf3949e0c53eee4",
+      "8872dafc405ed8ed03fed7604366c58b512216e7"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-bundled-bytecode-2026-10-31-2207-pdt.json",
+    "validation": "15/15 GitHub source-contract checks and 7/7 isolated mirrored Python scenarios; repository/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
