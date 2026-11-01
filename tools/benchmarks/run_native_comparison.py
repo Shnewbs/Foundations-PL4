@@ -158,23 +158,29 @@ def validate_native_report(report, source, trial, reference_schema=None):
         raise ValueError('Native benchmark workloads/operations differ across revisions or trials')
     return schema
 
-NATIVE_ENVIRONMENT_FIELDS = ("java", "os", "os_arch", "processors",
+NATIVE_ENVIRONMENT_FIELDS = ("java", "java_vendor", "vm_name", "gc_collectors",
+                             "os", "os_arch", "processors",
                              "heap_initial_bytes", "heap_max_bytes")
 
 
 def validate_native_environment(report, reference_report=None):
-    """Require comparable native JVM, heap and CPU allocation across all trials.
+    """Require comparable native JVM, GC policy, heap and CPU across all trials.
 
-    Native operation ratios are not meaningful if the JVM, heap limits or
-    available processors change between baseline and candidate trials.
+    Native operation ratios are not meaningful if the JVM vendor, collector,
+    heap limits or available processors change between revisions or trials.
     """
     if not isinstance(report, dict):
         raise ValueError("Missing native benchmark environment")
     environment = {field: report.get(field) for field in NATIVE_ENVIRONMENT_FIELDS}
-    for field in ("java", "os", "os_arch"):
+    for field in ("java", "java_vendor", "vm_name", "os", "os_arch"):
         value = environment[field]
         if not isinstance(value, str) or not value.strip():
             raise ValueError("Invalid native benchmark environment: " + field)
+    collectors = environment["gc_collectors"]
+    if (not isinstance(collectors, list) or not collectors or
+            any(not isinstance(gc, str) or not gc.strip() for gc in collectors) or
+            collectors != sorted(set(collectors))):
+        raise ValueError("Invalid native benchmark environment: gc_collectors")
     for field in ("processors", "heap_initial_bytes", "heap_max_bytes"):
         value = environment[field]
         if type(value) is not int or value <= 0:
