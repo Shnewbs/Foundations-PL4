@@ -1,0 +1,64 @@
+{
+  "recorded_date": "2026-11-01",
+  "recorded_local": "2026-11-01 10:04 PST",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "1.21.1 disposable native performance comparator; forward 26.4 readiness only; no RC qualification",
+  "source_commits": {
+    "initial_injection": "4ffc5c279f66d47050706830240db123df49aedb",
+    "regex_correction": "3fd4f7f25fbdd276676400ad63ab6a1eb1599493",
+    "regressions": "99ec59dd4f0ee78a66f7394a4b7c5301a3948db3",
+    "performance_documentation": "e361066917aca7539001728708a1888ab0fe9c9f",
+    "compatibility_watch": "235026b98e44a28aedc11becd0680bf6d8bac11c"
+  },
+  "change": "Runner now supplies pinned fixed GameTest heap via JAVA_TOOL_OPTIONS (default 2048 MiB; PL4_BENCHMARK_HEAP_MB=512..16384), rejects inherited conflicting JVM heap flags, preserves unrelated options, and retains measured native heap comparability gate.",
+  "validation": {
+    "github_source_readback": "PASS: updated runner, five new regression methods, documentation, and watch checked against committed GitHub contents",
+    "isolated_python_helper": "PASS: 5/5 manually copied helper unittest methods on local Python 3.13.5; not the committed repository suite",
+    "java_environment_smoke": "PASS: Java 21 HotSpot reports maximum heap 512 MiB when JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m; not Minecraft GameTest",
+    "committed_python_regressions": "NOT RUN: repository checkout unavailable through local DNS",
+    "full_gradle_build": "NOT RUN",
+    "native_217_gametests": "NOT RUN",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "migration": "NOT RUN",
+    "sustained_tps_gc_heap": "NOT RUN"
+  },
+  "toolchain": {
+    "local_java": "21.0.12.1",
+    "required_java_for_26x": 25,
+    "git_dns": "FAILED: Could not resolve github.com",
+    "gradle": "No installed Gradle or cached wrapper distribution",
+    "local_artifacts": 0
+  },
+  "compatibility_watch": {
+    "latest_official_minecraft": "26.4 Snapshot 6",
+    "snapshot_publication_date": "2026-10-27",
+    "neoforge_latest_observed": "26.3.0.99",
+    "neoforge_26_4_loader": "Absent from official Maven index checked 2026-11-01",
+    "neoform_snapshot_mappings": "Present; not a NeoForge runtime loader",
+    "action": "No unsupported branch, artifact or compatibility claim"
+  },
+  "branch_review": {
+    "mc/26.1.2": "0.2.0-rc.1-dev; 193 expected native tests; not RC qualified",
+    "mc/26.3": "0.2.0-rc.1-dev; 193 expected native tests; not RC qualified",
+    "mc/26.1": "audit-only; BUILD_STATUS.json still 1.21.1",
+    "mc/26.2": "audit-only; BUILD_STATUS.json still 1.21.1"
+  },
+  "release": {
+    "rc_clearances": 0,
+    "total_exact_targets": 24,
+    "qualified_new_jar": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No exact-current-source native build, installed-provider acceptance or production artifact; no deletion without verified replacement"
+  },
+  "next": [
+    "Run committed repository Python tests on a dependency-capable checkout",
+    "Run exact-source native 1.21.1 GameTests with pinned GameTest heap and verify JVM receipt",
+    "Restore Java 25 for 26.x exact branch builds and complete per-target installed-provider, multiplayer, migration and sustained performance acceptance",
+    "Publish only qualified direct GitHub/CurseForge artifacts and verify remote checksum before deleting any local build"
+  ]
+}
