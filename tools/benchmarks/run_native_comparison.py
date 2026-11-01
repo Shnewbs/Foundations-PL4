@@ -347,7 +347,7 @@ def native_trial_environment(source, trial, inherited=None):
         raise ValueError('PL4_BENCHMARK_HEAP_MB must be between 512 and 16384 MiB')
     for key in ('JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', '_JAVA_OPTIONS'):
         options = env.get(key, '')
-        if re.search(r'(?<!\\S)(?:-Xm[sx]\\S*|-XX:(?:InitialHeapSize|MaxHeapSize|InitialRAMPercentage|MaxRAMPercentage)=\\S+)', options):
+        if re.search(r'(?<!\S)(?:-Xm[sx]\S*|-XX:(?:InitialHeapSize|MaxHeapSize|InitialRAMPercentage|MaxRAMPercentage)=\S+)', options):
             raise ValueError('Conflicting inherited JVM heap option in ' + key)
     env['JAVA_TOOL_OPTIONS'] = (env.get('JAVA_TOOL_OPTIONS', '').strip() +
                                 f' -Xms{heap_mb}m -Xmx{heap_mb}m').strip()
