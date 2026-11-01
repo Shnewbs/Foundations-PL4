@@ -166,8 +166,22 @@ def finish_native_trial(root, report_path, output_path, source, trial, label,
     report *after* mark_owned_run would invalidate the SHA-256 inventory and
     prevent the next interleaved trial from safely replacing its own world.
     """
-    if report_path.is_symlink() or not report_path.is_file():
-        raise ValueError("Missing or linked native benchmark report")
+    # Accept only the two locations produced by the isolated GameTest runner.
+    # A recursive report search may otherwise find an unrelated world or a
+    # linked verification-logs directory and unlink someone else's report.
+    root = Path(root).resolve()
+    report_path = Path(report_path)
+    allowed = {
+        root / "verification-logs" / "performance-probe.json",
+        root / "run" / "verification-logs" / "performance-probe.json",
+    }
+    if (report_path.is_symlink() or report_path.parent.is_symlink()
+            or (root / "run").is_symlink()):
+        raise ValueError("Linked native benchmark report or directory")
+    if report_path.resolve() not in allowed:
+        raise ValueError("Native benchmark report is outside the expected probe directories")
+    if not report_path.is_file():
+        raise ValueError("Missing native benchmark report")
     report = json.loads(report_path.read_text())
     report.update(label=label, fixture_sha256=fixture_sha256)
     schema = validate_native_report(report, source, trial, reference_schema)
