@@ -179,20 +179,57 @@ def finish_native_trial(root, report_path, output_path, source, trial, label,
     return report, schema
 
 
+
+def preflight_native_checkouts(roots):
+    """Validate *both* exact revisions before modifying either checkout.
+
+    A bad second checkout must not leave the first checkout's GameTest
+    registration rewritten, or create a misleading empty results directory.
+    Benchmarking identical source commits also wastes six native runs.
+    """
+    plans = []
+    registration = (r'public static void register\(RegisterGameTestsEvent e\)'
+                    r'\{[^}]*\}')
+    replacement = ('public static void register(RegisterGameTestsEvent e)'
+                   '{e.register(ReleasePerformanceGameTests.class);}')
+    for label, root in zip(('baseline', 'candidate'), roots):
+        source = subprocess.check_output(
+            ['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+        if not re.fullmatch(r'[0-9a-f]{40}(?:[0-9a-f]{24})?', source):
+            raise ValueError('Benchmark source is not an exact Git commit')
+        status = json.loads((root / 'BUILD_STATUS.json').read_text(encoding='utf-8'))
+        if status.get('minecraft') != '1.21.1':
+            raise ValueError('Exact Minecraft 1.21.1 benchmark target required')
+        candidates = [
+            root / 'src/portTest/java/net/foundations/pl4/PLGameTests.java',
+            root / 'src/main/java/net/foundations/pl4/PLGameTests.java',
+        ]
+        registry = next((path for path in candidates if path.is_file()), None)
+        if registry is None:
+            raise ValueError('Missing isolated GameTest registration source')
+        original = registry.read_text(encoding='utf-8')
+        if len(re.findall(registration, original)) != 1:
+            raise ValueError('Unsupported or ambiguous isolated registration source')
+        rewritten = re.sub(registration, lambda _: replacement, original, count=1)
+        plans.append({'label': label, 'root': root, 'source': source,
+                      'registry': registry, 'registration': rewritten})
+    if plans[0]['source'] == plans[1]['source']:
+        raise ValueError('Native comparison requires distinct source commits')
+    return plans
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
-    args=parser.parse_args();roots,out=require_disposable_workspaces(args.baseline,args.candidate,args.output);out.mkdir(parents=True,exist_ok=False)
+    args=parser.parse_args();roots,out=require_disposable_workspaces(args.baseline,args.candidate,args.output)
+    plans=preflight_native_checkouts(roots)
     fixture=Path(__file__).with_name('ReleasePerformanceGameTests.java').read_text()
-    records=[];sources={};reference_schema=None
-    for label,root in [('baseline',roots[0]),('candidate',roots[1])]:
-        source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip();sources[label]=source
-        if json.loads((root/'BUILD_STATUS.json').read_text())['minecraft']!='1.21.1':raise ValueError('Exact Minecraft target required')
-        candidates=[root/'src/portTest/java/net/foundations/pl4/PLGameTests.java',root/'src/main/java/net/foundations/pl4/PLGameTests.java']
-        registry=next(p for p in candidates if p.exists());text=registry.read_text()
-        text,count=re.subn(r'public static void register\(RegisterGameTestsEvent e\)\{[^}]*\}', 'public static void register(RegisterGameTestsEvent e){e.register(ReleasePerformanceGameTests.class);}',text,count=1)
-        if count!=1:raise ValueError('Unsupported isolated registration source')
-        registry.write_text(text);registry.with_name('ReleasePerformanceGameTests.java').write_text(fixture)
+    # Only after both checkouts and the fixture pass preflight may we mutate.
+    out.mkdir(parents=True,exist_ok=False)
+    records=[];sources={plan['label']:plan['source'] for plan in plans};reference_schema=None
+    for plan in plans:
+        root=plan['root'];registry=plan['registry']
+        registry.write_text(plan['registration'],encoding='utf-8')
+        registry.with_name('ReleasePerformanceGameTests.java').write_text(fixture,encoding='utf-8')
         # The probe is development-only; all publication is absent from this workflow.
         (root/'verification-logs').mkdir(exist_ok=True)
     for trial in range(1,4):
