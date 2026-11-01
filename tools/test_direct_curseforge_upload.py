@@ -91,8 +91,8 @@ class DirectUploadValidationTests(unittest.TestCase):
         for dependency in ("neoforge", "minecraft"):
             with self.subTest(dependency=dependency):
                 metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
-                old = f'modId="{dependency}"\\ntype="required"'
-                new = f'modId="{dependency}"\\ntype="optional"'
+                old = f'modId="{dependency}"\ntype="required"'
+                new = f'modId="{dependency}"\ntype="optional"'
                 metadata = metadata.replace(old, new)
                 self.assertIn(new, metadata)
                 self.make_jar(metadata)
