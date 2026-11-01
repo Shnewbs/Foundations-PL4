@@ -186,6 +186,21 @@ def read_jar_snapshot(jar):
     return jar_bytes
 
 
+def write_receipt_exclusive(path, payload):
+    """Create a post-upload receipt without following links or replacing a file.
+
+    If a receipt appears while CurseForge processes the upload, preserve it and
+    require destination reconciliation rather than clobbering evidence. A
+    failed write deliberately leaves a fail-closed receipt for inspection.
+    """
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    with os.fdopen(os.open(path, flags, 0o600), "w", encoding="utf-8") as stream:
+        json.dump(payload, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
 def inspect(jar, notes, jar_bytes=None):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -263,6 +278,8 @@ def main():
     if not project.isdecimal() or int(project) <= 0:
         raise ValueError("CURSEFORGE_PROJECT_ID must be a positive integer")
     receipt = args.jar.with_suffix(".curseforge.json")
+    if receipt.is_symlink():
+        raise ValueError("CurseForge receipt is a symbolic-link path; reconcile the destination")
     if receipt.exists():
         previous = json.loads(receipt.read_text(encoding="utf-8"))
         file_id = verify_local_receipt(previous, digest, project, minecraft, version, loader)
@@ -289,10 +306,16 @@ def main():
     file_id = result.get("id")
     if isinstance(file_id, bool) or not isinstance(file_id, int) or file_id <= 0:
         raise RuntimeError("Upload response had no file ID; inspect CurseForge before retrying")
-    receipt.write_text(json.dumps({"project_id": project, "file_id": file_id,
-                                   "minecraft": minecraft, "version": version, "loader": loader,
-                                   "sha256": digest, "upload_status": "accepted_by_api_not_moderation_verified"},
-                                  indent=2) + "\n", encoding="utf-8")
+    payload = {"project_id": project, "file_id": file_id,
+               "minecraft": minecraft, "version": version, "loader": loader,
+               "sha256": digest, "upload_status": "accepted_by_api_not_moderation_verified"}
+    try:
+        write_receipt_exclusive(receipt, payload)
+    except OSError as exc:
+        raise RuntimeError(
+            f"CurseForge accepted file {file_id}, but its local receipt could not be "
+            "created exclusively. Reconcile CurseForge before retrying; no receipt "
+            "was overwritten.") from exc
     print(f"CurseForge accepted file {file_id}; moderation status is separate")
 
 
