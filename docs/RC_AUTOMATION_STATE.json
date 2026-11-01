@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T2005Z-nested-checkout-preflight",
-    "claimed_at": "2026-11-01T20:05:00Z",
-    "scope": "tools/benchmarks nested checkout safety and 26.4 compatibility documentation",
-    "expected_head": "b65c998cba7d2717845355e49a904fa911006ef4"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 11:09 PST: Native comparator now validates all six GameTest JVM environments before checkout mutation/output creation; 4/4 isolated mirrored helper tests and 9/9 GitHub readback contracts pass. Committed unittest/native builds remain blocked by unavailable GitHub/Gradle DNS, uncached Gradle and Java 25 for 26.x. Official 26.4 Snapshot 6 latest, NeoForge loader absent. 0/24 RC; no releases, Actions or build deletion.",
-  "local_validation": "4/4 isolated copied-helper unittest PASS; 9/9 actual committed source readback contracts PASS; committed repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 12:05 PST: Native benchmark rejects nested checkouts before mutation; 10/10 committed readback contracts and 4/4 isolated mirrored tests pass. Repository/native tests blocked by GitHub/Gradle DNS, uncached Gradle and missing Java 25. Official 26.4 Snapshot 6 latest; NeoForm snapshots exist but NeoForge 26.4 loader absent. 0/24 RC, no releases, Actions or build deletion.",
+  "local_validation": "10/10 GitHub committed source/test/watch readback contracts PASS; 4/4 mirrored isolated Python checks PASS; actual committed Python/Gradle/native/installed suites NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-jvm-preflight-before-mutation-2026-11-01-1109-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-nested-checkout-isolation-2026-11-01-1205-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3737,6 +3732,25 @@
     "evidence_commit": "68a9a1d23fd83b6be24b3ad1700a0396e718aac6",
     "evidence": "docs/acceptance/rc-dev-native-jvm-preflight-before-mutation-2026-11-01-1109-pst.json",
     "validation": "9/9 actual GitHub source readback; 4/4 isolated mirrored Python; committed suite/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_1205_nested_checkout": {
+    "owner": "pl4-hourly-20261101T2005Z-nested-checkout-preflight",
+    "claimed_at": "2026-11-01T20:05:00Z",
+    "released_at": "2026-11-01T20:12:00Z",
+    "source_commits": [
+      "f5394aa4beb6b92b54f072318ede1507fe4149d8",
+      "d8308a1f9d1fd4a9f192cef753cb2c3297a68b6c"
+    ],
+    "documentation_commits": [
+      "50929b23f34d3319d6f62bdabe45f3569607276b",
+      "5f11cc66d0ad265beb310d2473b39368e0ae3e19"
+    ],
+    "evidence_commit": "840565b69a8b3228fbaaec98bd355a627348df87",
+    "evidence": "docs/acceptance/rc-dev-native-nested-checkout-isolation-2026-11-01-1205-pst.json",
+    "validation": "10/10 committed readback contracts; 4/4 isolated mirrored Python tests; committed suite/native NOT RUN",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
