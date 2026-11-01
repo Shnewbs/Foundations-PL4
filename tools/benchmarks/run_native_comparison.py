@@ -376,10 +376,34 @@ def preflight_native_trial_environments(plans, inherited=None):
                 plan['source'], trial, snapshot)
     return environments
 
-def summarize_native_measurements(records):
-    """Show CPU and allocation changes alongside wall-time; never infer RC clearance."""
-    if not records:
+def validate_native_trial_set(records):
+    """Require one receipt for each interleaved revision/trial pair.
+
+    Counting three records per label is not enough: duplicated or mislabeled
+    trials could hide an absent run and make a comparison appear reproducible.
+    """
+    if not isinstance(records, list) or not records:
         raise ValueError('Native benchmark has no trial records')
+    expected = {(label, str(trial))
+                for label in ('baseline', 'candidate') for trial in range(1, 4)}
+    seen = set()
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError('Malformed native benchmark trial receipt')
+        key = (record.get('label'), record.get('trial'))
+        if key not in expected:
+            raise ValueError('Unexpected native benchmark trial receipt: ' + repr(key))
+        if key in seen:
+            raise ValueError('Duplicate native benchmark trial receipt: ' + repr(key))
+        seen.add(key)
+    if seen != expected:
+        raise ValueError('Expected exactly three native benchmark trials per revision')
+    return True
+
+
+def summarize_native_measurements(records):
+    """Show CPU, allocation and trial spread; never infer RC clearance."""
+    validate_native_trial_set(records)
     summaries = []
     for workload in records[0]['workloads']:
         for measurement in workload['measurements']:
@@ -394,8 +418,15 @@ def summarize_native_measurements(records):
                 for metric in ('elapsed_ns', 'cpu_ns', 'allocated_bytes'):
                     per_trial = [statistics.median(m[metric]) / m['operations_per_round']
                                  for m in selected]
-                    row[label + '_' + metric + '_per_operation'] = statistics.median(per_trial)
+                    median = statistics.median(per_trial)
+                    row[label + '_' + metric + '_per_operation'] = median
                     row[label + '_' + metric + '_trial_medians'] = per_trial
+                    # Surface trial-to-trial noise without inventing a pass
+                    # threshold or mistaking one lucky run for a speedup.
+                    spread = max(per_trial) - min(per_trial)
+                    row[label + '_' + metric + '_trial_range'] = spread
+                    row[label + '_' + metric + '_trial_relative_range'] = (
+                        spread / median if median else None)
             for metric in ('elapsed_ns', 'cpu_ns', 'allocated_bytes'):
                 baseline = row['baseline_' + metric + '_per_operation']
                 candidate = row['candidate_' + metric + '_per_operation']
