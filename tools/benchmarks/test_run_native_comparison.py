@@ -839,6 +839,12 @@ class NativeMetricSummaryTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'Unexpected native benchmark trial'):
                     bench.summarize_native_measurements(records)
 
+    def test_malformed_unhashable_trial_identity_is_rejected_cleanly(self):
+        records = self.records([0, 0, 0], [16, 16, 16])
+        records[0]['label'] = []
+        with self.assertRaisesRegex(ValueError, 'Malformed native benchmark trial identity'):
+            bench.summarize_native_measurements(records)
+
     def test_trial_range_exposes_unstable_elapsed_measurements(self):
         records = self.records([0, 0, 0], [16, 16, 16])
         records[1]['workloads'][0]['measurements'][0]['elapsed_ns'] = [600, 800, 1000]
