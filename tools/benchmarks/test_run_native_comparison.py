@@ -222,5 +222,75 @@ class NativeReportValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "differ"):
             bench.validate_native_report(report, "a" * 40, 1, schema)
 
+class NativeTrialFinalizationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.runtime = self.root / "run"
+        self.runtime.mkdir()
+        (self.runtime / "level.dat").write_bytes(b"benchmark-generated world")
+        self.source = "a" * 40
+
+    def write_report(self, parent):
+        parent.mkdir(parents=True, exist_ok=True)
+        path = parent / "performance-probe.json"
+        path.write_text(json.dumps(sample_native_report()), encoding="utf-8")
+        return path
+
+    def test_report_inside_run_is_removed_before_inventory_is_sealed(self):
+        report_path = self.write_report(self.runtime / "verification-logs")
+        result = self.root / "trial.json"
+        report, schema = bench.finish_native_trial(
+            self.root, report_path, result, self.source, 1, "baseline", "f" * 64)
+        self.assertEqual(report["label"], "baseline")
+        self.assertIn(("wired", "lookup"), schema)
+        self.assertFalse(report_path.exists())
+        self.assertTrue(result.is_file())
+        marker = json.loads((self.runtime / ".pl4-benchmark-owned").read_text())
+        self.assertEqual(marker["inventory_sha256"], bench.inventory_digest(self.runtime))
+        bench.replace_owned_run(self.root, 1, self.source)
+        self.assertFalse(self.runtime.exists())
+
+    def test_report_outside_run_still_seals_and_preserves_results(self):
+        report_path = self.write_report(self.root / "verification-logs")
+        result = self.root / "trial.json"
+        bench.finish_native_trial(
+            self.root, report_path, result, self.source, 1, "candidate", "f" * 64)
+        self.assertFalse(report_path.exists())
+        self.assertEqual(json.loads(result.read_text())["label"], "candidate")
+        bench.replace_owned_run(self.root, 1, self.source)
+        self.assertTrue(result.exists())
+
+    def test_invalid_report_never_seals_or_deletes_generated_world(self):
+        report_path = self.write_report(self.runtime / "verification-logs")
+        malformed = sample_native_report()
+        malformed["trial"] = "2"
+        report_path.write_text(json.dumps(malformed))
+        with self.assertRaisesRegex(ValueError, "source/trial mismatch"):
+            bench.finish_native_trial(
+                self.root, report_path, self.root / "trial.json", self.source,
+                1, "baseline", "f" * 64)
+        self.assertTrue(report_path.exists())
+        self.assertTrue((self.runtime / "level.dat").exists())
+        self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
+        self.assertFalse((self.root / "trial.json").exists())
+
+    def test_linked_report_is_rejected_without_reading_or_deleting_target(self):
+        outside = self.root / "retained-report.json"
+        outside.write_text(json.dumps(sample_native_report()))
+        link_dir = self.runtime / "verification-logs"
+        link_dir.mkdir()
+        report_path = link_dir / "performance-probe.json"
+        report_path.symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, "linked native benchmark report"):
+            bench.finish_native_trial(
+                self.root, report_path, self.root / "trial.json", self.source,
+                1, "baseline", "f" * 64)
+        self.assertTrue(outside.exists())
+        self.assertTrue(report_path.is_symlink())
+        self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
+
+
 if __name__ == "__main__":
     unittest.main()
