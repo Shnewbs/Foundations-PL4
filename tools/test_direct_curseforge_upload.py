@@ -131,6 +131,58 @@ class DirectUploadValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "differs from the JAR"):
             self.dry_run()
 
+    def test_rejects_too_new_bundled_class_outside_pl4_package(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("org/example/BundledHelper.class",
+                             bytes.fromhex("cafebabe000000450001"))  # Java 25
+        with self.assertRaisesRegex(ValueError, "incompatible PL4 bytecode"):
+            inspect(self.jar, self.notes)
+
+    def test_accepts_compatible_bundled_class(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("org/example/BundledHelper.class",
+                             bytes.fromhex("cafebabe000000410001"))  # Java 21
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.21.1", "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_rejects_too_new_active_multi_release_class(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("META-INF/versions/21/org/example/Helper.class",
+                             bytes.fromhex("cafebabe000000450001"))  # Java 25
+        with self.assertRaisesRegex(ValueError, "incompatible PL4 bytecode"):
+            inspect(self.jar, self.notes)
+
+    def test_ignores_multi_release_class_above_target_java(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("META-INF/versions/22/org/example/Helper.class",
+                             bytes.fromhex("cafebabe000000450001"))  # Java 25
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.21.1", "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_legacy_java8_ignores_java9_multi_release_class(self):
+        self.jar = self.root / "FoundationsPL4-1.16.5-0.97.0.rev1-beta-java8.jar"
+        metadata = self.metadata("0.97.0.rev1-beta", "1.16.5").replace(
+            'modId="neoforge"', 'modId="forge"')
+        self.make_jar(metadata, class_bytes=bytes.fromhex("cafebabe000000340001"),
+                      metadata_path="META-INF/mods.toml")
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("META-INF/versions/9/org/example/Helper.class",
+                             bytes.fromhex("cafebabe000000350001"))  # Java 9
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.16.5", "0.97.0.rev1-beta", "Forge"))
+
+    def test_rejects_malformed_multi_release_class_directory(self):
+        self.make_jar()
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("META-INF/versions/future/org/example/Helper.class",
+                             bytes.fromhex("cafebabe000000410001"))
+        with self.assertRaisesRegex(ValueError, "invalid multi-release class path"):
+            inspect(self.jar, self.notes)
+
     def test_rejects_fake_pl4_classfile(self):
         self.make_jar(class_bytes=b"class")
         with self.assertRaisesRegex(ValueError, "invalid PL4 classfile header"):
