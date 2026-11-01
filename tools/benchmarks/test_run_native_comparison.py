@@ -687,5 +687,75 @@ class NativeTrialEnvironmentTests(unittest.TestCase):
                                      "PL4_BENCHMARK_HEAP_MB": "512"})
 
 
+
+class NativeEnvironmentPreflightTests(unittest.TestCase):
+    def plans(self):
+        return [{"label": "baseline", "source": "a" * 40},
+                {"label": "candidate", "source": "b" * 40}]
+
+    def test_all_six_environments_are_prepared_before_native_execution(self):
+        inherited = {"PL4_BENCHMARK_HEAP_MB": "1024",
+                     "JAVA_TOOL_OPTIONS": "-Duser.language=en"}
+        environments = bench.preflight_native_trial_environments(self.plans(), inherited)
+        self.assertEqual(len(environments), 6)
+        for trial in range(1, 4):
+            for label, source in (("baseline", "a" * 40), ("candidate", "b" * 40)):
+                env = environments[(label, trial)]
+                self.assertEqual(env["PL4_BENCHMARK_SOURCE"], source)
+                self.assertEqual(env["PL4_BENCHMARK_TRIAL"], str(trial))
+                self.assertEqual(env["JAVA_TOOL_OPTIONS"],
+                                 "-Duser.language=en -Xms1024m -Xmx1024m")
+        self.assertEqual(inherited["PL4_BENCHMARK_HEAP_MB"], "1024")
+        environments[("baseline", 1)]["JAVA_TOOL_OPTIONS"] = "changed"
+        self.assertNotEqual(environments[("candidate", 1)]["JAVA_TOOL_OPTIONS"],
+                            "changed")
+
+    def test_bad_heap_preflight_does_not_mutate_checkout_or_create_results(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            baseline, candidate, output = (root / "baseline", root / "candidate",
+                                           root / "results")
+            for checkout in (baseline, candidate):
+                checkout.mkdir()
+                (checkout / "PLGameTests.java").write_text("original source")
+            plans = [
+                {"label": "baseline", "source": "a" * 40,
+                 "root": baseline, "registry": baseline / "PLGameTests.java",
+                 "registration": "modified source"},
+                {"label": "candidate", "source": "b" * 40,
+                 "root": candidate, "registry": candidate / "PLGameTests.java",
+                 "registration": "modified source"},
+            ]
+            with (mock.patch("sys.argv", ["benchmark", str(baseline),
+                                         str(candidate), str(output)]),
+                  mock.patch.object(bench, "require_disposable_workspaces",
+                                    return_value=([baseline, candidate], output)),
+                  mock.patch.object(bench, "preflight_native_checkouts",
+                                    return_value=plans),
+                  mock.patch.dict(bench.os.environ,
+                                  {"PL4_BENCHMARK_HEAP_MB": "not-a-number"}, clear=True)):
+                with self.assertRaisesRegex(ValueError, "HEAP_MB"):
+                    bench.main()
+            self.assertFalse(output.exists())
+            for checkout in (baseline, candidate):
+                self.assertEqual((checkout / "PLGameTests.java").read_text(),
+                                 "original source")
+                self.assertFalse((checkout / "ReleasePerformanceGameTests.java").exists())
+                self.assertFalse((checkout / "verification-logs").exists())
+
+    def test_conflicting_inherited_java_options_fail_all_trial_preflight(self):
+        for key in ("JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS"):
+            with self.subTest(key=key), self.assertRaisesRegex(
+                    ValueError, "Conflicting inherited JVM heap option"):
+                bench.preflight_native_trial_environments(
+                    self.plans(), {key: "-Xmx512m"})
+
+    def test_invalid_heap_size_rejects_preflight_without_mutating_input(self):
+        inherited = {"PL4_BENCHMARK_HEAP_MB": "16385"}
+        with self.assertRaisesRegex(ValueError, "HEAP_MB"):
+            bench.preflight_native_trial_environments(self.plans(), inherited)
+        self.assertEqual(inherited, {"PL4_BENCHMARK_HEAP_MB": "16385"})
+
+
 if __name__ == "__main__":
     unittest.main()
