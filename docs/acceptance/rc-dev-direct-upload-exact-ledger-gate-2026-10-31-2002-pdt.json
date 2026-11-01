@@ -1,0 +1,50 @@
+{
+  "recorded_local": "2026-10-31 20:02 PDT",
+  "recorded_utc": "2026-11-01T03:02:00Z",
+  "scope": "Modern direct CurseForge uploader exact-version release eligibility",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "source_commit": "3790b2835bca286ed8f2b577d2fe96872c85d905",
+  "test_commit": "540a8d51304dd1f676d35b2003c889a390733e32",
+  "change": "Require explicit approved direct-upload Minecraft version ledger (22 modern targets); keep 1.6.4/1.12.2 on legacy publisher and reject unfinished 1.13.2, adjacent patch versions and unreleased 26.4",
+  "approved_direct_targets": 22,
+  "approved_exact_tracks_total": 24,
+  "checks": {
+    "github_source_readback": "PASS: helper, 22-target set and inspect call present",
+    "github_test_readback": "PASS: negative and positive regression methods present",
+    "isolated_mirrored_python": "4/4 PASS; NOT repository test execution",
+    "full_repository_python": "NOT RUN: GitHub DNS unavailable in local container",
+    "gradle_native": "NOT RUN: Gradle 9.2.1 distribution/dependencies uncached and Java 25 unavailable",
+    "native_game_tests": "NOT RUN for this source",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "world_migration": "NOT RUN",
+    "sustained_performance": "NOT RUN"
+  },
+  "official_26_4_watch": {
+    "minecraft_snapshot": "26.4 Snapshot 6",
+    "minecraft_snapshot_date": "2026-10-27",
+    "neoforge_maven_latest_observed": "26.3.0.99",
+    "neoforge_26_4_coordinate_present": false,
+    "action": "No 26.4 port/branch/JAR/release; preserve existing Vulkan, fluid-state, login handshake, migration and pinned-heap gates",
+    "sources": [
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "release_status": {
+    "rc_cleared": 0,
+    "rc_total": 24,
+    "new_jar": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "retained_builds_deleted": false
+  },
+  "blockers": [
+    "GitHub hostname DNS fails in local builder",
+    "Gradle 9.2.1 and dependencies not cached",
+    "Java 25 not installed",
+    "Exact-source native and live acceptance outstanding"
+  ]
+}
