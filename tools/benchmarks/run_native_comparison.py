@@ -240,6 +240,12 @@ def preflight_native_checkouts(roots):
         status = json.loads((root / 'BUILD_STATUS.json').read_text(encoding='utf-8'))
         if status.get('minecraft') != '1.21.1':
             raise ValueError('Exact Minecraft 1.21.1 benchmark target required')
+        # This directory may be gitignored and therefore escape the clean
+        # checkout check. A stale report could otherwise be mistaken for a
+        # fresh GameTest result, or an existing report could be unlinked.
+        report_dir = root / 'verification-logs'
+        if report_dir.exists() or report_dir.is_symlink():
+            raise ValueError('Pre-existing native benchmark report directory: ' + str(report_dir))
         candidates = [
             root / 'src/portTest/java/net/foundations/pl4/PLGameTests.java',
             root / 'src/main/java/net/foundations/pl4/PLGameTests.java',
@@ -247,6 +253,11 @@ def preflight_native_checkouts(roots):
         registry = next((path for path in candidates if path.is_file()), None)
         if registry is None:
             raise ValueError('Missing isolated GameTest registration source')
+        # The runner injects this class via write_text. Never overwrite an
+        # existing (possibly gitignored) source or follow a fixture symlink.
+        fixture_target = registry.with_name('ReleasePerformanceGameTests.java')
+        if fixture_target.exists() or fixture_target.is_symlink():
+            raise ValueError('Existing performance fixture would be overwritten: ' + str(fixture_target))
         original = registry.read_text(encoding='utf-8')
         if len(re.findall(registration, original)) != 1:
             raise ValueError('Unsupported or ambiguous isolated registration source')
