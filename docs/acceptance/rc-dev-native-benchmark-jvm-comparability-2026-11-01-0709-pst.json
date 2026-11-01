@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-11-01T15:09:23Z",
+  "target": "1.21.1 native performance comparison, 26.4 forward compatibility watch",
+  "source_branch": "main",
+  "writer": "pl4-hourly-20261101T1507Z-runtime-comparability",
+  "changes": {
+    "fixture_commit": "c3b1585c9d6c35a741d5d6979b07faf0ae293def",
+    "runner_commit": "fafeced50c5ac4fac57caef551d801113bf7ff7e",
+    "tests_commit": "93ad53a6e98819d0a32e1ec693651b40db3e5384",
+    "watch_commit": "ca2ab83fa2ea935b29b58df8487eacdaa13a866a",
+    "new_runtime_fields": [
+      "os_arch",
+      "heap_initial_bytes",
+      "heap_max_bytes"
+    ],
+    "compared_fields": [
+      "java",
+      "os",
+      "os_arch",
+      "processors",
+      "heap_initial_bytes",
+      "heap_max_bytes"
+    ],
+    "behavior": "Reject noncomparable native JVM/heap/CPU environments before persisting a timing report or sealing generated world; retain world and report on failure",
+    "new_repository_test_methods": 4
+  },
+  "verification": {
+    "github_committed_source_contract_checks": {
+      "passed": 8,
+      "total": 8,
+      "method": "exact GitHub connector readback; static source/ordering assertions"
+    },
+    "isolated_python_scenarios": {
+      "passed": 4,
+      "total": 4,
+      "method": "manually mirrored environment helper in isolated temporary file, not committed repository test module"
+    },
+    "committed_repository_python_suite": "NOT_RUN",
+    "gradle_compile": "NOT_RUN",
+    "native_game_tests": "NOT_RUN",
+    "native_benchmark": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "multiplayer_migration_sustained_performance": "NOT_RUN",
+    "reason": "This execution environment has Java 21, no local PL4 checkout, no Gradle installation or cached dependencies, and GitHub DNS resolution fails."
+  },
+  "official_26_4": {
+    "minecraft_latest_identified": "26.4 Snapshot 6, 2026-10-27",
+    "snapshot_index": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "neoforge_maven_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "neoforge_26_4_loader_present": false,
+    "latest_26_3_loader_seen": "26.3.0.99",
+    "new_26_4_branch_or_release": false
+  },
+  "release": {
+    "rc_cleared": 0,
+    "total_targets": 24,
+    "production_jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "next": [
+    "Run committed Python benchmark regressions on exact checkout",
+    "Compile Java fixture and run interleaved native benchmark with pinned -Xms/-Xmx on dependency-capable Java 21 builder",
+    "Execute 217 current-source native GameTests and independent installed provider, multiplayer, migration and sustained TPS/heap gates",
+    "Publish only independently qualified exact-version JAR/source/checksum artifacts and verify destination before deleting local builds"
+  ]
+}
