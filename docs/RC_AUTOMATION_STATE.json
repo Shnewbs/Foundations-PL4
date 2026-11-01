@@ -3656,7 +3656,7 @@
   "last_writer_release_20261101_0609": {
     "owner": "pl4-hourly-20261101T1409Z-native-registry-symlink",
     "claimed_at": "2026-11-01T14:09:47Z",
-    "released_at": "2026-11-01T14:16:00Z",
+    "released_at": "2026-11-01T14:12:54Z",
     "lease_claim_commit": "beb6f1073fdaaa865e7b3a2dcc6f709bdea5376a",
     "source_commits": [
       "22f7a3a472500a7681b0318fd8b8e4cbdccbe4af",
