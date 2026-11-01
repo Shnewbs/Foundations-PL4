@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1409Z-native-registry-symlink",
-    "claimed_at": "2026-11-01T14:09:47Z",
-    "scope": "tools/benchmarks/run_native_comparison.py and test_run_native_comparison.py; symlink-safe registration preflight"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -92,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 05:16 PST: shared native benchmark now rejects pre-existing checkout verification-logs and fixture injection targets before either checkout is modified; 4 repository regression methods added. 8/8 GitHub source checks and 6/6 isolated mirrored Python checks passed; committed unittest and native Gradle tests not run. Official 26.4 Snapshot 6 remains latest, NeoForge 26.4 loader absent. 0/24 RC clearances; no releases or local deletion.",
-  "local_validation": "8/8 committed GitHub source contract checks PASS; 6/6 isolated mirrored Python scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 06:09 PST: native benchmark preflight rejects linked registration/metadata paths and ambiguous registration locations before checkout mutation; 4 repository regression tests added. GitHub readback 10/10 and isolated copied-logic Python scenarios 5/5 passed; full repository/native not run. Official 26.4 Snapshot 6 remains latest identified; NeoForge Maven has no 26.4 loader. 0/24 RC clearances; no releases or local deletion.",
+  "local_validation": "10/10 GitHub committed source contract checks PASS; 5/5 isolated copied-logic Python scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -103,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-benchmark-preexisting-probe-safety-2026-11-01-0505-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-registration-symlink-2026-11-01-0609-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3653,6 +3649,21 @@
     ],
     "evidence": "docs/acceptance/rc-dev-benchmark-preexisting-probe-safety-2026-11-01-0505-pst.json",
     "validation": "8/8 committed GitHub source contract checks; 6/6 isolated mirrored Python scenarios; full repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_0609": {
+    "owner": "pl4-hourly-20261101T1409Z-native-registry-symlink",
+    "claimed_at": "2026-11-01T14:09:47Z",
+    "released_at": "2026-11-01T14:16:00Z",
+    "lease_claim_commit": "beb6f1073fdaaa865e7b3a2dcc6f709bdea5376a",
+    "source_commits": [
+      "22f7a3a472500a7681b0318fd8b8e4cbdccbe4af",
+      "4554e14377947d02cf5b2546c3d849cbd3b6ddeb"
+    ],
+    "evidence": "docs/acceptance/rc-dev-native-registration-symlink-2026-11-01-0609-pst.json",
+    "validation": "10/10 source readback checks; 5/5 isolated copied-logic tests; committed suite/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
