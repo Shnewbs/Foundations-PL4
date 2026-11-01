@@ -1,0 +1,73 @@
+{
+  "date_local": "2026-10-31 23:06 PDT",
+  "date_utc": "2026-11-01",
+  "scope": "direct CurseForge upload receipt safety; 26.4 compatibility watch",
+  "base_commit": "2ee81c9c3b5f344189c90d872037c32c3f75973d",
+  "implementation_commits": [
+    "e28831bb1c84180fba7184cc8540f346e169cdb6"
+  ],
+  "test_commits": [
+    "1356ece3492bfd290f14702aa171c06f9b2259bb",
+    "f229d0e9a36bfb90ce7d9a1b32f841a94ec49b7d"
+  ],
+  "documentation_commits": [
+    "b10aa933c64c5277b5808e94d7b56fd503b2ef2f"
+  ],
+  "changed_files": [
+    "tools/direct_curseforge_upload.py",
+    "tools/test_direct_curseforge_upload.py",
+    "docs/MC_26_4_COMPATIBILITY_WATCH.md"
+  ],
+  "behavior": [
+    "Receipt is created with O_CREAT|O_EXCL, mode 0600, flushed and fsynced",
+    "Existing symlink receipt rejected before any upload",
+    "If another writer creates receipt during API call, existing evidence is preserved and destination reconciliation is required",
+    "API acceptance is not treated as CurseForge moderation/publication"
+  ],
+  "validation": {
+    "github_committed_source_contracts": {
+      "passed": 15,
+      "total": 15
+    },
+    "isolated_local_python_helper_scenarios": {
+      "passed": 3,
+      "total": 3,
+      "description": "mirrored helper logic, not repository tests"
+    },
+    "committed_repository_regression_methods_added": 4,
+    "committed_repository_python_suite": "NOT RUN",
+    "exact_source_gradle_native_build": "NOT RUN",
+    "exact_source_native_gametests": {
+      "expected": 217,
+      "executed": 0
+    },
+    "installed_provider": "PENDING",
+    "authenticated_multiplayer": "PENDING",
+    "world_migration": "PENDING",
+    "sustained_tps_heap": "PENDING"
+  },
+  "compatibility_26_4": {
+    "minecraft_latest_identified_snapshot": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "mojang_index": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "neoforge_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_observed_26_3": "26.3.0.99",
+    "neoforge_26_4_coordinate_found": false,
+    "port_created": false,
+    "compatibility_claim": false
+  },
+  "blockers": [
+    "Container cannot resolve github.com, raw.githubusercontent.com, services.gradle.org or maven.neoforged.net",
+    "Gradle 9.2.1 dependencies not cached locally",
+    "Java 21 present; Java 25 unavailable",
+    "No verified exact-source RC artifact eligible for publication"
+  ],
+  "release": {
+    "approved_exact_targets": 24,
+    "rc_cleared": 0,
+    "github_release_created": false,
+    "curseforge_upload_attempted": false,
+    "github_actions_used": false,
+    "local_artifacts_deleted": false
+  }
+}
