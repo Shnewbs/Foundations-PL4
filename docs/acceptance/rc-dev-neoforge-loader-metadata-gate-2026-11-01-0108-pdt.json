@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-01",
+  "local_time": "01:08 PDT",
+  "scope": "Direct CurseForge uploader preflight for approved NeoForge 1.21.1, 26.1.2, 26.3 tracks",
+  "source_commit": "39804f8127cacd1044d2f650b596220a8c64da37",
+  "regression_commit": "95c013d1e3c3c1d0474bbe32b1721f9d96baff26",
+  "regression_correction_commit": "ec31c1d1ef2f2babbd5a3d10bbc7966c76fb305a",
+  "issue": "Minecraft dependency exact-match alone allowed mismatched NeoForge loader versionRange or optional required dependencies to pass publisher inspection",
+  "change": "Pin reviewed loader version ranges for three approved NeoForge tracks; require NeoForge loader and Minecraft dependencies to be mandatory",
+  "reviewed_ranges": {
+    "1.21.1": "[21.1.250,21.2)",
+    "26.1.2": "[26.1.2.114,26.2)",
+    "26.3": "[26.3.0.23-beta,26.4)"
+  },
+  "validation": {
+    "github_source_contract_checks": "10/10 PASS on fetched committed source",
+    "isolated_mirrored_python_toml_scenarios": "8/8 PASS; mirrors new helper, NOT repository tests",
+    "repository_python_tests": "NOT RUN",
+    "gradle_native_build": "NOT RUN",
+    "native_gametests": "NOT RUN",
+    "installed_provider": "NOT RUN",
+    "multiplayer_migration_performance": "NOT RUN"
+  },
+  "official_compatibility": {
+    "minecraft": "26.4 Snapshot 6 (published 2026-10-27)",
+    "neoforge": "No 26.4 coordinate in official Maven directory on 2026-11-01",
+    "minecraft_source": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+    "loader_source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+  },
+  "blockers": [
+    "Local container cannot resolve github.com or Gradle hosts",
+    "Gradle distribution and dependencies not cached",
+    "Local JDK 21; 26.x requires JDK 25",
+    "No qualified exact-source native/installed acceptance candidate"
+  ],
+  "publication": {
+    "rc_clearance": "0/24",
+    "github_release_created": false,
+    "curseforge_upload_created": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No newly qualified release JAR; do not promote development source or delete unverifiable local builds"
+  }
+}
