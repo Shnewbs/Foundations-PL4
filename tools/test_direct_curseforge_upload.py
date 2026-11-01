@@ -247,6 +247,26 @@ class DirectUploadValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "symbolic-link archive entry"):
             inspect(self.jar, self.notes)
 
+    def test_rejects_oversized_compressed_jar_snapshot_before_upload(self):
+        self.make_jar()
+        with patch.object(direct, "MAX_JAR_COMPRESSED_BYTES", self.jar.stat().st_size - 1):
+            with self.assertRaisesRegex(ValueError, "compressed archive size limit"):
+                self.dry_run()
+
+    def test_accepts_compressed_jar_snapshot_at_exact_limit(self):
+        self.make_jar()
+        with patch.object(direct, "MAX_JAR_COMPRESSED_BYTES", self.jar.stat().st_size):
+            self.dry_run()
+
+    def test_jar_snapshot_remains_immutable_after_disk_replacement(self):
+        self.make_jar()
+        original = self.jar.read_bytes()
+        with patch.object(direct, "MAX_JAR_COMPRESSED_BYTES", len(original)):
+            snapshot = direct.read_jar_snapshot(self.jar)
+        self.jar.write_bytes(b"later replacement")
+        self.assertEqual(snapshot, original)
+        self.assertNotEqual(snapshot, self.jar.read_bytes())
+
     def test_rejects_archive_entry_count_limit(self):
         self.make_jar()
         with patch.object(direct, "MAX_JAR_ENTRIES", 1):
