@@ -47,13 +47,58 @@ class DirectUploadValidationTests(unittest.TestCase):
 
     @staticmethod
     def metadata(version, target):
+        loader_range = direct.NEOFORGE_LOADER_RANGES.get(target, "[21.1.250,21.2)")
         return (f'[[mods]]\nmodId="foundations_pl4"\nversion="{version}"\n'
-                '[[dependencies.foundations_pl4]]\nmodId="neoforge"\nversionRange="[21,)"\n'
-                f'[[dependencies.foundations_pl4]]\nmodId="minecraft"\nversionRange="[{target}]"\n')
+                f'[[dependencies.foundations_pl4]]\nmodId="neoforge"\n'
+                f'type="required"\nversionRange="{loader_range}"\n'
+                f'[[dependencies.foundations_pl4]]\nmodId="minecraft"\n'
+                f'type="required"\nversionRange="[{target}]"\n')
 
     def test_accepts_matching_runtime_and_changelog(self):
         self.make_jar()
         self.assertEqual(inspect(self.jar, self.notes), ("1.21.1", "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_accepts_exact_reviewed_neoforge_loader_ranges_for_26x(self):
+        for minecraft in ("26.1.2", "26.3"):
+            with self.subTest(minecraft=minecraft):
+                self.jar = self.root / f"FoundationsPL4-{minecraft}-0.97.0.rev1-beta.jar"
+                self.make_jar(self.metadata("0.97.0.rev1-beta", minecraft),
+                              class_bytes=bytes.fromhex("cafebabe000000450001"))
+                self.assertEqual(inspect(self.jar, self.notes),
+                                 (minecraft, "0.97.0.rev1-beta", "NeoForge"))
+
+    def test_rejects_wrong_neoforge_loader_range_for_26x(self):
+        for minecraft, wrong in (("26.3", "[21.1.250,21.2)"),
+                                 ("26.1.2", "[26.3.0.23-beta,26.4)")):
+            with self.subTest(minecraft=minecraft):
+                self.jar = self.root / f"FoundationsPL4-{minecraft}-0.97.0.rev1-beta.jar"
+                metadata = self.metadata("0.97.0.rev1-beta", minecraft)
+                metadata = metadata.replace(direct.NEOFORGE_LOADER_RANGES[minecraft], wrong)
+                self.make_jar(metadata, class_bytes=bytes.fromhex("cafebabe000000450001"))
+                with self.assertRaisesRegex(ValueError, "NeoForge loader version range"):
+                    inspect(self.jar, self.notes)
+
+    def test_rejects_broad_or_missing_neoforge_loader_range(self):
+        for replacement in ('versionRange="[21,)"', ""):
+            with self.subTest(replacement=replacement):
+                metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
+                metadata = metadata.replace('versionRange="[21.1.250,21.2)"', replacement)
+                self.make_jar(metadata)
+                with self.assertRaisesRegex(ValueError, "NeoForge loader version range"):
+                    inspect(self.jar, self.notes)
+
+    def test_rejects_optional_neoforge_loader_or_minecraft(self):
+        for dependency in ("neoforge", "minecraft"):
+            with self.subTest(dependency=dependency):
+                metadata = self.metadata("0.97.0.rev1-beta", "1.21.1")
+                old = f'modId="{dependency}"\\ntype="required"'
+                new = f'modId="{dependency}"\\ntype="optional"'
+                metadata = metadata.replace(old, new)
+                self.assertIn(new, metadata)
+                self.make_jar(metadata)
+                with self.assertRaisesRegex(ValueError, "dependency must be required"):
+                    inspect(self.jar, self.notes)
+
 
 
     def test_valid_receipt_prevents_duplicate_upload_without_claiming_moderation(self):
