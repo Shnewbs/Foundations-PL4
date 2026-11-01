@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1909Z-native-env-preflight",
-    "claimed_at": "2026-11-01T19:09:43Z",
-    "scope": "tools/benchmarks/run_native_comparison.py; tools/benchmarks/test_run_native_comparison.py; docs/PERFORMANCE_REVIEW.md; docs/MC_26_4_COMPATIBILITY_WATCH.md",
-    "purpose": "preflight all native benchmark JVM environments before modifying disposable checkouts"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 10:04 PST: 1.21.1 native comparator now injects pinned GameTest JVM heap (default 2048 MiB, validated override) and rejects conflicting inherited heap options. Five committed regression methods; 5/5 isolated copied-helper Python methods and Java 21 512-MiB HotSpot environment smoke passed. Full committed Python suite/native/installed-provider not run. Official 26.4 Snapshot 6 latest, NeoForge loader absent. 0/24 RC; no releases, Actions or build deletion.",
-  "local_validation": "5/5 isolated copied-helper unittest methods PASS; Java 21 JAVA_TOOL_OPTIONS 512 MiB smoke PASS; committed repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 11:09 PST: Native comparator now validates all six GameTest JVM environments before checkout mutation/output creation; 4/4 isolated mirrored helper tests and 9/9 GitHub readback contracts pass. Committed unittest/native builds remain blocked by unavailable GitHub/Gradle DNS, uncached Gradle and Java 25 for 26.x. Official 26.4 Snapshot 6 latest, NeoForge loader absent. 0/24 RC; no releases, Actions or build deletion.",
+  "local_validation": "4/4 isolated copied-helper unittest PASS; 9/9 actual committed source readback contracts PASS; committed repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-game-jvm-heap-injection-2026-11-01-1004-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-jvm-preflight-before-mutation-2026-11-01-1109-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3717,6 +3712,26 @@
     ],
     "evidence": "docs/acceptance/rc-dev-native-game-jvm-heap-injection-2026-11-01-1004-pst.json",
     "validation": "5/5 isolated helper tests + Java 21 HotSpot heap smoke; actual repo/native pending",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_native_env_preflight": {
+    "owner": "pl4-hourly-20261101T1909Z-native-env-preflight",
+    "claimed_at": "2026-11-01T19:09:43Z",
+    "released_at": "2026-11-01T19:12:33Z",
+    "lease_claim_commit": "4ea55e7c223146c7bb549f6aee04a9115e7671ee",
+    "source_commits": [
+      "946740d5166270eb32e58960e5882f621f9f56ab",
+      "dccc2ac50656792a77957f10bda073a0bea4d8ec"
+    ],
+    "documentation_commits": [
+      "8cfe010ebd2645cea03bd8ce101f3c550c2c93a2",
+      "0a788b1e6155cdcbd2676f3df0872a1d9134efb4"
+    ],
+    "evidence_commit": "68a9a1d23fd83b6be24b3ad1700a0396e718aac6",
+    "evidence": "docs/acceptance/rc-dev-native-jvm-preflight-before-mutation-2026-11-01-1109-pst.json",
+    "validation": "9/9 actual GitHub source readback; 4/4 isolated mirrored Python; committed suite/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
