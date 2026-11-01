@@ -63,6 +63,20 @@ public final class PLGameTests {
         h.assertTrue(pa.pendingItem.isEmpty(),"Escrow must clear after successful delivery");h.succeed();
     }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void foreignOwnerTransferDoesNotMoveItems(GameTestHelper h){
+        ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));
+        from.setItem(0,new ItemStack(Items.DIAMOND,17));
+        HostEntity a=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST);
+        HostEntity b=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
+        Part source=a.parts.get(Direction.WEST.ordinal()),sink=b.parts.get(Direction.EAST.ordinal());
+        source.transferMode=2;sink.transferMode=1;sink.owner=UUID.randomUUID();
+        TransferEngine.run(h.getLevel().getServer(),List.of(new NetworkEngine.Ref(a,source),new NetworkEngine.Ref(b,sink)));
+        h.assertTrue(from.getItem(0).getCount()==17&&to.getItem(0).isEmpty(),
+            "A direct transfer plan must never route items between different owners");
+        h.assertTrue(source.pendingItem.isEmpty(),"Rejected cross-owner transfer must not extract into escrow");
+        h.succeed();
+    }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void fullDestinationDoesNotExtract(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));for(int i=0;i<to.getContainerSize();i++)to.setItem(i,new ItemStack(Items.COBBLESTONE,64));
         HostEntity a=host(h,new BlockPos(2,1,1),Kind.TRANSFER_NODE,Direction.WEST),b=host(h,new BlockPos(4,1,1),Kind.TRANSFER_NODE,Direction.EAST);
