@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2101PDT-benchmark-report-seal",
-    "claimed_at": "2026-11-01T04:01:23Z",
-    "purpose": "Fix native benchmark report consumption before world inventory sealing; regression tests and 26.4 watch",
-    "base_commit": "0c8fe322414dfc081aa89abd7b0b9be6b2b80618"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 20:02 PDT: direct CurseForge publisher now restricts modern uploads to the 22 exact approved non-legacy release targets. Source 3790b283, tests 540a8d51, 4/4 isolated mirrored Python checks; actual repository/native not run due local DNS/Gradle/JDK25. 26.4 Snapshot 6 still latest; no NeoForge 26.4 Maven coordinate. RC 0/24; no new JAR/release/upload/Actions/deletion.",
-  "local_validation": "GitHub readback of committed source, tests and evidence PASS; 4/4 isolated mirrored Python checks PASS. Full repository Python/Gradle/native NOT RUN.",
+  "current_checkpoint": "2026-10-31 21:03 PDT: fixed native benchmark report-consumption ordering (c796d882), added four regression methods (7315f5f). GitHub readback 7/7; isolated mirrored Python smoke 4/4. Repository Python and native/installed tests not run (local DNS/Gradle/JDK25). Official 26.4 Snapshot 6 latest, no NeoForge 26.4 Maven loader. RC 0/24; no production JAR, GitHub/CurseForge release, Actions or deletion.",
+  "local_validation": "GitHub exact-source readback checks 7/7 PASS; 4/4 isolated mirrored Python smoke PASS. Committed repository Python/Gradle/native NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-exact-ledger-gate-2026-10-31-2002-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-report-seal-order-2026-10-31-2103-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3536,5 +3531,19 @@
     "rc_clearance": "0/24",
     "release_performed": false,
     "retained_builds_deleted": false
+  },
+  "last_writer_release_20261031_2103": {
+    "owner": "pl4-hourly-20261031T2101PDT-benchmark-report-seal",
+    "claimed_at": "2026-11-01T04:01:23Z",
+    "released_at": "2026-11-01T04:03:00Z",
+    "source_commits": [
+      "c796d88293b0cbba3578522eba8ef99462dd523e",
+      "7315f5f29bff66cb34f59186205293e6538b700a"
+    ],
+    "evidence": "docs/acceptance/rc-dev-native-benchmark-report-seal-order-2026-10-31-2103-pdt.json",
+    "validation": "7/7 GitHub exact-source static readback checks; 4/4 isolated mirrored Python smoke scenarios; committed regression and native suite not executed",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
   }
 }
