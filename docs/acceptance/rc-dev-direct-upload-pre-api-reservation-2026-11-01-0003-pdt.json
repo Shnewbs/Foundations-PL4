@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-11-01T00:03:00-07:00",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "Direct CurseForge publisher: prevent duplicate concurrent API submissions and retain uncertainty evidence",
+  "source_commits": [
+    "4a973c40b814040b5e2528417aff9eec6d4e5253",
+    "8ae97be0a8f22bf8b12d8d59e70b7d4cdd03aae5"
+  ],
+  "regression_commit": "78e43597f656861ca7b055e4bbd8dd17e550b41b",
+  "watch_commit": "78fdf61fd7b6ac28328bdbe984a8025545b9036e",
+  "changes": [
+    "Exclusive O_EXCL reservation written and fsynced before CurseForge API call",
+    "Pre-network recheck rejects receipt appearing during upload preparation",
+    "Uncertain API outcomes retain reservation for destination reconciliation",
+    "Successful exclusive receipt permits reservation removal; existing receipts remain fail-closed"
+  ],
+  "validation": {
+    "github_exact_source_contract_checks": {
+      "passed": 15,
+      "total": 15
+    },
+    "local_isolated_mirrored_python_reservation_tests": {
+      "passed": 4,
+      "total": 4,
+      "warning": "Copied helper logic only; not committed repository tests"
+    },
+    "committed_repository_regressions": {
+      "added": 3,
+      "executed": false
+    },
+    "native_build": {
+      "executed": false
+    },
+    "native_gametests": {
+      "executed": false
+    },
+    "installed_provider": {
+      "executed": false
+    },
+    "multiplayer_migration_performance": {
+      "executed": false
+    }
+  },
+  "environment_blockers": [
+    "GitHub DNS resolution fails in local container",
+    "Gradle 9.2.1 distribution and dependencies not cached",
+    "Local Java 21; Java 25 not installed"
+  ],
+  "minecraft_26_4": {
+    "latest_official_java_snapshot": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "latest_neoforge_maven_listed": "26.3.0.99",
+    "loader_26_4_listed": false,
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "rc_clearance": "0/24",
+  "github_release_created": false,
+  "curseforge_upload_attempted": false,
+  "github_actions_invoked": false,
+  "retained_artifacts_deleted": false,
+  "next_steps": [
+    "Execute committed Python regression suite in dependency-capable environment",
+    "Run exact-source native builds and 217 current-source GameTests",
+    "Complete installed-provider, multiplayer, migration and sustained TPS/heap gates before release"
+  ]
+}
