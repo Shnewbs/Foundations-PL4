@@ -5,12 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T2206Z-native-trial-integrity",
-    "claimed_at": "2026-11-01T22:06:00Z",
-    "scope": "native benchmark unique trial validation and variability reporting; official 26.4 watch",
-    "expected_head": "b28fb38faccc0e0b670255394de349b1a3d61ad4"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -93,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 13:08 PST: Native 1.21.1 benchmark now exposes elapsed/CPU/allocation ratios and absolute deltas, preserving elapsed_ratio; rejects missing trials and handles zero baseline. Four isolated mirrored Python scenarios PASS, 9/9 committed source/test markers and 2/2 docs readback PASS; actual committed suite/native NOT RUN. Official 26.4 Snapshot 6 remains latest; NeoForge 26.4 loader absent (NeoForm snapshots only). Existing 26.x branches checked, no new gate pass. RC 0/24, no release, Actions or local deletion.",
-  "local_validation": "4/4 isolated Python mirrored metric tests PASS; 9/9 committed benchmark source/test marker readbacks PASS; 2/2 docs readback PASS; evidence JSON readback PASS; committed repository Python, Gradle, native GameTests, installed providers, sustained benchmarks NOT RUN.",
+  "current_checkpoint": "2026-11-01 14:08 PST: Native benchmark now rejects duplicate, missing, malformed or unexpected baseline/candidate trial receipts and exposes elapsed/CPU/allocation per-trial spread; five new repository tests. 5/5 isolated mirrored Python smoke scenarios PASS, committed source/test/watch GitHub readback PASS; committed repo/native NOT RUN. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader (26.3.0.99 latest). 0/24 RC, no qualified JAR, release, Actions or local build deletion.",
+  "local_validation": "5/5 isolated mirrored Python smoke scenarios PASS; 3/3 committed source/test/watch marker sets PASS; main and evidence readback PASS; actual committed Python/Gradle/native/installed/multiplayer/migration/TPS suites NOT RUN due to DNS, Gradle dependencies and Java 25.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -104,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-metric-visibility-2026-11-01-1308-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-trial-integrity-2026-11-01-1406-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3775,6 +3770,24 @@
     "evidence_commit": "397de1c22304f9fcb170eac6ca39eccced827dc1",
     "evidence": "docs/acceptance/rc-dev-native-metric-visibility-2026-11-01-1308-pst.json",
     "validation": "4/4 isolated mirrored Python; 9/9 committed marker readbacks; 2/2 docs; repository/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_1408_native_trial_integrity": {
+    "owner": "pl4-hourly-20261101T2206Z-native-trial-integrity",
+    "claimed_at": "2026-11-01T22:06:00Z",
+    "released_at": "2026-11-01T22:08:00Z",
+    "source_commits": [
+      "d04d459b733a6a758e362226fb45a2d9edb68e6b",
+      "31ae23404716b88bc0c59cab5f4058fcf41e083a",
+      "74d8ac5b7877702df0ea74989fb19c20a030aacc",
+      "e443b83bcacbb994482e61d4e087bafe0a7a7331"
+    ],
+    "documentation_commit": "533cef96dfb021723aa8ef8a806b04d325a49c06",
+    "evidence_commit": "7cd7caba2ed4e09183b720c72e4b2851dc047adf",
+    "evidence": "docs/acceptance/rc-dev-native-trial-integrity-2026-11-01-1406-pst.json",
+    "validation": "5/5 isolated mirrored smoke tests; 3/3 source/test/watch marker readbacks; actual repo/native NOT RUN",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
