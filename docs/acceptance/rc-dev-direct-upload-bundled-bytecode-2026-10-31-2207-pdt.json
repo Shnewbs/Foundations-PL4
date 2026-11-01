@@ -1,0 +1,56 @@
+{
+  "recorded_date": "2026-10-31",
+  "local_time": "22:07 PDT",
+  "scope": "direct CurseForge publisher exact-target Java classfile compatibility preflight",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "base_source": "c62f47c7e9a38de5c9f42f8a9b5fc1902eb69f1b",
+  "source_commits": [
+    "7eb85131cba5b560e72afcb87b11b8d49ddf40a0",
+    "164120d02d20a079b18201c1c8a94291a4ccbe23",
+    "35c09ea984da21eede9c91c706143ca28acd47b7"
+  ],
+  "test_commits": [
+    "84d9a7c87d50ca5616fc6fb531cfdc414335e177",
+    "518d97ebb97332b864c2bd12b3131ba7d49860d1"
+  ],
+  "documentation_commit": "c4a922ce23b0fcafe2969841dc6cab6378f53092",
+  "change": "Validate bytecode for every class selectable by the exact target JVM, including bundled/shaded packages and applicable multi-release entries. Preserve Java 8 compatibility with future-version multi-release entries and ignored module-info.class.",
+  "added_repository_regression_methods": 7,
+  "validation": {
+    "github_source_readback": "PASS; source and regression methods read from main",
+    "isolated_mirrored_python": "7/7 PASS; copied logic, not repository unittest",
+    "repository_python_unittest": "NOT RUN; local GitHub DNS blocked full checkout",
+    "gradle_compile": "NOT RUN; Gradle 9.2.1 and dependencies unavailable, local JDK 21 only",
+    "native_gametests": "NOT RUN for changed source",
+    "independent_installed_provider": "NOT RUN",
+    "multiplayer_migration_performance": "NOT RUN",
+    "production_jar": "NOT BUILT"
+  },
+  "official_26_4_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27",
+    "minecraft_url": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge": "No 26.4 coordinate in official Maven index; 26.3.0.99 listed",
+    "neoforge_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "new_port_created": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "github_release_created": false,
+    "curseforge_upload_attempted": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "Container DNS cannot resolve github.com or services.gradle.org",
+    "No cached Gradle 9.2.1 distribution/dependencies",
+    "JDK 25 unavailable; only Java 21 installed",
+    "Exact-source native/installed-provider/multiplayer/migration/performance acceptance incomplete"
+  ],
+  "next_actions": [
+    "Execute full repository Python regression suite on exact source",
+    "Run exact-source native build and 217 GameTests on a dependency-capable builder",
+    "Run independent installed-provider, authenticated multiplayer, migration and sustained TPS/heap",
+    "Publish only after exact-target RC clearance and verify remote hashes before deleting redundant local builds"
+  ]
+}
