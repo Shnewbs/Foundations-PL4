@@ -363,5 +363,32 @@ class NativeTrialFinalizationTests(unittest.TestCase):
         self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
 
 
+    def test_unrelated_nested_report_is_preserved(self):
+        report_path = self.write_report(
+            self.root / "other-world" / "verification-logs")
+        with self.assertRaisesRegex(ValueError, "outside the expected probe directories"):
+            bench.finish_native_trial(
+                self.root, report_path, self.root / "trial.json", self.source,
+                1, "baseline", "f" * 64)
+        self.assertTrue(report_path.is_file())
+        self.assertFalse((self.root / "trial.json").exists())
+        self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
+
+    def test_symlinked_report_parent_is_preserved(self):
+        retained = self.root / "retained-reports"
+        outside = self.write_report(retained)
+        linked_dir = self.root / "verification-logs"
+        linked_dir.symlink_to(retained, target_is_directory=True)
+        report_path = linked_dir / "performance-probe.json"
+        with self.assertRaisesRegex(ValueError, "Linked native benchmark report"):
+            bench.finish_native_trial(
+                self.root, report_path, self.root / "trial.json", self.source,
+                1, "baseline", "f" * 64)
+        self.assertEqual(outside.read_text(encoding="utf-8"),
+                         json.dumps(sample_native_report()))
+        self.assertTrue(linked_dir.is_symlink())
+        self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
+
+
 if __name__ == "__main__":
     unittest.main()
