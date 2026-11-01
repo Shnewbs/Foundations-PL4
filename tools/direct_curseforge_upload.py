@@ -118,13 +118,30 @@ def java_classfile_limit(minecraft):
 
 
 def verify_pl4_bytecode(archive, names, minecraft):
-    """Reject missing, fake, preview, or too-new PL4 classfile headers."""
-    classes = sorted(name for name in names
-                     if name.startswith("net/foundations/pl4/") and name.endswith(".class"))
-    if not classes:
+    """Validate every class loaded by the target JVM, including bundled helpers.
+
+    A PL4 class must exist, but a shaded class outside net/foundations/pl4/
+    can also crash an older Minecraft JVM. Ignore multi-release classes only
+    when their Java version is strictly newer than this target's runtime.
+    """
+    pl4_classes = [name for name in names
+                   if name.startswith("net/foundations/pl4/") and name.endswith(".class")]
+    if not pl4_classes:
         raise ValueError("JAR contains no compiled PL4 classes")
     maximum = java_classfile_limit(minecraft)
-    for name in classes:
+    java_version = maximum - 44
+    classes = []
+    for name in names:
+        if not name.endswith(".class"):
+            continue
+        if name.startswith("META-INF/versions/"):
+            parts = name.split("/")
+            if len(parts) < 5 or not parts[2].isdecimal():
+                raise ValueError(f"JAR contains invalid multi-release class path: {name}")
+            if int(parts[2]) > java_version:
+                continue  # The target JVM cannot select this versioned class.
+        classes.append(name)
+    for name in sorted(classes):
         with archive.open(name) as stream:
             header = stream.read(10)
         if (len(header) != 10 or header[:4] != bytes.fromhex("cafebabe")
@@ -136,7 +153,6 @@ def verify_pl4_bytecode(archive, names, minecraft):
             raise ValueError(
                 f"JAR contains incompatible PL4 bytecode for {minecraft}: {name} "
                 f"(class {major}.{minor}; maximum {maximum}.0)")
-
 
 
 def verify_local_receipt(previous, digest, project, minecraft, version, loader):
