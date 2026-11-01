@@ -5,7 +5,11 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261101T1409Z-native-registry-symlink",
+    "claimed_at": "2026-11-01T14:09:47Z",
+    "scope": "tools/benchmarks/run_native_comparison.py and test_run_native_comparison.py; symlink-safe registration preflight"
+  },
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
