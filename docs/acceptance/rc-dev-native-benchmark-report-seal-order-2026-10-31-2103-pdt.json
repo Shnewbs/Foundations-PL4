@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-31",
+  "time_local": "21:03 PDT",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "change": "Native performance benchmark now consumes, validates and copies GameTest performance-probe.json before sealing its generated run/ inventory; avoids invalidating ownership digest when the report was written under run/verification-logs.",
+  "source_commit": "c796d88293b0cbba3578522eba8ef99462dd523e",
+  "regression_commit": "7315f5f29bff66cb34f59186205293e6538b700a",
+  "tests": {
+    "github_exact_source_readback_checks": {
+      "passed": 7,
+      "total": 7
+    },
+    "isolated_mirrored_python_smoke": {
+      "passed": 4,
+      "total": 4,
+      "cases": [
+        "report inside run consumed before sealing",
+        "report outside run consumed before sealing",
+        "invalid report preserves generated world and report",
+        "symlinked report rejected without target deletion"
+      ],
+      "limitations": "Standalone mirrored smoke of helper behavior; NOT an execution of the committed repository test module."
+    },
+    "committed_regression_methods_added": 4,
+    "complete_repository_python_suite": "NOT_RUN",
+    "gradle_native_compile": "NOT_RUN",
+    "native_game_tests": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "multiplayer_world_migration_tps_heap": "NOT_RUN"
+  },
+  "official_26_4_watch": {
+    "checked_at_utc": "2026-11-01T04:03:00Z",
+    "mojang_latest": "26.4 Snapshot 6 (published 2026-10-27)",
+    "mojang_index": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "neoforge_maven_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_observed_26_3": "26.3.0.99",
+    "official_26_4_loader_found": false,
+    "action": "No 26.4 branch, binary, compatibility clearance or release."
+  },
+  "publication": {
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "github_actions_used": false,
+    "new_production_jar": false,
+    "github_release_created": false,
+    "curseforge_upload_performed": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "Container cannot resolve GitHub/Gradle distribution hosts; no cached Gradle 9.2.1 distribution/dependencies",
+    "Only Java 21 available locally, while 26.x requires Java 25",
+    "No exact-source native GameTests, installed provider, authenticated multiplayer, migration, or sustained TPS/heap acceptance"
+  ],
+  "next": "Run committed tests and native Gradle benchmarks on dependency-capable builder, verify exact JAR and external destinations before any publication or deletion."
+}
