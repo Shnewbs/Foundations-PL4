@@ -191,7 +191,7 @@ class NativePreflightTests(unittest.TestCase):
         shas = shas or ['a' * 40, 'b' * 40]
         def git_head(command, cwd, text):
             self.assertEqual(command, ['git', 'rev-parse', 'HEAD'])
-            return shas[self.roots.index(cwd)] + '\\n'
+            return shas[self.roots.index(cwd)] + '\n'
         with mock.patch.object(bench.subprocess, 'check_output', side_effect=git_head):
             return bench.preflight_native_checkouts(self.roots)
 
@@ -220,7 +220,7 @@ class NativePreflightTests(unittest.TestCase):
         self.assert_untouched()
 
     def test_ambiguous_second_registration_does_not_dirty_first(self):
-        self.registry[1].write_text(self.original + '\\n' + self.original,
+        self.registry[1].write_text(self.original + '\n' + self.original,
                                     encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'ambiguous isolated registration'):
             self.preflight()
