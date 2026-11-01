@@ -234,6 +234,46 @@ class NativePreflightTests(unittest.TestCase):
             self.preflight()
         self.assert_untouched_first()
 
+    def test_existing_second_probe_report_is_preserved_before_mutation(self):
+        logs = self.roots[1] / 'verification-logs'
+        logs.mkdir()
+        stale = logs / 'performance-probe.json'
+        stale.write_text('{"stale": true}', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Pre-existing native benchmark report directory'):
+            self.preflight()
+        self.assertEqual(stale.read_text(encoding='utf-8'), '{"stale": true}')
+        self.assert_untouched_first()
+
+    def test_symlinked_second_probe_directory_is_not_followed(self):
+        outside = self.root / 'retained-logs'
+        outside.mkdir()
+        retained = outside / 'performance-probe.json'
+        retained.write_text('retained', encoding='utf-8')
+        (self.roots[1] / 'verification-logs').symlink_to(
+            outside, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'Pre-existing native benchmark report directory'):
+            self.preflight()
+        self.assertEqual(retained.read_text(encoding='utf-8'), 'retained')
+        self.assert_untouched_first()
+
+    def test_existing_second_fixture_is_preserved_before_mutation(self):
+        fixture = self.registry[1].with_name('ReleasePerformanceGameTests.java')
+        fixture.write_text('// retained user fixture', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Existing performance fixture'):
+            self.preflight()
+        self.assertEqual(fixture.read_text(encoding='utf-8'), '// retained user fixture')
+        self.assert_untouched_first()
+
+    def test_symlinked_second_fixture_is_not_overwritten(self):
+        retained = self.root / 'retained-fixture.java'
+        retained.write_text('// retained source', encoding='utf-8')
+        fixture = self.registry[1].with_name('ReleasePerformanceGameTests.java')
+        fixture.symlink_to(retained)
+        with self.assertRaisesRegex(ValueError, 'Existing performance fixture'):
+            self.preflight()
+        self.assertEqual(retained.read_text(encoding='utf-8'), '// retained source')
+        self.assert_untouched_first()
+
     def assert_untouched_first(self):
         self.assertEqual(self.registry[0].read_text(encoding='utf-8'), self.original)
         self.assertFalse(self.registry[0].with_name(
