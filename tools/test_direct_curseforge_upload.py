@@ -439,8 +439,8 @@ class DirectUploadValidationTests(unittest.TestCase):
             os.chdir(self.root)
             with patch.object(sys, "argv", [
                     "direct_curseforge_upload.py", str(self.jar),
-                    str(self.notes), "--upload"]), \\
-                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \\
+                    str(self.notes), "--upload"]), \
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \
                  patch.object(direct, "request_json",
                               side_effect=create_conflicting_receipt) as api:
                 with self.assertRaisesRegex(RuntimeError, "accepted file 54321"):
@@ -458,8 +458,8 @@ class DirectUploadValidationTests(unittest.TestCase):
             os.chdir(self.root)
             with patch.object(sys, "argv", [
                     "direct_curseforge_upload.py", str(self.jar),
-                    str(self.notes), "--upload"]), \\
-                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \\
+                    str(self.notes), "--upload"]), \
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \
                  patch.object(direct, "request_json",
                               return_value={"id": 54321}) as api:
                 direct.main()
