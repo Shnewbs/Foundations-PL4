@@ -201,6 +201,22 @@ def write_receipt_exclusive(path, payload):
         os.fsync(stream.fileno())
 
 
+def claim_upload_lock_exclusive(path, payload):
+    """Reserve the destination before calling CurseForge, even across processes.
+
+    A failed/ambiguous API call leaves this lock in place deliberately: without
+    a remote file reconciliation, retrying could publish a duplicate JAR.
+    """
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    with os.fdopen(os.open(path, flags, 0o600), "w", encoding="utf-8") as stream:
+        json.dump(payload, stream, sort_keys=True)
+        stream.write("\\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
 def inspect(jar, notes, jar_bytes=None):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -302,6 +318,24 @@ def main():
     if not token:
         raise ValueError("CURSEFORGE_API_TOKEN is required for direct upload")
     data, content_type = multipart(metadata, args.jar, jar_bytes=jar_bytes)
+    lock = args.jar.with_suffix(".curseforge.uploading")
+    lock_payload = {"project_id": project, "minecraft": minecraft,
+                    "version": version, "loader": loader, "sha256": digest,
+                    "status": "upload_outcome_requires_reconciliation_if_lock_remains"}
+    try:
+        claim_upload_lock_exclusive(lock, lock_payload)
+    except FileExistsError as exc:
+        raise RuntimeError(
+            "An upload reservation already exists; reconcile CurseForge and "
+            "the local receipt before retrying. No upload attempted.") from exc
+    # A previous publisher might have written its receipt after our first check.
+    # Never submit when the destination has already become ambiguous.
+    if receipt.exists() or receipt.is_symlink():
+        raise RuntimeError(
+            "A CurseForge receipt appeared during upload preparation; "
+            "reconcile the destination before retrying. No upload attempted.")
+    # Leave the reservation on every uncertain API outcome, including timeouts,
+    # malformed responses, and post-acceptance receipt races.
     result = request_json(f"/projects/{project}/upload-file", token, data, content_type)
     file_id = result.get("id")
     if isinstance(file_id, bool) or not isinstance(file_id, int) or file_id <= 0:
@@ -316,6 +350,11 @@ def main():
             f"CurseForge accepted file {file_id}, but its local receipt could not be "
             "created exclusively. Reconcile CurseForge before retrying; no receipt "
             "was overwritten.") from exc
+    try:
+        lock.unlink()
+    except OSError:
+        print(f"Warning: accepted file {file_id} has a valid receipt, but its "
+              f"upload reservation remains at {lock}; reconcile before removing it.")
     print(f"CurseForge accepted file {file_id}; moderation status is separate")
 
 
