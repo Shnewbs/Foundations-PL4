@@ -1,0 +1,47 @@
+{
+  "recorded_at": "2026-11-01T14:06:00-08:00",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "1.21.1 native benchmark receipt integrity and trial variability; official 26.4 compatibility watch",
+  "source_commits": [
+    "d04d459b733a6a758e362226fb45a2d9edb68e6b",
+    "31ae23404716b88bc0c59cab5f4058fcf41e083a",
+    "74d8ac5b7877702df0ea74989fb19c20a030aacc",
+    "e443b83bcacbb994482e61d4e087bafe0a7a7331"
+  ],
+  "documentation_commit": "533cef96dfb021723aa8ef8a806b04d325a49c06",
+  "change": [
+    "Reject duplicate, missing, unexpected or malformed native baseline/candidate trial receipts before summary",
+    "Expose per-metric absolute and relative trial spread for elapsed, CPU and allocation metrics; null relative spread on zero baseline"
+  ],
+  "validation": {
+    "github_readback": "3/3 committed source/test/watch marker sets PASS; main head readback PASS",
+    "isolated_python": "5/5 mirrored helper scenarios PASS; includes valid, duplicate, unexpected, variable and zero-baseline cases",
+    "committed_python_suite": "NOT RUN: source checkout inaccessible from local builder",
+    "gradle_native": "NOT RUN: local GitHub/Gradle DNS unavailable, Gradle dependencies uncached and JDK 25 missing",
+    "installed_providers": "NOT RUN",
+    "multiplayer_migration_tps": "NOT RUN"
+  },
+  "compatibility_26_4": {
+    "latest_official_minecraft": "26.4 Snapshot 6 (2026-10-27)",
+    "neoforge_loader": "No 26.4 loader listed; index ends at 26.3.0.99",
+    "loader_source": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "snapshot_source": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "port_created": false
+  },
+  "release": {
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "JDK 25 unavailable locally (JDK 21 present)",
+    "GitHub and Gradle DNS resolution unavailable in local container",
+    "Gradle distribution and native dependencies not cached",
+    "Exact-source native GameTests and RC acceptance unexecuted"
+  ],
+  "policy": "Existing branches and approved destinations only; never publish or delete an unverified artifact"
+}
