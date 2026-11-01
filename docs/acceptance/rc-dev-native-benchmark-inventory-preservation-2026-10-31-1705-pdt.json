@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-31",
+  "local_time": "17:05 PDT",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Non-release native performance benchmark safety; prevent accidental removal of user-created or modified worlds between benchmark trials",
+  "source_commits": [
+    "16a14f8452e3b597d8f3aa9ad42d47490a98d565",
+    "951fc7e2d19f520426f0a2176e523d93893db715",
+    "eb3373a8415d3c5d2af15437aa28b69c55eeb29e",
+    "6866d5880394638329cd7bda7c9a4d169725eecb"
+  ],
+  "documentation_commits": [
+    "f764bb319bdd1676f0d8b4fb567e5324ae173131",
+    "d90d92d9cf2cf5530b5a148262e379eb559b4c6a",
+    "7cd3f07b17235c97b9df2ffd200b745d51c36cba"
+  ],
+  "behavior": [
+    "Hash full generated runtime directory/file inventory after each trial, including path, file length, SHA-256 content digest and empty directories",
+    "Refuse cleanup when any file or directory changes, when links/special files appear, or when a directory is unreadable",
+    "Require matching source/trial and JSON marker digest; preserve existing world on failure"
+  ],
+  "verification": {
+    "github_source_readback": "14/14 source contract checks passed on connected GitHub source",
+    "isolated_local_python": "8/8 independent scenarios passed using copied inventory/marker helper logic, including unchanged cleanup and added/modified worlds",
+    "committed_repository_tests": "NOT RUN; five added test methods plus corrected original clean case",
+    "full_python_suite": "NOT RUN",
+    "gradle_compile": "NOT RUN",
+    "native_game_tests": "NOT RUN",
+    "native_benchmark": "NOT RUN",
+    "installed_optional_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "saved_world_migration": "NOT RUN",
+    "sustained_tps_heap": "NOT RUN"
+  },
+  "blockers": [
+    "Container DNS cannot resolve github.com; local clone unavailable",
+    "Gradle 9.2.1 distribution/dependencies uncached and external hosts unreachable",
+    "Only Java 21 installed; 26.x native ports require Java 25",
+    "CurseForge authenticated upload is not possible without a qualified runtime JAR and acceptance evidence"
+  ],
+  "compatibility_watch": {
+    "checked": "2026-10-31",
+    "mojang_latest": "Minecraft 26.4 Snapshot 6, 2026-10-27",
+    "neoforge_latest_observed": "26.3.0.99",
+    "neoforge_26_4_loader": "not listed",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "new_26_4_branch": false
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "github_release_created": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "retained_builds_deleted": false
+  },
+  "note": "Safety checks and isolated local helper tests do not qualify performance or release readiness. Preserve existing worlds and retained JARs."
+}
