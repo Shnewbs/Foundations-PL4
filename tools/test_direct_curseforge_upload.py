@@ -404,6 +404,75 @@ class DirectUploadValidationTests(unittest.TestCase):
             inspect(self.jar, self.notes)
 
 
+    def test_receipt_is_created_exclusively_with_private_permissions(self):
+        receipt = self.jar.with_suffix(".curseforge.json")
+        direct.write_receipt_exclusive(receipt, {"file_id": 54321})
+        self.assertEqual(json.loads(receipt.read_text(encoding="utf-8")),
+                         {"file_id": 54321})
+        if os.name == "posix":
+            self.assertEqual(stat.S_IMODE(receipt.stat().st_mode), 0o600)
+        with self.assertRaises(FileExistsError):
+            direct.write_receipt_exclusive(receipt, {"file_id": 99999})
+        self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["file_id"],
+                         54321)
+
+    def test_rejects_dangling_symlink_receipt_before_upload(self):
+        self.make_jar()
+        receipt = self.jar.with_suffix(".curseforge.json")
+        try:
+            receipt.symlink_to(self.root / "nonexistent-receipt")
+        except (OSError, NotImplementedError):
+            self.skipTest("symlinks unavailable on this platform")
+        with self.assertRaisesRegex(ValueError, "symbolic-link"):
+            self.dry_run()
+
+    def test_post_upload_receipt_race_preserves_existing_evidence(self):
+        self.make_jar()
+        receipt = self.jar.with_suffix(".curseforge.json")
+        original_cwd = Path.cwd()
+
+        def create_conflicting_receipt(*_args, **_kwargs):
+            receipt.write_text("another writer's receipt", encoding="utf-8")
+            return {"id": 54321}
+
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar),
+                    str(self.notes), "--upload"]), \\
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \\
+                 patch.object(direct, "request_json",
+                              side_effect=create_conflicting_receipt) as api:
+                with self.assertRaisesRegex(RuntimeError, "accepted file 54321"):
+                    direct.main()
+                api.assert_called_once()
+        finally:
+            os.chdir(original_cwd)
+        self.assertEqual(receipt.read_text(encoding="utf-8"),
+                         "another writer's receipt")
+
+    def test_successful_upload_creates_api_receipt_without_replacement(self):
+        self.make_jar()
+        original_cwd = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar),
+                    str(self.notes), "--upload"]), \\
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \\
+                 patch.object(direct, "request_json",
+                              return_value={"id": 54321}) as api:
+                direct.main()
+                api.assert_called_once()
+        finally:
+            os.chdir(original_cwd)
+        receipt = self.jar.with_suffix(".curseforge.json")
+        self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["file_id"],
+                         54321)
+        self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["sha256"],
+                         hashlib.sha256(self.jar.read_bytes()).hexdigest())
+
+
     def dry_run(self):
         original = Path.cwd()
         try:
