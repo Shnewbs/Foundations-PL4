@@ -61,3 +61,7 @@ The [official Java snapshot changelog index](https://feedback.minecraft.net/hc/e
 ## October 31, 17:05 PDT — official compatibility recheck
 
 The [official Mojang Java snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) still lists **26.4 Snapshot 6 (October 27)** as the latest. The [official NeoForge Maven index](https://maven.neoforged.net/releases/net/neoforged/neoforge/) contains `26.3.0.99` and **no 26.4 loader**. Preserve existing 24 exact targets; no 26.4 branch, release JAR or compatibility clearance. Future 26.4 work still requires Java 25, Vulkan/OpenGL, fluid-source and tag migration, login handshake/mod-list, world migration and pinned-heap native tests. The benchmark world-preservation fix this cycle is shared development tooling only, not a 26.4 port.
+
+## October 31, 18:05 PDT — loader/snapshot recheck and bounded publisher input
+
+The [official Mojang snapshot index](https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs) continues to list **26.4 Snapshot 6 (October 27)** as latest; the [official NeoForge Maven directory](https://maven.neoforged.net/releases/net/neoforged/neoforge/) still lists `26.3.0.99` and no `26.4` coordinate. A shared publisher input-size safeguard was added this cycle, but it does not establish 26.4 compatibility or permit a 26.4 release. Maintain the 24 existing exact targets and future Vulkan/OpenGL, fluid-source/tag, login handshake, world migration, Java 25 and pinned-heap native acceptance requirements.
