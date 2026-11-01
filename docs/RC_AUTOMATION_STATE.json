@@ -88,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 23:04 UTC: Bounded direct publisher ZIP resource preflight and five regression methods pushed; 10/10 GitHub readback checks and 7/7 mirrored local smoke cases. Full repository/native tests blocked by DNS/Gradle/JDK25. 26.4 Snapshot 6 remains latest; NeoForge Maven has no 26.4 loader. RC 0/24; no JAR, release, CurseForge upload, Actions or retained deletion.",
-  "local_validation": "10/10 GitHub source checks; 7/7 isolated copied-helper Python scenarios; five new repo regression methods committed but not executed; full Python/Gradle/native/installed provider not run.",
+  "current_checkpoint": "2026-10-31 20:02 PDT: direct CurseForge publisher now restricts modern uploads to the 22 exact approved non-legacy release targets. Source 3790b283, tests 540a8d51, 4/4 isolated mirrored Python checks; actual repository/native not run due local DNS/Gradle/JDK25. 26.4 Snapshot 6 still latest; no NeoForge 26.4 Maven coordinate. RC 0/24; no new JAR/release/upload/Actions/deletion.",
+  "local_validation": "GitHub readback of committed source, tests and evidence PASS; 4/4 isolated mirrored Python checks PASS. Full repository Python/Gradle/native NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -99,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-archive-resource-bounds-2026-10-31-1605-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-exact-ledger-gate-2026-10-31-2002-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3521,5 +3521,15 @@
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
+  },
+  "last_hourly_direct_ledger_gate": {
+    "recorded_at": "2026-10-31 20:02 PDT",
+    "source_commit": "3790b2835bca286ed8f2b577d2fe96872c85d905",
+    "tests_commit": "540a8d51304dd1f676d35b2003c889a390733e32",
+    "evidence": "docs/acceptance/rc-dev-direct-upload-exact-ledger-gate-2026-10-31-2002-pdt.json",
+    "approved_modern_targets": 22,
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "retained_builds_deleted": false
   }
 }
