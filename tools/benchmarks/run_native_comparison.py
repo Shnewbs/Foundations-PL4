@@ -163,7 +163,7 @@ NATIVE_ENVIRONMENT_FIELDS = ("java", "java_vendor", "vm_name", "gc_collectors",
                              "heap_initial_bytes", "heap_max_bytes")
 
 
-def validate_native_environment(report, reference_report=None):
+def validate_native_environment(report, reference_report=None, *, require_fixed_heap=False):
     """Require comparable native JVM, GC policy, heap and CPU across all trials.
 
     Native operation ratios are not meaningful if the JVM vendor, collector,
@@ -187,8 +187,10 @@ def validate_native_environment(report, reference_report=None):
             raise ValueError("Invalid native benchmark environment: " + field)
     if environment["heap_initial_bytes"] > environment["heap_max_bytes"]:
         raise ValueError("Native benchmark initial heap exceeds maximum heap")
+    if require_fixed_heap and environment["heap_initial_bytes"] != environment["heap_max_bytes"]:
+        raise ValueError("Native benchmark requires a fixed heap: pin both GameTest JVM -Xms and -Xmx equally")
     if reference_report is not None:
-        reference = validate_native_environment(reference_report)
+        reference = validate_native_environment(reference_report, require_fixed_heap=require_fixed_heap)
         if environment != reference:
             changed = [field for field in NATIVE_ENVIRONMENT_FIELDS
                        if environment[field] != reference[field]]
@@ -224,7 +226,9 @@ def finish_native_trial(root, report_path, output_path, source, trial, label,
     report = json.loads(report_path.read_text())
     report.update(label=label, fixture_sha256=fixture_sha256)
     schema = validate_native_report(report, source, trial, reference_schema)
-    validate_native_environment(report, reference_environment)
+    # Equal environments alone are insufficient: matching auto-sized heaps
+    # can vary with host RAM and invalidate a cross-version comparison.
+    validate_native_environment(report, reference_environment, require_fixed_heap=True)
     with output_path.open("x") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
     report_path.unlink()
