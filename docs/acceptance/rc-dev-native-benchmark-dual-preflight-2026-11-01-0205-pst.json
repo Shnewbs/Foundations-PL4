@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-11-01T02:05:00-08:00",
+  "target": "1.21.1",
+  "scope": "Exact-source native performance benchmark orchestration safety; not native performance acceptance",
+  "branch": "main",
+  "source_commit": "8a2ab7eb5ac20048da1a011b8a346bb9f57cf349",
+  "test_commits": [
+    "8339b22700d015988adb11b237d44b2fc2106926",
+    "96392dec73b9ba519798f98597bb403ed673584c"
+  ],
+  "changes": [
+    "Preflight both Git revisions, exact Minecraft target, and exactly one GameTest registration before modifying either checkout or creating results",
+    "Reject comparing identical commit SHA values",
+    "Keep output and benchmark checkouts untouched when the second source fails preflight"
+  ],
+  "checks": {
+    "github_source_readback": "PASS",
+    "static_contract_checks": "5/5 PASS",
+    "isolated_copied_helper_scenarios": "6/6 PASS; not full repository tests",
+    "new_committed_unittest_methods": 5,
+    "committed_repository_tests": "NOT RUN",
+    "native_gradle": "NOT RUN",
+    "native_performance_trials": "NOT RUN",
+    "installed_provider": "NOT RUN"
+  },
+  "blockers": [
+    "Local GitHub DNS resolution failed; git ls-remote could not resolve github.com",
+    "Gradle wrapper 9.2.1 distribution/dependencies not cached",
+    "Only Java 21 installed; Java 25 required for 26.x"
+  ],
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27, remains latest official listed as of 2026-11-01",
+    "neoforge": "No 26.4 coordinate in official Maven index; 26.3.0.99 listed",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "rc_cleared_targets": 0,
+    "rc_target_count": 24,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "reason": "No exact-source qualified production JAR; preserve all existing artifacts until verified replacement"
+  },
+  "next": [
+    "Execute the committed Python unittest module and full repository regression suite in a dependency-capable environment",
+    "Run 1.21.1 exact-source native GameTests and controlled-heap benchmark against distinct frozen commits",
+    "Complete independent installed-provider, multiplayer, migration and sustained TPS/heap acceptance before RC release"
+  ]
+}
