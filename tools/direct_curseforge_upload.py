@@ -136,7 +136,7 @@ def verify_pl4_bytecode(archive, names, minecraft):
             continue
         if name.startswith("META-INF/versions/"):
             parts = name.split("/")
-            if len(parts) < 5 or not parts[2].isdecimal():
+            if len(parts) < 4 or not parts[2].isdecimal():
                 raise ValueError(f"JAR contains invalid multi-release class path: {name}")
             if int(parts[2]) > java_version:
                 continue  # The target JVM cannot select this versioned class.
