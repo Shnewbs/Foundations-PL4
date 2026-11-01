@@ -5,7 +5,17 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261101T1507Z-runtime-comparability",
+    "claimed_at": "2026-11-01T15:07:00Z",
+    "scope": [
+      "tools/benchmarks/run_native_comparison.py",
+      "tools/benchmarks/ReleasePerformanceGameTests.java",
+      "tools/benchmarks/test_native_environment.py",
+      "docs/MC_26_4_COMPATIBILITY_WATCH.md"
+    ],
+    "purpose": "Compare native benchmark JVM/heap/CPU environment before accepting cross-revision timing"
+  },
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
