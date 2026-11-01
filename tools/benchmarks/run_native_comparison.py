@@ -22,6 +22,11 @@ def require_disposable_workspaces(baseline, candidate, output):
     control = Path(__file__).resolve().parents[2]
     if roots[0] == roots[1] or output.exists():
         raise ValueError("Benchmark needs two distinct checkouts and a new output directory")
+    # Two different paths can still be nested Git checkouts. Rewriting a
+    # child checkout would mutate the parent's tree and invalidate both
+    # supposedly independent baselines, even if both appear clean.
+    if roots[0] in roots[1].parents or roots[1] in roots[0].parents:
+        raise ValueError("Benchmark requires distinct, non-nested checkouts")
     for root in roots:
         if (root == control or root == output or root in output.parents or
                 output in root.parents or not (root / ".git").exists()):
