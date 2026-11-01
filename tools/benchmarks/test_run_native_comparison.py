@@ -129,6 +129,17 @@ class DisposableWorkspaceTests(unittest.TestCase):
             bench.replace_owned_run(self.baseline, 1, source)
         self.assertEqual(saved.read_bytes(), b"outside")
 
+    def test_unreadable_runtime_is_never_marked(self):
+        runtime = self.baseline / "run"
+        runtime.mkdir()
+        def unreadable_walk(*args, **kwargs):
+            kwargs["onerror"](OSError("permission denied"))
+            yield None
+        with mock.patch.object(bench.os, "walk", side_effect=unreadable_walk):
+            with self.assertRaisesRegex(ValueError, "Cannot inspect complete"):
+                bench.mark_owned_run(self.baseline, 1, "a" * 40)
+        self.assertFalse((runtime / ".pl4-benchmark-owned").exists())
+
     def test_invalid_marker_never_authorizes_deletion(self):
         runtime = self.baseline / "run"
         runtime.mkdir()
