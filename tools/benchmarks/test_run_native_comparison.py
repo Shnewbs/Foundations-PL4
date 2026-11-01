@@ -274,6 +274,47 @@ class NativePreflightTests(unittest.TestCase):
         self.assertEqual(retained.read_text(encoding='utf-8'), '// retained source')
         self.assert_untouched_first()
 
+    def test_linked_second_registry_does_not_overwrite_external_source(self):
+        outside = self.root / 'retained-registration.java'
+        outside.write_text(self.original, encoding='utf-8')
+        self.registry[1].unlink()
+        self.registry[1].symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, 'Linked native benchmark checkout path'):
+            self.preflight()
+        self.assertEqual(outside.read_text(encoding='utf-8'), self.original)
+        self.assert_untouched_first()
+
+    def test_linked_second_registry_parent_does_not_overwrite_external_source(self):
+        parent = self.registry[1].parent
+        outside = self.root / 'retained-registry'
+        parent.rename(outside)
+        parent.symlink_to(outside, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'Linked native benchmark checkout path'):
+            self.preflight()
+        self.assertEqual((outside / 'PLGameTests.java').read_text(encoding='utf-8'),
+                         self.original)
+        self.assert_untouched_first()
+
+    def test_ambiguous_registration_locations_rejected_before_mutation(self):
+        extra = self.roots[1] / 'src/main/java/net/foundations/pl4/PLGameTests.java'
+        extra.parent.mkdir(parents=True)
+        extra.write_text(self.original, encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Ambiguous isolated GameTest registration locations'):
+            self.preflight()
+        self.assertEqual(extra.read_text(encoding='utf-8'), self.original)
+        self.assert_untouched_first()
+
+    def test_linked_build_status_cannot_supply_target_identity(self):
+        outside = self.root / 'retained-build-status.json'
+        outside.write_text(json.dumps({'minecraft': '1.21.1'}), encoding='utf-8')
+        status = self.roots[1] / 'BUILD_STATUS.json'
+        status.unlink()
+        status.symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, 'Linked native benchmark checkout path'):
+            self.preflight()
+        self.assertEqual(json.loads(outside.read_text())['minecraft'], '1.21.1')
+        self.assert_untouched_first()
+
     def assert_untouched_first(self):
         self.assertEqual(self.registry[0].read_text(encoding='utf-8'), self.original)
         self.assertFalse(self.registry[0].with_name(
