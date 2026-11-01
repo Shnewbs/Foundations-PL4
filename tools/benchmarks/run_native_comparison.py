@@ -356,11 +356,27 @@ def native_trial_environment(source, trial, inherited=None):
     return env
 
 
+
+def preflight_native_trial_environments(plans, inherited=None):
+    """Validate and freeze all six GameTest JVM environments before any writes.
+
+    Invalid heap controls or inherited Java options must not leave disposable
+    checkouts modified or create an unusable results directory.
+    """
+    snapshot = dict(os.environ if inherited is None else inherited)
+    environments = {}
+    for trial in range(1, 4):
+        for plan in plans:
+            environments[(plan['label'], trial)] = native_trial_environment(
+                plan['source'], trial, snapshot)
+    return environments
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
     args=parser.parse_args();roots,out=require_disposable_workspaces(args.baseline,args.candidate,args.output)
     plans=preflight_native_checkouts(roots)
+    environments=preflight_native_trial_environments(plans)
     fixture=Path(__file__).with_name('ReleasePerformanceGameTests.java').read_text()
     # Only after both checkouts and the fixture pass preflight may we mutate.
     out.mkdir(parents=True,exist_ok=False)
@@ -376,7 +392,7 @@ def main():
         if trial%2==0:order.reverse()
         for label,root in order:
             root=root.resolve();replace_owned_run(root,trial-1,sources[label])
-            env=native_trial_environment(sources[label], trial)
+            env=environments[(label, trial)]
             log=out/f'{trial}-{label}.log';print(f'RUN trial {trial} {label} {sources[label]}',flush=True)
             with log.open('x') as output:
                 run=subprocess.run(['bash','gradlew','--no-daemon','--console=plain','runGameTestServer'],cwd=root,env=env,stdout=output,stderr=subprocess.STDOUT,timeout=1800)
