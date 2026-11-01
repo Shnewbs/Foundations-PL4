@@ -1,0 +1,46 @@
+{
+  "project": "Foundations PL4",
+  "checked_at_local": "2026-11-01 11:09 PST",
+  "branch": "main",
+  "purpose": "Preflight all native benchmark JVM settings before mutating disposable checkouts",
+  "source_commits": {
+    "implementation": "946740d5166270eb32e58960e5882f621f9f56ab",
+    "tests": "dccc2ac50656792a77957f10bda073a0bea4d8ec",
+    "performance_doc": "8cfe010ebd2645cea03bd8ce101f3c550c2c93a2",
+    "compatibility_watch": "0a788b1e6155cdcbd2676f3df0872a1d9134efb4"
+  },
+  "change": "Preflight all six (baseline/candidate x 3) native trial environments before output.mkdir, fixture injection or source registration rewrite; reuse validated snapshots for each trial",
+  "validation": {
+    "github_source_readback": "9/9 string contracts passed on actual committed files",
+    "isolated_python_smoke": "4/4 passed on manually copied helper logic",
+    "committed_repository_unittest": "NOT_RUN; local builder cannot fetch complete repository",
+    "native_gradle_gametests": "NOT_RUN; no Gradle distribution or cached dependencies",
+    "jvm": "Java 21 available; Java 25 unavailable",
+    "local_github_dns": "FAILED; raw.githubusercontent.com cannot resolve",
+    "isolated_test_scope": "environment preparation, invalid heap, conflicting inherited JVM flags, independent environment snapshots"
+  },
+  "compatibility_26_4": {
+    "official_minecraft_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "official_neoforge_maven_latest_26_3": "26.3.0.99",
+    "official_neoforge_26_4_loader": "NOT_LISTED as of 2026-11-01",
+    "snapshot_index": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "loader_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "new_26_4_branch_or_binary": false
+  },
+  "release": {
+    "exact_target_rc_clearances": "0/24",
+    "new_production_jar": false,
+    "github_release_upload": false,
+    "curseforge_upload": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false,
+    "rationale": "No exact-source native/installed-provider qualification; no verified replacement artifact to delete"
+  },
+  "remaining_gates": [
+    "Run committed Python suite on dependency-capable checkout",
+    "Native Gradle builds and 217 1.21.1 GameTests",
+    "Independent installed-provider and two-client multiplayer",
+    "World migration and sustained TPS/heap performance",
+    "Exact target SHA256 receipts before any release or deletion"
+  ]
+}
