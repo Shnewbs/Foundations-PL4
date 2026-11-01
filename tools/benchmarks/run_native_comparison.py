@@ -158,6 +158,27 @@ def validate_native_report(report, source, trial, reference_schema=None):
         raise ValueError('Native benchmark workloads/operations differ across revisions or trials')
     return schema
 
+def finish_native_trial(root, report_path, output_path, source, trial, label,
+                        fixture_sha256, reference_schema=None):
+    """Validate and persist the native report before sealing the disposable run.
+
+    The GameTest may write its report under run/verification-logs. Removing that
+    report *after* mark_owned_run would invalidate the SHA-256 inventory and
+    prevent the next interleaved trial from safely replacing its own world.
+    """
+    if report_path.is_symlink() or not report_path.is_file():
+        raise ValueError("Missing or linked native benchmark report")
+    report = json.loads(report_path.read_text())
+    report.update(label=label, fixture_sha256=fixture_sha256)
+    schema = validate_native_report(report, source, trial, reference_schema)
+    with output_path.open("x") as stream:
+        stream.write(json.dumps(report, indent=2) + "\n")
+    report_path.unlink()
+    # No benchmark-generated file is intentionally removed after this marker.
+    mark_owned_run(root, trial, source)
+    return report, schema
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
@@ -184,13 +205,13 @@ def main():
             with log.open('x') as output:
                 run=subprocess.run(['bash','gradlew','--no-daemon','--console=plain','runGameTestServer'],cwd=root,env=env,stdout=output,stderr=subprocess.STDOUT,timeout=1800)
             if run.returncode:raise RuntimeError(f'{log}: native probe failed: '+log.read_text(errors='replace')[-14000:])
-            mark_owned_run(root,trial,sources[label])
             paths=list(root.glob('**/verification-logs/performance-probe.json'))
             if len(paths)!=1:raise ValueError(f'Expected one native probe report, found {paths}')
-            report=json.loads(paths[0].read_text());report.update(label=label,fixture_sha256=hashlib.sha256(fixture.encode()).hexdigest())
-            schema=validate_native_report(report,sources[label],trial,reference_schema)
+            target=out/f'{trial}-{label}.json'
+            report,schema=finish_native_trial(root,paths[0],target,sources[label],trial,label,
+                                              hashlib.sha256(fixture.encode()).hexdigest(),reference_schema)
             if reference_schema is None:reference_schema=schema
-            target=out/f'{trial}-{label}.json';target.write_text(json.dumps(report,indent=2)+'\n');records.append(report);paths[0].unlink()
+            records.append(report)
     summaries=[]
     for workload in records[0]['workloads']:
         for measurement in workload['measurements']:
