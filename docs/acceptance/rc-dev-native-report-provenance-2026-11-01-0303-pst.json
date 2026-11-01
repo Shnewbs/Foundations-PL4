@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-11-01T03:03:00-08:00",
+  "scope": "1.21.1 native performance comparison report provenance; no runtime PL4 change",
+  "branch": "main",
+  "source_commit": "69aa4908574b6aa03c416e2d03687a78a9cef487",
+  "regression_commit": "b7e286fc78fa9490ddd0f7a01ef647b7dc88b377",
+  "change": "Accept native benchmark reports only from root/verification-logs or root/run/verification-logs and reject linked report directories or linked run roots before reading or unlinking the report.",
+  "validation": {
+    "github_source_readback": "9/9 targeted source and test contract checks passed on committed GitHub files",
+    "isolated_mirrored_python": "6/6 report provenance scenarios passed (two valid paths; unrelated nested path; linked parent; linked report; linked run)",
+    "repository_unittest": "NOT RUN; GitHub DNS unavailable to local runner",
+    "native_gradle": "NOT RUN; Gradle 9.2.1 and Java 25 unavailable in local runner",
+    "installed_provider": "NOT RUN",
+    "authenticated_multiplayer": "NOT RUN",
+    "world_migration": "NOT RUN",
+    "sustained_performance": "NOT RUN"
+  },
+  "compatibility_watch": {
+    "minecraft_latest_identified": "26.4 Snapshot 6, 2026-10-27",
+    "minecraft_official": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge_maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_26_3_indexed": "26.3.0.99",
+    "neoforge_26_4": "no coordinate listed at this check",
+    "action": "no 26.4 port or branch"
+  },
+  "release": {
+    "rc_clearances": "0/24",
+    "new_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "Local git clone fails with github.com DNS resolution error",
+    "No cached Gradle 9.2.1 or native dependencies",
+    "Local Java 21; Java 25 required for 26.x",
+    "Exact-source native acceptance, independent provider, multiplayer, migration, TPS/heap remain outstanding"
+  ],
+  "notes": "Source-only benchmark tooling correction; isolated mirrored checks do not qualify production performance or release readiness."
+}
