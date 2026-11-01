@@ -450,6 +450,7 @@ class DirectUploadValidationTests(unittest.TestCase):
             os.chdir(original_cwd)
         self.assertEqual(receipt.read_text(encoding="utf-8"),
                          "another writer's receipt")
+        self.assertTrue(self.jar.with_suffix(".curseforge.uploading").exists())
 
     def test_successful_upload_creates_api_receipt_without_replacement(self):
         self.make_jar()
@@ -471,7 +472,61 @@ class DirectUploadValidationTests(unittest.TestCase):
                          54321)
         self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["sha256"],
                          hashlib.sha256(self.jar.read_bytes()).hexdigest())
+        self.assertFalse(self.jar.with_suffix(".curseforge.uploading").exists())
 
+
+    def test_upload_reservation_is_exclusive_and_private(self):
+        lock = self.jar.with_suffix(".curseforge.uploading")
+        payload = {"sha256": "a" * 64, "status": "requires_reconciliation"}
+        direct.claim_upload_lock_exclusive(lock, payload)
+        self.assertEqual(json.loads(lock.read_text(encoding="utf-8")), payload)
+        if os.name != "nt":
+            self.assertEqual(stat.S_IMODE(lock.stat().st_mode), 0o600)
+        with self.assertRaises(FileExistsError):
+            direct.claim_upload_lock_exclusive(lock, {"sha256": "b" * 64})
+        self.assertEqual(json.loads(lock.read_text(encoding="utf-8")), payload)
+
+    def test_existing_upload_reservation_blocks_network(self):
+        self.make_jar()
+        lock = self.jar.with_suffix(".curseforge.uploading")
+        direct.claim_upload_lock_exclusive(lock, {"status": "uncertain_previous_upload"})
+        original_cwd = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar),
+                    str(self.notes), "--upload"]), \
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \
+                 patch.object(direct, "request_json") as api:
+                with self.assertRaisesRegex(RuntimeError, "reservation already exists"):
+                    direct.main()
+                api.assert_not_called()
+        finally:
+            os.chdir(original_cwd)
+        self.assertTrue(lock.is_file())
+        self.assertFalse(self.jar.with_suffix(".curseforge.json").exists())
+
+    def test_uncertain_api_error_preserves_upload_reservation(self):
+        self.make_jar()
+        original_cwd = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(sys, "argv", [
+                    "direct_curseforge_upload.py", str(self.jar),
+                    str(self.notes), "--upload"]), \
+                 patch.dict(os.environ, {"CURSEFORGE_API_TOKEN": "fixture-token"}), \
+                 patch.object(direct, "request_json",
+                              side_effect=TimeoutError("unknown API outcome")) as api:
+                with self.assertRaisesRegex(TimeoutError, "unknown API outcome"):
+                    direct.main()
+                api.assert_called_once()
+        finally:
+            os.chdir(original_cwd)
+        lock = self.jar.with_suffix(".curseforge.uploading")
+        self.assertTrue(lock.is_file())
+        self.assertEqual(json.loads(lock.read_text(encoding="utf-8"))["sha256"],
+                         hashlib.sha256(self.jar.read_bytes()).hexdigest())
+        self.assertFalse(self.jar.with_suffix(".curseforge.json").exists())
 
     def dry_run(self):
         original = Path.cwd()
