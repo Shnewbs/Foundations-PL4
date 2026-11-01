@@ -327,7 +327,7 @@ def sample_native_report():
         "vm_name": "OpenJDK 64-Bit Server VM",
         "gc_collectors": ["G1 Old Generation", "G1 Young Generation"],
         "os": "Linux", "os_arch": "amd64",
-        "processors": 8, "heap_initial_bytes": 536870912,
+        "processors": 8, "heap_initial_bytes": 2147483648,
         "heap_max_bytes": 2147483648,
         "workloads": [{
             "network": "wired", "host_count": 4096, "endpoint_count": 128,
@@ -539,7 +539,40 @@ class NativeEnvironmentComparabilityTests(unittest.TestCase):
         report = sample_native_report()
         environment = bench.validate_native_environment(report, copy.deepcopy(report))
         self.assertEqual(environment["heap_max_bytes"], 2147483648)
+        self.assertEqual(environment["heap_initial_bytes"], environment["heap_max_bytes"])
         self.assertEqual(environment["processors"], 8)
+
+    def test_unpinned_equal_heap_profiles_cannot_pass_native_gate(self):
+        report = sample_native_report()
+        report["heap_initial_bytes"] = 536870912
+        # Comparing two equally auto-sized heaps is not fixed-heap evidence.
+        self.assertEqual(
+            bench.validate_native_environment(report, copy.deepcopy(report))["heap_initial_bytes"],
+            536870912)
+        with self.assertRaisesRegex(ValueError, "fixed heap"):
+            bench.validate_native_environment(
+                report, copy.deepcopy(report), require_fixed_heap=True)
+
+    def test_unpinned_heap_preserves_world_and_original_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            logs = root / "run" / "verification-logs"
+            logs.mkdir(parents=True)
+            world = root / "run" / "level.dat"
+            world.write_bytes(b"preserve native test world")
+            report = sample_native_report()
+            report["heap_initial_bytes"] = 536870912
+            native_report = logs / "performance-probe.json"
+            native_report.write_text(json.dumps(report), encoding="utf-8")
+            result = root / "trial.json"
+            with self.assertRaisesRegex(ValueError, "fixed heap"):
+                bench.finish_native_trial(
+                    root, native_report, result, "a" * 40, 1, "candidate", "f" * 64,
+                    reference_environment=copy.deepcopy(report))
+            self.assertEqual(world.read_bytes(), b"preserve native test world")
+            self.assertEqual(json.loads(native_report.read_text()), report)
+            self.assertFalse(result.exists())
+            self.assertFalse((root / "run" / ".pl4-benchmark-owned").exists())
 
     def test_different_runtime_conditions_fail_comparability(self):
         for field, changed in (
