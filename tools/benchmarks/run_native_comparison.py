@@ -220,6 +220,20 @@ def locate_native_probe_report(root):
     return found[0]
 
 
+def require_unlinked_checkout_path(root, path):
+    """Reject symlinks in any component of a checkout-relative source path.
+
+    A clean Git checkout can contain a tracked symlink. Path.read_text and
+    Path.write_text follow it, potentially overwriting a file outside the
+    disposable benchmark checkout when the registration is rewritten.
+    """
+    current = root
+    for part in path.relative_to(root).parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError("Linked native benchmark checkout path: " + str(current))
+
+
 def preflight_native_checkouts(roots):
     """Validate *both* exact revisions before modifying either checkout.
 
@@ -237,7 +251,9 @@ def preflight_native_checkouts(roots):
             ['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
         if not re.fullmatch(r'[0-9a-f]{40}(?:[0-9a-f]{24})?', source):
             raise ValueError('Benchmark source is not an exact Git commit')
-        status = json.loads((root / 'BUILD_STATUS.json').read_text(encoding='utf-8'))
+        status_path = root / 'BUILD_STATUS.json'
+        require_unlinked_checkout_path(root, status_path)
+        status = json.loads(status_path.read_text(encoding='utf-8'))
         if status.get('minecraft') != '1.21.1':
             raise ValueError('Exact Minecraft 1.21.1 benchmark target required')
         # This directory may be gitignored and therefore escape the clean
@@ -250,9 +266,13 @@ def preflight_native_checkouts(roots):
             root / 'src/portTest/java/net/foundations/pl4/PLGameTests.java',
             root / 'src/main/java/net/foundations/pl4/PLGameTests.java',
         ]
-        registry = next((path for path in candidates if path.is_file()), None)
-        if registry is None:
+        registries = [path for path in candidates if path.is_file() or path.is_symlink()]
+        if not registries:
             raise ValueError('Missing isolated GameTest registration source')
+        if len(registries) != 1:
+            raise ValueError('Ambiguous isolated GameTest registration locations')
+        registry = registries[0]
+        require_unlinked_checkout_path(root, registry)
         # The runner injects this class via write_text. Never overwrite an
         # existing (possibly gitignored) source or follow a fixture symlink.
         fixture_target = registry.with_name('ReleasePerformanceGameTests.java')
