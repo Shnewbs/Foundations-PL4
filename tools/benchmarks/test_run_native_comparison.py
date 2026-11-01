@@ -649,5 +649,43 @@ class NativeEnvironmentComparabilityTests(unittest.TestCase):
             self.assertFalse((root / "run" / ".pl4-benchmark-owned").exists())
 
 
+class NativeTrialEnvironmentTests(unittest.TestCase):
+    def test_default_heap_is_pinned_for_native_game_jvm(self):
+        env = bench.native_trial_environment("a" * 40, 1, {})
+        self.assertEqual(env["JAVA_TOOL_OPTIONS"], "-Xms2048m -Xmx2048m")
+        self.assertEqual(env["PL4_BENCHMARK_SOURCE"], "a" * 40)
+        self.assertEqual(env["PL4_BENCHMARK_TRIAL"], "1")
+
+    def test_configured_heap_and_unrelated_options_are_preserved(self):
+        inherited = {"PL4_BENCHMARK_HEAP_MB": "1024",
+                     "JAVA_TOOL_OPTIONS": "-Duser.language=en"}
+        env = bench.native_trial_environment("b" * 40, 3, inherited)
+        self.assertEqual(env["JAVA_TOOL_OPTIONS"],
+                         "-Duser.language=en -Xms1024m -Xmx1024m")
+        self.assertNotIn("PL4_BENCHMARK_HEAP_MB", env)
+        self.assertEqual(inherited["PL4_BENCHMARK_HEAP_MB"], "1024")
+
+    def test_invalid_heap_sizes_are_rejected(self):
+        for value in ("", "0", "-1", "511", "16385", "1g", "100.0", " 1024"):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "HEAP_MB"):
+                bench.native_trial_environment("a" * 40, 1,
+                                               {"PL4_BENCHMARK_HEAP_MB": value})
+
+    def test_conflicting_inherited_heap_flags_are_rejected(self):
+        for key in ("JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS"):
+            for flag in ("-Xms1g", "-Xmx2048m",
+                         "-XX:InitialHeapSize=1024m", "-XX:MaxRAMPercentage=25"):
+                with self.subTest(key=key, flag=flag), self.assertRaisesRegex(
+                        ValueError, "Conflicting inherited JVM heap option"):
+                    bench.native_trial_environment("a" * 40, 1, {key: flag})
+
+    def test_unrelated_inherited_environment_is_not_modified(self):
+        inherited = {"JAVA_TOOL_OPTIONS": "-Dfoo=bar",
+                     "PL4_BENCHMARK_HEAP_MB": "512"}
+        bench.native_trial_environment("a" * 40, 1, inherited)
+        self.assertEqual(inherited, {"JAVA_TOOL_OPTIONS": "-Dfoo=bar",
+                                     "PL4_BENCHMARK_HEAP_MB": "512"})
+
+
 if __name__ == "__main__":
     unittest.main()
