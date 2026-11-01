@@ -376,6 +376,36 @@ def preflight_native_trial_environments(plans, inherited=None):
                 plan['source'], trial, snapshot)
     return environments
 
+def summarize_native_measurements(records):
+    """Show CPU and allocation changes alongside wall-time; never infer RC clearance."""
+    if not records:
+        raise ValueError('Native benchmark has no trial records')
+    summaries = []
+    for workload in records[0]['workloads']:
+        for measurement in workload['measurements']:
+            name = measurement['operation']
+            row = {'network': workload['network'], 'operation': name}
+            for label in ('baseline', 'candidate'):
+                selected = [m for record in records if record['label'] == label
+                            for w in record['workloads'] if w['network'] == workload['network']
+                            for m in w['measurements'] if m['operation'] == name]
+                if len(selected) != 3:
+                    raise ValueError('Expected three native benchmark trials per revision: ' + label)
+                for metric in ('elapsed_ns', 'cpu_ns', 'allocated_bytes'):
+                    per_trial = [statistics.median(m[metric]) / m['operations_per_round']
+                                 for m in selected]
+                    row[label + '_' + metric + '_per_operation'] = statistics.median(per_trial)
+                    row[label + '_' + metric + '_trial_medians'] = per_trial
+            for metric in ('elapsed_ns', 'cpu_ns', 'allocated_bytes'):
+                baseline = row['baseline_' + metric + '_per_operation']
+                candidate = row['candidate_' + metric + '_per_operation']
+                row[metric + '_ratio'] = candidate / baseline if baseline else None
+                row[metric + '_delta_per_operation'] = candidate - baseline
+            row['elapsed_ratio'] = row['elapsed_ns_ratio']  # Preserve existing consumer contract.
+            summaries.append(row)
+    return summaries
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline',type=Path);parser.add_argument('candidate',type=Path);parser.add_argument('output',type=Path)
@@ -409,18 +439,7 @@ def main():
                                               reference_environment=records[0] if records else None)
             if reference_schema is None:reference_schema=schema
             records.append(report)
-    summaries=[]
-    for workload in records[0]['workloads']:
-        for measurement in workload['measurements']:
-            name=measurement['operation'];row={'network':workload['network'],'operation':name}
-            for label in ['baseline','candidate']:
-                selected=[m for record in records if record['label']==label for w in record['workloads'] if w['network']==workload['network'] for m in w['measurements'] if m['operation']==name]
-                for metric in ['elapsed_ns','cpu_ns','allocated_bytes']:
-                    per_trial=[statistics.median(m[metric])/m['operations_per_round'] for m in selected]
-                    row[label+'_'+metric+'_per_operation']=statistics.median(per_trial)
-                    row[label+'_'+metric+'_trial_medians']=per_trial
-            baseline=row['baseline_elapsed_ns_per_operation'];row['elapsed_ratio']=row['candidate_elapsed_ns_per_operation']/baseline if baseline else None
-            summaries.append(row)
+    summaries=summarize_native_measurements(records)
     result={'target':'1.21.1','sources':sources,'trials_per_revision':3,'fixture_sha256':hashlib.sha256(fixture.encode()).hexdigest(),
             'benchmark_environment':validate_native_environment(records[0]),'scope':'Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.','measurements':summaries}
     with (out/'comparison.json').open('x') as stream: stream.write(json.dumps(result,indent=2)+'\n')
