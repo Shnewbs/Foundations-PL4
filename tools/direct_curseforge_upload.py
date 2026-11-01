@@ -25,6 +25,28 @@ NAME = re.compile(r"FoundationsPL4-(?P<minecraft>(?:1|26)\.\d+(?:\.\d+)?)-(?P<ve
 # Add a future target only after official loader availability and owner approval.
 SUPPORTED_26X_RELEASE_TARGETS = frozenset(("26.1.2", "26.3"))
 
+# Exact currently published tracks eligible for this modern metadata publisher.
+# The other two published tracks (1.6.4 and 1.12.2) use their own legacy
+# mcmod.info publishers; 1.13.2 is an unfinished port, not a release target.
+# Do not silently accept an adjacent Minecraft patch or a newly named JAR.
+SUPPORTED_DIRECT_UPLOAD_TARGETS = frozenset((
+    "1.14.4", "1.15.2",
+    "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5",
+    "1.17.1", "1.18.1", "1.18.2",
+    "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4",
+    "1.20", "1.20.1", "1.20.2", "1.20.4", "1.21.1",
+    "26.1.2", "26.3",
+))
+
+
+def require_supported_direct_target(minecraft):
+    """Reject non-ledger versions before a release can reach CurseForge."""
+    if minecraft not in SUPPORTED_DIRECT_UPLOAD_TARGETS:
+        raise ValueError(
+            f"Minecraft {minecraft} is not an approved direct-upload release target; "
+            "native validation and owner approval are required")
+
+
 # Check resource ceilings before ZipFile.testzip() decompresses every member.
 # These limits are generous for PL4 runtime JARs, but reject ZIP bombs.
 MAX_JAR_ENTRIES = 50_000
@@ -162,6 +184,7 @@ def inspect(jar, notes, jar_bytes=None):
         raise ValueError("This legacy target requires separate mcmod.info validation")
     if minecraft == "1.7.10":
         raise ValueError("Minecraft 1.7.10 is excluded")
+    require_supported_direct_target(minecraft)
     loader = "NeoForge" if minecraft == "1.21.1" or minecraft.startswith("26.") else "Forge"
     if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
         raise ValueError("A nonempty, version-specific changelog is required")
