@@ -168,6 +168,77 @@ class DisposableWorkspaceTests(unittest.TestCase):
 
 
 
+
+class NativePreflightTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.roots = [self.root / 'baseline', self.root / 'candidate']
+        self.registry = []
+        self.original = ('public static void register(RegisterGameTestsEvent e)'
+                         '{e.register(PLGameTests.class);}')
+        for root in self.roots:
+            (root / '.git').mkdir(parents=True)
+            (root / 'BUILD_STATUS.json').write_text(
+                json.dumps({'minecraft': '1.21.1'}), encoding='utf-8')
+            path = root / 'src/portTest/java/net/foundations/pl4/PLGameTests.java'
+            path.parent.mkdir(parents=True)
+            path.write_text(self.original, encoding='utf-8')
+            self.registry.append(path)
+
+    def preflight(self, shas=None):
+        shas = shas or ['a' * 40, 'b' * 40]
+        def git_head(command, cwd, text):
+            self.assertEqual(command, ['git', 'rev-parse', 'HEAD'])
+            return shas[self.roots.index(cwd)] + '\\n'
+        with mock.patch.object(bench.subprocess, 'check_output', side_effect=git_head):
+            return bench.preflight_native_checkouts(self.roots)
+
+    def assert_untouched(self):
+        for path in self.registry:
+            self.assertEqual(path.read_text(encoding='utf-8'), self.original)
+            self.assertFalse(path.with_name('ReleasePerformanceGameTests.java').exists())
+
+    def test_distinct_exact_revisions_are_planned_without_writing(self):
+        plans = self.preflight()
+        self.assertEqual([p['source'] for p in plans], ['a' * 40, 'b' * 40])
+        self.assertTrue(all('ReleasePerformanceGameTests.class' in
+                            p['registration'] for p in plans))
+        self.assert_untouched()
+
+    def test_same_source_is_rejected_before_any_checkout_mutation(self):
+        with self.assertRaisesRegex(ValueError, 'distinct source commits'):
+            self.preflight(['a' * 40, 'a' * 40])
+        self.assert_untouched()
+
+    def test_bad_second_target_does_not_dirty_first_checkout(self):
+        (self.roots[1] / 'BUILD_STATUS.json').write_text(
+            json.dumps({'minecraft': '26.3'}), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Exact Minecraft 1.21.1'):
+            self.preflight()
+        self.assert_untouched()
+
+    def test_ambiguous_second_registration_does_not_dirty_first(self):
+        self.registry[1].write_text(self.original + '\\n' + self.original,
+                                    encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'ambiguous isolated registration'):
+            self.preflight()
+        self.assertEqual(self.registry[0].read_text(encoding='utf-8'), self.original)
+        self.assertFalse(self.registry[0].with_name(
+            'ReleasePerformanceGameTests.java').exists())
+
+    def test_missing_second_registry_does_not_dirty_first(self):
+        self.registry[1].unlink()
+        with self.assertRaisesRegex(ValueError, 'Missing isolated GameTest'):
+            self.preflight()
+        self.assert_untouched_first()
+
+    def assert_untouched_first(self):
+        self.assertEqual(self.registry[0].read_text(encoding='utf-8'), self.original)
+        self.assertFalse(self.registry[0].with_name(
+            'ReleasePerformanceGameTests.java').exists())
+
 def sample_native_report():
     return {
         "source_commit": "a" * 40, "trial": "1",
