@@ -175,6 +175,18 @@ class DirectUploadValidationTests(unittest.TestCase):
         self.assertEqual(inspect(self.jar, self.notes),
                          ("1.16.5", "0.97.0.rev1-beta", "Forge"))
 
+    def test_legacy_java8_ignores_root_java9_module_descriptor(self):
+        self.jar = self.root / "FoundationsPL4-1.16.5-0.97.0.rev1-beta-java8.jar"
+        metadata = self.metadata("0.97.0.rev1-beta", "1.16.5").replace(
+            'modId="neoforge"', 'modId="forge"')
+        self.make_jar(metadata, class_bytes=bytes.fromhex("cafebabe000000340001"),
+                      metadata_path="META-INF/mods.toml")
+        with zipfile.ZipFile(self.jar, "a") as archive:
+            archive.writestr("module-info.class",
+                             bytes.fromhex("cafebabe000000350001"))  # Java 9
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.16.5", "0.97.0.rev1-beta", "Forge"))
+
     def test_rejects_malformed_multi_release_class_directory(self):
         self.make_jar()
         with zipfile.ZipFile(self.jar, "a") as archive:
