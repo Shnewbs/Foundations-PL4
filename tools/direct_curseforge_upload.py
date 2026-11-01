@@ -31,6 +31,9 @@ MAX_JAR_ENTRIES = 50_000
 MAX_JAR_MEMBER_BYTES = 128 * 1024 * 1024
 MAX_JAR_UNCOMPRESSED_BYTES = 512 * 1024 * 1024
 MAX_JAR_COMPRESSION_RATIO = 10_000
+# Limit the input snapshot itself, not only ZIP members after opening the JAR.
+# The multipart body also holds these bytes, so fail before unbounded allocation.
+MAX_JAR_COMPRESSED_BYTES = 256 * 1024 * 1024
 
 
 
@@ -134,6 +137,15 @@ def verify_local_receipt(previous, digest, project, minecraft, version, loader):
     return file_id
 
 
+def read_jar_snapshot(jar):
+    """Read a bounded, immutable snapshot for inspection, hashing and upload."""
+    with jar.open("rb") as stream:
+        jar_bytes = stream.read(MAX_JAR_COMPRESSED_BYTES + 1)
+    if len(jar_bytes) > MAX_JAR_COMPRESSED_BYTES:
+        raise ValueError("JAR exceeds compressed archive size limit")
+    return jar_bytes
+
+
 def inspect(jar, notes, jar_bytes=None):
     converted_java8 = jar.name.endswith("-java8.jar")
     normalized_name = jar.name.replace("-java8.jar", ".jar") if converted_java8 else jar.name
@@ -197,7 +209,7 @@ def main():
     args = parser.parse_args()
     # Pin one immutable byte snapshot across archive validation, hashing and upload.
     # A build replacing the on-disk JAR mid-publication cannot change uploaded bytes.
-    jar_bytes = args.jar.read_bytes()
+    jar_bytes = read_jar_snapshot(args.jar)
     minecraft, version, loader = inspect(args.jar, args.notes, jar_bytes=jar_bytes)
     maturity = release_type(version)  # Reject dev/nightly builds, even when a receipt already exists.
     if is_rc(version):
