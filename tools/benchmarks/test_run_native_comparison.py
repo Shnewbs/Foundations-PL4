@@ -4,6 +4,7 @@ These tests do not run Gradle or qualify native performance/RC releases.
 """
 import importlib.util
 import copy
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -72,7 +73,7 @@ class DisposableWorkspaceTests(unittest.TestCase):
             bench.replace_owned_run(self.baseline, 1, "a" * 40)
         marker = runtime / ".pl4-benchmark-owned"
         marker.write_text("b" * 40 + ":1\n")
-        with self.assertRaisesRegex(ValueError, "unowned or changed"):
+        with self.assertRaisesRegex(ValueError, "invalid benchmark ownership marker"):
             bench.replace_owned_run(self.baseline, 1, "a" * 40)
         self.assertEqual(important.read_bytes(), b"retained")
 
@@ -86,8 +87,10 @@ class DisposableWorkspaceTests(unittest.TestCase):
         self.assertFalse(runtime.exists())
         runtime.mkdir()
         bench.mark_owned_run(self.baseline, 2, source)
-        self.assertEqual(
-            (runtime / ".pl4-benchmark-owned").read_text(), source + ":2\n")
+        marker = json.loads((runtime / ".pl4-benchmark-owned").read_text())
+        self.assertEqual(marker["source"], source)
+        self.assertEqual(marker["trial"], 2)
+        self.assertEqual(marker["inventory_sha256"], bench.inventory_digest(runtime))
 
 
     def test_added_world_after_trial_is_preserved(self):
