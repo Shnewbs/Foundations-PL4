@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-31",
+  "local_time": "18:05 PDT",
+  "scope": "direct CurseForge publisher input allocation guard",
+  "source_branch": "main",
+  "source_start": "4c75e343d00c36849d57ff96c50532ae90776806",
+  "implementation_commit": "302445c203535f0fc299d0967893863e481a4a87",
+  "regression_commit": "c2b191753ba901153a808297d0fd43cd8aa62032",
+  "documentation_commits": [
+    "83867a7b2bfc004dc3385413b590a1cdd7cb2138",
+    "1438e80bef6dda0c33dff73b962241bb6a2e2cc2"
+  ],
+  "behavior": "read_jar_snapshot reads at most MAX_JAR_COMPRESSED_BYTES + 1 and rejects oversized input before ZIP inspection, hashing, multipart or upload; 256 MiB default",
+  "regression_methods": [
+    "test_rejects_oversized_compressed_jar_snapshot_before_upload",
+    "test_accepts_compressed_jar_snapshot_at_exact_limit",
+    "test_jar_snapshot_remains_immutable_after_disk_replacement"
+  ],
+  "validation": {
+    "github_source_readback": "PASS: implementation, test methods, and docs confirmed via connected GitHub API",
+    "isolated_local_python": "PASS 3/3 mirrored bounded-snapshot scenarios; not the repository tests",
+    "full_repository_python": "NOT_RUN: no locally cloned repository and GitHub DNS unavailable",
+    "native_gradle": "NOT_RUN: Gradle 9.2.1 distribution/dependencies uncached, Java 25 missing",
+    "installed_provider": "NOT_RUN",
+    "multiplayer_migration_tps_heap": "NOT_RUN"
+  },
+  "official_watch": {
+    "minecraft": "26.4 Snapshot 6 (2026-10-27) remains latest in official changelog index",
+    "neoforge": "No 26.4 loader in official Maven index; 26.3.0.99 present",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "rc_publication_cleared": false,
+    "rc_clearances": "0/24 per existing ledger",
+    "github_release_created": false,
+    "curseforge_upload_performed": false,
+    "github_actions_used": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "github.com DNS resolution fails in local builder",
+    "Gradle 9.2.1 not cached",
+    "Only JDK 21 installed",
+    "Current-source native/installed/live/performance acceptance pending"
+  ]
+}
