@@ -153,7 +153,12 @@ public final class TransferEngine {
         return rotateTies(endpoints.stream().filter(s->routable(s,sink,targets)).toList(),cursor);
     }
     private static boolean routable(NetworkEngine.Ref source,NetworkEngine.Ref sink,Map<NetworkEngine.Ref,TargetKey> targets){
-        return source!=sink&&!targets.computeIfAbsent(source,TransferEngine::target).equals(targets.computeIfAbsent(sink,TransferEngine::target))&&TransferRules.canRouteOnChannels(
+        return source!=sink&&source.part().owner!=null
+            &&source.part().owner.equals(sink.part().owner)
+            &&source.host().parts.get(source.part().slot())==source.part()
+            &&sink.host().parts.get(sink.part().slot())==sink.part()
+            &&!targets.computeIfAbsent(source,TransferEngine::target).equals(targets.computeIfAbsent(sink,TransferEngine::target))
+            &&TransferRules.canRouteOnChannels(
             source.part().kind==Kind.TRANSFER_NODE,source.part().transferMode,source.part().outputChannel,
             sink.part().kind==Kind.TRANSFER_NODE,sink.part().transferMode,sink.part().inputChannel);
     }
