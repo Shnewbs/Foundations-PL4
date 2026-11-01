@@ -35,8 +35,46 @@ def require_disposable_workspaces(baseline, candidate, output):
     return roots, output
 
 
+def inventory_digest(runtime):
+    """Fingerprint every generated runtime path and file before permitting deletion.
+
+    A matching ownership marker alone is insufficient: a player or another tool
+    may have added a save, changed a file, or linked in another directory after
+    the last benchmark trial. Refuse those cases instead of deleting them.
+    """
+    digest = hashlib.sha256()
+    for directory, dirs, files in os.walk(runtime, followlinks=False):
+        dirs.sort()
+        files.sort()
+        base = Path(directory)
+        for name in sorted(dirs + files):
+            entry = base / name
+            if entry == runtime / ".pl4-benchmark-owned":
+                continue
+            if entry.is_symlink():
+                raise ValueError("Refusing linked content inside benchmark run: " + str(entry))
+            relative = entry.relative_to(runtime).as_posix().encode("utf-8", "surrogateescape")
+            if entry.is_dir():
+                digest.update(b"D\0" + relative + b"\0")
+            elif entry.is_file():
+                file_digest = hashlib.sha256()
+                length = 0
+                with entry.open("rb") as stream:
+                    while True:
+                        chunk = stream.read(1024 * 1024)
+                        if not chunk:
+                            break
+                        length += len(chunk)
+                        file_digest.update(chunk)
+                digest.update(b"F\0" + relative + b"\0" +
+                              str(length).encode("ascii") + b"\0" + file_digest.digest())
+            else:
+                raise ValueError("Refusing special file inside benchmark run: " + str(entry))
+    return digest.hexdigest()
+
+
 def replace_owned_run(root, previous_trial, source):
-    """Only delete a runtime marked by this exact benchmark's prior trial."""
+    """Delete only an unchanged runtime produced by this benchmark's prior trial."""
     runtime = root / "run"
     if previous_trial == 0:
         if runtime.exists() or runtime.is_symlink():
@@ -44,9 +82,18 @@ def replace_owned_run(root, previous_trial, source):
         return
     marker = runtime / ".pl4-benchmark-owned"
     if (runtime.is_symlink() or not runtime.is_dir() or
-            marker.is_symlink() or not marker.is_file() or
-            marker.read_text() != f"{source}:{previous_trial}\n"):
+            marker.is_symlink() or not marker.is_file()):
         raise ValueError("Refusing to delete an unowned or changed Minecraft run: " + str(runtime))
+    try:
+        previous = json.loads(marker.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise ValueError("Refusing invalid benchmark ownership marker: " + str(marker)) from exc
+    if (not isinstance(previous, dict) or
+            previous.get("source") != source or previous.get("trial") != previous_trial or
+            not isinstance(previous.get("inventory_sha256"), str)):
+        raise ValueError("Refusing to delete an unowned or changed Minecraft run: " + str(runtime))
+    if inventory_digest(runtime) != previous["inventory_sha256"]:
+        raise ValueError("Refusing to delete a benchmark run changed after its trial: " + str(runtime))
     shutil.rmtree(runtime)
 
 
@@ -54,8 +101,11 @@ def mark_owned_run(root, trial, source):
     runtime = root / "run"
     if runtime.is_symlink() or not runtime.is_dir():
         raise ValueError("Native benchmark did not create a regular run directory")
-    with (runtime / ".pl4-benchmark-owned").open("x") as marker:
-        marker.write(f"{source}:{trial}\n")
+    inventory = inventory_digest(runtime)
+    with (runtime / ".pl4-benchmark-owned").open("x", encoding="utf-8") as marker:
+        json.dump({"source": source, "trial": trial, "inventory_sha256": inventory},
+                  marker, sort_keys=True)
+        marker.write("\n")
 
 
 
