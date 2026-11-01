@@ -594,5 +594,27 @@ class NativeEnvironmentComparabilityTests(unittest.TestCase):
             self.assertFalse((runtime / ".pl4-benchmark-owned").exists())
 
 
+    def test_gc_mismatch_preserves_world_and_unmodified_native_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            logs = root / "run" / "verification-logs"
+            logs.mkdir(parents=True)
+            world = root / "run" / "level.dat"
+            world.write_bytes(b"retained world")
+            native_report = logs / "performance-probe.json"
+            report = sample_native_report()
+            native_report.write_text(json.dumps(report), encoding="utf-8")
+            reference = copy.deepcopy(report)
+            reference["gc_collectors"] = ["ZGC Cycles", "ZGC Pauses"]
+            with self.assertRaisesRegex(ValueError, "gc_collectors"):
+                bench.finish_native_trial(
+                    root, native_report, root / "trial.json", "a" * 40,
+                    1, "candidate", "f" * 64, reference_environment=reference)
+            self.assertEqual(world.read_bytes(), b"retained world")
+            self.assertEqual(json.loads(native_report.read_text()), report)
+            self.assertFalse((root / "trial.json").exists())
+            self.assertFalse((root / "run" / ".pl4-benchmark-owned").exists())
+
+
 if __name__ == "__main__":
     unittest.main()
