@@ -323,7 +323,10 @@ class NativePreflightTests(unittest.TestCase):
 def sample_native_report():
     return {
         "source_commit": "a" * 40, "trial": "1",
-        "java": "25.0.5", "os": "Linux", "os_arch": "amd64",
+        "java": "25.0.5", "java_vendor": "Eclipse Adoptium",
+        "vm_name": "OpenJDK 64-Bit Server VM",
+        "gc_collectors": ["G1 Old Generation", "G1 Young Generation"],
+        "os": "Linux", "os_arch": "amd64",
         "processors": 8, "heap_initial_bytes": 536870912,
         "heap_max_bytes": 2147483648,
         "workloads": [{
@@ -540,7 +543,9 @@ class NativeEnvironmentComparabilityTests(unittest.TestCase):
 
     def test_different_runtime_conditions_fail_comparability(self):
         for field, changed in (
-                ("java", "25.0.6"), ("os", "Windows"), ("os_arch", "aarch64"),
+                ("java", "25.0.6"), ("java_vendor", "Different Vendor"),
+                ("vm_name", "Different VM"), ("gc_collectors", ["ZGC Cycles", "ZGC Pauses"]),
+                ("os", "Windows"), ("os_arch", "aarch64"),
                 ("processors", 4), ("heap_initial_bytes", 268435456),
                 ("heap_max_bytes", 1073741824)):
             with self.subTest(field=field):
@@ -552,7 +557,11 @@ class NativeEnvironmentComparabilityTests(unittest.TestCase):
 
     def test_missing_boolean_or_invalid_heap_environment_fails(self):
         for field, value in (
-                ("java", ""), ("os_arch", None), ("processors", True),
+                ("java", ""), ("java_vendor", ""), ("vm_name", None),
+                ("gc_collectors", []), ("gc_collectors", ["G1 Young Generation", "G1 Old Generation"]),
+                ("gc_collectors", ["G1 Old Generation", "G1 Old Generation"]),
+                ("gc_collectors", ["", "G1 Young Generation"]),
+                ("gc_collectors", "G1"), ("os_arch", None), ("processors", True),
                 ("heap_initial_bytes", 0), ("heap_max_bytes", -1),
                 ("heap_max_bytes", 1)):
             with self.subTest(field=field, value=value):
