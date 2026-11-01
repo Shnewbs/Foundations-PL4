@@ -43,7 +43,9 @@ def inventory_digest(runtime):
     the last benchmark trial. Refuse those cases instead of deleting them.
     """
     digest = hashlib.sha256()
-    for directory, dirs, files in os.walk(runtime, followlinks=False):
+    def fail_scan(error):
+        raise ValueError("Cannot inspect complete benchmark runtime: " + str(error)) from error
+    for directory, dirs, files in os.walk(runtime, followlinks=False, onerror=fail_scan):
         dirs.sort()
         files.sort()
         base = Path(directory)
