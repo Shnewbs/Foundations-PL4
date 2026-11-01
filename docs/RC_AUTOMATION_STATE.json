@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T0808Z-loader-range-gate",
-    "claimed_at": "2026-11-01T08:08:00Z",
-    "scope": "main direct publisher NeoForge loader dependency exact-range preflight"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -92,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 23:06 PDT: fixed direct CurseForge uploader receipt overwrite/symlink race with exclusive O_EXCL creation, mode 0600, fsync and manual reconciliation on conflict; four repository regression methods added. GitHub committed source contract checks 15/15; isolated mirrored local Python receipt scenarios 3/3. Repository Python/Gradle/native/installed tests NOT RUN (DNS, Gradle cache, JDK25). Official 26.4 Snapshot 6 latest; no NeoForge 26.4 Maven loader. RC 0/24; no JAR, release, Actions or deletion.",
-  "local_validation": "15/15 GitHub exact-source contract checks PASS; 3/3 isolated mirrored Python receipt scenarios PASS. Four committed repository methods NOT RUN; Gradle/native NOT RUN.",
+  "current_checkpoint": "2026-11-01 01:08 PDT: exact NeoForge loader metadata gate committed on main; reviewed 1.21.1, 26.1.2, 26.3 dependency ranges and required dependency types. 10/10 GitHub source-contract checks and 8/8 mirrored Python/TOML scenarios passed; actual repository Python/Gradle/native/installed tests NOT RUN due to DNS, missing Gradle and JDK25. 26.4 Snapshot 6 latest; official NeoForge Maven no 26.4 loader. RC 0/24; no JAR/release/Actions/deletion.",
+  "local_validation": "10/10 committed GitHub source-contract checks PASS; 8/8 isolated mirrored Python/TOML scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -103,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-exclusive-receipt-2026-10-31-2306-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-neoforge-loader-metadata-gate-2026-11-01-0108-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3593,6 +3589,21 @@
     ],
     "evidence": "docs/acceptance/rc-dev-direct-upload-exclusive-receipt-2026-10-31-2306-pdt.json",
     "validation": "15/15 GitHub source-contract checks, 3/3 isolated mirrored local Python receipt cases; repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_loader_range": {
+    "owner": "pl4-hourly-20261101T0808Z-loader-range-gate",
+    "claimed_at": "2026-11-01T08:08:00Z",
+    "released_at": "2026-11-01T08:17:00Z",
+    "source_commits": [
+      "39804f8127cacd1044d2f650b596220a8c64da37",
+      "95c013d1e3c3c1d0474bbe32b1721f9d96baff26",
+      "ec31c1d1ef2f2babbd5a3d10bbc7966c76fb305a"
+    ],
+    "evidence": "docs/acceptance/rc-dev-neoforge-loader-metadata-gate-2026-11-01-0108-pdt.json",
+    "validation": "10/10 GitHub source-contract checks; 8/8 mirrored Python/TOML scenarios; full repo/native NOT RUN",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
