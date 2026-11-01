@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1103Z-benchmark-report-provenance",
-    "claimed_at": "2026-11-01T11:03:00Z",
-    "scope": "tools/benchmarks/run_native_comparison.py and test_run_native_comparison.py; documentation; no binaries or Actions"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -3625,6 +3621,20 @@
     ],
     "evidence": "docs/acceptance/rc-dev-native-benchmark-dual-preflight-2026-11-01-0205-pst.json",
     "validation": "5/5 GitHub source-contract checks; 6/6 isolated copied-helper Python smoke cases; actual repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_benchmark_report_provenance": {
+    "owner": "pl4-hourly-20261101T1103Z-benchmark-report-provenance",
+    "claimed_at": "2026-11-01T11:03:00Z",
+    "released_at": "2026-11-01T11:11:00Z",
+    "source_commits": [
+      "69aa4908574b6aa03c416e2d03687a78a9cef487",
+      "b7e286fc78fa9490ddd0f7a01ef647b7dc88b377"
+    ],
+    "evidence": "docs/acceptance/rc-dev-native-report-provenance-2026-11-01-0303-pst.json",
+    "validation": "9/9 GitHub source/test contracts; 6/6 isolated mirrored Python; native and actual repository unittest not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
