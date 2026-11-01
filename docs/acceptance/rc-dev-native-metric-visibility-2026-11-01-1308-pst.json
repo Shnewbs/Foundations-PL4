@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-11-01T13:08:31-08:00",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "1.21.1 native performance comparison reporting, not actual performance acceptance",
+  "implementation_commit": "da552fd3daaf6e8fde2f05506e67ec24812b3f46",
+  "regression_commit": "cdcf635c0a2f6b78912dce89d440fc34fbf4cfde",
+  "documentation_commits": [
+    "2a42ba675d2acd3ac1a83bf3728685529c9b49db",
+    "ba56797fb4e0365b9da2bd589c6313240a6df62b"
+  ],
+  "change": {
+    "preserved_contract": "elapsed_ratio",
+    "new_ratios": [
+      "elapsed_ns_ratio",
+      "cpu_ns_ratio",
+      "allocated_bytes_ratio"
+    ],
+    "new_absolute_metrics": [
+      "elapsed_ns_delta_per_operation",
+      "cpu_ns_delta_per_operation",
+      "allocated_bytes_delta_per_operation"
+    ],
+    "zero_baseline_ratio": null,
+    "zero_baseline_behavior": "null ratio, retained candidate-minus-baseline absolute delta",
+    "trial_completeness": "exactly three selected trial records per revision and operation"
+  },
+  "validation": {
+    "isolated_python_mirrored_logic": "PASS 4/4",
+    "committed_source_test_readback": "PASS 9/9 targeted markers",
+    "documentation_readback": "PASS 2/2",
+    "committed_repository_unittest": "NOT_RUN",
+    "gradle_native_compile": "NOT_RUN",
+    "native_game_tests": "NOT_RUN",
+    "native_performance_comparison": "NOT_RUN",
+    "installed_provider": "NOT_RUN",
+    "multiplayer_migration_sustained_performance": "NOT_RUN",
+    "limitation": "No local PL4 checkout, GitHub DNS unavailable, no cached Gradle 9.2.1 or Java 25; isolated Python scenarios do not execute committed tests."
+  },
+  "exact_branch_review": {
+    "mc/26.1.2": "0.2.0-rc.1-dev, Java 25, 193 expected native tests; no new gate pass",
+    "mc/26.3": "0.2.0-rc.1-dev, Java 25, 193 expected native tests; no new gate pass",
+    "mc/26.1": "audit-only stale 1.21.1 BUILD_STATUS; do not release",
+    "mc/26.2": "audit-only stale 1.21.1 BUILD_STATUS; do not release"
+  },
+  "compatibility_26_4": {
+    "checked_date": "2026-11-01",
+    "minecraft_latest": "26.4 Snapshot 6 (2026-10-27)",
+    "neoforge_loader": "No 26.4 loader in official Maven index; 26.3.0.99 latest listed",
+    "neoform": "26.4-snapshot-6-1 present, not a runnable NeoForge loader",
+    "specific_readiness": "Verify source/level fluid state and #swimmable tag semantics; fixed JVM heap; Vulkan/OpenGL, login, migration, providers",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+      "https://maven.neoforged.net/releases/net/neoforged/neoform"
+    ]
+  },
+  "release": {
+    "rc_cleared": "0/24",
+    "production_jar_qualified": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  },
+  "next": [
+    "Run committed regression suite on a real checkout",
+    "Compile exact 1.21.1 source and run native GameTests and three-trial comparison",
+    "Run 26.x exact-version Java 25 native and installed-provider gates",
+    "Only publish exact-target release artifacts after acceptance and upload verification"
+  ]
+}
