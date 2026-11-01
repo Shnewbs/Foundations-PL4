@@ -390,7 +390,10 @@ def validate_native_trial_set(records):
     for record in records:
         if not isinstance(record, dict):
             raise ValueError('Malformed native benchmark trial receipt')
-        key = (record.get('label'), record.get('trial'))
+        label, trial = record.get('label'), record.get('trial')
+        if not isinstance(label, str) or not isinstance(trial, str):
+            raise ValueError('Malformed native benchmark trial identity')
+        key = (label, trial)
         if key not in expected:
             raise ValueError('Unexpected native benchmark trial receipt: ' + repr(key))
         if key in seen:
