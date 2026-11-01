@@ -390,5 +390,61 @@ class NativeTrialFinalizationTests(unittest.TestCase):
         self.assertFalse((self.runtime / ".pl4-benchmark-owned").exists())
 
 
+class NativeReportLocatorTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+
+    def report(self, relative):
+        path = self.root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(sample_native_report()), encoding="utf-8")
+        return path
+
+    def test_exact_generated_run_report_is_selected(self):
+        path = self.report("run/verification-logs/performance-probe.json")
+        self.assertEqual(bench.locate_native_probe_report(self.root), path)
+
+    def test_exact_checkout_report_is_selected(self):
+        path = self.report("verification-logs/performance-probe.json")
+        self.assertEqual(bench.locate_native_probe_report(self.root), path)
+
+    def test_unrelated_nested_world_report_is_ignored_and_preserved(self):
+        valid = self.report("run/verification-logs/performance-probe.json")
+        retained = self.report("saved-world/verification-logs/performance-probe.json")
+        self.assertEqual(bench.locate_native_probe_report(self.root), valid)
+        self.assertTrue(retained.is_file())
+
+    def test_two_generated_reports_are_ambiguous_and_preserved(self):
+        first = self.report("run/verification-logs/performance-probe.json")
+        second = self.report("verification-logs/performance-probe.json")
+        with self.assertRaisesRegex(ValueError, "Expected one native probe report, found 2"):
+            bench.locate_native_probe_report(self.root)
+        self.assertTrue(first.is_file())
+        self.assertTrue(second.is_file())
+
+    def test_missing_report_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "Expected one native probe report, found 0"):
+            bench.locate_native_probe_report(self.root)
+
+    def test_symlinked_generated_report_parent_is_rejected(self):
+        retained = self.report("retained/performance-probe.json")
+        (self.root / "verification-logs").symlink_to(
+            retained.parent, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, "Linked native benchmark report"):
+            bench.locate_native_probe_report(self.root)
+        self.assertTrue(retained.is_file())
+
+    def test_symlinked_generated_report_is_rejected(self):
+        retained = self.report("retained.json")
+        linked = self.root / "verification-logs" / "performance-probe.json"
+        linked.parent.mkdir()
+        linked.symlink_to(retained)
+        with self.assertRaisesRegex(ValueError, "Linked native benchmark report"):
+            bench.locate_native_probe_report(self.root)
+        self.assertTrue(retained.is_file())
+
+
 if __name__ == "__main__":
     unittest.main()
