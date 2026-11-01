@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-11-01T14:09:47Z",
+  "repository": "Shnewbs/Foundations-PL4",
+  "branch": "main",
+  "scope": "native performance comparison checkout registration preflight",
+  "source_commit": "22f7a3a472500a7681b0318fd8b8e4cbdccbe4af",
+  "regression_commit": "4554e14377947d02cf5b2546c3d849cbd3b6ddeb",
+  "finding": "A clean tracked symlink in PLGameTests.java or an ancestor could redirect write_text outside a disposable checkout; multiple candidate registration paths were not rejected.",
+  "change": "Reject symlink components in BUILD_STATUS.json and registration paths; require exactly one isolated GameTest registration location before any checkout mutation.",
+  "validation": {
+    "github_source_contract_checks": "10/10 passed by connector readback",
+    "isolated_local_python_scenarios": "5/5 passed using copied gate logic, not the committed full test module",
+    "committed_repository_python_suite": "NOT RUN",
+    "native_gradle_build": "NOT RUN",
+    "native_gametests": "NOT RUN",
+    "installed_provider_multiplayer_migration_tps_heap": "NOT RUN"
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27 (latest found)",
+    "neoforge": "No 26.4 coordinate in official Maven index at 2026-11-01 check; 26.3.0.99 present",
+    "source": [
+      "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "action": "No 26.4 port, branch or binary; retain snapshot-specific Vulkan, fluid, protocol and pinned-heap gates."
+  },
+  "publication": {
+    "rc_cleared_targets": 0,
+    "rc_targets": 24,
+    "github_release_upload": false,
+    "curseforge_upload": false,
+    "github_actions_invoked": false,
+    "local_artifact_cleanup": false
+  },
+  "blockers": [
+    "Local GitHub and Gradle hosts do not resolve in the builder container",
+    "Gradle 9.2.1 dependencies are not cached",
+    "Only Java 21 available; 26.x builds require Java 25",
+    "Native and installed runtime acceptance incomplete"
+  ]
+}
