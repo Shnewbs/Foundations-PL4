@@ -5,7 +5,12 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": null,
+  "writer_lease": {
+    "owner": "pl4-hourly-20261031T2101PDT-benchmark-report-seal",
+    "claimed_at": "2026-11-01T04:01:23Z",
+    "purpose": "Fix native benchmark report consumption before world inventory sealing; regression tests and 26.4 watch",
+    "base_commit": "0c8fe322414dfc081aa89abd7b0b9be6b2b80618"
+  },
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
