@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-11-01T13:05:00Z",
+  "branch": "main",
+  "scope": "1.21.1 native performance comparison preflight; shared benchmark tooling only",
+  "issue": "A gitignored checkout-level verification-logs directory could contain a stale performance-probe.json. The runner would create/use this directory without first rejecting existing data. A pre-existing ReleasePerformanceGameTests.java file could be overwritten during probe injection.",
+  "changes": [
+    "Reject pre-existing or symlinked checkout-level verification-logs before either checkout is modified.",
+    "Reject pre-existing or symlinked ReleasePerformanceGameTests.java fixture before either checkout is modified.",
+    "Add four repository regression methods covering existing/symlinked report directories and fixture files on the second checkout, asserting the first checkout remains unchanged."
+  ],
+  "commits": {
+    "implementation": "c734b7897e3348fb19c17ccf49cdac2eda9d984f",
+    "tests": "4af780bdbf3f491e0d5c938a042617ea044fe42d",
+    "compatibility_watch": "843e55f5c43250c6dd1550f93d4c8fc12ce3f39d"
+  },
+  "validation": {
+    "github_committed_source_contract_checks": {
+      "passed": 8,
+      "total": 8,
+      "scope": "source and test content read back from main"
+    },
+    "isolated_mirrored_python_smoke": {
+      "passed": 6,
+      "total": 6,
+      "scenarios": [
+        "clean dual preflight",
+        "existing report preserved",
+        "symlink report directory preserved",
+        "existing fixture preserved",
+        "symlink fixture preserved",
+        "baseline registration unchanged"
+      ]
+    },
+    "actual_repository_python_unittest": "NOT RUN: local repository checkout unavailable; GitHub DNS resolution failed",
+    "native_gradle_benchmark": "NOT RUN: local Gradle 9.2.1 dependencies uncached and exact native source checkouts unavailable",
+    "java25": "NOT AVAILABLE: local JDK 21 only",
+    "native_game_tests": "NOT RUN",
+    "installed_provider_multiplayer_migration_tps_heap": "NOT RUN"
+  },
+  "official_compatibility": {
+    "checked_date": "2026-11-01",
+    "minecraft_latest_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "neoforge_latest_observed": "26.3.0.99",
+    "neoforge_26_4_loader": "NOT LISTED",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+      "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "approved_targets": 24,
+    "cleared_targets": 0,
+    "production_jar_created": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_invoked": false,
+    "local_builds_deleted": false
+  }
+}
