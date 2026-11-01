@@ -88,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 14:08 PST: Native benchmark now rejects duplicate, missing, malformed or unexpected baseline/candidate trial receipts and exposes elapsed/CPU/allocation per-trial spread; five new repository tests. 5/5 isolated mirrored Python smoke scenarios PASS, committed source/test/watch GitHub readback PASS; committed repo/native NOT RUN. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 loader (26.3.0.99 latest). 0/24 RC, no qualified JAR, release, Actions or local build deletion.",
-  "local_validation": "5/5 isolated mirrored Python smoke scenarios PASS; 3/3 committed source/test/watch marker sets PASS; main and evidence readback PASS; actual committed Python/Gradle/native/installed/multiplayer/migration/TPS suites NOT RUN due to DNS, Gradle dependencies and Java 25.",
+  "current_checkpoint": "2026-11-01 15:09 PST: 26.1.2 and 26.3 source patched for cross-owner visual export/display and transfer-route isolation; 2 new native GameTests per branch, expected 195 each. 8/8 source/status files read back, exact-source Java 25 compilation/native tests NOT RUN. Official 26.4 Snapshot 6 latest, NeoForge 26.3.0.99 latest, no 26.4 loader. 0/24 RC, no JAR, upload, Actions or local deletion.",
+  "local_validation": "8/8 26.x source/test/status GitHub readbacks PASS; native Java 25 compilation, 195 GameTests per branch, installed-provider/multiplayer/migration/TPS NOT RUN due to missing local Java 25/Gradle dependencies and DNS.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -99,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-trial-integrity-2026-11-01-1406-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-26x-owner-boundaries-2026-11-01-1509-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3788,6 +3788,28 @@
     "evidence_commit": "7cd7caba2ed4e09183b720c72e4b2851dc047adf",
     "evidence": "docs/acceptance/rc-dev-native-trial-integrity-2026-11-01-1406-pst.json",
     "validation": "5/5 isolated mirrored smoke tests; 3/3 source/test/watch marker readbacks; actual repo/native NOT RUN",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_1509": {
+    "scope": "26.x visual and transfer owner-isolation parity",
+    "branches": [
+      "mc/26.1.2",
+      "mc/26.3"
+    ],
+    "source_and_test_commits": [
+      "ee4fb97eb13fd0f37be1cd61c5a09c82949a6678",
+      "bb9f1abbd3a5b67374a5f244ae3191e37388d08d",
+      "e20353b295acab931e4effdfd4ad115cac12eff5",
+      "fbfb01af2222c8890f1a0410c7d6805a6cf8630d",
+      "005aebcde0c90af4b3ff5ed33bf12c99368f026e",
+      "166441d7752165c596d95f96d64dfd52a1b4c93d",
+      "28141526d8265a6b817317958bf351674eebcf6d",
+      "fd6497ac5602906bfb1a7a557ebbf073da3d60df"
+    ],
+    "evidence": "docs/acceptance/rc-dev-26x-owner-boundaries-2026-11-01-1509-pst.json",
+    "validation": "8/8 GitHub source/test/status readbacks; native NOT RUN",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
