@@ -5,13 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261031T2306PDT-receipt-exclusivity",
-    "claimed_at": "2026-11-01T06:06:27Z",
-    "scope": "tools/direct_curseforge_upload.py, tools/test_direct_curseforge_upload.py, docs/MC_26_4_COMPATIBILITY_WATCH.md, docs/acceptance",
-    "base_commit": "2ee81c9c3b5f344189c90d872037c32c3f75973d",
-    "status": "active"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -94,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-10-31 22:07 PDT: direct uploader now verifies target-JVM-selectable bundled/shaded class bytecode and multi-release entries; 7 repository tests added. GitHub source readback 15/15, isolated mirrored Python 7/7. Full repository Python/Gradle/native/installed tests NOT RUN due to local DNS/Gradle/JDK25. Official 26.4 Snapshot 6 latest; no NeoForge 26.4 Maven loader. RC 0/24; no JAR, release, Actions or deletion.",
-  "local_validation": "15/15 GitHub exact-source contract checks PASS; 7/7 isolated mirrored Python scenarios PASS. Committed repository Python/Gradle/native NOT RUN.",
+  "current_checkpoint": "2026-10-31 23:06 PDT: fixed direct CurseForge uploader receipt overwrite/symlink race with exclusive O_EXCL creation, mode 0600, fsync and manual reconciliation on conflict; four repository regression methods added. GitHub committed source contract checks 15/15; isolated mirrored local Python receipt scenarios 3/3. Repository Python/Gradle/native/installed tests NOT RUN (DNS, Gradle cache, JDK25). Official 26.4 Snapshot 6 latest; no NeoForge 26.4 Maven loader. RC 0/24; no JAR, release, Actions or deletion.",
+  "local_validation": "15/15 GitHub exact-source contract checks PASS; 3/3 isolated mirrored Python receipt scenarios PASS. Four committed repository methods NOT RUN; Gradle/native NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -105,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-bundled-bytecode-2026-10-31-2207-pdt.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-direct-upload-exclusive-receipt-2026-10-31-2306-pdt.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3573,6 +3567,28 @@
     ],
     "evidence": "docs/acceptance/rc-dev-direct-upload-bundled-bytecode-2026-10-31-2207-pdt.json",
     "validation": "15/15 GitHub source-contract checks and 7/7 isolated mirrored Python scenarios; repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261031_2306": {
+    "owner": "pl4-hourly-20261031T2306PDT-receipt-exclusivity",
+    "claimed_at": "2026-11-01T06:06:27Z",
+    "released_at": "2026-11-01T06:08:42.395Z",
+    "lease_claim_commit": "6603f9e51874110555ee63a0e1c75716c44eede4",
+    "source_commits": [
+      "e28831bb1c84180fba7184cc8540f346e169cdb6"
+    ],
+    "test_commits": [
+      "1356ece3492bfd290f14702aa171c06f9b2259bb",
+      "f229d0e9a36bfb90ce7d9a1b32f841a94ec49b7d"
+    ],
+    "documentation_commits": [
+      "b10aa933c64c5277b5808e94d7b56fd503b2ef2f",
+      "3309bf4b07984ff1a6ba75c8ebbf02f99e89ad62"
+    ],
+    "evidence": "docs/acceptance/rc-dev-direct-upload-exclusive-receipt-2026-10-31-2306-pdt.json",
+    "validation": "15/15 GitHub source-contract checks, 3/3 isolated mirrored local Python receipt cases; repository/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
