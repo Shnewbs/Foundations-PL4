@@ -5,11 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1601Z-gc-comparability",
-    "claimed_at": "2026-11-01T16:01:17Z",
-    "scope": "Native benchmark JVM vendor/collector comparability, tests, 26.4 watch; main only; no Actions or releases"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -92,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 07:09 PST: native 1.21.1 performance benchmark now captures JVM architecture and initial/max heap, and rejects cross-trial Java/OS/CPU/heap mismatches before report persistence/world sealing. Four new repository regression tests committed; GitHub source contract 8/8, isolated mirrored Python scenarios 4/4; exact repository tests/Gradle/native not run. Official Minecraft 26.4 Snapshot 6 remains latest; no NeoForge 26.4 loader. 0/24 RC clearances, no releases, Actions or build deletions.",
-  "local_validation": "8/8 exact GitHub source contract checks PASS; 4/4 isolated mirrored Python scenarios PASS. Actual committed repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 08:01 PST: Native performance probe captures JVM vendor, VM name and sorted GC collector names, rejecting changed/malformed GC environments before result acceptance and preserving worlds. Four code/test commits, 14/14 committed source contract checks, 6/6 isolated copied-validator Python scenarios, extracted Java statement compiles on Java 21; actual repo tests/native not run. Minecraft 26.4 Snapshot 6 remains latest, NeoForge 26.4 loader absent. 0/24 RC clearances; no releases/Actions/build deletions.",
+  "local_validation": "14/14 exact GitHub source/test/docs checks PASS; 6/6 isolated copied Python validator cases PASS; extracted Java statement compiled/executed on Java 21. Actual committed repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -103,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-jvm-comparability-2026-11-01-0709-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-gc-comparability-2026-11-01-0801-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3685,6 +3681,22 @@
     "evidence_commit": "8e6908d7f422aa8b9603ca94b0d6b6f410f92afc",
     "evidence": "docs/acceptance/rc-dev-native-benchmark-jvm-comparability-2026-11-01-0709-pst.json",
     "validation": "8/8 exact GitHub source checks; 4/4 isolated mirrored Python scenarios; committed repository/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_gc_comparability": {
+    "owner": "pl4-hourly-20261101T1601Z-gc-comparability",
+    "claimed_at": "2026-11-01T16:01:17Z",
+    "released_at": "2026-11-01",
+    "source_commits": [
+      "d188cfb393df0ccaae0f84245e302b0ed0efd421",
+      "7056867237c3220f0b2fddc30fbba31b183a61b9",
+      "b5457048add912a900631bab7566fcfbcb8d8d1f",
+      "842bdaace434467c935ccc1e57535e6de90ff457"
+    ],
+    "evidence": "docs/acceptance/rc-dev-native-gc-comparability-2026-11-01-0801-pst.json",
+    "validation": "14/14 source readback, 6/6 isolated Python, extracted Java statement compiled; native pending",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
