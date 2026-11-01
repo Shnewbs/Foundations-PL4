@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-31",
+  "local_time": "19:05 PDT",
+  "scope": "Repair stale benchmark cleanup regression assertions; no runtime change",
+  "branch": "main",
+  "source_before": "797f91a0f5a34c15b9650f3764c7f03e13effaa9",
+  "implementation_commit": "e3640a5e171aa8df9945ba1f438913174e6e8683",
+  "file": "tools/benchmarks/test_run_native_comparison.py",
+  "correction": [
+    "Replace old plain-text ownership marker assertion with JSON source/trial/inventory_sha256 validation",
+    "Assert malformed legacy marker raises the actual invalid benchmark ownership marker error and preserves the world"
+  ],
+  "validation": {
+    "github_source_readback": "PASS: corrected assertions and json import verified on main",
+    "isolated_local_python": "PASS 2/2 mirrored ownership-marker scenarios; copied helper logic, not the checked-out repository suite",
+    "full_repository_python": "NOT_RUN: no local clone; github.com DNS unavailable",
+    "native_gradle": "NOT_RUN: no cached Gradle 9.2.1 and Java 25 unavailable; Java 21 only",
+    "installed_provider_multiplayer_migration_performance": "NOT_RUN"
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27, remains latest identified official Java snapshot",
+    "neoforge": "No 26.4 coordinate in official Maven index; 26.3.0.99 listed",
+    "sources": [
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ],
+    "branch_or_release_created": false
+  },
+  "publication": {
+    "rc_clearances": "0/24 per existing release ledger",
+    "new_runtime_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "github_actions_used": false,
+    "retained_builds_deleted": false
+  },
+  "blockers": [
+    "GitHub DNS resolution fails in local build environment",
+    "Gradle distribution and dependencies unavailable locally",
+    "Java 25 unavailable",
+    "Exact-source 217 GameTests, installed-provider, authenticated multiplayer, migration and TPS/heap acceptance pending"
+  ]
+}
