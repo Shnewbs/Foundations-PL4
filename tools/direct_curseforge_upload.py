@@ -134,6 +134,8 @@ def verify_pl4_bytecode(archive, names, minecraft):
     for name in names:
         if not name.endswith(".class"):
             continue
+        if name == "module-info.class" and java_version < 9:
+            continue  # Java 8 ignores the Java 9 module descriptor.
         if name.startswith("META-INF/versions/"):
             parts = name.split("/")
             if len(parts) < 4 or not parts[2].isdecimal():
