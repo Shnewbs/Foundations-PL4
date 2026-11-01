@@ -212,7 +212,7 @@ def claim_upload_lock_exclusive(path, payload):
         flags |= os.O_NOFOLLOW
     with os.fdopen(os.open(path, flags, 0o600), "w", encoding="utf-8") as stream:
         json.dump(payload, stream, sort_keys=True)
-        stream.write("\\n")
+        stream.write("\n")
         stream.flush()
         os.fsync(stream.fileno())
 
