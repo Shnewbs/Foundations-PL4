@@ -323,6 +323,9 @@ class NativePreflightTests(unittest.TestCase):
 def sample_native_report():
     return {
         "source_commit": "a" * 40, "trial": "1",
+        "java": "25.0.5", "os": "Linux", "os_arch": "amd64",
+        "processors": 8, "heap_initial_bytes": 536870912,
+        "heap_max_bytes": 2147483648,
         "workloads": [{
             "network": "wired", "host_count": 4096, "endpoint_count": 128,
             "measurements": [{
@@ -525,6 +528,61 @@ class NativeReportLocatorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Linked native benchmark report"):
             bench.locate_native_probe_report(self.root)
         self.assertTrue(retained.is_file())
+
+
+
+class NativeEnvironmentComparabilityTests(unittest.TestCase):
+    def test_matching_native_jvm_and_heap_across_trials(self):
+        report = sample_native_report()
+        environment = bench.validate_native_environment(report, copy.deepcopy(report))
+        self.assertEqual(environment["heap_max_bytes"], 2147483648)
+        self.assertEqual(environment["processors"], 8)
+
+    def test_different_runtime_conditions_fail_comparability(self):
+        for field, changed in (
+                ("java", "25.0.6"), ("os", "Windows"), ("os_arch", "aarch64"),
+                ("processors", 4), ("heap_initial_bytes", 268435456),
+                ("heap_max_bytes", 1073741824)):
+            with self.subTest(field=field):
+                reference = sample_native_report()
+                current = copy.deepcopy(reference)
+                current[field] = changed
+                with self.assertRaisesRegex(ValueError, "environment differs across trials"):
+                    bench.validate_native_environment(current, reference)
+
+    def test_missing_boolean_or_invalid_heap_environment_fails(self):
+        for field, value in (
+                ("java", ""), ("os_arch", None), ("processors", True),
+                ("heap_initial_bytes", 0), ("heap_max_bytes", -1),
+                ("heap_max_bytes", 1)):
+            with self.subTest(field=field, value=value):
+                report = sample_native_report()
+                report[field] = value
+                with self.assertRaises(ValueError):
+                    bench.validate_native_environment(report)
+
+    def test_mismatched_environment_preserves_world_and_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runtime = root / "run"
+            logs = runtime / "verification-logs"
+            logs.mkdir(parents=True)
+            world = runtime / "level.dat"
+            world.write_bytes(b"retained generated world")
+            path = logs / "performance-probe.json"
+            report = sample_native_report()
+            path.write_text(json.dumps(report), encoding="utf-8")
+            reference = copy.deepcopy(report)
+            reference["heap_max_bytes"] *= 2
+            result = root / "trial.json"
+            with self.assertRaisesRegex(ValueError, "environment differs across trials"):
+                bench.finish_native_trial(
+                    root, path, result, "a" * 40, 1, "candidate", "f" * 64,
+                    reference_environment=reference)
+            self.assertEqual(world.read_bytes(), b"retained generated world")
+            self.assertTrue(path.is_file())
+            self.assertFalse(result.exists())
+            self.assertFalse((runtime / ".pl4-benchmark-owned").exists())
 
 
 if __name__ == "__main__":
