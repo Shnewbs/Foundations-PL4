@@ -780,5 +780,51 @@ class NativeEnvironmentPreflightTests(unittest.TestCase):
         self.assertEqual(inherited, {"PL4_BENCHMARK_HEAP_MB": "16385"})
 
 
+
+class NativeMetricSummaryTests(unittest.TestCase):
+    """Report real CPU/allocation regressions without implying RC acceptance."""
+
+    def records(self, baseline_alloc, candidate_alloc):
+        records = []
+        for label, elapsed, cpu, allocation in (
+                ('baseline', [300, 400, 500], [100, 200, 300], baseline_alloc),
+                ('candidate', [600, 800, 1000], [200, 400, 600], candidate_alloc)):
+            for trial in range(3):
+                report = sample_native_report()
+                report['label'] = label
+                report['trial'] = str(trial + 1)
+                measurement = report['workloads'][0]['measurements'][0]
+                measurement['elapsed_ns'] = elapsed
+                measurement['cpu_ns'] = cpu
+                measurement['allocated_bytes'] = allocation
+                records.append(report)
+        return records
+
+    def test_elapsed_cpu_and_allocation_regressions_are_all_visible(self):
+        row = bench.summarize_native_measurements(
+            self.records([0, 16, 32], [16, 32, 48]))[0]
+        self.assertEqual(row['elapsed_ratio'], 2)
+        self.assertEqual(row['elapsed_ns_ratio'], 2)
+        self.assertEqual(row['cpu_ns_ratio'], 2)
+        self.assertEqual(row['allocated_bytes_ratio'], 2)
+        self.assertAlmostEqual(row['allocated_bytes_delta_per_operation'], 0.0016)
+        self.assertEqual(len(row['candidate_elapsed_ns_trial_medians']), 3)
+
+    def test_zero_baseline_allocation_has_delta_but_no_division(self):
+        row = bench.summarize_native_measurements(
+            self.records([0, 0, 0], [16, 16, 16]))[0]
+        self.assertIsNone(row['allocated_bytes_ratio'])
+        self.assertAlmostEqual(row['allocated_bytes_delta_per_operation'], 0.0016)
+
+    def test_missing_revision_trial_is_rejected(self):
+        records = self.records([0, 0, 0], [16, 16, 16])[:-1]
+        with self.assertRaisesRegex(ValueError, 'three native benchmark trials'):
+            bench.summarize_native_measurements(records)
+
+    def test_empty_trial_set_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'no trial records'):
+            bench.summarize_native_measurements([])
+
+
 if __name__ == "__main__":
     unittest.main()
