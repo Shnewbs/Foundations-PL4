@@ -158,8 +158,41 @@ def validate_native_report(report, source, trial, reference_schema=None):
         raise ValueError('Native benchmark workloads/operations differ across revisions or trials')
     return schema
 
+NATIVE_ENVIRONMENT_FIELDS = ("java", "os", "os_arch", "processors",
+                             "heap_initial_bytes", "heap_max_bytes")
+
+
+def validate_native_environment(report, reference_report=None):
+    """Require comparable native JVM, heap and CPU allocation across all trials.
+
+    Native operation ratios are not meaningful if the JVM, heap limits or
+    available processors change between baseline and candidate trials.
+    """
+    if not isinstance(report, dict):
+        raise ValueError("Missing native benchmark environment")
+    environment = {field: report.get(field) for field in NATIVE_ENVIRONMENT_FIELDS}
+    for field in ("java", "os", "os_arch"):
+        value = environment[field]
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("Invalid native benchmark environment: " + field)
+    for field in ("processors", "heap_initial_bytes", "heap_max_bytes"):
+        value = environment[field]
+        if type(value) is not int or value <= 0:
+            raise ValueError("Invalid native benchmark environment: " + field)
+    if environment["heap_initial_bytes"] > environment["heap_max_bytes"]:
+        raise ValueError("Native benchmark initial heap exceeds maximum heap")
+    if reference_report is not None:
+        reference = validate_native_environment(reference_report)
+        if environment != reference:
+            changed = [field for field in NATIVE_ENVIRONMENT_FIELDS
+                       if environment[field] != reference[field]]
+            raise ValueError("Native benchmark environment differs across trials: " +
+                             ", ".join(changed))
+    return environment
+
+
 def finish_native_trial(root, report_path, output_path, source, trial, label,
-                        fixture_sha256, reference_schema=None):
+                        fixture_sha256, reference_schema=None, reference_environment=None):
     """Validate and persist the native report before sealing the disposable run.
 
     The GameTest may write its report under run/verification-logs. Removing that
@@ -185,6 +218,7 @@ def finish_native_trial(root, report_path, output_path, source, trial, label,
     report = json.loads(report_path.read_text())
     report.update(label=label, fixture_sha256=fixture_sha256)
     schema = validate_native_report(report, source, trial, reference_schema)
+    validate_native_environment(report, reference_environment)
     with output_path.open("x") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
     report_path.unlink()
@@ -316,7 +350,8 @@ def main():
             report_path=locate_native_probe_report(root)
             target=out/f'{trial}-{label}.json'
             report,schema=finish_native_trial(root,report_path,target,sources[label],trial,label,
-                                              hashlib.sha256(fixture.encode()).hexdigest(),reference_schema)
+                                              hashlib.sha256(fixture.encode()).hexdigest(),reference_schema,
+                                              reference_environment=records[0] if records else None)
             if reference_schema is None:reference_schema=schema
             records.append(report)
     summaries=[]
@@ -331,7 +366,8 @@ def main():
                     row[label+'_'+metric+'_trial_medians']=per_trial
             baseline=row['baseline_elapsed_ns_per_operation'];row['elapsed_ratio']=row['candidate_elapsed_ns_per_operation']/baseline if baseline else None
             summaries.append(row)
-    result={'target':'1.21.1','sources':sources,'trials_per_revision':3,'fixture_sha256':hashlib.sha256(fixture.encode()).hexdigest(),'scope':'Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.','measurements':summaries}
+    result={'target':'1.21.1','sources':sources,'trials_per_revision':3,'fixture_sha256':hashlib.sha256(fixture.encode()).hexdigest(),
+            'benchmark_environment':validate_native_environment(records[0]),'scope':'Loaded wired/wireless operation timing and allocation; separate from full-server MSPT, client FPS, active providers and other ports. Shared CI hardware remains noisy.','measurements':summaries}
     with (out/'comparison.json').open('x') as stream: stream.write(json.dumps(result,indent=2)+'\n')
     print(json.dumps(result,indent=2),flush=True)
 
