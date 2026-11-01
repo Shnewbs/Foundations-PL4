@@ -194,6 +194,32 @@ def finish_native_trial(root, report_path, output_path, source, trial, label,
 
 
 
+
+def locate_native_probe_report(root):
+    """Select only the two runner-owned report paths, never a recursive glob.
+
+    Old or unrelated world directories can contain identically named reports.
+    They must not make a valid benchmark fail or become eligible for deletion.
+    """
+    root = Path(root).resolve()
+    candidates = (
+        root / "verification-logs" / "performance-probe.json",
+        root / "run" / "verification-logs" / "performance-probe.json",
+    )
+    found = []
+    for path in candidates:
+        if (path.is_symlink() or path.parent.is_symlink()
+                or (root / "run").is_symlink()):
+            raise ValueError("Linked native benchmark report or directory")
+        if path.exists():
+            if not path.is_file():
+                raise ValueError("Native benchmark report is not a regular file")
+            found.append(path)
+    if len(found) != 1:
+        raise ValueError(f"Expected one native probe report, found {len(found)}")
+    return found[0]
+
+
 def preflight_native_checkouts(roots):
     """Validate *both* exact revisions before modifying either checkout.
 
@@ -256,10 +282,9 @@ def main():
             with log.open('x') as output:
                 run=subprocess.run(['bash','gradlew','--no-daemon','--console=plain','runGameTestServer'],cwd=root,env=env,stdout=output,stderr=subprocess.STDOUT,timeout=1800)
             if run.returncode:raise RuntimeError(f'{log}: native probe failed: '+log.read_text(errors='replace')[-14000:])
-            paths=list(root.glob('**/verification-logs/performance-probe.json'))
-            if len(paths)!=1:raise ValueError(f'Expected one native probe report, found {paths}')
+            report_path=locate_native_probe_report(root)
             target=out/f'{trial}-{label}.json'
-            report,schema=finish_native_trial(root,paths[0],target,sources[label],trial,label,
+            report,schema=finish_native_trial(root,report_path,target,sources[label],trial,label,
                                               hashlib.sha256(fixture.encode()).hexdigest(),reference_schema)
             if reference_schema is None:reference_schema=schema
             records.append(report)
