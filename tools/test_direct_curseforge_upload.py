@@ -174,6 +174,25 @@ class DirectUploadValidationTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "not an approved exact NeoForge release target"):
                     inspect(self.jar, self.notes)
 
+    def test_rejects_nonledger_1x_targets_before_publication(self):
+        # A correctly named, internally self-consistent JAR is not enough:
+        # an exact version must also belong to the approved release ledger.
+        for target in ("1.13.2", "1.18.3", "1.20.3", "1.21.2"):
+            with self.subTest(target=target):
+                self.jar = self.root / f"FoundationsPL4-{target}-0.97.0.rev1-beta.jar"
+                self.make_jar(self.metadata("0.97.0.rev1-beta", target))
+                with self.assertRaisesRegex(ValueError, "not an approved direct-upload release target"):
+                    self.dry_run()
+
+    def test_accepts_published_forge_1_20_4_direct_target(self):
+        self.jar = self.root / "FoundationsPL4-1.20.4-0.97.0.rev1-beta.jar"
+        metadata = self.metadata("0.97.0.rev1-beta", "1.20.4").replace(
+            'modId="neoforge"', 'modId="forge"')
+        self.make_jar(metadata, class_bytes=bytes.fromhex("cafebabe0000003d0001"),
+                      metadata_path="META-INF/mods.toml")
+        self.assertEqual(inspect(self.jar, self.notes),
+                         ("1.20.4", "0.97.0.rev1-beta", "Forge"))
+
     def test_dry_run_rejects_26_4_before_publication(self):
         self.jar = self.root / "FoundationsPL4-26.4-0.97.0.rev1-beta.jar"
         self.make_jar(self.metadata("0.97.0.rev1-beta", "26.4"),
