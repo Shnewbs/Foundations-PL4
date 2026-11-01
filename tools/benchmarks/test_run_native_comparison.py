@@ -80,14 +80,66 @@ class DisposableWorkspaceTests(unittest.TestCase):
         runtime = self.baseline / "run"
         runtime.mkdir()
         source = "a" * 40
-        bench.mark_owned_run(self.baseline, 1, source)
         (runtime / "level.dat").write_bytes(b"disposable fixture")
+        bench.mark_owned_run(self.baseline, 1, source)
         bench.replace_owned_run(self.baseline, 1, source)
         self.assertFalse(runtime.exists())
         runtime.mkdir()
         bench.mark_owned_run(self.baseline, 2, source)
         self.assertEqual(
             (runtime / ".pl4-benchmark-owned").read_text(), source + ":2\n")
+
+
+    def test_added_world_after_trial_is_preserved(self):
+        runtime = self.baseline / "run"
+        runtime.mkdir()
+        source = "a" * 40
+        (runtime / "server.properties").write_text("generated")
+        bench.mark_owned_run(self.baseline, 1, source)
+        saved = runtime / "world" / "level.dat"
+        saved.parent.mkdir()
+        saved.write_bytes(b"player world added after the benchmark")
+        with self.assertRaisesRegex(ValueError, "changed after its trial"):
+            bench.replace_owned_run(self.baseline, 1, source)
+        self.assertEqual(saved.read_bytes(), b"player world added after the benchmark")
+
+    def test_modified_generated_file_after_trial_is_preserved(self):
+        runtime = self.baseline / "run"
+        runtime.mkdir()
+        source = "a" * 40
+        saved = runtime / "level.dat"
+        saved.write_bytes(b"original benchmark bytes")
+        bench.mark_owned_run(self.baseline, 1, source)
+        saved.write_bytes(b"new player world bytes")
+        with self.assertRaisesRegex(ValueError, "changed after its trial"):
+            bench.replace_owned_run(self.baseline, 1, source)
+        self.assertEqual(saved.read_bytes(), b"new player world bytes")
+
+    def test_nested_symlink_added_after_trial_is_preserved(self):
+        runtime = self.baseline / "run"
+        runtime.mkdir()
+        source = "a" * 40
+        bench.mark_owned_run(self.baseline, 1, source)
+        outside = self.root / "retained"
+        outside.mkdir()
+        saved = outside / "level.dat"
+        saved.write_bytes(b"outside")
+        (runtime / "linked-world").symlink_to(outside, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, "linked content"):
+            bench.replace_owned_run(self.baseline, 1, source)
+        self.assertEqual(saved.read_bytes(), b"outside")
+
+    def test_invalid_marker_never_authorizes_deletion(self):
+        runtime = self.baseline / "run"
+        runtime.mkdir()
+        source = "a" * 40
+        saved = runtime / "level.dat"
+        saved.write_bytes(b"keep")
+        bench.mark_owned_run(self.baseline, 1, source)
+        (runtime / ".pl4-benchmark-owned").write_text("{invalid")
+        with self.assertRaisesRegex(ValueError, "invalid benchmark ownership marker"):
+            bench.replace_owned_run(self.baseline, 1, source)
+        self.assertEqual(saved.read_bytes(), b"keep")
 
     def test_symlinked_runtime_is_rejected_without_following(self):
         outside = self.root / "saved"
