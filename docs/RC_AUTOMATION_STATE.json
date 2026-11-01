@@ -5,17 +5,7 @@
   "goal": "Implement and validate the remaining all-version RC work, then publish qualified exact-target releases to GitHub and CurseForge",
   "source_policy": "main and existing exact-version branches; no feature branches or force pushes",
   "automation_id": "6addfe8f6ea48191a4283103e0c2a908",
-  "writer_lease": {
-    "owner": "pl4-hourly-20261101T1507Z-runtime-comparability",
-    "claimed_at": "2026-11-01T15:07:00Z",
-    "scope": [
-      "tools/benchmarks/run_native_comparison.py",
-      "tools/benchmarks/ReleasePerformanceGameTests.java",
-      "tools/benchmarks/test_native_environment.py",
-      "docs/MC_26_4_COMPATIBILITY_WATCH.md"
-    ],
-    "purpose": "Compare native benchmark JVM/heap/CPU environment before accepting cross-revision timing"
-  },
+  "writer_lease": null,
   "last_writer_release_20261031_metadata_uniqueness": {
     "owner": "pl4-hourly-20261031T1805Z-metadata-uniqueness",
     "claimed_at": "2026-10-31T18:05:00Z",
@@ -98,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 06:09 PST: native benchmark preflight rejects linked registration/metadata paths and ambiguous registration locations before checkout mutation; 4 repository regression tests added. GitHub readback 10/10 and isolated copied-logic Python scenarios 5/5 passed; full repository/native not run. Official 26.4 Snapshot 6 remains latest identified; NeoForge Maven has no 26.4 loader. 0/24 RC clearances; no releases or local deletion.",
-  "local_validation": "10/10 GitHub committed source contract checks PASS; 5/5 isolated copied-logic Python scenarios PASS. Actual repository Python/Gradle/native/installed tests NOT RUN.",
+  "current_checkpoint": "2026-11-01 07:09 PST: native 1.21.1 performance benchmark now captures JVM architecture and initial/max heap, and rejects cross-trial Java/OS/CPU/heap mismatches before report persistence/world sealing. Four new repository regression tests committed; GitHub source contract 8/8, isolated mirrored Python scenarios 4/4; exact repository tests/Gradle/native not run. Official Minecraft 26.4 Snapshot 6 remains latest; no NeoForge 26.4 loader. 0/24 RC clearances, no releases, Actions or build deletions.",
+  "local_validation": "8/8 exact GitHub source contract checks PASS; 4/4 isolated mirrored Python scenarios PASS. Actual committed repository Python/Gradle/native/installed tests NOT RUN.",
   "next_work": [
     "Run complete repository Python regression suite and exact-source Gradle native build on dependency-capable local builder",
     "Run 217 exact-source native GameTests, independent installed-provider, multiplayer, migration, sustained TPS/heap",
@@ -109,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-registration-symlink-2026-11-01-0609-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-native-benchmark-jvm-comparability-2026-11-01-0709-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -3674,6 +3664,23 @@
     ],
     "evidence": "docs/acceptance/rc-dev-native-registration-symlink-2026-11-01-0609-pst.json",
     "validation": "10/10 source readback checks; 5/5 isolated copied-logic tests; committed suite/native not run",
+    "rc_clearance": "0/24",
+    "release_performed": false,
+    "writer_lease_released": true
+  },
+  "last_writer_release_20261101_jvm_comparability": {
+    "owner": "pl4-hourly-20261101T1507Z-runtime-comparability",
+    "claimed_at": "2026-11-01T15:07:00Z",
+    "released_at": "2026-11-01T15:09:30Z",
+    "source_commits": [
+      "c3b1585c9d6c35a741d5d6979b07faf0ae293def",
+      "fafeced50c5ac4fac57caef551d801113bf7ff7e",
+      "93ad53a6e98819d0a32e1ec693651b40db3e5384"
+    ],
+    "watch_commit": "ca2ab83fa2ea935b29b58df8487eacdaa13a866a",
+    "evidence_commit": "8e6908d7f422aa8b9603ca94b0d6b6f410f92afc",
+    "evidence": "docs/acceptance/rc-dev-native-benchmark-jvm-comparability-2026-11-01-0709-pst.json",
+    "validation": "8/8 exact GitHub source checks; 4/4 isolated mirrored Python scenarios; committed repository/native not run",
     "rc_clearance": "0/24",
     "release_performed": false,
     "writer_lease_released": true
