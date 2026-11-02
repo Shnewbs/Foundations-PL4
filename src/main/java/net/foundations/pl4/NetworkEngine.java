@@ -83,10 +83,15 @@ public final class NetworkEngine {
             .thenComparingLong(r->r.host.getBlockPos().asLong()).thenComparingInt(r->r.part.slot()));
         var sets=new net.foundations.pl4.core.DisjointSets(refs.size());
         Map<Part,Integer> index=new IdentityHashMap<>();
+        // Only emitters can be wireless targets. Avoid indexing every reader, cable and
+        // node (and allocating UUID buckets) when rebuilding large or wireless-off graphs.
+        boolean wirelessEnabled=PLConfig.WIRELESS.get();
         Map<UUID,List<Ref>> identities=new HashMap<>();
         Map<HostEntity,int[]> arms=new IdentityHashMap<>();
         for(int i=0;i<refs.size();i++) {
-            Ref r=refs.get(i);index.put(r.part,i);identities.computeIfAbsent(r.part.identity,k->new ArrayList<>()).add(r);
+            Ref r=refs.get(i);index.put(r.part,i);
+            if(wirelessEnabled&&r.part.kind.emitter())
+                identities.computeIfAbsent(r.part.identity,k->new ArrayList<>()).add(r);
             arms.computeIfAbsent(r.host,k->new int[6]);
         }
         List<net.foundations.pl4.core.MultipartTopology.Node> nodes=new ArrayList<>();
@@ -110,7 +115,7 @@ public final class NetworkEngine {
         for(int i:topology.externalLeads()){
             Ref r=refs.get(i);leads.merge(r.host,1<<r.part.slot(),(a,b)->a|b);
         }
-        if(PLConfig.WIRELESS.get())for(Ref r:refs)if(r.part.kind.receiver()&&r.part.owner!=null)for(Part.Link link:r.part.links){
+        if(wirelessEnabled)for(Ref r:refs)if(r.part.kind.receiver()&&r.part.owner!=null)for(Part.Link link:r.part.links){
             // Duplicate persisted emitter UUIDs must not shadow a valid coordinate-matched target.
             for(Ref target:identities.getOrDefault(link.part(),List.of())){
                 if(!target.part.kind.emitter()||target.part.kind.redstone()!=r.part.kind.redstone()
