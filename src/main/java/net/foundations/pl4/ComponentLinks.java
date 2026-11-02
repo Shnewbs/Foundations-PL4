@@ -14,7 +14,7 @@ public final class ComponentLinks {
     private static List<Part.Link> candidates(ServerPlayer player,HostEntity host,Part part){
         List<Part.Link> links=new ArrayList<>();
         if(part.kind.receiver()){
-            if(!PLConfig.WIRELESS.get())return links;
+            if(!PLConfig.WIRELESS.get()||part.owner==null)return links;
             for(var ref:NetworkEngine.all(player.level().getServer())){
                 if(!ref.part().kind.emitter()||ref.part().kind.redstone()!=part.kind.redstone()||!Objects.equals(ref.part().owner,part.owner)||!ref.host().canEdit(player)||!ref.level().mayInteract(player,ref.host().getBlockPos()))continue;
                 if(!PLConfig.CROSS_DIMENSION.get()&&ref.level()!=host.getLevel())continue;
@@ -57,7 +57,7 @@ public final class ComponentLinks {
         if(part.kind.receiver()){
             if(!PLConfig.WIRELESS.get()||link.entity()!=null||link.part()==null||!world.hasChunkAt(link.pos())||!(world.getBlockEntity(link.pos()) instanceof HostEntity remote)||!remote.canEdit(player)||!world.mayInteract(player,link.pos()))return false;
             Part target=remote.parts.values().stream().filter(p->p.identity.equals(link.part())).findFirst().orElse(null);
-            if(target==null||!target.kind.emitter()||target.kind.redstone()!=part.kind.redstone()||!Objects.equals(target.owner,part.owner))return false;
+            if(target==null||part.owner==null||!target.kind.emitter()||target.kind.redstone()!=part.kind.redstone()||!Objects.equals(target.owner,part.owner))return false;
         }else if(part.kind==Kind.ENTITY_NODE){
             var entity=link.entity()==null?null:world.getEntity(link.entity());if(entity==null||!entity.isAlive()||!world.mayInteract(player,entity.blockPosition()))return false;
         }else if(link.entity()!=null||!world.hasChunkAt(link.pos())||!world.mayInteract(player,link.pos()))return false;
