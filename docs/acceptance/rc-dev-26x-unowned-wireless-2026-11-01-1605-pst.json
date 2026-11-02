@@ -1,0 +1,57 @@
+{
+  "project": "Foundations PL4",
+  "observed_local_time": "2026-11-01T16:05:49-08:00",
+  "scope": "26.x null-owner wireless topology isolation; 26.4 compatibility watch",
+  "branches": {
+    "mc/26.1.2": {
+      "source_commit": "a71d7af8b2d45b8cbdf165bfcef367360d02476e",
+      "expected_native_tests": 196,
+      "readback": "PASS",
+      "native_tests": "NOT_RUN",
+      "java25_build": "NOT_RUN"
+    },
+    "mc/26.3": {
+      "source_commit": "e768d70e4831d92189e26142b9730938524cb1b4",
+      "expected_native_tests": 196,
+      "readback": "PASS",
+      "native_tests": "NOT_RUN",
+      "java25_build": "NOT_RUN"
+    }
+  },
+  "source_fix": "Wireless graph now rejects null-owner receivers and uses sharedOwner() for emitter/receiver authorization.",
+  "regression": "wirelessRejectsUnownedEndpoints covers null-null and null-owned forged wireless redstone links",
+  "official_sources": {
+    "minecraft_snapshot": "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs",
+    "latest_identified_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "neoforge_loader_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_identified_neoforge": "26.3.0.99",
+    "neoforge_26_4_loader_found": false,
+    "neoform_index": "https://maven.neoforged.net/releases/net/neoforged/neoform",
+    "latest_identified_neoform": "26.4-snapshot-6-1"
+  },
+  "local_builder": {
+    "java": "21.0.12.1",
+    "java25": false,
+    "gradle_installed": false,
+    "gradle_cached": false,
+    "external_dns": false
+  },
+  "release": {
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "qualified_jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "github_actions_used": false,
+    "local_builds_deleted": false
+  },
+  "remaining_gates": [
+    "exact-source Java 25 build",
+    "196 native GameTests per branch",
+    "installed optional providers",
+    "multiplayer",
+    "world migration",
+    "fixed-heap performance",
+    "exact-version RC qualification"
+  ]
+}
