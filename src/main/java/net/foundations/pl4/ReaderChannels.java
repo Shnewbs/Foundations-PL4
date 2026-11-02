@@ -42,9 +42,14 @@ public final class ReaderChannels {
         String query=reader.targetQuery.toLowerCase(Locale.ROOT);
         for(var t:targets){
             String id=id(t);if(!seen.add(id))continue;
-            String label=description(reader,t);
-            if(id.equals(reader.targetChannel))reader.targetLabel=label+(available(server,t)?"":" [unloaded]");
-            if(query.isEmpty()||label.toLowerCase(Locale.ROOT).contains(query)||id.contains(query))matches.add(t);
+            // Avoid formatting labels for off-page endpoints when no text filter needs them.
+            String label=null;
+            if(id.equals(reader.targetChannel)){
+                label=description(reader,t);
+                reader.targetLabel=label+(available(server,t)?"":" [unloaded]");
+            }
+            if(query.isEmpty()||id.contains(query))matches.add(t);
+            else if((label==null?description(reader,t):label).toLowerCase(Locale.ROOT).contains(query))matches.add(t);
         }
         reader.targetCount=matches.size();reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matches.size()-1)/64));
         int start=reader.targetPage*64;
