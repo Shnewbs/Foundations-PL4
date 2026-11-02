@@ -90,7 +90,7 @@ public final class NetworkEngine {
         Map<HostEntity,int[]> arms=new IdentityHashMap<>();
         for(int i=0;i<refs.size();i++) {
             Ref r=refs.get(i);index.put(r.part,i);
-            if(wirelessEnabled&&r.part.kind.emitter())
+            if(wirelessEnabled&&r.part.kind.emitter()&&r.part.owner!=null&&r.part.identity!=null)
                 identities.computeIfAbsent(r.part.identity,k->new ArrayList<>()).add(r);
             arms.computeIfAbsent(r.host,k->new int[6]);
         }
@@ -302,6 +302,9 @@ public final class NetworkEngine {
             }
         }
         String connectionStatus="Connected: "+hosts+" hosts / "+refs.size()+" parts";
+        // Most networks have no selected emitter/signaller. Build a first-match reader
+        // lookup only when one needs it, rather than scanning every reader per device.
+        Map<String,Ref> readerLookup=null;
         for(Ref r:refs){
             Part p=r.part;
             if(p.kind.cable()||p.kind==Kind.ARRAY)p.status=connectionStatus;
@@ -311,7 +314,20 @@ public final class NetworkEngine {
                 p.rows.clear();p.rows.add(new Part.Row("entities","Nearby entities",count,0,""));
             }
             if(p.kind==Kind.SIGNALLER||p.kind==Kind.DATA_EMITTER){
-                Ref reader=readers.stream().filter(x->p.selected.isEmpty()||x.part.identity.toString().equals(p.selected)||x.part.label.equals(p.selected)).findFirst().orElse(null);
+                Ref reader;
+                if(p.selected.isEmpty())reader=readers.isEmpty()?null:readers.getFirst();
+                else{
+                    if(readerLookup==null){
+                        readerLookup=new HashMap<>();
+                        // In insertion order: first reader wins even when its label
+                        // collides with a later reader's UUID or duplicate label.
+                        for(Ref candidate:readers){
+                            readerLookup.putIfAbsent(candidate.part.identity.toString(),candidate);
+                            readerLookup.putIfAbsent(candidate.part.label,candidate);
+                        }
+                    }
+                    reader=readerLookup.get(p.selected);
+                }
                 p.rows.clear(); if(reader!=null)p.rows.addAll(reader.part.rows);
                 p.status=reader==null?"No selected reader":reader.part.title();
                 if(p.kind==Kind.SIGNALLER){
