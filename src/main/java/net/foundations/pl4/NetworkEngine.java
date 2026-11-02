@@ -205,10 +205,13 @@ public final class NetworkEngine {
     private static boolean currentOwnedGroup(MinecraftServer server,Part anchor,Group group){
         if(anchor.owner==null)return false;
         boolean attached=false;
+        // One host can carry multiple parts. Verify the live block entity once per
+        // host while still validating every part's owner, identity and attachment.
+        Set<HostEntity> verifiedHosts=Collections.newSetFromMap(new IdentityHashMap<>());
         for(Ref ref:group.parts){
             TopologySnapshot snapshot=cachedTopology.get(ref.part);
             if(snapshot==null||!snapshot.matches(ref)
-                ||!loadedHost(ref.host,server)
+                ||(verifiedHosts.add(ref.host)&&!loadedHost(ref.host,server))
                 ||ref.host.parts.get(ref.part.slot())!=ref.part
                 ||!anchor.owner.equals(ref.part.owner))return false;
             if(ref.part==anchor)attached=true;
@@ -240,10 +243,12 @@ public final class NetworkEngine {
         long before=topologyBuilds;
         ensureCurrent(server);
         if(topologyBuilds!=before)DisplayNetworks.sample();
+        // A multipart host needs only one live block-entity lookup per UI preflight.
+        Set<HostEntity> verifiedHosts=Collections.newSetFromMap(new IdentityHashMap<>());
         for(Ref ref:cachedRefs){
             TopologySnapshot snapshot=cachedTopology.get(ref.part);
             if(snapshot==null||!snapshot.matches(ref)
-                ||!loadedHost(ref.host,server)
+                ||(verifiedHosts.add(ref.host)&&!loadedHost(ref.host,server))
                 ||ref.host.parts.get(ref.part.slot())!=ref.part){
                 dirty=true;
                 rebuild(server);
