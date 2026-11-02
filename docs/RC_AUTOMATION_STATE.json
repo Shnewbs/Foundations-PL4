@@ -88,18 +88,18 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 22:05 PST: both existing 26.x branches now resolve duplicate persisted emitter UUIDs by exact location, owner and channel; each has 201 registered native tests. GitHub source readback passed; current-source Java 25 compilation, committed Python verifier, native GameTests, installed-provider, multiplayer, migration and performance NOT RUN. Exact-head Actions checks zero; [skip ci] on all commits. 26.4 Snapshot 6 (Oct 27) latest identified; NeoForge loader Maven through 26.3.0.99, no 26.4 loader. RC 0/24; no JAR/release/upload/deletion.",
-  "local_validation": "Both 26.x branches: four changed source/status files read back and 201 registered GameTests counted. 7/7 isolated Java21 algorithm checks PASS, not repository/native. Java25 Gradle compilation, committed verifier, native tests and acceptance NOT RUN (no Java25, uncached Gradle/dependencies, DNS failure).",
+  "current_checkpoint": "2026-11-01 23:13 PST: 26.1.2 and 26.3 NetworkEngine now index only wireless emitters by UUID, skipping non-emitter UUID buckets and wireless-disabled indexing; duplicate-UUID exact-coordinate/owner/channel matching retained. Both exact source blobs read back identically; current-source Java25 compilation, committed verifier, native GameTests and performance benchmarks NOT RUN. Each branch still declares 201 expected native tests. All source/docs commits [skip ci], exact-head Actions queries zero. Official 26.4 Snapshot 6 (Oct 27) remains latest identified; NeoForge Maven ends at 26.3.0.99 without 26.4 loader. RC 0/24; no qualified JAR, release, upload or local deletion.",
+  "local_validation": "Both 26.x branch NetworkEngine.java readbacks PASS and share identical blob SHA 5921ace9d25ed117ef9a4593a51a4c34378dc7b9; structural checks confirm emitter-only UUID index and same wirelessEnabled guard for receiver resolution. Source-only: Java 25 build, committed verifier, 201 declared native tests per branch, providers/multiplayer/migration and sustained performance NOT RUN. Local Java 21 only, no checkout/Gradle dependencies, external DNS unavailable.",
   "next_work": [
-    "Run exact-source Java 25 Gradle compile, full committed Python checks and all 201 native GameTests on both 26.x branches without GitHub Actions",
-    "Run independently installed provider, multiplayer, world migration and controlled TPS/heap/GC benchmarks; qualify each exact target",
-    "Publish only qualified exact-target JARs directly to approved GitHub/CurseForge destinations; hash-verify before deleting redundant local builds",
-    "Watch official 26.4 loader and snapshot; no unsupported branch or release"
+    "Run exact-source Java 25 Gradle compilation, committed Python verifier and all 201 declared native GameTests on each existing 26.x branch without GitHub Actions",
+    "Benchmark wireless on/off topology rebuild time and allocations against previous source, then run installed-provider, multiplayer, migration and sustained TPS/heap/GC acceptance",
+    "Publish only qualified exact-target JARs directly to approved GitHub/CurseForge destinations and hash-verify uploads before removing redundant local builds",
+    "Watch official 26.4 loader and snapshots; do not create unsupported branch or release"
   ],
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-26x-duplicate-emitter-identity-2026-11-01-2205-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-26x-wireless-emitter-index-2026-11-01-2313-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
@@ -151,7 +151,7 @@
     "release_performed": false,
     "rc_clearance": "0/24"
   },
-  "latest_acceptance_evidence": "docs/acceptance/rc-dev-26x-duplicate-emitter-identity-2026-11-01-2205-pst.json",
+  "latest_acceptance_evidence": "docs/acceptance/rc-dev-26x-wireless-emitter-index-2026-11-01-2313-pst.json",
   "latest_branch_publisher_review": {
     "evidence": "docs/acceptance/rc-dev-legacy-publisher-guards-2026-10-27.json",
     "scope": "1.12.2 and 1.6.4 manual tagged-source publishers",
