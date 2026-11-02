@@ -1,0 +1,60 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-01",
+  "result": "SOURCE_ONLY_NOT_RC_ACCEPTED",
+  "issue": "Silently added parts on a loaded host were absent from cached topology and could remain invisible to readers until an unrelated invalidation",
+  "implementation": "Snapshot each connected host part-set count per cached Ref; detect count drift on access and sampling and rebuild topology",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "f1b6d2940c896cd57eeb65ea64945c86110646fa",
+      "source_readback": "PASS_4_OF_4",
+      "r16_fixtures": 32,
+      "expected_native_tests": 199,
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_runs_immediate": 0
+    },
+    "mc/26.3": {
+      "commit": "808c0be67432ada79c21359bddefff8a46436314",
+      "source_readback": "PASS_4_OF_4",
+      "r16_fixtures": 32,
+      "expected_native_tests": 199,
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_runs_immediate": 0
+    }
+  },
+  "build_environment": {
+    "java_version": "21.0.12.1",
+    "java_required": "25",
+    "gradle_distribution_available": false,
+    "git_clone_dns": "FAILED_COULD_NOT_RESOLVE_GITHUB",
+    "exact_source_native_build": "BLOCKED"
+  },
+  "minecraft_26_4": {
+    "latest_identified_snapshot": "Snapshot 6",
+    "snapshot_published": "2026-10-27",
+    "neoforge_maven_latest": "26.3.0.99",
+    "neoforge_26_4_loader": "NOT_LISTED",
+    "new_port_created": false
+  },
+  "release": {
+    "rc_targets_cleared": "0/24",
+    "github_release": "NONE",
+    "curseforge_upload": "NONE",
+    "qualified_binary": "NONE",
+    "local_build_deletions": "NONE"
+  },
+  "safety": {
+    "commits_use_skip_ci": true,
+    "manual_actions_dispatch": false,
+    "actions_head_check": "ZERO_NEW_RUNS_IMMEDIATE",
+    "push_only_after_skip_ci_preflight": true
+  },
+  "next": [
+    "Restore Java 25 and Gradle dependencies on a network-capable local builder",
+    "Execute committed R16 verifier and all 199 native GameTests on both exact branches",
+    "Measure cached topology snapshot overhead under sustained load",
+    "Run installed providers, migration, multiplayer and RC clearance before publication"
+  ]
+}
