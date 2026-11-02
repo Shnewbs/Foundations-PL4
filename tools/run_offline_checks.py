@@ -48,6 +48,7 @@ def main():
     run(sys.executable,ROOT/'tools/verify_r14.py')
     run(sys.executable,ROOT/'tools/verify_r17.py')
     run(sys.executable,ROOT/'tools/test_reader_lookup.py')
+    run(sys.executable,ROOT/'tools/test_reader_channel_refresh.py')
     run(sys.executable,ROOT/'tools/test_signaller_reader_consistency.py')
     run(sys.executable,ROOT/'tools/test_host_validation.py')
     run(sys.executable,ROOT/'tools/verify_r16.py')
