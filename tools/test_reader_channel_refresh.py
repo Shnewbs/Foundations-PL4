@@ -108,9 +108,20 @@ def main():
         'String alias=reader.channelNames.getOrDefault(identity,"");',
         'String identity=id(t);',
         'new Part.ReaderChoice(identity,label,',
+        'for(Part.Link t:targets)if(id(t).equals(reader.targetChannel))return List.of(t);',
     )
     for marker in required:
         assert marker in source, f"Missing bounded refresh contract: {marker}"
+
+    # Pinned selection must preserve first-match semantics for duplicate IDs.
+    # Isolated Python mirror; not native Minecraft acceptance.
+    select_rng = random.Random(26110210)
+    for _ in range(10000):
+        identities = [f"id-{select_rng.randrange(90)}" for _ in range(select_rng.randrange(100))]
+        selected_id = select_rng.choice(("absent", "id-0", "id-7", f"id-{select_rng.randrange(90)}"))
+        baseline = [identity for identity in identities if identity == selected_id][:1]
+        optimized = next((identity for identity in identities if identity == selected_id), None)
+        assert baseline == ([] if optimized is None else [optimized])
 
     rng = random.Random(261104)
     queries = ("", "foo", "bar", "entity", "dimension", "id-3", "alias", "absent", "x")
@@ -138,7 +149,7 @@ def main():
     improved, _ = refresh(targets, "id-8000", "", 2**31-1, {}, True)
     paged, bounded_calls, retained = bounded(targets, "id-8000", "", 2**31-1, {})
     assert baseline == improved == paged and retained <= 64 and bounded_calls == 65
-    print(f"PASS {cases} mirrored refresh cases; 8192 targets retain {retained} page entries (not native)")
+    print(f"PASS {cases} mirrored refresh cases and 10000 pinned selection cases; 8192 targets retain {retained} page entries (not native)")
 
 
 if __name__ == "__main__":

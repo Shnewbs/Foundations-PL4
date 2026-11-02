@@ -15,7 +15,10 @@ public final class ReaderChannels {
         try{return UUID.fromString(value).toString();}catch(IllegalArgumentException ex){return "";}
     }
     public static List<Part.Link> select(Part reader,List<Part.Link> targets) {
-        if(!reader.targetChannel.isEmpty())return targets.stream().filter(t->id(t).equals(reader.targetChannel)).limit(1).toList();
+        if(!reader.targetChannel.isEmpty()){
+            for(Part.Link t:targets)if(id(t).equals(reader.targetChannel))return List.of(t);
+            return List.of();
+        }
         if(reader.mode.equals("CHANNEL")&&reader.index>0)return targets.size()>=reader.index?List.of(targets.get(reader.index-1)):List.of();
         return targets;
     }
