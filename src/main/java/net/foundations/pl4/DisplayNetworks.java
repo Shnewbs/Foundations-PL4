@@ -158,10 +158,9 @@ public final class DisplayNetworks {
         newRoot.host().changed();for(var tile:tiles)tile.host().changed();
         return true;
     }
+    /** Share UUID-first, unique-label selection with signallers without stream/list allocation. */
     private static NetworkEngine.Ref reader(List<NetworkEngine.Ref> readers,String selector){
-        if(selector.isEmpty())return readers.isEmpty()?null:readers.getFirst();
-        var exact=readers.stream().filter(r->r.part().identity.toString().equals(selector)).findFirst();if(exact.isPresent())return exact.get();
-        var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.getFirst():null;
+        return SignallerLogic.readerRef(readers,selector);
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
         if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureLiveDisplayTopology(level.getServer());
