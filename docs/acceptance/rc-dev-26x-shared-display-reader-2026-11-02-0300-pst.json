@@ -16,7 +16,7 @@
   "source_readback": {
     "both_branches": true,
     "display_blob": "b4ac9a2c3672e1af3790f2bd32d9981d8b8dbbbc",
-    "regression_blob": "0233f1980dbad0063458b08d29d39b7e6afab26d"
+    "regression_blob": "a130b4a923ddb1601d1b917afbab57df379b0994"
   },
   "isolated_validation": {
     "java_version": 21,
@@ -40,7 +40,7 @@
   },
   "ci": {
     "commit_messages_all_skip_ci": true,
-    "checked_exact_commit_heads": 4,
+    "checked_exact_commit_heads": 8,
     "new_workflow_runs": 0,
     "repository_run_count": 2360,
     "manual_dispatch": false
@@ -65,5 +65,9 @@
     "Execute 201 native GameTests on each branch",
     "Benchmark display reader selection and topology preflight",
     "Validate installed providers, multiplayer, migrations, TPS/heap before RC clearance"
-  ]
+  ],
+  "test_description_fix_commits": {
+    "mc/26.1.2": "26e19df9535af221a563623f9db5392c59fc13f5",
+    "mc/26.3": "53ca677fc10f1fcafb5fdb0c7a2e3ee4165bc8b3"
+  }
 }
