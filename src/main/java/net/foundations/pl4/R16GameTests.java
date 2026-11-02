@@ -452,7 +452,10 @@ public final class R16GameTests {
         var remote=host(h,new BlockPos(4,1,1),Kind.DATA_EMITTER,Direction.UP);Part emitter=part(remote,Direction.UP);
         var link=new Part.Link(h.getLevel().dimension().identifier().toString(),remote.getBlockPos(),emitter.face,null,emitter.identity);
         emitter.owner=UUID.randomUUID();h.assertTrue(!ComponentLinks.add(f.player(),f.host(),receiver,link),"Foreign emitter never grants a wireless network edge");
-        emitter.owner=OWNER;h.assertTrue(ComponentLinks.add(f.player(),f.host(),receiver,link),"Owned matching emitter can be selected");h.succeed();
+        emitter.owner=OWNER;
+        var wrongFace=new Part.Link(link.dimension(),link.pos(),emitter.face.getOpposite(),null,emitter.identity);
+        h.assertTrue(!ComponentLinks.add(f.player(),f.host(),receiver,wrongFace)&&receiver.links.isEmpty(),"Stale emitter face cannot persist a wireless link");
+        h.assertTrue(ComponentLinks.add(f.player(),f.host(),receiver,link),"Owned matching emitter can be selected");h.succeed();
     }
 
 
