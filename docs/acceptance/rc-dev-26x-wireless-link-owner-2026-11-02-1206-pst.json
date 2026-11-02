@@ -1,0 +1,63 @@
+{
+  "checkpoint_utc": "2026-11-02T20:06:29Z",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "finding": "Wireless topology rejects null owners, but ComponentLinks candidate discovery and server-side link addition previously accepted a null/null owner pair. Both entry paths now require a non-null receiver owner.",
+  "source_commits": {
+    "mc/26.1.2": "93696442d2a3c2a87bd7179f9e7774004d24d3e0",
+    "mc/26.3": "02113cd6f986526ab6ffb252525ca352eae01075"
+  },
+  "test_commits": {
+    "mc/26.1.2": "c18fd31a04ab0b7cd5976dcd270830db249c46a9",
+    "mc/26.3": "eb4a8a16899d897b42d5ad3155924604c2d4eded"
+  },
+  "github_readback": {
+    "ComponentLinks_sha": "254faad1021d3c3d81fd748d618c6c591b43d59e",
+    "test_host_validation_sha": "6d786a724b45d11ccde489192fc5e16e1272ec46",
+    "branches_match": true
+  },
+  "checks": {
+    "source_contract": "PASS_GITHUB_READBACK",
+    "source_owner_truth_table": "INSPECTED_9_CASES",
+    "committed_python_offline_suite": "NOT_EXECUTED",
+    "exact_source_java25_gradle": "NOT_EXECUTED",
+    "native_gametests_per_branch": "201_DECLARED_NOT_EXECUTED",
+    "installed_provider_multiplayer_migration": "NOT_EXECUTED",
+    "measured_performance": "NOT_EXECUTED"
+  },
+  "github_actions": {
+    "source_test_commits_include_skip_ci": true,
+    "exact_sha_workflow_run_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "repository_total_before": 2360,
+    "repository_total_after": 2360,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "latest_identified": "Snapshot 6, 2026-10-27",
+    "neoforge_loader": "NO_26_4_VERSION_IN_OFFICIAL_MAVEN_INDEX",
+    "notes": [
+      "Snapshot 4 fluid-state source/level changes",
+      "Snapshot 6 swimmable fluid tag and default heap changes"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "rc_clearance": "0/24",
+    "qualified_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "production_build_deleted": false
+  },
+  "blockers": [
+    "Container-backed execution unavailable during this run; native build and committed offline test execution not possible",
+    "Exact-source Java 25 compilation and 201 native GameTests per branch not accepted",
+    "Installed-provider, migration, multiplayer and sustained performance acceptance pending"
+  ]
+}
