@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 195,
+  "expected_native_tests": 196,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -59,11 +59,11 @@
   "candidate_wireless_safety_validation": "PASS_IN_EXACT_TARGET_NATIVE_FIXTURES",
   "native_compilation": "PENDING_REVALIDATION_FOR_CURRENT_SOURCE",
   "pending_native_candidate": {
-    "source_scope": "Exact Minecraft 26.3 owned physical cable graph, live reader/storage alias revocation, and cross-owner visual reader/display isolation, cross-owner transfer-route rejection and detached-part route guards",
-    "expected_native_tests": 195,
-    "validation": "PENDING_NATIVE_26_3_195_TESTS_JAVA25",
+    "source_scope": "Exact Minecraft 26.3 owned physical cable graph, live reader/storage alias revocation, and cross-owner visual reader/display isolation, cross-owner transfer-route rejection and detached-part route guards; deny wireless links involving unowned/null-owner endpoints",
+    "expected_native_tests": 196,
+    "validation": "PENDING_NATIVE_26_3_196_TESTS_JAVA25",
     "installed_providers": "NOT_TESTED",
     "rc_publication_cleared": false
   },
-  "current_source_notes": "2026-10-30: Corrected real native regression: physical MultipartTopology union previously joined foreign-owned cable/node edges, so cached storage revalidation repeatedly invalidated the entire component and broke legitimate local withdrawals. Now skip graph unions unless both ends share nonnull owner. Preserve local attached endpoints, deny newly foreign remote aliases, and verify 193 native cases (including reader revocation and local storage after owner change). New exact-source validation pending. Native failures on prior candidate are recorded; no RC clearance."
+  "current_source_notes": "2026-11-01: Wireless topology now requires both emitter and receiver to have the same nonnull owner; previously null==null was accepted. Added a redstone native GameTest covering unowned-to-unowned and unowned-to-owned forged links. Expected 196 native cases, NOT executed on this source. RC gates remain closed. 2026-10-30: Corrected real native regression: physical MultipartTopology union previously joined foreign-owned cable/node edges, so cached storage revalidation repeatedly invalidated the entire component and broke legitimate local withdrawals. Now skip graph unions unless both ends share nonnull owner. Preserve local attached endpoints, deny newly foreign remote aliases, and verify 193 native cases (including reader revocation and local storage after owner change). New exact-source validation pending. Native failures on prior candidate are recorded; no RC clearance."
 }

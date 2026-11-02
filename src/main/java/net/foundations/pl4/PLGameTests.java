@@ -146,6 +146,26 @@ public final class PLGameTests {
         rp.links.add(new Part.Link(h.getLevel().dimension().identifier().toString(),emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
         h.runAtTickTime(45,()->{h.assertTrue(read.rows.isEmpty(),"Forged cross-owner link must be ignored");h.succeed();});
     }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
+    public static void wirelessRejectsUnownedEndpoints(GameTestHelper h){
+        // A null owner is not a shared identity, even when both ends are unclaimed.
+        h.setBlock(new BlockPos(1,1,1),Blocks.REDSTONE_BLOCK);
+        HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.REDSTONE_EMITTER,Direction.WEST);
+        HostEntity unowned=host(h,new BlockPos(6,1,1),Kind.REDSTONE_RECEIVER,Direction.DOWN);
+        HostEntity owned=host(h,new BlockPos(9,1,1),Kind.REDSTONE_RECEIVER,Direction.DOWN);
+        Part ep=emitter.parts.get(Direction.WEST.ordinal()),rp=unowned.parts.get(Direction.DOWN.ordinal()),op=owned.parts.get(Direction.DOWN.ordinal());
+        ep.owner=null;rp.owner=null;
+        Part.Link link=new Part.Link(h.getLevel().dimension().identifier().toString(),emitter.getBlockPos(),Direction.WEST,null,ep.identity);
+        rp.links.add(link);op.links.add(link);
+        NetworkEngine.invalidate(h.getLevel());
+        h.runAtTickTime(45,()->{
+            h.assertTrue(ep.rows.stream().anyMatch(row->row.key().equals("signal")&&row.value()>0),
+                "The powered emitter fixture must generate a redstone signal");
+            h.assertTrue(rp.signal==0,"Two unowned wireless parts must not form a signal network");
+            h.assertTrue(op.signal==0,"A claimed receiver must not link to an unowned emitter");
+            h.succeed();
+        });
+    }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readingUnloadedTargetDoesNotLoadChunk(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(1,1,1),Kind.INVENTORY_READER,Direction.DOWN);Part p=host.parts.get(0);
