@@ -1,0 +1,76 @@
+{
+  "project": "Foundations PL4",
+  "recorded_date": "2026-11-01",
+  "local_time": "22:05 PST",
+  "result": "SOURCE_READBACK_ONLY_NATIVE_ACCEPTANCE_PENDING",
+  "issue": "Wireless graph used Map<UUID,Ref>; two NBT-cloned emitter identities at distinct locations caused last-wins shadowing of one legitimate receiver link.",
+  "fix": "Index UUID to candidate list, preserving exact owner/kind/redstone channel/dimension/position/face matching and selecting the first valid live emitter.",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "d8819edef73d205f61489c3f31f8810edab95486",
+      "changed_files": 4,
+      "source_readback": "PASS",
+      "registered_native_tests": 201,
+      "native_compilation": "NOT_RUN",
+      "committed_python_verifier": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "new_actions_runs_initial": 0
+    },
+    "mc/26.3": {
+      "commit": "69c6d06bd7d7a9e420920f666e31d51ca5e22c2a",
+      "changed_files": 4,
+      "source_readback": "PASS",
+      "registered_native_tests": 201,
+      "native_compilation": "NOT_RUN",
+      "committed_python_verifier": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "new_actions_runs_initial": 0
+    }
+  },
+  "isolated_algorithm_probe": {
+    "environment": "OpenJDK 21",
+    "passed": 7,
+    "total": 7,
+    "scope": "Standalone Java mirror of candidate-selection algorithm; NOT PL4 source compilation or native tests",
+    "cases": [
+      "first duplicate emitter",
+      "second duplicate emitter",
+      "wrong face rejected",
+      "wrong dimension rejected",
+      "foreign owner rejected",
+      "unowned rejected",
+      "wrong redstone channel rejected"
+    ]
+  },
+  "build_blockers": [
+    "Local Java 25 missing (Java 21 present)",
+    "No cached Gradle distribution/dependencies",
+    "Local GitHub/Gradle DNS unavailable; no current local repository checkout"
+  ],
+  "minecraft_26_4": {
+    "latest_identified_snapshot": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "neoforge_loader_latest": "26.3.0.99",
+    "neoforge_26_4_loader": "NOT_LISTED",
+    "neoform_snapshot_artifacts": "26.4-snapshot-6-1",
+    "new_port_created": false
+  },
+  "release": {
+    "rc_targets_cleared": "0/24",
+    "qualified_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "local_build_deletions": false
+  },
+  "safety": {
+    "all_source_and_documentation_commit_messages": "[skip ci]",
+    "manual_actions_dispatch": false,
+    "branch_policy_preserved": true,
+    "actions_head_sha_queries": "ZERO_NEW_RUNS_INITIAL"
+  },
+  "next": [
+    "Run Java 25 exact-source builds and 201 native GameTests per branch",
+    "Run installed-provider/multiplayer/migration/sustained TPS-heap benchmarks",
+    "Publish only qualified exact-target artifacts and verify before cleanup"
+  ]
+}
