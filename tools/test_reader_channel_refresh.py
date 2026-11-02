@@ -104,6 +104,10 @@ def main():
         'boolean matched=query.isEmpty()||id.contains(query)',
         'if(matchCount%64==0)tailPage.clear();',
         'List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage:tailPage;',
+        'private static String description(Part reader,Part.Link t,String identity){',
+        'String alias=reader.channelNames.getOrDefault(identity,"");',
+        'String identity=id(t);',
+        'new Part.ReaderChoice(identity,label,',
     )
     for marker in required:
         assert marker in source, f"Missing bounded refresh contract: {marker}"
