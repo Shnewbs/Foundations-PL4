@@ -26,7 +26,8 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'R16GameTests.class' in read('src/main/java/net/foundations/pl4/PortTestInstance.java'),
- 'thirty-one transfer, automation and storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==31,
+ 'thirty-two transfer, automation and storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==32,
+ 'silent host part-set changes invalidate reader caches':'hostPartCount==ref.host.parts.size()' in network and 'snapshot.matches(ref)' in network and 'readerSeesSilentlyAddedAndRemovedOwnedNode' in read('src/main/java/net/foundations/pl4/R16GameTests.java'),
  'physical cable partitions newly foreign owners': bool(re.search(
      r'private\s+static\s+boolean\s+sharedOwner\s*\(\s*Ref\s+source\s*,\s*Ref\s+destination\s*\)\s*\{\s*return\s+source\.part\.owner\s*!=\s*null\s*&&\s*source\.part\.owner\.equals\s*\(\s*destination\.part\.owner\s*\)\s*;\s*\}',
      network)) and bool(re.search(

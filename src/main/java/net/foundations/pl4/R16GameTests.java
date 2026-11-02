@@ -79,6 +79,30 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    /** Detect unannounced additions to a loaded host without waiting for a tick. */
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerSeesSilentlyAddedAndRemovedOwnedNode(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        HostEntity readerHost=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.WEST);
+        HostEntity remoteHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
+        Part reader=part(readerHost,Direction.WEST);
+        BlockPos newTarget=remoteHost.getBlockPos().north();
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().noneMatch(link->link.pos().equals(newTarget)),
+            "Uninstalled north Node must not be exported");
+        long builds=NetworkEngine.topologyBuildCount();
+        Part added=new Part(Kind.NODE,Direction.NORTH,OWNER);
+        remoteHost.parts.put(added.slot(),added); // Deliberately bypass host.changed().
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().anyMatch(link->link.pos().equals(newTarget)),
+            "Silently installed owned Node must appear in reader targets immediately");
+        h.assertTrue(NetworkEngine.topologyBuildCount()>builds,
+            "Host part-set growth must invalidate cached topology");
+        remoteHost.parts.remove(added.slot()); // Also bypass host.changed().
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().noneMatch(link->link.pos().equals(newTarget)),
+            "Silently removed Node must revoke its exported target");
+        h.succeed();
+    }
+
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
