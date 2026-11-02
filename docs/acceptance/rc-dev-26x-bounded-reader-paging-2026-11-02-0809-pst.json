@@ -1,0 +1,75 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-02",
+  "time_local": "08:09 PST",
+  "scope": "mc/26.1.2 and mc/26.3; source-only bounded reader channel refresh",
+  "branch_heads": {
+    "mc/26.1.2": "618c7041a8d283bbe52200811bda172b362de215",
+    "mc/26.3": "f579600384ae359b388bd92d04f808d6bcfce5eb"
+  },
+  "implementation": "One-pass reader-channel refresh retains at most the requested page and trailing page (64 links each) rather than all matching links; preserves selected label, UUID deduplication, filter semantics, clamped pagination, order and unloaded state.",
+  "source_readback": {
+    "status": "PASS",
+    "identical_source_blob": "c648227656fb4c439dd246e692ba24723070df33",
+    "identical_test_blob": "af47bcbb32e012e47a9c414e07cc75833e566d47",
+    "exact_branch_heads_verified": true
+  },
+  "isolated_checks": {
+    "java21_candidate_stub_compile": "PASS",
+    "java21_candidate_stub_parity_cases": 10000,
+    "python_mirror_cases": 10000,
+    "python_mirror_result": "PASS",
+    "python_mirror_8192_targets_retained_page_entries": 64,
+    "algorithmic_max_retained_page_entries": 128,
+    "caveat": "Candidate Java was compiled against local minimal stubs; Python checks used a locally reconstructed mirror. The committed complete offline suite and native mod were not executed. No measured TPS, heap, or GC improvement is claimed."
+  },
+  "github_actions": {
+    "commit_message": "perf(26.x): bound reader channel paging memory and verify parity [skip ci]",
+    "source_commits_with_skip_ci": 2,
+    "exact_sha_workflow_runs": {
+      "618c7041a8d283bbe52200811bda172b362de215": 0,
+      "f579600384ae359b388bd92d04f808d6bcfce5eb": 0
+    },
+    "repository_run_count_before": 2360,
+    "repository_run_count_after_source_pushes": 2360,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "latest_official_identified": "Snapshot 6, published 2026-10-27",
+    "official_neoforge_maven": "No 26.4 loader observed as of 2026-11-02; highest listed 26.3.0.99",
+    "compatibility_watch": [
+      "fluid source/level state migration",
+      "Vulkan-default client graphics",
+      "network protocol behavior",
+      "explicit JVM heap for performance comparison"
+    ],
+    "decision": "Watch only; no unsupported 26.4 port, binary, or compatibility metadata changes.",
+    "sources": [
+      "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "native_acceptance": {
+    "java25_exact_source_gradle_compile": "NOT_RUN",
+    "full_committed_offline_suite": "NOT_RUN",
+    "native_gametests_expected_per_branch": 201,
+    "native_gametests": "NOT_RUN",
+    "installed_optional_provider": "PENDING",
+    "multiplayer": "PENDING",
+    "migration": "PENDING",
+    "measured_tps_heap_gc": "PENDING"
+  },
+  "release": {
+    "rc_qualified": false,
+    "production_jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "redundant_local_builds_deleted": false
+  },
+  "next_actions": [
+    "Restore dependency-capable Java 25 Gradle checkout",
+    "Run complete offline suite and 201 native GameTests per branch",
+    "Benchmark refresh under 8192 endpoints with fixed heap and TPS/GC instrumentation",
+    "Publish only qualified exact-target artifacts after checksums and upload verification"
+  ]
+}
