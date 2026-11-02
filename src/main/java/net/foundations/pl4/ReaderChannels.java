@@ -38,23 +38,32 @@ public final class ReaderChannels {
     }
     public static void refresh(MinecraftServer server,Part reader,List<Part.Link> targets) {
         reader.targetChoices.clear();reader.targetLabel="Selected target disconnected";
-        List<Part.Link> matches=new ArrayList<>();Set<String> seen=new HashSet<>();
+        // Keep only the requested page and trailing page, not every matching endpoint.
+        List<Part.Link> visiblePage=new ArrayList<>(64), tailPage=new ArrayList<>(64);
+        Set<String> seen=new HashSet<>();
         String query=reader.targetQuery.toLowerCase(Locale.ROOT);
+        int requestedPage=Math.max(0,reader.targetPage), matchCount=0;
+        long requestedStart=(long)requestedPage*64;
         for(var t:targets){
             String id=id(t);if(!seen.add(id))continue;
-            // Avoid formatting labels for off-page endpoints when no text filter needs them.
             String label=null;
             if(id.equals(reader.targetChannel)){
                 label=description(reader,t);
                 reader.targetLabel=label+(available(server,t)?"":" [unloaded]");
             }
-            if(query.isEmpty()||id.contains(query))matches.add(t);
-            else if((label==null?description(reader,t):label).toLowerCase(Locale.ROOT).contains(query))matches.add(t);
+            boolean matched=query.isEmpty()||id.contains(query)
+                ||(label==null?description(reader,t):label).toLowerCase(Locale.ROOT).contains(query);
+            if(!matched)continue;
+            if(matchCount>=requestedStart&&(long)matchCount<requestedStart+64)visiblePage.add(t);
+            if(matchCount%64==0)tailPage.clear();
+            tailPage.add(t);
+            matchCount++;
         }
-        reader.targetCount=matches.size();reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matches.size()-1)/64));
-        int start=reader.targetPage*64;
-        for(int i=start;i<Math.min(start+64,matches.size());i++){
-            var t=matches.get(i);String label=description(reader,t);
+        reader.targetCount=matchCount;
+        reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matchCount-1)/64));
+        List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage:tailPage;
+        for(var t:pageTargets){
+            String label=description(reader,t);
             if(!available(server,t))label+=" [unloaded]";
             reader.targetChoices.add(new Part.ReaderChoice(id(t),label,t.entity()==null?"block":"entity"));
         }
