@@ -83,10 +83,10 @@ public final class NetworkEngine {
             .thenComparingLong(r->r.host.getBlockPos().asLong()).thenComparingInt(r->r.part.slot()));
         var sets=new net.foundations.pl4.core.DisjointSets(refs.size());
         Map<Part,Integer> index=new IdentityHashMap<>();
-        Map<UUID,Ref> identities=new HashMap<>();
+        Map<UUID,List<Ref>> identities=new HashMap<>();
         Map<HostEntity,int[]> arms=new IdentityHashMap<>();
         for(int i=0;i<refs.size();i++) {
-            Ref r=refs.get(i);index.put(r.part,i);identities.put(r.part.identity,r);
+            Ref r=refs.get(i);index.put(r.part,i);identities.computeIfAbsent(r.part.identity,k->new ArrayList<>()).add(r);
             arms.computeIfAbsent(r.host,k->new int[6]);
         }
         List<net.foundations.pl4.core.MultipartTopology.Node> nodes=new ArrayList<>();
@@ -111,11 +111,14 @@ public final class NetworkEngine {
             Ref r=refs.get(i);leads.merge(r.host,1<<r.part.slot(),(a,b)->a|b);
         }
         if(PLConfig.WIRELESS.get())for(Ref r:refs)if(r.part.kind.receiver()&&r.part.owner!=null)for(Part.Link link:r.part.links){
-            Ref target=identities.get(link.part());
-            if(target==null||!target.part.kind.emitter()||target.part.kind.redstone()!=r.part.kind.redstone()
-                ||!sharedOwner(r,target)||!matchesWirelessTarget(link,target))continue;
-            if(!PLConfig.CROSS_DIMENSION.get()&&target.level()!=r.level())continue;
-            sets.union(index.get(r.part),index.get(target.part));
+            // Duplicate persisted emitter UUIDs must not shadow a valid coordinate-matched target.
+            for(Ref target:identities.getOrDefault(link.part(),List.of())){
+                if(!target.part.kind.emitter()||target.part.kind.redstone()!=r.part.kind.redstone()
+                    ||!sharedOwner(r,target)||!matchesWirelessTarget(link,target))continue;
+                if(!PLConfig.CROSS_DIMENSION.get()&&target.level()!=r.level())continue;
+                sets.union(index.get(r.part),index.get(target.part));
+                break;
+            }
         }
         Map<Integer,List<Ref>> groups=new LinkedHashMap<>();
         for(int i=0;i<refs.size();i++)groups.computeIfAbsent(sets.find(i),k->new ArrayList<>()).add(refs.get(i));

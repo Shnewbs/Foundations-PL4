@@ -35,6 +35,7 @@ checks={
      network)) and bool(re.search(
      r'if\s*\(\s*sharedOwner\s*\(\s*a\s*,\s*b\s*\)\s*\)\s*sets\.union\s*\(\s*edge\.a\(\)\s*,\s*edge\.b\(\)\s*\)\s*;',
      network)),
+ 'duplicate emitter UUIDs resolve by exact coordinates':'Map<UUID,List<Ref>> identities' in network and 'for(Ref target:identities.getOrDefault(link.part(),List.of()))' in network and 'wirelessDuplicateEmitterIdsPreserveBothLinks' in read('src/main/java/net/foundations/pl4/PLGameTests.java'),
  'wireless links retain owner and exact emitter identity': bool(re.search(
      r'!sharedOwner\s*\(\s*r\s*,\s*target\s*\)\s*\|\|\s*!matchesWirelessTarget\s*\(\s*link\s*,\s*target\s*\)',
      network)),
