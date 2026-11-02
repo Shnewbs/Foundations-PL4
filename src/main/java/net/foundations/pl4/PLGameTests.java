@@ -166,6 +166,33 @@ public final class PLGameTests {
             h.succeed();
         });
     }
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
+    public static void wirelessRejectsStaleCoordinatesAndFace(GameTestHelper h){
+        // A persisted UUID must not override its stored dimension, position or face.
+        chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));
+        host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
+        HostEntity emitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN);
+        HostEntity valid=host(h,new BlockPos(6,1,1),Kind.DATA_RECEIVER,Direction.DOWN);
+        HostEntity validReader=host(h,new BlockPos(7,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        HostEntity stalePos=host(h,new BlockPos(9,1,1),Kind.DATA_RECEIVER,Direction.DOWN);
+        HostEntity stalePosReader=host(h,new BlockPos(10,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        HostEntity staleFace=host(h,new BlockPos(12,1,1),Kind.DATA_RECEIVER,Direction.DOWN);
+        HostEntity staleFaceReader=host(h,new BlockPos(13,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        Part ep=emitter.parts.get(Direction.DOWN.ordinal());
+        String dimension=h.getLevel().dimension().identifier().toString();
+        valid.parts.get(Direction.DOWN.ordinal()).links.add(new Part.Link(dimension,emitter.getBlockPos(),Direction.DOWN,null,ep.identity));
+        stalePos.parts.get(Direction.DOWN.ordinal()).links.add(new Part.Link(dimension,new BlockPos(3,1,2),Direction.DOWN,null,ep.identity));
+        staleFace.parts.get(Direction.DOWN.ordinal()).links.add(new Part.Link(dimension,emitter.getBlockPos(),Direction.UP,null,ep.identity));
+        h.runAtTickTime(45,()->{
+            h.assertTrue(validReader.parts.get(Direction.DOWN.ordinal()).rows.stream().anyMatch(r->r.value()==17),
+                "Valid wireless link must carry the inventory reading");
+            h.assertTrue(stalePosReader.parts.get(Direction.DOWN.ordinal()).rows.isEmpty(),
+                "Stale wireless position must not resolve by UUID alone");
+            h.assertTrue(staleFaceReader.parts.get(Direction.DOWN.ordinal()).rows.isEmpty(),
+                "Stale wireless face must not resolve by UUID alone");
+            h.succeed();
+        });
+    }
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readingUnloadedTargetDoesNotLoadChunk(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(1,1,1),Kind.INVENTORY_READER,Direction.DOWN);Part p=host.parts.get(0);
