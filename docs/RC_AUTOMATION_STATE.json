@@ -88,8 +88,8 @@
     "1.12.2": 40443746091,
     "1.6.4": 40443746113
   },
-  "current_checkpoint": "2026-11-01 23:13 PST: 26.1.2 and 26.3 NetworkEngine now index only wireless emitters by UUID, skipping non-emitter UUID buckets and wireless-disabled indexing; duplicate-UUID exact-coordinate/owner/channel matching retained. Both exact source blobs read back identically; current-source Java25 compilation, committed verifier, native GameTests and performance benchmarks NOT RUN. Each branch still declares 201 expected native tests. All source/docs commits [skip ci], exact-head Actions queries zero. Official 26.4 Snapshot 6 (Oct 27) remains latest identified; NeoForge Maven ends at 26.3.0.99 without 26.4 loader. RC 0/24; no qualified JAR, release, upload or local deletion.",
-  "local_validation": "Both 26.x branch NetworkEngine.java readbacks PASS and share identical blob SHA 5921ace9d25ed117ef9a4593a51a4c34378dc7b9; structural checks confirm emitter-only UUID index and same wirelessEnabled guard for receiver resolution. Source-only: Java 25 build, committed verifier, 201 declared native tests per branch, providers/multiplayer/migration and sustained performance NOT RUN. Local Java 21 only, no checkout/Gradle dependencies, external DNS unavailable.",
+  "current_checkpoint": "2026-11-02 00:11 PST: 26.1.2 and 26.3 now lazily index reader UUID/label first-match selections for signallers/data emitters, avoiding repeated linear scans; wireless UUID buckets exclude unowned/missing-identity emitters. Both NetworkEngine blobs identical and all changed source/test/runner files read back. 70,000 Java21 mirrored and 35,000 Python mirrored precedence cases passed; committed offline suite, exact-source Java25 compilation, all 201 native GameTests per branch and benchmarks NOT RUN. Six source/test commits plus main acceptance commit all [skip ci], exact-head Actions queries zero, repository run total unchanged at 2360. Mojang 26.4 Snapshot 6 (Oct 27) latest identified; no NeoForge 26.4 loader listed. RC 0/24, no qualified artifact/upload/deletion.",
+  "local_validation": "NetworkEngine.java, tools/test_reader_lookup.py and tools/run_offline_checks.py GitHub readback PASS on both 26.x branches; identical NetworkEngine blob 317e0f0c328a2389019565cb80a4fddd75cb5deb. 70,000 Java 21 mirrored first-match cases, 35,000 Python mirrored cases and 250 JS mirrored cases PASS, but these are NOT native compilation, committed full offline suite or runtime benchmark. Local Java 21 only; GitHub DNS and Gradle dependencies unavailable. Exact-source native GameTests 201 per branch, installed providers/multiplayer/migration and sustained performance NOT RUN.",
   "next_work": [
     "Run exact-source Java 25 Gradle compilation, committed Python verifier and all 201 declared native GameTests on each existing 26.x branch without GitHub Actions",
     "Benchmark wireless on/off topology rebuild time and allocations against previous source, then run installed-provider, multiplayer, migration and sustained TPS/heap/GC acceptance",
@@ -99,7 +99,7 @@
   "rc_publication_cleared": false,
   "stable_rc_published": false,
   "first_hourly_run": 40195962271,
-  "latest_hourly_evidence": "docs/acceptance/rc-dev-26x-wireless-emitter-index-2026-11-01-2313-pst.json",
+  "latest_hourly_evidence": "docs/acceptance/rc-dev-26x-lazy-reader-lookup-2026-11-02-0011-pst.json",
   "main_native_validation_run": 40777637169,
   "curseforge_reconciliation_run": 40436224540,
   "latest_publisher_evidence": "docs/acceptance/rc-dev-legacy-native-publisher-stale-slots-2026-10-28.json",
