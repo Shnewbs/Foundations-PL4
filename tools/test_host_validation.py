@@ -39,13 +39,17 @@ def main():
     # and server-side addHeld/addChoice must enforce that same invariant.
     wireless = WIRELESS_SOURCE.read_text(encoding='utf-8')
     assert 'if(!PLConfig.WIRELESS.get()||part.owner==null)return links;' in wireless
-    assert 'if(target==null||part.owner==null||!target.kind.emitter()||target.kind.redstone()!=part.kind.redstone()||!Objects.equals(target.owner,part.owner))return false;' in wireless
+    assert 'if(target==null||part.owner==null||!target.kind.emitter()||target.kind.redstone()!=part.kind.redstone()||!Objects.equals(target.owner,part.owner)||link.side()!=target.face)return false;' in wireless
     for receiver in (None, 'alice', 'bob'):
         for emitter in (None, 'alice', 'bob'):
             topology_allows = receiver is not None and receiver == emitter
             candidate_allows = receiver is not None and receiver == emitter
             persisted_link_allows = receiver is not None and receiver == emitter
             assert candidate_allows == persisted_link_allows == topology_allows
+            for face_matches in (False, True):
+                link_add_allows = persisted_link_allows and face_matches
+                graph_accepts = topology_allows and face_matches
+                assert link_add_allows == graph_accepts
 
     rng = Random(0x504C34)
     checks = 0
