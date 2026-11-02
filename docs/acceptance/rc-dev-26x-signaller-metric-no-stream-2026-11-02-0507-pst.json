@@ -1,0 +1,58 @@
+{
+  "project": "Foundations PL4",
+  "checkpoint": "2026-11-02T05:07:00-08:00",
+  "scope": "26.x signaller metric selection allocation reduction",
+  "source_commits": {
+    "mc/26.1.2": "5f4d6a3043ef2b7ab57b8dcfa2af0a80a2c6309a",
+    "mc/26.3": "718a5cf0a99a3f1da2cb4358d7f0aeea9323d0d2"
+  },
+  "source_blob_sha_both": "1cb2ff7fa554e1b87b4818b9631b089376166621",
+  "source_readback": "PASS_BOTH_BRANCHES",
+  "change": "Replace per-sample stream/filter/map/findFirst on numeric Part.Row values with first-match loop shared by statement and legacy signal paths",
+  "isolated_validation": {
+    "java_version": 21,
+    "mode": "exact original SignallerLogic and proposed source compiled with minimal Minecraft stubs; parity harness",
+    "comparisons_passed": 249199,
+    "notes": "Not native Minecraft/NeoForge compilation or GameTests"
+  },
+  "ci_safety": {
+    "commit_messages_contain": "[skip ci]",
+    "exact_sha_push_workflow_runs": {
+      "mc/26.1.2": 0,
+      "mc/26.3": 0
+    },
+    "repository_workflow_run_count_before": 2360,
+    "repository_workflow_run_count_after": 2360,
+    "manually_dispatched": false
+  },
+  "native_acceptance": {
+    "java_required": 25,
+    "java_available": 21,
+    "full_gradle_build": "NOT_RUN",
+    "full_offline_suite": "NOT_RUN",
+    "native_gametests_per_branch_expected": 201,
+    "native_gametests_per_branch_executed": 0,
+    "installed_provider_tests": "NOT_RUN",
+    "multiplayer_tests": "NOT_RUN",
+    "migration_tests": "NOT_RUN",
+    "performance_benchmarks": "NOT_RUN"
+  },
+  "minecraft_26_4": {
+    "latest_official_identified": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "neoforge_maven_latest_observed": "26.3.0.99",
+    "official_26_4_loader_observed": false,
+    "notes": "No unsupported branch, build or release. Preserve fluid source/level, Vulkan/OpenGL, handshake and pinned-heap gates.",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "publication": {
+    "rc_targets_cleared": "0/24",
+    "production_jar_generated": false,
+    "github_release_published": false,
+    "curseforge_upload": false,
+    "local_builds_deleted": false
+  }
+}
