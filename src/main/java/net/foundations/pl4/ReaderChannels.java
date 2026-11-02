@@ -24,8 +24,8 @@ public final class ReaderChannels {
         return level!=null&&(target.entity()!=null?level.getEntity(target.entity())!=null:level.hasChunkAt(target.pos()));
     }
     public static String clean(String text){String value=text.replaceAll("[\\p{Cntrl}§]","").trim();return value.substring(0,Math.min(48,value.length()));}
-    private static String description(Part reader,Part.Link t){
-        String alias=reader.channelNames.getOrDefault(id(t),"");
+    private static String description(Part reader,Part.Link t,String identity){
+        String alias=reader.channelNames.getOrDefault(identity,"");
         String location=t.entity()!=null?"Entity "+t.entity()+" · "+t.dimension():t.dimension()+" "+t.pos().getX()+", "+t.pos().getY()+", "+t.pos().getZ()+" "+t.side().getName();
         return alias.isBlank()?location:alias+" · "+location;
     }
@@ -48,11 +48,11 @@ public final class ReaderChannels {
             String id=id(t);if(!seen.add(id))continue;
             String label=null;
             if(id.equals(reader.targetChannel)){
-                label=description(reader,t);
+                label=description(reader,t,id);
                 reader.targetLabel=label+(available(server,t)?"":" [unloaded]");
             }
             boolean matched=query.isEmpty()||id.contains(query)
-                ||(label==null?description(reader,t):label).toLowerCase(Locale.ROOT).contains(query);
+                ||(label==null?description(reader,t,id):label).toLowerCase(Locale.ROOT).contains(query);
             if(!matched)continue;
             if(matchCount>=requestedStart&&(long)matchCount<requestedStart+64)visiblePage.add(t);
             if(matchCount%64==0)tailPage.clear();
@@ -63,9 +63,10 @@ public final class ReaderChannels {
         reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matchCount-1)/64));
         List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage:tailPage;
         for(var t:pageTargets){
-            String label=description(reader,t);
+            String identity=id(t);
+            String label=description(reader,t,identity);
             if(!available(server,t))label+=" [unloaded]";
-            reader.targetChoices.add(new Part.ReaderChoice(id(t),label,t.entity()==null?"block":"entity"));
+            reader.targetChoices.add(new Part.ReaderChoice(identity,label,t.entity()==null?"block":"entity"));
         }
     }
     public static String label(Part reader) {
