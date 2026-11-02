@@ -1,0 +1,57 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-01",
+  "result": "SOURCE_ONLY_NOT_RC_ACCEPTED",
+  "changes": "Snapshot live network part owner, identity, blockedFaces and links; rebuild on silent drift before reader/storage export or at next sampling cycle",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "bd4987ca6f68d60e4d6505020a05bc58c6bbd1c6",
+      "source_readback": "PASS_4_OF_4",
+      "expected_native_tests": 198,
+      "fixture_count": "R16_31",
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_for_commit": 0
+    },
+    "mc/26.3": {
+      "commit": "94ab1596fe0eee86cdfaf1c2eb3aa989ab9ac68a",
+      "source_readback": "PASS_4_OF_4",
+      "expected_native_tests": 198,
+      "fixture_count": "R16_31",
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_for_commit": 0
+    }
+  },
+  "static_checks": {
+    "native_fixture_count_26_3": "198",
+    "build_gradle_count_gate": "PRESENT",
+    "r16_verifier_count_gate": "31"
+  },
+  "builder": {
+    "java_version": "21",
+    "required_java_for_26x": "25",
+    "gradle_distribution_cached": false,
+    "github_dns_available": false
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "neoforge_latest_listed": "26.3.0.99",
+    "neoforge_26_4_loader": "NOT_LISTED",
+    "port_created": false
+  },
+  "acceptance": {
+    "rc_targets_cleared": "0/24",
+    "installed_providers": "NOT_RUN",
+    "multiplayer": "NOT_RUN",
+    "migration": "NOT_RUN",
+    "sustained_performance": "NOT_RUN"
+  },
+  "publication": {
+    "github_release": "NONE",
+    "curseforge_upload": "NONE",
+    "github_actions_manual_dispatch": false,
+    "local_build_deletions": "NONE"
+  }
+}
