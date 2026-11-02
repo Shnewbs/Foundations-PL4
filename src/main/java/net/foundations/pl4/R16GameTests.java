@@ -103,6 +103,38 @@ public final class R16GameTests {
         h.succeed();
     }
 
+
+    /** UI preview and Open metadata must revoke a silently foreign reader or display immediately. */
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void displayPreviewRevokesSilentOwnerChanges(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        HostEntity host=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        Part reader=part(host,Direction.DOWN);
+        Part display=new Part(Kind.DISPLAY,Direction.DOWN,OWNER);
+        host.parts.put(display.slot(),display);host.changed();
+        NetworkEngine.rebuild(server);
+        reader.rows.add(new Part.Row("fixture","Visible inventory",17,64,""));
+        DisplayNetworks.sample();
+        h.assertTrue(!DisplayNetworks.preview(host,display,"").isEmpty()&&!display.rows.isEmpty(),
+            "Initially owned paired display must expose its reader rows");
+        long builds=NetworkEngine.topologyBuildCount();
+        reader.owner=UUID.randomUUID(); // Deliberately bypass host.changed().
+        DisplayNetworks.controller(host,display); // Same path as the Open packet's metadata.
+        h.assertTrue(DisplayNetworks.preview(host,display,"").isEmpty()&&display.rows.isEmpty()
+                &&display.readerChoices.isEmpty()&&display.sourceRows.isEmpty(),
+            "A silently foreign reader must revoke preview and serialized display metadata");
+        h.assertTrue(NetworkEngine.topologyBuildCount()>builds,
+            "Interactive display access must rebuild a silently invalid topology");
+        reader.owner=OWNER;
+        h.assertTrue(!DisplayNetworks.preview(host,display,"").isEmpty(),
+            "Restoring the owned reader should reauthorize its preview");
+        display.owner=UUID.randomUUID(); // Display ownership can also change without notification.
+        DisplayNetworks.controller(host,display);
+        h.assertTrue(DisplayNetworks.preview(host,display,"").isEmpty()&&display.rows.isEmpty(),
+            "A silently foreign display must not retain cached reader data");
+        h.succeed();
+    }
+
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));

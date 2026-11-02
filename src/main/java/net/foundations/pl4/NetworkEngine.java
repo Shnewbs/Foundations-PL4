@@ -222,6 +222,29 @@ public final class NetworkEngine {
         return cachedStorageNodes.getOrDefault(anchor,List.of());
     }
     public static void ensureCurrent(MinecraftServer server){if(dirty||cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())rebuild(server);}
+
+    /**
+     * Interactive display reads must not serialize a stale visual reader alias before
+     * the next sampling tick. This full snapshot check is only on UI read/edit paths,
+     * never in the high-frequency transfer or cable sampling loop.
+     */
+    public static void ensureLiveDisplayTopology(MinecraftServer server){
+        long before=topologyBuilds;
+        ensureCurrent(server);
+        if(topologyBuilds!=before)DisplayNetworks.sample();
+        for(Ref ref:cachedRefs){
+            TopologySnapshot snapshot=cachedTopology.get(ref.part);
+            if(snapshot==null||!snapshot.matches(ref)
+                ||!loadedHost(ref.host,server)
+                ||ref.host.parts.get(ref.part.slot())!=ref.part){
+                dirty=true;
+                rebuild(server);
+                // Clear stale rows, reader choices and element bindings before packet serialization.
+                DisplayNetworks.sample();
+                return;
+            }
+        }
+    }
     public static void tick(ServerTickEvent.Post e){
         MinecraftServer server=e.getServer();
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
