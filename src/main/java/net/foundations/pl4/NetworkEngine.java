@@ -320,7 +320,8 @@ public final class NetworkEngine {
             }
             if(p.kind==Kind.SIGNALLER||p.kind==Kind.DATA_EMITTER){
                 Ref reader;
-                if(p.selected.isEmpty())reader=readers.isEmpty()?null:readers.getFirst();
+                if(p.kind==Kind.SIGNALLER)reader=SignallerLogic.readerRef(readers,p.selected);
+                else if(p.selected.isEmpty())reader=readers.isEmpty()?null:readers.getFirst();
                 else{
                     if(readerLookup==null){
                         readerLookup=new HashMap<>();
