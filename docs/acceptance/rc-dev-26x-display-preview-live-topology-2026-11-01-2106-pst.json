@@ -1,0 +1,80 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-01",
+  "local_time": "21:06 PST",
+  "result": "SOURCE_ONLY_NOT_RC_ACCEPTED",
+  "issue": "Interactive display controller/preview used ensureCurrent(), which checked dirty/config only; a silent owner change could leave cached visual reader rows and serialized Open metadata accessible before the next sampling tick.",
+  "implementation": "On-demand full cached-topology snapshot check on display controller/preview; rebuild and resample derived display rows, reader choices and bindings on invalidation; no added scan in transfer/sampling hot path.",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "c1dba4b51ccd923454722d773eda33c1ef5d117a",
+      "source_readback": "PASS_4_OF_4",
+      "changed_files": 5,
+      "r16_fixtures": 33,
+      "registered_native_tests": 200,
+      "expected_native_tests": 200,
+      "native_compilation": "NOT_RUN",
+      "committed_verifier": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_runs_immediate": 0
+    },
+    "mc/26.3": {
+      "commit": "f0772b7de7a1c30ceae30f325ca40a9d406fb674",
+      "source_readback": "PASS_4_OF_4",
+      "changed_files": 5,
+      "r16_fixtures": 33,
+      "registered_native_tests": 200,
+      "expected_native_tests": 200,
+      "native_compilation": "NOT_RUN",
+      "committed_verifier": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "actions_runs_immediate": 0
+    }
+  },
+  "environment": {
+    "java_runtime": "OpenJDK 21.0.12.1",
+    "required_java": "25",
+    "gradle_distribution_cached": false,
+    "git_clone": "FAILED_COULD_NOT_RESOLVE_GITHUB",
+    "exact_source_native_build": "BLOCKED"
+  },
+  "minecraft_26_4": {
+    "latest_identified_snapshot": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "neoForge_loader_index": "26.3.0.99 latest",
+    "neoForge_26_4_loader": "NOT_LISTED",
+    "new_port_created": false,
+    "retained_gates": [
+      "Vulkan/OpenGL",
+      "fluid source-state and swimmable tag",
+      "login handshake/mod list",
+      "Java 25",
+      "migration",
+      "pinned heap/GC/TPS"
+    ]
+  },
+  "release": {
+    "rc_targets_cleared": "0/24",
+    "qualified_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "local_build_deletions": false
+  },
+  "safety": {
+    "source_commit_messages_skip_ci": true,
+    "manual_actions_dispatch": false,
+    "source_commit_actions_head_checks": "ZERO_NEW_RUNS_IMMEDIATE",
+    "main_commit_actions_head_check": "VERIFY_AFTER_PUSH",
+    "branch_policy_preserved": true
+  },
+  "performance": {
+    "new_display_ui_preflight": "O(number of cached parts) per interactive read; not in tick/transfer hot path",
+    "native_measurement": "PENDING"
+  },
+  "next": [
+    "Run exact-source Java 25 compilation and committed Python guards on a dependency-capable local builder",
+    "Execute all 200 native GameTests per branch and installed-provider/multiplayer/migration acceptance",
+    "Measure on-demand UI scan and network-cache rebuild costs with fixed JVM heaps",
+    "Publish only after exact-target RC clearance; verify uploaded JAR before deleting any local predecessor"
+  ]
+}
