@@ -91,10 +91,10 @@ public final class NetworkEngine {
         for(int i:topology.externalLeads()){
             Ref r=refs.get(i);leads.merge(r.host,1<<r.part.slot(),(a,b)->a|b);
         }
-        if(PLConfig.WIRELESS.get())for(Ref r:refs)if(r.part.kind.receiver())for(Part.Link link:r.part.links){
+        if(PLConfig.WIRELESS.get())for(Ref r:refs)if(r.part.kind.receiver()&&r.part.owner!=null)for(Part.Link link:r.part.links){
             Ref target=identities.get(link.part());
             if(target==null||!target.part.kind.emitter()||target.part.kind.redstone()!=r.part.kind.redstone()
-                ||!Objects.equals(target.part.owner,r.part.owner))continue;
+                ||!sharedOwner(r,target))continue;
             if(!PLConfig.CROSS_DIMENSION.get()&&target.level()!=r.level())continue;
             sets.union(index.get(r.part),index.get(target.part));
         }
