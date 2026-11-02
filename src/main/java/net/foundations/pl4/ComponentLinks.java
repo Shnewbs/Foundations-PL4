@@ -29,9 +29,16 @@ public final class ComponentLinks {
     }
     public static void refresh(ServerPlayer player,HostEntity host,Part part){
         if(!supported(part))return;part.targetChoices.clear();
-        List<Part.Link> choices=candidates(player,host,part).stream().filter(l->label(player,l).toLowerCase(Locale.ROOT).contains(part.targetQuery.toLowerCase(Locale.ROOT))).toList();
+        // Empty searches need labels only for the visible page, not every remote emitter.
+        List<Part.Link> choices=candidates(player,host,part);
+        String query=part.targetQuery.toLowerCase(Locale.ROOT);
+        if(!query.isEmpty())choices.removeIf(link->!label(player,link).toLowerCase(Locale.ROOT).contains(query));
         part.targetCount=choices.size();part.targetPage=Math.clamp(part.targetPage,0,Math.max(0,(choices.size()-1)/16));
-        for(var link:choices.stream().skip(part.targetPage*16L).limit(16).toList())part.targetChoices.add(new Part.ReaderChoice(choiceId(link),label(player,link),"link"));
+        int start=part.targetPage*16;
+        for(int i=start;i<choices.size()&&i-start<16;i++){
+            Part.Link link=choices.get(i);
+            part.targetChoices.add(new Part.ReaderChoice(choiceId(link),label(player,link),"link"));
+        }
     }
     private static String choiceId(Part.Link link){return link.entity()==null?ReaderChannels.id(link):link.entity().toString();}
     private static String label(ServerPlayer player,Part.Link link){
