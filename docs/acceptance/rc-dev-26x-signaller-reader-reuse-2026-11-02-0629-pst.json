@@ -1,0 +1,64 @@
+{
+  "project": "Foundations PL4",
+  "timestamp_local": "2026-11-02T06:29:38-08:00",
+  "change": "Reuse previously resolved signaller reader when evaluating simple redstone signals, preserving legacy two-argument API and independent multi-statement evaluation",
+  "branches": {
+    "mc/26.1.2": "791094543c17feae6a0d3a35abcd86a4d9abc05c",
+    "mc/26.3": "41e31e90bf331d8b47489390adc5807bd90bd7ec"
+  },
+  "source_readback": {
+    "passed": true,
+    "files_per_branch": 3,
+    "blobs": {
+      "src/main/java/net/foundations/pl4/SignallerLogic.java": "62711266112944ff3da6cd991f91af8378dcb95e",
+      "src/main/java/net/foundations/pl4/NetworkEngine.java": "b37e0af8cda3acad6c58114227d09a61c1d3b6a5",
+      "tools/test_signaller_reader_consistency.py": "7db10f42744891cd7c849bb36679104fe27379ac"
+    }
+  },
+  "isolated_validation": {
+    "status": "PASS",
+    "cases": 100000,
+    "java": "OpenJDK 21.0.12.1 --release 21",
+    "harness": "Exact SignallerLogic.java blob compiled against minimal Part/NetworkEngine stubs; original vs optimized vs preserved legacy API; deterministic seed 0x2632026",
+    "native_minecraft_compilation": false,
+    "full_committed_offline_suite_executed": false,
+    "native_gametests_executed": false,
+    "native_performance_benchmark_executed": false
+  },
+  "actions": {
+    "commit_message_marker": "[skip ci]",
+    "before_repo_run_count": 2360,
+    "after_source_repo_run_count": 2360,
+    "exact_source_commit_workflow_runs": {
+      "mc/26.1.2": 0,
+      "mc/26.3": 0
+    },
+    "manually_dispatched": false,
+    "post_documentation_commit_check": "TO_BE_VERIFIED_SEPARATELY"
+  },
+  "compatibility_watch": {
+    "official_minecraft": "26.4 Snapshot 6, published 2026-10-27",
+    "neoforge_maven_latest_observed": "26.3.0.99",
+    "neoforge_26_4_loader_observed": false,
+    "no_unsupported_port_created": true,
+    "urls": [
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "release": {
+    "expected_native_tests_per_branch": 201,
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "production_jar_built": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "local_artifacts_deleted": false,
+    "blockers": [
+      "Java 25 exact-version Gradle compilation unavailable",
+      "Gradle dependencies and local repository checkout unavailable",
+      "201 native GameTests per branch not run",
+      "Installed provider, multiplayer, migration and measured performance acceptance pending"
+    ]
+  }
+}
