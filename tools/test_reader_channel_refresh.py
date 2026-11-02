@@ -102,16 +102,23 @@ def main():
         'List<Part.Link> visiblePage=new ArrayList<>(64), tailPage=new ArrayList<>(64);',
         'long requestedStart=(long)requestedPage*64;',
         'boolean matched=query.isEmpty()||id.contains(query)',
-        'if(matchCount%64==0)tailPage.clear();',
-        'List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage:tailPage;',
+        'if(matchCount%64==0){tailPage.clear();tailIds.clear();}',
+        'List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage;',
+        'List<String> visibleIds=new ArrayList<>(64), tailIds=new ArrayList<>(64);',
+        'visiblePage.add(t);visibleIds.add(id);',
+        'tailPage.add(t);tailIds.add(id);',
+        'List<String> pageIds=reader.targetPage==requestedPage?visibleIds:tailIds;',
         'private static String description(Part reader,Part.Link t,String identity){',
         'String alias=reader.channelNames.getOrDefault(identity,"");',
-        'String identity=id(t);',
+        'String identity=pageIds.get(i);',
         'new Part.ReaderChoice(identity,label,',
         'for(Part.Link t:targets)if(id(t).equals(reader.targetChannel))return List.of(t);',
     )
     for marker in required:
         assert marker in source, f"Missing bounded refresh contract: {marker}"
+
+    refresh_body = source.split('public static void refresh(', 1)[1].split('public static String label(', 1)[0]
+    assert refresh_body.count('id(t)') == 1, 'Refresh must reuse the existing endpoint UUID for page choices'
 
     # Pinned selection must preserve first-match semantics for duplicate IDs.
     # Isolated Python mirror; not native Minecraft acceptance.

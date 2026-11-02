@@ -43,6 +43,7 @@ public final class ReaderChannels {
         reader.targetChoices.clear();reader.targetLabel="Selected target disconnected";
         // Keep only the requested page and trailing page, not every matching endpoint.
         List<Part.Link> visiblePage=new ArrayList<>(64), tailPage=new ArrayList<>(64);
+        List<String> visibleIds=new ArrayList<>(64), tailIds=new ArrayList<>(64);
         Set<String> seen=new HashSet<>();
         String query=reader.targetQuery.toLowerCase(Locale.ROOT);
         int requestedPage=Math.max(0,reader.targetPage), matchCount=0;
@@ -57,16 +58,18 @@ public final class ReaderChannels {
             boolean matched=query.isEmpty()||id.contains(query)
                 ||(label==null?description(reader,t,id):label).toLowerCase(Locale.ROOT).contains(query);
             if(!matched)continue;
-            if(matchCount>=requestedStart&&(long)matchCount<requestedStart+64)visiblePage.add(t);
-            if(matchCount%64==0)tailPage.clear();
-            tailPage.add(t);
+            if(matchCount>=requestedStart&&(long)matchCount<requestedStart+64){visiblePage.add(t);visibleIds.add(id);}
+            if(matchCount%64==0){tailPage.clear();tailIds.clear();}
+            tailPage.add(t);tailIds.add(id);
             matchCount++;
         }
         reader.targetCount=matchCount;
         reader.targetPage=Math.clamp(reader.targetPage,0,Math.max(0,(matchCount-1)/64));
         List<Part.Link> pageTargets=reader.targetPage==requestedPage?visiblePage:tailPage;
-        for(var t:pageTargets){
-            String identity=id(t);
+        List<String> pageIds=reader.targetPage==requestedPage?visibleIds:tailIds;
+        for(int i=0;i<pageTargets.size();i++){
+            Part.Link t=pageTargets.get(i);
+            String identity=pageIds.get(i);
             String label=description(reader,t,identity);
             if(!available(server,t))label+=" [unloaded]";
             reader.targetChoices.add(new Part.ReaderChoice(identity,label,t.entity()==null?"block":"entity"));
