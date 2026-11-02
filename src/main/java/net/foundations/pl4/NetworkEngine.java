@@ -20,10 +20,21 @@ public final class NetworkEngine {
     private static List<HostEntity> cachedHosts=List.of();
     private static List<Group> cachedGroups=List.of();
     private static Map<Part,Group> cachedMembership=Map.of();
+    private static Map<Part,TopologySnapshot> cachedTopology=Map.of();
     private static Map<Part,List<Ref>> cachedStorageNodes=Map.of();
     private static long topologyBuilds;
     private static int cachedMaxNetwork;
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
+    /** Immutable membership snapshot; live owner, identity, ports and links must still match. */
+    private record TopologySnapshot(UUID owner,UUID identity,int blockedFaces,List<Part.Link> links) {
+        static TopologySnapshot capture(Part p){
+            return new TopologySnapshot(p.owner,p.identity,p.blockedFaces,List.copyOf(p.links));
+        }
+        boolean matches(Part p){
+            return Objects.equals(owner,p.owner)&&Objects.equals(identity,p.identity)
+                &&blockedFaces==p.blockedFaces&&links.equals(p.links);
+        }
+    }
     public record Ref(HostEntity host,Part part) {
         public ServerLevel level(){return (ServerLevel)host.getLevel();}
         public Part.Link adjacent(){return new Part.Link(level().dimension().identifier().toString(),host.getBlockPos().relative(part.face),part.face.getOpposite(),null,null);}
@@ -33,7 +44,7 @@ public final class NetworkEngine {
     public static void invalidate(Level l){if(!l.isClientSide())dirty=true;}
     public static long topologyBuildCount(){return topologyBuilds;}
     public static void stopped(ServerStoppedEvent e){
-        EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedMembership=Map.of();cachedStorageNodes=Map.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
+        EnergyReader.clear();EnergyPorts.clear();DataSampler.clearFilters();DisplayNetworks.clear();LOADED.clear();cachedRefs=List.of();cachedHosts=List.of();cachedGroups=List.of();cachedMembership=Map.of();cachedStorageNodes=Map.of();cachedTopology=Map.of();cachedServer=null;dirty=true;deferDirtyRebuild=false;topologyBuilds=0;
     }
     public static ServerLevel level(MinecraftServer server,Part.Link link){
         Identifier id=Identifier.tryParse(link.dimension());return id==null?null:server.getLevel(ResourceKey.create(Registries.DIMENSION,id));
@@ -149,7 +160,9 @@ public final class NetworkEngine {
             for(Ref r:group.parts){membership.put(r.part,group);storageNodes.put(r.part,storageRefs);}
         }
         cachedRefs=List.copyOf(refs);cachedHosts=List.copyOf(arms.keySet());cachedGroups=List.copyOf(complete);
-        cachedMembership=membership;cachedStorageNodes=storageNodes;
+        Map<Part,TopologySnapshot> topologySnapshots=new IdentityHashMap<>();
+        for(Ref ref:refs)topologySnapshots.put(ref.part,TopologySnapshot.capture(ref.part));
+        cachedMembership=membership;cachedStorageNodes=storageNodes;cachedTopology=topologySnapshots;
         cachedServer=server;cachedWireless=PLConfig.WIRELESS.get();cachedCrossDimension=PLConfig.CROSS_DIMENSION.get();cachedMaxNetwork=PLConfig.MAX_NETWORK.get();dirty=false;topologyBuilds++;
         deferDirtyRebuild=false;
         // Send geometry now, not after the next (potentially very slow) sampling interval.
@@ -182,7 +195,9 @@ public final class NetworkEngine {
         if(anchor.owner==null)return false;
         boolean attached=false;
         for(Ref ref:group.parts){
-            if(!loadedHost(ref.host,server)
+            TopologySnapshot snapshot=cachedTopology.get(ref.part);
+            if(snapshot==null||!snapshot.matches(ref.part)
+                ||!loadedHost(ref.host,server)
                 ||ref.host.parts.get(ref.part.slot())!=ref.part
                 ||!anchor.owner.equals(ref.part.owner))return false;
             if(ref.part==anchor)attached=true;
@@ -209,6 +224,13 @@ public final class NetworkEngine {
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
         boolean sample=server.getTickCount()%PLConfig.TICK_RATE.get()==0;
         if(sample&&!dirty)for(HostEntity h:cachedHosts)if(!loadedHost(h,server)){dirty=true;break;}
+        // Unannounced owner, port, identity or wireless-link mutations cannot keep a
+        // stale graph alive for another sampling cycle.
+        if(sample&&!dirty)for(Ref ref:cachedRefs){
+            TopologySnapshot snapshot=cachedTopology.get(ref.part);
+            if(snapshot==null||!snapshot.matches(ref.part)
+                ||ref.host.parts.get(ref.part.slot())!=ref.part){dirty=true;break;}
+        }
         if(dirty&&deferDirtyRebuild){deferDirtyRebuild=false;return;}
         if(dirty)rebuild(server);
         if(!sample)return;
