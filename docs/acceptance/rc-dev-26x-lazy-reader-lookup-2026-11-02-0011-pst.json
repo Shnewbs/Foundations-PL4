@@ -1,0 +1,72 @@
+{
+  "recorded_at": "2026-11-02T00:11:42-08:00",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "change": "Lazy first-match reader selection lookup for signaller/data emitter sampling; exclude unowned or missing-UUID wireless emitters from UUID buckets",
+  "source_commits": {
+    "mc/26.1.2": [
+      "a32ef31f75a79408c1eb061bd9bf8bf17fb19a78",
+      "fee811a502c1ea5c399a3ea877c1d18cab7e66c4",
+      "b4c8cbffa129001fb9ca15b33c479126ce6547c9"
+    ],
+    "mc/26.3": [
+      "c4ff9f283d3c9610c2b37552ef2655398380f332",
+      "b3685641331dd0cb571949347a8c75ef0923425e",
+      "8d798c2fd8791efd3d7eb861d825d87a9e409f10"
+    ]
+  },
+  "source_readback": "PASS: NetworkEngine.java, tools/test_reader_lookup.py, tools/run_offline_checks.py read back from both branches",
+  "identical_network_engine_blob_sha": "317e0f0c328a2389019565cb80a4fddd75cb5deb",
+  "checks": {
+    "Java_21_mirrored_first_match_cases": 70000,
+    "Python_3_mirrored_first_match_cases": 35000,
+    "JavaScript_mirrored_first_match_cases": 250,
+    "committed_python_test_run_against_exact_checkout": false,
+    "committed_offline_suite_run": false,
+    "Java_25_exact_source_compilation": false,
+    "native_GameTests_executed": false,
+    "declared_native_GameTests_per_branch": 201,
+    "native_performance_benchmark_executed": false
+  },
+  "github_actions": {
+    "commit_messages_all_include_skip_ci": true,
+    "exact_commit_head_workflow_runs": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "repository_workflow_run_total_before": 2360,
+    "repository_workflow_run_total_after": 2360,
+    "manual_dispatch": false
+  },
+  "compatibility_watch": {
+    "latest_identified_mojang_snapshot": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "mojang_url": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+    "neoforge_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_identified_neoforge_26_3": "26.3.0.99",
+    "neoforge_26_4_loader_listed": false,
+    "port_created": false
+  },
+  "acceptance": {
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "qualified_artifact_created": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "local_build_deleted": false
+  },
+  "blockers": [
+    "Java 21 only in local runtime; Java 25 unavailable",
+    "No local repository checkout; GitHub DNS resolution failed",
+    "Gradle distribution/dependencies not locally cached",
+    "Current-source native tests, installed providers, multiplayer, migration and sustained TPS/heap/GC acceptance pending"
+  ],
+  "next": "Execute committed offline checks and Java 25 native build/GameTests per branch, benchmark reader selection and wireless index, then qualify exact-target artifacts before publishing"
+}
