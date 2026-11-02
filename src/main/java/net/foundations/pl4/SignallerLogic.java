@@ -19,14 +19,19 @@ final class SignallerLogic {
         var ref=readerRef(readers,selection);
         return ref==null?null:ref.part();
     }
+    /** First matching metric wins; avoid allocating a stream for each signal evaluation. */
+    private static Double metric(Part reader,String key){
+        for(var row:reader.rows)if(key.isEmpty()||row.key().equals(key))return row.value();
+        return null;
+    }
     static Double value(List<NetworkEngine.Ref> readers,SignalRules.Statement statement){
-        Part reader=reader(readers,statement.reader());if(reader==null)return null;
-        return reader.rows.stream().filter(row->statement.key().isEmpty()||row.key().equals(statement.key())).map(Part.Row::value).findFirst().orElse(null);
+        Part reader=reader(readers,statement.reader());
+        return reader==null?null:metric(reader,statement.key());
     }
     static int evaluate(Part p,List<NetworkEngine.Ref> readers){
         if(p.statements.isEmpty()){
             Part reader=reader(readers,p.selected);
-            Double value=reader==null?null:reader.rows.stream().filter(row->p.metric.isEmpty()||row.key().equals(p.metric)).map(Part.Row::value).findFirst().orElse(null);
+            Double value=reader==null?null:metric(reader,p.metric);
             return SignalRules.compare(value,p.threshold,p.comparison)?p.signalStrength:0;
         }
         return SignalRules.signal(p.statements,p.statementsAll,p.signalStrength,s->value(readers,s));
