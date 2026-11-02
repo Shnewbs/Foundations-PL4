@@ -29,8 +29,12 @@ final class SignallerLogic {
         return reader==null?null:metric(reader,statement.key());
     }
     static int evaluate(Part p,List<NetworkEngine.Ref> readers){
+        return evaluate(p,readers,p.statements.isEmpty()?readerRef(readers,p.selected):null);
+    }
+    /** Reuse the already-selected reader when publishing telemetry and evaluating redstone. */
+    static int evaluate(Part p,List<NetworkEngine.Ref> readers,NetworkEngine.Ref selected){
         if(p.statements.isEmpty()){
-            Part reader=reader(readers,p.selected);
+            Part reader=selected==null?null:selected.part();
             Double value=reader==null?null:metric(reader,p.metric);
             return SignalRules.compare(value,p.threshold,p.comparison)?p.signalStrength:0;
         }
