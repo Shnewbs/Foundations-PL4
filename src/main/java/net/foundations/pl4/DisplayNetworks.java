@@ -173,7 +173,13 @@ public final class DisplayNetworks {
             Part root=canvas.root.part();var source=reader(canvas.readers,root.selected);
             root.rows.clear();if(source!=null)root.rows.addAll(source.part().rows);
             root.status=source==null?"No unique selected reader":source.part().title();
-            root.readerChoices.clear();for(var option:canvas.readers.stream().limit(64).toList())root.readerChoices.add(new Part.ReaderChoice(option.part().identity.toString(),option.part().title(),option.part().kind.id));
+            root.readerChoices.clear();
+            // The visible choices are bounded to 64; avoid allocating a stream/list every sample.
+            int choiceCount=Math.min(64,canvas.readers.size());
+            for(int i=0;i<choiceCount;i++){
+                var option=canvas.readers.get(i);
+                root.readerChoices.add(new Part.ReaderChoice(option.part().identity.toString(),option.part().title(),option.part().kind.id));
+            }
             root.sourceRows.clear();int budget=256;
             // Only already-visible readers may satisfy bindings. Never resolve a global reader name/UUID.
             for(var element:root.elements){
