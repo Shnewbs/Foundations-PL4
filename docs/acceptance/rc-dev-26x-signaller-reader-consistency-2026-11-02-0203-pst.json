@@ -1,0 +1,65 @@
+{
+  "recorded_at": "2026-11-02T02:03:30-08:00",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "change": "Signaller visual rows now use the same UUID-first, unique-label reader resolution as signal evaluation; duplicate labels fail closed. SignallerLogic no longer allocates a stream list for label selection. DATA_EMITTER first-match selection is unchanged.",
+  "source_commits": {
+    "mc/26.1.2": "364f61b28d5be4ff532b58cd67add706a6e093b1",
+    "mc/26.3": "f270c33dd6ae35bcfae1adef12fdf804b1646d8e"
+  },
+  "source_readback": {
+    "both_branches": "PASS: 4/4 changed files match exact Git blob SHAs",
+    "matching_blobs": true
+  },
+  "checks": {
+    "deterministic_js_mirror_cases": 36000,
+    "isolated_java_21_compilation_and_assertions": 5,
+    "registered_native_tests_per_branch": 201,
+    "committed_python_test_run_against_exact_checkout": false,
+    "full_offline_suite_run": false,
+    "java_25_native_compilation": false,
+    "native_game_tests_executed": false,
+    "installed_provider_acceptance": false,
+    "multiplayer_acceptance": false,
+    "migration_acceptance": false,
+    "sustained_performance_acceptance": false
+  },
+  "github_actions": {
+    "source_commit_messages_include_skip_ci": true,
+    "source_commit_workflow_runs": {
+      "mc/26.1.2": 0,
+      "mc/26.3": 0
+    },
+    "repository_workflow_run_total_before": 2360,
+    "repository_workflow_run_total_after": 2360,
+    "manual_dispatch": false
+  },
+  "compatibility_watch": {
+    "latest_identified_mojang_snapshot": "26.4 Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "mojang_url": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge_index": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_listed_neoforge_26_3": "26.3.0.99",
+    "neoforge_26_4_loader_listed": false,
+    "port_created": false,
+    "notes": "Snapshot 4 fluid state source/level changes remain a future port-review item; Snapshot 6 density function changes do not require a PL4 change without a supported 26.4 loader."
+  },
+  "acceptance": {
+    "rc_targets_cleared": 0,
+    "rc_targets_total": 24,
+    "qualified_jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "local_build_deleted": false
+  },
+  "blockers": [
+    "Java 25 toolchain unavailable in current local builder (Java 21 only)",
+    "No complete local checkout or cached Gradle distribution/dependencies",
+    "External GitHub DNS resolution unavailable to local build container",
+    "Native installed-provider, multiplayer, migration and sustained TPS/heap/GC validation pending"
+  ],
+  "next": "Run the committed Python test and full offline suite on exact checkout, then Java 25 native builds and all 201 GameTests per branch. Benchmark signaller selection and qualify exact-version releases before publication."
+}
