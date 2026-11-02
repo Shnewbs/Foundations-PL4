@@ -1,0 +1,62 @@
+{
+  "checkpoint_utc": "2026-11-02T21:10:26Z",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "finding": "ComponentLinks.add previously allowed a bound wireless emitter UUID with a mismatched saved face; NetworkEngine.matchesWirelessTarget rejects that persisted link, leaving an unusable link slot. Server-side add now checks link.side()==target.face.",
+  "source_commits": {
+    "mc/26.1.2": "cce0dd158041a6a9a694da832c0e08c2c6185b84",
+    "mc/26.3": "3ad9da61acb6a2dcfbfe8fa3b3eb0b57b30a7772"
+  },
+  "github_readback": {
+    "source_blob": "c49c3f322e6987c6feb8bef22b41b40e06e3185c",
+    "native_test_blob": "bcfdc9dfb0ac92b93463c0d75342d6af28fb5f98",
+    "offline_guard_blob": "33909b6cc59d6cc8c85ffb71f27d2366404868e5",
+    "branches_match": true
+  },
+  "checks": {
+    "isolated_java21_owner_face_cases": 648,
+    "isolated_java21_result": "PASS",
+    "prior_wrong_face_combinations_in_mirror": 120,
+    "committed_python_offline_suite": "NOT_EXECUTED",
+    "exact_source_java25_gradle": "NOT_EXECUTED",
+    "native_gametests_per_branch": "201_DECLARED_NOT_EXECUTED",
+    "installed_provider_multiplayer_migration": "NOT_EXECUTED",
+    "measured_performance": "NOT_EXECUTED"
+  },
+  "github_actions": {
+    "all_source_test_commits_include_skip_ci": true,
+    "source_commit_workflow_runs": [
+      0,
+      0
+    ],
+    "repository_total_before": 2360,
+    "repository_total_after": 2360,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "latest_identified": "Snapshot 6 (2026-10-27)",
+    "official_snapshot": "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+    "neoforge_maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "neoforge_26_4_loader": "NOT_LISTED",
+    "compatibility_watch": [
+      "Snapshot 4 flowing fluid/source state migration",
+      "Snapshot 6 swimmable fluid tag",
+      "Snapshot 6 default JVM heap allocation"
+    ],
+    "port_created": false
+  },
+  "release": {
+    "rc_clearance": "0/24",
+    "qualified_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "production_build_deleted": false
+  },
+  "blockers": [
+    "No dependency-capable local checkout or Java 25 toolchain; GitHub DNS prevents cloning in container",
+    "Exact-source native compilation and 201 GameTests per branch unexecuted",
+    "Installed providers, multiplayer, migration and measured TPS/heap/GC acceptance pending"
+  ]
+}
