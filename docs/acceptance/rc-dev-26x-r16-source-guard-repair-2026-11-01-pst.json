@@ -1,0 +1,45 @@
+{
+  "date_local": "2026-11-01",
+  "category": "development-source-guard-repair",
+  "release_qualified": false,
+  "release_clearance": "0/24",
+  "reason": "A previously push-triggered 26.3 validation run (41365503594) compiled its port matrix but failed tools/verify_r16.py because its physical-owner source check searched for an obsolete inline expression after owner isolation moved to sharedOwner(Ref,Ref). Native build and GameTests were skipped in that run.",
+  "prior_workflow_run": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41365503594",
+  "changes": [
+    {
+      "branch": "mc/26.3",
+      "commit": "693bf7acaf819de8673c2559708198c9ea0120eb"
+    },
+    {
+      "branch": "mc/26.1.2",
+      "commit": "0c19908cccb8eb3922a273ea3ae19043aa760822"
+    }
+  ],
+  "fix": "R16 source guard now checks the non-null sharedOwner implementation, its physical union call site, and the wireless owner/target-identity fence. Runtime NetworkEngine was not changed.",
+  "verification": {
+    "github_source_readback": "Both branches returned matching tools/verify_r16.py blob d7e63506b637a60afd1070a0d542ad25636f7c35",
+    "source_checks": "Source guard conditions were independently checked against GitHub-fetched production files on both branches; all checked conditions matched",
+    "isolated_negative_fixture_tests": "5/5 passed locally against representative positive and negative guard snippets",
+    "committed_python_script_executed": false,
+    "native_compilation_for_new_commits": false,
+    "native_gametests_executed": false,
+    "actions_for_new_source_commits": "0 runs observed for each commit by head_sha after push",
+    "github_actions_manual_dispatch": false
+  },
+  "compatibility_watch": {
+    "minecraft": "26.4 Snapshot 6, published 2026-10-27",
+    "neoforge": "No 26.4 loader found in official Maven directory at 2026-11-01 check; 26.3.0.99 listed",
+    "new_branch_or_binary": false
+  },
+  "blockers": [
+    "Current local environment provides Java 21, not required Java 25",
+    "Gradle distribution and dependency cache unavailable locally; network DNS inaccessible",
+    "Current-source exact-version native tests, installed-provider tests, multiplayer, migration and sustained performance acceptance not executed"
+  ],
+  "publication": {
+    "github_release": false,
+    "curseforge": false,
+    "local_build_deletion": false
+  },
+  "policy": "Every commit uses [skip ci]; do not manually dispatch GitHub Actions. Source readback does not imply native acceptance."
+}
