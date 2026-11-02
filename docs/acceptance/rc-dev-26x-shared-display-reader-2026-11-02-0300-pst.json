@@ -1,0 +1,69 @@
+{
+  "checkpoint_local": "2026-11-02 03:00 PST",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "change": "DisplayNetworks.reader delegates to SignallerLogic.readerRef; preserves UUID-first and unique-label selection while eliminating per-lookup stream and list allocation.",
+  "source_commits": {
+    "mc/26.1.2": "c3a9e2a1be9a00ebb4b1527cbb49824b914d05e4",
+    "mc/26.3": "73b62a05cca6e95b5acabaecda99d29d6639ebbc"
+  },
+  "test_commits": {
+    "mc/26.1.2": "7084b4b14b606e3295427b1e8e3b0cdfba168ace",
+    "mc/26.3": "e2f3912511391e3a2d418d6a1cbb3f911179381c"
+  },
+  "source_readback": {
+    "both_branches": true,
+    "display_blob": "b4ac9a2c3672e1af3790f2bd32d9981d8b8dbbbc",
+    "regression_blob": "0233f1980dbad0063458b08d29d39b7e6afab26d"
+  },
+  "isolated_validation": {
+    "java_version": 21,
+    "mirrored_selector_cases": 70000,
+    "passed": true,
+    "scope": "standalone Java harness using equivalent original and shared selector logic; not current-source mod compilation"
+  },
+  "native_validation": {
+    "compiled": false,
+    "game_tests_executed": false,
+    "expected_game_tests_per_branch": 201,
+    "performance_benchmarks_executed": false,
+    "reason": "No Java 25, local Git checkout or dependency-capable Gradle builder; container GitHub DNS resolution failed."
+  },
+  "release": {
+    "branch_channel": "development",
+    "rc_publication_cleared": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "local_builds_deleted": false
+  },
+  "ci": {
+    "commit_messages_all_skip_ci": true,
+    "checked_exact_commit_heads": 4,
+    "new_workflow_runs": 0,
+    "repository_run_count": 2360,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "latest_identified_snapshot": "Snapshot 6",
+    "snapshot_date": "2026-10-27",
+    "loader_status": "No official NeoForge 26.4 loader identified in Maven directory at checkpoint",
+    "migration_watch": [
+      "fluid state source boolean and level",
+      "Vulkan-default client behavior",
+      "network protocol error handling"
+    ],
+    "sources": [
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-6",
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-4",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge"
+    ]
+  },
+  "next_gates": [
+    "Run exact-source Java 25 Gradle build and committed offline checks",
+    "Execute 201 native GameTests on each branch",
+    "Benchmark display reader selection and topology preflight",
+    "Validate installed providers, multiplayer, migrations, TPS/heap before RC clearance"
+  ]
+}
