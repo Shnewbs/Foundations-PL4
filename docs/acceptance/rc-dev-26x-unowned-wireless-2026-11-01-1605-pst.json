@@ -42,8 +42,14 @@
     "qualified_jar_generated": false,
     "github_release_uploaded": false,
     "curseforge_uploaded": false,
-    "github_actions_used": false,
-    "local_builds_deleted": false
+    "github_actions_used": true,
+    "local_builds_deleted": false,
+    "manual_github_actions_invoked": false,
+    "push_triggered_github_actions": true,
+    "push_triggered_validation_run": "https://github.com/Shnewbs/Foundations-PL4/actions/runs/41365503594",
+    "push_triggered_workflow": "Validate native Minecraft 26.3 (no publication)",
+    "push_triggered_status_at_check": "in_progress",
+    "note": "The 26.3 source push automatically triggered a pre-existing on:push GitHub Actions validation workflow. It was not manually dispatched. No release or upload workflow was invoked. Future source commits must use [skip ci] and verify trigger suppression."
   },
   "remaining_gates": [
     "exact-source Java 25 build",
