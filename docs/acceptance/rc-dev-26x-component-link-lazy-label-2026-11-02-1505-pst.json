@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-02",
+  "status": "source-only; RC publication NOT cleared",
+  "change": "ComponentLinks.refresh skips off-page remote emitter/entity label resolution for an empty search, and avoids a temporary stream/list for filtering and page slicing. Nonempty queries preserve label matching and page order.",
+  "branches": {
+    "mc/26.1.2": {
+      "source_commit": "226d9d116445d0e02588d3ae108fba951d5f2b17",
+      "regression_commit": "fd7be2ed8029df067ed4bee058aec053034a2693",
+      "runner_commit": "1ae0b0a5f4f9228e69ace7791a16acb0738ec82b"
+    },
+    "mc/26.3": {
+      "source_commit": "2335d6a6eb7a478050d2fa8a5c0f7436774f3117",
+      "regression_commit": "364835b440068590c0d37f9187760d09dd4206ce",
+      "runner_commit": "f026eb6ad6c82687280198e23b0d657e629b6b3e"
+    }
+  },
+  "source_readback": {
+    "matching_blob_shas": true,
+    "component_links": "e20abf573d70b7a412a832d106884ec7dbe0950b",
+    "test": "202adcd905be7e2c1ddfe054bf7a9d81fd176d88",
+    "runner": "015a5a1f5766fd7018ba76bf4541286b6b8a6f0d"
+  },
+  "isolated_parity": {
+    "cases": 10000,
+    "result": "passed",
+    "scope": "Python mirrored selection/count/pagination and label call counts; not native Java or GameTests"
+  },
+  "actions": {
+    "commit_message_token": "[skip ci]",
+    "repository_runs_before": 2360,
+    "repository_runs_after": 2360,
+    "exact_sha_new_runs": 0,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "latest_identified_snapshot": "26.4 Snapshot 6 (2026-10-27)",
+    "neoforge_26_4_loader_found": false,
+    "neoforge_maven_latest_observed": "26.3.0.99",
+    "notes": [
+      "26.4 Snapshot 4 removes separate flowing_water/flowing_lava fluid types and adds source/level properties",
+      "26.4 Snapshot 6 changes automatic heap sizing; benchmark with explicit fixed heap",
+      "Vulkan is default in 26.4 snapshots; test client render compatibility when loader is available"
+    ],
+    "official_sources": [
+      "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-4",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge"
+    ]
+  },
+  "native_acceptance": {
+    "java25_gradle_compile": "not run",
+    "complete_offline_suite": "not run",
+    "native_gametests": "not run",
+    "installed_provider": "not run",
+    "multiplayer": "not run",
+    "migration": "not run",
+    "native_performance": "not run"
+  },
+  "publication": {
+    "github_release": false,
+    "curseforge": false,
+    "jar_qualified": false,
+    "local_production_builds_deleted": false
+  }
+}
