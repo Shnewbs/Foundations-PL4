@@ -1,0 +1,68 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-02",
+  "scope": "26.x development branches; source-only reader channel refresh optimization",
+  "branch_heads": {
+    "mc/26.1.2": "b4bbca700abf15038ab13b738353752293d31fc5",
+    "mc/26.3": "7d8b2a135caa8828dcb3b30e9aa82f8edc09894d"
+  },
+  "implementation": "Defer channel description construction for nonselected, off-page targets when the text filter is empty or matches a stable channel UUID; retain exact selection, query, pagination and availability semantics.",
+  "source_readback": {
+    "status": "PASS",
+    "identical_source_blob": "d2d485807c4526613269c3a51df3be8cd658a7bc",
+    "identical_test_blob": "4af95f777f3459ccfef932b9ad32ac50b7852312",
+    "identical_runner_blob": "08e19d0fdb62b7d825340b3a6801a1d1d0762ef9"
+  },
+  "isolated_checks": {
+    "python_mirror_cases": 5000,
+    "result": "PASS",
+    "java21_exact_source_stub_compile": "PASS",
+    "java21_smoke_assertions": "PASS",
+    "illustrative_256_target_description_calls": {
+      "before": 320,
+      "after": 65
+    },
+    "caveat": "Not Minecraft-native compilation, runtime benchmark, or native GameTest acceptance."
+  },
+  "github_actions": {
+    "commit_messages_skip_ci": true,
+    "commit_count": 6,
+    "exact_sha_workflow_runs": 0,
+    "repository_workflow_runs_before": 2360,
+    "repository_workflow_runs_after": 2360,
+    "manual_dispatch": false
+  },
+  "minecraft_26_4": {
+    "official_latest_identified": "Snapshot 6, 2026-10-27",
+    "notable_change": "Launcher default JVM heap size now uses up to 25% of system RAM with a maximum of 4 GiB; revalidate PL4 memory/TPS baselines with explicit JVM settings.",
+    "neoforge_loader": "No 26.4 loader in official Maven index at review time; latest identified 26.3.0.99.",
+    "decision": "Watch only; no unsupported 26.4 binary or widened compatibility metadata.",
+    "sources": [
+      "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "native_acceptance": {
+    "java25_gradle_compile": "NOT_RUN",
+    "full_offline_suite": "NOT_RUN",
+    "declared_native_gametests_per_branch": 201,
+    "native_gametests": "NOT_RUN",
+    "installed_provider": "PENDING",
+    "multiplayer": "PENDING",
+    "migration": "PENDING",
+    "measured_tps_heap_gc": "PENDING"
+  },
+  "release": {
+    "rc_publication_cleared": false,
+    "jar_generated": false,
+    "github_release_uploaded": false,
+    "curseforge_uploaded": false,
+    "local_builds_deleted": false
+  },
+  "next_actions": [
+    "Restore Java 25 with Gradle dependencies and exact repository checkout",
+    "Run full offline suite and 201 native GameTests on each branch",
+    "Benchmark reader channel refresh under 256+ endpoints and multi-reader networks",
+    "Qualify exact-version RC builds before GitHub/CurseForge publication"
+  ]
+}
