@@ -52,6 +52,11 @@ public final class NetworkEngine {
     private static boolean sharedOwner(Ref source,Ref destination){
         return source.part.owner!=null&&source.part.owner.equals(destination.part.owner);
     }
+    /** A persisted wireless link is valid only for the exact live emitter it names. */
+    private static boolean matchesWirelessTarget(Part.Link link,Ref target){
+        return link.dimension().equals(target.level().dimension().identifier().toString())
+            &&link.pos().equals(target.host.getBlockPos())&&link.side()==target.part.face;
+    }
     /** Server-only loaded-part graph with typed NETWORK inputs and separate VISUAL exports. */
     public static void rebuild(MinecraftServer server){
         List<Ref> refs=new ArrayList<>();
@@ -94,7 +99,7 @@ public final class NetworkEngine {
         if(PLConfig.WIRELESS.get())for(Ref r:refs)if(r.part.kind.receiver()&&r.part.owner!=null)for(Part.Link link:r.part.links){
             Ref target=identities.get(link.part());
             if(target==null||!target.part.kind.emitter()||target.part.kind.redstone()!=r.part.kind.redstone()
-                ||!sharedOwner(r,target))continue;
+                ||!sharedOwner(r,target)||!matchesWirelessTarget(link,target))continue;
             if(!PLConfig.CROSS_DIMENSION.get()&&target.level()!=r.level())continue;
             sets.union(index.get(r.part),index.get(target.part));
         }
