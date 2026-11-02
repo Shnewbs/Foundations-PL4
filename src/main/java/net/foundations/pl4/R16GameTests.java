@@ -56,6 +56,29 @@ public final class R16GameTests {
         h.succeed();
     }
 
+    /** A cable port-mask edit without host.changed() must revoke a cached remote target. */
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
+    public static void readerRevokesSilentCablePortMaskChanges(GameTestHelper h){
+        var server=h.getLevel().getServer();
+        HostEntity readerHost=host(h,new BlockPos(2,1,1),Kind.INVENTORY_READER,Direction.WEST);
+        HostEntity remoteHost=host(h,new BlockPos(3,1,1),Kind.NODE,Direction.EAST);
+        Part reader=part(readerHost,Direction.WEST),cable=remoteHost.parts.get(6);
+        BlockPos inventory=remoteHost.getBlockPos().east();
+        NetworkEngine.rebuild(server);
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().anyMatch(link->link.pos().equals(inventory)),
+            "Owned cable initially exposes the remote inventory");
+        long builds=NetworkEngine.topologyBuildCount();
+        cable.blockedFaces=63; // Deliberately bypass host.changed() to simulate a stale provider edit.
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().noneMatch(link->link.pos().equals(inventory)),
+            "Silently blocked cable ports must revoke the remote inventory target");
+        h.assertTrue(NetworkEngine.topologyBuildCount()>builds,
+            "Live port-mask mismatch must rebuild cached network membership");
+        cable.blockedFaces=0;
+        h.assertTrue(NetworkEngine.targetsFor(server,reader).stream().anyMatch(link->link.pos().equals(inventory)),
+            "Restoring owned cable ports reauthorizes the remote inventory");
+        h.succeed();
+    }
+
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void passiveNodeFeedsAddTransferNode(GameTestHelper h){
         ChestBlockEntity from=chest(h,new BlockPos(1,1,1)),to=chest(h,new BlockPos(5,1,1));from.setItem(0,new ItemStack(Items.DIAMOND,17));
