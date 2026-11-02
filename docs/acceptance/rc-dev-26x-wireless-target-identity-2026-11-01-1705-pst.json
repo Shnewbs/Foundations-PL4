@@ -1,0 +1,64 @@
+{
+  "recorded_date": "2026-11-01",
+  "recorded_local_time": "17:05 PST",
+  "repository": "Shnewbs/Foundations-PL4",
+  "scope": "Existing 26.1.2 and 26.3 development branches only; no new 26.4 target",
+  "commits": {
+    "mc/26.1.2": "d1f65041c3b8585506c673f3dc0b5e890b4f5c0c",
+    "mc/26.3": "bfaef782059786b8d47bd94bcc363eb1ce4cd350"
+  },
+  "source_change": "Wireless topology validates stored target dimension, block position and face as well as UUID and nonnull matching owner",
+  "native_regression": "wirelessRejectsStaleCoordinatesAndFace: valid link control, stale block position, stale face",
+  "expected_native_tests_per_branch": 197,
+  "source_readback": {
+    "status": "PASS",
+    "branches": [
+      "mc/26.1.2",
+      "mc/26.3"
+    ],
+    "files_each": [
+      "NetworkEngine.java",
+      "PLGameTests.java",
+      "BUILD_STATUS.json"
+    ]
+  },
+  "native_compilation": "NOT_RUN",
+  "native_gametests": "NOT_RUN",
+  "installed_provider_acceptance": "NOT_RUN",
+  "multiplayer": "NOT_RUN",
+  "migration": "NOT_RUN",
+  "sustained_performance": "NOT_RUN",
+  "ci_suppression": {
+    "instruction": "[skip ci]",
+    "source_commit_messages_verified": true,
+    "source_commit_workflow_runs_immediate": {
+      "mc/26.1.2": 0,
+      "mc/26.3": 0
+    },
+    "manually_dispatched": false,
+    "reference": "https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs"
+  },
+  "official_watch": {
+    "minecraft_snapshot": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "neoforge_latest_seen": "26.3.0.99",
+    "neoforge_26_4_loader_seen": false,
+    "maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "snapshot": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6"
+  },
+  "release_clearance": {
+    "cleared_targets": 0,
+    "total_targets": 24,
+    "github_release_created": false,
+    "curseforge_uploaded": false,
+    "local_builds_deleted": false
+  },
+  "blockers": [
+    "Java 25 unavailable (Java 21 present)",
+    "Gradle distribution and dependencies not cached",
+    "GitHub/Gradle build host DNS unavailable",
+    "No exact-source native build or GameTest results",
+    "No installed-provider, multiplayer, migration or sustained performance acceptance"
+  ],
+  "note": "Readback verifies committed text only; it is not native compilation or runtime acceptance."
+}
