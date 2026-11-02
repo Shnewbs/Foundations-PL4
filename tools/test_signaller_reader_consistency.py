@@ -1,6 +1,7 @@
 """Deterministic signaller selection parity and source-contract checks.
 
-UUIDs outrank labels; ambiguous duplicate labels must not select a reader.\nDisplay selection delegates to the same resolver rather than duplicating allocation-heavy streams.
+UUIDs outrank labels; ambiguous duplicate labels must not select a reader.
+Display selection delegates to the same resolver rather than duplicating allocation-heavy streams.
 This is a source/mirror regression, NOT a compiled Minecraft or native GameTest.
 """
 from pathlib import Path
