@@ -1,0 +1,64 @@
+{
+  "project": "Foundations PL4",
+  "recorded_date": "2026-11-01",
+  "local_time": "23:13 PST",
+  "result": "SOURCE_READBACK_ONLY_NATIVE_ACCEPTANCE_PENDING",
+  "change": "Topology rebuild indexes only live emitter Parts by UUID when wireless is enabled; avoid buckets for non-emitter parts and disabled-wireless graphs while preserving duplicate-emitter coordinate matching.",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "cbd7001a25579cebe6ea10fa1c34ab4308c3ab3a",
+      "source_blob": "5921ace9d25ed117ef9a4593a51a4c34378dc7b9",
+      "source_readback": "PASS",
+      "expected_native_tests": 201,
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "performance_benchmark": "NOT_RUN",
+      "new_actions_runs": 0
+    },
+    "mc/26.3": {
+      "commit": "e35208d002b389ace24860612a5f34e0f0d32900",
+      "source_blob": "5921ace9d25ed117ef9a4593a51a4c34378dc7b9",
+      "source_readback": "PASS",
+      "expected_native_tests": 201,
+      "native_compilation": "NOT_RUN",
+      "native_gametests": "NOT_RUN",
+      "performance_benchmark": "NOT_RUN",
+      "new_actions_runs": 0
+    }
+  },
+  "source_equivalence": "PASS: identical SHA for both branch NetworkEngine.java; wirelessEnabled gates both emitter UUID index and receiver resolution; prior coordinate/owner/channel/face checks unchanged.",
+  "test_limitations": [
+    "Java 21 present, Java 25 absent",
+    "No local full repository checkout, Gradle distribution/dependency cache or working external build-host DNS",
+    "Committed offline verifier not run; native GameTests, installed providers, multiplayer, migration and sustained TPS/heap/GC tests pending"
+  ],
+  "github_actions": {
+    "commit_message_skip_ci": true,
+    "manual_dispatch": false,
+    "exact_head_queries_zero": true,
+    "overall_run_count_before": 2360,
+    "overall_run_count_after_source_pushes": 2360
+  },
+  "minecraft_26_4": {
+    "latest_official_snapshot": "26.4 Snapshot 6",
+    "published": "2026-10-27",
+    "mojang_url": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+    "neoforge_maven_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "latest_loader_listed": "26.3.0.99",
+    "loader_26_4": "NOT_LISTED",
+    "port_created": false,
+    "notes": "Snapshot 6 Java heap auto-sizing, pack versions, fluid source state and prior handshake/Vulkan changes remain future exact-target acceptance gates."
+  },
+  "release": {
+    "rc_cleared": "0/24",
+    "qualified_jar": false,
+    "github_release": false,
+    "curseforge_upload": false,
+    "local_build_deletions": false
+  },
+  "next": [
+    "Run exact-source Java 25 build, committed offline regressions and all 201 native tests on both branches without GitHub Actions",
+    "Benchmark allocation and topology rebuild time with wireless enabled and disabled on identical loaded graphs",
+    "Complete installed-provider, multiplayer, migration and TPS/heap/GC acceptance before publication"
+  ]
+}
