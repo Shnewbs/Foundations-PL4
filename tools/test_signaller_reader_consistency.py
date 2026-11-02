@@ -1,6 +1,6 @@
 """Deterministic signaller selection parity and source-contract checks.
 
-UUIDs outrank labels; ambiguous duplicate labels must not select a reader.
+UUIDs outrank labels; ambiguous duplicate labels must not select a reader.\nDisplay selection delegates to the same resolver rather than duplicating allocation-heavy streams.
 This is a source/mirror regression, NOT a compiled Minecraft or native GameTest.
 """
 from pathlib import Path
@@ -20,6 +20,7 @@ def select(readers, selection):
 def main():
     root = Path(__file__).resolve().parents[1]
     signaller = (root / "src/main/java/net/foundations/pl4/SignallerLogic.java").read_text()
+    display = (root / "src/main/java/net/foundations/pl4/DisplayNetworks.java").read_text()
     network = (root / "src/main/java/net/foundations/pl4/NetworkEngine.java").read_text()
     required = (
         (signaller, "static NetworkEngine.Ref readerRef(List<NetworkEngine.Ref> readers,String selection)"),
@@ -27,6 +28,7 @@ def main():
         (signaller, "if(named!=null)return null;"),
         (signaller, "var ref=readerRef(readers,selection);"),
         (signaller, "return ref==null?null:ref.part();"),
+        (display, "return SignallerLogic.readerRef(readers,selector);"),
         (network, "if(p.kind==Kind.SIGNALLER)reader=SignallerLogic.readerRef(readers,p.selected);"),
         (network, "else if(p.selected.isEmpty())reader=readers.isEmpty()?null:readers.getFirst();"),
     )
@@ -56,7 +58,7 @@ def main():
             actual = select(readers, selection)
             assert actual == expected, (readers, selection, expected, actual)
             checks += 1
-    print(f"PASS signaller UUID precedence, ambiguous-label denial and {checks} mirrored cases (not native)")
+    print(f"PASS signaller/display shared resolver, UUID precedence, ambiguous-label denial and {checks} mirrored cases (not native)")
 
 
 if __name__ == "__main__":
