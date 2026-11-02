@@ -11,7 +11,7 @@
     "native build",
     "native GameTests"
   ],
-  "expected_native_tests": 198,
+  "expected_native_tests": 199,
   "further_api_testing_required": true,
   "installed_optional_provider_acceptance": "PENDING_FOR_THIS_CANDIDATE",
   "client_visual_acceptance": "PENDING_FOR_THIS_CANDIDATE",
@@ -64,10 +64,10 @@
   "native_compilation": "PENDING_REVALIDATION_FOR_CURRENT_SOURCE",
   "pending_native_candidate": {
     "source_scope": "Exact Minecraft 26.1.2 owned physical cable graph, live reader/storage alias revocation, and cross-owner visual reader/display isolation, cross-owner transfer-route rejection and detached-part route guards; deny wireless links involving unowned/null-owner endpoints; validate persisted wireless target dimension/position/face against the live emitter; live cached graph snapshots revoke silent owner, identity, port-mask and link mutations",
-    "expected_native_tests": 198,
-    "validation": "PENDING_NATIVE_26_1_2_198_TESTS_JAVA25",
+    "expected_native_tests": 199,
+    "validation": "PENDING_NATIVE_26_1_2_199_TESTS_JAVA25",
     "installed_providers": "NOT_TESTED",
     "rc_publication_cleared": false
   },
-  "current_source_notes": "2026-11-01: Cache now snapshots owner, identity, blocked cable faces and persisted links; silent mutations trigger rebuild on access or next sample. Added port-mask reader revocation native fixture 198. Source-only, Java25 and 198 GameTests pending. 2026-11-01: Wireless UUID resolution now also requires the persisted target dimension, block position and face to match the live emitter; stale or forged coordinates no longer authorize network union. Added one native regression with a valid-link control. Expected 197 native cases, NOT executed on current source. RC clearance remains closed. 2026-11-01: Wireless topology now requires both emitter and receiver to have the same nonnull owner; previously null==null was accepted. Added a redstone native GameTest covering unowned-to-unowned and unowned-to-owned forged links. Expected 196 native cases, NOT executed on this source. RC gates remain closed. 2026-10-30: Corrected native port graph's unconditional foreign-owner physical union. Now revalidate loaded host and owner/part membership, partition graph by matching nonnull owners and keep legitimate local storage usable. Included native reader alias revocation and local withdrawal tests. Expected 193 scenarios are NOT native-executed at this new source; previous 192 case qualification belongs to previous pinned source. No RC clearance."
+  "current_source_notes": "2026-11-01: Snapshot host part-set counts to detect silent part additions/removals on connected hosts, and add native reader discovery/revocation fixture. Expected 199 native tests; Java 25 compilation and GameTests pending. 2026-11-01: Cache now snapshots owner, identity, blocked cable faces and persisted links; silent mutations trigger rebuild on access or next sample. Added port-mask reader revocation native fixture 198. Source-only, Java25 and 198 GameTests pending. 2026-11-01: Wireless UUID resolution now also requires the persisted target dimension, block position and face to match the live emitter; stale or forged coordinates no longer authorize network union. Added one native regression with a valid-link control. Expected 197 native cases, NOT executed on current source. RC clearance remains closed. 2026-11-01: Wireless topology now requires both emitter and receiver to have the same nonnull owner; previously null==null was accepted. Added a redstone native GameTest covering unowned-to-unowned and unowned-to-owned forged links. Expected 196 native cases, NOT executed on this source. RC gates remain closed. 2026-10-30: Corrected native port graph's unconditional foreign-owner physical union. Now revalidate loaded host and owner/part membership, partition graph by matching nonnull owners and keep legitimate local storage usable. Included native reader alias revocation and local withdrawal tests. Expected 193 scenarios are NOT native-executed at this new source; previous 192 case qualification belongs to previous pinned source. No RC clearance."
 }

@@ -26,13 +26,16 @@ public final class NetworkEngine {
     private static int cachedMaxNetwork;
     private record Group(List<Ref> parts,int hostCount,boolean redstone,List<Part.Link> targets,List<Ref> readers,TransferEngine.Plan transfers) {}
     /** Immutable membership snapshot; live owner, identity, ports and links must still match. */
-    private record TopologySnapshot(UUID owner,UUID identity,int blockedFaces,List<Part.Link> links) {
-        static TopologySnapshot capture(Part p){
-            return new TopologySnapshot(p.owner,p.identity,p.blockedFaces,List.copyOf(p.links));
+    private record TopologySnapshot(UUID owner,UUID identity,int blockedFaces,List<Part.Link> links,int hostPartCount) {
+        static TopologySnapshot capture(Ref ref){
+            Part p=ref.part;
+            return new TopologySnapshot(p.owner,p.identity,p.blockedFaces,List.copyOf(p.links),ref.host.parts.size());
         }
-        boolean matches(Part p){
+        boolean matches(Ref ref){
+            Part p=ref.part;
             return Objects.equals(owner,p.owner)&&Objects.equals(identity,p.identity)
-                &&blockedFaces==p.blockedFaces&&links.equals(p.links);
+                &&blockedFaces==p.blockedFaces&&links.equals(p.links)
+                &&hostPartCount==ref.host.parts.size();
         }
     }
     public record Ref(HostEntity host,Part part) {
@@ -161,7 +164,7 @@ public final class NetworkEngine {
         }
         cachedRefs=List.copyOf(refs);cachedHosts=List.copyOf(arms.keySet());cachedGroups=List.copyOf(complete);
         Map<Part,TopologySnapshot> topologySnapshots=new IdentityHashMap<>();
-        for(Ref ref:refs)topologySnapshots.put(ref.part,TopologySnapshot.capture(ref.part));
+        for(Ref ref:refs)topologySnapshots.put(ref.part,TopologySnapshot.capture(ref));
         cachedMembership=membership;cachedStorageNodes=storageNodes;cachedTopology=topologySnapshots;
         cachedServer=server;cachedWireless=PLConfig.WIRELESS.get();cachedCrossDimension=PLConfig.CROSS_DIMENSION.get();cachedMaxNetwork=PLConfig.MAX_NETWORK.get();dirty=false;topologyBuilds++;
         deferDirtyRebuild=false;
@@ -196,7 +199,7 @@ public final class NetworkEngine {
         boolean attached=false;
         for(Ref ref:group.parts){
             TopologySnapshot snapshot=cachedTopology.get(ref.part);
-            if(snapshot==null||!snapshot.matches(ref.part)
+            if(snapshot==null||!snapshot.matches(ref)
                 ||!loadedHost(ref.host,server)
                 ||ref.host.parts.get(ref.part.slot())!=ref.part
                 ||!anchor.owner.equals(ref.part.owner))return false;
@@ -224,11 +227,11 @@ public final class NetworkEngine {
         if(cachedServer!=server||cachedWireless!=PLConfig.WIRELESS.get()||cachedCrossDimension!=PLConfig.CROSS_DIMENSION.get()||cachedMaxNetwork!=PLConfig.MAX_NETWORK.get())dirty=true;
         boolean sample=server.getTickCount()%PLConfig.TICK_RATE.get()==0;
         if(sample&&!dirty)for(HostEntity h:cachedHosts)if(!loadedHost(h,server)){dirty=true;break;}
-        // Unannounced owner, port, identity or wireless-link mutations cannot keep a
+        // Unannounced part additions/removals, owner, port, identity or link mutations cannot keep a
         // stale graph alive for another sampling cycle.
         if(sample&&!dirty)for(Ref ref:cachedRefs){
             TopologySnapshot snapshot=cachedTopology.get(ref.part);
-            if(snapshot==null||!snapshot.matches(ref.part)
+            if(snapshot==null||!snapshot.matches(ref)
                 ||ref.host.parts.get(ref.part.slot())!=ref.part){dirty=true;break;}
         }
         if(dirty&&deferDirtyRebuild){deferDirtyRebuild=false;return;}
