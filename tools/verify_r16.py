@@ -5,6 +5,7 @@ R=Path(__file__).resolve().parents[1]
 def read(p):return (R/p).read_text()
 engine=read('src/main/java/net/foundations/pl4/TransferEngine.java')
 network=read('src/main/java/net/foundations/pl4/NetworkEngine.java')
+display=read('src/main/java/net/foundations/pl4/DisplayNetworks.java')
 rules=read('src/main/java/net/foundations/pl4/core/TransferRules.java')
 partscreen=read('src/main/java/net/foundations/pl4/client/PartScreen.java')
 book=json.loads((R/'src/main/resources/assets/foundations_pl4/guide/en_us.json').read_text())
@@ -26,7 +27,8 @@ checks={
  'FE boundary documented':'EU' in body and 'Joule' in body and 'read-only telemetry' in body,
  'clear mode labels':'ADD / IMPORT' in partscreen and 'REMOVE / EXPORT' in partscreen,
  'R16 native tests registered':'R16GameTests.class' in read('src/main/java/net/foundations/pl4/PortTestInstance.java'),
- 'thirty-two transfer, automation and storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==32,
+ 'thirty-three transfer, automation and storage native tests':read('src/main/java/net/foundations/pl4/R16GameTests.java').count('@PortGameTest(')==33,
+ 'display UI revalidates silent owner changes before serializing':'ensureLiveDisplayTopology(MinecraftServer server)' in network and 'DisplayNetworks.sample();' in network and display.count('NetworkEngine.ensureLiveDisplayTopology(level.getServer())')==2 and 'displayPreviewRevokesSilentOwnerChanges' in read('src/main/java/net/foundations/pl4/R16GameTests.java'),
  'silent host part-set changes invalidate reader caches':'hostPartCount==ref.host.parts.size()' in network and 'snapshot.matches(ref)' in network and 'readerSeesSilentlyAddedAndRemovedOwnedNode' in read('src/main/java/net/foundations/pl4/R16GameTests.java'),
  'physical cable partitions newly foreign owners': bool(re.search(
      r'private\s+static\s+boolean\s+sharedOwner\s*\(\s*Ref\s+source\s*,\s*Ref\s+destination\s*\)\s*\{\s*return\s+source\.part\.owner\s*!=\s*null\s*&&\s*source\.part\.owner\.equals\s*\(\s*destination\.part\.owner\s*\)\s*;\s*\}',

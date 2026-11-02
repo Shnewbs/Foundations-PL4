@@ -116,7 +116,7 @@ public final class DisplayNetworks {
     }
     public static void layoutEdited(HostEntity host,Part part){applyLayout(host,part,part.displaySettings(),nextLayoutRevision(part));}
     public static NetworkEngine.Ref controller(HostEntity host,Part part){
-        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureLiveDisplayTopology(level.getServer());
         return ROOTS.getOrDefault(part,new NetworkEngine.Ref(host,part));
     }
     /** Preflight the possible merged front before any settings are mirrored into neighboring tiles. */
@@ -164,7 +164,7 @@ public final class DisplayNetworks {
         var named=readers.stream().filter(r->r.part().label.equals(selector)).limit(2).toList();return named.size()==1?named.getFirst():null;
     }
     public static List<Part.Row> preview(HostEntity host,Part part,String selector){
-        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureCurrent(level.getServer());
+        if(host.getLevel() instanceof ServerLevel level)NetworkEngine.ensureLiveDisplayTopology(level.getServer());
         for(var canvas:canvases)if(canvas.tiles.stream().anyMatch(t->t.part()==part)){
             var ref=reader(canvas.readers,selector);return ref==null?List.of():List.copyOf(ref.part().rows.subList(0,Math.min(64,ref.part().rows.size())));
         }return List.of();
