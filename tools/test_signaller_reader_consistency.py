@@ -31,6 +31,10 @@ def main():
         (signaller, "return ref==null?null:ref.part();"),
         (display, "return SignallerLogic.readerRef(readers,selector);"),
         (network, "if(p.kind==Kind.SIGNALLER)reader=SignallerLogic.readerRef(readers,p.selected);"),
+        (signaller, "return evaluate(p,readers,p.statements.isEmpty()?readerRef(readers,p.selected):null);"),
+        (signaller, "static int evaluate(Part p,List<NetworkEngine.Ref> readers,NetworkEngine.Ref selected)"),
+        (signaller, "Part reader=selected==null?null:selected.part();"),
+        (network, "setSignal(r,SignallerLogic.evaluate(p,readers,reader));"),
         (network, "else if(p.selected.isEmpty())reader=readers.isEmpty()?null:readers.getFirst();"),
     )
     for source, marker in required:

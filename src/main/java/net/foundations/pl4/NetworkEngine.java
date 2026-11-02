@@ -337,7 +337,7 @@ public final class NetworkEngine {
                 p.rows.clear(); if(reader!=null)p.rows.addAll(reader.part.rows);
                 p.status=reader==null?"No selected reader":reader.part.title();
                 if(p.kind==Kind.SIGNALLER){
-                    setSignal(r,SignallerLogic.evaluate(p,readers));
+                    setSignal(r,SignallerLogic.evaluate(p,readers,reader));
                     if(!p.statements.isEmpty())p.status=(p.statementsAll?"ALL":"ANY")+" of "+p.statements.size()+" statements · output "+p.signal;
 
                 }
