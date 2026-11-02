@@ -47,6 +47,7 @@ def main():
     run(sys.executable,ROOT/'tools/verify_r13.py')
     run(sys.executable,ROOT/'tools/verify_r14.py')
     run(sys.executable,ROOT/'tools/verify_r17.py')
+    run(sys.executable,ROOT/'tools/test_reader_lookup.py')
     run(sys.executable,ROOT/'tools/verify_r16.py')
     print('OFFLINE CHECKS PASSED. Native mod compilation, GameTests, graphical rendering and Windows updater execution remain separate checks.',flush=True)
 
