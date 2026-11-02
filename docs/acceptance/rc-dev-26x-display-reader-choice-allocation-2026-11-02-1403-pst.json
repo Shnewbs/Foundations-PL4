@@ -1,0 +1,60 @@
+{
+  "project": "Foundations PL4",
+  "date": "2026-11-02",
+  "scope": [
+    "mc/26.1.2",
+    "mc/26.3"
+  ],
+  "change": "DisplayNetworks.sample now fills the at-most-64 reader-choice entries with a bounded indexed loop rather than allocating stream/limit/toList every sample; preserves order and 64-entry cap.",
+  "source_commits": {
+    "mc/26.1.2": "97bf4c3302c0977f9e770b575fba41822c57f7be",
+    "mc/26.3": "66c1c092d44a6f609b631b34f71da08d1cd49ff3"
+  },
+  "source_blob": "398f87bd64f3a5cc5154d8b7d260abd58f65fb82",
+  "source_readback": {
+    "branches": 2,
+    "matching_blobs": true,
+    "verified": true
+  },
+  "isolated_validation": {
+    "language": "JavaScript",
+    "cases": 100000,
+    "passed": 100000,
+    "scope": "Mirrored array order/limit equivalence; not Java compilation, not Gradle or native Minecraft tests"
+  },
+  "native_acceptance": {
+    "java25_exact_source_compile": "NOT_RUN",
+    "offline_suite": "NOT_RUN",
+    "native_gametests_per_branch_expected": 201,
+    "native_gametests": "NOT_RUN",
+    "installed_providers": "PENDING",
+    "multiplayer": "PENDING",
+    "migration": "PENDING",
+    "measured_performance": "PENDING",
+    "rc_cleared": false
+  },
+  "actions_policy": {
+    "source_commit_message_prefix": "[skip ci]",
+    "source_commits_exact_sha_workflow_runs": 0,
+    "repository_actions_count_after_source_commits": 2360,
+    "manual_dispatch": false,
+    "verification": "GitHub Actions repository runs filtered by exact head_sha; repository total checked"
+  },
+  "compatibility_26_4": {
+    "latest_identified_snapshot": "Minecraft 26.4 Snapshot 6 (2026-10-27)",
+    "loader": "No NeoForge 26.4 loader in official Maven index as of 2026-11-02",
+    "source_changes": "No 26.4 port created; monitor fluid source property, #swimmable tag, Vulkan/OpenGL, network protocol, Java 25, fixed-heap performance",
+    "references": [
+      "https://www.minecraft.net/fi-fi/article/minecraft-26-4-snapshot-6",
+      "https://www.minecraft.net/en-us/article/minecraft-26-4-snapshot-4",
+      "https://maven.neoforged.net/releases/net/neoforged/neoforge/"
+    ]
+  },
+  "publication": {
+    "production_jar": false,
+    "github_release": false,
+    "curseforge": false,
+    "local_builds_deleted": false,
+    "reason": "Exact-source native acceptance remains incomplete; container execution unavailable in this cycle"
+  }
+}
