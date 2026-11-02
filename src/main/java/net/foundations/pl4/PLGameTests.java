@@ -193,6 +193,38 @@ public final class PLGameTests {
             h.succeed();
         });
     }
+    /** Duplicate persisted UUIDs must resolve by exact emitter coordinates, not last map insertion. */
+    @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID,timeoutTicks=100)
+    public static void wirelessDuplicateEmitterIdsPreserveBothLinks(GameTestHelper h){
+        chest(h,new BlockPos(1,1,1)).setItem(0,new ItemStack(Items.DIAMOND,17));
+        host(h,new BlockPos(2,1,1),Kind.NODE,Direction.WEST);
+        HostEntity firstEmitter=host(h,new BlockPos(3,1,1),Kind.DATA_EMITTER,Direction.DOWN);
+        HostEntity firstReceiver=host(h,new BlockPos(5,1,1),Kind.DATA_RECEIVER,Direction.DOWN);
+        HostEntity firstReader=host(h,new BlockPos(6,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        chest(h,new BlockPos(7,1,1)).setItem(0,new ItemStack(Items.EMERALD,23));
+        host(h,new BlockPos(8,1,1),Kind.NODE,Direction.WEST);
+        HostEntity secondEmitter=host(h,new BlockPos(9,1,1),Kind.DATA_EMITTER,Direction.DOWN);
+        HostEntity secondReceiver=host(h,new BlockPos(11,1,1),Kind.DATA_RECEIVER,Direction.DOWN);
+        HostEntity secondReader=host(h,new BlockPos(12,1,1),Kind.INVENTORY_READER,Direction.DOWN);
+        Part first=firstEmitter.parts.get(Direction.DOWN.ordinal());
+        Part second=secondEmitter.parts.get(Direction.DOWN.ordinal());
+        second.identity=first.identity; // Simulate an NBT-cloned emitter; distinct positions, same UUID.
+        String dimension=h.getLevel().dimension().identifier().toString();
+        firstReceiver.parts.get(Direction.DOWN.ordinal()).links.add(
+            new Part.Link(dimension,firstEmitter.getBlockPos(),Direction.DOWN,null,first.identity));
+        secondReceiver.parts.get(Direction.DOWN.ordinal()).links.add(
+            new Part.Link(dimension,secondEmitter.getBlockPos(),Direction.DOWN,null,second.identity));
+        h.runAtTickTime(45,()->{
+            var a=firstReader.parts.get(Direction.DOWN.ordinal()).rows;
+            var b=secondReader.parts.get(Direction.DOWN.ordinal()).rows;
+            h.assertTrue(a.stream().anyMatch(row->row.value()==17)&&a.stream().noneMatch(row->row.value()==23),
+                "First receiver must resolve its coordinate-matched emitter despite duplicate UUID");
+            h.assertTrue(b.stream().anyMatch(row->row.value()==23)&&b.stream().noneMatch(row->row.value()==17),
+                "Second receiver must resolve its own emitter without cross-network leakage");
+            h.succeed();
+        });
+    }
+
     @PortGameTest(template="empty",templateNamespace=FoundationsPL4.ID)
     public static void readingUnloadedTargetDoesNotLoadChunk(GameTestHelper h){
         HostEntity host=host(h,new BlockPos(1,1,1),Kind.INVENTORY_READER,Direction.DOWN);Part p=host.parts.get(0);
