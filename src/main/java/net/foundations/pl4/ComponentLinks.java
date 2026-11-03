@@ -25,7 +25,13 @@ public final class ComponentLinks {
             for(var entity:player.level().getEntitiesOfClass(LivingEntity.class,new AABB(host.getBlockPos()).inflate(radius),e->e.isAlive()&&!e.isSpectator()))
                 if(player.level().mayInteract(player,entity.blockPosition()))links.add(new Part.Link(player.level().dimension().identifier().toString(),entity.blockPosition(),Direction.UP,entity.getUUID(),null));
         }
-        links.sort(Comparator.comparing(ComponentLinks::choiceId));return links;
+        // Cache the opaque choice ID once per candidate; sorting must not hash it O(n log n) times.
+        if(links.size()>1){
+            Map<Part.Link,String> keys=new IdentityHashMap<>();
+            for(Part.Link link:links)keys.put(link,choiceId(link));
+            links.sort(Comparator.comparing(keys::get));
+        }
+        return links;
     }
     public static void refresh(ServerPlayer player,HostEntity host,Part part){
         if(!supported(part))return;part.targetChoices.clear();
