@@ -1,0 +1,62 @@
+{
+  "project": "Foundations-PL4",
+  "recorded_local": "2026-11-02 16:07 America/Los_Angeles",
+  "change": "ComponentLinks.candidates caches choiceId once per candidate before sorting; stable order and duplicate-ID ties preserved",
+  "status": "development source only; not release cleared",
+  "branches": {
+    "mc/26.1.2": {
+      "commit": "e2a389e1540e139f7c52bfa9a220fb7a5e08ab98",
+      "source_readback": true,
+      "offline_runner_registered": true
+    },
+    "mc/26.3": {
+      "commit": "c028f30a40e507abed36559ea62d229be538f2c6",
+      "source_readback": true,
+      "offline_runner_registered": true
+    }
+  },
+  "verification": {
+    "github_actions_total_before": 2360,
+    "github_actions_total_after": 2360,
+    "exact_sha_workflow_runs": {
+      "mc/26.1.2": 0,
+      "mc/26.3": 0
+    },
+    "source_and_test_blobs_identical_between_branches": true,
+    "isolated_java_21_ordering_cases_passed": 10000,
+    "isolated_java_21_id_evaluations_before": 25185596,
+    "isolated_java_21_id_evaluations_after": 1641554,
+    "python_semantic_mirror_cases_passed": 10000,
+    "full_offline_suite": "NOT RUN",
+    "exact_source_java_25_gradle": "NOT RUN",
+    "native_gametests": "NOT RUN",
+    "multiplayer_migration_installed_providers": "NOT RUN",
+    "tps_heap_gc_benchmarks": "NOT RUN",
+    "note": "Operation-count comparisons are not native performance benchmarks or production acceptance."
+  },
+  "compatibility_watch": {
+    "minecraft_26_4_latest_identified": "Snapshot 6 (2026-10-27)",
+    "official_snapshot": "https://feedback.minecraft.net/hc/en-us/articles/49936802465805-Minecraft-Java-Edition-26-4-Snapshot-6",
+    "official_neoforge_maven": "https://maven.neoforged.net/releases/net/neoforged/neoforge/",
+    "neoforge_latest_identified": "26.3.0.99",
+    "neoforge_26_4_loader": "NOT FOUND",
+    "checks": [
+      "Snapshot 4 fluid-state source boolean and flowing type removal",
+      "Snapshot 6 #swimmable fluid tag",
+      "Snapshot 1 Vulkan default renderer",
+      "Snapshot 6 JVM automatic heap up to 25% RAM capped at 4GB; pin heap for benchmarks"
+    ],
+    "port_26_4_created": false
+  },
+  "blockers": [
+    "Container Java 21 only; Java 25 unavailable",
+    "GitHub clone DNS unavailable in container; no complete dependency-capable checkout",
+    "Native mod compilation and GameTests remain unexecuted",
+    "CurseForge/GitHub releases require native acceptance"
+  ],
+  "releases": {
+    "github_release_created": false,
+    "curseforge_upload_created": false,
+    "local_production_builds_deleted": false
+  }
+}
